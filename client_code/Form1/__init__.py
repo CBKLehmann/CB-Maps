@@ -13,7 +13,7 @@ class Form1(Form1Template):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.dom = anvil.js.get_dom_node(self.spacer_1)
-    self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"),("15 minutes", "15"), ("30 minutes", "30"), ("45 minutes", "45"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
+    self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("45 minutes", "45"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
     self.token = "pk.eyJ1IjoiYnJvb2tlbXllcnMiLCJhIjoiY2tsamtiZ3l0MW55YjJvb2lsbmNxaWo0dCJ9.9iOO0aFkAy0TAP_qjtSE-A"
 
 
@@ -21,20 +21,19 @@ class Form1(Form1Template):
     """This method is called when the HTML panel is shown on the screen"""
     mapboxgl.accessToken = self.token
     self.mapbox = mapboxgl.Map({'container': self.dom,
-                                #'style': 'mapbox://styles/mapbox/streets-v11',
-                                'style': 'mapbox://styles/brookemyers/cklk04z7x1f5d17pedafupa3e',
-                                'center': [0.1218, 52.2053], #center on Cambridge
-                                'zoom': 12})
-    self.marker = mapboxgl.Marker({'color': '#944840', 'draggable': True})
-    self.marker.setLngLat([0.1218, 52.2053]).addTo(self.mapbox)
+                                'style': 'mapbox://styles/mapbox/streets-v11',
+                                #'style': 'mapbox://styles/brookemyers/cklk04z7x1f5d17pedafupa3e',
+                                'center': [13.5719, 52.5517],
+                                'zoom': 16})
+    self.marker = mapboxgl.Marker({'color': '#0000FF', 'draggable': True})
+    self.marker.setLngLat([13.5719, 52.5517]).addTo(self.mapbox)
     
     self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken,
                                     'marker': False})
     self.mapbox.addControl(self.geocoder)
   
     self.geocoder.on('result', self.move_marker)
-    self.marker.on('drag', self.marker_dragged)
-
+    self.marker.on('drag', self.marker_dragged) 
     
     
   def move_marker(self, result):
@@ -57,7 +56,7 @@ class Form1(Form1Template):
                             'source': 'iso',
                             'layout': {},
                             'paint': {
-                            'fill-color': '#955547',
+                            'fill-color': '#04B404',
                             'fill-opacity': 0.3}
                            })
     
@@ -74,7 +73,6 @@ class Form1(Form1Template):
   
          
     response = anvil.http.request(response_string,json=True)
-    #response = anvil.http.request(f"https://api.mapbox.com/isochrone/v1/mapbox/{profile}/{lnglat.lng},{lnglat.lat}?contours_minutes={c_m0},{c_m1},{c_m2},{c_m3}&polygons=true&access_token={self.token}", json=True)
     self.mapbox.getSource('iso').setData(response)
 
   def time_dropdown_change(self, **event_args):
