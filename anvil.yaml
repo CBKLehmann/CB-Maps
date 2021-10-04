@@ -1,0 +1,24 @@
+dependencies: []
+services:
+- source: /runtime/services/tables.yml
+  client_config: {}
+  server_config: {}
+package_name: How_Far_Can_I_Go_
+allow_embedding: false
+name: Clone of Clone of How Far Can I Go?
+runtime_options: {version: 2, client_version: '3', server_version: python3-sandbox}
+metadata: {description: An app using Mapbox's Isochrone API which tells you how far you can travel given a certain amount of time.}
+startup_form: Form1
+native_deps: {head_html: '<script src=''https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js''></script>
+
+    <link href=''https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css'' rel=''stylesheet''
+    />
+
+    <script src=''https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.min.js''></script>
+
+    <link rel=''stylesheet'' href=''https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.css''
+    type=''text/css'' />
+
+    '}
+db_schema: {}
+renamed: true
