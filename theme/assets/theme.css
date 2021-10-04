@@ -661,7 +661,7 @@ input.anvil-component, textarea.anvil-component, .anvil-component select, .anvil
   border: 1px solid %color:Secondary 500% !important;
   border-radius: 10px;
   background-color: transparent;
-  color: rgba(0,0,0,0.87);
+  color: rgba(0,0,0,1);
   
   box-shadow: none;
 }
@@ -807,6 +807,7 @@ https://stackoverflow.com/questions/30533055/calculating-shadow-values-for-all-m
   min-width: 400px;
   margin: 50px 100px;
   padding: 30px 40px;
-  background-color: rgba(229, 213, 194, 0.7);
+  background-color: rgba(184, 184, 184, 0.7);
+  border-radius: 10px;
 }
 

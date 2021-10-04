@@ -13,7 +13,7 @@ class Form1(Form1Template):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.dom = anvil.js.get_dom_node(self.spacer_1)
-    self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("45 minutes", "45"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
+    self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
     self.token = "pk.eyJ1IjoiYnJvb2tlbXllcnMiLCJhIjoiY2tsamtiZ3l0MW55YjJvb2lsbmNxaWo0dCJ9.9iOO0aFkAy0TAP_qjtSE-A"
 
 
@@ -21,12 +21,11 @@ class Form1(Form1Template):
     """This method is called when the HTML panel is shown on the screen"""
     mapboxgl.accessToken = self.token
     self.mapbox = mapboxgl.Map({'container': self.dom,
-                                'style': 'mapbox://styles/mapbox/streets-v11',
-                                #'style': 'mapbox://styles/brookemyers/cklk04z7x1f5d17pedafupa3e',
-                                'center': [13.5719, 52.5517],
+                                'style': 'mapbox://styles/mapbox/outdoors-v11',
+                                'center': [13.4092, 52.5167],
                                 'zoom': 16})
     self.marker = mapboxgl.Marker({'color': '#0000FF', 'draggable': True})
-    self.marker.setLngLat([13.5719, 52.5517]).addTo(self.mapbox)
+    self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
     
     self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken,
                                     'marker': False})
@@ -56,8 +55,9 @@ class Form1(Form1Template):
                             'source': 'iso',
                             'layout': {},
                             'paint': {
-                            'fill-color': '#04B404',
-                            'fill-opacity': 0.3}
+                            'fill-color': '#ebb400',
+                            'fill-opacity': 0.3
+                            }
                            })
     
     lnglat = self.marker.getLngLat()
@@ -68,11 +68,10 @@ class Form1(Form1Template):
     else:
       response_string = response_string + f"contours_minutes={contours_minutes}"
       
-    
     response_string += f"&polygons=true&access_token={self.token}"
-  
-         
+    
     response = anvil.http.request(response_string,json=True)
+    
     self.mapbox.getSource('iso').setData(response)
 
   def time_dropdown_change(self, **event_args):
@@ -82,4 +81,3 @@ class Form1(Form1Template):
   def profile_dropdown_change(self, **event_args):
     """This method is called when an item is selected"""
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-
