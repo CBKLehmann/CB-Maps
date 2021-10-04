@@ -5,7 +5,7 @@ services:
   server_config: {}
 package_name: How_Far_Can_I_Go_
 allow_embedding: false
-name: Clone of Clone of How Far Can I Go?
+name: Maps2.0
 runtime_options: {version: 2, client_version: '3', server_version: python3-sandbox}
 metadata: {description: An app using Mapbox's Isochrone API which tells you how far you can travel given a certain amount of time.}
 startup_form: Form1
