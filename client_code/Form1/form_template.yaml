@@ -15,7 +15,7 @@ components:
     properties: {visible: true, spacing_above: none, spacing_below: none, height: 100vh,
       tooltip: ''}
     name: spacer_1
-    layout_properties: {grid_position: 'XWHZEO,HSRTMT', full_width_row: true}
+    layout_properties: {grid_position: 'XWHZEO,QMAXTV', full_width_row: true}
 - type: ColumnPanel
   properties: {col_widths: '{}'}
   name: column_panel_1

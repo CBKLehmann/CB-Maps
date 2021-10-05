@@ -29,6 +29,7 @@ class Form1(Form1Template):
     
     self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken,
                                     'marker': False})
+    
     self.mapbox.addControl(self.geocoder)
   
     self.geocoder.on('result', self.move_marker)
