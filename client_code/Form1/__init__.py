@@ -19,7 +19,7 @@ class Form1(Form1Template):
 
   def form_show(self, **event_args):
     
-    coords = [([13.4092, 52.5167]), (13.4594, 52.5224), (13.5658, 52.5373), (13.5147, 52.5537), (13.4491, 52.5904), (13.3299, 52.5487), (13.1441, 52.4838)]
+    coords = [(13.4092, 52.5167), (13.4594, 52.5224), (13.5658, 52.5373), (13.5147, 52.5537), (13.4491, 52.5904), (13.3299, 52.5487), (13.1441, 52.4838)]
     markercount = 0
   
     print(coords[0])
@@ -30,9 +30,10 @@ class Form1(Form1Template):
                                 'style': 'mapbox://styles/mapbox/outdoors-v11',
                                 'center': [13.4092, 52.5167],
                                 'zoom': 16})
-    while markercount <=  len(coords):
+    while markercount <  len(coords):
       self.marker = mapboxgl.Marker({'color': '#00FF00', 'draggable': False})
       self.marker.setLngLat(coords[markercount]).addTo(self.mapbox)
+      print(markercount)
       markercount += 1
 
     self.marker = mapboxgl.Marker({'color': '#0000FF', 'draggable': True})
