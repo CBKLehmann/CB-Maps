@@ -11,18 +11,6 @@ components:
   name: content_panel
   layout_properties: {slot: default}
   components:
-  - type: ColumnPanel
-    properties: {col_widths: '{}'}
-    name: column_panel_2
-    layout_properties: {grid_position: 'IVFLYG,FKFLWV', full_width_row: true}
-    components:
-    - type: Label
-      properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
-        visible: true, text: Testtext, font_size: null, font: '', spacing_above: small,
-        icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
-        underline: false, icon: ''}
-      name: label_2
-      layout_properties: {grid_position: 'TYBKSL,WJNTHW'}
   - type: Spacer
     properties: {visible: true, spacing_above: none, spacing_below: none, height: 100vh,
       tooltip: ''}
