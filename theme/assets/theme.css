@@ -805,9 +805,8 @@ https://stackoverflow.com/questions/30533055/calculating-shadow-values-for-all-m
   z-index: 100;
   min-height: 250px;
   min-width: 400px;
-  margin: 50px 100px;
+  margin: 50px 200px;
   padding: 30px 40px;
   background-color: rgba(184, 184, 184, 0.7);
   border-radius: 10px;
 }
-
