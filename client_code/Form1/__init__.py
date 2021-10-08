@@ -3,13 +3,16 @@ from anvil import *
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
-from anvil.js.window import mapboxgl, MapboxGeocoder
+from anvil.js.window import mapboxgl, MapboxGeocoder, document
 import anvil.js
 import anvil.http
+import anvil.server
+
 
 class Form1(Form1Template):
   
   def __init__(self, **properties):
+    
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.dom = anvil.js.get_dom_node(self.spacer_1)
@@ -19,21 +22,12 @@ class Form1(Form1Template):
 
   def form_show(self, **event_args):
     
-    coords = [(13.4092, 52.5167), (13.4594, 52.5224), (13.5658, 52.5373), (13.5147, 52.5537), (13.4491, 52.5904), (13.3299, 52.5487), (13.1441, 52.4838)]
-    colors = ['#FF0000', '#FFFF00', '#92D050', '#00B0F0', '#7030A0', '#FFC000', '#00B050']
-    markercount = 0
-    
     """This method is called when the HTML panel is shown on the screen"""
     mapboxgl.accessToken = self.token
     self.mapbox = mapboxgl.Map({'container': self.dom,
                                 'style': 'mapbox://styles/mapbox/outdoors-v11',
                                 'center': [13.4092, 52.5167],
                                 'zoom': 16})
-    while markercount <  len(coords):
-      self.marker = mapboxgl.Marker({'color': colors[markercount], 'draggable': False})
-      self.marker.setLngLat(coords[markercount]).addTo(self.mapbox)
-      print(markercount)
-      markercount += 1
 
     self.marker = mapboxgl.Marker({'color': '#0000FF', 'draggable': True})
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
@@ -93,3 +87,53 @@ class Form1(Form1Template):
   def profile_dropdown_change(self, **event_args):
     """This method is called when an item is selected"""
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
+
+  def file_loader_1_change(self, file, **event_args):
+    
+    """This method is called when a new file is loaded into this FileLoader"""
+    markercount = 1
+    self.token = "pk.eyJ1IjoiYnJvb2tlbXllcnMiLCJhIjoiY2tsamtiZ3l0MW55YjJvb2lsbmNxaWo0dCJ9.9iOO0aFkAy0TAP_qjtSE-A"
+    
+    anvil.server.call('my_image_classifier', (file))
+    
+    while markercount <=  anvil.server.call('get_amount_of_adresses'):
+
+      el = document.createElement('div')
+      width = 50
+      height = 50
+      el.className = 'marker'
+      
+      if anvil.server.call('get_type_of_icon', markercount) == 'CapitalBay':
+        el.style.backgroundImage = f'url(https://anvil.works/new-build/apps/ZETGHZB6W4UN4LYK/code/assets/haus.png/{width}/{height}/)'
+      else:
+        el.style.backgroundImage = f'url(https://anvil.works/new-build/apps/ZETGHZB6W4UN4LYK/code/assets/evil.png/{width}/{height}/)'
+      el.style.width = f'{width}px'
+      el.style.height = f'{height}px'
+      el.style.backgroundSize = '100%'
+
+      req_str = anvil.server.call('get_request_string', markercount)
+      response_string = req_str + f'.json?access_token={self.token}'
+      response = anvil.http.request(response_string,json=True)
+      coordinates = response['features'][0]['geometry']['coordinates']
+      
+#       if anvil.server.call('get_color_of_marker', markercount) == 'Rot':
+#         self.marker_static = mapboxgl.Marker({'color': '#FF0000', 'draggable': False})
+#       elif anvil.server.call('get_color_of_marker', markercount) == 'Gelb':  
+#         self.marker_static = mapboxgl.Marker({'color': '#FFFF00', 'draggable': False})
+#       elif anvil.server.call('get_color_of_marker', markercount) == 'Grün':  
+#         self.marker_static = mapboxgl.Marker({'color': '#92D050', 'draggable': False})
+#       elif anvil.server.call('get_color_of_marker', markercount) == 'Blau':  
+#         self.marker_static = mapboxgl.Marker({'color': '#00B0F0', 'draggable': False})
+#       elif anvil.server.call('get_color_of_marker', markercount) == 'Lila':  
+#         self.marker_static = mapboxgl.Marker({'color': '#D427F1', 'draggable': False})
+#       elif anvil.server.call('get_color_of_marker', markercount) == 'Orange':  
+#         self.marker_static = mapboxgl.Marker({'color': '#FFC000', 'draggable': False})
+#       elif anvil.server.call('get_color_of_marker', markercount) == 'Dunkelgrün':  
+#         self.marker_static = mapboxgl.Marker({'color': '#00B050', 'draggable': False})
+        
+#       self.marker_static.setLngLat(coordinates).addTo(self.mapbox)
+      mapboxgl.Marker(el).setLngLat(coordinates).addTo(self.mapbox)
+      markercount += 1
+    
+    pass
+
