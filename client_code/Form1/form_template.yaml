@@ -40,11 +40,6 @@ components:
     name: button_1
     layout_properties: {grid_position: 'CXZRHA,RPTXLD'}
     event_bindings: {click: button_1_click}
-  - type: Button
-    properties: {text: button_2}
-    name: button_2
-    layout_properties: {grid_position: 'CXZRHA,BUKAKX'}
-    event_bindings: {click: button_2_click}
   - type: Spacer
     properties: {visible: true, spacing_above: none, spacing_below: none, height: 100vh,
       tooltip: ''}
@@ -177,3 +172,31 @@ components:
     name: check_box_7
     layout_properties: {grid_position: 'KYVZWO,YUANIO'}
     event_bindings: {change: check_box_7_change}
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_4
+    layout_properties: {grid_position: 'WARMAN,VZFUWM'}
+  - type: CheckBox
+    properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+      foreground: '', allow_indeterminate: false, visible: true, text: Bundesländer,
+      font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+      background: '', bold: false, checked: true, underline: false}
+    name: check_box_8
+    layout_properties: {grid_position: 'JTQLHO,WCMUQZ'}
+    event_bindings: {change: check_box_8_change}
+  - type: CheckBox
+    properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+      foreground: '', allow_indeterminate: false, visible: true, text: Regierungsbezirke,
+      font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+      background: '', bold: false, checked: false, underline: false}
+    name: check_box_9
+    layout_properties: {grid_position: 'MZXCFD,PDTDMF'}
+    event_bindings: {change: check_box_9_change}
+  - type: CheckBox
+    properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+      foreground: '', allow_indeterminate: false, visible: true, text: Landkreise,
+      font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+      background: '', bold: false, checked: false, underline: false}
+    name: check_box_10
+    layout_properties: {grid_position: 'HIOEYG,YYBSZV'}
+    event_bindings: {change: check_box_10_change}
