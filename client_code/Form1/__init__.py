@@ -1,12 +1,12 @@
 from ._anvil_designer import Form1Template
 from anvil import *
+import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from anvil.js.window import mapboxgl, MapboxGeocoder, document
 import anvil.js
 import anvil.http
-import anvil.server
 
 
 class Form1(Form1Template):
@@ -27,7 +27,7 @@ class Form1(Form1Template):
     self.mapbox = mapboxgl.Map({'container': self.dom,
                                 'style': 'mapbox://styles/mapbox/outdoors-v11',
                                 'center': [13.4092, 52.5167],
-                                'zoom': 16})
+                                'zoom': 8})
 
     self.marker = mapboxgl.Marker({'color': '#0000FF', 'draggable': True})
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
@@ -42,15 +42,19 @@ class Form1(Form1Template):
     
     
   def move_marker(self, result):
+    
     lnglat = result['result']['geometry']['coordinates']
     self.marker.setLngLat(lnglat)
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
     
   def marker_dragged(self, drag):
+    
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
     
   def get_iso(self, profile, contours_minutes):
+    
     if not self.mapbox.getSource('iso'):
+      
       self.mapbox.addSource('iso', {'type': 'geojson',
                                     'data': {'type': 'FeatureCollection',
                                              'features': []}
@@ -70,8 +74,11 @@ class Form1(Form1Template):
     response_string = f"https://api.mapbox.com/isochrone/v1/mapbox/{profile}/{lnglat.lng},{lnglat.lat}?"
     
     if contours_minutes == "-1":
+      
       response_string = response_string + f"contours_minutes=5,10,15,20"
+      
     else:
+      
       response_string = response_string + f"contours_minutes={contours_minutes}"
       
     response_string += f"&polygons=true&access_token={self.token}"
@@ -80,39 +87,43 @@ class Form1(Form1Template):
     
     self.mapbox.getSource('iso').setData(response)
 
+    
   def time_dropdown_change(self, **event_args):
+    
     """This method is called when an item is selected"""
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
 
+    
   def profile_dropdown_change(self, **event_args):
+    
     """This method is called when an item is selected"""
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
 
+    
   def file_loader_1_change(self, file, **event_args):
     
     """This method is called when a new file is loaded into this FileLoader"""
+    anvil.server.call('save_local_excel_file', file)
+    
     markercount = 1
     self.token = "pk.eyJ1IjoiYnJvb2tlbXllcnMiLCJhIjoiY2tsamtiZ3l0MW55YjJvb2lsbmNxaWo0dCJ9.9iOO0aFkAy0TAP_qjtSE-A"
+#     img = anvil.URLMedia('https://anvil.works/new-build/apps/ZETGHZB6W4UN4LYK/code/assets/haus.png')
     
-    anvil.server.call('my_image_classifier', (file))
-    
-    img = anvil.URLMedia('https://anvil.works/new-build/apps/ZETGHZB6W4UN4LYK/code/assets/haus.png')
-    
-    while markercount <=  anvil.server.call('get_amount_of_adresses'):
+    while markercount <= anvil.server.call('get_amount_of_adresses'):
 
+      req_str = anvil.server.call('get_request_string', markercount)
+      req_str += f'.json?access_token={self.token}'
+      coords = anvil.http.request(req_str,json=True)
+      coordinates = coords['features'][0]['geometry']['coordinates']
+      
       el = document.createElement('div')
       width = 50
       height = 50
-      
+      el.className = 'marker'
       el.style.width = f'{width}px'
       el.style.height = f'{height}px'
       el.style.backgroundSize = '100%'
-      
-      req_str = anvil.server.call('get_request_string', markercount)
-      response_string = req_str + f'.json?access_token={self.token}'
-      response = anvil.http.request(response_string,json=True)
-      coordinates = response['features'][0]['geometry']['coordinates']
-      
+       
       if anvil.server.call('get_type_of_icon', markercount) == 'CapitalBay':
         
         el.className = 'markerCB'
@@ -249,6 +260,30 @@ class Form1(Form1Template):
       mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0,-22]).addTo(self.mapbox)
       markercount += 1
 
+      info_text = anvil.server.call('get_informationtext', markercount)
+      popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
+      popup.setHTML(info_text)
+      popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(info_text).setLngLat(coords['features'][0]['geometry']['coordinates'])
+      popup_static.addTo(self.mapbox)
+      
+  def button_1_click(self, **event_args):
+    
+    """This method is called when the button is clicked"""
+    anvil.js.call('hide_show_Popup')   
+      
+      
+  def radio_button_2_clicked(self, **event_args):
+    
+    """This method is called when this radio button is selected"""
+    self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
+    
+
+  def radio_button_1_clicked(self, **event_args):
+    
+    """This method is called when this radio button is selected"""
+    self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
+      
+  
   def check_box_1_change(self, **event_args):
     
     """This method is called when this checkbox is checked or unchecked"""
