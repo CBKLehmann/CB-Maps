@@ -12,9 +12,9 @@ import json
 
 class Form1(Form1Template):
   
-  def __init__(self, **properties):
-    
+  def __init__(self, **properties):    
     # Set Form properties and Data Bindings.
+    
     self.init_components(**properties)
     self.dom = anvil.js.get_dom_node(self.spacer_1)
     self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
@@ -22,12 +22,12 @@ class Form1(Form1Template):
 
 
   def form_show(self, **event_args):
+    """This method is called when the HTML panel is shown on the screen"""
     
     req_str = 'https://api.mapbox.com/geocoding/v5/mapbox.places/Berlin'
     req_str += f'.json?access_token={self.token}'
     coords = anvil.http.request(req_str,json=True)
-    
-    """This method is called when the HTML panel is shown on the screen"""
+  
     mapboxgl.accessToken = self.token
     self.mapbox = mapboxgl.Map({'container': self.dom,
                                 'style': 'mapbox://styles/mapbox/outdoors-v11',
@@ -553,6 +553,13 @@ class Form1(Form1Template):
       
       self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'visible')
+      self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
+      
+      self.check_box_9.checked = False
+      self.check_box_10.checked = False
 
   def check_box_9_change(self, **event_args):
     
@@ -568,6 +575,13 @@ class Form1(Form1Template):
       
       self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'visible')
+      self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
+      
+      self.check_box_8.checked = False
+      self.check_box_10.checked = False
     
   def check_box_10_change(self, **event_args):
     
@@ -583,3 +597,10 @@ class Form1(Form1Template):
       
       self.mapbox.setLayoutProperty('landkreise', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'visible')
+      self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
+      
+      self.check_box_8.checked = False
+      self.check_box_9.checked = False
