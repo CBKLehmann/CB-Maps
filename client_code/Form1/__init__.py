@@ -147,6 +147,40 @@ class Form1(Form1Template):
         }
     });
     
+    file = anvil.server.call('get_geojson', 'bezirke_berlin')
+    jsonfile = json.loads(file)
+    
+    self.mapbox.addSource ('bezirke_berlin', {
+      'type': 'geojson',
+      'data': jsonfile
+    })
+    
+    self.mapbox.addLayer({
+      'id': 'bezirke_berlin',
+      'type': 'fill',
+      'source': 'bezirke_berlin',
+      'layout': {
+          'visibility': 'none'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': 0.5
+      }
+    }); 
+
+    self.mapbox.addLayer({
+        'id': 'outlineBB',
+        'type': 'line',
+        'source': 'bezirke_berlin',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 0.5
+        }
+    });
+    
   def move_marker(self, result):
     
     lnglat = result['result']['geometry']['coordinates']
@@ -383,13 +417,219 @@ class Form1(Form1Template):
   def radio_button_2_clicked(self, **event_args):
     
     """This method is called when this radio button is selected"""
+    
     self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
+    
+    file = anvil.server.call('get_geojson', 'bundeslaender')
+    jsonfile = json.loads(file)
+    
+    self.mapbox.addSource ('bundeslaender', {
+      'type': 'geojson',
+      'data': jsonfile
+    })
+    
+    self.mapbox.addLayer({
+      'id': 'bundeslaender',
+      'type': 'fill',
+      'source': 'bundeslaender',
+      'layout': {
+          'visibility': 'visible'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': 0.5
+      }
+    }); 
+
+    self.mapbox.addLayer({
+        'id': 'outlineBL',
+        'type': 'line',
+        'source': 'bundeslaender',
+        'layout': {
+            'visibility': 'visible'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 2
+        }
+    });
+    
+    file = anvil.server.call('get_geojson', 'regierungsbezirke')
+    jsonfile = json.loads(file)
+    
+    self.mapbox.addSource ('regierungsbezirke', {
+      'type': 'geojson',
+      'data': jsonfile
+    })
+    
+    self.mapbox.addLayer({
+      'id': 'regierungsbezirke',
+      'type': 'fill',
+      'source': 'regierungsbezirke',
+      'layout': {
+          'visibility': 'none'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': 0.5
+      }
+    }); 
+
+    self.mapbox.addLayer({
+        'id': 'outlineRB',
+        'type': 'line',
+        'source': 'regierungsbezirke',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 1
+        }
+    });
+    
+    file = anvil.server.call('get_geojson', 'landkreise')
+    jsonfile = json.loads(file)
+    
+    self.mapbox.addSource ('landkreise', {
+      'type': 'geojson',
+      'data': jsonfile
+    })
+    
+    self.mapbox.addLayer({
+      'id': 'landkreise',
+      'type': 'fill',
+      'source': 'landkreise',
+      'layout': {
+          'visibility': 'none'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': 0.5
+      }
+    }); 
+
+    self.mapbox.addLayer({
+        'id': 'outlineLK',
+        'type': 'line',
+        'source': 'landkreise',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 0.5
+        }
+    });
     
 
   def radio_button_1_clicked(self, **event_args):
     
     """This method is called when this radio button is selected"""
+    
     self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
+    
+    file = anvil.server.call('get_geojson', 'bundeslaender')
+    jsonfile = json.loads(file)
+    
+    self.mapbox.addSource ('bundeslaender', {
+      'type': 'geojson',
+      'data': jsonfile
+    })
+    
+    self.mapbox.addLayer({
+      'id': 'bundeslaender',
+      'type': 'fill',
+      'source': 'bundeslaender',
+      'layout': {
+          'visibility': 'visible'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': 0.5
+      }
+    }); 
+
+    self.mapbox.addLayer({
+        'id': 'outlineBL',
+        'type': 'line',
+        'source': 'bundeslaender',
+        'layout': {
+            'visibility': 'visible'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 2
+        }
+    });
+    
+    file = anvil.server.call('get_geojson', 'regierungsbezirke')
+    jsonfile = json.loads(file)
+    
+    self.mapbox.addSource ('regierungsbezirke', {
+      'type': 'geojson',
+      'data': jsonfile
+    })
+    
+    self.mapbox.addLayer({
+      'id': 'regierungsbezirke',
+      'type': 'fill',
+      'source': 'regierungsbezirke',
+      'layout': {
+          'visibility': 'none'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': 0.5
+      }
+    }); 
+
+    self.mapbox.addLayer({
+        'id': 'outlineRB',
+        'type': 'line',
+        'source': 'regierungsbezirke',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 1
+        }
+    });
+    
+    file = anvil.server.call('get_geojson', 'landkreise')
+    jsonfile = json.loads(file)
+    
+    self.mapbox.addSource ('landkreise', {
+      'type': 'geojson',
+      'data': jsonfile
+    })
+    
+    self.mapbox.addLayer({
+      'id': 'landkreise',
+      'type': 'fill',
+      'source': 'landkreise',
+      'layout': {
+          'visibility': 'none'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': 0.5
+      }
+    }); 
+
+    self.mapbox.addLayer({
+        'id': 'outlineLK',
+        'type': 'line',
+        'source': 'landkreise',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 0.5
+        }
+    });
       
   
   def check_box_1_change(self, **event_args):
@@ -555,11 +795,12 @@ class Form1(Form1Template):
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('bezirke_berlin', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineBB', 'visibility', 'none')
       
       self.check_box_9.checked = False
       self.check_box_10.checked = False
+      self.check_box_11.checked = False
 
   def check_box_9_change(self, **event_args):
     
@@ -579,9 +820,12 @@ class Form1(Form1Template):
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
       self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('bezirke_berlin', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineBB', 'visibility', 'none')
       
       self.check_box_8.checked = False
       self.check_box_10.checked = False
+      self.check_box_11.checked = False
     
   def check_box_10_change(self, **event_args):
     
@@ -601,6 +845,34 @@ class Form1(Form1Template):
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
       self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('bezirke_berlin', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineBB', 'visibility', 'none')
       
       self.check_box_8.checked = False
       self.check_box_9.checked = False
+      self.check_box_11.checked = False
+
+  def check_box_11_change(self, **event_args):
+    
+    """This method is called when this checkbox is checked or unchecked"""
+    visibility = self.mapbox.getLayoutProperty('bezirke_berlin', 'visibility')
+    
+    if visibility == 'visible':
+      
+      self.mapbox.setLayoutProperty('bezirke_berlin', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineBB', 'visibility', 'none')
+      
+    else:
+      
+      self.mapbox.setLayoutProperty('bezirke_berlin', 'visibility', 'visible')
+      self.mapbox.setLayoutProperty('outlineBB', 'visibility', 'visible')
+      self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
+      
+      self.check_box_8.checked = False
+      self.check_box_9.checked = False
+      self.check_box_10.checked = False
