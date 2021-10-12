@@ -24,6 +24,7 @@
     </div>
 
     <div class="content">
+      <div id="test"></div>
       <div anvil-slot-repeat="default" class="anvil-measure-this"></div>
       <div class="placeholder drop-here" anvil-if-slot-empty="default" anvil-drop-slot="default">Drop a ColumnPanel here.</div>
     </div>
@@ -31,7 +32,7 @@
   <div class="nav-shield"></div>
 </div>
 <div anvil-drop-default anvil-drop-redirect=".placeholder" anvil-drop-container=".anvil-container"></div>
- 
+
 <script>
   function hideSidebar() {
     var ln = $('.structure > .nav-holder > .left-nav');
@@ -62,4 +63,18 @@
       $('.nav-shield').trigger('click');
     }
   });
-</script>
+  
+  function hide_show_Popup() {
+    
+    let popup = document.getElementsByClassName('static-popup')
+    if (popup[0].style.display === 'none') {
+   		for(const e of popup) {
+    		e.style.display = 'flex';
+        }
+    }else {
+    	for(const e of popup) {
+    		e.style.display = 'none';
+    	}
+    }
+}
+</script> 

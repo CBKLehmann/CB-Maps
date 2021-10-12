@@ -661,7 +661,7 @@ input.anvil-component, textarea.anvil-component, .anvil-component select, .anvil
   border: 1px solid %color:Secondary 500% !important;
   border-radius: 10px;
   background-color: transparent;
-  color: rgba(0,0,0,1);
+  color: rgba(0,0,0,0.87);
   
   box-shadow: none;
 }
@@ -805,8 +805,18 @@ https://stackoverflow.com/questions/30533055/calculating-shadow-values-for-all-m
   z-index: 100;
   min-height: 250px;
   min-width: 400px;
-  margin: 50px 200px;
+  margin: 50px 170px;
   padding: 30px 40px;
-  background-color: rgba(184, 184, 184, 0.7);
-  border-radius: 10px;
+  background-color: rgba(229, 213, 194, 0.7);
+}
+
+.static-popup {
+   background: rgba(0, 0, 0, 0) !important;
+   border: none !important;
+   font-size: 15px;
+   box-shadow: none !important;
+}
+
+.mapboxgl-popup-content {
+  box-shadow: 0 0px 0px rgb(0, 0, 0);
 }

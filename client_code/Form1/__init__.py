@@ -102,15 +102,14 @@ class Form1(Form1Template):
     
   def file_loader_1_change(self, file, **event_args):
     
-    """This method is called when a new file is loaded into this FileLoader"""
+    """This method is called when a new file is loaded into this FileLoader"""  
     anvil.server.call('save_local_excel_file', file)
     
     markercount = 1
     self.token = "pk.eyJ1IjoiYnJvb2tlbXllcnMiLCJhIjoiY2tsamtiZ3l0MW55YjJvb2lsbmNxaWo0dCJ9.9iOO0aFkAy0TAP_qjtSE-A"
-#     img = anvil.URLMedia('https://anvil.works/new-build/apps/ZETGHZB6W4UN4LYK/code/assets/haus.png')
     
     while markercount <= anvil.server.call('get_amount_of_adresses'):
-
+      
       req_str = anvil.server.call('get_request_string', markercount)
       req_str += f'.json?access_token={self.token}'
       coords = anvil.http.request(req_str,json=True)
@@ -258,13 +257,15 @@ class Form1(Form1Template):
 #         self.markerS_static.setLngLat(coordinates).addTo(self.mapbox)
         
       mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0,-22]).addTo(self.mapbox)
-      markercount += 1
 
       info_text = anvil.server.call('get_informationtext', markercount)
       popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
       popup.setHTML(info_text)
       popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(info_text).setLngLat(coords['features'][0]['geometry']['coordinates'])
       popup_static.addTo(self.mapbox)
+      
+      markercount += 1
+      
       
   def button_1_click(self, **event_args):
     
@@ -291,12 +292,18 @@ class Form1(Form1Template):
     marker = document.getElementsByClassName('markerCB')
        
     if self.check_box_1.checked == True:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'block'
+        
     else:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'none'
 
+        
   def check_box_2_change(self, **event_args):
     
     """This method is called when this checkbox is checked or unchecked"""
@@ -304,12 +311,18 @@ class Form1(Form1Template):
     marker = document.getElementsByClassName('markerKK')
 
     if self.check_box_2.checked == True:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'block'
+        
     else:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'none'
 
+        
   def check_box_3_change(self, **event_args):
     
     """This method is called when this checkbox is checked or unchecked"""
@@ -317,12 +330,18 @@ class Form1(Form1Template):
     marker = document.getElementsByClassName('markerH')
 
     if self.check_box_3.checked == True:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'block'
+        
     else:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'none'
 
+        
   def check_box_4_change(self, **event_args):
     
     """This method is called when this checkbox is checked or unchecked"""
@@ -330,12 +349,18 @@ class Form1(Form1Template):
     marker = document.getElementsByClassName('markerKH')
   
     if self.check_box_4.checked == True:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'block'
+        
     else:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'none'
 
+        
   def check_box_5_change(self, **event_args):
     
     """This method is called when this checkbox is checked or unchecked"""
@@ -343,12 +368,18 @@ class Form1(Form1Template):
     marker = document.getElementsByClassName('markerS')
 
     if self.check_box_5.checked == True:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'block'
+        
     else:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'none'
 
+        
   def check_box_6_change(self, **event_args):
     
     """This method is called when this checkbox is checked or unchecked"""
@@ -356,31 +387,43 @@ class Form1(Form1Template):
     marker = document.getElementsByClassName('markerLG')
 
     if self.check_box_6.checked == True:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'block'
+        
     else:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'none'
 
+        
   def check_box_7_change(self, **event_args):
+    
     """This method is called when this checkbox is checked or unchecked"""
     markerIcon = document.querySelectorAll('.markerCB,.markerKK,.markerH,.markerKH,.markerS,.markerLG')
     marker = document.querySelectorAll('.markerCB,.markerKK,.markerH,.markerKH,.markerS,.markerLG')
     
-    print(self.check_box_7.checked)
-    
     if self.check_box_7.checked == True:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'block'
+        
       self.check_box_1.checked = True
       self.check_box_2.checked = True
       self.check_box_3.checked = True
       self.check_box_4.checked = True
       self.check_box_5.checked = True
       self.check_box_6.checked = True
+      
     else:
+      
       for idx, val in enumerate(marker):
+        
         val.style.display = 'none'
+        
       self.check_box_1.checked = False
       self.check_box_2.checked = False
       self.check_box_3.checked = False
