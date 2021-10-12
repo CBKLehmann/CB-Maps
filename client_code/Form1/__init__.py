@@ -75,7 +75,7 @@ class Form1(Form1Template):
         },
         'paint': {
             'line-color': '#000',
-            'line-width': 1
+            'line-width': 2
         }
     });
     
@@ -143,7 +143,7 @@ class Form1(Form1Template):
         },
         'paint': {
             'line-color': '#000',
-            'line-width': 1
+            'line-width': 0.5
         }
     });
     
