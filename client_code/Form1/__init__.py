@@ -62,7 +62,12 @@ class Form1(Form1Template):
       },
       'paint': {
         'fill-color': '#0080ff',
-        'fill-opacity': 0.5
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              1,
+              0.5
+        ]
       }
     }); 
 
@@ -918,3 +923,5 @@ class Form1(Form1Template):
       
       self.linear_panel_1.visible = True
       self.button_3.icon = 'fa:angle-down'
+      
+  self.mapbox.on('mousemove', 'bundeslaender')
