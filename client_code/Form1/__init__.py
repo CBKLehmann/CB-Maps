@@ -43,10 +43,11 @@ class Form1(Form1Template):
     self.mapbox.addControl(self.geocoder)
   
     self.geocoder.on('result', self.move_marker)
-    self.marker.on('drag', self.marker_dragged)    
+    self.marker.on('drag', self.marker_dragged) 
+#     self.mapbox.on('mousemove', self.mousemove)
+#     self.mapbox.on('mouseleave', self.mouseleave)
     
-    file = anvil.server.call('get_geojson', 'bundeslaender')
-    jsonfile = json.loads(file)
+    jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
     
     self.mapbox.addSource ('bundeslaender', {
       'type': 'geojson',
@@ -84,8 +85,15 @@ class Form1(Form1Template):
         }
     });
     
-    file = anvil.server.call('get_geojson', 'regierungsbezirke')
-    jsonfile = json.loads(file)
+    for el in jsonfile['features']:
+      name = el['properties']['name'].replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC').replace('Ã¼', '%C3%BC')
+      req_str = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + name + '%20Deutschland'
+      req_str += f'.json?access_token={self.token}'
+      coords = anvil.http.request(req_str,json=True)
+      shown_name = name.replace('%C3%BC', 'ü')
+      popup = mapboxgl.Popup().setLngLat(coords['features'][0]['center']).setHTML(shown_name).addTo(self.mapbox)
+    
+    jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
     
     self.mapbox.addSource ('regierungsbezirke', {
       'type': 'geojson',
@@ -118,8 +126,7 @@ class Form1(Form1Template):
         }
     });
     
-    file = anvil.server.call('get_geojson', 'landkreise')
-    jsonfile = json.loads(file)
+    jsonfile = anvil.server.call('get_geojson', 'landkreise')
     
     self.mapbox.addSource ('landkreise', {
       'type': 'geojson',
@@ -152,8 +159,7 @@ class Form1(Form1Template):
         }
     });
     
-    file = anvil.server.call('get_geojson', 'bezirke_berlin')
-    jsonfile = json.loads(file)
+    jsonfile = anvil.server.call('get_geojson', 'bezirke_berlin')
     
     self.mapbox.addSource ('bezirke_berlin', {
       'type': 'geojson',
@@ -185,6 +191,7 @@ class Form1(Form1Template):
             'line-width': 0.5
         }
     });
+
     
   def move_marker(self, result):
     
@@ -192,9 +199,29 @@ class Form1(Form1Template):
     self.marker.setLngLat(lnglat)
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
     
+    
   def marker_dragged(self, drag):
     
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
+    
+    
+  def mousemove(self, mousemove, bundeslaender):
+    
+    if self.features.length > 0:
+      if hoveredStateId != null:
+        self.mapbox.setFeatureState({source: 'bundeslaender', id: hoveredStateId}, {hover: False})
+      hoveredStateId = self.features[0].id
+      self.mapbox.setFeatureState({source: 'bundeslaender', id: hoveredStateId}, {hover: True})
+  
+  
+  def mouseleave(self, mouseleave, bundeslaender):
+    
+    print('Test')
+    
+    if hoveredStateId != null:
+      self.mapbox.setFeatureState({source: 'bundeslaender', id: hoveredStateId}, {hover: False})
+    hoveredStateId = null
+  
     
   def get_iso(self, profile, contours_minutes):
     
@@ -923,5 +950,3 @@ class Form1(Form1Template):
       
       self.linear_panel_1.visible = True
       self.button_3.icon = 'fa:angle-down'
-      
-  self.mapbox.on('mousemove', 'bundeslaender')
