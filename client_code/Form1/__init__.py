@@ -538,7 +538,7 @@ class Form1(Form1Template):
     })
     
     self.mapbox.addLayer({
-      'id': 'bundeslaender',
+      'id': 'bundeslaender-border',
       'type': 'fill',
       'source': 'bundeslaender',
       'layout': {
@@ -550,6 +550,22 @@ class Form1(Form1Template):
       }
     }); 
 
+    self.mapbox.addLayer({
+      'id': 'bundeslaender-fill',
+      'type': 'fill',
+      'source': 'bundeslaender',
+      'layout': {},
+      'paint': {
+        'fill-color': '#627BC1',
+        'fill-opacity': [
+          'case',
+          ['boolean', ['feature-state', hover], False],
+          1,
+          0.5
+        ]
+      }
+    })
+    
     self.mapbox.addLayer({
         'id': 'outlineBL',
         'type': 'line',
@@ -902,4 +918,3 @@ class Form1(Form1Template):
       
       self.linear_panel_1.visible = True
       self.button_3.icon = 'fa:angle-down'
-
