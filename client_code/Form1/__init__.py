@@ -876,3 +876,30 @@ class Form1(Form1Template):
       self.check_box_8.checked = False
       self.check_box_9.checked = False
       self.check_box_10.checked = False
+
+  def button_2_click(self, **event_args):
+    
+    """This method is called when the button is clicked"""
+    if self.linear_panel_2.visible == True:
+    
+      self.linear_panel_2.visible = False
+      self.button_2.icon = 'fa:angle-right'
+      
+    else:
+      
+      self.linear_panel_2.visible = True
+      self.button_2.icon = 'fa:angle-down'
+
+  def button_3_click(self, **event_args):
+    
+    """This method is called when the button is clicked"""
+    if self.linear_panel_1.visible == True:
+    
+      self.linear_panel_1.visible = False
+      self.button_3.icon = 'fa:angle-right'
+      
+    else:
+      
+      self.linear_panel_1.visible = True
+      self.button_3.icon = 'fa:angle-down'
+
