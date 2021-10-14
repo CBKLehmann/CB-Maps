@@ -27,6 +27,7 @@ class Form1(Form1Template):
     req_str = 'https://api.mapbox.com/geocoding/v5/mapbox.places/Berlin'
     req_str += f'.json?access_token={self.token}'
     coords = anvil.http.request(req_str,json=True)
+    anvil.server.call('save_hoveredStateId_in_Session', None)
   
     mapboxgl.accessToken = self.token
     self.mapbox = mapboxgl.Map({'container': self.dom,
@@ -44,8 +45,8 @@ class Form1(Form1Template):
   
     self.geocoder.on('result', self.move_marker)
     self.marker.on('drag', self.marker_dragged) 
-#     self.mapbox.on('mousemove', self.mousemove)
-#     self.mapbox.on('mouseleave', self.mouseleave)
+    self.mapbox.on('mousemove', 'bundeslaender', self.mousemove)
+    self.mapbox.on('mouseleave', 'bundeslaender', self.mouseleave)
     
     jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
     
@@ -205,18 +206,20 @@ class Form1(Form1Template):
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
     
     
-  def mousemove(self, mousemove, bundeslaender):
+  def mousemove(self, mousemove):
     
-    if self.features.length > 0:
-      if hoveredStateId != null:
-        self.mapbox.setFeatureState({source: 'bundeslaender', id: hoveredStateId}, {hover: False})
-      hoveredStateId = self.features[0].id
-      self.mapbox.setFeatureState({source: 'bundeslaender', id: hoveredStateId}, {hover: True})
+    hoveredStateId = anvil.server.session.get('hoveredStateId', 0)
+    
+    print (hoveredStateId)
+    
+    if len(mousemove.features) > 0:
+      if hoveredStateId != None:
+        self.mapbox.setFeatureState({'source': 'bundeslaender', 'id': hoveredStateId}, {'hover': False})
+      hoveredStateId = mousemove.features[0].id
+      self.mapbox.setFeatureState({'source': 'bundeslaender', 'id': hoveredStateId}, {'hover': True})
   
   
-  def mouseleave(self, mouseleave, bundeslaender):
-    
-    print('Test')
+  def mouseleave(self, mouseleave):
     
     if hoveredStateId != null:
       self.mapbox.setFeatureState({source: 'bundeslaender', id: hoveredStateId}, {hover: False})
