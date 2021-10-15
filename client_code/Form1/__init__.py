@@ -50,9 +50,7 @@ class Form1(Form1Template):
     self.mapbox.on('mousemove', 'regierungsbezirke', self.mousemove)
     self.mapbox.on('mouseleave', 'regierungsbezirke', self.mouseleave)
     self.mapbox.on('mousemove', 'landkreise', self.mousemove)
-    self.mapbox.on('mouseleave', 'landkreise', self.mouseleave)
-    self.mapbox.on('mousemove', 'bezirke_berlin', self.mousemove)
-    self.mapbox.on('mouseleave', 'bezirke_berlin', self.mouseleave)    
+    self.mapbox.on('mouseleave', 'landkreise', self.mouseleave) 
     
     jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
     
@@ -175,44 +173,6 @@ class Form1(Form1Template):
             'line-width': 0.5
         }
     });
-    
-    jsonfile = anvil.server.call('get_geojson', 'bezirke_berlin')
-    
-    self.mapbox.addSource ('bezirke_berlin', {
-      'type': 'geojson',
-      'data': jsonfile
-    })
-    
-    self.mapbox.addLayer({
-      'id': 'bezirke_berlin',
-      'type': 'fill',
-      'source': 'bezirke_berlin',
-      'layout': {
-          'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              1,
-              0.5
-        ]
-      }
-    }); 
-
-    self.mapbox.addLayer({
-        'id': 'outlineBB',
-        'type': 'line',
-        'source': 'bezirke_berlin',
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': {
-            'line-color': '#000',
-            'line-width': 0.5
-        }
-    });
 
     
   def move_marker(self, result):
@@ -249,10 +209,6 @@ class Form1(Form1Template):
         elif layer == 'landkreise':
           
           self.mapbox.setFeatureState({'source': 'landkreise', 'id': Module1.hoveredStateId}, {'hover': False})          
-          
-        elif layer == 'bezirke_berlin': 
-          
-          self.mapbox.setFeatureState({'source': 'bezirke_berlin', 'id': Module1.hoveredStateId}, {'hover': False})
         
       Module1.hoveredStateId = mousemove.features[0].id
       
@@ -267,10 +223,6 @@ class Form1(Form1Template):
       elif layer == 'landkreise': 
           
         self.mapbox.setFeatureState({'source': 'landkreise', 'id': Module1.hoveredStateId}, {'hover': True})
-        
-      elif layer == 'bezirke_berlin':
-          
-        self.mapbox.setFeatureState({'source': 'bezirke_berlin', 'id': Module1.hoveredStateId}, {'hover': True}) 
         
         
   def mouseleave(self, mouseleave):
@@ -292,12 +244,7 @@ class Form1(Form1Template):
       elif Module1.activeLayer == 'landkreise':  
 
         self.mapbox.setFeatureState({'source': 'landkreise', 'id': Module1.hoveredStateId}, {'hover': False})
-        Module1.hoveredStateId = None        
-        
-      else: 
-  
-        self.mapbox.setFeatureState({'source': 'bezirke_berlin', 'id': Module1.hoveredStateId}, {'hover': False})
-        Module1.hoveredStateId = None    
+        Module1.hoveredStateId = None
     
     
   def get_iso(self, profile, contours_minutes):
@@ -924,12 +871,11 @@ class Form1(Form1Template):
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('bezirke_berlin', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('outlineBB', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
       
       self.check_box_9.checked = False
       self.check_box_10.checked = False
-      self.check_box_11.checked = False
       
       Module1.activeLayer = 'bundeslaender'
 
@@ -955,12 +901,9 @@ class Form1(Form1Template):
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
       self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('bezirke_berlin', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('outlineBB', 'visibility', 'none')
       
       self.check_box_8.checked = False
       self.check_box_10.checked = False
-      self.check_box_11.checked = False
       
       Module1.activeLayer = 'regierungsbezirke'
 
@@ -987,45 +930,12 @@ class Form1(Form1Template):
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
       self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('bezirke_berlin', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('outlineBB', 'visibility', 'none')
       
       self.check_box_8.checked = False
       self.check_box_9.checked = False
-      self.check_box_11.checked = False
       
       Module1.activeLayer = 'landkreise'
 
-  def check_box_11_change(self, **event_args):
-    
-    """This method is called when this checkbox is checked or unchecked"""
-    global Module1
-    
-    visibility = self.mapbox.getLayoutProperty('bezirke_berlin', 'visibility')
-    
-    if visibility == 'visible':
-      
-      self.mapbox.setLayoutProperty('bezirke_berlin', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('outlineBB', 'visibility', 'none')
-      
-      Module1.activeLayer = None
-      
-    else:
-      
-      self.mapbox.setLayoutProperty('bezirke_berlin', 'visibility', 'visible')
-      self.mapbox.setLayoutProperty('outlineBB', 'visibility', 'visible')
-      self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
-      self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
-      
-      self.check_box_8.checked = False
-      self.check_box_9.checked = False
-      self.check_box_10.checked = False
-      
-      Module1.activeLayer = 'bezirke_berlin'
 
   def button_2_click(self, **event_args):
     
