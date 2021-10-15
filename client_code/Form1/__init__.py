@@ -19,6 +19,10 @@ class Form1(Form1Template):
     self.dom = anvil.js.get_dom_node(self.spacer_1)
     self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
     self.token = "pk.eyJ1IjoiYnJvb2tlbXllcnMiLCJhIjoiY2tsamtiZ3l0MW55YjJvb2lsbmNxaWo0dCJ9.9iOO0aFkAy0TAP_qjtSE-A"
+    s_id = anvil.server.call('get_s_id')
+    hoveredStateId = anvil.server.call('get_hovered_State_Id', None)
+    
+    print(s_id)
 
 
   def form_show(self, **event_args):
@@ -27,7 +31,6 @@ class Form1(Form1Template):
     req_str = 'https://api.mapbox.com/geocoding/v5/mapbox.places/Berlin'
     req_str += f'.json?access_token={self.token}'
     coords = anvil.http.request(req_str,json=True)
-    anvil.server.call('save_hoveredStateId_in_Session', None)
   
     mapboxgl.accessToken = self.token
     self.mapbox = mapboxgl.Map({'container': self.dom,
@@ -207,10 +210,6 @@ class Form1(Form1Template):
     
     
   def mousemove(self, mousemove):
-    
-    hoveredStateId = anvil.server.session.get('hoveredStateId', 0)
-    
-    print (hoveredStateId)
     
     if len(mousemove.features) > 0:
       if hoveredStateId != None:
