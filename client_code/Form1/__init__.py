@@ -50,7 +50,8 @@ class Form1(Form1Template):
     self.mapbox.on('mousemove', 'regierungsbezirke', self.mousemove)
     self.mapbox.on('mouseleave', 'regierungsbezirke', self.mouseleave)
     self.mapbox.on('mousemove', 'landkreise', self.mousemove)
-    self.mapbox.on('mouseleave', 'landkreise', self.mouseleave) 
+    self.mapbox.on('mouseleave', 'landkreise', self.mouseleave)
+    self.mapbox.on('click', 'bundeslaender', self.popup)
     
     jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
     
@@ -962,3 +963,7 @@ class Form1(Form1Template):
       
       self.linear_panel_1.visible = True
       self.button_3.icon = 'fa:angle-down'
+      
+  def popup(self, **event_args):
+    
+    
