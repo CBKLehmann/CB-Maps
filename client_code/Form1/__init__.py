@@ -116,7 +116,12 @@ class Form1(Form1Template):
       },
       'paint': {
         'fill-color': '#0080ff',
-        'fill-opacity': 0.5
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              1,
+              0.5
+        ]
       }
     }); 
 
@@ -149,7 +154,12 @@ class Form1(Form1Template):
       },
       'paint': {
         'fill-color': '#0080ff',
-        'fill-opacity': 0.5
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              1,
+              0.5
+        ]
       }
     }); 
 
@@ -182,7 +192,12 @@ class Form1(Form1Template):
       },
       'paint': {
         'fill-color': '#0080ff',
-        'fill-opacity': 0.5
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              1,
+              0.5
+        ]
       }
     }); 
 
@@ -216,46 +231,48 @@ class Form1(Form1Template):
     
     global Module1
     
-    print(Module1.activeLayer)
-    print('Step1')
-    
+    hoveredStateId = Module1.hoveredStateId
     layer = Module1.activeLayer
     
     if len(mousemove.features) > 0:
       
-      print('Step2')
-      
-      if layer != None:
+      if hoveredStateId != None:
         
-        print('Step3')
-        
-        if Module1.activeLayer == 'bundeslaender':
-          
-          print('Step4')
+        if layer == 'bundeslaender':
           
           self.mapbox.setFeatureState({'source': 'bundeslaender', 'id': Module1.hoveredStateId}, {'hover': False})
-          Module1.hoveredStateId = mousemove.features[0].id
-          self.mapbox.setFeatureState({'source': 'bundeslaender', 'id': Module1.hoveredStateId}, {'hover': True})
           
-        elif Module1.activeLayer == 'regierungsbezirke':
+        elif layer == 'regierungsbezirke':
           
-          self.mapbox.setFeatureState({'source': 'regierungsbezirke', 'id': Module1.hoveredStateId}, {'hover': False})
-          Module1.hoveredStateId = mousemove.features[0].id
-          self.mapbox.setFeatureState({'source': 'regierungsbezirke', 'id': Module1.hoveredStateId}, {'hover': True})          
+          self.mapbox.setFeatureState({'source': 'regierungsbezirke', 'id': Module1.hoveredStateId}, {'hover': False})          
           
-        elif Module1.activeLayer == 'landkreise':
+        elif layer == 'landkreise':
           
-          self.mapbox.setFeatureState({'source': 'landkreise', 'id': Module1.hoveredStateId}, {'hover': False})
-          Module1.hoveredStateId = mousemove.features[0].id
-          self.mapbox.setFeatureState({'source': 'landkreise', 'id': Module1.hoveredStateId}, {'hover': True})          
+          self.mapbox.setFeatureState({'source': 'landkreise', 'id': Module1.hoveredStateId}, {'hover': False})          
           
-        else: 
+        elif layer == 'bezirke_berlin': 
           
           self.mapbox.setFeatureState({'source': 'bezirke_berlin', 'id': Module1.hoveredStateId}, {'hover': False})
-          Module1.hoveredStateId = mousemove.features[0].id
-          self.mapbox.setFeatureState({'source': 'bezirke_berlin', 'id': Module1.hoveredStateId}, {'hover': True})
-  
-  
+        
+      Module1.hoveredStateId = mousemove.features[0].id
+      
+      if layer == 'bundeslaender':
+        
+        self.mapbox.setFeatureState({'source': 'bundeslaender', 'id': Module1.hoveredStateId}, {'hover': True})    
+    
+      elif layer == 'regierungsbezirke':     
+      
+        self.mapbox.setFeatureState({'source': 'regierungsbezirke', 'id': Module1.hoveredStateId}, {'hover': True})
+        
+      elif layer == 'landkreise': 
+          
+        self.mapbox.setFeatureState({'source': 'landkreise', 'id': Module1.hoveredStateId}, {'hover': True})
+        
+      elif layer == 'bezirke_berlin':
+          
+        self.mapbox.setFeatureState({'source': 'bezirke_berlin', 'id': Module1.hoveredStateId}, {'hover': True}) 
+        
+        
   def mouseleave(self, mouseleave):
     
     global Module1
