@@ -964,6 +964,6 @@ class Form1(Form1Template):
       self.linear_panel_1.visible = True
       self.button_3.icon = 'fa:angle-down'
       
-  def popup(self, **event_args):
+  #def popup(self, **event_args):
     
     
