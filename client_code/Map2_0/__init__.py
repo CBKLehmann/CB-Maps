@@ -1024,7 +1024,7 @@ class Map2_0(Map2_0Template):
       #Set active Layer to Bundesländer
       Module1.activeLayer = 'bundeslaender'
 
-      
+  #This method is called when the Check Box for Regierungsbezirke-Layer is checked or unchecked     
   def check_box_rb_change(self, **event_args):
     
     """This method is called when this checkbox is checked or unchecked"""
