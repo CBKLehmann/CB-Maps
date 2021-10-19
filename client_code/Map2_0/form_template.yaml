@@ -92,9 +92,9 @@ components:
       foreground: '', visible: true, text: Icons, font_size: null, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: 'fa:angle-right'}
-    name: button_2
+    name: button_icons
     layout_properties: {grid_position: 'UJHSOK,KUGVSB'}
-    event_bindings: {click: button_2_click}
+    event_bindings: {click: button_icons_click}
   - type: LinearPanel
     properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
       border: '', visible: false, role: null, tooltip: ''}
@@ -106,65 +106,65 @@ components:
         foreground: '', allow_indeterminate: false, visible: true, text: Capital Bay,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: true, underline: false}
-      name: check_box_1
+      name: check_box_cb
       layout_properties: {grid_position: 'AYOULI,JRKCIZ'}
-      event_bindings: {change: check_box_1_change}
+      event_bindings: {change: check_box_cb_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: Konkurrenten,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: true, underline: false}
-      name: check_box_2
+      name: check_box_kk
       layout_properties: {grid_position: 'FULSKD,WAXOIZ'}
-      event_bindings: {change: check_box_2_change}
+      event_bindings: {change: check_box_kk_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: Hotels, font_size: null,
         font: '', spacing_above: small, spacing_below: small, italic: false, background: '',
         bold: false, checked: true, underline: false}
-      name: check_box_3
+      name: check_box_h
       layout_properties: {grid_position: 'MCNYUF,XTWLAL'}
-      event_bindings: {change: check_box_3_change}
+      event_bindings: {change: check_box_h_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: Krankenhäuser,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: true, underline: false}
-      name: check_box_4
+      name: check_box_kh
       layout_properties: {grid_position: 'UKKCCZ,RGBKJH'}
-      event_bindings: {change: check_box_4_change}
+      event_bindings: {change: check_box_kh_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: Schulen,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: true, underline: false}
-      name: check_box_5
+      name: check_box_s
       layout_properties: {grid_position: 'QHOGEW,KWAEGR'}
-      event_bindings: {change: check_box_5_change}
+      event_bindings: {change: check_box_s_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: Geschäfte,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: true, underline: false}
-      name: check_box_6
+      name: check_box_g
       layout_properties: {grid_position: 'DSENVQ,GBRDIV'}
-      event_bindings: {change: check_box_6_change}
+      event_bindings: {change: check_box_g_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: Alle, font_size: null,
         font: '', spacing_above: small, spacing_below: small, italic: false, background: '',
         bold: false, checked: true, underline: false}
-      name: check_box_7
+      name: check_box_all
       layout_properties: {grid_position: 'HZDKNY,EDHQEP'}
-      event_bindings: {change: check_box_7_change}
+      event_bindings: {change: check_box_all_change}
   - type: Button
     properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: Overlays, font_size: null, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: 'fa:angle-right'}
-    name: button_3
+    name: button_overlay
     layout_properties: {grid_position: 'FCPOMN,NTZMHZ'}
-    event_bindings: {click: button_3_click}
+    event_bindings: {click: button_overlay_click}
   - type: LinearPanel
     properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
       border: '', visible: false, role: null, tooltip: ''}
@@ -176,25 +176,25 @@ components:
         foreground: '', allow_indeterminate: false, visible: true, text: Bundesländer,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: true, underline: false}
-      name: check_box_8
+      name: check_box_bl
       layout_properties: {grid_position: 'SZBLCG,MBBZCQ'}
-      event_bindings: {change: check_box_8_change}
+      event_bindings: {change: check_box_bl_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: Regierungsbezirke,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: false, underline: false}
-      name: check_box_9
+      name: check_box_rb
       layout_properties: {grid_position: 'GPVKXD,IDANFD'}
-      event_bindings: {change: check_box_9_change}
+      event_bindings: {change: check_box_rb_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: Landkreise,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: false, underline: false}
-      name: check_box_10
+      name: check_box_lk
       layout_properties: {grid_position: 'LYVJDW,TTVIWB'}
-      event_bindings: {change: check_box_10_change}
+      event_bindings: {change: check_box_lk_change}
   - type: LinearPanel
     properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
       border: '', visible: true, role: null, tooltip: ''}
@@ -206,27 +206,27 @@ components:
         enabled: true, foreground: '', value: '', visible: true, text: Outdoor-Map,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, group_name: radioGroup1, underline: false}
-      name: radio_button_1
+      name: radio_button_om
       layout_properties: {grid_position: 'HOUZUH,ZMPNGY'}
-      event_bindings: {clicked: radio_button_1_clicked}
+      event_bindings: {clicked: radio_button_om_clicked}
     - type: RadioButton
       properties: {role: null, selected: false, align: left, tooltip: '', border: '',
         enabled: true, foreground: '', value: '', visible: true, text: Satellite Map,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, group_name: radioGroup1, underline: false}
-      name: radio_button_2
+      name: radio_button_sm
       layout_properties: {grid_position: 'XJXIJY,OTUDAD'}
-      event_bindings: {clicked: radio_button_2_clicked}
+      event_bindings: {clicked: radio_button_sm_clicked}
     - type: Button
       properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
         foreground: '', visible: true, text: De-/Aktiviere Informationen, font_size: null,
         font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
         background: '', bold: false, underline: false, icon: ''}
-      name: button_1
+      name: button_infos
       layout_properties: {grid_position: 'WQJULR,BXPCBJ'}
-      event_bindings: {click: button_1_click}
+      event_bindings: {click: button_infos_click}
     - type: FileLoader
       properties: {}
-      name: file_loader_1
+      name: file_loader_upload
       layout_properties: {grid_position: 'VVNTOC,NKJSFS'}
-      event_bindings: {change: file_loader_1_change}
+      event_bindings: {change: file_loader_upload_change}
