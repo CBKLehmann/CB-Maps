@@ -1640,9 +1640,6 @@ class Map2_0(Map2_0Template):
     
     #Get global Variables from "Variables"
     global Variables
-    
-    #Get Marker + Icon by ClassName from Document
-    markerIcon = document.getElementsByClassName('markerCB')
       
     #Check if Check Box is checked or unchecked  
     if self.check_box_cb.checked == True:
@@ -1660,129 +1657,119 @@ class Map2_0(Map2_0Template):
   #This method is called when the Check Box for Konkurrent-Icons is checked or unchecked      
   def check_box_kk_change(self, **event_args):
     
-    #Get Marker + Icon by ClassName from Document 
-    markerIcon = document.getElementsByClassName('markerKK')
-    marker = document.getElementsByClassName('markerKK')
-
-    #Check if Check Box is checked or unchecked
-    if self.check_box_kk.checked == True:
+    #Get global Variables from "Variables"
+    global Variables
       
-      #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
+    #Check if Check Box is checked or unchecked  
+    if self.check_box_kk.checked == True:
         
-        #Change Display-Mode to show
-        val.style.display = 'block'
+      #Show Marker and Icon
+      for el in Variables.marker['kk_marker']:
+        el.addTo(self.mapbox)
         
     else:
-      
-      #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
         
-        #Change Display-Mode to hide
-        val.style.display = 'none'
+      #Hide Marker and Icon
+      for el in Variables.marker['kk_marker']:
+        el.remove()
 
   #This method is called when the Check Box for Hotel-Icons is checked or unchecked      
   def check_box_h_change(self, **event_args):
     
-    #Get Marker + Icon by ClassName from Document
-    markerIcon = document.getElementsByClassName('markerH')
-    marker = document.getElementsByClassName('markerH')
-
-    #Check if Check Box is checked or unchecked
-    if self.check_box_h.checked == True:
+    #Get global Variables from "Variables"
+    global Variables
       
-      #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
+    #Check if Check Box is checked or unchecked  
+    if self.check_box_h.checked == True:
         
-        #Change Display-Mode to show
-        val.style.display = 'block'
+      #Show Marker and Icon
+      for el in Variables.marker['h_marker']:
+        el.addTo(self.mapbox)
         
     else:
-      
-      #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
         
-        #Change Display-Mode to hide
-        val.style.display = 'none'
+      #Hide Marker and Icon
+      for el in Variables.marker['h_marker']:
+        el.remove()
 
   #This method is called when the Check Box for Krankenhaus-Icons is checked or unchecked      
   def check_box_kh_change(self, **event_args):
     
-    #Get Marker + Icon by ClassName from Document
-    markerIcon = document.getElementsByClassName('markerKH')
-    marker = document.getElementsByClassName('markerKH')
-    
-    #Check if Check Box is checked or unchecked
-    if self.check_box_kh.checked == True:
+    #Get global Variables from "Variables"
+    global Variables
       
-      #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
+    #Check if Check Box is checked or unchecked  
+    if self.check_box_kh.checked == True:
         
-        #Change Display-Mode to show
-        val.style.display = 'block'
+      #Show Marker and Icon
+      for el in Variables.marker['kh_marker']:
+        el.addTo(self.mapbox)
         
     else:
-      
-      #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
         
-        #Change Display-Mode to hide
-        val.style.display = 'none'
+      #Hide Marker and Icon
+      for el in Variables.marker['kh_marker']:
+        el.remove()
 
   #This method is called when the Check Box for Schule-Icons is checked or unchecked     
   def check_box_s_change(self, **event_args):
     
-    #Get Marker + Icon by ClassName from Document
-    markerIcon = document.getElementsByClassName('markerS')
-    marker = document.getElementsByClassName('markerS')
-
-    #Check if Check Box is checked or unchecked
-    if self.check_box_s.checked == True:
+    #Get global Variables from "Variables"
+    global Variables
       
-      #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
+    #Check if Check Box is checked or unchecked  
+    if self.check_box_s.checked == True:
         
-        #Change Display-Mode to show
-        val.style.display = 'block'
+      #Show Marker and Icon
+      for el in Variables.marker['s_marker']:
+        el.addTo(self.mapbox)
         
     else:
-      
-      #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
         
-        #Change Display-Mode to hide
-        val.style.display = 'none'
+      #Hide Marker and Icon
+      for el in Variables.marker['s_marker']:
+        el.remove()
 
   #This method is called when the Check Box for Geschäfte-Icons is checked or unchecked      
   def check_box_g_change(self, **event_args):
     
-    #Get Marker + Icon by ClassName from Document
-    markerIcon = document.getElementsByClassName('markerLG')
-    marker = document.getElementsByClassName('markerLG')
-
-    #Check if Check Box is checked or unchecked
-    if self.check_box_g.checked == True:
+    #Get global Variables from "Variables"
+    global Variables
       
-      #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
+    #Check if Check Box is checked or unchecked  
+    if self.check_box_g.checked == True:
         
-        #Change Display-Mode to show
-        val.style.display = 'block'
+      #Show Marker and Icon
+      for el in Variables.marker['g_marker']:
+        el.addTo(self.mapbox)
         
     else:
-      
-      #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
         
-        #Change Display-Mode to hide
-        val.style.display = 'none'
+      #Hide Marker and Icon
+      for el in Variables.marker['g_marker']:
+        el.remove()
 
   #This method is called when the Check Box for All-Icons is checked or unchecked      
   def check_box_all_change(self, **event_args):
     
-    #Get Marker + Icon by ClassName from Document
-    markerIcon = document.querySelectorAll('.markerCB,.markerKK,.markerH,.markerKH,.markerS,.markerLG')
-    marker = document.querySelectorAll('.markerCB,.markerKK,.markerH,.markerKH,.markerS,.markerLG')
+    #Get global Variables from "Variables"
+    global Variables
+      
+    #Check if Check Box is checked or unchecked  
+    if self.check_box_all.checked == True:
+        
+      #Show Marker and Icon
+      for el in Variables.marker['cb_marker']:
+        el.addTo(self.mapbox)
+        
+    else:
+        
+      #Hide Marker and Icon
+      for el in Variables.marker['cb_marker']:
+        el.remove()
+    
+    
+    
     
     #Check if Check Box is checked or unchecked
     if self.check_box_all.checked == True:
