@@ -1759,14 +1759,16 @@ class Map2_0(Map2_0Template):
     if self.check_box_all.checked == True:
         
       #Show Marker and Icon
-      for el in Variables.marker['cb_marker']:
-        el.addTo(self.mapbox)
+      for el in Variables.marker:
+        for el2 in el:
+          el2.addTo(self.mapbox)
         
     else:
         
       #Hide Marker and Icon
-      for el in Variables.marker['cb_marker']:
-        el.remove()
+      for el in Variables.marker:
+        for el2 in el:
+          el2.remove()
     
     
     
