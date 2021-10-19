@@ -991,7 +991,7 @@ class Map2_0(Map2_0Template):
   #This method is called when the Check Box for Bundesländer-Layer is checked or unchecked
   def check_box_bl_change(self, **event_args):
     
-     #Get Global Variables from Variables
+    #Get Global Variables from Variables
     global Variables
     
     #Get Visibility of Layer
@@ -1000,7 +1000,7 @@ class Map2_0(Map2_0Template):
     #Check if Layer is visible or not
     if visibility == 'visible':
       
-      #Hide every other Layer
+      #Hide active Layer
       self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
       
@@ -1022,22 +1022,26 @@ class Map2_0(Map2_0Template):
       self.check_box_10.checked = False
       
       #Set active Layer to Bundesländer
-      Module1.activeLayer = 'bundeslaender'
+      Variables.activeLayer = 'bundeslaender'
 
   #This method is called when the Check Box for Regierungsbezirke-Layer is checked or unchecked     
   def check_box_rb_change(self, **event_args):
     
-    """This method is called when this checkbox is checked or unchecked"""
-    global Module1
+    #Get Global Variables from Variables
+    global Variables
     
+    #Get Visibility of Layer
     visibility = self.mapbox.getLayoutProperty('regierungsbezirke', 'visibility')
     
+    #Check if Layer is visible or not
     if visibility == 'visible':
       
+      #Hide active Layer
       self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
       
-      Module1.activeLayer = None
+      #Set active Layer to None
+      Variables.activeLayer = None
       
     else:
       
