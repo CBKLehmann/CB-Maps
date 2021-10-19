@@ -1096,53 +1096,63 @@ class Map2_0(Map2_0Template):
       #Set active Layer to Landkreise
       Module1.activeLayer = 'landkreise'
 
-
+  #This method is called when the Button Icons is clicked
   def button_icons_click(self, **event_args):
     
-    """This method is called when the button is clicked"""
+    #Check if Checkbox-Panel is visible or not
     if self.linear_panel_2.visible == True:
     
+      #Set Checkbox-Panel to invisible and change Arrow-Icon
       self.linear_panel_2.visible = False
       self.button_2.icon = 'fa:angle-right'
       
     else:
       
+      #Set Checkbox-Panel to visible and change Arrow-Icon
       self.linear_panel_2.visible = True
       self.button_2.icon = 'fa:angle-down'
 
-      
+  #This method is called when the Button Icons is clicked    
   def button_overlay_click(self, **event_args):
     
-    """This method is called when the button is clicked"""
+    #Check if Checkbox-Panel is visible or not
     if self.linear_panel_1.visible == True:
     
+      #Set Checkbox-Panel to invisible and change Arrow-Icon
       self.linear_panel_1.visible = False
       self.button_3.icon = 'fa:angle-right'
       
     else:
       
+      #Set Checkbox-Panel to visible and change Arrow-Icon
       self.linear_panel_1.visible = True
       self.button_3.icon = 'fa:angle-down'
     
-    
+  #This method is called when the User clicked a Part of a Map-Layer  
   def popup(self, click):
     
+    #Check which Layer is active
     if click.features[0].layer.source == 'bundeslaender':
       
+      #Create Popup and add it to the Map
       bl_name = click.features[0].properties.name
       bl_id = click.features[0].id
       clicked_lngLat = dict(click.lngLat)
       popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}').addTo(self.mapbox)
-      
+    
+    #Check which Layer is active
     elif click.features[0].layer.source == 'regierungsbezirke':
       
+      #Create Popup and add it to the Map
       bl_name = click.features[0].properties.NAME_1
       rb_name = click.features[0].properties.NAME_2
       clicked_lngLat = dict(click.lngLat)
       popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Regierungsbezirk:</b> {rb_name}').addTo(self.mapbox)
-      
+    
+     #Check which Layer is active
     elif click.features[0].layer.source == 'landkreise':
       
+      #Create Popup and add it to the Map
       bl_name = click.features[0].properties.NAME_1
       rb_name = click.features[0].properties.NAME_2
       lk_name = click.features[0].properties.NAME_3
