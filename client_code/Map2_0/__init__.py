@@ -1646,12 +1646,14 @@ class Map2_0(Map2_0Template):
         
       #Show Marker and Icon
       for el in Variables.marker['cb_marker']:
+        
         el.addTo(self.mapbox)
         
     else:
         
       #Hide Marker and Icon
       for el in Variables.marker['cb_marker']:
+        
         el.remove()
 
   #This method is called when the Check Box for Konkurrent-Icons is checked or unchecked      
@@ -1665,12 +1667,14 @@ class Map2_0(Map2_0Template):
         
       #Show Marker and Icon
       for el in Variables.marker['kk_marker']:
+        
         el.addTo(self.mapbox)
         
     else:
         
       #Hide Marker and Icon
       for el in Variables.marker['kk_marker']:
+        
         el.remove()
 
   #This method is called when the Check Box for Hotel-Icons is checked or unchecked      
@@ -1684,12 +1688,14 @@ class Map2_0(Map2_0Template):
         
       #Show Marker and Icon
       for el in Variables.marker['h_marker']:
+        
         el.addTo(self.mapbox)
         
     else:
         
       #Hide Marker and Icon
       for el in Variables.marker['h_marker']:
+        
         el.remove()
 
   #This method is called when the Check Box for Krankenhaus-Icons is checked or unchecked      
@@ -1703,12 +1709,14 @@ class Map2_0(Map2_0Template):
         
       #Show Marker and Icon
       for el in Variables.marker['kh_marker']:
+        
         el.addTo(self.mapbox)
         
     else:
         
       #Hide Marker and Icon
       for el in Variables.marker['kh_marker']:
+        
         el.remove()
 
   #This method is called when the Check Box for Schule-Icons is checked or unchecked     
@@ -1722,12 +1730,14 @@ class Map2_0(Map2_0Template):
         
       #Show Marker and Icon
       for el in Variables.marker['s_marker']:
+        
         el.addTo(self.mapbox)
         
     else:
         
       #Hide Marker and Icon
       for el in Variables.marker['s_marker']:
+        
         el.remove()
 
   #This method is called when the Check Box for Geschäfte-Icons is checked or unchecked      
@@ -1740,13 +1750,15 @@ class Map2_0(Map2_0Template):
     if self.check_box_g.checked == True:
         
       #Show Marker and Icon
-      for el in Variables.marker['g_marker']:
+      for el in Variables.marker['lg_marker']:
+        
         el.addTo(self.mapbox)
         
     else:
         
       #Hide Marker and Icon
-      for el in Variables.marker['g_marker']:
+      for el in Variables.marker['lg_marker']:
+        
         el.remove()
 
   #This method is called when the Check Box for All-Icons is checked or unchecked      
@@ -1759,28 +1771,28 @@ class Map2_0(Map2_0Template):
     if self.check_box_all.checked == True:
         
       #Show Marker and Icon
-      for el in Variables.marker:
-        for el2 in el:
-          el2.addTo(self.mapbox)
+      for el in Variables.marker['cb_marker']:
+        el.addTo(self.mapbox)
         
-    else:
+      #Show Marker and Icon
+      for el in Variables.marker['kk_marker']:
+        el.addTo(self.mapbox)
         
-      #Hide Marker and Icon
-      for el in Variables.marker:
-        for el2 in el:
-          el2.remove()
-    
-    
-    
-    
-    #Check if Check Box is checked or unchecked
-    if self.check_box_all.checked == True:
+      #Show Marker and Icon
+      for el in Variables.marker['h_marker']:
+        el.addTo(self.mapbox)  
+        
+      #Show Marker and Icon
+      for el in Variables.marker['kh_marker']:
+        el.addTo(self.mapbox)  
+        
+      #Show Marker and Icon
+      for el in Variables.marker['s_marker']:
+        el.addTo(self.mapbox)  
       
-      #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
-      
-        #Change Display-Mode to show
-        val.style.display = 'block'
+      #Show Marker and Icon
+      for el in Variables.marker['g_marker']:
+        el.addTo(self.mapbox)
       
       #Check every Checkbox for every Icon
       self.check_box_cb.checked = True
@@ -1789,14 +1801,32 @@ class Map2_0(Map2_0Template):
       self.check_box_kh.checked = True
       self.check_box_s.checked = True
       self.check_box_g.checked = True
-      
-    else:
-      
-      #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
         
-        #Change Display-Mode to hide
-        val.style.display = 'none'
+    else:
+        
+      #Hide Marker and Icon
+      for el in Variables.marker['cb_marker']:
+        el.remove()
+        
+     #Hide Marker and Icon
+      for el in Variables.marker['kk_marker']:
+        el.remove()
+        
+      #Hide Marker and Icon
+      for el in Variables.marker['h_marker']:
+        el.remove()  
+        
+      #Hide Marker and Icon
+      for el in Variables.marker['kh_marker']:
+        el.remove()  
+      
+      #Hide Marker and Icon
+      for el in Variables.marker['s_marker']:
+        el.remove()
+      
+      #Hide Marker and Icon
+      for el in Variables.marker['g_marker']:
+        el.remove()
       
       #Uncheck every Checkbox for every Icon
       self.check_box_cb.checked = False
@@ -1804,8 +1834,8 @@ class Map2_0(Map2_0Template):
       self.check_box_h.checked = False
       self.check_box_kh.checked = False
       self.check_box_s.checked = False
-      self.check_box_g.checked = False
-
+      self.check_box_g.checked = False     
+    
   #This method is called when the Check Box for Bundesländer-Layer is checked or unchecked
   def check_box_bl_change(self, **event_args):
     

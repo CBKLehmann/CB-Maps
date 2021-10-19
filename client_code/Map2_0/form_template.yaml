@@ -217,6 +217,11 @@ components:
       name: radio_button_sm
       layout_properties: {grid_position: 'XJXIJY,OTUDAD'}
       event_bindings: {clicked: radio_button_sm_clicked}
+  - type: LinearPanel
+    properties: {}
+    name: linear_panel_5
+    layout_properties: {grid_position: 'KNSJQG,ZEFCXH'}
+    components:
     - type: Button
       properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
         foreground: '', visible: true, text: De-/Aktiviere Informationen, font_size: null,
@@ -225,6 +230,11 @@ components:
       name: button_infos
       layout_properties: {grid_position: 'WQJULR,BXPCBJ'}
       event_bindings: {click: button_infos_click}
+  - type: LinearPanel
+    properties: {}
+    name: linear_panel_4
+    layout_properties: {grid_position: 'OOGBUM,AEZWVT'}
+    components:
     - type: FileLoader
       properties: {}
       name: file_loader_upload
