@@ -1045,6 +1045,7 @@ class Map2_0(Map2_0Template):
       
     else:
       
+      #Set Visibility of Layer to visible and every other Layer to None
       self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
@@ -1052,28 +1053,35 @@ class Map2_0(Map2_0Template):
       self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
       
+      #Uncheck Check Box from other Layers
       self.check_box_8.checked = False
       self.check_box_10.checked = False
       
+      #Set active Layer to Regierungsbezirke
       Module1.activeLayer = 'regierungsbezirke'
 
-    
+  #This method is called when the Check Box for Landkreise-Layer is checked or unchecked  
   def check_box_lk_change(self, **event_args):
     
-    """This method is called when this checkbox is checked or unchecked"""
-    global Module1
+    #Get Global Variables from Variables
+    global Variables
     
+    #Get Visibility of Layer
     visibility = self.mapbox.getLayoutProperty('landkreise', 'visibility')
     
+    #Check if Layer is visible or not
     if visibility == 'visible':
       
+      #Hide active Layer
       self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
       
+      #Set active Layer to None
       Module1.activeLayer = None
       
     else:
       
+      #Set Visibility of Layer to visible and every other Layer to None
       self.mapbox.setLayoutProperty('landkreise', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
@@ -1081,9 +1089,11 @@ class Map2_0(Map2_0Template):
       self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
       
+      #Uncheck Check Box from other Layers
       self.check_box_8.checked = False
       self.check_box_9.checked = False
       
+      #Set active Layer to Landkreise
       Module1.activeLayer = 'landkreise'
 
 
