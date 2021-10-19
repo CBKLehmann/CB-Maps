@@ -828,7 +828,7 @@ class Map2_0(Map2_0Template):
         #Change Display-Mode to hide
         val.style.display = 'none'
 
-  #This method is called when the Check Box for CapitalBay-Icons is checked or unchecked      
+  #This method is called when the Check Box for Konkurrent-Icons is checked or unchecked      
   def check_box_kk_change(self, **event_args):
     
     #Get Marker + Icon by ClassName from Document 
@@ -841,103 +841,130 @@ class Map2_0(Map2_0Template):
       #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to show
         val.style.display = 'block'
         
     else:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to hide
         val.style.display = 'none'
 
-        
+  #This method is called when the Check Box for Hotel-Icons is checked or unchecked      
   def check_box_h_change(self, **event_args):
     
-    """This method is called when this checkbox is checked or unchecked"""
+    #Get Marker + Icon by ClassName from Document
     markerIcon = document.getElementsByClassName('markerH')
     marker = document.getElementsByClassName('markerH')
 
+    #Check if Check Box is checked or unchecked
     if self.check_box_3.checked == True:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to show
         val.style.display = 'block'
         
     else:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to hide
         val.style.display = 'none'
 
-        
+  #This method is called when the Check Box for Krankenhaus-Icons is checked or unchecked      
   def check_box_kh_change(self, **event_args):
     
-    """This method is called when this checkbox is checked or unchecked"""
+    #Get Marker + Icon by ClassName from Document
     markerIcon = document.getElementsByClassName('markerKH')
     marker = document.getElementsByClassName('markerKH')
-  
+    
+    #Check if Check Box is checked or unchecked
     if self.check_box_4.checked == True:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to show
         val.style.display = 'block'
         
     else:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to hide
         val.style.display = 'none'
 
-        
+  #This method is called when the Check Box for Schule-Icons is checked or unchecked     
   def check_box_s_change(self, **event_args):
     
-    """This method is called when this checkbox is checked or unchecked"""
+    #Get Marker + Icon by ClassName from Document
     markerIcon = document.getElementsByClassName('markerS')
     marker = document.getElementsByClassName('markerS')
 
+    #Check if Check Box is checked or unchecked
     if self.check_box_5.checked == True:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to show
         val.style.display = 'block'
         
     else:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to hide
         val.style.display = 'none'
 
-        
+  #This method is called when the Check Box for Geschäfte-Icons is checked or unchecked      
   def check_box_g_change(self, **event_args):
     
-    """This method is called when this checkbox is checked or unchecked"""
+    #Get Marker + Icon by ClassName from Document
     markerIcon = document.getElementsByClassName('markerLG')
     marker = document.getElementsByClassName('markerLG')
 
+    #Check if Check Box is checked or unchecked
     if self.check_box_6.checked == True:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to show
         val.style.display = 'block'
         
     else:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to hide
         val.style.display = 'none'
 
-        
+  #This method is called when the Check Box for All-Icons is checked or unchecked      
   def check_box_all_change(self, **event_args):
     
-    """This method is called when this checkbox is checked or unchecked"""
+    #Get Marker + Icon by ClassName from Document
     markerIcon = document.querySelectorAll('.markerCB,.markerKK,.markerH,.markerKH,.markerS,.markerLG')
     marker = document.querySelectorAll('.markerCB,.markerKK,.markerH,.markerKH,.markerS,.markerLG')
     
+    #Check if Check Box is checked or unchecked
     if self.check_box_7.checked == True:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
-        
+      
+        #Change Display-Mode to show
         val.style.display = 'block'
-        
+      
+      #Check every Checkbox for every Icon
       self.check_box_1.checked = True
       self.check_box_2.checked = True
       self.check_box_3.checked = True
@@ -947,10 +974,13 @@ class Map2_0(Map2_0Template):
       
     else:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to hide
         val.style.display = 'none'
-        
+      
+      #Uncheck every Checkbox for every Icon
       self.check_box_1.checked = False
       self.check_box_2.checked = False
       self.check_box_3.checked = False
@@ -958,23 +988,28 @@ class Map2_0(Map2_0Template):
       self.check_box_5.checked = False
       self.check_box_6.checked = False
 
-
+  #This method is called when the Check Box for Bundesländer-Layer is checked or unchecked
   def check_box_bl_change(self, **event_args):
     
-    """This method is called when this checkbox is checked or unchecked"""
-    global Module1
+     #Get Global Variables from Variables
+    global Variables
     
+    #Get Visibility of Layer
     visibility = self.mapbox.getLayoutProperty('bundeslaender', 'visibility')
 
+    #Check if Layer is visible or not
     if visibility == 'visible':
       
+      #Hide every other Layer
       self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
       
-      Module1.activeLayer = None
+      #Set active Layer to None
+      Variables.activeLayer = None
       
     else:
       
+      #Set Visibility of Layer to visible and every other Layer to None
       self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
@@ -982,9 +1017,11 @@ class Map2_0(Map2_0Template):
       self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
       
+      #Uncheck Check Box from other Layers
       self.check_box_9.checked = False
       self.check_box_10.checked = False
       
+      #Set active Layer to Bundesländer
       Module1.activeLayer = 'bundeslaender'
 
       
