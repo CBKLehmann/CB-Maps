@@ -53,6 +53,7 @@ class Map2_0(Map2_0Template):
     self.mapbox.on('click', 'bundeslaender', self.popup)
     self.mapbox.on('click', 'regierungsbezirke', self.popup)
     self.mapbox.on('click', 'landkreise', self.popup)
+    self.mapbox.on('click', self.poi)
     
     #Get Geocoordinates for all Federal states
     jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
@@ -2006,3 +2007,11 @@ class Map2_0(Map2_0Template):
       lk_name = click.features[0].properties.NAME_3
       clicked_lngLat = dict(click.lngLat)
       popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Regierungsbezirk:</b> {rb_name}<br><b>Landkreis:</b> {lk_name}').addTo(self.mapbox)
+      
+  def poi(self, click):
+    
+    layers = self.mapbox.getStyle().layers
+    
+    features = self.mapbox.queryRenderedFeatures(click.point, {'layers': ['poi-label', 'transit-label', 'landuse', 'national-park']})
+    
+    popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('you clicked here: <br/>' + features[0].properties.name).addTo(self.mapbox)
