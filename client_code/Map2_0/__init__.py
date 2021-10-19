@@ -237,7 +237,7 @@ class Map2_0(Map2_0Template):
     request_string += f"&polygons=true&access_token={self.token}"
     
     #Get Data from request
-    response = anvil.http.request(response_string,json=True)
+    response = anvil.http.request(request_string,json=True)
     
     #Attach Data to iso-source
     self.mapbox.getSource('iso').setData(response)
@@ -245,7 +245,7 @@ class Map2_0(Map2_0Template):
   #This method is called when the Mouse is moved inside an active Map-Layer 
   def mousemove(self, mousemove):
     
-    #Get Global Variables from Module 1
+    #Get Global Variables from Variables
     global Variables
     hoveredStateId = Variables.hoveredStateId
     layer = Variables.activeLayer
@@ -340,11 +340,20 @@ class Map2_0(Map2_0Template):
   #This method is called when a new file is loaded into the FileLoader 
   def file_loader_upload_change(self, file, **event_args):
     
+    #Get global Variables from "Variables"
+    global Variables
+    
     #Call Server-Function to safe the File  
     anvil.server.call('save_local_excel_file', file)
     
-    #Initialise Markercounter
+    #Initialise Variables
     markercount = 1
+    cb_marker = []
+    kk_marker = []
+    h_marker = []
+    kh_marker = []
+    s_marker = []
+    lg_marker = []
     
     #Add Marker while Markercount is under Amount of Adresses inside provided File
     while markercount <= anvil.server.call('get_amount_of_adresses'):
@@ -389,7 +398,10 @@ class Map2_0(Map2_0Template):
           self.markerCB_static = mapboxgl.Marker({'color': '#00B050', 'draggable': False})
         
         #Add Marker to the Map
-        self.markerCB_static.setLngLat(coordinates).addTo(self.mapbox)  
+        newmarker = self.markerCB_static.setLngLat(coordinates).addTo(self.mapbox)
+        
+        #Add Marker to Marker-Array
+        cb_marker.append(newmarker)
       
       #Check which Icon the provided Adress has
       elif anvil.server.call('get_type_of_icon', markercount) == 'Konkurrent':
@@ -416,7 +428,10 @@ class Map2_0(Map2_0Template):
         
         #Add Marker to the Map
         self.markerKK_static.setLngLat(coordinates).addTo(self.mapbox)
-      
+        
+        #Add Marker to Marker-Array
+        kk_marker.append(newmarker)
+        
       #Check which Icon the provided Adress has
       elif anvil.server.call('get_type_of_icon', markercount) == 'Hotel':
          
@@ -442,6 +457,9 @@ class Map2_0(Map2_0Template):
         
         #Add Marker to the Map
         self.markerH_static.setLngLat(coordinates).addTo(self.mapbox)
+        
+        #Add Marker to Marker-Array
+        h_marker.append(newmarker)
       
       #Check which Icon the provided Adress has
       elif anvil.server.call('get_type_of_icon', markercount) == 'Krankenhaus':     
@@ -468,6 +486,9 @@ class Map2_0(Map2_0Template):
      
         #Add Marker to the Map
         self.markerKH_static.setLngLat(coordinates).addTo(self.mapbox)
+        
+        #Add Marker to Marker-Array
+        kh_marker.append(newmarker)
       
       #Check which Icon the provided Adress has
       elif anvil.server.call('get_type_of_icon', markercount) == 'Laden':     
@@ -494,6 +515,9 @@ class Map2_0(Map2_0Template):
         
         #Add Marker to the Map
         self.markerLG_static.setLngLat(coordinates).addTo(self.mapbox)
+        
+        #Add Marker to Marker-Array
+        lg_marker.append(newmarker)
       
       #Check which Icon the provided Adress has
       elif anvil.server.call('get_type_of_icon', markercount) == 'Schule':       
@@ -520,6 +544,9 @@ class Map2_0(Map2_0Template):
         
         #Add Marker to the Map
         self.markerS_static.setLngLat(coordinates).addTo(self.mapbox)
+        
+        #Add Marker to Marker-Array
+        s_marker.append(newmarker)
       
       #Add Icon to the Map
       mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0,-22]).addTo(self.mapbox)
@@ -533,7 +560,10 @@ class Map2_0(Map2_0Template):
       
       #Increase Markercount
       markercount += 1
-      
+    
+    #Add Marker-Arrays to global Variable Marker
+    Variables.marker.update({'cb_marker': cb_marker, 'kk_marker': kk_marker, 'h_marker': h_marker, 'kh_marker': kh_marker, 's_marker': s_marker, 'lg_marker': lg_marker})
+    
   #This method is called when the Button for toggling the Marker-Popups got clicked    
   def button_infos_click(self, **event_args):
     
@@ -543,290 +573,1076 @@ class Map2_0(Map2_0Template):
   #This method is called when the Button for changing the Map-Style to "Satellite Map" got clicked    
   def radio_button_sm_clicked(self, **event_args):
 
+    #Get Global Variables from Variables
+    global Variables
+    
     #Change Map-Style to "Satellite Map"    
     self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
     
-    #Get Geocoordinates for all Federal states
-    jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
+    #Check which Layer is active
+    if Variables.activeLayer == 'bundeslaender':
     
-    #Add Mapsource for Federal states
-    self.mapbox.addSource ('bundeslaender', {
-      'type': 'geojson',
-      'data': jsonfile
-    })
+      #Get Geocoordinates for all Federal states
+      jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
     
-    #Add filled Layer for Federal states
-    self.mapbox.addLayer({
-      'id': 'bundeslaender',
-      'type': 'fill',
-      'source': 'bundeslaender',
-      'layout': {
-          'visibility': 'visible'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
-        ]
-      }
-    }); 
-
-    #Add outlined Layer for Federal states
-    self.mapbox.addLayer({
-        'id': 'outlineBL',
-        'type': 'line',
+      #Add Mapsource for Federal states
+      self.mapbox.addSource ('bundeslaender', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+    
+      #Add filled Layer for Federal states
+      self.mapbox.addLayer({
+        'id': 'bundeslaender',
+        'type': 'fill',
         'source': 'bundeslaender',
         'layout': {
             'visibility': 'visible'
         },
         'paint': {
-            'line-color': '#000',
-            'line-width': 2
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
         }
-    });
-    
-    #Get Geocoordinates for all government districts
-    jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
-    
-    #Add Mapsource for government districts
-    self.mapbox.addSource ('regierungsbezirke', {
-      'type': 'geojson',
-      'data': jsonfile
-    })
-    
-    #Add filled Layer for government districts
-    self.mapbox.addLayer({
-      'id': 'regierungsbezirke',
-      'type': 'fill',
-      'source': 'regierungsbezirke',
-      'layout': {
-          'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
-        ]
-      }
-    }); 
-
-    #Add outlined Layer for government districts
-    self.mapbox.addLayer({
-        'id': 'outlineRB',
-        'type': 'line',
+      }); 
+  
+      #Add outlined Layer for Federal states
+      self.mapbox.addLayer({
+          'id': 'outlineBL',
+          'type': 'line',
+          'source': 'bundeslaender',
+          'layout': {
+              'visibility': 'visible'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 2
+          }
+      });
+      
+      #Get Geocoordinates for all government districts
+      jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
+      
+      #Add Mapsource for government districts
+      self.mapbox.addSource ('regierungsbezirke', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for government districts
+      self.mapbox.addLayer({
+        'id': 'regierungsbezirke',
+        'type': 'fill',
         'source': 'regierungsbezirke',
         'layout': {
             'visibility': 'none'
         },
         'paint': {
-            'line-color': '#000',
-            'line-width': 1
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
         }
-    });
-    
-    #Get Geocoordinates for all rural districts
-    jsonfile = anvil.server.call('get_geojson', 'landkreise')
-    
-    #Add Mapsource for rural districts
-    self.mapbox.addSource ('landkreise', {
-      'type': 'geojson',
-      'data': jsonfile
-    })
-    
-    #Add filled Layer for rural districts
-    self.mapbox.addLayer({
-      'id': 'landkreise',
-      'type': 'fill',
-      'source': 'landkreise',
-      'layout': {
-          'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
-        ]
-      }
-    }); 
-    
-    #Add outlined Layer for rural districts
-    self.mapbox.addLayer({
-        'id': 'outlineLK',
-        'type': 'line',
+      }); 
+  
+      #Add outlined Layer for government districts
+      self.mapbox.addLayer({
+          'id': 'outlineRB',
+          'type': 'line',
+          'source': 'regierungsbezirke',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 1
+          }
+      });
+      
+      #Get Geocoordinates for all rural districts
+      jsonfile = anvil.server.call('get_geojson', 'landkreise')
+      
+      #Add Mapsource for rural districts
+      self.mapbox.addSource ('landkreise', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for rural districts
+      self.mapbox.addLayer({
+        'id': 'landkreise',
+        'type': 'fill',
         'source': 'landkreise',
         'layout': {
             'visibility': 'none'
         },
         'paint': {
-            'line-color': '#000',
-            'line-width': 0.5
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
         }
-    });
+      }); 
+      
+      #Add outlined Layer for rural districts
+      self.mapbox.addLayer({
+          'id': 'outlineLK',
+          'type': 'line',
+          'source': 'landkreise',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 0.5
+          }
+      });
+    
+    elif Variables.activeLayer == 'regierungsbezirke':
+      
+      #Get Geocoordinates for all Federal states
+      jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
+    
+      #Add Mapsource for Federal states
+      self.mapbox.addSource ('bundeslaender', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+    
+      #Add filled Layer for Federal states
+      self.mapbox.addLayer({
+        'id': 'bundeslaender',
+        'type': 'fill',
+        'source': 'bundeslaender',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+  
+      #Add outlined Layer for Federal states
+      self.mapbox.addLayer({
+          'id': 'outlineBL',
+          'type': 'line',
+          'source': 'bundeslaender',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 2
+          }
+      });
+      
+      #Get Geocoordinates for all government districts
+      jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
+      
+      #Add Mapsource for government districts
+      self.mapbox.addSource ('regierungsbezirke', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for government districts
+      self.mapbox.addLayer({
+        'id': 'regierungsbezirke',
+        'type': 'fill',
+        'source': 'regierungsbezirke',
+        'layout': {
+            'visibility': 'visible'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+  
+      #Add outlined Layer for government districts
+      self.mapbox.addLayer({
+          'id': 'outlineRB',
+          'type': 'line',
+          'source': 'regierungsbezirke',
+          'layout': {
+              'visibility': 'visible'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 1
+          }
+      });
+      
+      #Get Geocoordinates for all rural districts
+      jsonfile = anvil.server.call('get_geojson', 'landkreise')
+      
+      #Add Mapsource for rural districts
+      self.mapbox.addSource ('landkreise', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for rural districts
+      self.mapbox.addLayer({
+        'id': 'landkreise',
+        'type': 'fill',
+        'source': 'landkreise',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+      
+      #Add outlined Layer for rural districts
+      self.mapbox.addLayer({
+          'id': 'outlineLK',
+          'type': 'line',
+          'source': 'landkreise',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 0.5
+          }
+      });
+    
+    elif Variables.activeLayer == 'landkreise':
+      
+      #Get Geocoordinates for all Federal states
+      jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
+    
+      #Add Mapsource for Federal states
+      self.mapbox.addSource ('bundeslaender', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+    
+      #Add filled Layer for Federal states
+      self.mapbox.addLayer({
+        'id': 'bundeslaender',
+        'type': 'fill',
+        'source': 'bundeslaender',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+  
+      #Add outlined Layer for Federal states
+      self.mapbox.addLayer({
+          'id': 'outlineBL',
+          'type': 'line',
+          'source': 'bundeslaender',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 2
+          }
+      });
+      
+      #Get Geocoordinates for all government districts
+      jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
+      
+      #Add Mapsource for government districts
+      self.mapbox.addSource ('regierungsbezirke', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for government districts
+      self.mapbox.addLayer({
+        'id': 'regierungsbezirke',
+        'type': 'fill',
+        'source': 'regierungsbezirke',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+  
+      #Add outlined Layer for government districts
+      self.mapbox.addLayer({
+          'id': 'outlineRB',
+          'type': 'line',
+          'source': 'regierungsbezirke',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 1
+          }
+      });
+      
+      #Get Geocoordinates for all rural districts
+      jsonfile = anvil.server.call('get_geojson', 'landkreise')
+      
+      #Add Mapsource for rural districts
+      self.mapbox.addSource ('landkreise', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for rural districts
+      self.mapbox.addLayer({
+        'id': 'landkreise',
+        'type': 'fill',
+        'source': 'landkreise',
+        'layout': {
+            'visibility': 'visible'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+      
+      #Add outlined Layer for rural districts
+      self.mapbox.addLayer({
+          'id': 'outlineLK',
+          'type': 'line',
+          'source': 'landkreise',
+          'layout': {
+              'visibility': 'visible'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 0.5
+          }
+      });
+    
+    elif Variables.activeLayer == None:
+      
+      #Get Geocoordinates for all Federal states
+      jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
+    
+      #Add Mapsource for Federal states
+      self.mapbox.addSource ('bundeslaender', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+    
+      #Add filled Layer for Federal states
+      self.mapbox.addLayer({
+        'id': 'bundeslaender',
+        'type': 'fill',
+        'source': 'bundeslaender',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+  
+      #Add outlined Layer for Federal states
+      self.mapbox.addLayer({
+          'id': 'outlineBL',
+          'type': 'line',
+          'source': 'bundeslaender',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 2
+          }
+      });
+      
+      #Get Geocoordinates for all government districts
+      jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
+      
+      #Add Mapsource for government districts
+      self.mapbox.addSource ('regierungsbezirke', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for government districts
+      self.mapbox.addLayer({
+        'id': 'regierungsbezirke',
+        'type': 'fill',
+        'source': 'regierungsbezirke',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+  
+      #Add outlined Layer for government districts
+      self.mapbox.addLayer({
+          'id': 'outlineRB',
+          'type': 'line',
+          'source': 'regierungsbezirke',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 1
+          }
+      });
+      
+      #Get Geocoordinates for all rural districts
+      jsonfile = anvil.server.call('get_geojson', 'landkreise')
+      
+      #Add Mapsource for rural districts
+      self.mapbox.addSource ('landkreise', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for rural districts
+      self.mapbox.addLayer({
+        'id': 'landkreise',
+        'type': 'fill',
+        'source': 'landkreise',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+      
+      #Add outlined Layer for rural districts
+      self.mapbox.addLayer({
+          'id': 'outlineLK',
+          'type': 'line',
+          'source': 'landkreise',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 0.5
+          }
+      });
     
   #This method is called when the Button for changing the Map-Style to "Outdoor Map" got clicked
   def radio_button_om_clicked(self, **event_args):
     
+    #Get Global Variables from Variables
+    global Variables
+    
     #Change Map-Style to "Outdoor Map"
     self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
     
-    #Get Geocoordinates for all Federal states
-    jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
+    #Check which Layer is active
+    if Variables.activeLayer == 'bundeslaender':
     
-    #Add Mapsource for Federal states
-    self.mapbox.addSource ('bundeslaender', {
-      'type': 'geojson',
-      'data': jsonfile
-    })
+      #Get Geocoordinates for all Federal states
+      jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
     
-    #Add filled Layer for Federal states
-    self.mapbox.addLayer({
-      'id': 'bundeslaender-border',
-      'type': 'fill',
-      'source': 'bundeslaender',
-      'layout': {
-          'visibility': 'visible'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
-        ]
-      }
-    }); 
+      #Add Mapsource for Federal states
+      self.mapbox.addSource ('bundeslaender', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
     
-    #Add outlined Layer for Federal states
-    self.mapbox.addLayer({
-        'id': 'outlineBL',
-        'type': 'line',
+      #Add filled Layer for Federal states
+      self.mapbox.addLayer({
+        'id': 'bundeslaender',
+        'type': 'fill',
         'source': 'bundeslaender',
         'layout': {
             'visibility': 'visible'
         },
         'paint': {
-            'line-color': '#000',
-            'line-width': 2
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
         }
-    });
-    
-    #Get Geocoordinates for all government districts
-    jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
-    
-    #Add Mapsource for government districts
-    self.mapbox.addSource ('regierungsbezirke', {
-      'type': 'geojson',
-      'data': jsonfile
-    })
-    
-    #Add filled Layer for government districts
-    self.mapbox.addLayer({
-      'id': 'regierungsbezirke',
-      'type': 'fill',
-      'source': 'regierungsbezirke',
-      'layout': {
-          'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
-        ]
-      }
-    }); 
-    
-    #Add outlined Layer for government districts
-    self.mapbox.addLayer({
-        'id': 'outlineRB',
-        'type': 'line',
+      }); 
+  
+      #Add outlined Layer for Federal states
+      self.mapbox.addLayer({
+          'id': 'outlineBL',
+          'type': 'line',
+          'source': 'bundeslaender',
+          'layout': {
+              'visibility': 'visible'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 2
+          }
+      });
+      
+      #Get Geocoordinates for all government districts
+      jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
+      
+      #Add Mapsource for government districts
+      self.mapbox.addSource ('regierungsbezirke', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for government districts
+      self.mapbox.addLayer({
+        'id': 'regierungsbezirke',
+        'type': 'fill',
         'source': 'regierungsbezirke',
         'layout': {
             'visibility': 'none'
         },
         'paint': {
-            'line-color': '#000',
-            'line-width': 1
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
         }
-    });
-    
-    #Get Geocoordinates for all rural districts
-    jsonfile = anvil.server.call('get_geojson', 'landkreise')
-    
-    #Add Mapsource for rural districts
-    self.mapbox.addSource ('landkreise', {
-      'type': 'geojson',
-      'data': jsonfile
-    })
-    
-    #Add filled Layer for rural districts
-    self.mapbox.addLayer({
-      'id': 'landkreise',
-      'type': 'fill',
-      'source': 'landkreise',
-      'layout': {
-          'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
-        ]
-      }
-    }); 
+      }); 
   
-    #Add outlined Layer for rural districts
-    self.mapbox.addLayer({
-        'id': 'outlineLK',
-        'type': 'line',
+      #Add outlined Layer for government districts
+      self.mapbox.addLayer({
+          'id': 'outlineRB',
+          'type': 'line',
+          'source': 'regierungsbezirke',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 1
+          }
+      });
+      
+      #Get Geocoordinates for all rural districts
+      jsonfile = anvil.server.call('get_geojson', 'landkreise')
+      
+      #Add Mapsource for rural districts
+      self.mapbox.addSource ('landkreise', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for rural districts
+      self.mapbox.addLayer({
+        'id': 'landkreise',
+        'type': 'fill',
         'source': 'landkreise',
         'layout': {
             'visibility': 'none'
         },
         'paint': {
-            'line-color': '#000',
-            'line-width': 0.5
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
         }
-    });
+      }); 
+      
+      #Add outlined Layer for rural districts
+      self.mapbox.addLayer({
+          'id': 'outlineLK',
+          'type': 'line',
+          'source': 'landkreise',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 0.5
+          }
+      });
+    
+    elif Variables.activeLayer == 'regierungsbezirke':
+      
+      #Get Geocoordinates for all Federal states
+      jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
+    
+      #Add Mapsource for Federal states
+      self.mapbox.addSource ('bundeslaender', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+    
+      #Add filled Layer for Federal states
+      self.mapbox.addLayer({
+        'id': 'bundeslaender',
+        'type': 'fill',
+        'source': 'bundeslaender',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+  
+      #Add outlined Layer for Federal states
+      self.mapbox.addLayer({
+          'id': 'outlineBL',
+          'type': 'line',
+          'source': 'bundeslaender',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 2
+          }
+      });
+      
+      #Get Geocoordinates for all government districts
+      jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
+      
+      #Add Mapsource for government districts
+      self.mapbox.addSource ('regierungsbezirke', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for government districts
+      self.mapbox.addLayer({
+        'id': 'regierungsbezirke',
+        'type': 'fill',
+        'source': 'regierungsbezirke',
+        'layout': {
+            'visibility': 'visible'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+  
+      #Add outlined Layer for government districts
+      self.mapbox.addLayer({
+          'id': 'outlineRB',
+          'type': 'line',
+          'source': 'regierungsbezirke',
+          'layout': {
+              'visibility': 'visible'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 1
+          }
+      });
+      
+      #Get Geocoordinates for all rural districts
+      jsonfile = anvil.server.call('get_geojson', 'landkreise')
+      
+      #Add Mapsource for rural districts
+      self.mapbox.addSource ('landkreise', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for rural districts
+      self.mapbox.addLayer({
+        'id': 'landkreise',
+        'type': 'fill',
+        'source': 'landkreise',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+      
+      #Add outlined Layer for rural districts
+      self.mapbox.addLayer({
+          'id': 'outlineLK',
+          'type': 'line',
+          'source': 'landkreise',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 0.5
+          }
+      });
+    
+    elif Variables.activeLayer == 'landkreise':
+      
+      #Get Geocoordinates for all Federal states
+      jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
+    
+      #Add Mapsource for Federal states
+      self.mapbox.addSource ('bundeslaender', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+    
+      #Add filled Layer for Federal states
+      self.mapbox.addLayer({
+        'id': 'bundeslaender',
+        'type': 'fill',
+        'source': 'bundeslaender',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+  
+      #Add outlined Layer for Federal states
+      self.mapbox.addLayer({
+          'id': 'outlineBL',
+          'type': 'line',
+          'source': 'bundeslaender',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 2
+          }
+      });
+      
+      #Get Geocoordinates for all government districts
+      jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
+      
+      #Add Mapsource for government districts
+      self.mapbox.addSource ('regierungsbezirke', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for government districts
+      self.mapbox.addLayer({
+        'id': 'regierungsbezirke',
+        'type': 'fill',
+        'source': 'regierungsbezirke',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+  
+      #Add outlined Layer for government districts
+      self.mapbox.addLayer({
+          'id': 'outlineRB',
+          'type': 'line',
+          'source': 'regierungsbezirke',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 1
+          }
+      });
+      
+      #Get Geocoordinates for all rural districts
+      jsonfile = anvil.server.call('get_geojson', 'landkreise')
+      
+      #Add Mapsource for rural districts
+      self.mapbox.addSource ('landkreise', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for rural districts
+      self.mapbox.addLayer({
+        'id': 'landkreise',
+        'type': 'fill',
+        'source': 'landkreise',
+        'layout': {
+            'visibility': 'visible'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+      
+      #Add outlined Layer for rural districts
+      self.mapbox.addLayer({
+          'id': 'outlineLK',
+          'type': 'line',
+          'source': 'landkreise',
+          'layout': {
+              'visibility': 'visible'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 0.5
+          }
+      });
+    
+    elif Variables.activeLayer == None:
+      
+      #Get Geocoordinates for all Federal states
+      jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
+    
+      #Add Mapsource for Federal states
+      self.mapbox.addSource ('bundeslaender', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+    
+      #Add filled Layer for Federal states
+      self.mapbox.addLayer({
+        'id': 'bundeslaender',
+        'type': 'fill',
+        'source': 'bundeslaender',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+  
+      #Add outlined Layer for Federal states
+      self.mapbox.addLayer({
+          'id': 'outlineBL',
+          'type': 'line',
+          'source': 'bundeslaender',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 2
+          }
+      });
+      
+      #Get Geocoordinates for all government districts
+      jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
+      
+      #Add Mapsource for government districts
+      self.mapbox.addSource ('regierungsbezirke', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for government districts
+      self.mapbox.addLayer({
+        'id': 'regierungsbezirke',
+        'type': 'fill',
+        'source': 'regierungsbezirke',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+  
+      #Add outlined Layer for government districts
+      self.mapbox.addLayer({
+          'id': 'outlineRB',
+          'type': 'line',
+          'source': 'regierungsbezirke',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 1
+          }
+      });
+      
+      #Get Geocoordinates for all rural districts
+      jsonfile = anvil.server.call('get_geojson', 'landkreise')
+      
+      #Add Mapsource for rural districts
+      self.mapbox.addSource ('landkreise', {
+        'type': 'geojson',
+        'data': jsonfile
+      })
+      
+      #Add filled Layer for rural districts
+      self.mapbox.addLayer({
+        'id': 'landkreise',
+        'type': 'fill',
+        'source': 'landkreise',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      }); 
+      
+      #Add outlined Layer for rural districts
+      self.mapbox.addLayer({
+          'id': 'outlineLK',
+          'type': 'line',
+          'source': 'landkreise',
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 0.5
+          }
+      });
       
   #This method is called when the Check Box for CapitalBay-Icons is checked or unchecked
   def check_box_cb_change(self, **event_args):
     
+    #Get global Variables from "Variables"
+    global Variables
+    
     #Get Marker + Icon by ClassName from Document
     markerIcon = document.getElementsByClassName('markerCB')
-    marker = document.getElementsByClassName('markerCB')
       
     #Check if Check Box is checked or unchecked  
-    if self.check_box_1.checked == True:
+    if self.check_box_cb.checked == True:
       
       #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
+      for el_i in markerIcon:
         
-        #Change Display-Mode to show
-        val.style.display = 'block'
+        #Show Marker and Icon
+        el_i.style.display = 'block'
+        for el in Variables.marker['cb_marker']:
+          el.addTo(self.mapbox)
         
     else:
       
       #Change Display-Mode for every item in Markerlist
-      for idx, val in enumerate(marker):
+      for el_i in markerIcon:
         
-        #Change Display-Mode to hide
-        val.style.display = 'none'
+        #Hide Marker and Icon
+        el_i.style.display = 'none'
+        for el in Variables.marker['cb_marker']:
+          el.remove()
 
   #This method is called when the Check Box for Konkurrent-Icons is checked or unchecked      
   def check_box_kk_change(self, **event_args):
@@ -836,7 +1652,7 @@ class Map2_0(Map2_0Template):
     marker = document.getElementsByClassName('markerKK')
 
     #Check if Check Box is checked or unchecked
-    if self.check_box_2.checked == True:
+    if self.check_box_kk.checked == True:
       
       #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
@@ -860,7 +1676,7 @@ class Map2_0(Map2_0Template):
     marker = document.getElementsByClassName('markerH')
 
     #Check if Check Box is checked or unchecked
-    if self.check_box_3.checked == True:
+    if self.check_box_h.checked == True:
       
       #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
@@ -884,7 +1700,7 @@ class Map2_0(Map2_0Template):
     marker = document.getElementsByClassName('markerKH')
     
     #Check if Check Box is checked or unchecked
-    if self.check_box_4.checked == True:
+    if self.check_box_kh.checked == True:
       
       #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
@@ -908,7 +1724,7 @@ class Map2_0(Map2_0Template):
     marker = document.getElementsByClassName('markerS')
 
     #Check if Check Box is checked or unchecked
-    if self.check_box_5.checked == True:
+    if self.check_box_s.checked == True:
       
       #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
@@ -932,7 +1748,7 @@ class Map2_0(Map2_0Template):
     marker = document.getElementsByClassName('markerLG')
 
     #Check if Check Box is checked or unchecked
-    if self.check_box_6.checked == True:
+    if self.check_box_g.checked == True:
       
       #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
@@ -956,7 +1772,7 @@ class Map2_0(Map2_0Template):
     marker = document.querySelectorAll('.markerCB,.markerKK,.markerH,.markerKH,.markerS,.markerLG')
     
     #Check if Check Box is checked or unchecked
-    if self.check_box_7.checked == True:
+    if self.check_box_all.checked == True:
       
       #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
@@ -965,12 +1781,12 @@ class Map2_0(Map2_0Template):
         val.style.display = 'block'
       
       #Check every Checkbox for every Icon
-      self.check_box_1.checked = True
-      self.check_box_2.checked = True
-      self.check_box_3.checked = True
-      self.check_box_4.checked = True
-      self.check_box_5.checked = True
-      self.check_box_6.checked = True
+      self.check_box_cb.checked = True
+      self.check_box_kk.checked = True
+      self.check_box_h.checked = True
+      self.check_box_kh.checked = True
+      self.check_box_s.checked = True
+      self.check_box_g.checked = True
       
     else:
       
@@ -981,12 +1797,12 @@ class Map2_0(Map2_0Template):
         val.style.display = 'none'
       
       #Uncheck every Checkbox for every Icon
-      self.check_box_1.checked = False
-      self.check_box_2.checked = False
-      self.check_box_3.checked = False
-      self.check_box_4.checked = False
-      self.check_box_5.checked = False
-      self.check_box_6.checked = False
+      self.check_box_cb.checked = False
+      self.check_box_kk.checked = False
+      self.check_box_h.checked = False
+      self.check_box_kh.checked = False
+      self.check_box_s.checked = False
+      self.check_box_g.checked = False
 
   #This method is called when the Check Box for Bundesländer-Layer is checked or unchecked
   def check_box_bl_change(self, **event_args):
@@ -1018,8 +1834,8 @@ class Map2_0(Map2_0Template):
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
       
       #Uncheck Check Box from other Layers
-      self.check_box_9.checked = False
-      self.check_box_10.checked = False
+      self.check_box_rb.checked = False
+      self.check_box_lk.checked = False
       
       #Set active Layer to Bundesländer
       Variables.activeLayer = 'bundeslaender'
@@ -1054,11 +1870,11 @@ class Map2_0(Map2_0Template):
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
       
       #Uncheck Check Box from other Layers
-      self.check_box_8.checked = False
-      self.check_box_10.checked = False
+      self.check_box_bl.checked = False
+      self.check_box_lk.checked = False
       
       #Set active Layer to Regierungsbezirke
-      Module1.activeLayer = 'regierungsbezirke'
+      Variables.activeLayer = 'regierungsbezirke'
 
   #This method is called when the Check Box for Landkreise-Layer is checked or unchecked  
   def check_box_lk_change(self, **event_args):
@@ -1077,7 +1893,7 @@ class Map2_0(Map2_0Template):
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
       
       #Set active Layer to None
-      Module1.activeLayer = None
+      Variables.activeLayer = None
       
     else:
       
@@ -1090,11 +1906,11 @@ class Map2_0(Map2_0Template):
       self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
       
       #Uncheck Check Box from other Layers
-      self.check_box_8.checked = False
-      self.check_box_9.checked = False
+      self.check_box_bl.checked = False
+      self.check_box_rb.checked = False
       
       #Set active Layer to Landkreise
-      Module1.activeLayer = 'landkreise'
+      Variables.activeLayer = 'landkreise'
 
   #This method is called when the Button Icons is clicked
   def button_icons_click(self, **event_args):
@@ -1104,13 +1920,13 @@ class Map2_0(Map2_0Template):
     
       #Set Checkbox-Panel to invisible and change Arrow-Icon
       self.linear_panel_2.visible = False
-      self.button_2.icon = 'fa:angle-right'
+      self.button_icons.icon = 'fa:angle-right'
       
     else:
       
       #Set Checkbox-Panel to visible and change Arrow-Icon
       self.linear_panel_2.visible = True
-      self.button_2.icon = 'fa:angle-down'
+      self.button_icons.icon = 'fa:angle-down'
 
   #This method is called when the Button Icons is clicked    
   def button_overlay_click(self, **event_args):
@@ -1120,13 +1936,13 @@ class Map2_0(Map2_0Template):
     
       #Set Checkbox-Panel to invisible and change Arrow-Icon
       self.linear_panel_1.visible = False
-      self.button_3.icon = 'fa:angle-right'
+      self.button_overlay.icon = 'fa:angle-right'
       
     else:
       
       #Set Checkbox-Panel to visible and change Arrow-Icon
       self.linear_panel_1.visible = True
-      self.button_3.icon = 'fa:angle-down'
+      self.button_overlay.icon = 'fa:angle-down'
     
   #This method is called when the User clicked a Part of a Map-Layer  
   def popup(self, click):

@@ -4,4 +4,4 @@ from anvil.tables import app_tables
 
 hoveredStateId = None
 activeLayer = 'bundeslaender'
-Test = 0
+marker = {}
