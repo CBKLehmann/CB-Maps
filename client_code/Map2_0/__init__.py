@@ -400,8 +400,12 @@ class Map2_0(Map2_0Template):
         #Add Marker to the Map
         newmarker = self.markerCB_static.setLngLat(coordinates).addTo(self.mapbox)
         
-        #Add Marker to Marker-Array
+        #Add Icon to the Map
+        newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0,-22]).addTo(self.mapbox)
+        
+        #Add Marker and Icon to Marker-Array
         cb_marker.append(newmarker)
+        cb_marker.append(newicon)
       
       #Check which Icon the provided Adress has
       elif anvil.server.call('get_type_of_icon', markercount) == 'Konkurrent':
@@ -427,10 +431,14 @@ class Map2_0(Map2_0Template):
           self.markerKK_static = mapboxgl.Marker({'color': '#00B050', 'draggable': False})
         
         #Add Marker to the Map
-        self.markerKK_static.setLngLat(coordinates).addTo(self.mapbox)
+        newmarker = self.markerKK_static.setLngLat(coordinates).addTo(self.mapbox)
         
-        #Add Marker to Marker-Array
+        #Add Icon to the Map
+        newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0,-22]).addTo(self.mapbox)
+        
+        #Add Marker and Icon to Marker-Array
         kk_marker.append(newmarker)
+        kk_marker.append(newicon)
         
       #Check which Icon the provided Adress has
       elif anvil.server.call('get_type_of_icon', markercount) == 'Hotel':
@@ -456,10 +464,14 @@ class Map2_0(Map2_0Template):
           self.markerH_static = mapboxgl.Marker({'color': '#00B050', 'draggable': False})      
         
         #Add Marker to the Map
-        self.markerH_static.setLngLat(coordinates).addTo(self.mapbox)
+        newmarker = self.markerH_static.setLngLat(coordinates).addTo(self.mapbox)
+        
+        #Add Icon to the Map
+        newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0,-22]).addTo(self.mapbox)
         
         #Add Marker to Marker-Array
         h_marker.append(newmarker)
+        h_marker.append(newicon)
       
       #Check which Icon the provided Adress has
       elif anvil.server.call('get_type_of_icon', markercount) == 'Krankenhaus':     
@@ -485,10 +497,14 @@ class Map2_0(Map2_0Template):
           self.markerKH_static = mapboxgl.Marker({'color': '#00B050', 'draggable': False})         
      
         #Add Marker to the Map
-        self.markerKH_static.setLngLat(coordinates).addTo(self.mapbox)
+        newmarker = self.markerKH_static.setLngLat(coordinates).addTo(self.mapbox)
+        
+        #Add Icon to the Map
+        newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0,-22]).addTo(self.mapbox)
         
         #Add Marker to Marker-Array
         kh_marker.append(newmarker)
+        kh_marker.append(newicon)
       
       #Check which Icon the provided Adress has
       elif anvil.server.call('get_type_of_icon', markercount) == 'Laden':     
@@ -514,10 +530,14 @@ class Map2_0(Map2_0Template):
           self.markerLG_static = mapboxgl.Marker({'color': '#00B050', 'draggable': False})    
         
         #Add Marker to the Map
-        self.markerLG_static.setLngLat(coordinates).addTo(self.mapbox)
+        newmarker = self.markerLG_static.setLngLat(coordinates).addTo(self.mapbox)
+        
+        #Add Icon to the Map
+        newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0,-22]).addTo(self.mapbox)
         
         #Add Marker to Marker-Array
         lg_marker.append(newmarker)
+        lg_marker.append(newicon)
       
       #Check which Icon the provided Adress has
       elif anvil.server.call('get_type_of_icon', markercount) == 'Schule':       
@@ -543,13 +563,14 @@ class Map2_0(Map2_0Template):
           self.markerS_static = mapboxgl.Marker({'color': '#00B050', 'draggable': False})
         
         #Add Marker to the Map
-        self.markerS_static.setLngLat(coordinates).addTo(self.mapbox)
+        newmarker = self.markerS_static.setLngLat(coordinates).addTo(self.mapbox)
+      
+        #Add Icon to the Map
+        newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0,-22]).addTo(self.mapbox)
         
         #Add Marker to Marker-Array
         s_marker.append(newmarker)
-      
-      #Add Icon to the Map
-      mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0,-22]).addTo(self.mapbox)
+        s_marker.append(newicon)
 
       #Create Popup for Marker and add it to the Map
       info_text = anvil.server.call('get_informationtext', markercount)
@@ -1625,24 +1646,16 @@ class Map2_0(Map2_0Template):
       
     #Check if Check Box is checked or unchecked  
     if self.check_box_cb.checked == True:
-      
-      #Change Display-Mode for every item in Markerlist
-      for el_i in markerIcon:
         
-        #Show Marker and Icon
-        el_i.style.display = 'block'
-        for el in Variables.marker['cb_marker']:
-          el.addTo(self.mapbox)
+      #Show Marker and Icon
+      for el in Variables.marker['cb_marker']:
+        el.addTo(self.mapbox)
         
     else:
-      
-      #Change Display-Mode for every item in Markerlist
-      for el_i in markerIcon:
         
-        #Hide Marker and Icon
-        el_i.style.display = 'none'
-        for el in Variables.marker['cb_marker']:
-          el.remove()
+      #Hide Marker and Icon
+      for el in Variables.marker['cb_marker']:
+        el.remove()
 
   #This method is called when the Check Box for Konkurrent-Icons is checked or unchecked      
   def check_box_kk_change(self, **event_args):
