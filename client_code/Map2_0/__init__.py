@@ -584,7 +584,7 @@ class Map2_0(Map2_0Template):
         },
         'paint': {
             'line-color': '#000',
-            'line-width': 1
+            'line-width': 2
         }
     });
     
@@ -597,6 +597,7 @@ class Map2_0(Map2_0Template):
       'data': jsonfile
     })
     
+    #Add filled Layer for government districts
     self.mapbox.addLayer({
       'id': 'regierungsbezirke',
       'type': 'fill',
@@ -606,10 +607,16 @@ class Map2_0(Map2_0Template):
       },
       'paint': {
         'fill-color': '#0080ff',
-        'fill-opacity': 0.5
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
+        ]
       }
     }); 
 
+    #Add outlined Layer for government districts
     self.mapbox.addLayer({
         'id': 'outlineRB',
         'type': 'line',
@@ -623,13 +630,16 @@ class Map2_0(Map2_0Template):
         }
     });
     
+    #Get Geocoordinates for all rural districts
     jsonfile = anvil.server.call('get_geojson', 'landkreise')
     
+    #Add Mapsource for rural districts
     self.mapbox.addSource ('landkreise', {
       'type': 'geojson',
       'data': jsonfile
     })
     
+    #Add filled Layer for rural districts
     self.mapbox.addLayer({
       'id': 'landkreise',
       'type': 'fill',
@@ -639,10 +649,16 @@ class Map2_0(Map2_0Template):
       },
       'paint': {
         'fill-color': '#0080ff',
-        'fill-opacity': 0.5
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
+        ]
       }
     }); 
-
+    
+    #Add outlined Layer for rural districts
     self.mapbox.addLayer({
         'id': 'outlineLK',
         'type': 'line',
@@ -656,20 +672,22 @@ class Map2_0(Map2_0Template):
         }
     });
     
-
+  #This method is called when the Button for changing the Map-Style to "Outdoor Map" got clicked
   def radio_button_om_clicked(self, **event_args):
     
-    """This method is called when this radio button is selected"""
-    
+    #Change Map-Style to "Outdoor Map"
     self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
     
+    #Get Geocoordinates for all Federal states
     jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
     
+    #Add Mapsource for Federal states
     self.mapbox.addSource ('bundeslaender', {
       'type': 'geojson',
       'data': jsonfile
     })
     
+    #Add filled Layer for Federal states
     self.mapbox.addLayer({
       'id': 'bundeslaender-border',
       'type': 'fill',
@@ -679,26 +697,16 @@ class Map2_0(Map2_0Template):
       },
       'paint': {
         'fill-color': '#0080ff',
-        'fill-opacity': 0.5
-      }
-    }); 
-
-    self.mapbox.addLayer({
-      'id': 'bundeslaender-fill',
-      'type': 'fill',
-      'source': 'bundeslaender',
-      'layout': {},
-      'paint': {
-        'fill-color': '#627BC1',
         'fill-opacity': [
-          'case',
-          ['boolean', ['feature-state', hover], False],
-          1,
-          0.5
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
         ]
       }
-    })
+    }); 
     
+    #Add outlined Layer for Federal states
     self.mapbox.addLayer({
         'id': 'outlineBL',
         'type': 'line',
@@ -712,13 +720,16 @@ class Map2_0(Map2_0Template):
         }
     });
     
+    #Get Geocoordinates for all government districts
     jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
     
+    #Add Mapsource for government districts
     self.mapbox.addSource ('regierungsbezirke', {
       'type': 'geojson',
       'data': jsonfile
     })
     
+    #Add filled Layer for government districts
     self.mapbox.addLayer({
       'id': 'regierungsbezirke',
       'type': 'fill',
@@ -728,10 +739,16 @@ class Map2_0(Map2_0Template):
       },
       'paint': {
         'fill-color': '#0080ff',
-        'fill-opacity': 0.5
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
+        ]
       }
     }); 
-
+    
+    #Add outlined Layer for government districts
     self.mapbox.addLayer({
         'id': 'outlineRB',
         'type': 'line',
@@ -745,13 +762,16 @@ class Map2_0(Map2_0Template):
         }
     });
     
+    #Get Geocoordinates for all rural districts
     jsonfile = anvil.server.call('get_geojson', 'landkreise')
     
+    #Add Mapsource for rural districts
     self.mapbox.addSource ('landkreise', {
       'type': 'geojson',
       'data': jsonfile
     })
     
+    #Add filled Layer for rural districts
     self.mapbox.addLayer({
       'id': 'landkreise',
       'type': 'fill',
@@ -761,10 +781,16 @@ class Map2_0(Map2_0Template):
       },
       'paint': {
         'fill-color': '#0080ff',
-        'fill-opacity': 0.5
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
+        ]
       }
     }); 
-
+  
+    #Add outlined Layer for rural districts
     self.mapbox.addLayer({
         'id': 'outlineLK',
         'type': 'line',
@@ -778,34 +804,41 @@ class Map2_0(Map2_0Template):
         }
     });
       
-  
+  #This method is called when the Check Box for CapitalBay-Icons is checked or unchecked
   def check_box_cb_change(self, **event_args):
     
-    """This method is called when this checkbox is checked or unchecked"""
+    #Get Marker + Icon by ClassName from Document
     markerIcon = document.getElementsByClassName('markerCB')
     marker = document.getElementsByClassName('markerCB')
-       
+      
+    #Check if Check Box is checked or unchecked  
     if self.check_box_1.checked == True:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to show
         val.style.display = 'block'
         
     else:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
+        #Change Display-Mode to hide
         val.style.display = 'none'
 
-        
+  #This method is called when the Check Box for CapitalBay-Icons is checked or unchecked      
   def check_box_kk_change(self, **event_args):
     
-    """This method is called when this checkbox is checked or unchecked"""
+    #Get Marker + Icon by ClassName from Document 
     markerIcon = document.getElementsByClassName('markerKK')
     marker = document.getElementsByClassName('markerKK')
 
+    #Check if Check Box is checked or unchecked
     if self.check_box_2.checked == True:
       
+      #Change Display-Mode for every item in Markerlist
       for idx, val in enumerate(marker):
         
         val.style.display = 'block'
