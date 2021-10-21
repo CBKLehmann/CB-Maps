@@ -70,7 +70,7 @@ class Map2_0(Map2_0Template):
       'type': 'fill',
       'source': 'bundeslaender',
       'layout': {
-          'visibility': 'visible'
+          'visibility': 'none'
       },
       'paint': {
         'fill-color': '#0080ff',
@@ -89,7 +89,7 @@ class Map2_0(Map2_0Template):
         'type': 'line',
         'source': 'bundeslaender',
         'layout': {
-            'visibility': 'visible'
+            'visibility': 'none'
         },
         'paint': {
             'line-color': '#000',
@@ -180,7 +180,50 @@ class Map2_0(Map2_0Template):
             'line-width': 0.5
         }
     });
+    
+    #Get Geocoordinates for all municipalities
+    jsonfile = anvil.server.call('get_geojson', 'gemeinden')
+    data = jsonfile.get_bytes()
+    
+    #Add Mapsource for municipalities
+    self.mapbox.addSource ('gemeinden', {
+      'type': 'geojson',
+      'data': data
+    })
+    
+    #Add filled Layer for municipalities
+    self.mapbox.addLayer({
+      'id': 'gemeinden',
+      'type': 'fill',
+      'source': 'gemeinden',
+      'layout': {
+          'visibility': 'visible'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
+        ]
+      }
+    }); 
 
+    #Add outlined Layer for municipalities
+    self.mapbox.addLayer({
+        'id': 'outlineGM',
+        'type': 'line',
+        'source': 'gemeinden',
+        'layout': {
+            'visibility': 'visible'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 0.5
+        }
+    });
+    
   #This method is called when the Geocoder was used 
   def move_marker(self, result):
     
@@ -1865,10 +1908,13 @@ class Map2_0(Map2_0Template):
       self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
       self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'none')
       
       #Uncheck Check Box from other Layers
       self.check_box_rb.checked = False
       self.check_box_lk.checked = False
+      self.check_box_gm.checked = False
       
       #Set active Layer to Bundesländer
       Variables.activeLayer = 'bundeslaender'
@@ -1901,10 +1947,13 @@ class Map2_0(Map2_0Template):
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
       self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'none')
       
       #Uncheck Check Box from other Layers
       self.check_box_bl.checked = False
       self.check_box_lk.checked = False
+      self.check_box_gm.checked = False
       
       #Set active Layer to Regierungsbezirke
       Variables.activeLayer = 'regierungsbezirke'
@@ -1937,14 +1986,56 @@ class Map2_0(Map2_0Template):
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
       self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
       self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'none')
       
       #Uncheck Check Box from other Layers
       self.check_box_bl.checked = False
       self.check_box_rb.checked = False
+      self.check_box_gm.checked = False
       
       #Set active Layer to Landkreise
       Variables.activeLayer = 'landkreise'
 
+  #This method is called when the Check Box for Gemeinden-Layer is checked or unchecked    
+  def check_box_gm_change(self, **event_args):
+  
+    #Get Global Variables from Variables
+    global Variables
+    
+    #Get Visibility of Layer
+    visibility = self.mapbox.getLayoutProperty('gemeinden', 'visibility')
+    
+    #Check if Layer is visible or not
+    if visibility == 'visible':
+      
+      #Hide active Layer
+      self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'none')
+      
+      #Set active Layer to None
+      Variables.activeLayer = None
+      
+    else:
+      
+      #Set Visibility of Layer to visible and every other Layer to None
+      self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'visible')
+      self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'visible')
+      self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
+      self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
+      
+      #Uncheck Check Box from other Layers
+      self.check_box_bl.checked = False
+      self.check_box_rb.checked = False
+      self.check_box_lk.checked = False
+      
+      #Set active Layer to Landkreise
+      Variables.activeLayer = 'gemeinden'  
+      
   #This method is called when the Button Icons is clicked
   def button_icons_click(self, **event_args):
     
