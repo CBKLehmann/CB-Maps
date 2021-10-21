@@ -182,16 +182,19 @@ class Map2_0(Map2_0Template):
     });
     
     #Get Geocoordinates for all municipalities
-    jsonfile = anvil.server.call('get_geojson', 'gemeinden')
-    print(jsonfile)
-    print('##############################')
-    file = jsonfile.get_bytes()
-    print(file)
+    BL = ['BW', 'BY', 'B', 'BB', 'HB', 'HH', 'H', 'RP', 'MV', 'NS', 'NRW', 'SL', 'S', 'SA', 'SH', 'T']
+    data = {"type":"FeatureCollection","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"source":"© GeoBasis-DE / BKG 2013 (Daten verändert)","features": []}
+#     for el in BL:
+#       print(el)
+#       jsonfile = anvil.server.call('get_geojson_mun', el)
+#       data['features'].append(jsonfile)
     
+    jsonfile = anvil.server.call('get_geojson_mun', 'BY')
+  
     #Add Mapsource for municipalities
     self.mapbox.addSource ('gemeinden', {
       'type': 'geojson',
-      'data': file
+      'data': data
     })
     
     #Add filled Layer for municipalities
