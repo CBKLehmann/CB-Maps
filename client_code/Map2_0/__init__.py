@@ -2019,17 +2019,8 @@ class Map2_0(Map2_0Template):
     #Get all Features (Point of Interest) of selected Layers on clicked Point
     features = self.mapbox.queryRenderedFeatures(click.point, {'layers': ['poi-label', 'transit-label', 'landuse', 'national-park']})
     
-    print(type(features))
-    print('###############################')
-    print(features)
-    print('###############################')
-    features_unwrapped = dict(features[0])
-    print(features[0].properties.name)
-    print('###############################')
-    print(features_unwrapped)
-    
-    #Check if no POI was clicked
-    if not features == [] and Variables.activeLayer == None:
+    #Check if no POI was clicked and no Layer is active
+    if not features == [] and Variables.activeLayer == None and hasattr(features[0].properties, 'name') == True:
     
       #Create Popup on clicked Point with Information about the Point of Interest
       popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('you clicked here: <br/>' + features[0].properties.name).addTo(self.mapbox)

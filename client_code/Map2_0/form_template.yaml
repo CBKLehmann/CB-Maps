@@ -84,7 +84,7 @@ components:
     event_bindings: {change: profile_dropdown_change}
 - type: ColumnPanel
   properties: {col_widths: '{}'}
-  name: column_panel_2
+  name: Side_Panel
   layout_properties: {slot: left-nav}
   components:
   - type: Button

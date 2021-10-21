@@ -217,6 +217,7 @@ a:hover, a:active {
   flex-shrink: 0;
   min-width: 160px;
   max-width: 400px;
+  background-color: black;
 }
 
 .nav-shield {
@@ -261,6 +262,7 @@ a:hover, a:active {
 .nav-holder .left-nav, .left-nav-placeholder {
   display: flex;
   flex-direction: column;
+/*   background: linear-gradient(209deg, rgba(2,0,36,1) 0%, rgba(84,84,84,1) 98%, rgba(79,79,79,1) 100%); */
   background: white;
   border-right: 1px solid #e0e0e0;
   font-size: 14px;
@@ -559,6 +561,7 @@ body>div[data-notify="container"].alert-warning>span[data-notify="title"]{
   background-image: none;
   background-color: transparent;
   color: %color:Primary 500%;
+/*   color: #E7C700 */
   text-shadow: none;
   box-shadow: none;
   -webkit-box-shadow: none;
