@@ -183,11 +183,15 @@ class Map2_0(Map2_0Template):
     
     #Get Geocoordinates for all municipalities
     jsonfile = anvil.server.call('get_geojson', 'gemeinden')
+    print(jsonfile)
+    print('##############################')
+    file = jsonfile.get_bytes()
+    print(file)
     
     #Add Mapsource for municipalities
     self.mapbox.addSource ('gemeinden', {
       'type': 'geojson',
-      'data': jsonfile
+      'data': file
     })
     
     #Add filled Layer for municipalities
