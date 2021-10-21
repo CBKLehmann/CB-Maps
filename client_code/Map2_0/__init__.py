@@ -2007,11 +2007,29 @@ class Map2_0(Map2_0Template):
       lk_name = click.features[0].properties.NAME_3
       clicked_lngLat = dict(click.lngLat)
       popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Regierungsbezirk:</b> {rb_name}<br><b>Landkreis:</b> {lk_name}').addTo(self.mapbox)
-      
+  
+  #This method is called when the User clicked on a Point of Interest on the Map
   def poi(self, click):
     
+    global Variables
+    
+    #Get all Layers on the Map
     layers = self.mapbox.getStyle().layers
     
+    #Get all Features (Point of Interest) of selected Layers on clicked Point
     features = self.mapbox.queryRenderedFeatures(click.point, {'layers': ['poi-label', 'transit-label', 'landuse', 'national-park']})
     
-    popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('you clicked here: <br/>' + features[0].properties.name).addTo(self.mapbox)
+    print(type(features))
+    print('###############################')
+    print(features)
+    print('###############################')
+    features_unwrapped = dict(features[0])
+    print(features[0].properties.name)
+    print('###############################')
+    print(features_unwrapped)
+    
+    #Check if no POI was clicked
+    if not features == [] and Variables.activeLayer == None:
+    
+      #Create Popup on clicked Point with Information about the Point of Interest
+      popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('you clicked here: <br/>' + features[0].properties.name).addTo(self.mapbox)
