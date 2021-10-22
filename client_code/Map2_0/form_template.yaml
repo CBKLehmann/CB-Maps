@@ -175,7 +175,7 @@ components:
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: Bundesländer,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
-        background: '', bold: false, checked: true, underline: false}
+        background: '', bold: false, checked: false, underline: false}
       name: check_box_bl
       layout_properties: {grid_position: 'SZBLCG,MBBZCQ'}
       event_bindings: {change: check_box_bl_change}
@@ -199,7 +199,7 @@ components:
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: Gemeinden,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
-        background: '', bold: false, checked: false, underline: false}
+        background: '', bold: false, checked: true, underline: false}
       name: check_box_gm
       layout_properties: {}
       event_bindings: {change: check_box_gm_change}
