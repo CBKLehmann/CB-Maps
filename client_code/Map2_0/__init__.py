@@ -181,26 +181,39 @@ class Map2_0(Map2_0Template):
         }
     });
     
-    #Get Geocoordinates for all municipalities
-    BL = ['BW', 'BY', 'B', 'BB', 'HB', 'HH', 'H', 'RP', 'MV', 'NS', 'NRW', 'SL', 'S', 'SA', 'SH', 'T']
+    #Create basic data-framework and some needed variables
     data = {"type": "FeatureCollection", "name": "VG250_GEM", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": []}
     i = 0
     check = 0
     
+    #Fetch geojson-Data inside temporary Server-File
     anvil.server.call('save_geofile_mun')
+    
+    #Get Amount of municipalities
     Len = anvil.server.call('get_len_of_features')
     
+    #Check if all municipalities arrived
     while check < Len:
       
-      j = 0     
+      #Create index-variable
+      j = 0 
+      
+      #Get data-pack from geojson
       gm = anvil.server.call('get_geojson_mun', i)
+      
+      #Increase Value of Data-Variable
       i += 1000
     
+      #Check if index-variable is smaller than amount of data-pack
       while j < len(gm):
     
+        #Append data-pack to local data
         data['features'].append(gm[j])
+        
+        #Increase index-variable
         j += 1
         
+      #Get new value for municipalities-amount  
       check = len(data['features'])     
   
     #Add Mapsource for municipalities
