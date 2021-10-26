@@ -9,7 +9,7 @@ from anvil.js.window import mapboxgl, MapboxGeocoder, document
 import anvil.js
 import anvil.http
 import json
-from .. import Variables
+from .. import Variables, Mun
 
 #Definition of every function inside Map2_0
 class Map2_0(Map2_0Template):
@@ -56,7 +56,7 @@ class Map2_0(Map2_0Template):
     self.mapbox.on('click', self.poi)
     
     #Get Geocoordinates for all Federal states
-    jsonfile = anvil.server.call('get_geojson', 'bundeslaender')
+    jsonfile = anvil.server.call_s('get_geojson', 'bundeslaender')
     
     #Add Mapsource for Federal states
     self.mapbox.addSource ('bundeslaender', {
@@ -97,8 +97,13 @@ class Map2_0(Map2_0Template):
         }
     });
     
+    n = Notification('Bundesländer-Layer geladen !',style='info').show()
+    
+    self.check_box_bl.enabled = True
+    
+    
     #Get Geocoordinates for all government districts 
-    jsonfile = anvil.server.call('get_geojson', 'regierungsbezirke')
+    jsonfile = anvil.server.call_s('get_geojson', 'regierungsbezirke')
     
     #Add Mapsource for government districts
     self.mapbox.addSource ('regierungsbezirke', {
@@ -139,8 +144,15 @@ class Map2_0(Map2_0Template):
         }
     });
     
+    n = Notification('Regierunsbezirke-Layer geladen !',
+                      timeout=30)
+    
+    self.check_box_rb.enabled = True
+    
+    n.show()
+    
     #Get Geocoordinates for all rural districts
-    jsonfile = anvil.server.call('get_geojson', 'landkreise')
+    jsonfile = anvil.server.call_s('get_geojson', 'landkreise')
     
     #Add Mapsource for rural districts
     self.mapbox.addSource ('landkreise', {
@@ -181,16 +193,23 @@ class Map2_0(Map2_0Template):
         }
     });
     
+    n = Notification('Landkreise-Layer geladen !',
+                      timeout=30)
+    
+    self.check_box_lk.enabled = True
+    
+    n.show()
+    
     #Create basic data-framework and some needed variables
     data = {"type": "FeatureCollection", "name": "VG250_GEM", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": []}
     i = 0
     check = 0
     
     #Fetch geojson-Data inside temporary Server-File
-    anvil.server.call('save_geofile_mun')
+    anvil.server.call_s('save_geofile_mun')
     
     #Get Amount of municipalities
-    Len = anvil.server.call('get_len_of_features')
+    Len = anvil.server.call_s('get_len_of_features')
     
     #Check if all municipalities arrived
     while check < Len:
@@ -199,7 +218,7 @@ class Map2_0(Map2_0Template):
       j = 0 
       
       #Get data-pack from geojson
-      gm = anvil.server.call('get_geojson_mun', i)
+      gm = anvil.server.call_s('get_geojson_mun', i)
       
       #Increase Value of Data-Variable
       i += 1000
@@ -228,7 +247,7 @@ class Map2_0(Map2_0Template):
       'type': 'fill',
       'source': 'gemeinden',
       'layout': {
-          'visibility': 'visible'
+          'visibility': 'none'
       },
       'paint': {
         'fill-color': '#0080ff',
@@ -247,7 +266,7 @@ class Map2_0(Map2_0Template):
         'type': 'line',
         'source': 'gemeinden',
         'layout': {
-            'visibility': 'visible'
+            'visibility': 'none'
         },
         'paint': {
             'line-color': '#000',
@@ -255,7 +274,14 @@ class Map2_0(Map2_0Template):
         }
     });
     
-    anvil.server.call('delete_file')
+    anvil.server.call_s('delete_file')
+    
+    n = Notification('Gemeinden-Layer geladen !',
+                      timeout=30)
+    
+    self.check_box_gm.enabled = True
+    
+    n.show()
     
   #This method is called when the Geocoder was used 
   def move_marker(self, result):
@@ -2148,3 +2174,7 @@ class Map2_0(Map2_0Template):
     
       #Create Popup on clicked Point with Information about the Point of Interest
       popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('you clicked here: <br/>' + features[0].properties.name).addTo(self.mapbox)
+
+  def test_click(self, **event_args):
+    
+    anvil.server.call('write_table')

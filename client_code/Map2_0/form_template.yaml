@@ -172,7 +172,7 @@ components:
     layout_properties: {grid_position: 'BRIAXR,EQDVBU'}
     components:
     - type: CheckBox
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: false,
         foreground: '', allow_indeterminate: false, visible: true, text: Bundesländer,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: false, underline: false}
@@ -180,7 +180,7 @@ components:
       layout_properties: {grid_position: 'SZBLCG,MBBZCQ'}
       event_bindings: {change: check_box_bl_change}
     - type: CheckBox
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: false,
         foreground: '', allow_indeterminate: false, visible: true, text: Regierungsbezirke,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: false, underline: false}
@@ -188,7 +188,7 @@ components:
       layout_properties: {grid_position: 'GPVKXD,IDANFD'}
       event_bindings: {change: check_box_rb_change}
     - type: CheckBox
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: false,
         foreground: '', allow_indeterminate: false, visible: true, text: Landkreise,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: false, underline: false}
@@ -196,10 +196,10 @@ components:
       layout_properties: {grid_position: 'LYVJDW,TTVIWB'}
       event_bindings: {change: check_box_lk_change}
     - type: CheckBox
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: false,
         foreground: '', allow_indeterminate: false, visible: true, text: Gemeinden,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
-        background: '', bold: false, checked: true, underline: false}
+        background: '', bold: false, checked: false, underline: false}
       name: check_box_gm
       layout_properties: {}
       event_bindings: {change: check_box_gm_change}
@@ -248,3 +248,8 @@ components:
       name: file_loader_upload
       layout_properties: {grid_position: 'VVNTOC,NKJSFS'}
       event_bindings: {change: file_loader_upload_change}
+  - type: Button
+    properties: {text: button_1}
+    name: test
+    layout_properties: {grid_position: 'TRGUOB,CQJMND'}
+    event_bindings: {click: test_click}
