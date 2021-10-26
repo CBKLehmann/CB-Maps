@@ -52,9 +52,12 @@ class Map2_0(Map2_0Template):
     self.mapbox.on('mouseleave', 'regierungsbezirke', self.mouseleave)
     self.mapbox.on('mousemove', 'landkreise', self.mousemove)
     self.mapbox.on('mouseleave', 'landkreise', self.mouseleave)
+    self.mapbox.on('mousemove', 'gemeinden', self.mousemove)
+    self.mapbox.on('mouseleave', 'gemeinden', self.mouseleave)
     self.mapbox.on('click', 'bundeslaender', self.popup)
     self.mapbox.on('click', 'regierungsbezirke', self.popup)
     self.mapbox.on('click', 'landkreise', self.popup)
+    self.mapbox.on('click', 'gemeinden', self.popup)
     self.mapbox.on('click', self.poi)
     
     #Get Geocoordinates for all Federal states
@@ -63,7 +66,7 @@ class Map2_0(Map2_0Template):
     #Add Mapsource for Federal states
     self.mapbox.addSource ('bundeslaender', {
       'type': 'geojson',
-      'data': Layer.data_bl
+      'data': (Layer.data_bl)
     })
     
     #Add filled Layer for Federal states
@@ -103,180 +106,181 @@ class Map2_0(Map2_0Template):
     
     self.check_box_bl.enabled = True
     
-#     #Get Geocoordinates for all government districts 
-#     Layer.data_rb = anvil.server.call_s('get_geojson', 'regierungsbezirke')
+    #Get Geocoordinates for all government districts 
+    Layer.data_rb = anvil.server.call_s('get_geojson', 'regierungsbezirke')
     
-#     #Add Mapsource for government districts
-#     self.mapbox.addSource ('regierungsbezirke', {
-#       'type': 'geojson',
-#       'data': Layer.data_rb
-#     })
+    #Add Mapsource for government districts
+    self.mapbox.addSource ('regierungsbezirke', {
+      'type': 'geojson',
+      'data': (Layer.data_rb)
+    })
     
-#     #Add filled Layer for government districts
-#     self.mapbox.addLayer({
-#       'id': 'regierungsbezirke',
-#       'type': 'fill',
-#       'source': 'regierungsbezirke',
-#       'layout': {
-#           'visibility': 'none'
-#       },
-#       'paint': {
-#         'fill-color': '#0080ff',
-#         'fill-opacity': [
-#               'case',
-#               ['boolean', ['feature-state', 'hover'], False],
-#               0.75,
-#               0.5
-#         ]
-#       }
-#     }); 
+    #Add filled Layer for government districts
+    self.mapbox.addLayer({
+      'id': 'regierungsbezirke',
+      'type': 'fill',
+      'source': 'regierungsbezirke',
+      'layout': {
+          'visibility': 'none'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
+        ]
+      }
+    }); 
 
-#     #Add outlined Layer for government districts
-#     self.mapbox.addLayer({
-#         'id': 'outlineRB',
-#         'type': 'line',
-#         'source': 'regierungsbezirke',
-#         'layout': {
-#             'visibility': 'none'
-#         },
-#         'paint': {
-#             'line-color': '#000',
-#             'line-width': 1
-#         }
-#     });
+    #Add outlined Layer for government districts
+    self.mapbox.addLayer({
+        'id': 'outlineRB',
+        'type': 'line',
+        'source': 'regierungsbezirke',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 1
+        }
+    });
     
-#     n = Notification('Regierunsbezirke-Layer geladen !', title='Layer geladen', style='info').show()
+    n = Notification('Regierunsbezirke-Layer geladen !', title='Layer geladen', style='info').show()
     
-#     self.check_box_rb.enabled = True
+    self.check_box_rb.enabled = True
     
-#     #Get Geocoordinates for all rural districts
-#     Layer.data_lk = anvil.server.call_s('get_geojson', 'landkreise')
+    #Get Geocoordinates for all rural districts
+    Layer.data_lk = anvil.server.call_s('get_geojson', 'landkreise')
     
-#     #Add Mapsource for rural districts
-#     self.mapbox.addSource ('landkreise', {
-#       'type': 'geojson',
-#       'data': Layer.data_lk
-#     })
+    #Add Mapsource for rural districts
+    self.mapbox.addSource ('landkreise', {
+      'type': 'geojson',
+      'data': (Layer.data_lk)
+    })
     
-#     #Add filled Layer for rural districts
-#     self.mapbox.addLayer({
-#       'id': 'landkreise',
-#       'type': 'fill',
-#       'source': 'landkreise',
-#       'layout': {
-#           'visibility': 'none'
-#       },
-#       'paint': {
-#         'fill-color': '#0080ff',
-#         'fill-opacity': [
-#               'case',
-#               ['boolean', ['feature-state', 'hover'], False],
-#               0.75,
-#               0.5
-#         ]
-#       }
-#     }); 
+    #Add filled Layer for rural districts
+    self.mapbox.addLayer({
+      'id': 'landkreise',
+      'type': 'fill',
+      'source': 'landkreise',
+      'layout': {
+          'visibility': 'none'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
+        ]
+      }
+    }); 
 
-#     #Add outlined Layer for rural districts
-#     self.mapbox.addLayer({
-#         'id': 'outlineLK',
-#         'type': 'line',
-#         'source': 'landkreise',
-#         'layout': {
-#             'visibility': 'none'
-#         },
-#         'paint': {
-#             'line-color': '#000',
-#             'line-width': 0.5
-#         }
-#     });
+    #Add outlined Layer for rural districts
+    self.mapbox.addLayer({
+        'id': 'outlineLK',
+        'type': 'line',
+        'source': 'landkreise',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 0.5
+        }
+    });
     
-#     n = Notification('Landkreise-Layer geladen !', title='Layer geladen', style='info').show()
+    n = Notification('Landkreise-Layer geladen !', title='Layer geladen', style='info').show()
     
-#     self.check_box_lk.enabled = True
+    self.check_box_lk.enabled = True
     
-#     #Create basic data-framework and some needed variables
-#     data = {"type": "FeatureCollection", "name": "VG250_GEM", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": []}
-#     i = 0
-#     check = 0
+    #Create basic data-framework and some needed variables
+    data = {"type": "FeatureCollection", "name": "VG250_GEM", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": []}
+    i = 0
+    check = 0
     
-#     #Fetch geojson-Data inside temporary Server-File
-#     anvil.server.call_s('save_geofile_mun')
+    #Fetch geojson-Data inside temporary Server-File
+    anvil.server.call_s('save_geofile_mun')
     
-#     #Get Amount of municipalities
-#     Len = anvil.server.call_s('get_len_of_features')
+    #Get Amount of municipalities
+    Len = anvil.server.call_s('get_len_of_features')
     
-#     #Check if all municipalities arrived
-# #     while check < Len:
-#     while check < 1000:
+    #Check if all municipalities arrived
+#     while check < Len:
+    while check < 1000:
       
-#       #Create index-variable
-#       j = 0 
+      #Create index-variable
+      j = 0 
       
-#       #Get data-pack from geojson
-#       gm = anvil.server.call_s('get_geojson_mun', i)
+      #Get data-pack from geojson
+      gm = anvil.server.call_s('get_geojson_mun', i)
       
-#       #Increase Value of Data-Variable
-#       i += 1000
+      #Increase Value of Data-Variable
+      i += 1000
     
-#       #Check if index-variable is smaller than amount of data-pack
-#       while j < len(gm):
+      #Check if index-variable is smaller than amount of data-pack
+      while j < len(gm):
     
-#         #Append data-pack to local data
-#         data['features'].append(gm[j])
+        #Append data-pack to local data
+        gm[j]['id'] = f'{j}'
+        data['features'].append(gm[j])
         
-#         #Increase index-variable
-#         j += 1
+        #Increase index-variable
+        j += 1
         
-#       #Get new value for municipalities-amount  
-#       check = len(data['features'])     
+      #Get new value for municipalities-amount  
+      check = len(data['features'])     
   
-#     Layer.data_gm = data
+    Layer.data_gm = data
   
-#     #Add Mapsource for municipalities
-#     self.mapbox.addSource ('gemeinden', {
-#       'type': 'geojson',
-#       'data': Layer.data_gm
-#     })
+    #Add Mapsource for municipalities
+    self.mapbox.addSource ('gemeinden', {
+      'type': 'geojson',
+      'data': (Layer.data_gm)
+    })
     
-#     #Add filled Layer for municipalities
-#     self.mapbox.addLayer({
-#       'id': 'gemeinden',
-#       'type': 'fill',
-#       'source': 'gemeinden',
-#       'layout': {
-#           'visibility': 'none'
-#       },
-#       'paint': {
-#         'fill-color': '#0080ff',
-#         'fill-opacity': [
-#               'case',
-#               ['boolean', ['feature-state', 'hover'], False],
-#               0.75,
-#               0.5
-#         ]
-#       }
-#     }); 
+    #Add filled Layer for municipalities
+    self.mapbox.addLayer({
+      'id': 'gemeinden',
+      'type': 'fill',
+      'source': 'gemeinden',
+      'layout': {
+          'visibility': 'none'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
+        ]
+      }
+    }); 
 
-#     #Add outlined Layer for municipalities
-#     self.mapbox.addLayer({
-#         'id': 'outlineGM',
-#         'type': 'line',
-#         'source': 'gemeinden',
-#         'layout': {
-#             'visibility': 'none'
-#         },
-#         'paint': {
-#             'line-color': '#000',
-#             'line-width': 0.5
-#         }
-#     });
+    #Add outlined Layer for municipalities
+    self.mapbox.addLayer({
+        'id': 'outlineGM',
+        'type': 'line',
+        'source': 'gemeinden',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 0.5
+        }
+    });
     
-#     anvil.server.call_s('delete_file')
+    anvil.server.call_s('delete_file')
     
-#     n = Notification('Gemeinden-Layer geladen !', title='Layer geladen', style='info').show()
+    n = Notification('Gemeinden-Layer geladen !', title='Layer geladen', style='info').show()
     
-#     self.check_box_gm.enabled = True
+    self.check_box_gm.enabled = True
 
   #This method is called when the Geocoder was used 
   def move_marker(self, result):
@@ -372,8 +376,19 @@ class Map2_0(Map2_0Template):
           #Change hover-State to False
           self.mapbox.setFeatureState({'source': 'landkreise', 'id': Variables.hoveredStateId}, {'hover': False})          
       
+        #Check if active Layer is Gemeinden
+        elif layer == 'gemeinden':
+          
+          #Change hover-State to False
+          self.mapbox.setFeatureState({'source': 'gemeinden', 'id': Variables.hoveredStateId}, {'hover': False})
+      
       #Change global hoveredStateID to new active Layer-id
       Variables.hoveredStateId = mousemove.features[0].id
+      dicti = mousemove.features[0]
+      print(dicti)
+      finaldict = dict(dicti)
+      print(finaldict)
+      print (Variables.hoveredStateId)
       
       #Check if active Layer is Bundesländer
       if layer == 'bundeslaender':
@@ -392,7 +407,13 @@ class Map2_0(Map2_0Template):
           
         #Change hover-State to True  
         self.mapbox.setFeatureState({'source': 'landkreise', 'id': Variables.hoveredStateId}, {'hover': True})
-        
+      
+      #Check if active Layer is Gemeinden
+      elif layer == 'gemeinden': 
+          
+        #Change hover-State to True  
+        self.mapbox.setFeatureState({'source': 'gemeinden', 'id': Variables.hoveredStateId}, {'hover': True})
+      
   #This method is called when the Mouse is leaving an active Map-Layer      
   def mouseleave(self, mouseleave):
     
@@ -422,6 +443,13 @@ class Map2_0(Map2_0Template):
         #Change hover-State to False and set global-variable 'hoveredStateId' to None
         self.mapbox.setFeatureState({'source': 'landkreise', 'id': Variables.hoveredStateId}, {'hover': False})
         Variables.hoveredStateId = None
+        
+      #Check if active Layer is Gemeinden
+      elif Variables.activeLayer == 'gemeinden':  
+
+        #Change hover-State to False and set global-variable 'hoveredStateId' to None
+        self.mapbox.setFeatureState({'source': 'gemeinden', 'id': Variables.hoveredStateId}, {'hover': False})
+        Variables.hoveredStateId = None  
 
   #This method is called when the Time-Dropdown-Menu has changed  
   def time_dropdown_change(self, **event_args):
@@ -698,12 +726,10 @@ class Map2_0(Map2_0Template):
     #Change Map-Style to "Satellite Map"    
     self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
   
-    print(Layer.data_bl)
-  
     #Add Mapsource for Federal states
     self.mapbox.addSource ('bundeslaender', {
       'type': 'geojson',
-      'data': Layer.data_bl
+      'data': (Layer.data_bl)
     })
   
     #Add filled Layer for Federal states
@@ -739,196 +765,10 @@ class Map2_0(Map2_0Template):
         }
     });
   
-# #     #Add Mapsource for government districts
-# #     self.mapbox.addSource ('regierungsbezirke', {
-# #       'type': 'geojson',
-# #       'data': Layer.data_rb
-# #     })
-  
-#     #Add filled Layer for government districts
-#     self.mapbox.addLayer({
-#       'id': 'regierungsbezirke',
-#       'type': 'fill',
-#       'source': 'regierungsbezirke',
-#       'layout': {
-#           'visibility': 'none'
-#       },
-#       'paint': {
-#         'fill-color': '#0080ff',
-#         'fill-opacity': [
-#               'case',
-#               ['boolean', ['feature-state', 'hover'], False],
-#               0.75,
-#               0.5
-#         ]
-#       }
-#     }); 
-
-#     #Add outlined Layer for government districts
-#     self.mapbox.addLayer({
-#         'id': 'outlineRB',
-#         'type': 'line',
-#         'source': 'regierungsbezirke',
-#         'layout': {
-#             'visibility': 'none'
-#         },
-#         'paint': {
-#             'line-color': '#000',
-#             'line-width': 1
-#         }
-#     });
-  
-# #     #Add Mapsource for rural districts
-# #     self.mapbox.addSource ('landkreise', {
-# #       'type': 'geojson',
-# #       'data': Layer.data_lk
-# #     })
-  
-#     #Add filled Layer for rural districts
-#     self.mapbox.addLayer({
-#       'id': 'landkreise',
-#       'type': 'fill',
-#       'source': 'landkreise',
-#       'layout': {
-#           'visibility': 'none'
-#       },
-#       'paint': {
-#         'fill-color': '#0080ff',
-#         'fill-opacity': [
-#               'case',
-#               ['boolean', ['feature-state', 'hover'], False],
-#               0.75,
-#               0.5
-#         ]
-#       }
-#     }); 
-  
-#     #Add outlined Layer for rural districts
-#     self.mapbox.addLayer({
-#         'id': 'outlineLK',
-#         'type': 'line',
-#         'source': 'landkreise',
-#         'layout': {
-#             'visibility': 'none'
-#         },
-#         'paint': {
-#             'line-color': '#000',
-#             'line-width': 0.5
-#         }
-#     });
-    
-# #     #Add Mapsource for municipalities
-# #     self.mapbox.addSource ('gemeinden', {
-# #       'type': 'geojson',
-# #       'data': Layer.data_gm
-# #     })
-    
-#     #Add filled Layer for municipalities
-#     self.mapbox.addLayer({
-#       'id': 'gemeinden',
-#       'type': 'fill',
-#       'source': 'gemeinden',
-#       'layout': {
-#           'visibility': 'none'
-#       },
-#       'paint': {
-#         'fill-color': '#0080ff',
-#         'fill-opacity': [
-#               'case',
-#               ['boolean', ['feature-state', 'hover'], False],
-#               0.75,
-#               0.5
-#         ]
-#       }
-#     }); 
-
-#     #Add outlined Layer for municipalities
-#     self.mapbox.addLayer({
-#         'id': 'outlineGM',
-#         'type': 'line',
-#         'source': 'gemeinden',
-#         'layout': {
-#             'visibility': 'none'
-#         },
-#         'paint': {
-#             'line-color': '#000',
-#             'line-width': 0.5
-#         }
-#     });
-    
-    #Check which Layer is active
-    if Variables.activeLayer == 'bundeslaender':
-  
-      self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'visible')
-      self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'visible')
-  
-    elif Variables.activeLayer == 'regierungsbezirke':
-    
-      self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'visible')
-      self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'visible')
-    
-    elif Variables.activeLayer == 'landkreise':
-      
-      self.mapbox.setLayoutProperty('landkreise', 'visibility', 'visible')
-      self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'visible')
-      
-    elif Variables.activeLayer == 'gemeinden':
-      
-      self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'visible')
-      self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'visible')
-    
-  #This method is called when the Button for changing the Map-Style to "Outdoor Map" got clicked
-  def radio_button_om_clicked(self, **event_args):
-    
-    #Get Global Variables from Variables
-    global Variables, Layer
-    
-    #Change Map-Style to "Outdoor Map"
-    self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
-    
-    #Add Mapsource for Federal states
-    self.mapbox.addSource ('bundeslaender', {
-      'type': 'geojson',
-      'data': Layer.data_bl
-    })
-  
-    #Add filled Layer for Federal states
-    self.mapbox.addLayer({
-      'id': 'bundeslaender',
-      'type': 'fill',
-      'source': 'bundeslaender',
-      'layout': {
-          'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
-        ]
-      }
-    }); 
-
-    #Add outlined Layer for Federal states
-    self.mapbox.addLayer({
-        'id': 'outlineBL',
-        'type': 'line',
-        'source': 'bundeslaender',
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': {
-            'line-color': '#000',
-            'line-width': 2
-        }
-    });
-  
     #Add Mapsource for government districts
     self.mapbox.addSource ('regierungsbezirke', {
       'type': 'geojson',
-      'data': Layer.data_rb
+      'data': (Layer.data_rb)
     })
   
     #Add filled Layer for government districts
@@ -967,7 +807,7 @@ class Map2_0(Map2_0Template):
     #Add Mapsource for rural districts
     self.mapbox.addSource ('landkreise', {
       'type': 'geojson',
-      'data': Layer.data_lk
+      'data': (Layer.data_lk)
     })
   
     #Add filled Layer for rural districts
@@ -1006,7 +846,193 @@ class Map2_0(Map2_0Template):
     #Add Mapsource for municipalities
     self.mapbox.addSource ('gemeinden', {
       'type': 'geojson',
-      'data': Layer.data_gm
+      'data': (Layer.data_gm)
+    })
+    
+    #Add filled Layer for municipalities
+    self.mapbox.addLayer({
+      'id': 'gemeinden',
+      'type': 'fill',
+      'source': 'gemeinden',
+      'layout': {
+          'visibility': 'none'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
+        ]
+      }
+    }); 
+
+    #Add outlined Layer for municipalities
+    self.mapbox.addLayer({
+        'id': 'outlineGM',
+        'type': 'line',
+        'source': 'gemeinden',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 0.5
+        }
+    });
+    
+    #Check which Layer is active
+    if Variables.activeLayer == 'bundeslaender':
+  
+      self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'visible')
+      self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'visible')
+  
+    elif Variables.activeLayer == 'regierungsbezirke':
+    
+      self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'visible')
+      self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'visible')
+    
+    elif Variables.activeLayer == 'landkreise':
+      
+      self.mapbox.setLayoutProperty('landkreise', 'visibility', 'visible')
+      self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'visible')
+      
+    elif Variables.activeLayer == 'gemeinden':
+      
+      self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'visible')
+      self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'visible')
+    
+  #This method is called when the Button for changing the Map-Style to "Outdoor Map" got clicked
+  def radio_button_om_clicked(self, **event_args):
+    
+    #Get Global Variables from Variables
+    global Variables, Layer
+    
+    #Change Map-Style to "Outdoor Map"
+    self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
+    
+    #Add Mapsource for Federal states
+    self.mapbox.addSource ('bundeslaender', {
+      'type': 'geojson',
+      'data': (Layer.data_bl)
+    })
+  
+    #Add filled Layer for Federal states
+    test = self.mapbox.addLayer({
+      'id': 'bundeslaender',
+      'type': 'fill',
+      'source': 'bundeslaender',
+      'layout': {
+          'visibility': 'visible'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
+        ]
+      }
+    }); 
+    
+    #Add outlined Layer for Federal states
+    self.mapbox.addLayer({
+        'id': 'outlineBL',
+        'type': 'line',
+        'source': 'bundeslaender',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 2
+        }
+    });
+  
+    #Add Mapsource for government districts
+    self.mapbox.addSource ('regierungsbezirke', {
+      'type': 'geojson',
+      'data': (Layer.data_rb)
+    })
+  
+    #Add filled Layer for government districts
+    self.mapbox.addLayer({
+      'id': 'regierungsbezirke',
+      'type': 'fill',
+      'source': 'regierungsbezirke',
+      'layout': {
+          'visibility': 'none'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
+        ]
+      }
+    }); 
+
+    #Add outlined Layer for government districts
+    self.mapbox.addLayer({
+        'id': 'outlineRB',
+        'type': 'line',
+        'source': 'regierungsbezirke',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 1
+        }
+    });
+  
+    #Add Mapsource for rural districts
+    self.mapbox.addSource ('landkreise', {
+      'type': 'geojson',
+      'data': (Layer.data_lk)
+    })
+  
+    #Add filled Layer for rural districts
+    self.mapbox.addLayer({
+      'id': 'landkreise',
+      'type': 'fill',
+      'source': 'landkreise',
+      'layout': {
+          'visibility': 'none'
+      },
+      'paint': {
+        'fill-color': '#0080ff',
+        'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.75,
+              0.5
+        ]
+      }
+    }); 
+  
+    #Add outlined Layer for rural districts
+    self.mapbox.addLayer({
+        'id': 'outlineLK',
+        'type': 'line',
+        'source': 'landkreise',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': '#000',
+            'line-width': 0.5
+        }
+    });
+    
+    #Add Mapsource for municipalities
+    self.mapbox.addSource ('gemeinden', {
+      'type': 'geojson',
+      'data': (Layer.data_gm)
     })
     
     #Add filled Layer for municipalities
@@ -1482,6 +1508,11 @@ class Map2_0(Map2_0Template):
       lk_name = click.features[0].properties.NAME_3
       clicked_lngLat = dict(click.lngLat)
       popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Regierungsbezirk:</b> {rb_name}<br><b>Landkreis:</b> {lk_name}').addTo(self.mapbox)
+  
+    elif click.features[0].layer.source == 'gemeinden':
+      gm_name = click.features[0].properties.GEN
+      clicked_lngLat = dict(click.lngLat)
+      popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<bGemeinde:</b> {gm_name}').addTo(self.mapbox)
   
   #This method is called when the User clicked on a Point of Interest on the Map
   def poi(self, click):
