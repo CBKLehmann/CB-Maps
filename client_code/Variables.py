@@ -3,5 +3,5 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 
 hoveredStateId = None
-activeLayer = 'bundeslaender'
+activeLayer = None
 marker = {}
