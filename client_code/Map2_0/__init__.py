@@ -1531,4 +1531,4 @@ class Map2_0(Map2_0Template):
       print(features[0].properties)
     
       #Create Popup on clicked Point with Information about the Point of Interest
-#       popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('you clicked here: <br/>Name: ' + features[0].properties.name + '<br/>Typ: ' + features[0].properties.type + '<br/>Kategorie: ' + features[0].properties.class).addTo(self.mapbox)
+      popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('you clicked here: <br/>Name: ' + features[0].properties.name).addTo(self.mapbox)
