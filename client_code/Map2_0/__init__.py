@@ -700,11 +700,13 @@ class Map2_0(Map2_0Template):
     #Change Map-Style to "Satellite Map"    
     self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
   
-#     #Add Mapsource for Federal states
-#     self.mapbox.addSource ('bundeslaender', {
-#       'type': 'geojson',
-#       'data': Layer.data_bl
-#     })
+    print(self.mapbox.getStyle().sources)
+  
+    #Add Mapsource for Federal states
+    self.mapbox.addSource ('bundeslaender', {
+      'type': 'geojson',
+      'data': Layer.data_bl
+    })
   
     #Add filled Layer for Federal states
     self.mapbox.addLayer({
@@ -739,11 +741,11 @@ class Map2_0(Map2_0Template):
         }
     });
   
-    #Add Mapsource for government districts
-    self.mapbox.addSource ('regierungsbezirke', {
-      'type': 'geojson',
-      'data': Layer.data_rb
-    })
+#     #Add Mapsource for government districts
+#     self.mapbox.addSource ('regierungsbezirke', {
+#       'type': 'geojson',
+#       'data': Layer.data_rb
+#     })
   
     #Add filled Layer for government districts
     self.mapbox.addLayer({
@@ -778,11 +780,11 @@ class Map2_0(Map2_0Template):
         }
     });
   
-    #Add Mapsource for rural districts
-    self.mapbox.addSource ('landkreise', {
-      'type': 'geojson',
-      'data': Layer.data_lk
-    })
+#     #Add Mapsource for rural districts
+#     self.mapbox.addSource ('landkreise', {
+#       'type': 'geojson',
+#       'data': Layer.data_lk
+#     })
   
     #Add filled Layer for rural districts
     self.mapbox.addLayer({
@@ -817,11 +819,11 @@ class Map2_0(Map2_0Template):
         }
     });
     
-    #Add Mapsource for municipalities
-    self.mapbox.addSource ('gemeinden', {
-      'type': 'geojson',
-      'data': Layer.data_gm
-    })
+#     #Add Mapsource for municipalities
+#     self.mapbox.addSource ('gemeinden', {
+#       'type': 'geojson',
+#       'data': Layer.data_gm
+#     })
     
     #Add filled Layer for municipalities
     self.mapbox.addLayer({
@@ -855,6 +857,8 @@ class Map2_0(Map2_0Template):
             'line-width': 0.5
         }
     });
+    
+    print('Ready')
     
     #Check which Layer is active
     if Variables.activeLayer == 'bundeslaender':
