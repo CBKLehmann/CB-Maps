@@ -210,8 +210,8 @@ class Map2_0(Map2_0Template):
     Len = anvil.server.call_s('get_len_of_features')
     
     #Check if all municipalities arrived
-#     while check < Len:
-    while check < 1000:
+    while check < Len:
+#     while check < 1000:
       
       #Create index-variable
       j = 0 
