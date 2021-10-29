@@ -60,9 +60,6 @@ class Map2_0(Map2_0Template):
     self.mapbox.on('click', 'gemeinden', self.popup)
     self.mapbox.on('click', self.poi)
     
-    feat = self.mapbox.queryRenderedFeatures({'layers': ['poi-label', 'transit-label', 'landuse', 'national-park']})
-    print(len(feat))
-    
 #     #Get Geocoordinates for all government districts 
 #     data = anvil.server.call_s('get_geojson', 'bundeslaender')
     
@@ -1165,7 +1162,7 @@ class Map2_0(Map2_0Template):
     
     #Get all Layers on the Map
     layers = self.mapbox.getStyle().layers
-    
+
     #Get all Features (Point of Interest) of selected Layers on clicked Point
     features = self.mapbox.queryRenderedFeatures(click.point, {'layers': ['poi-label', 'transit-label', 'landuse', 'national-park']})
     
