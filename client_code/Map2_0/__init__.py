@@ -68,7 +68,7 @@ class Map2_0(Map2_0Template):
     data = []
     
     while check < dlen:
-#     while check < 1000:
+    #while check < 50000:
       
       #Create index-variable
       j = 0 
@@ -77,7 +77,7 @@ class Map2_0(Map2_0Template):
       gm = anvil.server.call('get_json_bh', i)
       
       #Increase Value of Data-Variable
-      i += 10000
+      i += 50000
     
       #Check if index-variable is smaller than amount of data-pack
       while j < len(gm):
@@ -92,65 +92,20 @@ class Map2_0(Map2_0Template):
       #Get new value for municipalities-amount  
       check = len(data)
     
-      print(len(data))
-  
-#     data = anvil.server.call_s('send_data')
-    
-#     for el in data['elements']:
+    for el in data:
 
-#       lnglat = [el['lon'], el['lat']]
+      lnglat = [el['lon'], el['lat']]
       
-#       html_el = document.createElement('div')
+      html_el = document.createElement('div')
       
-#       html_el.className = 'icon'
-#       html_el.style.backgroundImage = f'url(https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Zeichen_224_-_Haltestelle%2C_StVO_2017.svg/2048px-Zeichen_224_-_Haltestelle%2C_StVO_2017.svg.png)'
-#       html_el.style.width = '20px'
-#       html_el.style.height = '20px'
-#       html_el.style.backgroundSize = '100%'
-#       html_el.style.backgroundrepeat = 'no-repeat'
+      html_el.className = 'icon'
+      html_el.style.backgroundImage = f'url(https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Zeichen_224_-_Haltestelle%2C_StVO_2017.svg/2048px-Zeichen_224_-_Haltestelle%2C_StVO_2017.svg.png)'
+      html_el.style.width = '20px'
+      html_el.style.height = '20px'
+      html_el.style.backgroundSize = '100%'
+      html_el.style.backgroundrepeat = 'no-repeat'
       
-#       poi_marker = mapboxgl.Marker(html_el).setLngLat(lnglat).addTo(self.mapbox)
-    
-#     #Add Mapsource for government districts
-#     self.mapbox.addSource ('bundeslaender', {
-#       'type': 'geojson',
-#       'data': data
-#     })
-    
-#      #Add filled Layer for Federal states
-#     self.mapbox.addLayer({
-#       'id': 'bundeslaender',
-#       'type': 'fill',
-#       'source': 'bundeslaender',
-#       'layout': {
-#           'visibility': 'none'
-#       },
-#       'paint': {
-#         'fill-color': '#0080ff',
-#         'fill-opacity': [
-#               'case',
-#               ['boolean', ['feature-state', 'hover'], False],
-#               0.75,
-#               0.5
-#         ]
-#       }
-#     }); 
-
-#     #Add outlined Layer for Federal states
-#     self.mapbox.addLayer({
-#         'id': 'outlineBL',
-#         'type': 'line',
-#         'source': 'bundeslaender',
-#         'layout': {
-#             'visibility': 'none'
-#         },
-#         'paint': {
-#             'line-color': '#000',
-#             'line-width': 2
-#         }
-#     });
-
-
+      poi_marker = mapboxgl.Marker(html_el).setLngLat(lnglat).addTo(self.mapbox)
 
 
     
