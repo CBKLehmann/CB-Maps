@@ -92,7 +92,7 @@ class Map2_0(Map2_0Template):
       #Get new value for municipalities-amount  
       check = len(data)
     
-    print(len(data))
+      print(len(data))
   
 #     data = anvil.server.call_s('send_data')
     
