@@ -67,8 +67,8 @@ class Map2_0(Map2_0Template):
     gm_id = 0
     data = []
     
-    while check < dlen:
-    #while check < 50000:
+    #while check < dlen:
+    while check < 50000:
       
       #Create index-variable
       j = 0 
