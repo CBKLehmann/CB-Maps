@@ -1422,6 +1422,4 @@ class Map2_0(Map2_0Template):
     
   def button_1_click(self, **event_args):
 
-    data = anvil.server.call('get_data')
-    
-    print(data)
+    anvil.server.call('get_data')
