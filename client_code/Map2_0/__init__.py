@@ -1419,11 +1419,5 @@ class Map2_0(Map2_0Template):
       
       self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'visible')
-
-  def button_1_click(self, **event_args):
-    
-    result = anvil.server.call('get_poi')
-    
-    print(len(result))
     
 
