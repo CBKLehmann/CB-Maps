@@ -33,7 +33,7 @@ class Map2_0(Map2_0Template):
                                 'style': 'mapbox://styles/mapbox/outdoors-v11',
                                 'center': [13.4092, 52.5167],
                                 'zoom': 8})
-
+    
     #Initiate Marker
     self.marker = mapboxgl.Marker({'color': '#0000FF', 'draggable': True})
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
@@ -59,280 +59,58 @@ class Map2_0(Map2_0Template):
     self.mapbox.on('click', 'landkreise', self.popup)
     self.mapbox.on('click', 'gemeinden', self.popup)
     self.mapbox.on('click', self.poi)
-
-    dlen = anvil.server.call('get_len_of_features2')
+    self.mapbox.on('load', self.place_layer)
     
-    i = 0
-    check = 0
-    gm_id = 0
-    data = []
     
-    #while check < dlen:
-    while check < 50000:
-      
-      #Create index-variable
-      j = 0 
-      
-      #Get data-pack from geojson
-      gm = anvil.server.call('get_json_bh', i)
-      
-      #Increase Value of Data-Variable
-      i += 50000
+#***POI-Layer***
+#     dlen = anvil.server.call('get_len_of_features2')
     
-      #Check if index-variable is smaller than amount of data-pack
-      while j < len(gm):
-    
-        #Append data-pack to local data
-        data.append(gm[j])
-        
-        #Increase index-variable
-        j += 1
-        gm_id += 1
-        
-      #Get new value for municipalities-amount  
-      check = len(data)
-    
-    for el in data:
-
-      lnglat = [el['lon'], el['lat']]
-      
-      html_el = document.createElement('div')
-      
-      html_el.className = 'icon'
-      html_el.style.backgroundImage = f'url(https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Zeichen_224_-_Haltestelle%2C_StVO_2017.svg/2048px-Zeichen_224_-_Haltestelle%2C_StVO_2017.svg.png)'
-      html_el.style.width = '20px'
-      html_el.style.height = '20px'
-      html_el.style.backgroundSize = '100%'
-      html_el.style.backgroundrepeat = 'no-repeat'
-      
-      poi_marker = mapboxgl.Marker(html_el).setLngLat(lnglat).addTo(self.mapbox)
-
-
-    
-#     #Get Geocoordinates for all government districts 
-#     data = anvil.server.call_s('get_geojson', 'bundeslaender')
-    
-#     #Add Mapsource for government districts
-#     self.mapbox.addSource ('bundeslaender', {
-#       'type': 'geojson',
-#       'data': data
-#     })
-    
-#      #Add filled Layer for Federal states
-#     self.mapbox.addLayer({
-#       'id': 'bundeslaender',
-#       'type': 'fill',
-#       'source': 'bundeslaender',
-#       'layout': {
-#           'visibility': 'none'
-#       },
-#       'paint': {
-#         'fill-color': '#0080ff',
-#         'fill-opacity': [
-#               'case',
-#               ['boolean', ['feature-state', 'hover'], False],
-#               0.75,
-#               0.5
-#         ]
-#       }
-#     }); 
-
-#     #Add outlined Layer for Federal states
-#     self.mapbox.addLayer({
-#         'id': 'outlineBL',
-#         'type': 'line',
-#         'source': 'bundeslaender',
-#         'layout': {
-#             'visibility': 'none'
-#         },
-#         'paint': {
-#             'line-color': '#000',
-#             'line-width': 2
-#         }
-#     });
-    
-#     n = Notification('Bundesländer-Layer geladen !', title='Layer geladen', style='info').show()
-    
-#     self.check_box_bl.enabled = True
-  
-#     #Get Geocoordinates for all government districts 
-#     data = anvil.server.call_s('get_geojson', 'regierungsbezirke')
-    
-#     #Add Mapsource for government districts
-#     self.mapbox.addSource ('regierungsbezirke', {
-#       'type': 'geojson',
-#       'data': data
-#     })
-    
-#     #Add filled Layer for government districts
-#     self.mapbox.addLayer({
-#       'id': 'regierungsbezirke',
-#       'type': 'fill',
-#       'source': 'regierungsbezirke',
-#       'layout': {
-#           'visibility': 'none'
-#       },
-#       'paint': {
-#         'fill-color': '#0080ff',
-#         'fill-opacity': [
-#               'case',
-#               ['boolean', ['feature-state', 'hover'], False],
-#               0.75,
-#               0.5
-#         ]
-#       }
-#     }); 
-
-#     #Add outlined Layer for government districts
-#     self.mapbox.addLayer({
-#         'id': 'outlineRB',
-#         'type': 'line',
-#         'source': 'regierungsbezirke',
-#         'layout': {
-#             'visibility': 'none'
-#         },
-#         'paint': {
-#             'line-color': '#000',
-#             'line-width': 1
-#         }
-#     });
-    
-#     n = Notification('Regierunsbezirke-Layer geladen !', title='Layer geladen', style='info').show()
-    
-#     self.check_box_rb.enabled = True
-    
-#     #Get Geocoordinates for all rural districts
-#     data = anvil.server.call_s('get_geojson', 'landkreise')
-    
-#     #Add Mapsource for rural districts
-#     self.mapbox.addSource ('landkreise', {
-#       'type': 'geojson',
-#       'data': data
-#     })
-    
-#     #Add filled Layer for rural districts
-#     self.mapbox.addLayer({
-#       'id': 'landkreise',
-#       'type': 'fill',
-#       'source': 'landkreise',
-#       'layout': {
-#           'visibility': 'none'
-#       },
-#       'paint': {
-#         'fill-color': '#0080ff',
-#         'fill-opacity': [
-#               'case',
-#               ['boolean', ['feature-state', 'hover'], False],
-#               0.75,
-#               0.5
-#         ]
-#       }
-#     }); 
-
-#     #Add outlined Layer for rural districts
-#     self.mapbox.addLayer({
-#         'id': 'outlineLK',
-#         'type': 'line',
-#         'source': 'landkreise',
-#         'layout': {
-#             'visibility': 'none'
-#         },
-#         'paint': {
-#             'line-color': '#000',
-#             'line-width': 0.5
-#         }
-#     });
-    
-#     n = Notification('Landkreise-Layer geladen !', title='Layer geladen', style='info').show()
-    
-#     self.check_box_lk.enabled = True
-    
-#     #Create basic data-framework and some needed variables
-#     data = {"type": "FeatureCollection", "name": "VG250_GEM", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": []}
 #     i = 0
 #     check = 0
 #     gm_id = 0
+#     data = []
     
-#     #Fetch geojson-Data inside temporary Server-File
-#     anvil.server.call_s('save_geofile_mun')
-    
-#     #Get Amount of municipalities
-#     Len = anvil.server.call_s('get_len_of_features')
-    
-#     #Check if all municipalities arrived
-#     while check < Len:
-# #     while check < 1000:
+#     #while check < dlen:
+#     while check < 50000:
       
 #       #Create index-variable
 #       j = 0 
       
 #       #Get data-pack from geojson
-#       gm = anvil.server.call_s('get_geojson_mun', i)
+#       gm = anvil.server.call('get_json_bh', i)
       
 #       #Increase Value of Data-Variable
-#       i += 1000
+#       i += 50000
     
 #       #Check if index-variable is smaller than amount of data-pack
 #       while j < len(gm):
     
 #         #Append data-pack to local data
-#         gm[j]['id'] = f'{gm_id}'
-#         data['features'].append(gm[j])
+#         data.append(gm[j])
         
 #         #Increase index-variable
 #         j += 1
 #         gm_id += 1
         
 #       #Get new value for municipalities-amount  
-#       check = len(data['features'])     
-  
-#     #Add Mapsource for municipalities
-#     self.mapbox.addSource ('gemeinden', {
-#       'type': 'geojson',
-#       'data': data
-#     })
+#       check = len(data)
     
-#     #Add filled Layer for municipalities
-#     self.mapbox.addLayer({
-#       'id': 'gemeinden',
-#       'type': 'fill',
-#       'source': 'gemeinden',
-#       'layout': {
-#           'visibility': 'none'
-#       },
-#       'paint': {
-#         'fill-color': '#0080ff',
-#         'fill-opacity': [
-#               'case',
-#               ['boolean', ['feature-state', 'hover'], False],
-#               0.75,
-#               0.5
-#         ]
-#       }
-#     }); 
+#     for el in data:
 
-#     #Add outlined Layer for municipalities
-#     self.mapbox.addLayer({
-#         'id': 'outlineGM',
-#         'type': 'line',
-#         'source': 'gemeinden',
-#         'layout': {
-#             'visibility': 'none'
-#         },
-#         'paint': {
-#             'line-color': '#000',
-#             'line-width': 0.5
-#         }
-#     });
-    
-#     anvil.server.call_s('delete_file')
-    
-#     n = Notification('Gemeinden-Layer geladen !', title='Layer geladen', style='info').show()
-    
-#     self.check_box_gm.enabled = True
-    
-#     n = Notification('Fertig geladen !', title='Fertig geladen', style='info').show()
-  
+#       lnglat = [el['lon'], el['lat']]
+      
+#       html_el = document.createElement('div')
+      
+#       html_el.className = 'icon'
+#       html_el.style.backgroundImage = f'url(https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Zeichen_224_-_Haltestelle%2C_StVO_2017.svg/2048px-Zeichen_224_-_Haltestelle%2C_StVO_2017.svg.png)'
+#       html_el.style.width = '20px'
+#       html_el.style.height = '20px'
+#       html_el.style.backgroundSize = '100%'
+#       html_el.style.backgroundrepeat = 'no-repeat'
+      
+#       poi_marker = mapboxgl.Marker(html_el).setLngLat(lnglat).addTo(self.mapbox)
+#***End of POI-Layer***
+
   #This method is called when the Geocoder was used 
   def move_marker(self, result):
     
@@ -766,18 +544,34 @@ class Map2_0(Map2_0Template):
   #This method is called when the Button for changing the Map-Style to "Satellite Map" got clicked    
   def radio_button_sm_clicked(self, **event_args):
     
+    self.mapbox.removeLayer('bundeslaender')
+    self.mapbox.removeSource('bundeslaender')
+    self.mapbox.removeLayer('regierungsbezirke')
+    self.mapbox.removeSource('regierungsbezirke')
+    self.mapbox.removeLayer('landkreise')
+    self.mapbox.removeSource('landkreise')
+    self.mapbox.removeLayer('gemeinden')
+    self.mapbox.removeSource('gemeinden')
+    
     #Change Map-Style to "Satellite Map"    
     self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
-    
-    self.addLayer()
+    self.mapbox.on('styledata', self.place_layer)
     
   #This method is called when the Button for changing the Map-Style to "Outdoor Map" got clicked
   def radio_button_om_clicked(self, **event_args):
     
+    self.mapbox.removeLayer('bundeslaender')
+    self.mapbox.removeSource('bundeslaender')
+    self.mapbox.removeLayer('regierungsbezirke')
+    self.mapbox.removeSource('regierungsbezirke')
+    self.mapbox.removeLayer('landkreise')
+    self.mapbox.removeSource('landkreise')
+    self.mapbox.removeLayer('gemeinden')
+    self.mapbox.removeSource('gemeinden')
+    
     #Change Map-Style to "Outdoor Map"
     self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
-    
-    self.addLayer()
+    self.mapbox.on('styledata', self.place_layer)
      
   #This method is called when the Check Box for CapitalBay-Icons is checked or unchecked
   def check_box_cb_change(self, **event_args):
@@ -1220,21 +1014,51 @@ class Map2_0(Map2_0Template):
     
       #Create Popup on clicked Point with Information about the Point of Interest
       popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('you clicked here: <br/>Name: ' + features[0].properties.name).addTo(self.mapbox)
-      
-  def addLayer(self):
+          
+  def button_1_click(self, **event_args):
+
+    anvil.server.call('get_data')
     
-    self.check_box_bl.enabled = False
-    self.check_box_rb.enabled = False
-    self.check_box_lk.enabled = False
-    self.check_box_gm.enabled = False
+  def place_layer(self, event):
     
-    #Get Geocoordinates for all government districts 
-    data = anvil.server.call_s('get_geojson', 'bundeslaender')
+    layers = self.mapbox.getStyle().layers
+
+    self.mapbox.addLayer({
+      'id': 'add-3d-buildings',
+      'source': 'composite',
+      'source-layer': 'building',
+      'filter': ['==', 'extrude', 'true'],
+      'type': 'fill-extrusion',
+      'minzoom': 15,
+      'paint': {
+        'fill-extrusion-color': '#aaa',
+        'fill-extrusion-height': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          15,
+          0,
+          15.05,
+          ['get', 'height']
+        ],
+        'fill-extrusion-base': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          15,
+          0,
+          15.05,
+          ['get', 'min_height']
+        ],
+        'fill-extrusion-opacity': 0.6
+      }
+    },
+    );
     
     #Add Mapsource for government districts
     self.mapbox.addSource ('bundeslaender', {
       'type': 'geojson',
-      'data': data
+      'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'
     })
     
     #Add filled Layer for Federal states
@@ -1274,13 +1098,10 @@ class Map2_0(Map2_0Template):
     
     self.check_box_bl.enabled = True
     
-    #Get Geocoordinates for all government districts 
-    data = anvil.server.call_s('get_geojson', 'regierungsbezirke')
-    
     #Add Mapsource for government districts
     self.mapbox.addSource ('regierungsbezirke', {
       'type': 'geojson',
-      'data': data
+      'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'
     })
     
     #Add filled Layer for government districts
@@ -1320,13 +1141,10 @@ class Map2_0(Map2_0Template):
     
     self.check_box_rb.enabled = True
     
-    #Get Geocoordinates for all rural districts
-    data = anvil.server.call_s('get_geojson', 'landkreise')
-    
     #Add Mapsource for rural districts
     self.mapbox.addSource ('landkreise', {
       'type': 'geojson',
-      'data': data
+      'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/4_kreise/1_sehr_hoch.geo.json'
     })
     
     #Add filled Layer for rural districts
@@ -1364,49 +1182,12 @@ class Map2_0(Map2_0Template):
     
     n = Notification('Landkreise-Layer geladen !', title='Layer geladen', style='info').show()
     
-    self.check_box_lk.enabled = True
-    
-    #Create basic data-framework and some needed variables
-    data = {"type": "FeatureCollection", "name": "VG250_GEM", "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, "features": []}
-    i = 0
-    check = 0
-    
-    #Fetch geojson-Data inside temporary Server-File
-    anvil.server.call_s('save_geofile_mun')
-    
-    #Get Amount of municipalities
-    Len = anvil.server.call_s('get_len_of_features')
-    
-    #Check if all municipalities arrived
-#     while check < Len:
-    while check < 1000:
-      
-      #Create index-variable
-      j = 0 
-      
-      #Get data-pack from geojson
-      gm = anvil.server.call_s('get_geojson_mun', i)
-      
-      #Increase Value of Data-Variable
-      i += 1000
-    
-      #Check if index-variable is smaller than amount of data-pack
-      while j < len(gm):
-    
-        #Append data-pack to local data
-        gm[j]['id'] = f'{j}'
-        data['features'].append(gm[j])
-        
-        #Increase index-variable
-        j += 1
-        
-      #Get new value for municipalities-amount  
-      check = len(data['features'])     
+    self.check_box_lk.enabled = True  
   
     #Add Mapsource for municipalities
     self.mapbox.addSource ('gemeinden', {
       'type': 'geojson',
-      'data': data
+      'data': 'https://raw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/GemeindenHigh.geojson'
     })
     
     #Add filled Layer for municipalities
@@ -1442,8 +1223,6 @@ class Map2_0(Map2_0Template):
         }
     });
     
-    anvil.server.call_s('delete_file')
-    
     n = Notification('Gemeinden-Layer geladen !', title='Layer geladen', style='info').show()
     
     self.check_box_gm.enabled = True
@@ -1468,7 +1247,3 @@ class Map2_0(Map2_0Template):
       
       self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'visible')
-    
-  def button_1_click(self, **event_args):
-
-    anvil.server.call('get_data')
