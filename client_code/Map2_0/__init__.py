@@ -25,7 +25,7 @@ class Map2_0(Map2_0Template):
   #This method is called when the HTML panel is shown on the screen
   def form_show(self, **event_args):
     
-    global Layer
+    global Layer, Variables
   
     #Initiate Map
     mapboxgl.accessToken = self.token
@@ -59,8 +59,7 @@ class Map2_0(Map2_0Template):
     self.mapbox.on('click', 'landkreise', self.popup)
     self.mapbox.on('click', 'gemeinden', self.popup)
     self.mapbox.on('click', self.poi)
-    self.mapbox.on('load', self.place_layer)
-    
+    self.mapbox.on('styledata', self.place_layer)
     
 #***POI-Layer***
 #     dlen = anvil.server.call('get_len_of_features2')
@@ -544,34 +543,14 @@ class Map2_0(Map2_0Template):
   #This method is called when the Button for changing the Map-Style to "Satellite Map" got clicked    
   def radio_button_sm_clicked(self, **event_args):
     
-    self.mapbox.removeLayer('bundeslaender')
-    self.mapbox.removeSource('bundeslaender')
-    self.mapbox.removeLayer('regierungsbezirke')
-    self.mapbox.removeSource('regierungsbezirke')
-    self.mapbox.removeLayer('landkreise')
-    self.mapbox.removeSource('landkreise')
-    self.mapbox.removeLayer('gemeinden')
-    self.mapbox.removeSource('gemeinden')
-    
-    #Change Map-Style to "Satellite Map"    
     self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
     self.mapbox.on('styledata', self.place_layer)
-    
+   
   #This method is called when the Button for changing the Map-Style to "Outdoor Map" got clicked
   def radio_button_om_clicked(self, **event_args):
     
-    self.mapbox.removeLayer('bundeslaender')
-    self.mapbox.removeSource('bundeslaender')
-    self.mapbox.removeLayer('regierungsbezirke')
-    self.mapbox.removeSource('regierungsbezirke')
-    self.mapbox.removeLayer('landkreise')
-    self.mapbox.removeSource('landkreise')
-    self.mapbox.removeLayer('gemeinden')
-    self.mapbox.removeSource('gemeinden')
-    
-    #Change Map-Style to "Outdoor Map"
     self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
-    self.mapbox.on('styledata', self.place_layer)
+    self.mapbox.on('load', self.place_layer)
      
   #This method is called when the Check Box for CapitalBay-Icons is checked or unchecked
   def check_box_cb_change(self, **event_args):
@@ -1003,26 +982,34 @@ class Map2_0(Map2_0Template):
     
     global Variables
     
-    #Get all Layers on the Map
-    layers = self.mapbox.getStyle().layers
-
-    #Get all Features (Point of Interest) of selected Layers on clicked Point
-    features = self.mapbox.queryRenderedFeatures(click.point, {'layers': ['poi-label', 'transit-label', 'landuse', 'national-park']})
+    info = dict(self.mapbox.style)
     
-    #Check if no POI was clicked and no Layer is active
-    if not features == [] and Variables.activeLayer == None and hasattr(features[0].properties, 'name') == True:
+    if (info['stylesheet']['metadata']['mapbox:origin'] == 'outdoors-v11'):
     
-      #Create Popup on clicked Point with Information about the Point of Interest
-      popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('you clicked here: <br/>Name: ' + features[0].properties.name).addTo(self.mapbox)
-          
+      #Get all Layers on the Map
+      layers = self.mapbox.getStyle().layers
+  
+      #Get all Features (Point of Interest) of selected Layers on clicked Point
+      features = self.mapbox.queryRenderedFeatures(click.point, {'layers': ['poi-label', 'transit-label', 'landuse', 'national-park']})
+      
+      #Check if no POI was clicked and no Layer is active
+      if not features == [] and Variables.activeLayer == None and hasattr(features[0].properties, 'name') == True:
+      
+        #Create Popup on clicked Point with Information about the Point of Interest
+        popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('you clicked here: <br/>Name: ' + features[0].properties.name).addTo(self.mapbox)
+       
+    else:
+      
+      
+      
   def button_1_click(self, **event_args):
 
     anvil.server.call('get_data')
     
   def place_layer(self, event):
     
-    layers = self.mapbox.getStyle().layers
-
+    global Variables, Layer
+      
     self.mapbox.addLayer({
       'id': 'add-3d-buildings',
       'source': 'composite',
@@ -1055,17 +1042,14 @@ class Map2_0(Map2_0Template):
     },
     );
     
-    #Add Mapsource for government districts
-    self.mapbox.addSource ('bundeslaender', {
-      'type': 'geojson',
-      'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'
-    })
-    
     #Add filled Layer for Federal states
     self.mapbox.addLayer({
       'id': 'bundeslaender',
       'type': 'fill',
-      'source': 'bundeslaender',
+      'source': {
+          'type': 'geojson',
+          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'
+      },
       'layout': {
           'visibility': 'none'
       },
@@ -1079,12 +1063,15 @@ class Map2_0(Map2_0Template):
         ]
       }
     }); 
-
+    
     #Add outlined Layer for Federal states
     self.mapbox.addLayer({
         'id': 'outlineBL',
         'type': 'line',
-        'source': 'bundeslaender',
+        'source': {
+            'type': 'geojson',
+            'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'
+        },
         'layout': {
             'visibility': 'none'
         },
@@ -1094,21 +1081,14 @@ class Map2_0(Map2_0Template):
         }
     });
     
-    n = Notification('Bundesländer-Layer geladen !', title='Layer geladen', style='info').show()
-    
-    self.check_box_bl.enabled = True
-    
-    #Add Mapsource for government districts
-    self.mapbox.addSource ('regierungsbezirke', {
-      'type': 'geojson',
-      'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'
-    })
-    
     #Add filled Layer for government districts
     self.mapbox.addLayer({
       'id': 'regierungsbezirke',
       'type': 'fill',
-      'source': 'regierungsbezirke',
+      'source': {
+          'type': 'geojson',
+          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'
+      },
       'layout': {
           'visibility': 'none'
       },
@@ -1127,7 +1107,10 @@ class Map2_0(Map2_0Template):
     self.mapbox.addLayer({
         'id': 'outlineRB',
         'type': 'line',
-        'source': 'regierungsbezirke',
+        'source': {
+            'type': 'geojson',
+            'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'
+        },
         'layout': {
             'visibility': 'none'
         },
@@ -1137,21 +1120,14 @@ class Map2_0(Map2_0Template):
         }
     });
     
-    n = Notification('Regierunsbezirke-Layer geladen !', title='Layer geladen', style='info').show()
-    
-    self.check_box_rb.enabled = True
-    
-    #Add Mapsource for rural districts
-    self.mapbox.addSource ('landkreise', {
-      'type': 'geojson',
-      'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/4_kreise/1_sehr_hoch.geo.json'
-    })
-    
     #Add filled Layer for rural districts
     self.mapbox.addLayer({
       'id': 'landkreise',
       'type': 'fill',
-      'source': 'landkreise',
+      'source': {
+          'type': 'geojson',
+          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/4_kreise/1_sehr_hoch.geo.json'
+      },
       'layout': {
           'visibility': 'none'
       },
@@ -1170,7 +1146,10 @@ class Map2_0(Map2_0Template):
     self.mapbox.addLayer({
         'id': 'outlineLK',
         'type': 'line',
-        'source': 'landkreise',
+        'source': {
+            'type': 'geojson',
+            'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/4_kreise/1_sehr_hoch.geo.json'
+        },
         'layout': {
             'visibility': 'none'
         },
@@ -1180,21 +1159,14 @@ class Map2_0(Map2_0Template):
         }
     });
     
-    n = Notification('Landkreise-Layer geladen !', title='Layer geladen', style='info').show()
-    
-    self.check_box_lk.enabled = True  
-  
-    #Add Mapsource for municipalities
-    self.mapbox.addSource ('gemeinden', {
-      'type': 'geojson',
-      'data': 'https://raw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/GemeindenHigh.geojson'
-    })
-    
     #Add filled Layer for municipalities
     self.mapbox.addLayer({
       'id': 'gemeinden',
       'type': 'fill',
-      'source': 'gemeinden',
+      'source': {
+          'type': 'geojson',
+          'data': 'https://raw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/GemeindenHigh.geojson'
+      },
       'layout': {
           'visibility': 'none'
       },
@@ -1213,7 +1185,10 @@ class Map2_0(Map2_0Template):
     self.mapbox.addLayer({
         'id': 'outlineGM',
         'type': 'line',
-        'source': 'gemeinden',
+        'source': {
+            'type': 'geojson',
+            'data': 'https://raw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/GemeindenHigh.geojson'
+        },
         'layout': {
             'visibility': 'none'
         },
@@ -1222,11 +1197,7 @@ class Map2_0(Map2_0Template):
             'line-width': 0.5
         }
     });
-    
-    n = Notification('Gemeinden-Layer geladen !', title='Layer geladen', style='info').show()
-    
-    self.check_box_gm.enabled = True
-    
+  
     #Check which Layer is active
     if Variables.activeLayer == 'bundeslaender':
   
