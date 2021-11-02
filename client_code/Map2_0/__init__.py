@@ -953,10 +953,10 @@ class Map2_0(Map2_0Template):
       
       Notification('Point of Interests are only available on the Outdoor-Map !', style='info').show()
       
-  def button_1_click(self, **event_args):
+#   def button_1_click(self, **event_args):
 
 #     anvil.server.call('get_data')
-      anvil.server.call('manipulate')
+#     anvil.server.call('manipulate')
     
   def place_layer(self, event):
     
