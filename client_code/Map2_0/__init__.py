@@ -949,7 +949,7 @@ class Map2_0(Map2_0Template):
         #Create Popup on clicked Point with Information about the Point of Interest
         popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('you clicked here: <br/>Name: ' + features[0].properties.name).addTo(self.mapbox)
        
-    else:
+    elif Variables.activeLayer == None:
       
       Notification('Point of Interests are only available on the Outdoor-Map !', style='info').show()
       
