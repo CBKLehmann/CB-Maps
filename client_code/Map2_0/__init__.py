@@ -60,6 +60,7 @@ class Map2_0(Map2_0Template):
     self.mapbox.on('click', 'gemeinden', self.popup)
     self.mapbox.on('click', self.poi)
     self.mapbox.on('styledata', self.place_layer)
+    self.mapbox.on('load', self.generateSource)
     
   #This method is called when the Geocoder was used 
   def move_marker(self, result):
@@ -1147,18 +1148,13 @@ class Map2_0(Map2_0Template):
             'line-color': '#000',
             'line-width': 0.5
         }
-    })
-  
-    self.mapbox.addSource('poi', {
-      'type': 'symbol',
-      'data': {}
-    })  
+    }) 
   
     #Add filled Layer for poi
     self.mapbox.addLayer({
-      'id': 'poi',
+      'id': 'own_poi',
       'type': 'symbol',
-      'source': 'poi',
+      'source': 'own_poi',
       'layout': {
           'text-field': ['get', 'title'],
           'text-font': [
@@ -1193,16 +1189,22 @@ class Map2_0(Map2_0Template):
 
   def check_box_1_change(self, **event_args):
     
+    print('Step1')
+    
     raw_bbox = self.mapbox.getBounds()
   
     bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
     
+    print('Step2')
+    
     anvil.server.call('poi_data', 'health', bbox)
 
+    print('Step3')
+    
     feature = {
       "type": "feature",
       "geometry": {
-        "type": "Point",
+        "type": "point",
         "coordinates": [13.4092, 52.5167]
       },
       "properties": {
@@ -1210,10 +1212,45 @@ class Map2_0(Map2_0Template):
       }
     }
     
-    getSource = self.mapbox.getSource('poi')
+    print('Step4')
     
-    print(getSource)
+    getSource = self.mapbox.getSource('own_poi')
+    print(type(getSource))
     
-    getSource.setData(feature)
+    print('Step5')
     
-    Variables.data = feature
+    if not getSource == None:
+    
+      getSource.setData(feature)
+      Variables.data = feature
+      
+    print('Step6')
+      
+  def generateSource(self, load, **event_args):
+    
+    self.mapbox.addSource('own_poi', {
+      'type': 'geojson',
+      'data': {
+        'type': 'FeatureCollection',
+        'features': [{
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-77.03238901390978, 38.913188059745586]
+          },
+          'properties': {
+            'title': 'Mapbox DC'
+          }
+        },
+        {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [-122.414, 37.776]
+          },
+          'properties': {
+          'title': 'Mapbox SF'
+          }
+        }]
+      }
+    }) 
