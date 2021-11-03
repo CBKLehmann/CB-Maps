@@ -991,8 +991,7 @@ class Map2_0(Map2_0Template):
         ],
         'fill-extrusion-opacity': 0.6
       }
-    },
-    );
+    })
     
     #Add filled Layer for Federal states
     self.mapbox.addLayer({
@@ -1014,7 +1013,7 @@ class Map2_0(Map2_0Template):
               0.5
         ]
       }
-    }); 
+    }) 
     
     #Add outlined Layer for Federal states
     self.mapbox.addLayer({
@@ -1031,7 +1030,7 @@ class Map2_0(Map2_0Template):
             'line-color': '#000',
             'line-width': 2
         }
-    });
+    })
     
     #Add filled Layer for government districts
     self.mapbox.addLayer({
@@ -1053,7 +1052,7 @@ class Map2_0(Map2_0Template):
               0.5
         ]
       }
-    }); 
+    }) 
 
     #Add outlined Layer for government districts
     self.mapbox.addLayer({
@@ -1070,7 +1069,7 @@ class Map2_0(Map2_0Template):
             'line-color': '#000',
             'line-width': 1
         }
-    });
+    })
     
     #Add filled Layer for rural districts
     self.mapbox.addLayer({
@@ -1092,7 +1091,7 @@ class Map2_0(Map2_0Template):
               0.5
         ]
       }
-    }); 
+    })
 
     #Add outlined Layer for rural districts
     self.mapbox.addLayer({
@@ -1109,7 +1108,7 @@ class Map2_0(Map2_0Template):
             'line-color': '#000',
             'line-width': 0.5
         }
-    });
+    })
     
     #Add filled Layer for municipalities
     self.mapbox.addLayer({
@@ -1131,7 +1130,7 @@ class Map2_0(Map2_0Template):
               0.5
         ]
       }
-    }); 
+    })
 
     #Add outlined Layer for municipalities
     self.mapbox.addLayer({
@@ -1148,23 +1147,18 @@ class Map2_0(Map2_0Template):
             'line-color': '#000',
             'line-width': 0.5
         }
-    });
+    })
   
-  
+    self.mapbox.addSource('poi', {
+      'type': 'symbol',
+      'data': {}
+    })  
   
     #Add filled Layer for poi
     self.mapbox.addLayer({
       'id': 'poi',
       'type': 'symbol',
-      'source': {
-        'type': 'geojson',
-        'data': {
-          'type': 'FeatureCollection',
-          'features': [
-            Variables.data
-          ]
-        }
-      }, 
+      'source': 'poi',
       'layout': {
           'text-field': ['get', 'title'],
           'text-font': [
@@ -1215,5 +1209,11 @@ class Map2_0(Map2_0Template):
         "title": "Mapbox DC"
       }
     }
+    
+    getSource = self.mapbox.getSource('poi')
+    
+    print(getSource)
+    
+    getSource.setData(feature)
     
     Variables.data = feature
