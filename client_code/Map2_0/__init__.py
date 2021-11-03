@@ -1150,6 +1150,32 @@ class Map2_0(Map2_0Template):
         }
     });
   
+  
+  
+    #Add filled Layer for poi
+    self.mapbox.addLayer({
+      'id': 'poi',
+      'type': 'symbol',
+      'source': {
+        'type': 'geojson',
+        'data': {
+          'type': 'FeatureCollection',
+          'features': [
+            Variables.data
+          ]
+        }
+      }, 
+      'layout': {
+          'text-field': ['get', 'title'],
+          'text-font': [
+            'Open Sans Semibold',
+            'Arial Unicode MS Bold'
+          ],
+          'text-offset': [0, 1.25],
+          'text-anchor': 'top'
+      },
+    })
+  
     #Check which Layer is active
     if Variables.activeLayer == 'bundeslaender':
   
@@ -1174,15 +1200,20 @@ class Map2_0(Map2_0Template):
   def check_box_1_change(self, **event_args):
     
     raw_bbox = self.mapbox.getBounds()
-    
-    lng1 = (dict(raw_bbox['_sw']))['lng']
-    lng2 = (dict(raw_bbox['_ne']))['lng']
-    lat1 = (dict(raw_bbox['_sw']))['lat']
-    lat2 = (dict(raw_bbox['_ne']))['lat']
   
-    bbox = [(dict(raw_bbox['_sw']))['lat'], (dict(raw_bbox['_sw']))['lng'], (dict(raw_bbox['_ne']))['lat'], (dict(raw_bbox['_ne']))['lng']]
-  
-    print (bbox)
+    bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
     
     anvil.server.call('poi_data', 'health', bbox)
 
+    feature = {
+      "type": "feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [13.4092, 52.5167]
+      },
+      "properties": {
+        "title": "Mapbox DC"
+      }
+    }
+    
+    Variables.data = feature
