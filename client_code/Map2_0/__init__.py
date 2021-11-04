@@ -60,7 +60,6 @@ class Map2_0(Map2_0Template):
     self.mapbox.on('click', 'gemeinden', self.popup)
     self.mapbox.on('click', self.poi)
     self.mapbox.on('styledata', self.place_layer)
-    self.mapbox.on('load', self.generateSource)
     
   #This method is called when the Geocoder was used 
   def move_marker(self, result):
@@ -1148,22 +1147,6 @@ class Map2_0(Map2_0Template):
             'line-color': '#000',
             'line-width': 0.5
         }
-    }) 
-  
-    #Add filled Layer for poi
-    self.mapbox.addLayer({
-      'id': 'own_poi',
-      'type': 'symbol',
-      'source': 'own_poi',
-      'layout': {
-          'text-field': ['get', 'title'],
-          'text-font': [
-            'Open Sans Semibold',
-            'Arial Unicode MS Bold'
-          ],
-          'text-offset': [0, 1.25],
-          'text-anchor': 'top'
-      },
     })
   
     #Check which Layer is active
@@ -1193,56 +1176,75 @@ class Map2_0(Map2_0Template):
   
     bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
     
-    anvil.server.call('poi_data', 'health', bbox)
+    geojson = anvil.server.call('poi_data', 'health', bbox)
     
-    feature = {
-      "type": "feature",
-      "geometry": {
-        "type": "point",
-        "coordinates": [13.4092, 52.5167]
-      },
-      "properties": {
-        "title": "Mapbox DC"
-      }
-    }
-    
-    layer_old = self.mapbox.getSource('own_poi')
-    
-    print(dict(layer_old))
+    print(geojson[0])
 
-    print('#############################################')
     
-    self.mapbox.getSource('own_poi').setData(feature)
+    if not self.mapbox.getSource('own_poi') == None:
     
-    layer = self.mapbox.getSource('own_poi')
+      source = self.mapbox.getSource('own_poi').setData({
+          'type': 'FeatureCollection',
+          'features': [{
+            'type': geojson[0]['type'],
+            'geometry': {
+              'type': geojson[0]['geometry']['type'],
+              'coordinates': geojson[0]['geometry']['coordinates']
+            },
+            'properties': {
+              'title': geojson[0]['properties']['id']
+            }
+          }]
+      })
+      
+    else:
     
-    print(dictlayer)
-    
-  def generateSource(self, load, **event_args):
-    
-    self.mapbox.addSource('own_poi', {
-      'type': 'geojson',
-      'data': {
-        'type': 'FeatureCollection',
-        'features': [{
-          'type': 'Feature',
-          'geometry': {
-          'type': 'Point',
-          'coordinates': [-77.03238901390978, 38.913188059745586]
-          },
-          'properties': {
-            'title': 'Mapbox DC'
-          }
+#       source = self.mapbox.addSource('own_poi', {
+#         'type': 'geojson',
+#         'data': {
+#           'type': 'FeatureCollection',
+#           'features': [{
+#             'type': geojson[0]['type'],
+#             'geometry': {
+#               'type': geojson[0]['geometry']['type'],
+#               'coordinates': geojson[0]['geometry']['coordinates']
+#             },
+#             'properties': {
+#               'title': geojson[0]['properties']['id']
+#             }
+#           }]
+#         }
+#       })
+      
+      source = self.mapbox.addSource('own_poi', {
+        'type': 'geojson',
+        'data': {
+          'type': 'FeatureCollection',
+          'features': [{
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': [-77.03238901390978, 38.913188059745586]
+            },
+            'properties': {
+              'title': 'Mapbox DC'
+            }
+          }]
+        }
+      })
+      
+      #Add filled Layer for poi
+      self.mapbox.addLayer({
+        'id': 'own_poi',
+        'type': 'symbol',
+        'source': 'own_poi',
+        'layout': {
+            'text-field': ['get', 'title'],
+            'text-font': [
+              'Open Sans Semibold',
+              'Arial Unicode MS Bold'
+            ],
+            'text-offset': [0, 1.25],
+            'text-anchor': 'top'
         },
-        {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'Point',
-            'coordinates': [-122.414, 37.776]
-          },
-          'properties': {
-          'title': 'Mapbox SF'
-          }
-        }]
-      }
-    }) 
+      })
