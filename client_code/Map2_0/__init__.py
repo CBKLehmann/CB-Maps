@@ -1189,17 +1189,11 @@ class Map2_0(Map2_0Template):
 
   def check_box_1_change(self, **event_args):
     
-    print('Step1')
-    
     raw_bbox = self.mapbox.getBounds()
   
     bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
     
-    print('Step2')
-    
     anvil.server.call('poi_data', 'health', bbox)
-
-    print('Step3')
     
     feature = {
       "type": "feature",
@@ -1212,20 +1206,18 @@ class Map2_0(Map2_0Template):
       }
     }
     
-    print('Step4')
+    layer_old = self.mapbox.getSource('own_poi')
     
-    getSource = self.mapbox.getSource('own_poi')
-    print(type(getSource))
+    print(dict(layer_old))
+
+    print('#############################################')
     
-    print('Step5')
+    self.mapbox.getSource('own_poi').setData(feature)
     
-    if not getSource == None:
+    layer = self.mapbox.getSource('own_poi')
     
-      getSource.setData(feature)
-      Variables.data = feature
-      
-    print('Step6')
-      
+    print(dictlayer)
+    
   def generateSource(self, load, **event_args):
     
     self.mapbox.addSource('own_poi', {
