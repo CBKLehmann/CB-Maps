@@ -494,13 +494,19 @@ class Map2_0(Map2_0Template):
   #This method is called when the Button for changing the Map-Style to "Satellite Map" got clicked    
   def radio_button_sm_clicked(self, **event_args):
     
+    #Set new Mapstyle
     self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
+    
+    #Call Function to reload Layers
     self.mapbox.on('styledata', self.place_layer)
    
   #This method is called when the Button for changing the Map-Style to "Outdoor Map" got clicked
   def radio_button_om_clicked(self, **event_args):
     
+    #Set new Mapstyle
     self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
+    
+    #Call Function to reload Layers
     self.mapbox.on('load', self.place_layer)
      
   #This method is called when the Check Box for CapitalBay-Icons is checked or unchecked
@@ -515,6 +521,7 @@ class Map2_0(Map2_0Template):
       #Show Marker and Icon
       for el in Variables.marker['cb_marker']:
         
+        #Add Marker to Map
         el.addTo(self.mapbox)
         
     else:
@@ -522,6 +529,7 @@ class Map2_0(Map2_0Template):
       #Hide Marker and Icon
       for el in Variables.marker['cb_marker']:
         
+        #Remove Marker from Map
         el.remove()
 
   #This method is called when the Check Box for Konkurrent-Icons is checked or unchecked      
@@ -536,6 +544,7 @@ class Map2_0(Map2_0Template):
       #Show Marker and Icon
       for el in Variables.marker['kk_marker']:
         
+        #Add Marker to Map
         el.addTo(self.mapbox)
         
     else:
@@ -543,6 +552,7 @@ class Map2_0(Map2_0Template):
       #Hide Marker and Icon
       for el in Variables.marker['kk_marker']:
         
+        #Remove Marker from Map
         el.remove()
 
   #This method is called when the Check Box for Hotel-Icons is checked or unchecked      
@@ -557,6 +567,7 @@ class Map2_0(Map2_0Template):
       #Show Marker and Icon
       for el in Variables.marker['h_marker']:
         
+        #Add Marker to Map
         el.addTo(self.mapbox)
         
     else:
@@ -564,6 +575,7 @@ class Map2_0(Map2_0Template):
       #Hide Marker and Icon
       for el in Variables.marker['h_marker']:
         
+        #Remove Marker from Map
         el.remove()
 
   #This method is called when the Check Box for Krankenhaus-Icons is checked or unchecked      
@@ -578,6 +590,7 @@ class Map2_0(Map2_0Template):
       #Show Marker and Icon
       for el in Variables.marker['kh_marker']:
         
+        #Add Marker to Map
         el.addTo(self.mapbox)
         
     else:
@@ -585,6 +598,7 @@ class Map2_0(Map2_0Template):
       #Hide Marker and Icon
       for el in Variables.marker['kh_marker']:
         
+        #Remove Marker from Map
         el.remove()
 
   #This method is called when the Check Box for Schule-Icons is checked or unchecked     
@@ -599,6 +613,7 @@ class Map2_0(Map2_0Template):
       #Show Marker and Icon
       for el in Variables.marker['s_marker']:
         
+        #Add Marker to Map
         el.addTo(self.mapbox)
         
     else:
@@ -606,6 +621,7 @@ class Map2_0(Map2_0Template):
       #Hide Marker and Icon
       for el in Variables.marker['s_marker']:
         
+        #Remove Marker from Map
         el.remove()
 
   #This method is called when the Check Box for Geschäfte-Icons is checked or unchecked      
@@ -620,6 +636,7 @@ class Map2_0(Map2_0Template):
       #Show Marker and Icon
       for el in Variables.marker['lg_marker']:
         
+        #Add Marker to Map
         el.addTo(self.mapbox)
         
     else:
@@ -627,6 +644,7 @@ class Map2_0(Map2_0Template):
       #Hide Marker and Icon
       for el in Variables.marker['lg_marker']:
         
+        #Remove Marker from Map
         el.remove()
 
   #This method is called when the Check Box for All-Icons is checked or unchecked      
@@ -640,26 +658,32 @@ class Map2_0(Map2_0Template):
         
       #Show Marker and Icon
       for el in Variables.marker['cb_marker']:
+        
         el.addTo(self.mapbox)
         
       #Show Marker and Icon
       for el in Variables.marker['kk_marker']:
+        
         el.addTo(self.mapbox)
         
       #Show Marker and Icon
       for el in Variables.marker['h_marker']:
+        
         el.addTo(self.mapbox)  
         
       #Show Marker and Icon
       for el in Variables.marker['kh_marker']:
+        
         el.addTo(self.mapbox)  
         
       #Show Marker and Icon
       for el in Variables.marker['s_marker']:
+        
         el.addTo(self.mapbox)  
       
       #Show Marker and Icon
       for el in Variables.marker['g_marker']:
+        
         el.addTo(self.mapbox)
       
       #Check every Checkbox for every Icon
@@ -674,26 +698,32 @@ class Map2_0(Map2_0Template):
         
       #Hide Marker and Icon
       for el in Variables.marker['cb_marker']:
+        
         el.remove()
         
      #Hide Marker and Icon
       for el in Variables.marker['kk_marker']:
+        
         el.remove()
         
       #Hide Marker and Icon
       for el in Variables.marker['h_marker']:
+        
         el.remove()  
         
       #Hide Marker and Icon
       for el in Variables.marker['kh_marker']:
+        
         el.remove()  
       
       #Hide Marker and Icon
       for el in Variables.marker['s_marker']:
+        
         el.remove()
       
       #Hide Marker and Icon
       for el in Variables.marker['g_marker']:
+        
         el.remove()
       
       #Uncheck every Checkbox for every Icon
@@ -864,32 +894,32 @@ class Map2_0(Map2_0Template):
   def button_icons_click(self, **event_args):
     
     #Check if Checkbox-Panel is visible or not
-    if self.linear_panel_2.visible == True:
+    if self.icon_categories.visible == True:
     
       #Set Checkbox-Panel to invisible and change Arrow-Icon
-      self.linear_panel_2.visible = False
+      self.icon_categories.visible = False
       self.button_icons.icon = 'fa:angle-right'
       
     else:
       
       #Set Checkbox-Panel to visible and change Arrow-Icon
-      self.linear_panel_2.visible = True
+      self.icon_categories.visible = True
       self.button_icons.icon = 'fa:angle-down'
 
   #This method is called when the Button Icons is clicked    
   def button_overlay_click(self, **event_args):
     
     #Check if Checkbox-Panel is visible or not
-    if self.linear_panel_1.visible == True:
+    if self.layer_categories.visible == True:
     
       #Set Checkbox-Panel to invisible and change Arrow-Icon
-      self.linear_panel_1.visible = False
+      self.layer_categories.visible = False
       self.button_overlay.icon = 'fa:angle-right'
       
     else:
       
       #Set Checkbox-Panel to visible and change Arrow-Icon
-      self.linear_panel_1.visible = True
+      self.layer_categories.visible = True
       self.button_overlay.icon = 'fa:angle-down'
     
   #This method is called when the User clicked a Part of a Map-Layer  
@@ -931,10 +961,11 @@ class Map2_0(Map2_0Template):
   #This method is called when the User clicked on a Point of Interest on the Map
   def poi(self, click):
     
-    global Variables
-    
+    #Get and Set Variables
+    global Variables 
     info = dict(self.mapbox.style)
     
+    #Check current Map-Style
     if (info['stylesheet']['metadata']['mapbox:origin'] == 'outdoors-v11'):
     
       #Get all Layers on the Map
@@ -948,20 +979,26 @@ class Map2_0(Map2_0Template):
       
         #Create Popup on clicked Point with Information about the Point of Interest
         popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('you clicked here: <br/>Name: ' + features[0].properties.name).addTo(self.mapbox)
-       
+    
+    #Check current Map-Style
     elif Variables.activeLayer == None:
       
+      #Send Notification to User
       Notification('Point of Interests are only available on the Outdoor-Map !', style='info').show()
-      
-  def button_1_click(self, **event_args):
-
-    anvil.server.call('get_data')
-#     anvil.server.call('manipulate')
     
+  #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
+  def admin_button_click(self, **event_args):
+    
+    #Call a Server Function
+    anvil.server.call('manipulate')
+    
+  #This method is called when the Map is loading or changing his Style
   def place_layer(self, event):
     
+    #Get global Variables
     global Variables, Layer
-      
+     
+    #Add 3D-Layer to the Map
     self.mapbox.addLayer({
       'id': 'add-3d-buildings',
       'source': 'composite',
@@ -1152,41 +1189,56 @@ class Map2_0(Map2_0Template):
     #Check which Layer is active
     if Variables.activeLayer == 'bundeslaender':
   
+      #Set Visibility to visible
       self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'visible')
-  
+    
+     #Check which Layer is active
     elif Variables.activeLayer == 'regierungsbezirke':
     
+      #Set Visibility to visible
       self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'visible')
     
+     #Check which Layer is active
     elif Variables.activeLayer == 'landkreise':
       
+      #Set Visibility to visible
       self.mapbox.setLayoutProperty('landkreise', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'visible')
-      
+    
+     #Check which Layer is active
     elif Variables.activeLayer == 'gemeinden':
       
+      #Set Visibility to visible
       self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'visible')
       self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'visible')
 
-  def check_box_1_change(self, **event_args):
+  #This method is called when the Check Box for POI 'doctors' is checked or unchecked
+  def check_box_doc_change(self, **event_args):
     
-    if self.check_box_1.checked == True:
+    #Check if Checkbox is checked
+    if self.check_box_doc.checked == True:
       
+      #Get visible Bounding Box of Map
       bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
     
+      #Check if Bounding Box is not the same as least Request
       if not bbox == Variables.last_bbox_doc:
         
+        #Get geojson of POIs inside Bounding Box
         geojson = anvil.server.call('poi_data', 'doctors', bbox)
   
+        #Create emtpy Array
         icons = []
     
+        #Loop through every Element in geojson
         for ele in geojson:
           
+          #Get coordinates of element
           coordinates = ele['geometry']['coordinates']
       
-          #Create HTML Element for Marker
+          #Create HTML Element for Icon
           el = document.createElement('div')
           width = 25
           height = 25
@@ -1200,6 +1252,7 @@ class Map2_0(Map2_0Template):
           el.className = 'icon_doc'
           el.style.backgroundImage = f'url(https://wiki.openstreetmap.org/w/images/7/71/Doctors-14.svg)'
 
+          #Get different Informations from geojson
           city = ele['properties']['city']
           suburb = ele['properties']['suburb']
           street = ele['properties']['street']
@@ -1217,35 +1270,44 @@ class Map2_0(Map2_0Template):
           speciality = ele['properties']['healthcare:speciality']
           operator = ele['properties']['operator']
     
+          #Create Popup for Element
           popup = mapboxgl.Popup({'offset': 25}).setHTML(f'<b>ID:</b> {o_id}<br><b>Name:</b><br>&nbsp;&nbsp;{name}<br><b>Operator:</b><br>&nbsp;&nbsp;{operator}<br><b>Adresse:</b><br>&nbsp;&nbsp;{street} {housenumber}<br>&nbsp;&nbsp;{postcode}, {city} {suburb}<br><b>Kontakt</b><br>&nbsp;&nbsp;Telefon: {phone}<br>&nbsp;&nbsp;Fax: {fax}<br>&nbsp;&nbsp;Email: {email}<br>&nbsp;&nbsp;Webseite:<br>&nbsp;&nbsp;&nbsp;&nbsp;{website}<br><b>Infos</b><br>&nbsp;&nbsp;Kategorie: {healthcare}<br>&nbsp;&nbsp;Speciality: {speciality}<br>&nbsp;&nbsp;Öffnungszeiten:<br>&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}<br>&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}')
       
           #Add Icon to the Map
           newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
           
+          #Add current Element-Icon to Icon-Array
           icons.append(newicon)
   
-        #Add Icons to global Variable Icons
+        #Refresh global Variables
         Variables.icons.update({'doctors': icons})
         Variables.last_bbox_doc = bbox
         Variables.last_cat = 'doctors'
       
+      #Do if Bounding Box is the same as least Request
       else:
         
+        #Loop through every Element in global Icon-Elements
         for el in Variables.icons['doctors']:
           
+          #Add Element to Map
           el.addTo(self.mapbox)
           
+        #Change last Category
         Variables.last_cat = 'doctors'
-      
+    
+    #Do if Checkbox is unchecked
     else:
       
+      #Loop through every Element in global Icon-Elements 
       for el in Variables.icons['doctors']:
         
+        #Remove Element from Map
         el.remove()
 
-  def check_box_3_change(self, **event_args):
+  def check_box_den_change(self, **event_args):
     
-    if self.check_box_3.checked == True:
+    if self.check_box_den.checked == True:
       
       bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
     
@@ -1316,7 +1378,7 @@ class Map2_0(Map2_0Template):
         
         el.remove()
 
-  def check_box_2_change(self, **event_args):
+  def check_box_cli_change(self, **event_args):
    
     if self.check_box_2.checked == True:
       
@@ -1389,7 +1451,7 @@ class Map2_0(Map2_0Template):
         
         el.remove()
   
-  def check_box_4_change(self, **event_args):
+  def check_box_hos_change(self, **event_args):
     
     if self.check_box_4.checked == True:
       
@@ -1462,7 +1524,7 @@ class Map2_0(Map2_0Template):
         
         el.remove()
 
-  def check_box_5_change(self, **event_args):
+  def check_box_nur_change(self, **event_args):
     
     if self.check_box_5.checked == True:
       
@@ -1535,7 +1597,7 @@ class Map2_0(Map2_0Template):
         
         el.remove()
 
-  def check_box_6_change(self, **event_args):
+  def check_box_pha_change(self, **event_args):
     
     if self.check_box_6.checked == True:
       
@@ -1608,7 +1670,7 @@ class Map2_0(Map2_0Template):
         
         el.remove()
 
-  def check_box_7_change(self, **event_args):
+  def check_box_soc_change(self, **event_args):
     
     if self.check_box_7.checked == True:
       
@@ -1681,7 +1743,7 @@ class Map2_0(Map2_0Template):
         
         el.remove()
 
-  def check_box_8_change(self, **event_args):
+  def check_box_vet_change(self, **event_args):
     
     if self.check_box_8.checked == True:
       
@@ -1753,3 +1815,18 @@ class Map2_0(Map2_0Template):
       for el in Variables.icons['veterinary']:
         
         el.remove()
+
+  def button_healthcare_click(self, **event_args):
+    
+    #Check if Checkbox-Panel is visible or not
+    if self.linear_panel_8.visible == True:
+    
+      #Set Checkbox-Panel to invisible and change Arrow-Icon
+      self.linear_panel_8.visible = False
+      self.button_2.icon = 'fa:angle-right'
+      
+    else:
+      
+      #Set Checkbox-Panel to visible and change Arrow-Icon
+      self.linear_panel_8.visible = True
+      self.button_2.icon = 'fa:angle-down'

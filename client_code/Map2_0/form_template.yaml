@@ -18,7 +18,7 @@ components:
     layout_properties: {grid_position: 'GPYYRC,DTHXCI', full_width_row: true}
 - type: ColumnPanel
   properties: {col_widths: '{}'}
-  name: column_panel_1
+  name: interaction_panel_1
   layout_properties: {slot: .floating-menu}
   components:
   - type: Label
@@ -26,7 +26,7 @@ components:
         500', visible: true, text: 'Wie weit kommst du?', font_size: null, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
-    name: label_1
+    name: heading
     layout_properties: {grid_position: 'HRKJUK,WLEKNF'}
   - type: Spacer
     properties: {height: 13}
@@ -84,7 +84,7 @@ components:
     event_bindings: {change: profile_dropdown_change}
 - type: ColumnPanel
   properties: {col_widths: '{}'}
-  name: Side_Panel
+  name: Side_Bar
   layout_properties: {slot: left-nav}
   components:
   - type: Button
@@ -98,7 +98,7 @@ components:
   - type: LinearPanel
     properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
       border: '', visible: false, role: null, tooltip: ''}
-    name: linear_panel_2
+    name: icon_categories
     layout_properties: {grid_position: 'JJCHVU,MSCGYA'}
     components:
     - type: CheckBox
@@ -168,7 +168,7 @@ components:
   - type: LinearPanel
     properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
       border: '', visible: false, role: null, tooltip: ''}
-    name: linear_panel_1
+    name: layer_categories
     layout_properties: {grid_position: 'BRIAXR,EQDVBU'}
     components:
     - type: CheckBox
@@ -206,7 +206,7 @@ components:
   - type: LinearPanel
     properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
       border: '', visible: true, role: null, tooltip: ''}
-    name: linear_panel_3
+    name: checkbox_map_style
     layout_properties: {grid_position: 'XFQRHZ,PKIQLM'}
     components:
     - type: RadioButton
@@ -225,54 +225,55 @@ components:
       name: radio_button_sm
       layout_properties: {grid_position: 'XJXIJY,OTUDAD'}
       event_bindings: {clicked: radio_button_sm_clicked}
-  - type: LinearPanel
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_4
+    layout_properties: {grid_position: 'UMHBHR,NQYPKT'}
+  - type: Button
+    properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+      foreground: '', visible: true, text: De-/Aktiviere Informationen, font_size: null,
+      font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false, icon: ''}
+    name: button_infos
+    layout_properties: {grid_position: 'ZGJCTW,HEUZDW'}
+    event_bindings: {click: button_infos_click}
+  - type: FileLoader
     properties: {}
-    name: linear_panel_6
-    layout_properties: {grid_position: 'PDSHLM,NNFFHF'}
-    components: []
-  - type: LinearPanel
-    properties: {}
-    name: linear_panel_5
-    layout_properties: {grid_position: 'KNSJQG,ZEFCXH'}
-    components:
-    - type: Button
-      properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-        foreground: '', visible: true, text: De-/Aktiviere Informationen, font_size: null,
-        font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
-        background: '', bold: false, underline: false, icon: ''}
-      name: button_infos
-      layout_properties: {grid_position: 'WQJULR,BXPCBJ'}
-      event_bindings: {click: button_infos_click}
-  - type: LinearPanel
-    properties: {}
-    name: linear_panel_4
-    layout_properties: {grid_position: 'OOGBUM,AEZWVT'}
-    components:
-    - type: FileLoader
-      properties: {}
-      name: file_loader_upload
-      layout_properties: {grid_position: 'VVNTOC,NKJSFS'}
-      event_bindings: {change: file_loader_upload_change}
+    name: file_loader_upload
+    layout_properties: {grid_position: 'MJAFCR,CTHQUH'}
+    event_bindings: {change: file_loader_upload_change}
   - type: Button
     properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: Admin-Button, font_size: null, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
-    name: button_1
+    name: admin_button
     layout_properties: {grid_position: 'MULYZT,VSPZQL'}
-    event_bindings: {click: button_1_click}
+    event_bindings: {click: admin_button_click}
   - type: LinearPanel
     properties: {}
-    name: linear_panel_7
+    name: poi_container
     layout_properties: {grid_position: 'XBFKWK,QFSNVK'}
     components:
+    - type: RichText
+      properties: {role: null, align: center, tooltip: '', enable_slots: true, border: '',
+        foreground: '', visible: true, font_size: 15, content: Point of Interest - Categories,
+        font: '', spacing_above: small, spacing_below: small, data: null, background: '',
+        format: markdown}
+      name: poi_heading
+      layout_properties: {}
     - type: Button
-      properties: {text: button_2}
-      name: button_2
+      properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+        foreground: '', visible: true, text: healthcare, font_size: null, font: '',
+        spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+        background: '', bold: false, underline: false, icon: 'fa:angle-right'}
+      name: button_healthcare
       layout_properties: {grid_position: 'GWMEHV,WDDGND'}
+      event_bindings: {click: button_healthcare_click}
     - type: LinearPanel
-      properties: {}
-      name: linear_panel_8
+      properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
+        border: '', visible: false, role: null, tooltip: ''}
+      name: poi_categories_healthcare_container
       layout_properties: {grid_position: 'FBKLDH,MJUPEZ'}
       components:
       - type: CheckBox
@@ -280,15 +281,15 @@ components:
           foreground: '', allow_indeterminate: false, visible: true, text: doctors,
           font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
           background: '', bold: false, checked: false, underline: false}
-        name: check_box_1
+        name: check_box_doc
         layout_properties: {grid_position: 'UQYGUH,VHGKDE'}
-        event_bindings: {change: check_box_1_change}
+        event_bindings: {change: check_box_doc_change}
       - type: CheckBox
         properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
           foreground: '', allow_indeterminate: false, visible: true, text: dentists,
           font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
           background: '', bold: false, checked: false, underline: false}
-        name: check_box_3
+        name: check_box_den
         layout_properties: {}
         event_bindings: {change: check_box_3_change}
       - type: CheckBox
@@ -296,7 +297,7 @@ components:
           foreground: '', allow_indeterminate: false, visible: true, text: clinics,
           font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
           background: '', bold: false, checked: false, underline: false}
-        name: check_box_2
+        name: check_box_cli
         layout_properties: {}
         event_bindings: {change: check_box_2_change}
       - type: CheckBox
@@ -304,7 +305,7 @@ components:
           foreground: '', allow_indeterminate: false, visible: true, text: hospitals,
           font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
           background: '', bold: false, checked: false, underline: false}
-        name: check_box_4
+        name: check_box_hos
         layout_properties: {}
         event_bindings: {change: check_box_4_change}
       - type: CheckBox
@@ -312,7 +313,7 @@ components:
           foreground: '', allow_indeterminate: false, visible: true, text: nursing-home,
           font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
           background: '', bold: false, checked: false, underline: false}
-        name: check_box_5
+        name: check_box_nur
         layout_properties: {}
         event_bindings: {change: check_box_5_change}
       - type: CheckBox
@@ -320,7 +321,7 @@ components:
           foreground: '', allow_indeterminate: false, visible: true, text: pharmacy,
           font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
           background: '', bold: false, checked: false, underline: false}
-        name: check_box_6
+        name: check_box_pha
         layout_properties: {}
         event_bindings: {change: check_box_6_change}
       - type: CheckBox
@@ -328,7 +329,7 @@ components:
           foreground: '', allow_indeterminate: false, visible: true, text: social facility,
           font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
           background: '', bold: false, checked: false, underline: false}
-        name: check_box_7
+        name: check_box_soc
         layout_properties: {}
         event_bindings: {change: check_box_7_change}
       - type: CheckBox
@@ -336,6 +337,6 @@ components:
           foreground: '', allow_indeterminate: false, visible: true, text: veterinary,
           font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
           background: '', bold: false, checked: false, underline: false}
-        name: check_box_8
+        name: check_box_vet
         layout_properties: {}
         event_bindings: {change: check_box_8_change}
