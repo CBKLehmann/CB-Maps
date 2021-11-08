@@ -291,7 +291,7 @@ components:
           background: '', bold: false, checked: false, underline: false}
         name: check_box_den
         layout_properties: {}
-        event_bindings: {change: check_box_3_change}
+        event_bindings: {change: check_box_den_change}
       - type: CheckBox
         properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
           foreground: '', allow_indeterminate: false, visible: true, text: clinics,
@@ -299,7 +299,7 @@ components:
           background: '', bold: false, checked: false, underline: false}
         name: check_box_cli
         layout_properties: {}
-        event_bindings: {change: check_box_2_change}
+        event_bindings: {change: check_box_cli_change}
       - type: CheckBox
         properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
           foreground: '', allow_indeterminate: false, visible: true, text: hospitals,
@@ -307,7 +307,7 @@ components:
           background: '', bold: false, checked: false, underline: false}
         name: check_box_hos
         layout_properties: {}
-        event_bindings: {change: check_box_4_change}
+        event_bindings: {change: check_box_hos_change}
       - type: CheckBox
         properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
           foreground: '', allow_indeterminate: false, visible: true, text: nursing-home,
@@ -315,7 +315,7 @@ components:
           background: '', bold: false, checked: false, underline: false}
         name: check_box_nur
         layout_properties: {}
-        event_bindings: {change: check_box_5_change}
+        event_bindings: {change: check_box_nur_change}
       - type: CheckBox
         properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
           foreground: '', allow_indeterminate: false, visible: true, text: pharmacy,
@@ -323,7 +323,7 @@ components:
           background: '', bold: false, checked: false, underline: false}
         name: check_box_pha
         layout_properties: {}
-        event_bindings: {change: check_box_6_change}
+        event_bindings: {change: check_box_pha_change}
       - type: CheckBox
         properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
           foreground: '', allow_indeterminate: false, visible: true, text: social facility,
@@ -331,7 +331,7 @@ components:
           background: '', bold: false, checked: false, underline: false}
         name: check_box_soc
         layout_properties: {}
-        event_bindings: {change: check_box_7_change}
+        event_bindings: {change: check_box_soc_change}
       - type: CheckBox
         properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
           foreground: '', allow_indeterminate: false, visible: true, text: veterinary,
@@ -339,4 +339,4 @@ components:
           background: '', bold: false, checked: false, underline: false}
         name: check_box_vet
         layout_properties: {}
-        event_bindings: {change: check_box_8_change}
+        event_bindings: {change: check_box_vet_change}
