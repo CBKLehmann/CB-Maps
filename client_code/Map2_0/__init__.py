@@ -1180,73 +1180,93 @@ class Map2_0(Map2_0Template):
 #     coords = geojson[0]['geometry']['coordinates']
 #     title = geojson[0]['properties']['id']
     
-    test = geojson[0]
-  
-    print(geojson)
-    
     if not self.mapbox.getSource('own_poi') == None:
     
-      source = self.mapbox.getSource('own_poi').setData({
-          'type': 'FeatureCollection',
-          'features': geojson
-      })
+      icons = []
+    
+#       source = self.mapbox.getSource('own_poi').setData({
+#           'type': 'FeatureCollection',
+#           'features': geojson
+#       })
+      
+      for ele in geojson:
+        
+        coordinates = ele['geometry']['coordinates']
+    
+        #Create HTML Element for Marker
+        el = document.createElement('div')
+        width = 20
+        height = 20
+        el.className = 'marker'
+        el.style.width = f'{width}px'
+        el.style.height = f'{height}px'
+        el.style.backgroundSize = '100%'
+        el.style.backgroundrepeat = 'no-repeat'
+      
+        #Create Icon
+        el.className = 'icon_doc'
+        el.style.backgroundImage = f'url(data:image/png;base64,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)'
+    
+      
+        #Add Icon to the Map
+        newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0,-22]).addTo(self.mapbox)
+      
+        icons.append(newicon)
+      
+      #Add Icons to global Variable Icons
+      Variables.icons.update({'Icons': icons})
       
     else:
-    
-#       source = self.mapbox.addSource('own_poi', {
-#         'type': 'geojson',
-#         'data': {
-#           'type': 'FeatureCollection',
-#           'features': [{
-#             'type': geojson[0]['type'],
-#             'geometry': {
-#               'type': geojson[0]['geometry']['type'],
-#               'coordinates': geojson[0]['geometry']['coordinates']
-#             },
-#             'properties': {
-#               'title': geojson[0]['properties']['id']
-#             }
-#           }]
-#         }
-#       })
-  
-#       source = self.mapbox.addSource('own_poi', {
-#         'type': 'geojson',
-#         'data': {
-#           'type': 'FeatureCollection',
-#           'features': [{
-#             'type': type_1,
-#             'geometry': {
-#               'type': type_2,
-#               'coordinates': coords
-#             },
-#             'properties': {
-#               'title': title
-#             }
-#           }]
-#         }
-#       })
 
-      source = self.mapbox.addSource('own_poi', {
-        'type': 'geojson',
-        'data': {
-          'type': 'FeatureCollection',
-          'features': geojson
-        }
-      })
+      icons = []
       
+#       source = self.mapbox.addSource('own_poi', {
+#         'type': 'geojson',
+#         'data': {
+#           'type': 'FeatureCollection',
+#           'features': geojson
+#         }
+#       })
+    
       #Add filled Layer for poi
-      self.mapbox.addLayer({
-        'id': 'own_poi',
-        'type': 'symbol',
-        'source': 'own_poi',
-        'layout': {
-            'text-field': ['get', 'id'],
-            'text-font': [
-              'Open Sans Semibold',
-              'Arial Unicode MS Bold'
-            ],
-            'text-offset': [0, 1.25],
-            'text-anchor': 'top'
-        },
-      })
+#       self.mapbox.addLayer({
+#         'id': 'own_poi',
+#         'type': 'symbol',
+#         'source': 'own_poi',
+#         'layout': {
+#             'text-field': ['get', 'id'],
+#             'text-font': [
+#               'Open Sans Semibold',
+#               'Arial Unicode MS Bold'
+#             ],
+#             'text-offset': [0, 1.25],
+#             'text-anchor': 'top'
+#         },
+#       })
+      
+      for ele in geojson:
+        
+        coordinates = ele['geometry']['coordinates']
+    
+        #Create HTML Element for Marker
+        el = document.createElement('div')
+        width = 20
+        height = 20
+        el.className = 'marker'
+        el.style.width = f'{width}px'
+        el.style.height = f'{height}px'
+        el.style.backgroundSize = '100%'
+        el.style.backgroundrepeat = 'no-repeat'
+      
+        #Create Icon
+        el.className = 'icon_doc'
+        el.style.backgroundImage = f'url(data:image/png;base64,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)'
+    
+      
+        #Add Icon to the Map
+        newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0,-22]).addTo(self.mapbox)
+        
+        icons.append(newicon)
+
+      #Add Icons to global Variable Icons
+      Variables.icons.update({'Icons': icons})
