@@ -1177,24 +1177,18 @@ class Map2_0(Map2_0Template):
     bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
     
     geojson = anvil.server.call('poi_data', 'health', bbox)
+#     coords = geojson[0]['geometry']['coordinates']
+#     title = geojson[0]['properties']['id']
     
-    print(geojson[0])
-
+    test = geojson[0]
+  
+    print(geojson)
     
     if not self.mapbox.getSource('own_poi') == None:
     
       source = self.mapbox.getSource('own_poi').setData({
           'type': 'FeatureCollection',
-          'features': [{
-            'type': geojson[0]['type'],
-            'geometry': {
-              'type': geojson[0]['geometry']['type'],
-              'coordinates': geojson[0]['geometry']['coordinates']
-            },
-            'properties': {
-              'title': geojson[0]['properties']['id']
-            }
-          }]
+          'features': geojson
       })
       
     else:
@@ -1215,21 +1209,29 @@ class Map2_0(Map2_0Template):
 #           }]
 #         }
 #       })
-      
+  
+#       source = self.mapbox.addSource('own_poi', {
+#         'type': 'geojson',
+#         'data': {
+#           'type': 'FeatureCollection',
+#           'features': [{
+#             'type': type_1,
+#             'geometry': {
+#               'type': type_2,
+#               'coordinates': coords
+#             },
+#             'properties': {
+#               'title': title
+#             }
+#           }]
+#         }
+#       })
+
       source = self.mapbox.addSource('own_poi', {
         'type': 'geojson',
         'data': {
           'type': 'FeatureCollection',
-          'features': [{
-            'type': 'Feature',
-            'geometry': {
-              'type': 'Point',
-              'coordinates': [-77.03238901390978, 38.913188059745586]
-            },
-            'properties': {
-              'title': 'Mapbox DC'
-            }
-          }]
+          'features': geojson
         }
       })
       
@@ -1239,7 +1241,7 @@ class Map2_0(Map2_0Template):
         'type': 'symbol',
         'source': 'own_poi',
         'layout': {
-            'text-field': ['get', 'title'],
+            'text-field': ['get', 'id'],
             'text-font': [
               'Open Sans Semibold',
               'Arial Unicode MS Bold'
