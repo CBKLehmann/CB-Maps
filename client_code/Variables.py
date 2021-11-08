@@ -8,3 +8,5 @@ marker = {}
 start = True
 x = 0
 icons = {}
+last_zoom = 100000
+last_bbox = 0
