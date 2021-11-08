@@ -229,15 +229,7 @@ components:
     properties: {}
     name: linear_panel_6
     layout_properties: {grid_position: 'PDSHLM,NNFFHF'}
-    components:
-    - type: CheckBox
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', allow_indeterminate: false, visible: true, text: Healthcare,
-        font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
-        background: '', bold: false, checked: false, underline: false}
-      name: check_box_1
-      layout_properties: {}
-      event_bindings: {change: check_box_1_change}
+    components: []
   - type: LinearPanel
     properties: {}
     name: linear_panel_5
@@ -269,3 +261,81 @@ components:
     name: button_1
     layout_properties: {grid_position: 'MULYZT,VSPZQL'}
     event_bindings: {click: button_1_click}
+  - type: LinearPanel
+    properties: {}
+    name: linear_panel_7
+    layout_properties: {grid_position: 'XBFKWK,QFSNVK'}
+    components:
+    - type: Button
+      properties: {text: button_2}
+      name: button_2
+      layout_properties: {grid_position: 'GWMEHV,WDDGND'}
+    - type: LinearPanel
+      properties: {}
+      name: linear_panel_8
+      layout_properties: {grid_position: 'FBKLDH,MJUPEZ'}
+      components:
+      - type: CheckBox
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', allow_indeterminate: false, visible: true, text: doctors,
+          font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+          background: '', bold: false, checked: false, underline: false}
+        name: check_box_1
+        layout_properties: {grid_position: 'UQYGUH,VHGKDE'}
+        event_bindings: {change: check_box_1_change}
+      - type: CheckBox
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', allow_indeterminate: false, visible: true, text: dentists,
+          font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+          background: '', bold: false, checked: false, underline: false}
+        name: check_box_3
+        layout_properties: {}
+        event_bindings: {change: check_box_3_change}
+      - type: CheckBox
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', allow_indeterminate: false, visible: true, text: clinics,
+          font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+          background: '', bold: false, checked: false, underline: false}
+        name: check_box_2
+        layout_properties: {}
+        event_bindings: {change: check_box_2_change}
+      - type: CheckBox
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', allow_indeterminate: false, visible: true, text: hospitals,
+          font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+          background: '', bold: false, checked: false, underline: false}
+        name: check_box_4
+        layout_properties: {}
+        event_bindings: {change: check_box_4_change}
+      - type: CheckBox
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', allow_indeterminate: false, visible: true, text: nursing-home,
+          font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+          background: '', bold: false, checked: false, underline: false}
+        name: check_box_5
+        layout_properties: {}
+        event_bindings: {change: check_box_5_change}
+      - type: CheckBox
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', allow_indeterminate: false, visible: true, text: pharmacy,
+          font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+          background: '', bold: false, checked: false, underline: false}
+        name: check_box_6
+        layout_properties: {}
+        event_bindings: {change: check_box_6_change}
+      - type: CheckBox
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', allow_indeterminate: false, visible: true, text: social facility,
+          font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+          background: '', bold: false, checked: false, underline: false}
+        name: check_box_7
+        layout_properties: {}
+        event_bindings: {change: check_box_7_change}
+      - type: CheckBox
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', allow_indeterminate: false, visible: true, text: veterinary,
+          font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+          background: '', bold: false, checked: false, underline: false}
+        name: check_box_8
+        layout_properties: {}
+        event_bindings: {change: check_box_8_change}
