@@ -1220,11 +1220,20 @@ class Map2_0(Map2_0Template):
     #Check if Checkbox is checked
     if self.check_box_doc.checked == True:
       
+      sw_lat = (dict(self.mapbox.getBounds()['_sw']))['lat']
+      sw_lng = (dict(self.mapbox.getBounds()['_sw']))['lng']
+      ne_lat = (dict(self.mapbox.getBounds()['_ne']))['lat']
+      ne_lng = (dict(self.mapbox.getBounds()['_ne']))['lng']
+      
       #Get visible Bounding Box of Map
       bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
     
+      print (Variables.last_bbox_doc)
+      print ('#####################')
+      print (bbox)
+      
       #Check if Bounding Box is not the same as least Request
-      if not bbox == Variables.last_bbox_doc:
+      if not bbox == Variables.last_bbox_doc and bbox[0] <= Variables.last_bbox_doc[0] and bbox[1] <= Variables.last_bbox_doc[1] and bbox[2] >= Variables.last_bbox_doc[2] and bbox[3] >= Variables.last_bbox_doc[3]:
         
         #Get geojson of POIs inside Bounding Box
         geojson = anvil.server.call('poi_data', 'doctors', bbox)
@@ -1292,6 +1301,8 @@ class Map2_0(Map2_0Template):
           
           #Add Element to Map
           el.addTo(self.mapbox)
+          
+        print(dict(el))
           
         #Change last Category
         Variables.last_cat = 'doctors'
