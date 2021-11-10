@@ -1233,7 +1233,9 @@ class Map2_0(Map2_0Template):
       print (bbox)
       
       #Check if Bounding Box is not the same as least Request
-      if not bbox == Variables.last_bbox_doc and bbox[0] <= Variables.last_bbox_doc[0] and bbox[1] <= Variables.last_bbox_doc[1] and bbox[2] >= Variables.last_bbox_doc[2] and bbox[3] >= Variables.last_bbox_doc[3]:
+      if not bbox == Variables.last_bbox_doc:
+        
+        if bbox[0] <= Variables.last_bbox_doc[0] and bbox[1] <= Variables.last_bbox_doc[1] and bbox[2] >= Variables.last_bbox_doc[2] and bbox[3] >= Variables.last_bbox_doc[3]:
         
         #Get geojson of POIs inside Bounding Box
         geojson = anvil.server.call('poi_data', 'doctors', bbox)
