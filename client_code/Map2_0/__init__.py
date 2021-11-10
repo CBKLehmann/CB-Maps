@@ -1304,6 +1304,8 @@ class Map2_0(Map2_0Template):
           #Change last Category
           Variables.last_cat = 'doctors'
         
+          print(dict(el))
+        
       #Do if Bounding Box is the same as least Request
       else:
         
