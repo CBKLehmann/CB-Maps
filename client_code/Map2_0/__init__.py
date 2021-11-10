@@ -1220,11 +1220,6 @@ class Map2_0(Map2_0Template):
     #Check if Checkbox is checked
     if self.check_box_doc.checked == True:
       
-      sw_lat = (dict(self.mapbox.getBounds()['_sw']))['lat']
-      sw_lng = (dict(self.mapbox.getBounds()['_sw']))['lng']
-      ne_lat = (dict(self.mapbox.getBounds()['_ne']))['lat']
-      ne_lng = (dict(self.mapbox.getBounds()['_ne']))['lng']
-      
       #Get visible Bounding Box of Map
       bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
       
