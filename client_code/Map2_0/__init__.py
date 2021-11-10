@@ -1238,8 +1238,6 @@ class Map2_0(Map2_0Template):
           #Loop through every Element in geojson
           for ele in geojson:
             
-            print(ele)
-            
             #Get coordinates of current Icon
             el_coords = ele['geometry']['coordinates']
             
