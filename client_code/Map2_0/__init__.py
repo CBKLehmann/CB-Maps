@@ -1227,74 +1227,88 @@ class Map2_0(Map2_0Template):
       
       #Get visible Bounding Box of Map
       bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
-    
-      print (Variables.last_bbox_doc)
-      print ('#####################')
-      print (bbox)
       
       #Check if Bounding Box is not the same as least Request
       if not bbox == Variables.last_bbox_doc:
         
-        if bbox[0] <= Variables.last_bbox_doc[0] and bbox[1] <= Variables.last_bbox_doc[1] and bbox[2] >= Variables.last_bbox_doc[2] and bbox[3] >= Variables.last_bbox_doc[3]:
+        #Check if new Bounding Box is overlapping old Bounding Box
+        if bbox[0] < Variables.last_bbox_doc[0] or bbox[1] < Variables.last_bbox_doc[1] or bbox[2] > Variables.last_bbox_doc[2] or bbox[3] > Variables.last_bbox_doc[3]:
         
-        #Get geojson of POIs inside Bounding Box
-        geojson = anvil.server.call('poi_data', 'doctors', bbox)
-  
-        #Create emtpy Array
-        icons = []
+          #Get geojson of POIs inside Bounding Box
+          geojson = anvil.server.call('poi_data', 'doctors', bbox)
     
-        #Loop through every Element in geojson
-        for ele in geojson:
-          
-          #Get coordinates of element
-          coordinates = ele['geometry']['coordinates']
+          #Create emtpy Array
+          icons = []
       
-          #Create HTML Element for Icon
-          el = document.createElement('div')
-          width = 25
-          height = 25
-          el.className = 'marker'
-          el.style.width = f'{width}px'
-          el.style.height = f'{height}px'
-          el.style.backgroundSize = '100%'
-          el.style.backgroundrepeat = 'no-repeat'
+          #Loop through every Element in geojson
+          for ele in geojson:
+            
+            #Get coordinates of element
+            coordinates = ele['geometry']['coordinates']
         
-          #Create Icon
-          el.className = 'icon_doc'
-          el.style.backgroundImage = f'url(https://wiki.openstreetmap.org/w/images/7/71/Doctors-14.svg)'
-
-          #Get different Informations from geojson
-          city = ele['properties']['city']
-          suburb = ele['properties']['suburb']
-          street = ele['properties']['street']
-          housenumber = ele['properties']['housenumber']
-          postcode = ele['properties']['postcode']
-          phone = ele['properties']['phone']
-          website = ele['properties']['website']
-          healthcare = ele['properties']['healthcare']
-          name = ele['properties']['name']
-          opening_hours = ele['properties']['opening_hours']
-          wheelchair = ele['properties']['wheelchair']
-          o_id = ele['properties']['id']
-          fax = ele['properties']['fax']
-          email = ele['properties']['email']
-          speciality = ele['properties']['healthcare:speciality']
-          operator = ele['properties']['operator']
-    
-          #Create Popup for Element
-          popup = mapboxgl.Popup({'offset': 25}).setHTML(f'<b>ID:</b> {o_id}<br><b>Name:</b><br>&nbsp;&nbsp;{name}<br><b>Operator:</b><br>&nbsp;&nbsp;{operator}<br><b>Adresse:</b><br>&nbsp;&nbsp;{street} {housenumber}<br>&nbsp;&nbsp;{postcode}, {city} {suburb}<br><b>Kontakt</b><br>&nbsp;&nbsp;Telefon: {phone}<br>&nbsp;&nbsp;Fax: {fax}<br>&nbsp;&nbsp;Email: {email}<br>&nbsp;&nbsp;Webseite:<br>&nbsp;&nbsp;&nbsp;&nbsp;{website}<br><b>Infos</b><br>&nbsp;&nbsp;Kategorie: {healthcare}<br>&nbsp;&nbsp;Speciality: {speciality}<br>&nbsp;&nbsp;Öffnungszeiten:<br>&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}<br>&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}')
-      
-          #Add Icon to the Map
-          newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+            #Create HTML Element for Icon
+            el = document.createElement('div')
+            width = 25
+            height = 25
+            el.className = 'marker'
+            el.style.width = f'{width}px'
+            el.style.height = f'{height}px'
+            el.style.backgroundSize = '100%'
+            el.style.backgroundrepeat = 'no-repeat'
           
-          #Add current Element-Icon to Icon-Array
-          icons.append(newicon)
+            #Create Icon
+            el.className = 'icon_doc'
+            el.style.backgroundImage = f'url(https://wiki.openstreetmap.org/w/images/7/71/Doctors-14.svg)'
   
-        #Refresh global Variables
-        Variables.icons.update({'doctors': icons})
-        Variables.last_bbox_doc = bbox
-        Variables.last_cat = 'doctors'
+            #Get different Informations from geojson
+            city = ele['properties']['city']
+            suburb = ele['properties']['suburb']
+            street = ele['properties']['street']
+            housenumber = ele['properties']['housenumber']
+            postcode = ele['properties']['postcode']
+            phone = ele['properties']['phone']
+            website = ele['properties']['website']
+            healthcare = ele['properties']['healthcare']
+            name = ele['properties']['name']
+            opening_hours = ele['properties']['opening_hours']
+            wheelchair = ele['properties']['wheelchair']
+            o_id = ele['properties']['id']
+            fax = ele['properties']['fax']
+            email = ele['properties']['email']
+            speciality = ele['properties']['healthcare:speciality']
+            operator = ele['properties']['operator']
       
+            #Create Popup for Element
+            popup = mapboxgl.Popup({'offset': 25}).setHTML(f'<b>ID:</b> {o_id}<br><b>Name:</b><br>&nbsp;&nbsp;{name}<br><b>Operator:</b><br>&nbsp;&nbsp;{operator}<br><b>Adresse:</b><br>&nbsp;&nbsp;{street} {housenumber}<br>&nbsp;&nbsp;{postcode}, {city} {suburb}<br><b>Kontakt</b><br>&nbsp;&nbsp;Telefon: {phone}<br>&nbsp;&nbsp;Fax: {fax}<br>&nbsp;&nbsp;Email: {email}<br>&nbsp;&nbsp;Webseite:<br>&nbsp;&nbsp;&nbsp;&nbsp;{website}<br><b>Infos</b><br>&nbsp;&nbsp;Kategorie: {healthcare}<br>&nbsp;&nbsp;Speciality: {speciality}<br>&nbsp;&nbsp;Öffnungszeiten:<br>&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}<br>&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}')
+        
+            #Add Icon to the Map
+            newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+            
+            #Add current Element-Icon to Icon-Array
+            icons.append(newicon)
+    
+          #Refresh global Variables
+          Variables.icons.update({'doctors': icons})
+          Variables.last_bbox_doc = bbox
+          Variables.last_cat = 'doctors'
+        
+        else:
+        
+          #Loop through every Element in global Icon-Elements
+          for el in Variables.icons['doctors']:
+          
+            #Get coordinates of current Icon
+            el_coords = dict(el['_lngLat'])
+            
+            #Check if Icon is inside visible Bounding Box
+            if bbox[0] < el_coords['lat'] < bbox[2] and bbox[1] < el_coords['lng'] < bbox[3]:
+          
+              #Add Element to Map
+              el.addTo(self.mapbox)
+          
+          #Change last Category
+          Variables.last_cat = 'doctors'
+        
       #Do if Bounding Box is the same as least Request
       else:
         
@@ -1302,10 +1316,8 @@ class Map2_0(Map2_0Template):
         for el in Variables.icons['doctors']:
           
           #Add Element to Map
-          el.addTo(self.mapbox)
-          
-        print(dict(el))
-          
+          el.addTo(self.mapbox) 
+        
         #Change last Category
         Variables.last_cat = 'doctors'
     
