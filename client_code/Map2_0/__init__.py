@@ -1220,9 +1220,47 @@ class Map2_0(Map2_0Template):
     #Check if Checkbox is checked
     if self.check_box_doc.checked == True:
       
-      #Get visible Bounding Box of Map
-      bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+      #Check if Checkbox for Iso-Layer' is checked
+      if self.checkbox_poi_x_hfcig.checked == True:
+        
+        #Get Data of Iso-Layer
+        iso = dict(self.mapbox.getSource('iso'))
+        
+        #Create empty Bounding Box
+        bbox = [0, 0, 0, 0]
       
+        #Check every element in Iso-Data
+        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      
+          #Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] < bbox[1] or bbox[1] == 0:
+    
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[1] = el[0]
+           
+          #Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] > bbox[3] or bbox[3] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[3] = el[0]
+          
+          #Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] < bbox[0] or bbox[0] == 0:
+    
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[0] = el[1]
+          
+          #Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] > bbox[2] or bbox[2] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[2] = el[1]
+        
+      else:  
+      
+        #Get visible Bounding Box of Map
+        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+        
       #Check if Bounding Box is not the same as least Request
       if not bbox == Variables.last_bbox_doc:
         
@@ -1337,9 +1375,47 @@ class Map2_0(Map2_0Template):
     #Check if Checkbox is checked
     if self.check_box_den.checked == True:
       
-      #Get visible Bounding Box of Map
-      bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+      #Check if Checkbox for Iso-Layer' is checked
+      if self.checkbox_poi_x_hfcig.checked == True:
+        
+        #Get Data of Iso-Layer
+        iso = dict(self.mapbox.getSource('iso'))
+        
+        #Create empty Bounding Box
+        bbox = [0, 0, 0, 0]
+      
+        #Check every element in Iso-Data
+        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      
+          #Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] < bbox[1] or bbox[1] == 0:
     
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[1] = el[0]
+           
+          #Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] > bbox[3] or bbox[3] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[3] = el[0]
+          
+          #Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] < bbox[0] or bbox[0] == 0:
+    
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[0] = el[1]
+          
+          #Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] > bbox[2] or bbox[2] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[2] = el[1]
+        
+      else:  
+      
+        #Get visible Bounding Box of Map
+        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+        
       #Check if Bounding Box is not the same as least Request
       if not bbox == Variables.last_bbox_den:
         
@@ -1454,9 +1530,47 @@ class Map2_0(Map2_0Template):
     #Check if Checkbox is checked
     if self.check_box_cli.checked == True:
       
-      #Get visible Bounding Box of Map
-      bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+      #Check if Checkbox for Iso-Layer' is checked
+      if self.checkbox_poi_x_hfcig.checked == True:
+        
+        #Get Data of Iso-Layer
+        iso = dict(self.mapbox.getSource('iso'))
+        
+        #Create empty Bounding Box
+        bbox = [0, 0, 0, 0]
+      
+        #Check every element in Iso-Data
+        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      
+          #Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] < bbox[1] or bbox[1] == 0:
     
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[1] = el[0]
+           
+          #Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] > bbox[3] or bbox[3] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[3] = el[0]
+          
+          #Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] < bbox[0] or bbox[0] == 0:
+    
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[0] = el[1]
+          
+          #Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] > bbox[2] or bbox[2] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[2] = el[1]
+        
+      else:  
+      
+        #Get visible Bounding Box of Map
+        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+        
       #Check if Bounding Box is not the same as least Request
       if not bbox == Variables.last_bbox_cli:
         
@@ -1571,9 +1685,47 @@ class Map2_0(Map2_0Template):
     #Check if Checkbox is checked
     if self.check_box_hos.checked == True:
       
-      #Get visible Bounding Box of Map
-      bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+      #Check if Checkbox for Iso-Layer' is checked
+      if self.checkbox_poi_x_hfcig.checked == True:
+        
+        #Get Data of Iso-Layer
+        iso = dict(self.mapbox.getSource('iso'))
+        
+        #Create empty Bounding Box
+        bbox = [0, 0, 0, 0]
       
+        #Check every element in Iso-Data
+        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      
+          #Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] < bbox[1] or bbox[1] == 0:
+    
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[1] = el[0]
+           
+          #Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] > bbox[3] or bbox[3] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[3] = el[0]
+          
+          #Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] < bbox[0] or bbox[0] == 0:
+    
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[0] = el[1]
+          
+          #Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] > bbox[2] or bbox[2] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[2] = el[1]
+        
+      else:  
+      
+        #Get visible Bounding Box of Map
+        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+        
       #Check if Bounding Box is not the same as least Request
       if not bbox == Variables.last_bbox_hos:
         
@@ -1688,9 +1840,47 @@ class Map2_0(Map2_0Template):
     #Check if Checkbox is checked
     if self.check_box_nur.checked == True:
       
-      #Get visible Bounding Box of Map
-      bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+      #Check if Checkbox for Iso-Layer' is checked
+      if self.checkbox_poi_x_hfcig.checked == True:
+        
+        #Get Data of Iso-Layer
+        iso = dict(self.mapbox.getSource('iso'))
+        
+        #Create empty Bounding Box
+        bbox = [0, 0, 0, 0]
+      
+        #Check every element in Iso-Data
+        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      
+          #Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] < bbox[1] or bbox[1] == 0:
     
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[1] = el[0]
+           
+          #Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] > bbox[3] or bbox[3] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[3] = el[0]
+          
+          #Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] < bbox[0] or bbox[0] == 0:
+    
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[0] = el[1]
+          
+          #Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] > bbox[2] or bbox[2] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[2] = el[1]
+        
+      else:  
+      
+        #Get visible Bounding Box of Map
+        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+        
       #Check if Bounding Box is not the same as least Request
       if not bbox == Variables.last_bbox_nur:
         
@@ -1805,9 +1995,47 @@ class Map2_0(Map2_0Template):
     #Check if Checkbox is checked
     if self.check_box_pha.checked == True:
       
-      #Get visible Bounding Box of Map
-      bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+      #Check if Checkbox for Iso-Layer' is checked
+      if self.checkbox_poi_x_hfcig.checked == True:
+        
+        #Get Data of Iso-Layer
+        iso = dict(self.mapbox.getSource('iso'))
+        
+        #Create empty Bounding Box
+        bbox = [0, 0, 0, 0]
+      
+        #Check every element in Iso-Data
+        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      
+          #Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] < bbox[1] or bbox[1] == 0:
     
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[1] = el[0]
+           
+          #Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] > bbox[3] or bbox[3] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[3] = el[0]
+          
+          #Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] < bbox[0] or bbox[0] == 0:
+    
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[0] = el[1]
+          
+          #Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] > bbox[2] or bbox[2] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[2] = el[1]
+        
+      else:  
+      
+        #Get visible Bounding Box of Map
+        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+        
       #Check if Bounding Box is not the same as least Request
       if not bbox == Variables.last_bbox_pha:
         
@@ -1922,9 +2150,47 @@ class Map2_0(Map2_0Template):
     #Check if Checkbox is checked
     if self.check_box_soc.checked == True:
       
-      #Get visible Bounding Box of Map
-      bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+      #Check if Checkbox for Iso-Layer' is checked
+      if self.checkbox_poi_x_hfcig.checked == True:
+        
+        #Get Data of Iso-Layer
+        iso = dict(self.mapbox.getSource('iso'))
+        
+        #Create empty Bounding Box
+        bbox = [0, 0, 0, 0]
+      
+        #Check every element in Iso-Data
+        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      
+          #Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] < bbox[1] or bbox[1] == 0:
     
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[1] = el[0]
+           
+          #Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] > bbox[3] or bbox[3] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[3] = el[0]
+          
+          #Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] < bbox[0] or bbox[0] == 0:
+    
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[0] = el[1]
+          
+          #Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] > bbox[2] or bbox[2] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[2] = el[1]
+        
+      else:  
+      
+        #Get visible Bounding Box of Map
+        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+        
       #Check if Bounding Box is not the same as least Request
       if not bbox == Variables.last_bbox_soc:
         
@@ -2039,9 +2305,47 @@ class Map2_0(Map2_0Template):
     #Check if Checkbox is checked
     if self.check_box_vet.checked == True:
       
-      #Get visible Bounding Box of Map
-      bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+      #Check if Checkbox for Iso-Layer' is checked
+      if self.checkbox_poi_x_hfcig.checked == True:
+        
+        #Get Data of Iso-Layer
+        iso = dict(self.mapbox.getSource('iso'))
+        
+        #Create empty Bounding Box
+        bbox = [0, 0, 0, 0]
+      
+        #Check every element in Iso-Data
+        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      
+          #Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] < bbox[1] or bbox[1] == 0:
     
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[1] = el[0]
+           
+          #Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] > bbox[3] or bbox[3] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[3] = el[0]
+          
+          #Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] < bbox[0] or bbox[0] == 0:
+    
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[0] = el[1]
+          
+          #Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] > bbox[2] or bbox[2] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[2] = el[1]
+        
+      else:  
+      
+        #Get visible Bounding Box of Map
+        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+        
       #Check if Bounding Box is not the same as least Request
       if not bbox == Variables.last_bbox_vet:
         
@@ -2165,3 +2469,59 @@ class Map2_0(Map2_0Template):
       #Set Checkbox-Panel to visible and change Arrow-Icon
       self.poi_categories_healthcare_container.visible = True
       self.button_healthcare.icon = 'fa:angle-down'
+
+  def checkbox_poi_x_hfcig_change(self, **event_args):
+    
+    if self.checkbox_poi_x_hfcig.checked == True:
+      
+      #Get Data of Iso-Layer
+      iso = dict(self.mapbox.getSource('iso'))
+      
+      #Create empty Bounding Box
+      bbox = [0, 0, 0, 0]
+    
+      #Check every element in Iso-Data
+      for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+    
+        #Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+        if el[0] < bbox[1] or bbox[1] == 0:
+  
+          #Set BBox-Coordinate to new Element-Coordinate
+          bbox[1] = el[0]
+          
+        #Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+        if el[0] > bbox[3] or bbox[3] == 0:
+
+          #Set BBox-Coordinate to new Element-Coordinate
+          bbox[3] = el[0]
+        
+        #Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+        if el[1] < bbox[0] or bbox[0] == 0:
+  
+          #Set BBox-Coordinate to new Element-Coordinate
+          bbox[0] = el[1]
+        
+        #Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+        if el[1] > bbox[2] or bbox[2] == 0:
+
+          #Set BBox-Coordinate to new Element-Coordinate
+          bbox[2] = el[1]
+
+    else:  
+      
+        #Get visible Bounding Box of Map
+        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+        
+    checkbox =  self.poi_categories_healthcare_container.get_components()
+    
+    for el in checkbox:
+      
+      print(dict(el))
+      
+#       if checkbox.checked == True:
+        
+#         print (True)
+        
+#       else:
+        
+#         print (False)
