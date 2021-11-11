@@ -2472,6 +2472,8 @@ class Map2_0(Map2_0Template):
 
   def checkbox_poi_x_hfcig_change(self, **event_args):
     
+    checkbox =  self.poi_categories_healthcare_container.get_components()
+    
     if self.checkbox_poi_x_hfcig.checked == True:
       
       #Get Data of Iso-Layer
@@ -2506,22 +2508,25 @@ class Map2_0(Map2_0Template):
 
           #Set BBox-Coordinate to new Element-Coordinate
           bbox[2] = el[1]
+          
+      for el in checkbox:
+      
+        if el.checked == True:
+          
+          #Loop through every Element in global Icon-Elements 
+          for ele in Variables.icons[f'{el.text}']:
+            
+            #Get coordinates of current Icon
+            ele_coords = dict(ele['_lngLat'])
+            
+            #Check if Icon is inside visible Bounding Box
+            if bbox[0] > ele_coords['lat'] or ele_coords['lat'] > bbox[2] and bbox[1] > ele_coords['lng'] or ele_coords['lng'] < bbox[3]:
+  
+              #Remove Element from Map
+              ele.remove()
 
     else:  
       
         #Get visible Bounding Box of Map
         bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
-        
-    checkbox =  self.poi_categories_healthcare_container.get_components()
-    
-    for el in checkbox:
       
-      print(dict(el))
-      
-#       if checkbox.checked == True:
-        
-#         print (True)
-        
-#       else:
-        
-#         print (False)
