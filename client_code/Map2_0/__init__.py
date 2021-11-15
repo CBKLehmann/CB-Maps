@@ -2586,53 +2586,61 @@ class Map2_0(Map2_0Template):
           #Get geojson of POIs inside Bounding Box
           geojson = anvil.server.call('poi_data', 'bus_station', bbox)
     
-          #Create emtpy Array
-          icons = []
-      
-          #Loop through every Element in geojson
-          for ele in geojson:
-            
-#             #Get coordinates of current Icon
-#             el_coords = ele['geometry']['coordinates']
-            
-#             #Check if Icon is inside visible Bounding Box
-#             if bbox[0] < el_coords[1] < bbox[2] and bbox[1] < el_coords[0] < bbox[3]:
-            
-              #Get coordinates of element
-              coordinates = ele['geometry']['coordinates']
-          
-              #Create HTML Element for Icon
-              el = document.createElement('div')
-              width = 25
-              height = 25
-              el.className = 'marker'
-              el.style.width = f'{width}px'
-              el.style.height = f'{height}px'
-              el.style.backgroundSize = '100%'
-              el.style.backgroundrepeat = 'no-repeat'
-            
-              #Create Icon
-              el.className = 'icon_bus'
-              el.style.backgroundImage = f'url(https://wiki.openstreetmap.org/w/images/5/5a/Amenity_bus_station.svg)'
-    
-              #Get different Informations from geojson
-              name = ele['properties']['name']
+          if len(geojson) > 3000:
         
-              #Create Popup for Element
-              popup = mapboxgl.Popup({'offset': 25}).setHTML(f'<b>Name:</b><br>&nbsp;&nbsp;{name}')
+            alert('Zu große Ergebnismenge ! Näher ranzoomen !')
           
-              #Add Icon to the Map
-              newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
-              
-              #Add current Element-Icon to Icon-Array
-              icons.append(newicon)
+          else:
     
-          #Refresh global Variables
-          Variables.icons.update({'bus_station': icons})
-          Variables.last_bbox_bus = bbox
-          Variables.last_cat = 'bus_station'
+            #Create emtpy Array
+            icons = []
+        
+            #Loop through every Element in geojson
+            for ele in geojson:
+              
+              #Get coordinates of current Icon
+              el_coords = ele['geometry']['coordinates']
+              
+              #Check if Icon is inside visible Bounding Box
+              if bbox[0] < el_coords[1] < bbox[2] and bbox[1] < el_coords[0] < bbox[3]:
+              
+                #Get coordinates of element
+                coordinates = ele['geometry']['coordinates']
+            
+                #Create HTML Element for Icon
+                el = document.createElement('div')
+                width = 25
+                height = 25
+                el.className = 'marker'
+                el.style.width = f'{width}px'
+                el.style.height = f'{height}px'
+                el.style.backgroundSize = '100%'
+                el.style.backgroundrepeat = 'no-repeat'
+              
+                #Create Icon
+                el.className = 'icon_bus'
+                el.style.backgroundImage = f'url(https://wiki.openstreetmap.org/w/images/5/5a/Amenity_bus_station.svg)'
+      
+                #Get different Informations from geojson
+                name = ele['properties']['name']
+          
+                #Create Popup for Element
+                popup = mapboxgl.Popup({'offset': 25}).setHTML(f'<b>Name:</b><br>&nbsp;&nbsp;{name}')
+            
+                #Add Icon to the Map
+                newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+                
+                #Add current Element-Icon to Icon-Array
+                icons.append(newicon)
+      
+            #Refresh global Variables
+            Variables.icons.update({'bus_station': icons})
+            Variables.last_bbox_bus = bbox
+            Variables.last_cat = 'bus_station'
       
         else:
+          
+          i = 0
         
           #Loop through every Element in global Icon-Elements
           for el in Variables.icons['bus_station']:
@@ -2643,11 +2651,15 @@ class Map2_0(Map2_0Template):
             #Check if Icon is inside visible Bounding Box
             if bbox[0] < el_coords['lat'] < bbox[2] and bbox[1] < el_coords['lng'] < bbox[3]:
           
+              i += 1
+          
               #Add Element to Map
               el.addTo(self.mapbox)
           
           #Change last Category
           Variables.last_cat = 'bus_station'
+      
+          print (i)
       
       #Do if Bounding Box is the same as least Request
       else:
@@ -2669,5 +2681,3 @@ class Map2_0(Map2_0Template):
         
         #Remove Element from Map
         el.remove()
-
-
