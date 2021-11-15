@@ -2616,25 +2616,19 @@ class Map2_0(Map2_0Template):
               el.style.backgroundImage = f'url(https://wiki.openstreetmap.org/w/images/5/5a/Amenity_bus_station.svg)'
     
               #Get different Informations from geojson
-              city = ele['properties']['city']
-              suburb = ele['properties']['suburb']
-              street = ele['properties']['street']
-              housenumber = ele['properties']['housenumber']
-              postcode = ele['properties']['postcode']
               phone = ele['properties']['phone']
               website = ele['properties']['website']
-              healthcare = ele['properties']['healthcare']
               name = ele['properties']['name']
-              opening_hours = ele['properties']['opening_hours']
               wheelchair = ele['properties']['wheelchair']
-              o_id = ele['properties']['id']
-              fax = ele['properties']['fax']
-              email = ele['properties']['email']
-              speciality = ele['properties']['healthcare:speciality']
               operator = ele['properties']['operator']
+              internet_access = ele['properties']['internet_access']
+              wheelchair_description = ele['properties']['wheelchair_description']
+              wheelchair_note = ele['properties']['wheelchair_note']
+              disused = ele['properties']['disused']
+              description = ele['properties']['description']
         
               #Create Popup for Element
-              popup = mapboxgl.Popup({'offset': 25}).setHTML(f'<b>ID:</b> {o_id}<br><b>Name:</b><br>&nbsp;&nbsp;{name}<br><b>Operator:</b><br>&nbsp;&nbsp;{operator}<br><b>Adresse:</b><br>&nbsp;&nbsp;{street} {housenumber}<br>&nbsp;&nbsp;{postcode}, {city} {suburb}<br><b>Kontakt</b><br>&nbsp;&nbsp;Telefon: {phone}<br>&nbsp;&nbsp;Fax: {fax}<br>&nbsp;&nbsp;Email: {email}<br>&nbsp;&nbsp;Webseite:<br>&nbsp;&nbsp;&nbsp;&nbsp;{website}<br><b>Infos</b><br>&nbsp;&nbsp;Kategorie: {healthcare}<br>&nbsp;&nbsp;Speciality: {speciality}<br>&nbsp;&nbsp;Öffnungszeiten:<br>&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}<br>&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}')
+              popup = mapboxgl.Popup({'offset': 25}).setHTML(f'<b>Name:</b><br>&nbsp;&nbsp;{name}<br>&nbsp;&nbsp;Beschreibung: {description}<br><b>Operator:</b><br>&nbsp;&nbsp;{operator}<br><b>Kontakt</b><br>&nbsp;&nbsp;Telefon: {phone}<br>&nbsp;&nbsp;Webseite:<br>&nbsp;&nbsp;&nbsp;&nbsp;{website}<br><b>Infos</b><br>&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}<br>&nbsp;&nbsp;Rollstuhl-GTK: {wheelchair_description}<br>&nbsp;&nbsp;Rollstuhl-GTK: {wheelchair_note}<br>&nbsp;&nbsp;Internetzugang: {internet_access}<br>&nbsp;&nbsp;Inaktiv: {disused}')
           
               #Add Icon to the Map
               newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
