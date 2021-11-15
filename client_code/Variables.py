@@ -16,5 +16,5 @@ last_bbox_nur = [100000, 100000, 0, 0]
 last_bbox_pha = [100000, 100000, 0, 0]
 last_bbox_soc = [100000, 100000, 0, 0]
 last_bbox_vet = [100000, 100000, 0, 0]
-last_bbox_bga = [100000, 100000, 0, 0]
+last_bbox_bus = [100000, 100000, 0, 0]
 last_cat = None

@@ -2531,10 +2531,10 @@ class Map2_0(Map2_0Template):
         bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
       
 
-  def check_box_bga_change(self, **event_args):
+  def check_box_bus_change(self, **event_args):
     
      #Check if Checkbox is checked
-    if self.check_box_bga.checked == True:
+    if self.check_box_bus.checked == True:
       
       #Check if Checkbox for Iso-Layer' is checked
       if self.checkbox_poi_x_hfcig.checked == True:
@@ -2578,13 +2578,13 @@ class Map2_0(Map2_0Template):
         bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
         
       #Check if Bounding Box is not the same as least Request
-      if not bbox == Variables.last_bbox_bga:
+      if not bbox == Variables.last_bbox_bus:
         
         #Check if new Bounding Box is overlapping old Bounding Box
-        if bbox[0] < Variables.last_bbox_bga[0] or bbox[1] < Variables.last_bbox_bga[1] or bbox[2] > Variables.last_bbox_bga[2] or bbox[3] > Variables.last_bbox_bga[3]:
+        if bbox[0] < Variables.last_bbox_bus[0] or bbox[1] < Variables.last_bbox_bus[1] or bbox[2] > Variables.last_bbox_bus[2] or bbox[3] > Variables.last_bbox_bus[3]:
         
           #Get geojson of POIs inside Bounding Box
-          geojson = anvil.server.call('poi_data', 'biergarten')
+          geojson = anvil.server.call('poi_data', 'bus_station')
     
           #Create emtpy Array
           icons = []
@@ -2612,8 +2612,8 @@ class Map2_0(Map2_0Template):
               el.style.backgroundrepeat = 'no-repeat'
             
               #Create Icon
-              el.className = 'icon_doc'
-              el.style.backgroundImage = f'url(https://wiki.openstreetmap.org/w/images/f/fc/Veterinary-14.svg)'
+              el.className = 'icon_bus'
+              el.style.backgroundImage = f'url(https://wiki.openstreetmap.org/w/images/5/5a/Amenity_bus_station.svg)'
     
               #Get different Informations from geojson
               city = ele['properties']['city']
@@ -2643,14 +2643,14 @@ class Map2_0(Map2_0Template):
               icons.append(newicon)
     
           #Refresh global Variables
-          Variables.icons.update({'biergarten': icons})
-          Variables.last_bbox_vet = bbox
-          Variables.last_cat = 'biergarten'
+          Variables.icons.update({'bus_station': icons})
+          Variables.last_bbox_bus = bbox
+          Variables.last_cat = 'bus_station'
       
         else:
         
           #Loop through every Element in global Icon-Elements
-          for el in Variables.icons['biergarten']:
+          for el in Variables.icons['bus_station']:
           
             #Get coordinates of current Icon
             el_coords = dict(el['_lngLat'])
@@ -2662,25 +2662,25 @@ class Map2_0(Map2_0Template):
               el.addTo(self.mapbox)
           
           #Change last Category
-          Variables.last_cat = 'biergarten'
+          Variables.last_cat = 'bus_station'
       
       #Do if Bounding Box is the same as least Request
       else:
         
         #Loop through every Element in global Icon-Elements
-        for el in Variables.icons['biergarten']:
+        for el in Variables.icons['bus_station']:
           
           #Add Element to Map
           el.addTo(self.mapbox)
           
         #Change last Category
-        Variables.last_cat = 'biergarten'
+        Variables.last_cat = 'bus_station'
     
     #Do if Checkbox is unchecked
     else:
       
       #Loop through every Element in global Icon-Elements 
-      for el in Variables.icons['biergarten']:
+      for el in Variables.icons['bus_station']:
         
         #Remove Element from Map
         el.remove()
