@@ -2584,7 +2584,7 @@ class Map2_0(Map2_0Template):
         if bbox[0] < Variables.last_bbox_bus[0] or bbox[1] < Variables.last_bbox_bus[1] or bbox[2] > Variables.last_bbox_bus[2] or bbox[3] > Variables.last_bbox_bus[3]:
         
           #Get geojson of POIs inside Bounding Box
-          geojson = anvil.server.call('poi_data', 'bus_station')
+          geojson = anvil.server.call('poi_data', 'bus_station', bbox)
     
           #Create emtpy Array
           icons = []
