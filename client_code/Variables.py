@@ -17,4 +17,5 @@ last_bbox_pha = [100000, 100000, 0, 0]
 last_bbox_soc = [100000, 100000, 0, 0]
 last_bbox_vet = [100000, 100000, 0, 0]
 last_bbox_bus = [100000, 100000, 0, 0]
+last_bbox_tra = [100000, 100000, 0, 0]
 last_cat = None
