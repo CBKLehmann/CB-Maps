@@ -2530,3 +2530,159 @@ class Map2_0(Map2_0Template):
         #Get visible Bounding Box of Map
         bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
       
+
+  def check_box_bga_change(self, **event_args):
+    
+     #Check if Checkbox is checked
+    if self.check_box_bga.checked == True:
+      
+      #Check if Checkbox for Iso-Layer' is checked
+      if self.checkbox_poi_x_hfcig.checked == True:
+        
+        #Get Data of Iso-Layer
+        iso = dict(self.mapbox.getSource('iso'))
+        
+        #Create empty Bounding Box
+        bbox = [0, 0, 0, 0]
+      
+        #Check every element in Iso-Data
+        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      
+          #Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] < bbox[1] or bbox[1] == 0:
+    
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[1] = el[0]
+           
+          #Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] > bbox[3] or bbox[3] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[3] = el[0]
+          
+          #Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] < bbox[0] or bbox[0] == 0:
+    
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[0] = el[1]
+          
+          #Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] > bbox[2] or bbox[2] == 0:
+
+            #Set BBox-Coordinate to new Element-Coordinate
+            bbox[2] = el[1]
+        
+      else:  
+      
+        #Get visible Bounding Box of Map
+        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+        
+      #Check if Bounding Box is not the same as least Request
+      if not bbox == Variables.last_bbox_bga:
+        
+        #Check if new Bounding Box is overlapping old Bounding Box
+        if bbox[0] < Variables.last_bbox_bga[0] or bbox[1] < Variables.last_bbox_bga[1] or bbox[2] > Variables.last_bbox_bga[2] or bbox[3] > Variables.last_bbox_bga[3]:
+        
+          #Get geojson of POIs inside Bounding Box
+          geojson = anvil.server.call('poi_data', 'biergarten')
+    
+          #Create emtpy Array
+          icons = []
+      
+          #Loop through every Element in geojson
+          for ele in geojson:
+            
+            #Get coordinates of current Icon
+            el_coords = ele['geometry']['coordinates']
+            
+            #Check if Icon is inside visible Bounding Box
+            if bbox[0] < el_coords[1] < bbox[2] and bbox[1] < el_coords[0] < bbox[3]:
+            
+              #Get coordinates of element
+              coordinates = ele['geometry']['coordinates']
+          
+              #Create HTML Element for Icon
+              el = document.createElement('div')
+              width = 25
+              height = 25
+              el.className = 'marker'
+              el.style.width = f'{width}px'
+              el.style.height = f'{height}px'
+              el.style.backgroundSize = '100%'
+              el.style.backgroundrepeat = 'no-repeat'
+            
+              #Create Icon
+              el.className = 'icon_doc'
+              el.style.backgroundImage = f'url(https://wiki.openstreetmap.org/w/images/f/fc/Veterinary-14.svg)'
+    
+              #Get different Informations from geojson
+              city = ele['properties']['city']
+              suburb = ele['properties']['suburb']
+              street = ele['properties']['street']
+              housenumber = ele['properties']['housenumber']
+              postcode = ele['properties']['postcode']
+              phone = ele['properties']['phone']
+              website = ele['properties']['website']
+              healthcare = ele['properties']['healthcare']
+              name = ele['properties']['name']
+              opening_hours = ele['properties']['opening_hours']
+              wheelchair = ele['properties']['wheelchair']
+              o_id = ele['properties']['id']
+              fax = ele['properties']['fax']
+              email = ele['properties']['email']
+              speciality = ele['properties']['healthcare:speciality']
+              operator = ele['properties']['operator']
+        
+              #Create Popup for Element
+              popup = mapboxgl.Popup({'offset': 25}).setHTML(f'<b>ID:</b> {o_id}<br><b>Name:</b><br>&nbsp;&nbsp;{name}<br><b>Operator:</b><br>&nbsp;&nbsp;{operator}<br><b>Adresse:</b><br>&nbsp;&nbsp;{street} {housenumber}<br>&nbsp;&nbsp;{postcode}, {city} {suburb}<br><b>Kontakt</b><br>&nbsp;&nbsp;Telefon: {phone}<br>&nbsp;&nbsp;Fax: {fax}<br>&nbsp;&nbsp;Email: {email}<br>&nbsp;&nbsp;Webseite:<br>&nbsp;&nbsp;&nbsp;&nbsp;{website}<br><b>Infos</b><br>&nbsp;&nbsp;Kategorie: {healthcare}<br>&nbsp;&nbsp;Speciality: {speciality}<br>&nbsp;&nbsp;Öffnungszeiten:<br>&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}<br>&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}')
+          
+              #Add Icon to the Map
+              newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+              
+              #Add current Element-Icon to Icon-Array
+              icons.append(newicon)
+    
+          #Refresh global Variables
+          Variables.icons.update({'biergarten': icons})
+          Variables.last_bbox_vet = bbox
+          Variables.last_cat = 'biergarten'
+      
+        else:
+        
+          #Loop through every Element in global Icon-Elements
+          for el in Variables.icons['biergarten']:
+          
+            #Get coordinates of current Icon
+            el_coords = dict(el['_lngLat'])
+            
+            #Check if Icon is inside visible Bounding Box
+            if bbox[0] < el_coords['lat'] < bbox[2] and bbox[1] < el_coords['lng'] < bbox[3]:
+          
+              #Add Element to Map
+              el.addTo(self.mapbox)
+          
+          #Change last Category
+          Variables.last_cat = 'biergarten'
+      
+      #Do if Bounding Box is the same as least Request
+      else:
+        
+        #Loop through every Element in global Icon-Elements
+        for el in Variables.icons['biergarten']:
+          
+          #Add Element to Map
+          el.addTo(self.mapbox)
+          
+        #Change last Category
+        Variables.last_cat = 'biergarten'
+    
+    #Do if Checkbox is unchecked
+    else:
+      
+      #Loop through every Element in global Icon-Elements 
+      for el in Variables.icons['biergarten']:
+        
+        #Remove Element from Map
+        el.remove()
+
+
