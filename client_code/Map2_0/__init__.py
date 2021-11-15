@@ -2470,6 +2470,7 @@ class Map2_0(Map2_0Template):
       self.poi_categories_healthcare_container.visible = True
       self.button_healthcare.icon = 'fa:angle-down'
 
+      
   def checkbox_poi_x_hfcig_change(self, **event_args):
     
     checkbox =  self.poi_categories_healthcare_container.get_components()
@@ -2530,7 +2531,7 @@ class Map2_0(Map2_0Template):
         #Get visible Bounding Box of Map
         bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
       
-
+      
   def check_box_bus_change(self, **event_args):
     
      #Check if Checkbox is checked
