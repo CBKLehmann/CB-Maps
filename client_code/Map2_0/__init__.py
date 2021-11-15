@@ -2573,7 +2573,7 @@ class Map2_0(Map2_0Template):
             bbox[2] = el[1]
         
       else:  
-      
+        
         #Get visible Bounding Box of Map
         bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
         
@@ -2584,7 +2584,7 @@ class Map2_0(Map2_0Template):
         if bbox[0] < Variables.last_bbox_bus[0] or bbox[1] < Variables.last_bbox_bus[1] or bbox[2] > Variables.last_bbox_bus[2] or bbox[3] > Variables.last_bbox_bus[3]:
         
           #Get geojson of POIs inside Bounding Box
-          geojson = anvil.server.call('poi_data', 'bus_station')
+          geojson = anvil.server.call('poi_data', 'bus_station', bbox)
     
           #Create emtpy Array
           icons = []
@@ -2592,11 +2592,11 @@ class Map2_0(Map2_0Template):
           #Loop through every Element in geojson
           for ele in geojson:
             
-            #Get coordinates of current Icon
-            el_coords = ele['geometry']['coordinates']
+#             #Get coordinates of current Icon
+#             el_coords = ele['geometry']['coordinates']
             
-            #Check if Icon is inside visible Bounding Box
-            if bbox[0] < el_coords[1] < bbox[2] and bbox[1] < el_coords[0] < bbox[3]:
+#             #Check if Icon is inside visible Bounding Box
+#             if bbox[0] < el_coords[1] < bbox[2] and bbox[1] < el_coords[0] < bbox[3]:
             
               #Get coordinates of element
               coordinates = ele['geometry']['coordinates']
@@ -2616,19 +2616,10 @@ class Map2_0(Map2_0Template):
               el.style.backgroundImage = f'url(https://wiki.openstreetmap.org/w/images/5/5a/Amenity_bus_station.svg)'
     
               #Get different Informations from geojson
-              phone = ele['properties']['phone']
-              website = ele['properties']['website']
               name = ele['properties']['name']
-              wheelchair = ele['properties']['wheelchair']
-              operator = ele['properties']['operator']
-              internet_access = ele['properties']['internet_access']
-              wheelchair_description = ele['properties']['wheelchair_description']
-              wheelchair_note = ele['properties']['wheelchair_note']
-              disused = ele['properties']['disused']
-              description = ele['properties']['description']
         
               #Create Popup for Element
-              popup = mapboxgl.Popup({'offset': 25}).setHTML(f'<b>Name:</b><br>&nbsp;&nbsp;{name}<br>&nbsp;&nbsp;Beschreibung: {description}<br><b>Operator:</b><br>&nbsp;&nbsp;{operator}<br><b>Kontakt</b><br>&nbsp;&nbsp;Telefon: {phone}<br>&nbsp;&nbsp;Webseite:<br>&nbsp;&nbsp;&nbsp;&nbsp;{website}<br><b>Infos</b><br>&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}<br>&nbsp;&nbsp;Rollstuhl-GTK: {wheelchair_description}<br>&nbsp;&nbsp;Rollstuhl-GTK: {wheelchair_note}<br>&nbsp;&nbsp;Internetzugang: {internet_access}<br>&nbsp;&nbsp;Inaktiv: {disused}')
+              popup = mapboxgl.Popup({'offset': 25}).setHTML(f'<b>Name:</b><br>&nbsp;&nbsp;{name}')
           
               #Add Icon to the Map
               newicon = mapboxgl.Marker(el).setLngLat(coordinates).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
