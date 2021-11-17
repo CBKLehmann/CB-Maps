@@ -11,6 +11,9 @@ import anvil.http
 import json
 from .. import Variables, Layer
 
+#Get global Variables
+global Variables, Layer
+
 #Definition of every function inside Map2_0
 class Map2_0(Map2_0Template):
 
@@ -26,8 +29,6 @@ class Map2_0(Map2_0Template):
 
     #This method is called when the HTML panel is shown on the screen
     def form_show(self, **event_args):
-    
-      global Layer, Variables
     
       #Initiate Map
       mapboxgl.accessToken = self.token
@@ -70,82 +71,57 @@ class Map2_0(Map2_0Template):
     #This method is called when the Check Box for CapitalBay-Icons is checked or unchecked
     def check_box_cb_change(self, **event_args):
     
+      #Call Function to show or hide Markers
       self.show_hide_marker(self.check_box_cb.checked, 'cb_marker')
 
     #This method is called when the Check Box for Konkurrent-Icons is checked or unchecked      
     def check_box_kk_change(self, **event_args):
     
+      #Call Function to show or hide Markers
       self.show_hide_marker(self.check_box_kk.checked, 'kk_marker')
 
     #This method is called when the Check Box for Hotel-Icons is checked or unchecked      
     def check_box_h_change(self, **event_args):
     
+      #Call Function to show or hide Markers
       self.show_hide_marker(self.check_box_h.checked, 'h_marker')
 
     #This method is called when the Check Box for Krankenhaus-Icons is checked or unchecked      
     def check_box_kh_change(self, **event_args):
     
+      #Call Function to show or hide Markers
       self.show_hide_marker(self.check_box_kh.checked, 'kh_marker')
 
     #This method is called when the Check Box for Schule-Icons is checked or unchecked     
     def check_box_s_change(self, **event_args):
     
+      #Call Function to show or hide Markers
       self.show_hide_marker(self.check_box_s.checked, 's_marker')
 
     #This method is called when the Check Box for Geschäfte-Icons is checked or unchecked      
     def check_box_g_change(self, **event_args):
     
+      #Call Function to show or hide Markers
       self.show_hide_marker(self.check_box_g.checked, 'lg_marker')
 
     #This method is called when the Check Box for All-Icons is checked or unchecked      
     def check_box_all_change(self, **event_args):
       
+      #Get all Marker-Categoried and Status of Checkbox
       marker = self.icon_categories.get_components()
+      check_box = self.check_box_all.checked
       
+      #Loop through every Marker-Category
       for el in marker:
         
-        print(el.tooltip)
-      
-      #Check if Check Box is checked or unchecked  
-      if self.check_box_all.checked == True:
-        
-        self.show_hide_marker(True, 'cb_marker')
-        self.show_hide_marker(True, 'kk_marker')
-        self.show_hide_marker(True, 'h_marker')
-        self.show_hide_marker(True, 'kh_marker')
-        self.show_hide_marker(True, 's_marker')
-        self.show_hide_marker(True, 'lg_marker')
+        #Call Function to show or hide Markers on Map
+        self.show_hide_marker(check_box, el.tooltip)
         
         #Check every Checkbox for every Icon
-        self.check_box_cb.checked = True
-        self.check_box_kk.checked = True
-        self.check_box_h.checked = True
-        self.check_box_kh.checked = True
-        self.check_box_s.checked = True
-        self.check_box_g.checked = True
-        
-      else:
-        
-        self.show_hide_marker(False, 'cb_marker')
-        self.show_hide_marker(False, 'kk_marker')
-        self.show_hide_marker(False, 'h_marker')
-        self.show_hide_marker(False, 'kh_marker')
-        self.show_hide_marker(False, 's_marker')
-        self.show_hide_marker(False, 'lg_marker')
-        
-        #Check every Checkbox for every Icon
-        self.check_box_cb.checked = False
-        self.check_box_kk.checked = False
-        self.check_box_h.checked = False
-        self.check_box_kh.checked = False
-        self.check_box_s.checked = False
-        self.check_box_g.checked = False     
+        el.checked = check_box
     
-    #This method is called when the Check Box for Bundesländer-Layer is checked or unchecked
+    #This method is called when the Check Box for Bundesländer-Layer is checked or unchecked      #Eventuell kürzen
     def check_box_bl_change(self, **event_args):
-    
-      #Get Global Variables from Variables
-      global Variables
       
       #Get Visibility of Layer
       visibility = self.mapbox.getLayoutProperty('bundeslaender', 'visibility')
@@ -180,11 +156,8 @@ class Map2_0(Map2_0Template):
         #Set active Layer to Bundesländer
         Variables.activeLayer = 'bundeslaender'
 
-    #This method is called when the Check Box for Regierungsbezirke-Layer is checked or unchecked     
+    #This method is called when the Check Box for Regierungsbezirke-Layer is checked or unchecked     #Eventuell kürzen
     def check_box_rb_change(self, **event_args):
-    
-      #Get Global Variables from Variables
-      global Variables
       
       #Get Visibility of Layer
       visibility = self.mapbox.getLayoutProperty('regierungsbezirke', 'visibility')
@@ -219,12 +192,9 @@ class Map2_0(Map2_0Template):
         #Set active Layer to Regierungsbezirke
         Variables.activeLayer = 'regierungsbezirke'
 
-    #This method is called when the Check Box for Landkreise-Layer is checked or unchecked  
+    #This method is called when the Check Box for Landkreise-Layer is checked or unchecked  #Eventuell kürzen
     def check_box_lk_change(self, **event_args):
-    
-      #Get Global Variables from Variables
-      global Variables
-      
+
       #Get Visibility of Layer
       visibility = self.mapbox.getLayoutProperty('landkreise', 'visibility')
       
@@ -258,11 +228,8 @@ class Map2_0(Map2_0Template):
         #Set active Layer to Landkreise
         Variables.activeLayer = 'landkreise'
 
-    #This method is called when the Check Box for Gemeinden-Layer is checked or unchecked    
+    #This method is called when the Check Box for Gemeinden-Layer is checked or unchecked    #Eventuell kürzen
     def check_box_gm_change(self, **event_args):
-  
-      #Get Global Variables from Variables
-      global Variables
       
       #Get Visibility of Layer
       visibility = self.mapbox.getLayoutProperty('gemeinden', 'visibility')
@@ -345,7 +312,7 @@ class Map2_0(Map2_0Template):
       #Call create_icons-Function to set the Icons on Map and save last BBox of veterinary
       Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, 'veterinary', 'https://wiki.openstreetmap.org/w/images/f/fc/Veterinary-14.svg')
       
-    #This method is called when the Check Box for POI based on HFCIG is checked or unchecked    
+    #This method is called when the Check Box for POI based on HFCIG is checked or unchecked    #Eventuell kürzen
     def checkbox_poi_x_hfcig_change(self, **event_args):
       
       #Get all categories of healthcare_poi_container
@@ -451,23 +418,23 @@ class Map2_0(Map2_0Template):
       #Call Function to reload Layers
       self.mapbox.on('load', self.place_layer)
       
-    #This method is called when the Button Icons is clicked
+    #This method is called when the Button Icons is clicked  #Eventuell kürzen
     def button_icons_click(self, **event_args):
-    
+      
       #Check if Checkbox-Panel is visible or not
-      if self.icon_categories.visible == True:
+      if self.icon_categories_all.visible == True:
       
         #Set Checkbox-Panel to invisible and change Arrow-Icon
-        self.icon_categories.visible = False
+        self.icon_categories_all.visible = False
         self.button_icons.icon = 'fa:angle-right'
         
       else:
         
         #Set Checkbox-Panel to visible and change Arrow-Icon
-        self.icon_categories.visible = True
+        self.icon_categories_all.visible = True
         self.button_icons.icon = 'fa:angle-down'
 
-    #This method is called when the Button Icons is clicked    
+    #This method is called when the Button Icons is clicked    #Eventuell kürzen
     def button_overlay_click(self, **event_args):
     
       #Check if Checkbox-Panel is visible or not
@@ -489,7 +456,7 @@ class Map2_0(Map2_0Template):
       #Call a Server Function
       anvil.server.call('manipulate')
       
-    #This method is called when the Healthcare-Button is clicked
+    #This method is called when the Healthcare-Button is clicked  #Eventuell kürzen
     def button_healthcare_click(self, **event_args):
       
       #Check if Checkbox-Panel is visible or not
@@ -525,11 +492,8 @@ class Map2_0(Map2_0Template):
   ###############################
   #####  Upload Functions   #####
 
-    #This method is called when a new file is loaded into the FileLoader 
+    #This method is called when a new file is loaded into the FileLoader  #Eventuell kürzen
     def file_loader_upload_change(self, file, **event_args):
-    
-      #Get global Variables from "Variables"
-      global Variables
       
       #Call Server-Function to safe the File  
       anvil.server.call('save_local_excel_file', file)
@@ -839,11 +803,10 @@ class Map2_0(Map2_0Template):
       #Attach Data to iso-source
       self.mapbox.getSource('iso').setData(response)
   
-    #This method is called when the Mouse is moved inside an active Map-Layer 
+    #This method is called when the Mouse is moved inside an active Map-Layer       #Eventuell kürzen
     def mousemove(self, mousemove):
     
       #Get Global Variables from Variables
-      global Variables
       hoveredStateId = Variables.hoveredStateId
       layer = Variables.activeLayer
       
@@ -904,11 +867,8 @@ class Map2_0(Map2_0Template):
           #Change hover-State to True  
           self.mapbox.setFeatureState({'source': 'gemeinden', 'id': Variables.hoveredStateId}, {'hover': True})
       
-    #This method is called when the Mouse is leaving an active Map-Layer      
+    #This method is called when the Mouse is leaving an active Map-Layer      #Eventuell kürzen
     def mouseleave(self, mouseleave):
-    
-      #Get Global Variables from Module 1
-      global Variables
       
       #Check if Layer is already hovered
       if Variables.hoveredStateId != None:
@@ -941,7 +901,7 @@ class Map2_0(Map2_0Template):
           self.mapbox.setFeatureState({'source': 'gemeinden', 'id': Variables.hoveredStateId}, {'hover': False})
           Variables.hoveredStateId = None  
         
-    #This method is called when the User clicked a Part of a Map-Layer  
+    #This method is called when the User clicked a Part of a Map-Layer   #Eventuell kürzen
     def popup(self, click):
     
       #Check which Layer is active
@@ -977,11 +937,10 @@ class Map2_0(Map2_0Template):
         clicked_lngLat = dict(click.lngLat)
         popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<bGemeinde:</b> {gm_name}').addTo(self.mapbox)
   
-    #This method is called when the User clicked on a Point of Interest on the Map
+    #This method is called when the User clicked on a Point of Interest on the Map   #Eventuell nicht mehr benötigt
     def poi(self, click):
     
       #Get and Set Variables
-      global Variables 
       info = dict(self.mapbox.style)
       
       #Check current Map-Style
@@ -1007,9 +966,6 @@ class Map2_0(Map2_0Template):
     
     #This method is called when the Map is loading or changing his Style
     def place_layer(self, event):
-    
-      #Get global Variables
-      global Variables, Layer
       
       #Add 3D-Layer to the Map
       self.mapbox.addLayer({
@@ -1439,18 +1395,20 @@ class Map2_0(Map2_0Template):
       # Send Value back to origin Function
       return (last_bbox)
     
+    #This method is called from different Marker-Checkboxes to hide/show there markers
     def show_hide_marker(self, check_box, marker_id):
         
-      #Check if Check Box is checked or unchecked  
-      if check_box == True:
+      #Check if Check Box is checked and id exist 
+      if check_box == True and marker_id in Variables.marker:
           
         #Show Marker and Icon
         for el in Variables.marker[marker_id]:
           
           #Add Marker to Map
           el.addTo(self.mapbox)
-          
-      else:
+         
+      #Check if Check Box is unchecked and id exist  
+      elif check_box == False and marker_id in Variables.marker:
           
         #Hide Marker and Icon
         for el in Variables.marker[marker_id]:
