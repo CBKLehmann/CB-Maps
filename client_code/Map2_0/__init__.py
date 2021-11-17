@@ -70,181 +70,51 @@ class Map2_0(Map2_0Template):
     #This method is called when the Check Box for CapitalBay-Icons is checked or unchecked
     def check_box_cb_change(self, **event_args):
     
-      #Get global Variables from "Variables"
-      global Variables
-        
-      #Check if Check Box is checked or unchecked  
-      if self.check_box_cb.checked == True:
-          
-        #Show Marker and Icon
-        for el in Variables.marker['cb_marker']:
-          
-          #Add Marker to Map
-          el.addTo(self.mapbox)
-          
-      else:
-          
-        #Hide Marker and Icon
-        for el in Variables.marker['cb_marker']:
-          
-          #Remove Marker from Map
-          el.remove()
+      self.show_hide_marker(self.check_box_cb.checked, 'cb_marker')
 
     #This method is called when the Check Box for Konkurrent-Icons is checked or unchecked      
     def check_box_kk_change(self, **event_args):
     
-      self.show_hide_marker(self.check_box_kk.checked, marker_id)
-    
-      #Get global Variables from "Variables"
-      global Variables
-        
-      #Check if Check Box is checked or unchecked  
-      if self.check_box_kk.checked == True:
-          
-        #Show Marker and Icon
-        for el in Variables.marker['kk_marker']:
-          
-          #Add Marker to Map
-          el.addTo(self.mapbox)
-          
-      else:
-          
-        #Hide Marker and Icon
-        for el in Variables.marker['kk_marker']:
-          
-          #Remove Marker from Map
-          el.remove()
+      self.show_hide_marker(self.check_box_kk.checked, 'kk_marker')
 
     #This method is called when the Check Box for Hotel-Icons is checked or unchecked      
     def check_box_h_change(self, **event_args):
     
-      #Get global Variables from "Variables"
-      global Variables
-        
-      #Check if Check Box is checked or unchecked  
-      if self.check_box_h.checked == True:
-          
-        #Show Marker and Icon
-        for el in Variables.marker['h_marker']:
-          
-          #Add Marker to Map
-          el.addTo(self.mapbox)
-          
-      else:
-          
-        #Hide Marker and Icon
-        for el in Variables.marker['h_marker']:
-          
-          #Remove Marker from Map
-          el.remove()
+      self.show_hide_marker(self.check_box_h.checked, 'h_marker')
 
     #This method is called when the Check Box for Krankenhaus-Icons is checked or unchecked      
     def check_box_kh_change(self, **event_args):
     
-      #Get global Variables from "Variables"
-      global Variables
-        
-      #Check if Check Box is checked or unchecked  
-      if self.check_box_kh.checked == True:
-          
-        #Show Marker and Icon
-        for el in Variables.marker['kh_marker']:
-          
-          #Add Marker to Map
-          el.addTo(self.mapbox)
-          
-      else:
-          
-        #Hide Marker and Icon
-        for el in Variables.marker['kh_marker']:
-          
-          #Remove Marker from Map
-          el.remove()
+      self.show_hide_marker(self.check_box_kh.checked, 'kh_marker')
 
     #This method is called when the Check Box for Schule-Icons is checked or unchecked     
     def check_box_s_change(self, **event_args):
     
-      #Get global Variables from "Variables"
-      global Variables
-        
-      #Check if Check Box is checked or unchecked  
-      if self.check_box_s.checked == True:
-          
-        #Show Marker and Icon
-        for el in Variables.marker['s_marker']:
-          
-          #Add Marker to Map
-          el.addTo(self.mapbox)
-          
-      else:
-          
-        #Hide Marker and Icon
-        for el in Variables.marker['s_marker']:
-          
-          #Remove Marker from Map
-          el.remove()
+      self.show_hide_marker(self.check_box_s.checked, 's_marker')
 
     #This method is called when the Check Box for Geschäfte-Icons is checked or unchecked      
     def check_box_g_change(self, **event_args):
     
-      #Get global Variables from "Variables"
-      global Variables
-        
-      #Check if Check Box is checked or unchecked  
-      if self.check_box_g.checked == True:
-          
-        #Show Marker and Icon
-        for el in Variables.marker['lg_marker']:
-          
-          #Add Marker to Map
-          el.addTo(self.mapbox)
-          
-      else:
-          
-        #Hide Marker and Icon
-        for el in Variables.marker['lg_marker']:
-          
-          #Remove Marker from Map
-          el.remove()
+      self.show_hide_marker(self.check_box_g.checked, 'lg_marker')
 
     #This method is called when the Check Box for All-Icons is checked or unchecked      
     def check_box_all_change(self, **event_args):
-    
-      #Get global Variables from "Variables"
-      global Variables
+      
+      marker = self.icon_categories.get_components()
+      
+      for el in marker:
+        
+        print(el.tooltip)
       
       #Check if Check Box is checked or unchecked  
       if self.check_box_all.checked == True:
-          
-        #Show Marker and Icon
-        for el in Variables.marker['cb_marker']:
-          
-          el.addTo(self.mapbox)
-          
-        #Show Marker and Icon
-        for el in Variables.marker['kk_marker']:
-          
-          el.addTo(self.mapbox)
-          
-        #Show Marker and Icon
-        for el in Variables.marker['h_marker']:
-          
-          el.addTo(self.mapbox)  
-          
-        #Show Marker and Icon
-        for el in Variables.marker['kh_marker']:
-          
-          el.addTo(self.mapbox)  
-          
-        #Show Marker and Icon
-        for el in Variables.marker['s_marker']:
-          
-          el.addTo(self.mapbox)  
         
-        #Show Marker and Icon
-        for el in Variables.marker['g_marker']:
-          
-          el.addTo(self.mapbox)
+        self.show_hide_marker(True, 'cb_marker')
+        self.show_hide_marker(True, 'kk_marker')
+        self.show_hide_marker(True, 'h_marker')
+        self.show_hide_marker(True, 'kh_marker')
+        self.show_hide_marker(True, 's_marker')
+        self.show_hide_marker(True, 'lg_marker')
         
         #Check every Checkbox for every Icon
         self.check_box_cb.checked = True
@@ -253,40 +123,17 @@ class Map2_0(Map2_0Template):
         self.check_box_kh.checked = True
         self.check_box_s.checked = True
         self.check_box_g.checked = True
-          
+        
       else:
-          
-        #Hide Marker and Icon
-        for el in Variables.marker['cb_marker']:
-          
-          el.remove()
-          
-      #Hide Marker and Icon
-        for el in Variables.marker['kk_marker']:
-          
-          el.remove()
-          
-        #Hide Marker and Icon
-        for el in Variables.marker['h_marker']:
-          
-          el.remove()  
-          
-        #Hide Marker and Icon
-        for el in Variables.marker['kh_marker']:
-          
-          el.remove()  
         
-        #Hide Marker and Icon
-        for el in Variables.marker['s_marker']:
-          
-          el.remove()
+        self.show_hide_marker(False, 'cb_marker')
+        self.show_hide_marker(False, 'kk_marker')
+        self.show_hide_marker(False, 'h_marker')
+        self.show_hide_marker(False, 'kh_marker')
+        self.show_hide_marker(False, 's_marker')
+        self.show_hide_marker(False, 'lg_marker')
         
-        #Hide Marker and Icon
-        for el in Variables.marker['g_marker']:
-          
-          el.remove()
-        
-        #Uncheck every Checkbox for every Icon
+        #Check every Checkbox for every Icon
         self.check_box_cb.checked = False
         self.check_box_kk.checked = False
         self.check_box_h.checked = False
