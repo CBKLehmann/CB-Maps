@@ -120,149 +120,61 @@ class Map2_0(Map2_0Template):
         #Check every Checkbox for every Icon
         el.checked = check_box
     
-    #This method is called when the Check Box for Bundesländer-Layer is checked or unchecked      #Eventuell kürzen
+    #This method is called when the Check Box for Bundesländer-Layer is checked or unchecked
     def check_box_bl_change(self, **event_args):
       
       #Get Visibility of Layer
       visibility = self.mapbox.getLayoutProperty('bundeslaender', 'visibility')
-  
-      #Check if Layer is visible or not
-      if visibility == 'visible':
-        
-        #Hide active Layer
-        self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
-        
-        #Set active Layer to None
-        Variables.activeLayer = None
-        
-      else:
-        
-        #Set Visibility of Layer to visible and every other Layer to None
-        self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'visible')
-        self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'visible')
-        self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'none')
-        
-        #Uncheck Check Box from other Layers
-        self.check_box_rb.checked = False
-        self.check_box_lk.checked = False
-        self.check_box_gm.checked = False
-        
-        #Set active Layer to Bundesländer
-        Variables.activeLayer = 'bundeslaender'
+      
+      if visibility == 'none':
+      
+        self.change_active_Layer(['bundeslaender', 'outlineBL'], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM']], 'visible', [self.check_box_rb, self.check_box_lk, self.check_box_gm])
+      
+      elif visibility == 'visible':
+      
+        self.change_active_Layer(['bundeslaender', 'outlineBL'], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM']], 'none', [self.check_box_rb, self.check_box_lk, self.check_box_gm])
 
-    #This method is called when the Check Box for Regierungsbezirke-Layer is checked or unchecked     #Eventuell kürzen
+    #This method is called when the Check Box for Regierungsbezirke-Layer is checked or unchecked
     def check_box_rb_change(self, **event_args):
       
       #Get Visibility of Layer
       visibility = self.mapbox.getLayoutProperty('regierungsbezirke', 'visibility')
       
-      #Check if Layer is visible or not
-      if visibility == 'visible':
-        
-        #Hide active Layer
-        self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
-        
-        #Set active Layer to None
-        Variables.activeLayer = None
-        
-      else:
-        
-        #Set Visibility of Layer to visible and every other Layer to None
-        self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'visible')
-        self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'visible')
-        self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'none')
-        
-        #Uncheck Check Box from other Layers
-        self.check_box_bl.checked = False
-        self.check_box_lk.checked = False
-        self.check_box_gm.checked = False
-        
-        #Set active Layer to Regierungsbezirke
-        Variables.activeLayer = 'regierungsbezirke'
+      if visibility == 'none':
+      
+        self.change_active_Layer(['regierungsbezirke', 'outlineRB'], [['bundeslaender', 'outlineBL'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM']], 'visible', [self.check_box_bl, self.check_box_lk, self.check_box_gm])
+      
+      elif visibility == 'visible':
+      
+        self.change_active_Layer(['regierungsbezirke', 'outlineRB'], [['bundeslaender', 'outlineBL'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM']], 'none', [self.check_box_bl, self.check_box_lk, self.check_box_gm])
 
-    #This method is called when the Check Box for Landkreise-Layer is checked or unchecked  #Eventuell kürzen
+    #This method is called when the Check Box for Landkreise-Layer is checked or unchecked
     def check_box_lk_change(self, **event_args):
 
       #Get Visibility of Layer
-      visibility = self.mapbox.getLayoutProperty('landkreise', 'visibility')
+      visibility = self.mapbox.getLayoutProperty('regierungsbezirke', 'visibility')
       
-      #Check if Layer is visible or not
-      if visibility == 'visible':
-        
-        #Hide active Layer
-        self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
-        
-        #Set active Layer to None
-        Variables.activeLayer = None
-        
-      else:
-        
-        #Set Visibility of Layer to visible and every other Layer to None
-        self.mapbox.setLayoutProperty('landkreise', 'visibility', 'visible')
-        self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'visible')
-        self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'none')
-        
-        #Uncheck Check Box from other Layers
-        self.check_box_bl.checked = False
-        self.check_box_rb.checked = False
-        self.check_box_gm.checked = False
-        
-        #Set active Layer to Landkreise
-        Variables.activeLayer = 'landkreise'
+      if visibility == 'none':
+      
+        self.change_active_Layer(['landkreise', 'outlineLK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['gemeinden', 'outlineGM']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_gm])
+      
+      elif visibility == 'visible':
+      
+        self.change_active_Layer(['landkreise', 'outlineLK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['gemeinden', 'outlineGM']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_gm])
 
-    #This method is called when the Check Box for Gemeinden-Layer is checked or unchecked    #Eventuell kürzen
+    #This method is called when the Check Box for Gemeinden-Layer is checked or unchecked
     def check_box_gm_change(self, **event_args):
       
       #Get Visibility of Layer
-      visibility = self.mapbox.getLayoutProperty('gemeinden', 'visibility')
+      visibility = self.mapbox.getLayoutProperty('regierungsbezirke', 'visibility')
       
-      #Check if Layer is visible or not
-      if visibility == 'visible':
-        
-        #Hide active Layer
-        self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'none')
-        
-        #Set active Layer to None
-        Variables.activeLayer = None
-        
-      else:
-        
-        #Set Visibility of Layer to visible and every other Layer to None
-        self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'visible')
-        self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'visible')
-        self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('landkreise', 'visibility', 'none')
-        self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'none')
-        
-        #Uncheck Check Box from other Layers
-        self.check_box_bl.checked = False
-        self.check_box_rb.checked = False
-        self.check_box_lk.checked = False
-        
-        #Set active Layer to Landkreise
-        Variables.activeLayer = 'gemeinden'  
+      if visibility == 'none':
+      
+        self.change_active_Layer(['gemeinden', 'outlineGM'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk])
+      
+      elif visibility == 'visible':
+      
+        self.change_active_Layer(['gemeinden', 'outlineGM'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk])
         
     #This method is called when the Check Box for POI 'doctors' is checked or unchecked
     def check_box_doc_change(self, **event_args):
@@ -1415,5 +1327,34 @@ class Map2_0(Map2_0Template):
           
           #Remove Marker from Map
           el.remove()
+    
+    def change_active_Layer(self, layer, inactive_layer, visibility, other_checkbox):
+      
+      # Check if Layer is visible or not
+      for el in layer:
+      
+          # Hide active Layer
+          self.mapbox.setLayoutProperty(el, 'visibility', f'{visibility}')
+      
+          for el in inactive_layer:
+      
+              for ele in el:
+      
+                  self.mapbox.setLayoutProperty(ele, 'visibility', 'none')
+      
+      for el in other_checkbox:
+      
+          # Uncheck Check Box from other Layers
+          el.checked = False
+      
+      if visibility == 'visible':
+      
+          # Set active Layer to Bundesländer
+          Variables.activeLayer = layer[0]
+          
+      else:
+        
+          # Set active Layer to Bundesländer
+          Variables.activeLayer = None
     
   #####   Extra Functions   #####
