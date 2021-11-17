@@ -1217,8 +1217,6 @@ class Map2_0(Map2_0Template):
     def check_box_doc_change(self, **event_args):
     
       Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, 'doctors', 'https://wiki.openstreetmap.org/w/images/7/71/Doctors-14.svg')
-      print('1: ' + f'{Variables.last_bbox_doc}')
-      print('###########################')
   
     #This method is called when the Check Box for POI 'dentist' is checked or unchecked
     def check_box_den_change(self, **event_args):
@@ -1334,6 +1332,8 @@ class Map2_0(Map2_0Template):
         
         
     def check_box_bus_change(self, **event_args):
+      
+      Variables.last_bbox_hos = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, 'bus_station', 'https://wiki.openstreetmap.org/w/images/3/33/Hospital-14.svg')
       
       #Check if Checkbox is checked
       if self.check_box_bus.checked == True:
@@ -1637,8 +1637,6 @@ class Map2_0(Map2_0Template):
           el.remove()
         
     def create_icons(self, check_box, last_bbox, category, picture):
-    
-      print('2: ' + f'{last_bbox}')
     
       # Check if Checkbox is checked
       if check_box == True: #check_box-Variable points to checked check_box
