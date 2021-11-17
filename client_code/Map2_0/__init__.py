@@ -152,7 +152,7 @@ class Map2_0(Map2_0Template):
     def check_box_lk_change(self, **event_args):
 
       #Get Visibility of Layer
-      visibility = self.mapbox.getLayoutProperty('regierungsbezirke', 'visibility')
+      visibility = self.mapbox.getLayoutProperty('landkreise', 'visibility')
       
       if visibility == 'none':
       
@@ -166,7 +166,7 @@ class Map2_0(Map2_0Template):
     def check_box_gm_change(self, **event_args):
       
       #Get Visibility of Layer
-      visibility = self.mapbox.getLayoutProperty('regierungsbezirke', 'visibility')
+      visibility = self.mapbox.getLayoutProperty('gemeinden', 'visibility')
       
       if visibility == 'none':
       
@@ -1328,13 +1328,14 @@ class Map2_0(Map2_0Template):
           #Remove Marker from Map
           el.remove()
     
+    #This method is called when the active Layer is changed
     def change_active_Layer(self, layer, inactive_layer, visibility, other_checkbox):
       
       # Check if Layer is visible or not
       for el in layer:
       
           # Hide active Layer
-          self.mapbox.setLayoutProperty(el, 'visibility', f'{visibility}')
+          self.mapbox.setLayoutProperty(el, 'visibility', visibility)
       
           for el in inactive_layer:
       
