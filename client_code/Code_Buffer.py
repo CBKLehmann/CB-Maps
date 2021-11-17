@@ -1,48 +1,308 @@
-#***POI-Layer***
-#     dlen = anvil.server.call('get_len_of_features2')
-  
-#     i = 0
-#     check = 0
-#     gm_id = 0
-#     data = []
-  
-#     #while check < dlen:
-#     while check < 50000:
-    
-#       #Create index-variable
-#       j = 0 
-    
-#       #Get data-pack from geojson
-#       gm = anvil.server.call('get_json_bh', i)
-    
-#       #Increase Value of Data-Variable
-#       i += 50000
-  
-#       #Check if index-variable is smaller than amount of data-pack
-#       while j < len(gm):
-  
-#         #Append data-pack to local data
-#         data.append(gm[j])
-      
-#         #Increase index-variable
-#         j += 1
-#         gm_id += 1
-      
-#       #Get new value for municipalities-amount  
-#       check = len(data)
-  
-#     for el in data:
+def poi_data(topic):
 
-#       lnglat = [el['lon'], el['lat']]
-    
-#       html_el = document.createElement('div')
-    
-#       html_el.className = 'icon'
-#       html_el.style.backgroundImage = f'url(https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Zeichen_224_-_Haltestelle%2C_StVO_2017.svg/2048px-Zeichen_224_-_Haltestelle%2C_StVO_2017.svg.png)'
-#       html_el.style.width = '20px'
-#       html_el.style.height = '20px'
-#       html_el.style.backgroundSize = '100%'
-#       html_el.style.backgroundrepeat = 'no-repeat'
-    
-#       poi_marker = mapboxgl.Marker(html_el).setLngLat(lnglat).addTo(self.mapbox)
-#***End of POI-Layer***
+  if topic == 'bus_station':
+
+    # Open POI-Data File and save all Data as JSON
+    response = open('./src/poi/busstation.json', 'r')
+
+  elif topic == 'tram_station':
+
+    # Open POI-Data File and save all Data as JSON
+    response = open('./src/poi/tramstation.json', 'r')
+
+  else:
+
+    #Open POI-Data File and save all Data as JSON
+    response = open('./src/poi/all_data.json', 'r')
+
+  raw_json = response.read()
+  data = json.loads(raw_json)
+
+  #Create empty Array for sendable Data
+  new_data = []
+
+  if topic == 'bus_station':
+
+    # Loop through every Item in Data
+    for el in data['elements']:
+
+      # Get coordinates of current Icon
+      el_coords = [el['lon'], el['lat']]
+
+      # Check if Icon is inside visible Bounding Box
+      if bbox[0] < el_coords[1] < bbox[2] and bbox[1] < el_coords[0] < bbox[3]:
+
+        # Create empty JSON-Structure for Marker *Part 1*
+        raw_data = {
+          'type': 'Feature',
+          'properties': {},
+          'geometry': {}
+        }
+
+        # Create empty JSON-Structure for Marker *Part 2*
+        geo_data = {
+          'type': 'Point',
+          'coordinates': el_coords
+        }
+
+        # Check if different tags are available
+        if 'name' in el['tags']:
+
+          name = el['tags']['name']
+
+        elif 'name:de' in el['tags']:
+
+          name = el['tags']['name:de']
+
+        else:
+
+          name = 'N.A.'
+
+        # Insert data into JSON-Structure
+        prop_data = {
+          'name': name
+        }
+
+        # Save data in new JSON-Structure
+        raw_data['geometry'] = geo_data
+        raw_data['properties'] = prop_data
+
+        # Add Marker-JSON to SendArray
+        new_data.append(raw_data)
+
+  elif topic == 'tram_station':
+
+    # Loop through every Item in Data
+    for el in data['elements']:
+
+      # Get coordinates of current Icon
+      el_coords = [el['lon'], el['lat']]
+
+      # Check if Icon is inside visible Bounding Box
+      if bbox[0] < el_coords[1] < bbox[2] and bbox[1] < el_coords[0] < bbox[3]:
+
+        # Create empty JSON-Structure for Marker *Part 1*
+        raw_data = {
+          'type': 'Feature',
+          'properties': {},
+          'geometry': {}
+        }
+
+        # Create empty JSON-Structure for Marker *Part 2*
+        geo_data = {
+          'type': 'Point',
+          'coordinates': el_coords
+        }
+
+        # Check if different tags are available
+        if 'name' in el['tags']:
+
+          name = el['tags']['name']
+
+        elif 'name:de' in el['tags']:
+
+          name = el['tags']['name:de']
+
+        else:
+
+          name = 'N.A.'
+
+        # Insert data into JSON-Structure
+        prop_data = {
+          'name': name
+        }
+
+        # Save data in new JSON-Structure
+        raw_data['geometry'] = geo_data
+        raw_data['properties'] = prop_data
+
+        # Add Marker-JSON to SendArray
+        new_data.append(raw_data)
+
+  else:
+
+    #Loop through every Item in Data
+    for el in data['elements']:
+
+      #Check if element has same topic as given topic
+      if el['tags']['amenity'] == topic:
+
+        #Create empty JSON-Structure for Marker *Part 1*
+        raw_data = {
+          'type': 'Feature',
+          'properties': {},
+          'geometry': {}
+        }
+
+        # Create empty JSON-Structure for Marker *Part 2*
+        geo_data = {
+          'type': 'Point',
+          'coordinates': [el['lon'], el['lat']]
+        }
+
+        #Check if different tags are available
+        if 'addr:city' in el['tags']:
+
+          city = el['tags']['addr:city']
+
+        else:
+
+          city = 'N.A.'
+
+        if 'addr:suburb' in el['tags']:
+
+          suburb = el['tags']['addr:suburb']
+
+        else:
+
+          suburb = 'N.A.'
+
+        if 'addr:street' in el['tags']:
+
+          street = el['tags']['addr:street']
+
+        else:
+
+          street = 'N.A.'
+
+        if 'addr:housenumber' in el['tags']:
+
+          housenumber = el['tags']['addr:housenumber']
+
+        else:
+
+          housenumber = 'N.A.'
+
+        if 'addr:postcode' in el['tags']:
+
+          postcode = el['tags']['addr:postcode']
+
+        else:
+
+          postcode = 'N.A.'
+
+        if 'contact:phone' in el['tags']:
+
+          phone = el['tags']['contact:phone']
+
+        elif 'phone' in el['tags']:
+
+          phone = el['tags']['phone']
+
+        else:
+
+          phone = 'N.A.'
+
+        if 'contact:website' in el['tags']:
+
+          website = el['tags']['contact:website']
+
+        else:
+
+          website = 'N.A.'
+
+        if 'healthcare' in el['tags']:
+
+          healthcare = el['tags']['healthcare']
+
+        else:
+
+          healthcare = 'N.A.'
+
+        if 'name' in el['tags']:
+
+          name = el['tags']['name']
+
+        else:
+
+          name = 'N.A.'
+
+        if 'opening_hours' in el['tags']:
+
+          opening_hours = el['tags']['opening_hours']
+
+        else:
+
+          opening_hours = 'N.A.'
+
+        if 'wheelchair' in el['tags']:
+
+          wheelchair = el['tags']['wheelchair']
+
+        else:
+
+          wheelchair = 'N.A.'
+
+        if 'healthcare:speciality' in el['tags']:
+
+          fachrichtung = el['tags']['healthcare:speciality']
+
+        else:
+
+          fachrichtung = 'N.A.'
+
+        if 'fax' in el['tags']:
+
+          fax = el['tags']['fax']
+
+        elif 'contact:fax' in el['tags']:
+
+          fax = el['tags']['contact:fax']
+
+        else:
+
+          fax = 'N.A.'
+
+        if 'email' in el['tags']:
+
+          email = el['tags']['email']
+
+        elif 'contact:email' in el['tags']:
+
+          email = el['tags']['contact:email']
+
+        else:
+
+          email = 'N.A.'
+
+        if 'operator' in el['tags']:
+
+          operator = el['tags']['operator']
+
+        else:
+
+          operator = 'N.A.'
+
+        #Insert data into JSON-Structure
+        prop_data = {
+          'id': el['id'],
+          'city': city,
+          'suburb': suburb,
+          'street': street,
+          'housenumber': housenumber,
+          'postcode': postcode,
+          'phone': phone,
+          'fax': fax,
+          'website': website,
+          'email': email,
+          'healthcare': healthcare,
+          'healthcare:speciality': fachrichtung,
+          'name': name,
+          'operator': operator,
+          'opening_hours': opening_hours,
+          'wheelchair': wheelchair
+        }
+
+        #Save data in new JSON-Structure
+        raw_data['geometry'] = geo_data
+        raw_data['properties'] = prop_data
+
+        #Add Marker-JSON to SendArray
+        new_data.append(raw_data)
+
+  print(len(new_data))
+
+  #Send Array
+  return (new_data)
+
+anvil.server.wait_forever()
