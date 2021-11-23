@@ -224,7 +224,7 @@ class Map2_0(Map2_0Template):
       #Call create_icons-Function to set the Icons on Map and save last BBox of veterinary
       Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, 'veterinary', 'https://wiki.openstreetmap.org/w/images/f/fc/Veterinary-14.svg')
       
-    #This method is called when the Check Box for POI based on HFCIG is checked or unchecked    #Eventuell kürzen
+    #This method is called when the Check Box for POI based on HFCIG is checked or unchecked
     def checkbox_poi_x_hfcig_change(self, **event_args):
       
       #Get all categories of healthcare_poi_container
