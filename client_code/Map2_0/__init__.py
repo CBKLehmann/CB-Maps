@@ -330,37 +330,33 @@ class Map2_0(Map2_0Template):
       #Call Function to reload Layers
       self.mapbox.on('load', self.place_layer)
       
-    #This method is called when the Button Icons is clicked  #Eventuell kürzen
+    #This method is called when the Button Icons is clicked
     def button_icons_click(self, **event_args):
       
       #Check if Checkbox-Panel is visible or not
       if self.icon_categories_all.visible == True:
       
         #Set Checkbox-Panel to invisible and change Arrow-Icon
-        self.icon_categories_all.visible = False
-        self.button_icons.icon = 'fa:angle-right'
+        self.icon_change(self.icon_categories_all, False, self.button_icons, 'fa:angle-right')
         
       else:
         
         #Set Checkbox-Panel to visible and change Arrow-Icon
-        self.icon_categories_all.visible = True
-        self.button_icons.icon = 'fa:angle-down'
+        self.icon_change(self.icon_categories_all, True, self.button_icons, 'fa:angle-down')
 
-    #This method is called when the Button Icons is clicked    #Eventuell kürzen
+    #This method is called when the Button Icons is clicked
     def button_overlay_click(self, **event_args):
     
       #Check if Checkbox-Panel is visible or not
       if self.layer_categories.visible == True:
       
         #Set Checkbox-Panel to invisible and change Arrow-Icon
-        self.layer_categories.visible = False
-        self.button_overlay.icon = 'fa:angle-right'
+        self.icon_change(self.layer_categories, False, self.button_overlay, 'fa:angle-right')
         
       else:
         
         #Set Checkbox-Panel to visible and change Arrow-Icon
-        self.layer_categories.visible = True
-        self.button_overlay.icon = 'fa:angle-down'
+        self.icon_change(self.layer_categories, True, self.button_overlay, 'fa:angle-down')
         
     #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
     def admin_button_click(self, **event_args):
@@ -368,21 +364,19 @@ class Map2_0(Map2_0Template):
       #Call a Server Function
       anvil.server.call('manipulate')
       
-    #This method is called when the Healthcare-Button is clicked  #Eventuell kürzen
+    #This method is called when the Healthcare-Button is clicked
     def button_healthcare_click(self, **event_args):
       
       #Check if Checkbox-Panel is visible or not
       if self.poi_categories_healthcare_container.visible == True:
       
         #Set Checkbox-Panel to invisible and change Arrow-Icon
-        self.poi_categories_healthcare_container.visible = False
-        self.button_healthcare.icon = 'fa:angle-right'
+        self.icon_change(self.poi_categories_healthcare_container, False, self.button_healthcare, 'fa:angle-right')
         
       else:
         
         #Set Checkbox-Panel to visible and change Arrow-Icon
-        self.poi_categories_healthcare_container.visible = True
-        self.button_healthcare.icon = 'fa:angle-down'
+        self.icon_change(self.poi_categories_healthcare_container, True, self.button_healthcare, 'fa:angle-down')
 
   #####  Button Functions   #####
   ###############################
@@ -1357,5 +1351,10 @@ class Map2_0(Map2_0Template):
         
           # Set active Layer to Bundesländer
           Variables.activeLayer = None
+          
+    def icon_change(self, button, btn_state, icon, icon_icon):
+
+      button.visible = btn_state
+      icon.icon = icon_icon
     
   #####   Extra Functions   #####
