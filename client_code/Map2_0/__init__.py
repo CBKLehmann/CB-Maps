@@ -601,7 +601,11 @@ class Map2_0(Map2_0Template):
         popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Regierungsbezirk:</b> {rb_name}<br><b>Landkreis:</b> {lk_name}').addTo(self.mapbox)
     
       elif click.features[0].layer.source == 'gemeinden':
-        gm_name = click.features[0].properties.GEN
+        print(click.features[0].properties)
+        if hasattr(click.features[0].properties, 'GEN'):
+          gm_name = click.features[0].properties.GEN
+        else:
+          gm_name = click.features[0].properties.name
         clicked_lngLat = dict(click.lngLat)
         popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<bGemeinde:</b> {gm_name}').addTo(self.mapbox)
   
