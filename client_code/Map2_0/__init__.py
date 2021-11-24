@@ -57,13 +57,13 @@ class Map2_0(Map2_0Template):
       self.mapbox.on('mouseleave', 'landkreise', self.change_hover_state)
       self.mapbox.on('mousemove', 'gemeinden', self.change_hover_state)
       self.mapbox.on('mouseleave', 'gemeinden', self.change_hover_state)
-      self.mapbox.on('mousemove', 'ber_dist', self.change_hover_state)
-      self.mapbox.on('mouseleave', 'ber_dist', self.change_hover_state)
+      self.mapbox.on('mousemove', 'bezirke', self.change_hover_state)
+      self.mapbox.on('mouseleave', 'bezirke', self.change_hover_state)
       self.mapbox.on('click', 'bundeslaender', self.popup)
       self.mapbox.on('click', 'regierungsbezirke', self.popup)
       self.mapbox.on('click', 'landkreise', self.popup)
       self.mapbox.on('click', 'gemeinden', self.popup)
-      self.mapbox.on('click', 'ber_dist', self.popup)
+      self.mapbox.on('click', 'bezirke', self.popup)
       self.mapbox.on('click', self.poi)
       self.mapbox.on('styledata', self.place_layer)
  
@@ -133,13 +133,13 @@ class Map2_0(Map2_0Template):
       if visibility == 'none':
       
         #Change Active Layer to show
-        self.change_active_Layer(['bundeslaender', 'outlineBL'], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['ber_dist', 'outlineBD']], 'visible', [self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt])
+        self.change_active_Layer(['bundeslaender', 'outlineBL'], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'visible', [self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt])
       
       #Check state of visibility
       elif visibility == 'visible':
       
         #Change Active Layer to hide
-        self.change_active_Layer(['bundeslaender', 'outlineBL'], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['ber_dist', 'outlineBD']], 'none', [self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt])
+        self.change_active_Layer(['bundeslaender', 'outlineBL'], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'none', [self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt])
 
     #This method is called when the Check Box for Regierungsbezirke-Layer is checked or unchecked
     def check_box_rb_change(self, **event_args):
@@ -151,13 +151,13 @@ class Map2_0(Map2_0Template):
       if visibility == 'none':
       
         #Change Active Layer to show
-        self.change_active_Layer(['regierungsbezirke', 'outlineRB'], [['bundeslaender', 'outlineBL'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['ber_dist', 'outlineBD']], 'visible', [self.check_box_bl, self.check_box_lk, self.check_box_gm, self.check_box_dt])
+        self.change_active_Layer(['regierungsbezirke', 'outlineRB'], [['bundeslaender', 'outlineBL'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'visible', [self.check_box_bl, self.check_box_lk, self.check_box_gm, self.check_box_dt])
       
       #Check state of visibility
       elif visibility == 'visible':
       
         #Change Active Layer to hide
-        self.change_active_Layer(['regierungsbezirke', 'outlineRB'], [['bundeslaender', 'outlineBL'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['ber_dist', 'outlineBD']], 'none', [self.check_box_bl, self.check_box_lk, self.check_box_gm, self.check_box_dt])
+        self.change_active_Layer(['regierungsbezirke', 'outlineRB'], [['bundeslaender', 'outlineBL'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'none', [self.check_box_bl, self.check_box_lk, self.check_box_gm, self.check_box_dt])
 
     #This method is called when the Check Box for Landkreise-Layer is checked or unchecked
     def check_box_lk_change(self, **event_args):
@@ -169,13 +169,13 @@ class Map2_0(Map2_0Template):
       if visibility == 'none':
       
         #Change Active Layer to show
-        self.change_active_Layer(['landkreise', 'outlineLK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['gemeinden', 'outlineGM'], ['ber_dist', 'outlineBD']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_gm, self.check_box_dt])
+        self.change_active_Layer(['landkreise', 'outlineLK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_gm, self.check_box_dt])
       
       #Check state of visibility
       elif visibility == 'visible':
       
         #Change Active Layer to hide
-        self.change_active_Layer(['landkreise', 'outlineLK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['gemeinden', 'outlineGM'], ['ber_dist', 'outlineBD']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_gm, self.check_box_dt])
+        self.change_active_Layer(['landkreise', 'outlineLK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_gm, self.check_box_dt])
 
     #This method is called when the Check Box for Gemeinden-Layer is checked or unchecked
     def check_box_gm_change(self, **event_args):
@@ -187,31 +187,31 @@ class Map2_0(Map2_0Template):
       if visibility == 'none':
       
         #Change Active Layer to show
-        self.change_active_Layer(['gemeinden', 'outlineGM'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['ber_dist', 'outlineBD']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_dt])
+        self.change_active_Layer(['gemeinden', 'outlineGM'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['bezirke', 'outlineBK']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_dt])
       
       #Check state of visibility
       elif visibility == 'visible':
       
         #Change Active Layer to hide
-        self.change_active_Layer(['gemeinden', 'outlineGM'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['ber_dist', 'outlineBD']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_dt])
+        self.change_active_Layer(['gemeinden', 'outlineGM'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['bezirke', 'outlineBK']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_dt])
     
     #This method is called when the Check Box for Gemeinden-Layer is checked or unchecked
     def check_box_dt_change(self, **event_args):
 
             #Get Visibility of Layer
-      visibility = self.mapbox.getLayoutProperty('ber_dist', 'visibility')
+      visibility = self.mapbox.getLayoutProperty('bezirke', 'visibility')
       
       #Check state of visibility
       if visibility == 'none':
       
         #Change Active Layer to show
-        self.change_active_Layer(['ber_dist', 'outlineBD'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm])
+        self.change_active_Layer(['bezirke', 'outlineBK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm])
       
       #Check state of visibility
       elif visibility == 'visible':
       
         #Change Active Layer to hide
-        self.change_active_Layer(['ber_dist', 'outlineBD'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm])
+        self.change_active_Layer(['bezirke', 'outlineBK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm])
         
     #This method is called when the Check Box for POI 'doctors' is checked or unchecked
     def check_box_doc_change(self, **event_args):
@@ -631,7 +631,7 @@ class Map2_0(Map2_0Template):
         popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<bGemeinde:</b> {gm_name}').addTo(self.mapbox)
         
       #Check which Layer is active
-      elif click.features[0].layer.source == 'ber_dist':
+      elif click.features[0].layer.source == 'bezirke':
         
         #Create Popup and add it to the Map
         dt_name = click.features[0].properties.name
@@ -859,11 +859,11 @@ class Map2_0(Map2_0Template):
       
       #Add filled Layer for berlin districts
       self.mapbox.addLayer({
-        'id': 'ber_dist',
+        'id': 'bezirke',
         'type': 'fill',
         'source': {
             'type': 'geojson',
-            'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_dist_new.geojson'
+            'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_dist.geojson'
         },
         'layout': {
             'visibility': 'none'
@@ -881,11 +881,11 @@ class Map2_0(Map2_0Template):
   
       #Add outlined Layer for municipalities
       self.mapbox.addLayer({
-          'id': 'outlineBD',
+          'id': 'outlineBK',
           'type': 'line',
           'source': {
               'type': 'geojson',
-              'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_dist_new.geojson'
+              'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_dist.geojson'
           },
           'layout': {
               'visibility': 'none'
@@ -1277,10 +1277,10 @@ class Map2_0(Map2_0Template):
               Variables.hoveredStateId = None
             
           # Check if active Layer is Gemeinden
-          elif Variables.activeLayer == 'ber_dist':
+          elif Variables.activeLayer == 'bezirke':
       
               # Change hover-State to False and set global-variable 'hoveredStateId' to None
-              self.mapbox.setFeatureState({'source': 'ber_dist', 'id': Variables.hoveredStateId}, {'hover': False})
+              self.mapbox.setFeatureState({'source': 'bezirke', 'id': Variables.hoveredStateId}, {'hover': False})
               Variables.hoveredStateId = None
       
       #Check if Mouse is moved inside Layer or out of Layer
@@ -1317,9 +1317,9 @@ class Map2_0(Map2_0Template):
                 self.mapbox.setFeatureState({'source': 'gemeinden', 'id': Variables.hoveredStateId}, {'hover': True})
             
             # Check if active Layer is Gemeinden
-            elif Variables.activeLayer == 'ber_dist':
+            elif Variables.activeLayer == 'bezirke':
         
                 # Change hover-State to True
-                self.mapbox.setFeatureState({'source': 'ber_dist', 'id': Variables.hoveredStateId}, {'hover': True})
+                self.mapbox.setFeatureState({'source': 'bezirke', 'id': Variables.hoveredStateId}, {'hover': True})
     
   #####   Extra Functions   #####
