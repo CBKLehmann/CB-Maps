@@ -453,6 +453,8 @@ class Map2_0(Map2_0Template):
       #Add Marker while Markercount is under Amount of Adresses inside provided File
       while markercount <= anvil.server.call('get_amount_of_adresses'):
         
+        print(markercount)
+        
         #Get Coordinates of provided Adress for Marker
         req_str = anvil.server.call('get_request_string', markercount)
         req_str += f'.json?access_token={self.token}'
@@ -469,43 +471,45 @@ class Map2_0(Map2_0Template):
         el.style.backgroundSize = '100%'
         el.style.backgroundrepeat = 'no-repeat'
         
+        icon_cat = anvil.server.call('get_type_of_icon', markercount)
+        
         #Check which Icon the provided Adress has
-        if anvil.server.call('get_type_of_icon', markercount) == 'CapitalBay':
+        if icon_cat == 'CapitalBay':
           
           #Set Markers based on Excel
           self.markerCB_static = None
           self.set_excel_markers(el, 'markerCB', Variables.imageCB, self.markerCB_static, coordinates, cb_marker, markercount)
         
         #Check which Icon the provided Adress has
-        elif anvil.server.call('get_type_of_icon', markercount) == 'Konkurrent':
+        elif icon_cat == 'Konkurrent':
           
           #Set Markers based on Excel
           self.markerKK_static = None
           self.set_excel_markers(el, 'markerKK', Variables.imageKK, self.markerKK_static, coordinates, kk_marker, markercount)  
           
         #Check which Icon the provided Adress has
-        elif anvil.server.call('get_type_of_icon', markercount) == 'Hotel':
+        elif icon_cat == 'Hotel':
           
           #Set Markers based on Excel
           self.markerH_static = None
           self.set_excel_markers(el, 'markerH', Variables.imageH, self.markerH_static, coordinates, h_marker, markercount)
          
         #Check which Icon the provided Adress has
-        elif anvil.server.call('get_type_of_icon', markercount) == 'Krankenhaus':     
+        elif icon_cat == 'Krankenhaus':     
           
           #Set Markers based on Excel
           self.markerKH_static = None
           self.set_excel_markers(el, 'markerKH', Variables.imageKH, self.markerKH_static, coordinates, kh_marker, markercount)
           
         #Check which Icon the provided Adress has
-        elif anvil.server.call('get_type_of_icon', markercount) == 'Laden':     
+        elif icon_cat == 'Laden':     
           
           #Set Markers based on Excel
           self.markerLG_static = None
           self.set_excel_markers(el, 'markerLG', Variables.imageLG, self.markerLG_static, coordinates, lg_marker, markercount)
           
         #Check which Icon the provided Adress has
-        elif anvil.server.call('get_type_of_icon', markercount) == 'Schule':       
+        elif icon_cat == 'Schule':       
           
           #Set Markers based on Excel
           self.markerS_static = None
