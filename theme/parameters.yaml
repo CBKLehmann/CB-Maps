@@ -31,6 +31,7 @@ roles:
   components: [Link]
 - {name: fixed-height}
 - {name: floater}
+- {name: show_button, components: null}
 color_scheme:
   preset_groups:
   - name: Primary Colour

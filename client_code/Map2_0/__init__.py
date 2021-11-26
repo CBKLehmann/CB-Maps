@@ -418,15 +418,15 @@ class Map2_0(Map2_0Template):
     def hide_bar_button_click(self, **event_args):
       
       #Check if Checkbox-Panel is visible or not
-      if self.poi_categories_healthcare_container.visible == True:
+      if self.Side_Bar.visible == True:
       
         #Set Checkbox-Panel to invisible and change Arrow-Icon
-        self.icon_change(self.poi_categories_healthcare_container, False, self.button_healthcare, 'fa:angle-right')
+        self.icon_change(self.Side_Bar, False, self.hide_bar_button, 'fa:angle-left')
         
       else:
         
         #Set Checkbox-Panel to visible and change Arrow-Icon
-        self.icon_change(self.poi_categories_healthcare_container, True, self.button_healthcare, 'fa:angle-down'),
+        self.icon_change(self.Side_Bar, True, self.hide_bar_button, 'fa:angle-down'),
 
   #####  Button Functions   #####
   ###############################
@@ -1212,10 +1212,13 @@ class Map2_0(Map2_0Template):
           Variables.activeLayer = None
       
     #This method is called from different Menu-Collapsables
-    def icon_change(self, button, btn_state, icon, icon_icon):
+    def icon_change(self, container, container_state, icon, icon_icon):
 
+      print(container)
+      print(container.visible)
+      
       #Change State of Button and Image of Icon
-      button.visible = btn_state
+      container.visible = container_state
       icon.icon = icon_icon
     
     #This method is called from the file uploader to set Markers based on Excel-Data
