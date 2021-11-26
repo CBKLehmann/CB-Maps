@@ -413,7 +413,20 @@ class Map2_0(Map2_0Template):
       else:
         
         #Set Checkbox-Panel to visible and change Arrow-Icon
-        self.icon_change(self.poi_categories_healthcare_container, True, self.button_healthcare, 'fa:angle-down')
+        self.icon_change(self.poi_categories_healthcare_container, True, self.button_healthcare, 'fa:angle-down'),
+        
+    def hide_bar_button_click(self, **event_args):
+      
+      #Check if Checkbox-Panel is visible or not
+      if self.poi_categories_healthcare_container.visible == True:
+      
+        #Set Checkbox-Panel to invisible and change Arrow-Icon
+        self.icon_change(self.poi_categories_healthcare_container, False, self.button_healthcare, 'fa:angle-right')
+        
+      else:
+        
+        #Set Checkbox-Panel to visible and change Arrow-Icon
+        self.icon_change(self.poi_categories_healthcare_container, True, self.button_healthcare, 'fa:angle-down'),
 
   #####  Button Functions   #####
   ###############################
@@ -439,10 +452,10 @@ class Map2_0(Map2_0Template):
     def file_loader_upload_change(self, file, **event_args):
       
       #Call Server-Function to safe the File  
-      anvil.server.call('save_local_excel_file', file)
+      data = anvil.server.call('save_local_excel_file', file)
       
       #Initialise Variables
-      markercount = 1
+      markercount = 0
       cb_marker = []
       kk_marker = []
       h_marker = []
@@ -451,10 +464,10 @@ class Map2_0(Map2_0Template):
       lg_marker = []
       
       #Add Marker while Markercount is under Amount of Adresses inside provided File
-      while markercount <= anvil.server.call('get_amount_of_adresses'):
+      while markercount < len(data):
         
         #Get Coordinates of provided Adress for Marker
-        req_str = anvil.server.call('get_request_string', markercount)
+        req_str = self.build_request_string(data[markercount])
         req_str += f'.json?access_token={self.token}'
         coords = anvil.http.request(req_str,json=True)
         coordinates = coords['features'][0]['geometry']['coordinates']
@@ -469,55 +482,52 @@ class Map2_0(Map2_0Template):
         el.style.backgroundSize = '100%'
         el.style.backgroundrepeat = 'no-repeat'
         
-        icon_cat = anvil.server.call('get_type_of_icon', markercount)
-        
         #Check which Icon the provided Adress has
-        if icon_cat == 'CapitalBay':
+        if data[markercount]['Icon'] == 'CapitalBay':
           
           #Set Markers based on Excel
           self.markerCB_static = None
-          self.set_excel_markers(el, 'markerCB', Variables.imageCB, self.markerCB_static, coordinates, cb_marker, markercount)
+          self.set_excel_markers(el, 'markerCB', Variables.imageCB, self.markerCB_static, coordinates, cb_marker, data[markercount]['Pinfarbe'])
         
         #Check which Icon the provided Adress has
-        elif icon_cat == 'Konkurrent':
+        elif data[markercount]['Icon'] == 'Konkurrent':
           
           #Set Markers based on Excel
           self.markerKK_static = None
-          self.set_excel_markers(el, 'markerKK', Variables.imageKK, self.markerKK_static, coordinates, kk_marker, markercount)  
+          self.set_excel_markers(el, 'markerKK', Variables.imageKK, self.markerKK_static, coordinates, kk_marker, data[markercount]['Pinfarbe'])  
           
         #Check which Icon the provided Adress has
-        elif icon_cat == 'Hotel':
+        elif data[markercount]['Icon'] == 'Hotel':
           
           #Set Markers based on Excel
           self.markerH_static = None
-          self.set_excel_markers(el, 'markerH', Variables.imageH, self.markerH_static, coordinates, h_marker, markercount)
+          self.set_excel_markers(el, 'markerH', Variables.imageH, self.markerH_static, coordinates, h_marker, data[markercount]['Pinfarbe'])
          
         #Check which Icon the provided Adress has
-        elif icon_cat == 'Krankenhaus':     
+        elif data[markercount]['Icon'] == 'Krankenhaus':     
           
           #Set Markers based on Excel
           self.markerKH_static = None
-          self.set_excel_markers(el, 'markerKH', Variables.imageKH, self.markerKH_static, coordinates, kh_marker, markercount)
+          self.set_excel_markers(el, 'markerKH', Variables.imageKH, self.markerKH_static, coordinates, kh_marker, data[markercount]['Pinfarbe'])
           
         #Check which Icon the provided Adress has
-        elif icon_cat == 'Laden':     
+        elif data[markercount]['Icon'] == 'Laden':     
           
           #Set Markers based on Excel
           self.markerLG_static = None
-          self.set_excel_markers(el, 'markerLG', Variables.imageLG, self.markerLG_static, coordinates, lg_marker, markercount)
+          self.set_excel_markers(el, 'markerLG', Variables.imageLG, self.markerLG_static, coordinates, lg_marker, data[markercount]['Pinfarbe'])
           
         #Check which Icon the provided Adress has
-        elif icon_cat == 'Schule':       
+        elif data[markercount]['Icon'] == 'Schule':       
           
           #Set Markers based on Excel
           self.markerS_static = None
-          self.set_excel_markers(el, 'markerS', Variables.imageS, self.markerS_static, coordinates, s_marker, markercount)
+          self.set_excel_markers(el, 'markerS', Variables.imageS, self.markerS_static, coordinates, s_marker, data[markercount]['Pinfarbe'])
           
         #Create Popup for Marker and add it to the Map
-        info_text = anvil.server.call('get_informationtext', markercount)
         popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
-        popup.setHTML(info_text)
-        popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(info_text).setLngLat(coords['features'][0]['geometry']['coordinates'])
+        popup.setHTML(data[markercount]['Informationen'])
+        popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
         popup_static.addTo(self.mapbox)
         
         #Increase Markercount
@@ -525,7 +535,7 @@ class Map2_0(Map2_0Template):
       
       #Add Marker-Arrays to global Variable Marker
       Variables.marker.update({'cb_marker': cb_marker, 'kk_marker': kk_marker, 'h_marker': h_marker, 'kh_marker': kh_marker, 's_marker': s_marker, 'lg_marker': lg_marker})
-
+      
   #####  Upload Functions   #####
   ###############################
   #####   Extra Functions   #####
@@ -1209,14 +1219,11 @@ class Map2_0(Map2_0Template):
       icon.icon = icon_icon
     
     #This method is called from the file uploader to set Markers based on Excel-Data
-    def set_excel_markers(self, el, el_className, el_image, marker_cat, coords, marker_list, markercount):
+    def set_excel_markers(self, el, el_className, el_image, marker_cat, coords, marker_list, color):
       
       # Create Icon
       el.className = el_className
       el.style.backgroundImage = el_image
-      
-      #Get color of Marker
-      color = anvil.server.call('get_color_of_marker', markercount)
       
       # Check wich Markercolor the provided Adress has and color the Marker
       if color == 'Rot':
@@ -1323,5 +1330,19 @@ class Map2_0(Map2_0Template):
         
                 # Change hover-State to True
                 self.mapbox.setFeatureState({'source': 'bezirke', 'id': Variables.hoveredStateId}, {'hover': True})
+    
+    def build_request_string(self, marker):
+      
+      #Create basic request String
+      request_string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/"
+      
+      #Create and Send Request String based on given Marker
+      request_string += str(marker['Straße']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+      request_string += str(marker['Hausnummer']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+      request_string += str(marker['Bezirk']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+      request_string += str(marker['Stadt']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+      request_string += str(marker['Postleitzahl'])
+      
+      return (request_string)
     
   #####   Extra Functions   #####

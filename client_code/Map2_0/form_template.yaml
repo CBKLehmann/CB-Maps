@@ -21,6 +21,19 @@ components:
   name: Side_Bar
   layout_properties: {slot: left-nav}
   components:
+  - type: LinearPanel
+    properties: {}
+    name: linear_panel_1
+    layout_properties: {grid_position: 'OQLSQT,JAQCFT'}
+    components:
+    - type: Button
+      properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+        foreground: '', visible: true, text: Hide Bar, font_size: null, font: '',
+        spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+        background: '', bold: false, underline: false, icon: 'fa:angle-left'}
+      name: hide_bar_button
+      layout_properties: {}
+      event_bindings: {click: hide_bar_button_click}
   - type: ColumnPanel
     properties: {col_widths: '{}'}
     name: interaction_panel_1
