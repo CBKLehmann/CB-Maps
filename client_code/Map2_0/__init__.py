@@ -453,8 +453,6 @@ class Map2_0(Map2_0Template):
       #Add Marker while Markercount is under Amount of Adresses inside provided File
       while markercount <= anvil.server.call('get_amount_of_adresses'):
         
-        print(markercount)
-        
         #Get Coordinates of provided Adress for Marker
         req_str = anvil.server.call('get_request_string', markercount)
         req_str += f'.json?access_token={self.token}'
