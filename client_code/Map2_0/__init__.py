@@ -638,11 +638,16 @@ class Map2_0(Map2_0Template):
           gm_name = click.features[0].properties.GEN
         else:
           gm_name = click.features[0].properties.name
-        clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<bGemeinde:</b> {gm_name}').addTo(self.mapbox)
         
-        zip_code = json.loads(click.features[0].properties.destatis)
-        anvil.server.call('get_Data_from_Database', gm_name, zip_code['zip'])
+        print(click.features[0].properties)
+        
+        key = click.features[0].properties.AGS
+        data = anvil.server.call('get_Data_from_Database', key)
+        
+        print(data)
+        
+        clicked_lngLat = dict(click.lngLat)
+        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>ID:</b> {key}<br><b>Gemeinde:</b> {gm_name}<br><b>Fläche:</b> {data[2]} km&sup2;<br><br><b>Bevölkerung</b><br><b>Insgesamt:</b> {data[3]}<br><b>Männlich:</b> {data[4]}<br><b>Weiblich:</b> {data[5]}<br><b>je km&sup2:</b> {data[6]}<br><br><b>Grad der Verstädterung</b><br><b>Bezeichnung:</b> {data[7]}').addTo(self.mapbox)
         
       #Check which Layer is active
       elif click.features[0].layer.source == 'bezirke':
