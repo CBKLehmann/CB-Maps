@@ -647,7 +647,7 @@ class Map2_0(Map2_0Template):
         print(data)
         
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>ID:</b> {key}<br><b>Gemeinde:</b> {gm_name}<br><b>Fläche:</b> {data[2]} km&sup2;<br><br><b>Bevölkerung</b><br><b>Insgesamt:</b> {data[3]}<br><b>Männlich:</b> {data[4]}<br><b>Weiblich:</b> {data[5]}<br><b>je km&sup2:</b> {data[6]}<br><br><b>Grad der Verstädterung</b><br><b>Bezeichnung:</b> {data[7]}').addTo(self.mapbox)
+        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>ID:</b> {key}<br><b>Gemeinde:</b> {gm_name}<br><b>Fläche:</b> {data[9]} km&sup2;<br><br><b>Bevölkerung</b><br><b>Insgesamt:</b> {data[10]}<br><b>Männlich:</b> {data[11]}<br><b>Weiblich:</b> {data[12]}<br><b>je km&sup2:</b> {data[13]}<br><br><b>Grad der Verstädterung</b><br><b>Schlüssel:</b> {data[16]}<br><b>Bezeichnung:</b> {data[17]}').addTo(self.mapbox)
         
       #Check which Layer is active
       elif click.features[0].layer.source == 'bezirke':
