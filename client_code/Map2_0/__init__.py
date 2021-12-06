@@ -397,11 +397,11 @@ class Map2_0(Map2_0Template):
         
     #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
     def admin_button_click(self, **event_args):
-      
-      print('Not active')
     
 #       #Call a Server Function
 #       anvil.server.call('manipulate')
+
+      print('Not active')
       
     #This method is called when the Healthcare-Button is clicked
     def button_healthcare_click(self, **event_args):
@@ -416,19 +416,6 @@ class Map2_0(Map2_0Template):
         
         #Set Checkbox-Panel to visible and change Arrow-Icon
         self.icon_change(self.poi_categories_healthcare_container, True, self.button_healthcare, 'fa:angle-down'),
-        
-    def hide_bar_button_click(self, **event_args):
-      
-      #Check if Checkbox-Panel is visible or not
-      if self.Side_Bar.visible == True:
-      
-        #Set Checkbox-Panel to invisible and change Arrow-Icon
-        self.icon_change(self.Side_Bar, False, self.hide_bar_button, 'fa:angle-left')
-        
-      else:
-        
-        #Set Checkbox-Panel to visible and change Arrow-Icon
-        self.icon_change(self.Side_Bar, True, self.hide_bar_button, 'fa:angle-down'),
 
   #####  Button Functions   #####
   ###############################
@@ -649,7 +636,10 @@ class Map2_0(Map2_0Template):
         print(data)
         
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>ID:</b> {key}<br><b>Gemeinde:</b> {gm_name}<br><b>Fläche:</b> {data[9]} km&sup2;<br><br><b>Bevölkerung</b><br><b>Insgesamt:</b> {data[10]}<br><b>Männlich:</b> {data[11]}<br><b>Weiblich:</b> {data[12]}<br><b>je km&sup2:</b> {data[13]}<br><br><b>Grad der Verstädterung</b><br><b>Schlüssel:</b> {data[16]}<br><b>Bezeichnung:</b> {data[17]}').addTo(self.mapbox)
+        popup_text = f'<button type="button" onClick="hide_mun_info()">&#10006;</button><br><br><h3>Gemeinde: {gm_name}</h3><b>ID:</b> {key}<br><b>Fläche:</b> {data[9]} km&sup2;<br><br><b>Bevölkerung</b><br><b>Insgesamt:</b> {data[10]}<br><b>Männlich:</b> {data[11]}<br><b>Weiblich:</b> {data[12]}<br><b>je km&sup2:</b> {data[13]}<br><br><b>Grad der Verstädterung</b><br><b>Schlüssel:</b> {data[17]}<br><b>Bezeichnung:</b> {data[18]}'
+#         popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>ID:</b> {key}<br><b>Gemeinde:</b> {gm_name}<br><b>Fläche:</b> {data[9]} km&sup2;<br><br><b>Bevölkerung</b><br><b>Insgesamt:</b> {data[10]}<br><b>Männlich:</b> {data[11]}<br><b>Weiblich:</b> {data[12]}<br><b>je km&sup2:</b> {data[13]}<br><br><b>Grad der Verstädterung</b><br><b>Schlüssel:</b> {data[17]}<br><b>Bezeichnung:</b> {data[18]}').addTo(self.mapbox)
+        
+        anvil.js.call('show_mun_info', popup_text)
         
       #Check which Layer is active
       elif click.features[0].layer.source == 'bezirke':

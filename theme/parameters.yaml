@@ -32,6 +32,7 @@ roles:
 - {name: fixed-height}
 - {name: floater}
 - {name: show_button, components: null}
+- {name: gm_info, components: null}
 color_scheme:
   preset_groups:
   - name: Primary Colour

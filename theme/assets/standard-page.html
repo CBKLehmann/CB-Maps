@@ -14,6 +14,9 @@
     <div style="clear:both"></div>
   </div> -->
 
+  <div class="floating-menu" anvil-drop-here anvil-slot=" .floating-menu" id="info">
+  </div>
+  
   <div class="nav-holder">
     <div class="left-nav anvil-measure-this" anvil-slot-repeat="left-nav" anvil-drop-container=">.anvil-container">
     </div>
@@ -74,5 +77,18 @@
     		e.style.display = 'none';
     	}
     }
+  }
+  
+  function show_mun_info(html) {
+    
+    document.getElementById('info').innerHTML = html
+    document.getElementById('info').style.display = 'block'
+    
+  }
+  
+  function hide_mun_info() {
+    
+    document.getElementById('info').style.display = 'none'
+    
   }
 </script> 
