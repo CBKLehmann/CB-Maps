@@ -628,16 +628,14 @@ class Map2_0(Map2_0Template):
         else:
           gm_name = click.features[0].properties.name
         
-        print(click.features[0].properties)
-        
         key = click.features[0].properties.AGS
         data = anvil.server.call('get_Data_from_Database', key)
-        
         print(data)
-        
-        clicked_lngLat = dict(click.lngLat)
+        print(data[0])
+        print(data[0][0])
+        print(data[1])
+      
         popup_text = f'<button type="button" onClick="hide_mun_info()">&#10006;</button><br><br><h3>Gemeinde: {gm_name}</h3><b>ID:</b> {key}<br><b>Fläche:</b> {data[9]} km&sup2;<br><br><b>Bevölkerung</b><br><b>Insgesamt:</b> {data[10]}<br><b>Männlich:</b> {data[11]}<br><b>Weiblich:</b> {data[12]}<br><b>je km&sup2:</b> {data[13]}<br><br><b>Grad der Verstädterung</b><br><b>Schlüssel:</b> {data[17]}<br><b>Bezeichnung:</b> {data[18]}'
-#         popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>ID:</b> {key}<br><b>Gemeinde:</b> {gm_name}<br><b>Fläche:</b> {data[9]} km&sup2;<br><br><b>Bevölkerung</b><br><b>Insgesamt:</b> {data[10]}<br><b>Männlich:</b> {data[11]}<br><b>Weiblich:</b> {data[12]}<br><b>je km&sup2:</b> {data[13]}<br><br><b>Grad der Verstädterung</b><br><b>Schlüssel:</b> {data[17]}<br><b>Bezeichnung:</b> {data[18]}').addTo(self.mapbox)
         
         anvil.js.call('show_mun_info', popup_text)
         
