@@ -241,7 +241,7 @@ class Map2_0(Map2_0Template):
     def check_box_nur_change(self, **event_args):
       
       #Call create_icons-Function to set the Icons on Map and save last BBox of nursing_home
-      Variables.last_bbox_nur = self.create_icons(self.check_box_nur.checked, Variables.last_bbox_nur, 'nursing-home', Variables.icon_nursing)
+      Variables.last_bbox_nur = self.create_icons(self.check_box_nur.checked, Variables.last_bbox_nur, 'nursing_home', Variables.icon_nursing)
   
     #This method is called when the Check Box for POI 'pharmacy' is checked or unchecked
     def check_box_pha_change(self, **event_args):
