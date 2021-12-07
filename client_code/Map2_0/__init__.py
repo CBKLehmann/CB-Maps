@@ -398,8 +398,8 @@ class Map2_0(Map2_0Template):
     #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
     def admin_button_click(self, **event_args):
     
-#       #Call a Server Function
-#       anvil.server.call('manipulate')
+      #Call a Server Function
+      anvil.server.call('manipulate')
 
       print('Not active')
       
