@@ -824,3 +824,7 @@ https://stackoverflow.com/questions/30533055/calculating-shadow-values-for-all-m
 .mapboxgl-popup-content {
   box-shadow: 0 0px 0px rgb(0, 0, 0);
 }
+
+table, th, td {
+  border: 1px solid black;
+}
