@@ -831,7 +831,7 @@ class Map2_0(Map2_0Template):
         'type': 'fill',
         'source': {
             'type': 'geojson',
-            'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/gemeinden.geojson'
+            'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
         },
         'layout': {
             'visibility': 'none'
@@ -847,22 +847,22 @@ class Map2_0(Map2_0Template):
         }
       })
   
-      #Add outlined Layer for municipalities
-      self.mapbox.addLayer({
-          'id': 'outlineGM',
-          'type': 'line',
-          'source': {
-              'type': 'geojson',
-              'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/gemeinden.geojson'
-          },
-          'layout': {
-              'visibility': 'none'
-          },
-          'paint': {
-              'line-color': '#000',
-              'line-width': 0.5
-          }
-      })
+#       #Add outlined Layer for municipalities
+#       self.mapbox.addLayer({
+#           'id': 'outlineGM',
+#           'type': 'line',
+#           'source': {
+#               'type': 'geojson',
+#               'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
+#           },
+#           'layout': {
+#               'visibility': 'none'
+#           },
+#           'paint': {
+#               'line-color': '#000',
+#               'line-width': 0.5
+#           }
+#       })
       
       #Add filled Layer for berlin districts
       self.mapbox.addLayer({
