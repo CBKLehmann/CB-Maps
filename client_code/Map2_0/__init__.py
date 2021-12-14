@@ -358,6 +358,26 @@ class Map2_0(Map2_0Template):
       
       #Call create_icons-Function to set the Icons on Map and save last BBox of tram_stop
       Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, 'tram_stop', Variables.icon_tram)
+      
+    def check_box_sma_change(self, **event_args):
+      
+      #Call create_icons-Function to set the Icons on Map and save last BBox of supermarket
+      Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, 'supermarket', Variables.icon_supermarket)
+
+    def check_box_res_change(self, **event_args):
+      
+      #Call create_icons-Function to set the Icons on Map and save last BBox of tram_stop
+      Variables.last_bbox_res = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, 'restaurant', Variables.icon_restaurant)
+
+    def check_box_cafe_change(self, **event_args):
+      
+      #Call create_icons-Function to set the Icons on Map and save last BBox of tram_stop
+      Variables.last_bbox_caf = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, 'cafe', Variables.icon_cafe)
+
+    def check_box_uni_change(self, **event_args):
+      
+      #Call create_icons-Function to set the Icons on Map and save last BBox of tram_stop
+      Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, 'university', Variables.icon_university)
 
   ##### Check-Box Functions #####
   ###############################
@@ -435,7 +455,36 @@ class Map2_0(Map2_0Template):
       else:
         
         #Set Checkbox-Panel to visible and change Arrow-Icon
-        self.icon_change(self.poi_categories_healthcare_container, True, self.button_healthcare, 'fa:angle-down'),
+        self.icon_change(self.poi_categories_healthcare_container, True, self.button_healthcare, 'fa:angle-down')
+    
+    #This method is called when the Miscelanious-Button is clicked
+    def misc_button_click(self, **event_args):
+      
+      #Check if Checkbox-Panel is visible or not
+      if self.Misc_Container.visible == True:
+      
+        #Set Checkbox-Panel to invisible and change Arrow-Icon
+        self.icon_change(self.Misc_Container, False, self.misc_button, 'fa:angle-right')
+        
+      else:
+      
+        #Set Checkbox-Panel to visible and change Arrow-Icon
+        self.icon_change(self.Misc_Container, True, self.misc_button, 'fa:angle-down')
+
+    #This method is called when the ÖPNV-Button is clicked
+    def opnv_button_click(self, **event_args):
+      
+      #Check if Checkbox-Panel is visible or not
+      if self.opnv_container.visible == True:
+      
+        #Set Checkbox-Panel to invisible and change Arrow-Icon
+        self.icon_change(self.opnv_container, False, self.opnv_button, 'fa:angle-right')
+        
+      else:
+      
+        #Set Checkbox-Panel to visible and change Arrow-Icon
+        self.icon_change(self.opnv_container, True, self.opnv_button, 'fa:angle-down')
+
 
   #####  Button Functions   #####
   ###############################
@@ -1055,6 +1104,8 @@ class Map2_0(Map2_0Template):
       
                   # Get geojson of POIs inside Bounding Box
                   geojson = anvil.server.call('poi_data', category, bbox)
+      
+                  print(geojson)
       
                   # Check if Elements are over 3000 for performance Reasons
                   if len(geojson) > 3000:
