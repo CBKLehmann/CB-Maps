@@ -198,7 +198,7 @@ class Map2_0(Map2_0Template):
     #This method is called when the Check Box for Gemeinden-Layer is checked or unchecked
     def check_box_dt_change(self, **event_args):
 
-            #Get Visibility of Layer
+      #Get Visibility of Layer
       visibility = self.mapbox.getLayoutProperty('bezirke', 'visibility')
       
       #Check state of visibility
@@ -212,6 +212,24 @@ class Map2_0(Map2_0Template):
       
         #Change Active Layer to hide
         self.change_active_Layer(['bezirke', 'outlineBK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm])
+        
+    def check_box_nl_change(self, **event_args):
+
+      #Get Visibility of Layer
+      visibility = self.mapbox.getLayoutProperty('netherlands', 'visibility')
+      
+      #Check state of visibility
+      if visibility == 'none':
+      
+        #Change Active Layer to show
+        self.change_active_Layer(['netherlands', 'outlineNL'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_nl])
+      
+      #Check state of visibility
+      elif visibility == 'visible':
+      
+        #Change Active Layer to hide
+        self.change_active_Layer(['netherlands', 'outlineNL'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_nl])
+
         
     #This method is called when the Check Box for POI 'doctors' is checked or unchecked
     def check_box_doc_change(self, **event_args):
@@ -894,6 +912,45 @@ class Map2_0(Map2_0Template):
           'source': {
               'type': 'geojson',
               'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson'
+          },
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 0.5
+          }
+      })
+      
+      #Add filled Layer for Netherlands
+      self.mapbox.addLayer({
+        'id': 'netherlands',
+        'type': 'fill',
+        'source': {
+            'type': 'geojson',
+            'data': 'https://www.webuildinternet.com/articles/2015-07-19-geojson-data-of-the-netherlands/townships.geojson'
+        },
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      })
+  
+      #Add outlined Layer for Netherlands
+      self.mapbox.addLayer({
+          'id': 'outlineNL',
+          'type': 'line',
+          'source': {
+              'type': 'geojson',
+              'data': 'https://www.webuildinternet.com/articles/2015-07-19-geojson-data-of-the-netherlands/townships.geojson'
           },
           'layout': {
               'visibility': 'none'
