@@ -854,6 +854,7 @@ class Map2_0(Map2_0Template):
           'source': {
               'type': 'geojson',
               'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
+
           },
           'layout': {
               'visibility': 'none'
