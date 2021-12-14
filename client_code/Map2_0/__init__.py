@@ -831,7 +831,7 @@ class Map2_0(Map2_0Template):
         'type': 'fill',
         'source': {
             'type': 'geojson',
-            'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/gemeinden.geojson'
+            'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
         },
         'layout': {
             'visibility': 'none'
@@ -853,7 +853,7 @@ class Map2_0(Map2_0Template):
           'type': 'line',
           'source': {
               'type': 'geojson',
-              'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/gemeinden.geojson'
+              'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
           },
           'layout': {
               'visibility': 'none'
