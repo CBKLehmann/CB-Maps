@@ -1092,9 +1092,9 @@ class Map2_0(Map2_0Template):
           # Do if Checkbox for Iso-Layer' is unchecked
           else:
       
-              # Get visible Bounding Box of Map
-              bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'],
-                      (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+            # Get visible Bounding Box of Map
+            bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'],
+                    (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
       
           # Check if Bounding Box is not the same as least Request
           if not bbox == last_bbox:
@@ -1104,8 +1104,6 @@ class Map2_0(Map2_0Template):
       
                   # Get geojson of POIs inside Bounding Box
                   geojson = anvil.server.call('poi_data', category, bbox)
-      
-                  print(geojson)
       
                   # Check if Elements are over 3000 for performance Reasons
                   if len(geojson) > 3000:
@@ -1164,7 +1162,7 @@ class Map2_0(Map2_0Template):
                                   f'<br>'
                                   f'&nbsp;&nbsp;{name}'
                               )
-                             
+
                           # Check if Category is not Bus or Tram
                           else:
       
