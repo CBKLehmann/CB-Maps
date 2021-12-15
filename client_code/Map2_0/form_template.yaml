@@ -12,7 +12,7 @@ components:
   layout_properties: {slot: default}
   components:
   - type: Spacer
-    properties: {visible: true, spacing_above: none, spacing_below: none, height: 1066,
+    properties: {visible: true, spacing_above: none, spacing_below: none, height: 1245,
       tooltip: ''}
     name: spacer_1
     layout_properties: {grid_position: 'QGFIHK,HAWKQF', full_width_row: true}
