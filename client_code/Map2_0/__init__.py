@@ -510,7 +510,7 @@ class Map2_0(Map2_0Template):
         coords = [el[46], el[45]]
         
         # Add Icon to the Map
-        newicon = mapboxgl.Marker({'color': '#0000FF'}).setLngLat(coords).setOffset([0, 0]).addTo(self.mapbox)
+        newicon = mapboxgl.Marker({'color': '#FF0000'}).setLngLat(coords).setOffset([0, 0]).addTo(self.mapbox)
       
   #####  Button Functions   #####
   ###############################
