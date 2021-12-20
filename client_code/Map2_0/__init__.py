@@ -493,9 +493,18 @@ class Map2_0(Map2_0Template):
 
       data = anvil.server.call('get_Care_DB_Data', bbox)
       
+      print(len(data))
+      
       for el in data:
         
-        print(el[46])
+        print(el)
+        
+        newData = []
+        
+        newData.append(el[46])
+      
+      print(len(newData))
+      print(newData)
       
   #####  Button Functions   #####
   ###############################
