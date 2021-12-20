@@ -493,22 +493,19 @@ class Map2_0(Map2_0Template):
 
       data = anvil.server.call('get_Care_DB_Data', bbox)
       
-      print(len(data))
-      
       i = 0
+      newData = []
       
-      for el in data:
+      while i < len(data):
         
-        print(len(el))
-        
-        newData = []
-        
-        newData.append(el[46])
-        
-        i += 0
+        if bbox[0] < float(data[i][45]) < bbox[2]:
+          
+          if bbox[1] < float(data[i[46]]) < bbox[3]:
       
-      print(f'index: {i}')
-      print(len(newData))
+            newData.append(data[i])
+        
+        i += 1
+
       print(newData)
       
   #####  Button Functions   #####
