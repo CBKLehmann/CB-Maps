@@ -497,8 +497,6 @@ class Map2_0(Map2_0Template):
         
         print(el[46])
       
-      print(data)
-      
   #####  Button Functions   #####
   ###############################
   #####  Dropdown Functions #####
