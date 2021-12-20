@@ -495,14 +495,19 @@ class Map2_0(Map2_0Template):
       
       print(len(data))
       
+      i = 0
+      
       for el in data:
         
-        print(el)
+        print(len(el))
         
         newData = []
         
         newData.append(el[46])
+        
+        i += 0
       
+      print(f'index: {i}')
       print(len(newData))
       print(newData)
       
