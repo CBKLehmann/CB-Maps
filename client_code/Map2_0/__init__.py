@@ -10,7 +10,6 @@ import anvil.js
 import anvil.http
 import json
 from .. import Variables, Layer
-import psycopg2
 
 #Get global Variables
 global Variables, Layer
@@ -485,8 +484,21 @@ class Map2_0(Map2_0Template):
       
         #Set Checkbox-Panel to visible and change Arrow-Icon
         self.icon_change(self.opnv_container, True, self.opnv_button, 'fa:angle-down')
+        
+    def pdb_data_click(self, **event_args):
+    
+      # Get visible Bounding Box of Map
+      bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'],
+              (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
 
-
+      data = anvil.server.call('get_Care_DB_Data', bbox)
+      
+      for el in data:
+        
+        print(el[46])
+      
+      print(data)
+      
   #####  Button Functions   #####
   ###############################
   #####  Dropdown Functions #####
