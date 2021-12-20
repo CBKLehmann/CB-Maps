@@ -10,6 +10,7 @@ import anvil.js
 import anvil.http
 import json
 from .. import Variables, Layer
+import psycopg2
 
 #Get global Variables
 global Variables, Layer
@@ -59,6 +60,8 @@ class Map2_0(Map2_0Template):
       self.mapbox.on('mouseleave', 'gemeinden', self.change_hover_state)
       self.mapbox.on('mousemove', 'bezirke', self.change_hover_state)
       self.mapbox.on('mouseleave', 'bezirke', self.change_hover_state)
+      self.mapbox.on('mousemove', 'netherlands', self.change_hover_state)
+      self.mapbox.on('mouseleave', 'netherlands', self.change_hover_state)
       self.mapbox.on('click', 'bundeslaender', self.popup)
       self.mapbox.on('click', 'regierungsbezirke', self.popup)
       self.mapbox.on('click', 'landkreise', self.popup)
@@ -133,13 +136,13 @@ class Map2_0(Map2_0Template):
       if visibility == 'none':
       
         #Change Active Layer to show
-        self.change_active_Layer(['bundeslaender', 'outlineBL'], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'visible', [self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt])
+        self.change_active_Layer(['bundeslaender', 'outlineBL'], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'visible', [self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt, self.check_box_nl])
       
       #Check state of visibility
       elif visibility == 'visible':
       
         #Change Active Layer to hide
-        self.change_active_Layer(['bundeslaender', 'outlineBL'], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'none', [self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt])
+        self.change_active_Layer(['bundeslaender', 'outlineBL'], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'none', [self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt, self.check_box_nl])
 
     #This method is called when the Check Box for Regierungsbezirke-Layer is checked or unchecked
     def check_box_rb_change(self, **event_args):
@@ -151,13 +154,13 @@ class Map2_0(Map2_0Template):
       if visibility == 'none':
       
         #Change Active Layer to show
-        self.change_active_Layer(['regierungsbezirke', 'outlineRB'], [['bundeslaender', 'outlineBL'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'visible', [self.check_box_bl, self.check_box_lk, self.check_box_gm, self.check_box_dt])
+        self.change_active_Layer(['regierungsbezirke', 'outlineRB'], [['bundeslaender', 'outlineBL'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'visible', [self.check_box_bl, self.check_box_lk, self.check_box_gm, self.check_box_dt, self.check_box_nl])
       
       #Check state of visibility
       elif visibility == 'visible':
       
         #Change Active Layer to hide
-        self.change_active_Layer(['regierungsbezirke', 'outlineRB'], [['bundeslaender', 'outlineBL'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'none', [self.check_box_bl, self.check_box_lk, self.check_box_gm, self.check_box_dt])
+        self.change_active_Layer(['regierungsbezirke', 'outlineRB'], [['bundeslaender', 'outlineBL'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'none', [self.check_box_bl, self.check_box_lk, self.check_box_gm, self.check_box_dt, self.check_box_nl])
 
     #This method is called when the Check Box for Landkreise-Layer is checked or unchecked
     def check_box_lk_change(self, **event_args):
@@ -169,13 +172,13 @@ class Map2_0(Map2_0Template):
       if visibility == 'none':
       
         #Change Active Layer to show
-        self.change_active_Layer(['landkreise', 'outlineLK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_gm, self.check_box_dt])
+        self.change_active_Layer(['landkreise', 'outlineLK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_gm, self.check_box_dt, self.check_box_nl])
       
       #Check state of visibility
       elif visibility == 'visible':
       
         #Change Active Layer to hide
-        self.change_active_Layer(['landkreise', 'outlineLK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_gm, self.check_box_dt])
+        self.change_active_Layer(['landkreise', 'outlineLK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_gm, self.check_box_dt, self.check_box_nl])
 
     #This method is called when the Check Box for Gemeinden-Layer is checked or unchecked
     def check_box_gm_change(self, **event_args):
@@ -187,31 +190,49 @@ class Map2_0(Map2_0Template):
       if visibility == 'none':
       
         #Change Active Layer to show
-        self.change_active_Layer(['gemeinden', 'outlineGM'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['bezirke', 'outlineBK']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_dt])
+        self.change_active_Layer(['gemeinden', 'outlineGM'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_dt, self.check_box_nl])
       
       #Check state of visibility
       elif visibility == 'visible':
       
         #Change Active Layer to hide
-        self.change_active_Layer(['gemeinden', 'outlineGM'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['bezirke', 'outlineBK']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_dt])
+        self.change_active_Layer(['gemeinden', 'outlineGM'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_dt, self.check_box_nl])
     
     #This method is called when the Check Box for Gemeinden-Layer is checked or unchecked
     def check_box_dt_change(self, **event_args):
 
-            #Get Visibility of Layer
+      #Get Visibility of Layer
       visibility = self.mapbox.getLayoutProperty('bezirke', 'visibility')
       
       #Check state of visibility
       if visibility == 'none':
       
         #Change Active Layer to show
-        self.change_active_Layer(['bezirke', 'outlineBK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm])
+        self.change_active_Layer(['bezirke', 'outlineBK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['netherlands', 'outlineNL']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_nl])
       
       #Check state of visibility
       elif visibility == 'visible':
       
         #Change Active Layer to hide
-        self.change_active_Layer(['bezirke', 'outlineBK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm])
+        self.change_active_Layer(['bezirke', 'outlineBK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['netherlands', 'outlineNL']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_nl])
+        
+    def check_box_nl_change(self, **event_args):
+
+      #Get Visibility of Layer
+      visibility = self.mapbox.getLayoutProperty('netherlands', 'visibility')
+      
+      #Check state of visibility
+      if visibility == 'none':
+      
+        #Change Active Layer to show
+        self.change_active_Layer(['netherlands', 'outlineNL'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt])
+      
+      #Check state of visibility
+      elif visibility == 'visible':
+      
+        #Change Active Layer to hide
+        self.change_active_Layer(['netherlands', 'outlineNL'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt])
+
         
     #This method is called when the Check Box for POI 'doctors' is checked or unchecked
     def check_box_doc_change(self, **event_args):
@@ -338,6 +359,26 @@ class Map2_0(Map2_0Template):
       
       #Call create_icons-Function to set the Icons on Map and save last BBox of tram_stop
       Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, 'tram_stop', Variables.icon_tram)
+      
+    def check_box_sma_change(self, **event_args):
+      
+      #Call create_icons-Function to set the Icons on Map and save last BBox of supermarket
+      Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, 'supermarket', Variables.icon_supermarket)
+
+    def check_box_res_change(self, **event_args):
+      
+      #Call create_icons-Function to set the Icons on Map and save last BBox of tram_stop
+      Variables.last_bbox_res = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, 'restaurant', Variables.icon_restaurant)
+
+    def check_box_cafe_change(self, **event_args):
+      
+      #Call create_icons-Function to set the Icons on Map and save last BBox of tram_stop
+      Variables.last_bbox_caf = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, 'cafe', Variables.icon_cafe)
+
+    def check_box_uni_change(self, **event_args):
+      
+      #Call create_icons-Function to set the Icons on Map and save last BBox of tram_stop
+      Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, 'university', Variables.icon_university)
 
   ##### Check-Box Functions #####
   ###############################
@@ -415,7 +456,36 @@ class Map2_0(Map2_0Template):
       else:
         
         #Set Checkbox-Panel to visible and change Arrow-Icon
-        self.icon_change(self.poi_categories_healthcare_container, True, self.button_healthcare, 'fa:angle-down'),
+        self.icon_change(self.poi_categories_healthcare_container, True, self.button_healthcare, 'fa:angle-down')
+    
+    #This method is called when the Miscelanious-Button is clicked
+    def misc_button_click(self, **event_args):
+      
+      #Check if Checkbox-Panel is visible or not
+      if self.Misc_Container.visible == True:
+      
+        #Set Checkbox-Panel to invisible and change Arrow-Icon
+        self.icon_change(self.Misc_Container, False, self.misc_button, 'fa:angle-right')
+        
+      else:
+      
+        #Set Checkbox-Panel to visible and change Arrow-Icon
+        self.icon_change(self.Misc_Container, True, self.misc_button, 'fa:angle-down')
+
+    #This method is called when the ÖPNV-Button is clicked
+    def opnv_button_click(self, **event_args):
+      
+      #Check if Checkbox-Panel is visible or not
+      if self.opnv_container.visible == True:
+      
+        #Set Checkbox-Panel to invisible and change Arrow-Icon
+        self.icon_change(self.opnv_container, False, self.opnv_button, 'fa:angle-right')
+        
+      else:
+      
+        #Set Checkbox-Panel to visible and change Arrow-Icon
+        self.icon_change(self.opnv_container, True, self.opnv_button, 'fa:angle-down')
+
 
   #####  Button Functions   #####
   ###############################
@@ -633,7 +703,7 @@ class Map2_0(Map2_0Template):
 
         print(data[0][17])
       
-        popup_text = f'<button type="button" onClick="hide_mun_info()">&#10006;</button><br><br><h3>Municipality: {gm_name}</h3><b>ID:</b> {key}<br><b>Area:</b> {data[0][9]} km&sup2;<br><br><b>Population:</b> {data[0][10]}<br><b>per km&sup2:</b> {data[0][13]}<br><br><table><tr><th rowspan="2">Overall</th><th>Under 3</th><th>3 to Under 6</th><th>6 to Under 10</th><th>10 to Under 15</th><th>15 to Under 18</th><th>18 to Under 20</th><th>20 to Under 25</th><th>25 to Under 30</th><th>30 to Under 35</th><th>35 to Under 40</th><th>40 to Under 45</th><th>45 to Under 50</th><th>50 to Under 55</th><th>55 to Under 60</th><th>60 to Under 65</th><th>65 to Under 75</th><th>75 and older</th></tr><tr><td>{"{:.1f}".format(data[1][2])}%</td><td>{"{:.1f}".format(data[1][3])}%</td><td>{"{:.1f}".format(data[1][4])}%</td><td>{"{:.1f}".format(data[1][5])}%</td><td>{"{:.1f}".format(data[1][6])}%</td><td>{"{:.1f}".format(data[1][7])}%</td><td>{"{:.1f}".format(data[1][8])}%</td><td>{"{:.1f}".format(data[1][9])}%</td><td>{"{:.1f}".format(data[1][10])}%</td><td>{"{:.1f}".format(data[1][11])}%</td><td>{"{:.1f}".format(data[1][12])}%</td><td>{"{:.1f}".format(data[1][13])}%</td><td>{"{:.1f}".format(data[1][14])}%</td><td>{"{:.1f}".format(data[1][15])}%</td><td>{"{:.1f}".format(data[1][16])}%</td><td>{"{:.1f}".format(data[1][17])}%</td><td>{"{:.1f}".format(data[1][18])}%</td></tr></table><br><table><tr><th rowspan="2">Male</th><th>Overall</th><th>Under 3</th><th>3 to Under 6</th><th>6 to Under 10</th><th>10 to Under 15</th><th>15 to Under 18</th><th>18 to Under 20</th><th>20 to Under 25</th><th>25 to Under 30</th><th>30 to Under 35</th><th>35 to Under 40</th><th>40 to Under 45</th><th>45 to Under 50</th><th>50 to Under 55</th><th>55 to Under 60</th><th>60 to Under 65</th><th>65 to Under 75</th><th>75 and older</th></tr><tr><td>{"{:.1f}".format(data[1][37])}%</td><td>{"{:.1f}".format(data[1][20])}%</td><td>{"{:.1f}".format(data[1][21])}%</td><td>{"{:.1f}".format(data[1][22])}%</td><td>{"{:.1f}".format(data[1][23])}%</td><td>{data[1][24]}%</td><td>{"{:.1f}".format(data[1][25])}%</td><td>{"{:.1f}".format(data[1][26])}%</td><td>{"{:.1f}".format(data[1][27])}%</td><td>{"{:.1f}".format(data[1][28])}%</td><td>{"{:.1f}".format(data[1][29])}%</td><td>{"{:.1f}".format(data[1][30])}%</td><td>{"{:.1f}".format(data[1][31])}%</td><td>{"{:.1f}".format(data[1][32])}%</td><td>{"{:.1f}".format(data[1][33])}%</td><td>{"{:.1f}".format(data[1][34])}%</td><td>{"{:.1f}".format(data[1][35])}%</td><td>{"{:.1f}".format(data[1][36])}%</td></tr></table><br><table><tr><th rowspan="2">Female</th><th>Overall</th><th>Under 3</th><th>3 to Under 6</th><th>6 to Under 10</th><th>10 to Under 15</th><th>15 to Under 18</th><th>18 to Under 20</th><th>20 to Under 25</th><th>25 to Under 30</th><th>30 to Under 35</th><th>35 to Under 40</th><th>40 to Under 45</th><th>45 to Under 50</th><th>50 to Under 55</th><th>55 to Under 60</th><th>60 to Under 65</th><th>65 to Under 75</th><th>75 and older</th></tr><tr><td>{"{:.1f}".format(data[1][55])}%</td><td>{"{:.1f}".format(data[1][38])}%</td><td>{"{:.1f}".format(data[1][39])}%</td><td>{"{:.1f}".format(data[1][40])}%</td><td>{"{:.1f}".format(data[1][41])}%</td><td>{"{:.1f}".format(data[1][42])}%</td><td>{data[1][43]}%</td><td>{"{:.1f}".format(data[1][44])}%</td><td>{"{:.1f}".format(data[1][45])}%</td><td>{"{:.1f}".format(data[1][46])}%</td> <td>{"{:.1f}".format(data[1][47])}%</td><td>{"{:.1f}".format(data[1][48])}%</td><td>{"{:.1f}".format(data[1][49])}%</td><td>{"{:.1f}".format(data[1][50])}%</td><td>{"{:.1f}".format(data[1][51])}%</td><td>{"{:.1f}".format(data[1][52])}%</td><td>{"{:.1f}".format(data[1][53])}%</td><td>{"{:.1f}".format(data[1][54])}%</td></tr></table><br><br><br><b>Grad der Verstädterung:</b> {data[0][18]}'
+        popup_text = f'<button type="button" onClick="hide_mun_info()">&#10006;</button><br><br><h3>Municipality: {gm_name}</h3><b>ID:</b> {key}<br><b>Area:</b> {"{:.2f}".format(data[0][9])}km&sup2;<br><br><b>Population:</b> {data[0][10]}<br><b>per km&sup2:</b> {data[0][13]}<br><br><table><tr><th class="firstCol">Gender</th><th>Overall</th><th>Under 3</th><th>3 to <br>Under 6</th><th>6 to <br>Under 10</th><th>10 to Under 15</th><th>15 to Under 18</th><th>18 to Under 20</th><th>20 to Under 25</th><th>25 to Under 30</th><th>30 to Under 35</th><th>35 to Under 40</th><th>40 to Under 45</th><th>45 to Under 50</th><th>50 to Under 55</th><th>55 to Under 60</th><th>60 to Under 65</th><th>65 to Under 75</th><th>75 and older</th></tr><tr><th class="firstCol">Overall</th><td>100%</td><td>{"{:.1f}".format(data[1][2])}%</td><td>{"{:.1f}".format(data[1][3])}%</td><td>{"{:.1f}".format(data[1][4])}%</td><td>{"{:.1f}".format(data[1][5])}%</td><td>{"{:.1f}".format(data[1][6])}%</td><td>{"{:.1f}".format(data[1][7])}%</td><td>{"{:.1f}".format(data[1][8])}%</td><td>{"{:.1f}".format(data[1][9])}%</td><td>{"{:.1f}".format(data[1][10])}%</td><td>{"{:.1f}".format(data[1][11])}%</td><td>{"{:.1f}".format(data[1][12])}%</td><td>{"{:.1f}".format(data[1][13])}%</td><td>{"{:.1f}".format(data[1][14])}%</td><td>{"{:.1f}".format(data[1][15])}%</td><td>{"{:.1f}".format(data[1][16])}%</td><td>{"{:.1f}".format(data[1][17])}%</td><td>{"{:.1f}".format(data[1][18])}%</td></tr><tr><th class="firstCol">Male</th><td>{"{:.1f}".format(data[1][37])}%</td><td>{"{:.1f}".format(data[1][20])}%</td><td>{"{:.1f}".format(data[1][21])}%</td><td>{"{:.1f}".format(data[1][22])}%</td><td>{"{:.1f}".format(data[1][23])}%</td><td>{data[1][24]}%</td><td>{"{:.1f}".format(data[1][25])}%</td><td>{"{:.1f}".format(data[1][26])}%</td><td>{"{:.1f}".format(data[1][27])}%</td><td>{"{:.1f}".format(data[1][28])}%</td><td>{"{:.1f}".format(data[1][29])}%</td><td>{"{:.1f}".format(data[1][30])}%</td><td>{"{:.1f}".format(data[1][31])}%</td><td>{"{:.1f}".format(data[1][32])}%</td><td>{"{:.1f}".format(data[1][33])}%</td><td>{"{:.1f}".format(data[1][34])}%</td><td>{"{:.1f}".format(data[1][35])}%</td><td>{"{:.1f}".format(data[1][36])}%</td></tr><tr><th class="firstCol">Female</th><td>{"{:.1f}".format(data[1][55])}%</td><td>{"{:.1f}".format(data[1][38])}%</td><td>{"{:.1f}".format(data[1][39])}%</td><td>{"{:.1f}".format(data[1][40])}%</td><td>{"{:.1f}".format(data[1][41])}%</td><td>{"{:.1f}".format(data[1][42])}%</td><td>{data[1][43]}%</td><td>{"{:.1f}".format(data[1][44])}%</td><td>{"{:.1f}".format(data[1][45])}%</td><td>{"{:.1f}".format(data[1][46])}%</td> <td>{"{:.1f}".format(data[1][47])}%</td><td>{"{:.1f}".format(data[1][48])}%</td><td>{"{:.1f}".format(data[1][49])}%</td><td>{"{:.1f}".format(data[1][50])}%</td><td>{"{:.1f}".format(data[1][51])}%</td><td>{"{:.1f}".format(data[1][52])}%</td><td>{"{:.1f}".format(data[1][53])}%</td><td>{"{:.1f}".format(data[1][54])}%</td></tr></table><br><br><br><b>Grad der Verstädterung:</b> {data[0][18]}'
         
         anvil.js.call('show_mun_info', popup_text)
         
@@ -831,7 +901,7 @@ class Map2_0(Map2_0Template):
         'type': 'fill',
         'source': {
             'type': 'geojson',
-            'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/gemeinden.geojson'
+            'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
         },
         'layout': {
             'visibility': 'none'
@@ -853,7 +923,8 @@ class Map2_0(Map2_0Template):
           'type': 'line',
           'source': {
               'type': 'geojson',
-              'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/gemeinden.geojson'
+              'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
+
           },
           'layout': {
               'visibility': 'none'
@@ -893,6 +964,45 @@ class Map2_0(Map2_0Template):
           'source': {
               'type': 'geojson',
               'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson'
+          },
+          'layout': {
+              'visibility': 'none'
+          },
+          'paint': {
+              'line-color': '#000',
+              'line-width': 0.5
+          }
+      })
+      
+      #Add filled Layer for Netherlands
+      self.mapbox.addLayer({
+        'id': 'netherlands',
+        'type': 'fill',
+        'source': {
+            'type': 'geojson',
+            'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson'
+        },
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+          'fill-color': '#0080ff',
+          'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], False],
+                0.75,
+                0.5
+          ]
+        }
+      })
+  
+      #Add outlined Layer for Netherlands
+      self.mapbox.addLayer({
+          'id': 'outlineNL',
+          'type': 'line',
+          'source': {
+              'type': 'geojson',
+              'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson'
           },
           'layout': {
               'visibility': 'none'
@@ -983,9 +1093,9 @@ class Map2_0(Map2_0Template):
           # Do if Checkbox for Iso-Layer' is unchecked
           else:
       
-              # Get visible Bounding Box of Map
-              bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'],
-                      (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+            # Get visible Bounding Box of Map
+            bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'],
+                    (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
       
           # Check if Bounding Box is not the same as least Request
           if not bbox == last_bbox:
@@ -1053,7 +1163,7 @@ class Map2_0(Map2_0Template):
                                   f'<br>'
                                   f'&nbsp;&nbsp;{name}'
                               )
-                             
+
                           # Check if Category is not Bus or Tram
                           else:
       
