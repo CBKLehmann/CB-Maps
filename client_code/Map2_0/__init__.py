@@ -377,7 +377,12 @@ class Map2_0(Map2_0Template):
       
       #Call create_icons-Function to set the Icons on Map and save last BBox of tram_stop
       Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, 'university', Variables.icon_university)
-
+      
+    def pdb_data_cb_change(self, **event_args):
+      
+      #Call create_icons-Function to set the Icons on Map and save last BBox of tram_stop
+      Variables.last_bbox_uni = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_pdb, 'pflegeDB', Variables.icon_pflegeDB)
+          
   ##### Check-Box Functions #####
   ###############################
   #####  Button Functions   #####
@@ -484,34 +489,6 @@ class Map2_0(Map2_0Template):
         #Set Checkbox-Panel to visible and change Arrow-Icon
         self.icon_change(self.opnv_container, True, self.opnv_button, 'fa:angle-down')
         
-    def pdb_data_click(self, **event_args):
-    
-      # Get visible Bounding Box of Map
-      bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'],
-              (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
-
-      data = anvil.server.call('get_Care_DB_Data', bbox)
-      
-      i = 0
-      newData = []
-      
-      while i < len(data):
-        
-        if bbox[0] < float(data[i][45]) < bbox[2]:
-          
-          if bbox[1] < float(data[i][46]) < bbox[3]:
-      
-            newData.append(data[i])
-        
-        i += 1
-
-      for el in newData:
-        
-        coords = [el[46], el[45]]
-        
-        # Add Icon to the Map
-        newicon = mapboxgl.Marker({'color': '#FF0000'}).setLngLat(coords).setOffset([0, 0]).addTo(self.mapbox)
-      
   #####  Button Functions   #####
   ###############################
   #####  Dropdown Functions #####
@@ -1128,8 +1105,16 @@ class Map2_0(Map2_0Template):
               # Check if new Bounding Box is overlapping old Bounding Box
               if bbox[0] < last_bbox[0] or bbox[1] < last_bbox[1] or bbox[2] > last_bbox[2] or bbox[3] > last_bbox[3]:
       
-                  # Get geojson of POIs inside Bounding Box
-                  geojson = anvil.server.call('poi_data', category, bbox)
+                  if category == 'pflegeDB':
+          
+                    geojson = anvil.server.call('get_Care_DB_Data', bbox)
+            
+                    print(len(geojson))
+          
+                  else:
+      
+                    # Get geojson of POIs inside Bounding Box
+                    geojson = anvil.server.call('poi_data', category, bbox)
       
                   # Check if Elements are over 3000 for performance Reasons
                   if len(geojson) > 3000:
@@ -1143,97 +1128,112 @@ class Map2_0(Map2_0Template):
                       #Create empty Icons Array to save Elements
                       icons = []
       
+                      print(geojson[0])
+      
                       # Loop through every Element in geojson
                       for ele in geojson:
       
-                          # Get coordinates of current Icon
-                          el_coords = ele['geometry']['coordinates']
-      
-                          # Create HTML Element for Icon
-                          el = document.createElement('div')
-                          el.className = 'marker'
-                          el.style.width = '25px'
-                          el.style.height = '25px'
-                          el.style.backgroundSize = '100%'
-                          el.style.backgroundrepeat = 'no-repeat'
-      
-                          # Create Icon
-                          el.className = 'icon_doc'
-                          el.style.backgroundImage = f'url({picture})'
-      
-                          # Get different Informations from geojson
-                          city = ele['properties']['city']
-                          suburb = ele['properties']['suburb']
-                          street = ele['properties']['street']
-                          housenumber = ele['properties']['housenumber']
-                          postcode = ele['properties']['postcode']
-                          phone = ele['properties']['phone']
-                          website = ele['properties']['website']
-                          healthcare = ele['properties']['healthcare']
-                          name = ele['properties']['name']
-                          opening_hours = ele['properties']['opening_hours']
-                          wheelchair = ele['properties']['wheelchair']
-                          o_id = ele['properties']['id']
-                          fax = ele['properties']['fax']
-                          email = ele['properties']['email']
-                          speciality = ele['properties']['healthcare:speciality']
-                          operator = ele['properties']['operator']
-      
-                          # Check if Category is Bus or Tram
-                          if category == 'bus_stop' or category == 'tram_stop':
+                          if category == 'pflegeDB':
           
-                              # Create Popup for Element
-                              popup = mapboxgl.Popup({'offset': 25}).setHTML(
-                                  f'<b>Name:</b>'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;{name}'
-                              )
-
-                          # Check if Category is not Bus or Tram
+                            el_coords = [ele[45], ele[46]]
+          
+                            # Create Popup for Element
+                            popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                                f'<b>PM ID:</b>'
+                                f'<br>'
+                                f'&nbsp;&nbsp;{name}'
+                            )
+          
                           else:
+          
+                            # Get coordinates of current Icon
+                            el_coords = ele['geometry']['coordinates']
+        
+                            # Create HTML Element for Icon
+                            el = document.createElement('div')
+                            el.className = 'marker'
+                            el.style.width = '25px'
+                            el.style.height = '25px'
+                            el.style.backgroundSize = '100%'
+                            el.style.backgroundrepeat = 'no-repeat'
+        
+                            # Create Icon
+                            el.className = 'icon_doc'
+                            el.style.backgroundImage = f'url({picture})'
+        
+                            # Get different Informations from geojson
+                            city = ele['properties']['city']
+                            suburb = ele['properties']['suburb']
+                            street = ele['properties']['street']
+                            housenumber = ele['properties']['housenumber']
+                            postcode = ele['properties']['postcode']
+                            phone = ele['properties']['phone']
+                            website = ele['properties']['website']
+                            healthcare = ele['properties']['healthcare']
+                            name = ele['properties']['name']
+                            opening_hours = ele['properties']['opening_hours']
+                            wheelchair = ele['properties']['wheelchair']
+                            o_id = ele['properties']['id']
+                            fax = ele['properties']['fax']
+                            email = ele['properties']['email']
+                            speciality = ele['properties']['healthcare:speciality']
+                            operator = ele['properties']['operator']
       
-                              # Create Popup for Element
-                              popup = mapboxgl.Popup({'offset': 25}).setHTML(
-                                  f'<b>ID:</b> {o_id}'
-                                  f'<br>'
-                                  f'<b>Name:</b>'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;{name}'
-                                  f'<br>'
-                                  f'<b>Operator:</b>'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;{operator}'
-                                  f'<br>'
-                                  f'<b>Adresse:</b>'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;{street} {housenumber}'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;{postcode}, {city} {suburb}'
-                                  f'<br>'
-                                  f'<b>Kontakt</b>'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;Telefon: {phone}'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;Fax: {fax}'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;Email: {email}'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;Webseite:'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;&nbsp;&nbsp;{website}'
-                                  f'<br>'
-                                  f'<b>Infos</b>'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;Kategorie: {healthcare}'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;Speciality: {speciality}'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;Öffnungszeiten:'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}'
-                                  f'<br>'
-                                  f'&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}'
-                              )
+                            # Check if Category is Bus or Tram
+                            if category == 'bus_stop' or category == 'tram_stop':
+            
+                                # Create Popup for Element
+                                popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                                    f'<b>Name:</b>'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;{name}'
+                                )
+                
+                            # Check if Category is not Bus or Tram
+                            else:
+        
+                                # Create Popup for Element
+                                popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                                    f'<b>ID:</b> {o_id}'
+                                    f'<br>'
+                                    f'<b>Name:</b>'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;{name}'
+                                    f'<br>'
+                                    f'<b>Operator:</b>'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;{operator}'
+                                    f'<br>'
+                                    f'<b>Adresse:</b>'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;{street} {housenumber}'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;{postcode}, {city} {suburb}'
+                                    f'<br>'
+                                    f'<b>Kontakt</b>'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;Telefon: {phone}'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;Fax: {fax}'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;Email: {email}'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;Webseite:'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;&nbsp;&nbsp;{website}'
+                                    f'<br>'
+                                    f'<b>Infos</b>'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;Kategorie: {healthcare}'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;Speciality: {speciality}'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;Öffnungszeiten:'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}'
+                                    f'<br>'
+                                    f'&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}'
+                                )
       
                           # Add Icon to the Map
                           newicon = mapboxgl.Marker(el).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
