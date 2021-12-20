@@ -231,8 +231,7 @@ class Map2_0(Map2_0Template):
       
         #Change Active Layer to hide
         self.change_active_Layer(['netherlands', 'outlineNL'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt])
-
-        
+      
     #This method is called when the Check Box for POI 'doctors' is checked or unchecked
     def check_box_doc_change(self, **event_args):
     
@@ -500,13 +499,18 @@ class Map2_0(Map2_0Template):
         
         if bbox[0] < float(data[i][45]) < bbox[2]:
           
-          if bbox[1] < float(data[i[46]]) < bbox[3]:
+          if bbox[1] < float(data[i][46]) < bbox[3]:
       
             newData.append(data[i])
         
         i += 1
 
-      print(newData)
+      for el in newData:
+        
+        coords = [el[46], el[45]]
+        
+        # Add Icon to the Map
+        newicon = mapboxgl.Marker({'color': '#0000FF'}).setLngLat(coords).setOffset([0, 0]).addTo(self.mapbox)
       
   #####  Button Functions   #####
   ###############################
