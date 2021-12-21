@@ -1196,7 +1196,7 @@ class Map2_0(Map2_0Template):
                               '<br>'
                               f'<b>Art: </b> {ele[9]}'
                               '<br>'
-                              f'<b>Spezialisierung: </b> {ele[45]}'
+                              f'<b>Spezialisierung: </b> {ele[44]}'
                               '<br>'
                               f'<b>Status: </b> {ele[4]}'
                               '<br>'
