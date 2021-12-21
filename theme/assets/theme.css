@@ -172,11 +172,13 @@ a:hover, a:active {
 .nav-holder {
   flex-grow: 1;
   overflow-y: auto;
+  background-color: #282828
 }
 
 @media print {
   .nav-holder {
     overflow-y: initial;
+    background-color: #282828
   }
 }
 
@@ -217,7 +219,7 @@ a:hover, a:active {
   flex-shrink: 0;
   min-width: 160px;
   max-width: 400px;
-  background-color: black;
+  background-color: #282828
 }
 
 .nav-shield {
@@ -263,11 +265,10 @@ a:hover, a:active {
   display: flex;
   flex-direction: column;
 /*   background: linear-gradient(209deg, rgba(2,0,36,1) 0%, rgba(84,84,84,1) 98%, rgba(79,79,79,1) 100%); */
-  background: white;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #282828;
   font-size: 14px;
   font-weight: 500;
-  color: rgba(0,0,0,0.87);
+  color: #BFB273;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -368,6 +369,7 @@ a:hover, a:active {
 .nav-holder .content {
   flex: 1;
   overflow-x: hidden;
+  background-color: #282828
 }
 
 /* Components: App Bar */
@@ -664,7 +666,7 @@ input.anvil-component, textarea.anvil-component, .anvil-component select, .anvil
   border: 1px solid %color:Secondary 500% !important;
   border-radius: 10px;
   background-color: transparent;
-  color: rgba(0,0,0,0.87);
+  color: #BFB273;
   
   box-shadow: none;
 }
@@ -836,4 +838,8 @@ th, td {
 
 .firstCol {
   width: 80px
+}
+
+.anvil-role-leftColumn {
+  background-color: #282828
 }
