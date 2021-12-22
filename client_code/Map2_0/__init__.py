@@ -214,7 +214,8 @@ class Map2_0(Map2_0Template):
     
       #Change Active Layer to hide
       self.change_active_Layer(['bezirke', 'outlineBK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['netherlands', 'outlineNL']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_nl])
-      
+    
+  #This method is called when the Check Box for Niederlande-Layer is checked or unchecked  
   def check_box_nl_change(self, **event_args):
 
     #Get Visibility of Layer
@@ -449,8 +450,6 @@ class Map2_0(Map2_0Template):
   
     #Call a Server Function
     anvil.server.call('manipulate')
-
-    print('Not active')
     
   #This method is called when the Healthcare-Button is clicked
   def button_healthcare_click(self, **event_args):
