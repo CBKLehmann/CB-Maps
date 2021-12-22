@@ -91,4 +91,12 @@
     document.getElementById('info').style.display = 'none'
     
   }
+  
+  function open_tab(html) {
+    
+    var tab = window.open('about:blank', '_blank');
+    tab.document.write(html);
+    tab.document.close();
+    
+  }
 </script> 
