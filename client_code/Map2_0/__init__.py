@@ -387,7 +387,7 @@ class Map2_0(Map2_0Template):
   def pdb_data_cb_change(self, **event_args):
     
     #Call create_icons-Function to set the Icons on Map and save last BBox of Pflege DB
-    Variables.last_bbox_uni = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_pdb, 'pflegeDB', Variables.icon_pflegeDB)
+    Variables.last_bbox_pdb = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_pdb, 'pflegeDB', Variables.icon_pflegeDB)
           
   ##### Check-Box Functions #####
   ###############################
@@ -492,6 +492,10 @@ class Map2_0(Map2_0Template):
     
       #Set Checkbox-Panel to visible and change Arrow-Icon
       self.icon_change(self.opnv_container, True, self.opnv_button, 'fa:angle-down')
+      
+  def exp_care_db_click(self, **event_args):
+    
+    
       
   #####  Button Functions   #####
   ###############################
