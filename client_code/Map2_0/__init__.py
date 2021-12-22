@@ -495,13 +495,33 @@ class Map2_0(Map2_0Template):
       
   def exp_care_db_click(self, **event_args):
     
-    print(Variables.pflegeDBEntries)
+    index = 1
     
-    popup_text = f'<button type="button" onClick="hide_mun_info()">&#10006;</button><br><br><table><tr><th class="firstCol">PM ID</th><th>Träger ID</th><th>IK Nummer</th><th>Sektor</th><th>Status</th><th>Name</th><th>Betreiber</th><th>Tochterfirma 1</th><th>Tochterfirma 2</th><th>Art</th><th>Straße</th><th>PLZ</th><th>Ort</th><th>Bundesland</th><th>Gemeindeschlüssel</th><th>Telefon</th><th>Fax</th><th>E-Mail</th><th>Webseite</th><th>Domain</th><th>MDK Datum</th><th>Pflege und medizinische Versorgung</th><th>Umgang mit demenzkranken Bewohnern</th><th>Soziale Betreuung und Alltagsgestaltung</th><th>Wohnen, Verpflegung, Hauswirtschaft und Hygiene</th><th>Befragung der Bewohner</th><th>MDK Note</th><th>Anzahl versorgte Patienten</th><th>Platzzahl vollstationäre Pflege</th><th>Platzzahl Kurzzeitpflege</th><th>Platzzahl Nachtpflege</th><th>Einzelzimmer</th><th>Doppelzimmer</th><th>Baujahr</th><th>Modernisierungsjahr</th><th>Ausbildungsumlage</th><th>EEE</th><th>UuV</th><th>Invest</th><th>PG 1</th><th>PG 2</th><th>PG 3</th><th>PG 4</th><th>PG 5</th><th>Spezialisierung</th></tr>'
+    popup_text = f'<table><tr><th>No.</th><th>Name</th><th>No. of beds</th><th>single rooms</th><th>double rooms</th><th>Patients</th><th>occupancy</th><th>year of construction</th><th>Status</th><th>Operator</th><th>Invest costs per day</th><th>MDK grade</th></tr>'
     
     for el in Variables.pflegeDBEntries:
       
-      popup_text += f'<tr><td>{el[0]}</td><td>{el[1]}</td><td>{el[2]}</td><td>{el[3]}</td><td>{el[4]}</td><td>{el[5]}</td><td>{el[6]}</td><td>{el[7]}</td><td>{el[8]}</td><td>{el[9]}</td><td>{el[10]}</td><td>{el[11]}</td><td>{el[12]}</td><td>{el[13]}</td><td>{el[14]}</td><td>{el[15]}</td><td>{el[16]}</td><td>{el[17]}</td><td>{el[18]}</td><td>{el[19]}</td><td>{el[20]}</td><td>{el[21]}</td><td>{el[22]}</td><td>{el[23]}</td><td>{el[24]}</td><td>{el[25]}</td><td>{el[26]}</td><td>{el[27]}</td><td>{el[28]}</td><td>{el[29]}</td><td>{el[30]}</td><td>{el[31]}</td><td>{el[32]}</td><td>{el[33]}</td><td>{el[34]}</td><td>{el[35]}</td><td>{el[36]}</td><td>{el[37]}</td><td>{el[38]}</td><td>{el[39]}</td><td>{el[40]}</td><td>{el[41]}</td><td>{el[42]}</td><td>{el[43]}</td><td>{el[44]}</td></tr>'
+      if el[27] == '-':
+        
+        x = 0
+        
+      else:
+        
+        x = int(el[27])
+        
+      if el[28] == '-':
+        
+        y = 0
+        
+      else:
+        
+        y = int(el[28])
+        
+        
+      occupancy = float("{:.2f}".format((x * 100) / y, 2))
+      
+      popup_text += f'<tr><td>{index}</td><td>{el[5]}</td><td>{el[28]}</td><td>{el[31]}</td><td>{el[32]}</td><td>{el[27]}</td><td>{occupancy}</td><td>{el[33]}</td><td>{el[4]}</td><td>{el[6]}</td><td>{el[38]}</td><td>{el[26]}</td></tr>'
+      index += 1
   
     popup_text += '</table>'
   
