@@ -790,19 +790,19 @@ class Map2_0(Map2_0Template):
       'id': 'bundeslaender',
       'type': 'fill',
       'source': {
-          'type': 'geojson',
-          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'
+        'type': 'geojson',
+        'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'
       },
       'layout': {
-          'visibility': 'none'
+        'visibility': 'none'
       },
       'paint': {
         'fill-color': '#0080ff',
         'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
+          'case',
+          ['boolean', ['feature-state', 'hover'], False],
+          0.75,
+          0.5
         ]
       }
     }) 
@@ -812,15 +812,15 @@ class Map2_0(Map2_0Template):
         'id': 'outlineBL',
         'type': 'line',
         'source': {
-            'type': 'geojson',
-            'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'
+          'type': 'geojson',
+          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'
         },
         'layout': {
-            'visibility': 'none'
+          'visibility': 'none'
         },
         'paint': {
-            'line-color': '#000',
-            'line-width': 2
+          'line-color': '#000',
+          'line-width': 2
         }
     })
     
@@ -829,19 +829,19 @@ class Map2_0(Map2_0Template):
       'id': 'regierungsbezirke',
       'type': 'fill',
       'source': {
-          'type': 'geojson',
-          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'
+        'type': 'geojson',
+        'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'
       },
       'layout': {
-          'visibility': 'none'
+        'visibility': 'none'
       },
       'paint': {
         'fill-color': '#0080ff',
         'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
+          'case',
+          ['boolean', ['feature-state', 'hover'], False],
+          0.75,
+          0.5
         ]
       }
     }) 
@@ -851,15 +851,15 @@ class Map2_0(Map2_0Template):
         'id': 'outlineRB',
         'type': 'line',
         'source': {
-            'type': 'geojson',
-            'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'
+          'type': 'geojson',
+          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'
         },
         'layout': {
-            'visibility': 'none'
+          'visibility': 'none'
         },
         'paint': {
-            'line-color': '#000',
-            'line-width': 1
+          'line-color': '#000',
+          'line-width': 1
         }
     })
     
@@ -868,19 +868,19 @@ class Map2_0(Map2_0Template):
       'id': 'landkreise',
       'type': 'fill',
       'source': {
-          'type': 'geojson',
-          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/4_kreise/1_sehr_hoch.geo.json'
+        'type': 'geojson',
+        'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/4_kreise/1_sehr_hoch.geo.json'
       },
       'layout': {
-          'visibility': 'none'
+        'visibility': 'none'
       },
       'paint': {
         'fill-color': '#0080ff',
         'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
+          'case',
+          ['boolean', ['feature-state', 'hover'], False],
+          0.75,
+          0.5
         ]
       }
     })
@@ -890,15 +890,15 @@ class Map2_0(Map2_0Template):
         'id': 'outlineLK',
         'type': 'line',
         'source': {
-            'type': 'geojson',
-            'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/4_kreise/1_sehr_hoch.geo.json'
+          'type': 'geojson',
+          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/4_kreise/1_sehr_hoch.geo.json'
         },
         'layout': {
-            'visibility': 'none'
+          'visibility': 'none'
         },
         'paint': {
-            'line-color': '#000',
-            'line-width': 0.5
+          'line-color': '#000',
+          'line-width': 0.5
         }
     })
     
@@ -907,19 +907,19 @@ class Map2_0(Map2_0Template):
       'id': 'gemeinden',
       'type': 'fill',
       'source': {
-          'type': 'geojson',
-          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
+        'type': 'geojson',
+        'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
       },
       'layout': {
-          'visibility': 'none'
+        'visibility': 'none'
       },
       'paint': {
         'fill-color': '#0080ff',
         'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
+          'case',
+          ['boolean', ['feature-state', 'hover'], False],
+          0.75,
+          0.5
         ]
       }
     })
@@ -929,16 +929,16 @@ class Map2_0(Map2_0Template):
         'id': 'outlineGM',
         'type': 'line',
         'source': {
-            'type': 'geojson',
-            'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
+          'type': 'geojson',
+          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
 
         },
         'layout': {
-            'visibility': 'none'
+          'visibility': 'none'
         },
         'paint': {
-            'line-color': '#000',
-            'line-width': 0.5
+          'line-color': '#000',
+          'line-width': 0.5
         }
     })
     
@@ -947,19 +947,19 @@ class Map2_0(Map2_0Template):
       'id': 'bezirke',
       'type': 'fill',
       'source': {
-          'type': 'geojson',
-          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson'
+        'type': 'geojson',
+        'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson'
       },
       'layout': {
-          'visibility': 'none'
+        'visibility': 'none'
       },
       'paint': {
         'fill-color': '#0080ff',
         'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
+          'case',
+          ['boolean', ['feature-state', 'hover'], False],
+          0.75,
+          0.5
         ]
       }
     })
@@ -969,15 +969,15 @@ class Map2_0(Map2_0Template):
         'id': 'outlineBK',
         'type': 'line',
         'source': {
-            'type': 'geojson',
-            'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson'
+          'type': 'geojson',
+          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson'
         },
         'layout': {
-            'visibility': 'none'
+          'visibility': 'none'
         },
         'paint': {
-            'line-color': '#000',
-            'line-width': 0.5
+          'line-color': '#000',
+          'line-width': 0.5
         }
     })
     
@@ -986,19 +986,19 @@ class Map2_0(Map2_0Template):
       'id': 'netherlands',
       'type': 'fill',
       'source': {
-          'type': 'geojson',
-          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson'
+        'type': 'geojson',
+        'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson'
       },
       'layout': {
-          'visibility': 'none'
+        'visibility': 'none'
       },
       'paint': {
         'fill-color': '#0080ff',
         'fill-opacity': [
-              'case',
-              ['boolean', ['feature-state', 'hover'], False],
-              0.75,
-              0.5
+          'case',
+          ['boolean', ['feature-state', 'hover'], False],
+          0.75,
+          0.5
         ]
       }
     })
@@ -1008,15 +1008,15 @@ class Map2_0(Map2_0Template):
         'id': 'outlineNL',
         'type': 'line',
         'source': {
-            'type': 'geojson',
-            'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson'
+          'type': 'geojson',
+          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson'
         },
         'layout': {
-            'visibility': 'none'
+          'visibility': 'none'
         },
         'paint': {
-            'line-color': '#000',
-            'line-width': 0.5
+          'line-color': '#000',
+          'line-width': 0.5
         }
     })
   
@@ -1061,320 +1061,326 @@ class Map2_0(Map2_0Template):
     # Check if Checkbox is checked
     if check_box == True:
     
-        # Check if Checkbox for Iso-Layer' is checked
-        if self.checkbox_poi_x_hfcig.checked == True:
+      # Check if Checkbox for Iso-Layer' is checked
+      if self.checkbox_poi_x_hfcig.checked == True:
+  
+        # Get Data of Iso-Layer
+        iso = dict(self.mapbox.getSource('iso'))
+  
+        # Create empty Bounding Box
+        bbox = [0, 0, 0, 0]
+  
+        # Check every element in Iso-Data
+        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+  
+          # Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] < bbox[1] or bbox[1] == 0:
     
-            # Get Data of Iso-Layer
-            iso = dict(self.mapbox.getSource('iso'))
+            # Set BBox-Coordinate to new Element-Coordinate
+            bbox[1] = el[0]
+  
+          # Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] > bbox[3] or bbox[3] == 0:
     
-            # Create empty Bounding Box
-            bbox = [0, 0, 0, 0]
+            # Set BBox-Coordinate to new Element-Coordinate
+            bbox[3] = el[0]
+  
+          # Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] < bbox[0] or bbox[0] == 0:
     
-            # Check every element in Iso-Data
-            for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+            # Set BBox-Coordinate to new Element-Coordinate
+            bbox[0] = el[1]
+  
+          # Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] > bbox[2] or bbox[2] == 0:
     
-                # Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
-                if el[0] < bbox[1] or bbox[1] == 0:
-          
-                    # Set BBox-Coordinate to new Element-Coordinate
-                    bbox[1] = el[0]
+            # Set BBox-Coordinate to new Element-Coordinate
+            bbox[2] = el[1]
+  
+      # Do if Checkbox for Iso-Layer' is unchecked
+      else:
+  
+        # Get visible Bounding Box of Map
+        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'],
+                (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+  
+      # Check if Bounding Box is not the same as least Request
+      if not bbox == last_bbox:
+  
+        # Check if new Bounding Box is overlapping old Bounding Box
+        if bbox[0] < last_bbox[0] or bbox[1] < last_bbox[1] or bbox[2] > last_bbox[2] or bbox[3] > last_bbox[3]:
     
-                # Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
-                if el[0] > bbox[3] or bbox[3] == 0:
-          
-                    # Set BBox-Coordinate to new Element-Coordinate
-                    bbox[3] = el[0]
+          # Check if Category is PflegeDB
+          if category == 'pflegeDB':
     
-                # Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
-                if el[1] < bbox[0] or bbox[0] == 0:
-          
-                    # Set BBox-Coordinate to new Element-Coordinate
-                    bbox[0] = el[1]
+            geojson = anvil.server.call('get_Care_DB_Data', bbox)
     
-                # Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
-                if el[1] > bbox[2] or bbox[2] == 0:
-          
-                    # Set BBox-Coordinate to new Element-Coordinate
-                    bbox[2] = el[1]
+          else:
     
-        # Do if Checkbox for Iso-Layer' is unchecked
-        else:
+            # Get geojson of POIs inside Bounding Box
+            geojson = anvil.server.call('poi_data', category, bbox)
     
-          # Get visible Bounding Box of Map
-          bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'],
-                  (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+          # Check if Elements are over 3000 for performance Reasons
+          if len(geojson) > 3000:
     
-        # Check if Bounding Box is not the same as least Request
-        if not bbox == last_bbox:
+            # Tell the User about to many Elements
+            alert('Zu große Ergebnismenge ! Näher ranzoomen !')
     
-            # Check if new Bounding Box is overlapping old Bounding Box
-            if bbox[0] < last_bbox[0] or bbox[1] < last_bbox[1] or bbox[2] > last_bbox[2] or bbox[3] > last_bbox[3]:
+          # Do if Elements are under 3000
+          else:
     
-                if category == 'pflegeDB':
-        
-                  geojson = anvil.server.call('get_Care_DB_Data', bbox)
-        
-                else:
+            #Create empty Icons Array to save Elements
+            icons = []
     
-                  # Get geojson of POIs inside Bounding Box
-                  geojson = anvil.server.call('poi_data', category, bbox)
+            # Loop through every Element in geojson
+            for ele in geojson:
     
-                # Check if Elements are over 3000 for performance Reasons
-                if len(geojson) > 3000:
+              # Create HTML Element for Icon
+              el = document.createElement('div')
+              el.className = 'marker'
+              el.style.width = '25px'
+              el.style.height = '25px'
+              el.style.backgroundSize = '100%'
+              el.style.backgroundrepeat = 'no-repeat'
     
-                    # Tell the User about to many Elements
-                    alert('Zu große Ergebnismenge ! Näher ranzoomen !')
+              # Create Icon
+              el.style.backgroundImage = f'url({picture})'
     
-                # Do if Elements are under 3000
-                else:
+              # Check if Category is not PflegeDB
+              if not category == 'pflegeDB':
     
-                    #Create empty Icons Array to save Elements
-                    icons = []
-      
-                    # Loop through every Element in geojson
-                    for ele in geojson:
-      
-                          # Create HTML Element for Icon
-                          el = document.createElement('div')
-                          el.className = 'marker'
-                          el.style.width = '25px'
-                          el.style.height = '25px'
-                          el.style.backgroundSize = '100%'
-                          el.style.backgroundrepeat = 'no-repeat'
-      
-                          # Create Icon
-                          el.style.backgroundImage = f'url({picture})'
-      
-                          if not category == 'pflegeDB':
-          
-                            # Get coordinates of current Icon
-                            el_coords = ele['geometry']['coordinates']
-      
-                            # Get different Informations from geojson
-                            city = ele['properties']['city']
-                            suburb = ele['properties']['suburb']
-                            street = ele['properties']['street']
-                            housenumber = ele['properties']['housenumber']
-                            postcode = ele['properties']['postcode']
-                            phone = ele['properties']['phone']
-                            website = ele['properties']['website']
-                            healthcare = ele['properties']['healthcare']
-                            name = ele['properties']['name']
-                            opening_hours = ele['properties']['opening_hours']
-                            wheelchair = ele['properties']['wheelchair']
-                            o_id = ele['properties']['id']
-                            fax = ele['properties']['fax']
-                            email = ele['properties']['email']
-                            speciality = ele['properties']['healthcare:speciality']
-                            operator = ele['properties']['operator']
+                # Get coordinates of current Icon
+                el_coords = ele['geometry']['coordinates']
     
-                          # Check if Category is Bus or Tram
-                          if category == 'bus_stop' or category == 'tram_stop':
-          
-                              # Create Popup for Element
-                              popup = mapboxgl.Popup({'offset': 25}).setHTML(
-                                f'<b>Name:</b>'
-                                f'<br>'
-                                f'&nbsp;&nbsp;{name}'
-                              )
-                          
-                          elif category == 'pflegeDB':
-        
-                            el_coords = [ele[46], ele[45]]
-          
-                            # Create Popup for Element
-                            popup = mapboxgl.Popup({'offset': 25}).setHTML(
-                              f'<b>PM ID: </b> {ele[0]}'
-                              '<br>'
-                              f'<b>Träger ID: </b> {ele[1]}'
-                              '<br>'
-                              f'<b>IK_Nummer: </b> {ele[2]}'
-                              '<br>'
-                              '<br>'
-                              f'<b>Sektor: </b> {ele[3]}'
-                              '<br>'
-                              f'<b>Art: </b> {ele[9]}'
-                              '<br>'
-                              f'<b>Spezialisierung: </b> {ele[44]}'
-                              '<br>'
-                              f'<b>Status: </b> {ele[4]}'
-                              '<br>'
-                              f'<b>Baujahr: </b> {ele[33]}'
-                              '<br>'
-                              f'<b>Modernisierungsjahr: </b> {ele[34]}'
-                              '<br>'
-                              '<br>'
-                              f'<b>Name: </b> {ele[5]}'
-                              '<br>'
-                              '<br>'
-                              f'<b>Betreiber: </b> {ele[6]}'
-                              '<br>'
-                              f'<b>Tochterfirma 1: </b> {ele[7]}'
-                              '<br>'
-                              f'<b>Tochterfirma 2: </b> {ele[8]}'
-                              '<br>'
-                              '<br>'
-                              f'<b>Straße: </b> {ele[10]}'
-                              '<br>'
-                              f'<b>Postleitzahl: </b> {ele[11]}'
-                              '<br>'
-                              f'<b>Ort: </b> {ele[12]}'
-                              '<br>'
-                              f'<b>Bundesland: </b> {ele[13]}'
-                              '<br>'
-                              f'<b>Gemeindeschlüssel: </b> {ele[14]}'
-                              '<br>'
-                              '<br>'
-                              f'<b>Telefon: </b> {ele[15]}'
-                              '<br>'
-                              f'<b>Fax: </b> {ele[16]}'
-                              '<br>'
-                              f'<b>E-Mail: </b> {ele[17]}'
-                              '<br>'
-                              f'<b>Webseite: </b> {ele[18]}'
-                              '<br>'
-                              f'<b>Domain: </b> {ele[19]}'
-                              '<br>'
-                              '<br>'
-                              f'<b>MDK Datum: </b> {ele[20]}'
-                              '<br>'
-                              f'<b>Pflege und medizinische Versorgung: </b> {ele[21]}'
-                              '<br>'
-                              f'<b>Umgang mit demenzkranken Bewohnern: </b> {ele[22]}'
-                              '<br>'
-                              f'<b>Soziale Betreuung und Alltagsgestaltung: </b> {ele[23]}'
-                              '<br>'
-                              f'<b>Wohnen, Verpflegung, Hauswirtschaft und Hygiene: </b> {ele[24]}'
-                              '<br>'
-                              f'<b>Befragung der Bewohner: </b> {ele[25]}'
-                              '<br>'
-                              f'<b>MDK Note: </b> {ele[26]}'
-                              '<br>'
-                              '<br>'
-                              f'<b>Anzahl versorgte Patienten: </b> {ele[27]}'
-                              '<br>'
-                              f'<b>Platzzahl vollständige Pflege: </b> {ele[28]}'
-                              '<br>'
-                              f'<b>Platzzahl Kurzzeitpflege: </b> {ele[29]}'
-                              '<br>'
-                              f'<b>Platzzahl Nachtpflege: </b> {ele[30]}'
-                              '<br>'
-                              f'<b>Einzelzimmer: </b> {ele[31]}'
-                              '<br>'
-                              f'<b>Doppelzimmer: </b> {ele[32]}'
-                              '<br>'
-                              '<br>'
-                              f'<b>Ausbildungsumlage: </b> {ele[35]}'
-                              '<br>'
-                              f'<b>EEE: </b> {ele[36]}'
-                              '<br>'
-                              f'<b>UuV: </b> {ele[37]}'
-                              '<br>'
-                              f'<b>Invest: </b> {ele[38]}'
-                              '<br>'
-                              f'<b>PG 1: </b> {ele[39]}'
-                              '<br>'
-                              f'<b>PG 2: </b> {ele[40]}'
-                              '<br>'
-                              f'<b>PG 3: </b> {ele[41]}'
-                              '<br>'
-                              f'<b>PG 4: </b> {ele[42]}'
-                              '<br>'
-                              f'<b>PG 5: </b> {ele[43]}'
-                            )
-              
-                          # Check if Category is not Bus or Tram
-                          else:
-      
-                              # Create Popup for Element
-                              popup = mapboxgl.Popup({'offset': 25}).setHTML(
-                                f'<b>ID:</b> {o_id}'
-                                f'<br>'
-                                f'<b>Name:</b>'
-                                f'<br>'
-                                f'&nbsp;&nbsp;{name}'
-                                f'<br>'
-                                f'<b>Operator:</b>'
-                                f'<br>'
-                                f'&nbsp;&nbsp;{operator}'
-                                f'<br>'
-                                f'<b>Adresse:</b>'
-                                f'<br>'
-                                f'&nbsp;&nbsp;{street} {housenumber}'
-                                f'<br>'
-                                f'&nbsp;&nbsp;{postcode}, {city} {suburb}'
-                                f'<br>'
-                                f'<b>Kontakt</b>'
-                                f'<br>'
-                                f'&nbsp;&nbsp;Telefon: {phone}'
-                                f'<br>'
-                                f'&nbsp;&nbsp;Fax: {fax}'
-                                f'<br>'
-                                f'&nbsp;&nbsp;Email: {email}'
-                                f'<br>'
-                                f'&nbsp;&nbsp;Webseite:'
-                                f'<br>'
-                                f'&nbsp;&nbsp;&nbsp;&nbsp;{website}'
-                                f'<br>'
-                                f'<b>Infos</b>'
-                                f'<br>'
-                                f'&nbsp;&nbsp;Kategorie: {healthcare}'
-                                f'<br>'
-                                f'&nbsp;&nbsp;Speciality: {speciality}'
-                                f'<br>'
-                                f'&nbsp;&nbsp;Öffnungszeiten:'
-                                f'<br>'
-                                f'&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}'
-                                f'<br>'
-                                f'&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}'
-                              )
+                # Get different Informations from geojson
+                city = ele['properties']['city']
+                suburb = ele['properties']['suburb']
+                street = ele['properties']['street']
+                housenumber = ele['properties']['housenumber']
+                postcode = ele['properties']['postcode']
+                phone = ele['properties']['phone']
+                website = ele['properties']['website']
+                healthcare = ele['properties']['healthcare']
+                name = ele['properties']['name']
+                opening_hours = ele['properties']['opening_hours']
+                wheelchair = ele['properties']['wheelchair']
+                o_id = ele['properties']['id']
+                fax = ele['properties']['fax']
+                email = ele['properties']['email']
+                speciality = ele['properties']['healthcare:speciality']
+                operator = ele['properties']['operator']
     
-                          # Add Icon to the Map
-                          newicon = mapboxgl.Marker(el).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
-      
-                          # Add current Element-Icon to Icon-Array
-                          icons.append(newicon)
+              # Check if Category is Bus or Tram
+              if category == 'bus_stop' or category == 'tram_stop':
     
-                # Refresh global Variables
-                Variables.icons.update({f'{category}': icons})
-                last_bbox = bbox
-                Variables.last_cat = f'{category}'
+                # Create Popup for Element
+                popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                  f'<b>Name:</b>'
+                  f'<br>'
+                  f'&nbsp;&nbsp;{name}'
+                )
+                
+              # Check if Category is PflegeDB
+              elif category == 'pflegeDB':
     
-            # Do if new Bounding Box is smaller or same than old Bounding Box
-            else:
+                el_coords = [ele[46], ele[45]]
     
-                # Loop through every Element in global Icon-Elements
-                for el in Variables.icons[f'{category}']:
+                # Create Popup for Element
+                popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                  f'<b>PM ID: </b> {ele[0]}'
+                  '<br>'
+                  f'<b>Träger ID: </b> {ele[1]}'
+                  '<br>'
+                  f'<b>IK_Nummer: </b> {ele[2]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Sektor: </b> {ele[3]}'
+                  '<br>'
+                  f'<b>Art: </b> {ele[9]}'
+                  '<br>'
+                  f'<b>Spezialisierung: </b> {ele[44]}'
+                  '<br>'
+                  f'<b>Status: </b> {ele[4]}'
+                  '<br>'
+                  f'<b>Baujahr: </b> {ele[33]}'
+                  '<br>'
+                  f'<b>Modernisierungsjahr: </b> {ele[34]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Name: </b> {ele[5]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Betreiber: </b> {ele[6]}'
+                  '<br>'
+                  f'<b>Tochterfirma 1: </b> {ele[7]}'
+                  '<br>'
+                  f'<b>Tochterfirma 2: </b> {ele[8]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Straße: </b> {ele[10]}'
+                  '<br>'
+                  f'<b>Postleitzahl: </b> {ele[11]}'
+                  '<br>'
+                  f'<b>Ort: </b> {ele[12]}'
+                  '<br>'
+                  f'<b>Bundesland: </b> {ele[13]}'
+                  '<br>'
+                  f'<b>Gemeindeschlüssel: </b> {ele[14]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Telefon: </b> {ele[15]}'
+                  '<br>'
+                  f'<b>Fax: </b> {ele[16]}'
+                  '<br>'
+                  f'<b>E-Mail: </b> {ele[17]}'
+                  '<br>'
+                  f'<b>Webseite: </b> {ele[18]}'
+                  '<br>'
+                  f'<b>Domain: </b> {ele[19]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>MDK Datum: </b> {ele[20]}'
+                  '<br>'
+                  f'<b>Pflege und medizinische Versorgung: </b> {ele[21]}'
+                  '<br>'
+                  f'<b>Umgang mit demenzkranken Bewohnern: </b> {ele[22]}'
+                  '<br>'
+                  f'<b>Soziale Betreuung und Alltagsgestaltung: </b> {ele[23]}'
+                  '<br>'
+                  f'<b>Wohnen, Verpflegung, Hauswirtschaft und Hygiene: </b> {ele[24]}'
+                  '<br>'
+                  f'<b>Befragung der Bewohner: </b> {ele[25]}'
+                  '<br>'
+                  f'<b>MDK Note: </b> {ele[26]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Anzahl versorgte Patienten: </b> {ele[27]}'
+                  '<br>'
+                  f'<b>Platzzahl vollständige Pflege: </b> {ele[28]}'
+                  '<br>'
+                  f'<b>Platzzahl Kurzzeitpflege: </b> {ele[29]}'
+                  '<br>'
+                  f'<b>Platzzahl Nachtpflege: </b> {ele[30]}'
+                  '<br>'
+                  f'<b>Einzelzimmer: </b> {ele[31]}'
+                  '<br>'
+                  f'<b>Doppelzimmer: </b> {ele[32]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Ausbildungsumlage: </b> {ele[35]}'
+                  '<br>'
+                  f'<b>EEE: </b> {ele[36]}'
+                  '<br>'
+                  f'<b>UuV: </b> {ele[37]}'
+                  '<br>'
+                  f'<b>Invest: </b> {ele[38]}'
+                  '<br>'
+                  f'<b>PG 1: </b> {ele[39]}'
+                  '<br>'
+                  f'<b>PG 2: </b> {ele[40]}'
+                  '<br>'
+                  f'<b>PG 3: </b> {ele[41]}'
+                  '<br>'
+                  f'<b>PG 4: </b> {ele[42]}'
+                  '<br>'
+                  f'<b>PG 5: </b> {ele[43]}'
+                )
     
-                    # Get coordinates of current Icon
-                    el_coords = dict(el['_lngLat'])
+              # Check if Category is not Bus or Tram or PflegeDB
+              else:
     
-                    # Check if Icon is inside visible Bounding Box
-                    if bbox[0] < el_coords['lat'] < bbox[2] and bbox[1] < el_coords['lng'] < bbox[3]:
-                        # Add Element to Map
-                        el.addTo(self.mapbox)
+                # Create Popup for Element
+                popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                  f'<b>ID:</b> {o_id}'
+                  f'<br>'
+                  f'<b>Name:</b>'
+                  f'<br>'
+                  f'&nbsp;&nbsp;{name}'
+                  f'<br>'
+                  f'<b>Operator:</b>'
+                  f'<br>'
+                  f'&nbsp;&nbsp;{operator}'
+                  f'<br>'
+                  f'<b>Adresse:</b>'
+                  f'<br>'
+                  f'&nbsp;&nbsp;{street} {housenumber}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;{postcode}, {city} {suburb}'
+                  f'<br>'
+                  f'<b>Kontakt</b>'
+                  f'<br>'
+                  f'&nbsp;&nbsp;Telefon: {phone}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;Fax: {fax}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;Email: {email}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;Webseite:'
+                  f'<br>'
+                  f'&nbsp;&nbsp;&nbsp;&nbsp;{website}'
+                  f'<br>'
+                  f'<b>Infos</b>'
+                  f'<br>'
+                  f'&nbsp;&nbsp;Kategorie: {healthcare}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;Speciality: {speciality}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;Öffnungszeiten:'
+                  f'<br>'
+                  f'&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}'
+                )
     
-                # Change last Category
-                Variables.last_cat = f'{category}'
+              # Add Icon to the Map
+              newicon = mapboxgl.Marker(el).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
     
-        # Do if Bounding Box is the same as least Request
-        else:
+              # Add current Element-Icon to Icon-Array
+              icons.append(newicon)
     
-            # Loop through every Element in global Icon-Elements
-            for el in Variables.icons[f'{category}']:
-                # Add Element to Map
-                el.addTo(self.mapbox)
-    
-            # Change last Category
+            # Refresh global Variables
+            Variables.icons.update({f'{category}': icons})
+            last_bbox = bbox
             Variables.last_cat = f'{category}'
+    
+        # Do if new Bounding Box is smaller or same than old Bounding Box
+        else:
+    
+          # Loop through every Element in global Icon-Elements
+          for el in Variables.icons[f'{category}']:
+  
+            # Get coordinates of current Icon
+            el_coords = dict(el['_lngLat'])
+  
+            # Check if Icon is inside visible Bounding Box
+            if bbox[0] < el_coords['lat'] < bbox[2] and bbox[1] < el_coords['lng'] < bbox[3]:
+        
+              # Add Element to Map
+              el.addTo(self.mapbox)
+  
+          # Change last Category
+          Variables.last_cat = f'{category}'
+  
+      # Do if Bounding Box is the same as least Request
+      else:
+  
+        # Loop through every Element in global Icon-Elements
+        for el in Variables.icons[f'{category}']:
+        
+          # Add Element to Map
+          el.addTo(self.mapbox)
+  
+        # Change last Category
+        Variables.last_cat = f'{category}'
     
     # Do if Checkbox is unchecked
     else:
     
-        # Loop through every Element in global Icon-Elements
-        for el in Variables.icons[f'{category}']:
-            # Remove Element from Map
-            el.remove()
+      # Loop through every Element in global Icon-Elements
+      for el in Variables.icons[f'{category}']:
+        
+        # Remove Element from Map
+        el.remove()
     
     # Send Value back to origin Function
     return (last_bbox)
@@ -1382,58 +1388,55 @@ class Map2_0(Map2_0Template):
   #This method is called from different Marker-Checkboxes to hide/show there markers
   def show_hide_marker(self, check_box, marker_id):
       
-    #Check if Check Box is checked and id exist 
-    if check_box == True and marker_id in Variables.marker:
-        
-      #Show Marker and Icon
-      for el in Variables.marker[marker_id]:
-        
+    #Show Marker and Icon
+    for el in Variables.marker[marker_id]:  
+      
+      #Check if Check Box is checked and id exist 
+      if check_box == True and marker_id in Variables.marker:
+          
         #Add Marker to Map
         el.addTo(self.mapbox)
-        
-    #Check if Check Box is unchecked and id exist  
-    elif check_box == False and marker_id in Variables.marker:
-        
-      #Hide Marker and Icon
-      for el in Variables.marker[marker_id]:
-        
+          
+      #Check if Check Box is unchecked and id exist  
+      elif check_box == False and marker_id in Variables.marker:
+    
         #Remove Marker from Map
         el.remove()
   
   #This method is called when the active Layer is changed
   def change_active_Layer(self, layer, inactive_layer, visibility, other_checkbox):
     
-    # Check if Layer is visible or not
+    #Check if Layer is visible or not
     for el in layer:
     
-        # Hide active Layer
-        self.mapbox.setLayoutProperty(el, 'visibility', visibility)
-    
-        #Do for every inactive Layer
-        for el in inactive_layer:
-    
-            #Do for every Sub-Layer of inactive Layer
-            for ele in el:
-    
-                #Set visiblity to 'not visible'
-                self.mapbox.setLayoutProperty(ele, 'visibility', 'none')
+      #Hide active Layer
+      self.mapbox.setLayoutProperty(el, 'visibility', visibility)
+  
+      #Do for every inactive Layer
+      for el in inactive_layer:
+  
+        #Do for every Sub-Layer of inactive Layer
+        for ele in el:
+  
+          #Set visiblity to 'not visible'
+          self.mapbox.setLayoutProperty(ele, 'visibility', 'none')
     
     #Do for every Checkbox
     for el in other_checkbox:
     
-        # Uncheck Check Box from other Layers
-        el.checked = False
+      #Uncheck Check Box from other Layers
+      el.checked = False
     
     #Check visibility
     if visibility == 'visible':
     
-        # Set active Layer to Bundesländer
-        Variables.activeLayer = layer[0]
+      #Set active Layer to Bundesländer
+      Variables.activeLayer = layer[0]
         
     else:
       
-        # Set active Layer to Bundesländer
-        Variables.activeLayer = None
+      #Set active Layer to Bundesländer
+      Variables.activeLayer = None
     
   #This method is called from different Menu-Collapsables
   def icon_change(self, container, container_state, icon, icon_icon):
@@ -1451,19 +1454,19 @@ class Map2_0(Map2_0Template):
     
     # Check wich Markercolor the provided Adress has and color the Marker
     if color == 'Rot':
-        marker_cat = mapboxgl.Marker({'color': '#FF0000', 'draggable': False})
+      marker_cat = mapboxgl.Marker({'color': '#FF0000', 'draggable': False})
     elif color == 'Gelb':
-        marker_cat = mapboxgl.Marker({'color': '#FFFF00', 'draggable': False})
+      marker_cat = mapboxgl.Marker({'color': '#FFFF00', 'draggable': False})
     elif color == 'Grün':
-        marker_cat = mapboxgl.Marker({'color': '#92D050', 'draggable': False})
+      marker_cat = mapboxgl.Marker({'color': '#92D050', 'draggable': False})
     elif color == 'Blau':
-        marker_cat = mapboxgl.Marker({'color': '#00B0F0', 'draggable': False})
+      marker_cat = mapboxgl.Marker({'color': '#00B0F0', 'draggable': False})
     elif color == 'Lila':
-        marker_cat = mapboxgl.Marker({'color': '#D427F1', 'draggable': False})
+      marker_cat = mapboxgl.Marker({'color': '#D427F1', 'draggable': False})
     elif color == 'Orange':
-        marker_cat = mapboxgl.Marker({'color': '#FFC000', 'draggable': False})
+      marker_cat = mapboxgl.Marker({'color': '#FFC000', 'draggable': False})
     elif color == 'Dunkelgrün':
-        marker_cat = mapboxgl.Marker({'color': '#00B050', 'draggable': False})
+      marker_cat = mapboxgl.Marker({'color': '#00B050', 'draggable': False})
     
     # Add Marker to the Map
     newmarker = marker_cat.setLngLat(coords).addTo(self.mapbox)
@@ -1481,40 +1484,37 @@ class Map2_0(Map2_0Template):
     # Check if Layer is already hovered
     if Variables.hoveredStateId != None:
     
-        # Check if active Layer is Bundesländer
-        if Variables.activeLayer == 'bundeslaender':
+      # Check if active Layer is Bundesländer
+      if Variables.activeLayer == 'bundeslaender':
+  
+        # Change hover-State to False and set global-variable 'hoveredStateId' to None
+        self.mapbox.setFeatureState({'source': 'bundeslaender', 'id': Variables.hoveredStateId}, {'hover': False})
     
-            # Change hover-State to False and set global-variable 'hoveredStateId' to None
-            self.mapbox.setFeatureState({'source': 'bundeslaender', 'id': Variables.hoveredStateId}, {'hover': False})
-            Variables.hoveredStateId = None
-    
-        # Check if active Layer is Regierungsbezirke
-        elif Variables.activeLayer == 'regierungsbezirke':
-    
-            # Change hover-State to False and set global-variable 'hoveredStateId' to None
-            self.mapbox.setFeatureState({'source': 'regierungsbezirke', 'id': Variables.hoveredStateId}, {'hover': False})
-            Variables.hoveredStateId = None
-    
-            # Check if active Layer is Landkreise
-        elif Variables.activeLayer == 'landkreise':
-    
-            # Change hover-State to False and set global-variable 'hoveredStateId' to None
-            self.mapbox.setFeatureState({'source': 'landkreise', 'id': Variables.hoveredStateId}, {'hover': False})
-            Variables.hoveredStateId = None
-    
-        # Check if active Layer is Gemeinden
-        elif Variables.activeLayer == 'gemeinden':
-    
-            # Change hover-State to False and set global-variable 'hoveredStateId' to None
-            self.mapbox.setFeatureState({'source': 'gemeinden', 'id': Variables.hoveredStateId}, {'hover': False})
-            Variables.hoveredStateId = None
-          
-        # Check if active Layer is Gemeinden
-        elif Variables.activeLayer == 'bezirke':
-    
-            # Change hover-State to False and set global-variable 'hoveredStateId' to None
-            self.mapbox.setFeatureState({'source': 'bezirke', 'id': Variables.hoveredStateId}, {'hover': False})
-            Variables.hoveredStateId = None
+      # Check if active Layer is Regierungsbezirke
+      elif Variables.activeLayer == 'regierungsbezirke':
+  
+        # Change hover-State to False and set global-variable 'hoveredStateId' to None
+        self.mapbox.setFeatureState({'source': 'regierungsbezirke', 'id': Variables.hoveredStateId}, {'hover': False})
+  
+          # Check if active Layer is Landkreise
+      elif Variables.activeLayer == 'landkreise':
+  
+        # Change hover-State to False and set global-variable 'hoveredStateId' to None
+        self.mapbox.setFeatureState({'source': 'landkreise', 'id': Variables.hoveredStateId}, {'hover': False})
+  
+      # Check if active Layer is Gemeinden
+      elif Variables.activeLayer == 'gemeinden':
+  
+        # Change hover-State to False and set global-variable 'hoveredStateId' to None
+        self.mapbox.setFeatureState({'source': 'gemeinden', 'id': Variables.hoveredStateId}, {'hover': False})
+        
+      # Check if active Layer is Gemeinden
+      elif Variables.activeLayer == 'bezirke':
+  
+        # Change hover-State to False and set global-variable 'hoveredStateId' to None
+        self.mapbox.setFeatureState({'source': 'bezirke', 'id': Variables.hoveredStateId}, {'hover': False})
+      
+      Variables.hoveredStateId = None
     
     #Check if Mouse is moved inside Layer or out of Layer
     if hasattr(mouse, 'features'):
@@ -1522,38 +1522,38 @@ class Map2_0(Map2_0Template):
       # Check if Mouse was moved inside active Map-Layer
       if len(mouse.features) > 0:
       
-          # Change global hoveredStateID to new active Layer-id
-          Variables.hoveredStateId = mouse.features[0].id
-      
-          # Check if active Layer is Bundesländer
-          if Variables.activeLayer == 'bundeslaender':
-      
-              # Change hover-State to True
-              self.mapbox.setFeatureState({'source': 'bundeslaender', 'id': Variables.hoveredStateId}, {'hover': True})
-      
-          # Check if active Layer is Regierungsbezirke
-          elif Variables.activeLayer == 'regierungsbezirke':
-      
-              # Change hover-State to True
-              self.mapbox.setFeatureState({'source': 'regierungsbezirke', 'id': Variables.hoveredStateId}, {'hover': True})
-      
-          # Check if active Layer is Landkreise
-          elif Variables.activeLayer == 'landkreise':
-      
-              # Change hover-State to True
-              self.mapbox.setFeatureState({'source': 'landkreise', 'id': Variables.hoveredStateId}, {'hover': True})
-      
-          # Check if active Layer is Gemeinden
-          elif Variables.activeLayer == 'gemeinden':
-      
-              # Change hover-State to True
-              self.mapbox.setFeatureState({'source': 'gemeinden', 'id': Variables.hoveredStateId}, {'hover': True})
-          
-          # Check if active Layer is Gemeinden
-          elif Variables.activeLayer == 'bezirke':
-      
-              # Change hover-State to True
-              self.mapbox.setFeatureState({'source': 'bezirke', 'id': Variables.hoveredStateId}, {'hover': True})
+        # Change global hoveredStateID to new active Layer-id
+        Variables.hoveredStateId = mouse.features[0].id
+    
+        # Check if active Layer is Bundesländer
+        if Variables.activeLayer == 'bundeslaender':
+    
+          # Change hover-State to True
+          self.mapbox.setFeatureState({'source': 'bundeslaender', 'id': Variables.hoveredStateId}, {'hover': True})
+    
+        # Check if active Layer is Regierungsbezirke
+        elif Variables.activeLayer == 'regierungsbezirke':
+    
+          # Change hover-State to True
+          self.mapbox.setFeatureState({'source': 'regierungsbezirke', 'id': Variables.hoveredStateId}, {'hover': True})
+    
+        # Check if active Layer is Landkreise
+        elif Variables.activeLayer == 'landkreise':
+    
+          # Change hover-State to True
+          self.mapbox.setFeatureState({'source': 'landkreise', 'id': Variables.hoveredStateId}, {'hover': True})
+    
+        # Check if active Layer is Gemeinden
+        elif Variables.activeLayer == 'gemeinden':
+    
+          # Change hover-State to True
+          self.mapbox.setFeatureState({'source': 'gemeinden', 'id': Variables.hoveredStateId}, {'hover': True})
+        
+        # Check if active Layer is Gemeinden
+        elif Variables.activeLayer == 'bezirke':
+    
+          # Change hover-State to True
+          self.mapbox.setFeatureState({'source': 'bezirke', 'id': Variables.hoveredStateId}, {'hover': True})
   
   #Builds request-String for geocoder
   def build_request_string(self, marker):
@@ -1569,10 +1569,5 @@ class Map2_0(Map2_0Template):
     request_string += str(marker['Postleitzahl'])
     
     return (request_string)
-    
-
-  def new_form_click(self, **event_args):
-    
-    open_form('Form1', )
 
   #####   Extra Functions   #####
