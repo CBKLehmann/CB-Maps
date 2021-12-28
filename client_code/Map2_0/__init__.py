@@ -516,9 +516,14 @@ class Map2_0(Map2_0Template):
       else:
         
         y = int(el[28])
+      
+      if not x == 0 and not y == 0:
         
+        occupancy = round(float("{:.2f}".format((x * 100) / y, 2)), 2)
         
-      occupancy = float("{:.2f}".format((x * 100) / y, 2))
+      else:
+        
+        occupancy = 0
       
       popup_text += f'<tr><td>{index}</td><td>{el[5]}</td><td>{el[28]}</td><td>{el[31]}</td><td>{el[32]}</td><td>{el[27]}</td><td>{occupancy}</td><td>{el[33]}</td><td>{el[4]}</td><td>{el[6]}</td><td>{el[38]}</td><td>{el[26]}</td></tr>'
       index += 1
