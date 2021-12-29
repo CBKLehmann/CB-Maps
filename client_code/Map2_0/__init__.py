@@ -494,6 +494,9 @@ class Map2_0(Map2_0Template):
       self.icon_change(self.opnv_container, True, self.opnv_button, 'fa:angle-down')
       
   def exp_care_db_click(self, **event_args):
+
+    print(len(Variables.pflegeDBEntries))
+    print(len(Variables.activeIcons['pflegeDB']))
     
     index = 1
     
@@ -534,6 +537,10 @@ class Map2_0(Map2_0Template):
           
           popup_text += f'<tr><td>{index}</td><td>{el[5]}</td><td>{el[28]}</td><td>{el[31]}</td><td>{el[32]}</td><td>{el[27]}</td><td>{"{:.2f}".format(occupancy)}</td><td>{el[33]}</td><td>{el[4]}</td><td>{el[6]}</td><td>{el[38]}</td><td>{el[26]}</td></tr>'
           index += 1
+          
+        else:
+          
+          print('False')
   
     popup_text += '</table>'
   
