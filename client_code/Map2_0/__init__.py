@@ -499,6 +499,7 @@ class Map2_0(Map2_0Template):
     print(len(Variables.activeIcons['pflegeDB']))
     
     index = 1
+    counter = 0
     
     popup_text = f'<table><tr><th>No.</th><th>Name</th><th>No. of beds</th><th>single rooms</th><th>double rooms</th><th>Patients</th><th>occupancy</th><th>year of construction</th><th>Status</th><th>Operator</th><th>Invest costs per day</th><th>MDK grade</th></tr>'
     
@@ -510,6 +511,8 @@ class Map2_0(Map2_0Template):
         lat = '%.6f' % ele['_lngLat']['lat']
         
         if el[46] == lng and el[45] == lat:
+          
+          counter += 1
       
           if el[27] == '-':
             
@@ -538,13 +541,13 @@ class Map2_0(Map2_0Template):
           popup_text += f'<tr><td>{index}</td><td>{el[5]}</td><td>{el[28]}</td><td>{el[31]}</td><td>{el[32]}</td><td>{el[27]}</td><td>{"{:.2f}".format(occupancy)}</td><td>{el[33]}</td><td>{el[4]}</td><td>{el[6]}</td><td>{el[38]}</td><td>{el[26]}</td></tr>'
           index += 1
           
-        else:
+          break
           
-          print('False')
-  
     popup_text += '</table>'
   
     anvil.js.call('open_tab', popup_text)
+    
+    print(counter)
       
   #####  Button Functions   #####
   ###############################
