@@ -497,36 +497,50 @@ class Map2_0(Map2_0Template):
     
     index = 1
     
-    popup_text = f'<table><tr><th>No.</th><th>Name</th><th>No. of beds</th><th>single rooms</th><th>double rooms</th><th>Patients</th><th>occupancy</th><th>year of construction</th><th>Status</th><th>Operator</th><th>Invest costs per day</th><th>MDK grade</th></tr>'
+    popup_text = f'<table style="border: 1px solid black"><tr><th>No.</th><th>Name</th><th>No. of beds</th><th>single rooms</th><th>double rooms</th><th>Patients</th><th>occupancy</th><th>year of construction</th><th>Status</th><th>Operator</th><th>Invest costs per day</th><th>MDK grade</th></tr>'
     
     for el in Variables.pflegeDBEntries:
       
-      if el[27] == '-':
+      for ele in Variables.activeIcons['pflegeDB']:
         
-        x = 0
+        lng = '%.6f' % ele['_lngLat']['lng']
+        lat = '%.6f' % ele['_lngLat']['lat']
         
-      else:
-        
-        x = int(el[27])
-        
-      if el[28] == '-':
-        
-        y = 0
-        
-      else:
-        
-        y = int(el[28])
+        if el[46] == lng and el[45] == lat:
       
-      if not x == 0 and not y == 0:
-        
-        occupancy = (x * 100) / y
-        
-      else:
-        
-        occupancy = 0
-      
-      popup_text += f'<tr><td>{index}</td><td>{el[5]}</td><td>{el[28]}</td><td>{el[31]}</td><td>{el[32]}</td><td>{el[27]}</td><td>{"{:.2f}".format(occupancy)}</td><td>{el[33]}</td><td>{el[4]}</td><td>{el[6]}</td><td>{el[38]}</td><td>{el[26]}</td></tr>'
-      index += 1
+          if el[27] == '-':
+            
+            x = 0
+            
+          else:
+            
+            x = int(el[27])
+            
+          if el[28] == '-':
+            
+            y = 0
+            
+          else:
+            
+            y = int(el[28])
+          
+          if not x == 0 and not y == 0:
+            
+            occupancy = (x * 100) / y
+            
+          else:
+            
+            occupancy = 0
+          
+          popup_text += f'<tr><td>{index}</td><td>{el[5]}</td><td>{el[28]}</td><td>{el[31]}</td><td>{el[32]}</td><td>{el[27]}</td><td>{"{:.2f}".format(occupancy)}</td><td>{el[33]}</td><td>{el[4]}</td><td>{el[6]}</td><td>{el[38]}</td><td>{el[26]}</td></tr>'
+          index += 1
+          
+        else:
+          
+          print('False')
+          print('########################')
+  
+      print('##############################################')
   
     popup_text += '</table>'
   
@@ -1379,12 +1393,17 @@ class Map2_0(Map2_0Template):
               icons.append(newicon)
     
             # Refresh global Variables
+            Variables.activeIcons.pop(f'{category}', None)
             Variables.icons.update({f'{category}': icons})
+            Variables.activeIcons.update({f'{category}': icons})
             last_bbox = bbox
             Variables.last_cat = f'{category}'
     
         # Do if new Bounding Box is smaller or same than old Bounding Box
         else:
+          
+          #Create empty Icons Array to save Elements
+          icons = []
     
           # Loop through every Element in global Icon-Elements
           for el in Variables.icons[f'{category}']:
@@ -1395,11 +1414,14 @@ class Map2_0(Map2_0Template):
             # Check if Icon is inside visible Bounding Box
             if bbox[0] < el_coords['lat'] < bbox[2] and bbox[1] < el_coords['lng'] < bbox[3]:
         
-              # Add Element to Map
+              # Add Element to Map and add to Icon-Array
               el.addTo(self.mapbox)
+              icons.append(el)
   
-          # Change last Category
+          # Change last Category and add Icons to active Icon-Array
+          Variables.activeIcons.pop(f'{category}', None)
           Variables.last_cat = f'{category}'
+          Variables.activeIcons.update({f'{category}': icons})
   
       # Do if Bounding Box is the same as least Request
       else:

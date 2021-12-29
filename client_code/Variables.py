@@ -8,6 +8,7 @@ marker = {}
 start = True
 x = 0
 icons = {}
+activeIcons = {}
 last_bbox_doc = [100000, 100000, 0, 0]
 last_bbox_den = [100000, 100000, 0, 0]
 last_bbox_cli = [100000, 100000, 0, 0]
