@@ -247,7 +247,7 @@ class Map2_0(Map2_0Template):
   
   #This method is called when the Check Box for POI 'clinic' is checked or unchecked
   def check_box_cli_change(self, **event_args):
-  
+    
     #Call create_icons-Function to set the Icons on Map and save last BBox of clinics
     Variables.last_bbox_cli = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, 'clinic', Variables.icon_clinics)
 
@@ -493,6 +493,45 @@ class Map2_0(Map2_0Template):
       #Set Checkbox-Panel to visible and change Arrow-Icon
       self.icon_change(self.opnv_container, True, self.opnv_button, 'fa:angle-down')
       
+  def dist_layer_click(self, **event_args):
+
+    #Check if Checkbox-Panel is visible or not
+    if self.dist_container.visible == True:
+    
+      #Set Checkbox-Panel to invisible and change Arrow-Icon
+      self.icon_change(self.dist_container, False, self.dist_layer, 'fa:angle-right')
+      
+    else:
+    
+      #Set Checkbox-Panel to visible and change Arrow-Icon
+      self.icon_change(self.dist_container, True, self.dist_layer, 'fa:angle-down')
+      
+  def map_styles_click(self, **event_args):
+    
+    #Check if Checkbox-Panel is visible or not
+    if self.checkbox_map_style.visible == True:
+    
+      #Set Checkbox-Panel to invisible and change Arrow-Icon
+      self.icon_change(self.checkbox_map_style, False, self.map_styles, 'fa:angle-right')
+      
+    else:
+    
+      #Set Checkbox-Panel to visible and change Arrow-Icon
+      self.icon_change(self.checkbox_map_style, True, self.map_styles, 'fa:angle-down')
+
+  def poi_categories_click(self, **event_args):
+    
+    #Check if Checkbox-Panel is visible or not
+    if self.poi_category.visible == True:
+    
+      #Set Checkbox-Panel to invisible and change Arrow-Icon
+      self.icon_change(self.poi_category, False, self.poi_category, 'fa:angle-right')
+      
+    else:
+    
+      #Set Checkbox-Panel to visible and change Arrow-Icon
+      self.icon_change(self.poi_category, True, self.poi_category, 'fa:angle-down')
+      
   def exp_care_db_click(self, **event_args):
     
     index = 1
@@ -555,7 +594,7 @@ class Map2_0(Map2_0Template):
     popup_text += '</table>'
   
     anvil.js.call('open_tab', popup_text)
-      
+    
   #####  Button Functions   #####
   ###############################
   #####  Dropdown Functions #####
@@ -1641,5 +1680,5 @@ class Map2_0(Map2_0Template):
     request_string += str(marker['Postleitzahl'])
     
     return (request_string)
-
+  
   #####   Extra Functions   #####
