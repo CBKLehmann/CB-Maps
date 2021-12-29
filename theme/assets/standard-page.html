@@ -95,7 +95,9 @@
   function open_tab(html) {
     
     var tab = window.open('about:blank', '_blank');
+    tab.document.write('<html><head><title>Competitor Analysis</title><style>table {border-collapse: collapse; width: 100%} td {border-bottom: 1px solid black; text-align: center; min-width: 80px} th {background-color: #BFAD75; text-align: center; min-width: 80px; height: 30px}</style></head><body>');
     tab.document.write(html);
+    tab.document.write('</body></html>');
     tab.document.close();
     
   }

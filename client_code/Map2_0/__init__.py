@@ -497,7 +497,7 @@ class Map2_0(Map2_0Template):
     
     index = 1
     
-    popup_text = f'<table style="border: 1px solid black"><tr><th>No.</th><th>Name</th><th>No. of beds</th><th>single rooms</th><th>double rooms</th><th>Patients</th><th>occupancy</th><th>year of construction</th><th>Status</th><th>Operator</th><th>Invest costs per day</th><th>MDK grade</th></tr>'
+    popup_text = f'<table><tr><th>No.</th><th>Name</th><th>No. of beds</th><th>single rooms</th><th>double rooms</th><th>Patients</th><th>occupancy</th><th>year of construction</th><th>Status</th><th>Operator</th><th>Invest costs per day</th><th>MDK grade</th></tr>'
     
     for el in Variables.pflegeDBEntries:
       
@@ -534,13 +534,6 @@ class Map2_0(Map2_0Template):
           
           popup_text += f'<tr><td>{index}</td><td>{el[5]}</td><td>{el[28]}</td><td>{el[31]}</td><td>{el[32]}</td><td>{el[27]}</td><td>{"{:.2f}".format(occupancy)}</td><td>{el[33]}</td><td>{el[4]}</td><td>{el[6]}</td><td>{el[38]}</td><td>{el[26]}</td></tr>'
           index += 1
-          
-        else:
-          
-          print('False')
-          print('########################')
-  
-      print('##############################################')
   
     popup_text += '</table>'
   
