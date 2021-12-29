@@ -494,9 +494,6 @@ class Map2_0(Map2_0Template):
       self.icon_change(self.opnv_container, True, self.opnv_button, 'fa:angle-down')
       
   def exp_care_db_click(self, **event_args):
-
-    print(len(Variables.pflegeDBEntries))
-    print(len(Variables.activeIcons['pflegeDB']))
     
     index = 1
     counter = 0
@@ -505,12 +502,15 @@ class Map2_0(Map2_0Template):
     
     for el in Variables.pflegeDBEntries:
       
+      lng1 = '%.6f' % float(el[46])
+      lat1 = '%.6f' % float(el[45])
+      
       for ele in Variables.activeIcons['pflegeDB']:
         
         lng = '%.6f' % ele['_lngLat']['lng']
         lat = '%.6f' % ele['_lngLat']['lat']
         
-        if el[46] == lng and el[45] == lat:
+        if lng1 == lng and lat1 == lat:
           
           counter += 1
       
@@ -532,13 +532,22 @@ class Map2_0(Map2_0Template):
           
           if not x == 0 and not y == 0:
             
-            occupancy = (x * 100) / y
+            occupancy_raw = round((x * 100) / y)
+            occupancy = f'{occupancy_raw} %'
             
           else:
             
-            occupancy = 0
+            occupancy = '-'
+            
+          if not el[38] == '-':
+            
+            invest = f'{el[38]} €'
+            
+          else:
+            
+            invest = el[38]
           
-          popup_text += f'<tr><td>{index}</td><td>{el[5]}</td><td>{el[28]}</td><td>{el[31]}</td><td>{el[32]}</td><td>{el[27]}</td><td>{"{:.2f}".format(occupancy)}</td><td>{el[33]}</td><td>{el[4]}</td><td>{el[6]}</td><td>{el[38]}</td><td>{el[26]}</td></tr>'
+          popup_text += f'<tr><td>{index}</td><td>{el[5]}</td><td>{el[28]}</td><td>{el[31]}</td><td>{el[32]}</td><td>{el[27]}</td><td>{occupancy}</td><td>{el[33]}</td><td>{el[4]}</td><td>{el[6]}</td><td>{invest}</td><td>{el[26]}</td></tr>'
           index += 1
           
           break
@@ -546,8 +555,6 @@ class Map2_0(Map2_0Template):
     popup_text += '</table>'
   
     anvil.js.call('open_tab', popup_text)
-    
-    print(counter)
       
   #####  Button Functions   #####
   ###############################
