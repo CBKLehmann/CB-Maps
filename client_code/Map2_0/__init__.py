@@ -537,7 +537,8 @@ class Map2_0(Map2_0Template):
     index = 1
     counter = 0
     
-    popup_text = f'<table><tr><th>No.</th><th>Name</th><th>No. of beds</th><th>single rooms</th><th>double rooms</th><th>Patients</th><th>occupancy</th><th>year of construction</th><th>Status</th><th>Operator</th><th>Invest costs per day</th><th>MDK grade</th></tr>'
+    popup_text = '<html><head><title>Competitor Analysis</title><style>table {border-collapse: collapse; width: 100%} td {border-bottom: 1px solid black; text-align: center; min-width: 80px} th {background-color: #BFAD75; text-align: center; min-width: 80px; height: 30px}</style></head><body>'
+    popup_text += f'<table><tr><th>No.</th><th>Name</th><th>No. of beds</th><th>single rooms</th><th>double rooms</th><th>Patients</th><th>occupancy</th><th>year of construction</th><th>Status</th><th>Operator</th><th>Invest costs per day</th><th>MDK grade</th></tr>'
     
     for el in Variables.pflegeDBEntries:
       
@@ -591,7 +592,7 @@ class Map2_0(Map2_0Template):
           
           break
           
-    popup_text += '</table>'
+    popup_text += '</table></body></html>'
   
     anvil.js.call('open_tab', popup_text)
     
@@ -602,14 +603,53 @@ class Map2_0(Map2_0Template):
     string = f'https://api.mapbox.com/geocoding/v5/mapbox.places/{lngLat[0]},{lngLat[1]}.json?access_token={self.token}'
     
     #Get Data from request
-    response = anvil.http.request(string,json=True)
+    response_data = anvil.http.request(string,json=True)
     
-    print(response['features'][0]['context'][0]['text'])
-    print(response['features'][0]['context'][1]['text'])
-    print(response['features'][0]['context'][2]['text'])
-    print(response['features'][0]['context'][3]['text'])
+    marker_context = response_data['features'][0]['context']
     
-#     anvil.js.call('open_tab', response)
+    zipcode = 'n.a.'
+    district = 'n.a.'
+    city = 'n.a.'
+    federal_state = 'n.a.'
+    
+    print(marker_context)
+    
+    for el in marker_context:
+      
+      if 'postcode' in el['id'] :
+        
+        print(True)
+        
+        zipcode = el['text']
+        
+      elif 'locality' in el['id']:
+        
+        district = el['text']
+        
+      elif 'place' in el['id']:
+        
+        city = el['text']
+        
+      elif 'region' in el['id']:
+        
+        federal_state = el['text']
+        
+    if federal_state == 'n.a.':
+      
+      federal_state = city
+      
+    if district == 'n.a.':
+      
+      district = city
+        
+    data = [zipcode, city, district, federal_state]
+
+    response = '<html><head><title>Summary</title><style></style></head><body>'
+    response += f'<h1>Executive Summary</h1><p>General information</p><table><tr><td>Zip Code</td><td>{zipcode}</td></tr><tr><td>City</td><td>{city}</td></tr><tr><td>District</td><td>{district}</td></tr><tr><td>Federal State</td><td>{federal_state}</td></tr><tr><td>Radius of analysis</td><td>Not implemented yet</td></tr></table>'
+    response += f'<p>Demographic trend</p><table><tr><th></th></tr><tr><td>Zip Code</td><td>{zipcode}</td></tr><tr><td>City</td><td>{city}</td></tr><tr><td>District</td><td>{district}</td></tr><tr><td>Federal State</td><td>{federal_state}</td></tr><tr><td>Radius of analysis</td><td>Not implemented yet</td></tr></table>'
+    response += '</body></html>'
+    
+    anvil.js.call('open_tab', response)
     
   #####  Button Functions   #####
   ###############################
