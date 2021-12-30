@@ -595,6 +595,22 @@ class Map2_0(Map2_0Template):
   
     anvil.js.call('open_tab', popup_text)
     
+  def Summary_click(self, **event_args):
+    
+    lngLat = [(dict(self.marker['_lngLat'])['lng']), (dict(self.marker['_lngLat'])['lat'])]
+    
+    string = f'https://api.mapbox.com/geocoding/v5/mapbox.places/{lngLat[0]},{lngLat[1]}.json?access_token={self.token}'
+    
+    #Get Data from request
+    response = anvil.http.request(string,json=True)
+    
+    print(response['features'][0]['context'][0]['text'])
+    print(response['features'][0]['context'][1]['text'])
+    print(response['features'][0]['context'][2]['text'])
+    print(response['features'][0]['context'][3]['text'])
+    
+#     anvil.js.call('open_tab', response)
+    
   #####  Button Functions   #####
   ###############################
   #####  Dropdown Functions #####
