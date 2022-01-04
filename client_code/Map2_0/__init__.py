@@ -663,6 +663,8 @@ class Map2_0(Map2_0Template):
     response += '</table>'
     response += '</body></html>'
     
+    anvil.server.call('get_countie_data_from_DB', city)
+    
     anvil.js.call('open_tab', response)
     
   #####  Button Functions   #####
