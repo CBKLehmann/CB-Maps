@@ -657,7 +657,7 @@ class Map2_0(Map2_0Template):
     peopleu75 = int((float(data[0][19]) * float(data[0][17])) / 100)
     peopleo75 = int((float(data[0][19]) * float(data[0][18])) / 100)
     
-    careDB = anvil.server.call('get_federalstate_data', federal_state, data[])
+    careDB = anvil.server.call('get_federalstate_data', federal_state, data[0][0])
     
     print(careDB)
     
