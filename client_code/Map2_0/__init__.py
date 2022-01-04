@@ -607,8 +607,6 @@ class Map2_0(Map2_0Template):
     
     marker_context = response_data['features'][0]['context']
     
-    print(marker_context)
-    
     zipcode = 'n.a.'
     district = 'n.a.'
     city = 'n.a.'
@@ -651,21 +649,63 @@ class Map2_0(Map2_0Template):
     data = anvil.server.call('get_countie_data_from_DB', city, federal_state)
     population = 0
     
-    print(data)
     countie = data[0][1].split(',')
     
     peopleu75 = int((float(data[0][19]) * float(data[0][17])) / 100)
     peopleo75 = int((float(data[0][19]) * float(data[0][18])) / 100)
     
-    careDB = anvil.server.call('get_federalstate_data', federal_state, data[0][0])
+    CareData = anvil.server.call('get_federalstate_data', federal_state, data[0][0])
     
-    print(careDB)
+    sum = 0
+    
+    for el in CareData:
+    
+        if not el[27] == '-':
+    
+            sum += int(el[27])
+    
+    # Get Data of Iso-Layer
+    iso = dict(self.mapbox.getSource('iso'))
+    
+    # Create empty Bounding Box
+    bbox = [0, 0, 0, 0]
+
+    # Check every element in Iso-Data
+    for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+
+      # Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+      if el[0] < bbox[1] or bbox[1] == 0:
+
+        # Set BBox-Coordinate to new Element-Coordinate
+        bbox[1] = el[0]
+
+      # Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+      if el[0] > bbox[3] or bbox[3] == 0:
+
+        # Set BBox-Coordinate to new Element-Coordinate
+        bbox[3] = el[0]
+
+      # Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+      if el[1] < bbox[0] or bbox[0] == 0:
+
+        # Set BBox-Coordinate to new Element-Coordinate
+        bbox[0] = el[1]
+
+      # Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+      if el[1] > bbox[2] or bbox[2] == 0:
+
+        # Set BBox-Coordinate to new Element-Coordinate
+        bbox[2] = el[1]
+        
+    anvil.server.call('get_iso_data', bbox)    
+        
+    print(bbox)
     
     response = '<html><head><title>Summary</title><style>table {border-collapse: collapse} td {max-width: 250px; height: 10px} th {text-align: left; height: 10px}</style></head><body>'
     response += '<h1>Executive Summary</h1><br>'
     response += '<table>'
     response += f'<tr style="border-bottom: 1px solid #000;"><th>General Information</th></tr><tr style="height: 20px;" /><tr><th>Zip Code</th><th></th><th></th><th>{zipcode}</th></tr><tr><th>City</th><th></th><th></th><th>{city}</th></tr><tr><th>District</th><th></th><th></th><th>{district}</th></tr><tr><th>Federal State</th><th></th><th></th><th>{federal_state}</th></tr><tr><th>Radius of analysis</th><th></th><th></th><th>{time} minutes of {movement}</th></tr><tr style="height: 30px;" />'
-    response += f'<tr style="border-bottom: 1px solid #000;"><th>Demographic trend</th></tr><tr style="height: 5px;" /><tr><th>{countie[0]}, LK</th><th>2019 Actual</th><th>2030 Forecast</th><th>Change in %</th></tr><tr><td>Population</td><td>{data[0][19]}</td></tr><tr><td>Population 65-74</td><td>{peopleu75}</td><td>Not implemented yet</td><td>Not implemented yet</td></tr><tr><td>Population 75+</td><td>{peopleo75}</td><td>Not implemented yet</td><td>Not implemented yet</td></tr><tr><td>Patients receiving full inpatient care</td><td>Not implemented yet</td><td>Not implemented yet</td><td>Not implemented yet</td></tr><tr style="height: 30px;" />'
+    response += f'<tr style="border-bottom: 1px solid #000;"><th>Demographic trend</th></tr><tr style="height: 5px;" /><tr><th>{countie[0]}, LK</th><th>2019 Actual</th><th>2030 Forecast</th><th>Change in %</th></tr><tr><td>Population</td><td>{data[0][19]}</td></tr><tr><td>Population 65-74</td><td>{peopleu75}</td><td>Not implemented yet</td><td>Not implemented yet</td></tr><tr><td>Population 75+</td><td>{peopleo75}</td><td>Not implemented yet</td><td>Not implemented yet</td></tr><tr><td>Patients receiving full inpatient care</td><td>{sum}</td><td>Not implemented yet</td><td>Not implemented yet</td></tr><tr style="height: 30px;" />'
     response += f'<tr style="border-bottom: 1px solid #000;"><th>Demand</th><td>Radius: {time} minutes of {movement}</td></tr><tr><td>Number of inpatients</td><td>Not implemented yet</td></tr><tr><td>Number of inpatients forecast 2030</td><td></td><td>Not implemented yet</td></tr><tr style="height: 30px;" />'
     response += f'<tr style="border-bottom: 1px solid #000;"><th>Supply</th><td>Radius: {time} minutes of {movement}</td></tr><tr><td>Beds</td><td>Not implemented yet</td></tr><tr><td>Nursing homes</td><td>Not implemented yet</td></tr><tr><td>Nursing homes in planning</td><td>Not implemented yet</td></tr><tr><td>Nursing homes under construction</td><td>Not implemented yet</td></tr><tr><td>Beds in planning</td><td>Not implemented yet</td></tr><tr><td>Beds under construction</td><td>Not implemented yet</td></tr><tr><td>Adjusted number of beds (incl. beds in planning and under construction</td><td>Not implemented yet</td></tr><tr><td>Occupancy rate</td><td>Not implemented yet</td></tr><tr><td>Median Invest Cost</td><td>Not implemented yet</td></tr><tr style="height: 5px;" /><tr style="border-bottom: 1px solid #000;"><th>Surplus or deficit 2030 of beds IC</th><th></th><th>Not implemented yet</th></tr><tr style="height: 30px;" />'
     response += f'<tr style="border-bottom: 1px solid #000;"><th>Market shares</th><td>Radius: {time} minutes of {movement}</td></tr><tr style="height: 15px;" /><tr><td>Number of operators</td><td>Not implemented yet</td></tr><tr><td>Median Number of beds</td><td>Not implemented yet</td></tr><tr><td>Median Year of construction</td><td>Not implemented yet</td></tr><tr><td>% Public operators</td><td>Not implemented yet</td></tr><tr><td>% Non-profit operators</td><td>Not implemented yet</td></tr><tr><td>% Private operators</td><td>Not implemented yet</td></tr>'
