@@ -607,6 +607,8 @@ class Map2_0(Map2_0Template):
     
     marker_context = response_data['features'][0]['context']
     
+    print(marker_context)
+    
     zipcode = 'n.a.'
     district = 'n.a.'
     city = 'n.a.'
@@ -646,10 +648,8 @@ class Map2_0(Map2_0Template):
     
     movement = self.profile_dropdown.selected_value.lower()
     
-    data = anvil.server.call('get_countie_data_from_DB', city)
+    data = anvil.server.call('get_countie_data_from_DB', city, federal_state)
     population = 0
-    
-    print(data)
     
     countie = data[0][1].split(',')
     
