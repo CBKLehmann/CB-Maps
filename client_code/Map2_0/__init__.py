@@ -10,7 +10,6 @@ import anvil.js
 import anvil.http
 import json
 from .. import Variables, Layer
-import plotly.express as px
 
 #Get global Variables
 global Variables, Layer
@@ -448,9 +447,9 @@ class Map2_0(Map2_0Template):
       
   #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
   def admin_button_click(self, **event_args):
-  
+    
     #Call a Server Function
-    anvil.server.call('manipulate')
+    anvil.server.call('create_pieChart')
     
   #This method is called when the Healthcare-Button is clicked
   def button_healthcare_click(self, **event_args):
