@@ -502,7 +502,7 @@ components:
     event_bindings: {click: Summary_click}
   - type: Button
     properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-      foreground: '', visible: true, text: Admin-Button, font_size: null, font: '',
+      foreground: '', visible: false, text: Admin-Button, font_size: null, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
     name: admin_button

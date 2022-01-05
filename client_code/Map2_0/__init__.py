@@ -449,7 +449,7 @@ class Map2_0(Map2_0Template):
   def admin_button_click(self, **event_args):
     
     #Call a Server Function
-    anvil.server.call('create_pieChart')
+    anvil.server.call('manipulate')
     
   #This method is called when the Healthcare-Button is clicked
   def button_healthcare_click(self, **event_args):
@@ -811,6 +811,11 @@ class Map2_0(Map2_0Template):
     occupancy_raw = round((inpatients * 100) / beds_active)
         
     beds_adjusted = beds_active + beds_construct + beds_planned
+    
+    labels = ['% Public operators', '% Non-profit operators', '% Private operators']
+    values = [len(operator_public), len(operator_nonProfit), len(operator_private)]
+    
+    anvil.server.call('create_pieChart', labels, values)
     
     response = '<html><head><title>Summary</title><style>table {border-collapse: collapse} td {max-width: 250px; height: 10px} th {height: 10px} .left {text-align: left} .right {text-align: right} .center {text-align: center}</style></head><body>'
     response += '<h1>Executive Summary</h1><br>'
