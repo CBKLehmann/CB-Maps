@@ -697,17 +697,72 @@ class Map2_0(Map2_0Template):
         # Set BBox-Coordinate to new Element-Coordinate
         bbox[2] = el[1]
         
-    anvil.server.call('get_iso_data', bbox)    
+    dataDB = anvil.server.call('get_iso_data', bbox)
+    
+    inpatients = 0
+    beds_active = 0
+    beds_planned = 0
+    beds_construct = 0
+    nursingHomes_active = 0
+    nursingHomes_planned = 0
+    nursingHomes_construct = 0
+    patients = 0
+    
+    for el in dataDB:
+      
+      if not el[27] == '-':
         
-    print(bbox)
+        inpatients += int(el[27])
+      
+      if el[4] == 'aktiv':
+      
+        nursingHomes_active += 1
+        
+        if not el[31] == '-':
+          
+          beds_active += int(el[31])
+          
+        if not el[32] == '-':
+          
+          beds_active += (int(el[32]) * 2)
+        
+      elif el[4] == 'in Planung':
+        
+        nursingHomes_planned += 1
+        
+        if not el[31] == '-':
+          
+          beds_planned += int(el[31])
+          
+        if not el[32] == '-':
+          
+          beds_planned += (int(el[32]) * 2)
+        
+      elif el[4] == 'im Bau':
+        
+        nursingHomes_construct += 1
+        
+        if not el[31] == '-':
+          
+          beds_construct += int(el[31])
+          
+        if not el[32] == '-':
+          
+          beds_construct += (int(el[32]) * 2)
+    
+    print(inpatients)
+    print(beds_active)
+    occupancy_raw = round((inpatients * 100) / beds_active)
+        
+    beds_adjusted = beds_active + beds_construct + beds_planned
     
     response = '<html><head><title>Summary</title><style>table {border-collapse: collapse} td {max-width: 250px; height: 10px} th {text-align: left; height: 10px}</style></head><body>'
     response += '<h1>Executive Summary</h1><br>'
     response += '<table>'
     response += f'<tr style="border-bottom: 1px solid #000;"><th>General Information</th></tr><tr style="height: 20px;" /><tr><th>Zip Code</th><th></th><th></th><th>{zipcode}</th></tr><tr><th>City</th><th></th><th></th><th>{city}</th></tr><tr><th>District</th><th></th><th></th><th>{district}</th></tr><tr><th>Federal State</th><th></th><th></th><th>{federal_state}</th></tr><tr><th>Radius of analysis</th><th></th><th></th><th>{time} minutes of {movement}</th></tr><tr style="height: 30px;" />'
     response += f'<tr style="border-bottom: 1px solid #000;"><th>Demographic trend</th></tr><tr style="height: 5px;" /><tr><th>{countie[0]}, LK</th><th>2019 Actual</th><th>2030 Forecast</th><th>Change in %</th></tr><tr><td>Population</td><td>{data[0][19]}</td></tr><tr><td>Population 65-74</td><td>{peopleu75}</td><td>Not implemented yet</td><td>Not implemented yet</td></tr><tr><td>Population 75+</td><td>{peopleo75}</td><td>Not implemented yet</td><td>Not implemented yet</td></tr><tr><td>Patients receiving full inpatient care</td><td>{sum}</td><td>Not implemented yet</td><td>Not implemented yet</td></tr><tr style="height: 30px;" />'
-    response += f'<tr style="border-bottom: 1px solid #000;"><th>Demand</th><td>Radius: {time} minutes of {movement}</td></tr><tr><td>Number of inpatients</td><td>Not implemented yet</td></tr><tr><td>Number of inpatients forecast 2030</td><td></td><td>Not implemented yet</td></tr><tr style="height: 30px;" />'
-    response += f'<tr style="border-bottom: 1px solid #000;"><th>Supply</th><td>Radius: {time} minutes of {movement}</td></tr><tr><td>Beds</td><td>Not implemented yet</td></tr><tr><td>Nursing homes</td><td>Not implemented yet</td></tr><tr><td>Nursing homes in planning</td><td>Not implemented yet</td></tr><tr><td>Nursing homes under construction</td><td>Not implemented yet</td></tr><tr><td>Beds in planning</td><td>Not implemented yet</td></tr><tr><td>Beds under construction</td><td>Not implemented yet</td></tr><tr><td>Adjusted number of beds (incl. beds in planning and under construction</td><td>Not implemented yet</td></tr><tr><td>Occupancy rate</td><td>Not implemented yet</td></tr><tr><td>Median Invest Cost</td><td>Not implemented yet</td></tr><tr style="height: 5px;" /><tr style="border-bottom: 1px solid #000;"><th>Surplus or deficit 2030 of beds IC</th><th></th><th>Not implemented yet</th></tr><tr style="height: 30px;" />'
+    response += f'<tr style="border-bottom: 1px solid #000;"><th>Demand</th><td>Radius: {time} minutes of {movement}</td></tr><tr><td>Number of inpatients</td><td>{inpatients}</td></tr><tr><td>Number of inpatients forecast 2030</td><td></td><td>Not implemented yet</td></tr><tr style="height: 30px;" />'
+    response += f'<tr style="border-bottom: 1px solid #000;"><th>Supply</th><td>Radius: {time} minutes of {movement}</td></tr><tr><td>Beds</td><td>{beds_active}</td></tr><tr><td>Nursing homes</td><td>{nursingHomes_active}</td></tr><tr><td>Nursing homes in planning</td><td>{nursingHomes_planned}</td></tr><tr><td>Nursing homes under construction</td><td>{nursingHomes_construct}</td></tr><tr><td>Beds in planning</td><td>{beds_planned}</td></tr><tr><td>Beds under construction</td><td>{beds_construct}</td></tr><tr><td>Adjusted number of beds (incl. beds in planning and under construction</td><td>{beds_adjusted}</td></tr><tr><td>Occupancy rate</td><td>{occupancy_raw}%</td></tr><tr><td>Median Invest Cost</td><td>Not implemented yet</td></tr><tr style="height: 5px;" /><tr style="border-bottom: 1px solid #000;"><th>Surplus or deficit 2030 of beds IC</th><th></th><th>Not implemented yet</th></tr><tr style="height: 30px;" />'
     response += f'<tr style="border-bottom: 1px solid #000;"><th>Market shares</th><td>Radius: {time} minutes of {movement}</td></tr><tr style="height: 15px;" /><tr><td>Number of operators</td><td>Not implemented yet</td></tr><tr><td>Median Number of beds</td><td>Not implemented yet</td></tr><tr><td>Median Year of construction</td><td>Not implemented yet</td></tr><tr><td>% Public operators</td><td>Not implemented yet</td></tr><tr><td>% Non-profit operators</td><td>Not implemented yet</td></tr><tr><td>% Private operators</td><td>Not implemented yet</td></tr>'
     response += '</table>'
     response += '</body></html>'
