@@ -10,6 +10,8 @@ import anvil.js
 import anvil.http
 import json
 from .. import Variables, Layer
+import anvil.media
+import plotly.graph_objects as go
 
 #Get global Variables
 global Variables, Layer
@@ -815,7 +817,9 @@ class Map2_0(Map2_0Template):
     labels = ['% Public operators', '% Non-profit operators', '% Private operators']
     values = [len(operator_public), len(operator_nonProfit), len(operator_private)]
     
-    anvil.server.call('create_pieChart', labels, values)
+    donut = anvil.server.call('create_pieChart', labels, values)
+    
+    print(donut.content_type)
     
     response = '<html><head><title>Summary</title><style>table {border-collapse: collapse} td {max-width: 250px; height: 10px} th {height: 10px} .left {text-align: left} .right {text-align: right} .center {text-align: center}</style></head><body>'
     response += '<h1>Executive Summary</h1><br>'
