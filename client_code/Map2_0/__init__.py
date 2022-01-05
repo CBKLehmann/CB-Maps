@@ -707,8 +707,17 @@ class Map2_0(Map2_0Template):
     nursingHomes_planned = 0
     nursingHomes_construct = 0
     patients = 0
+    investCost = []
+    operator = []
+    beds = []
+    year = []
+    operator_public = []
+    operator_nonProfit = []
+    operator_private = []
     
     for el in dataDB:
+      
+      bedsEL = 0
       
       if not el[27] == '-':
         
@@ -718,13 +727,22 @@ class Map2_0(Map2_0Template):
       
         nursingHomes_active += 1
         
-        if not el[31] == '-':
+        if not el[28] == '-':
           
-          beds_active += int(el[31])
+          beds_active += int(el[28])
+          bedsEL += int(el[28])
           
-        if not el[32] == '-':
+        if not el[29] == '-':
           
-          beds_active += (int(el[32]) * 2)
+          beds_active += int(el[29])
+          bedsEL += int(el[29])
+        
+        if not el[30] == '-':
+          
+          beds_active += int(el[30])
+          bedsEL += int(el[30])
+          
+        beds.append(bedsEL)
         
       elif el[4] == 'in Planung':
         
@@ -749,9 +767,47 @@ class Map2_0(Map2_0Template):
         if not el[32] == '-':
           
           beds_construct += (int(el[32]) * 2)
+      
+      if not el[38] == '-':
+        
+        investCost.append(float(el[38]))
+        
+      if not el[6] == '-':
+        
+        if el[9] == 'privat':
+          
+          if not el[6] in operator_private:
+          
+            operator_private.append(el[6])
+          
+        elif el[9] == 'gemeinnützig':
+          
+          if not el[6] in operator_nonProfit:
+          
+            operator_nonProfit.append(el[6])
+          
+        elif el[9] == 'kommunal':
+          
+          if not el[6] in operator_public:
+          
+            operator_public.append(el[6])
+        
+        if not el[6] in operator:
+          
+          operator.append(el[6])
+          
+      if not el[33] == '-':
+        
+        year.append(int(el[33]))
     
-    print(inpatients)
-    print(beds_active)
+    investMedian = anvil.server.call('get_median', investCost)
+    investMedian = "{:.2f}".format(investMedian)
+    bedsMedian = anvil.server.call('get_median', beds)
+    yearMedian = round(anvil.server.call('get_median', year))
+    op_private_percent = round((len(operator_private) * 100) / len(operator))
+    op_nonProfit_percent = round((len(operator_nonProfit) * 100) / len(operator))
+    op_public_percent = round((len(operator_public) * 100) / len(operator))
+    
     occupancy_raw = round((inpatients * 100) / beds_active)
         
     beds_adjusted = beds_active + beds_construct + beds_planned
@@ -762,8 +818,8 @@ class Map2_0(Map2_0Template):
     response += f'<tr style="border-bottom: 1px solid #000;"><th>General Information</th></tr><tr style="height: 20px;" /><tr><th>Zip Code</th><th></th><th></th><th>{zipcode}</th></tr><tr><th>City</th><th></th><th></th><th>{city}</th></tr><tr><th>District</th><th></th><th></th><th>{district}</th></tr><tr><th>Federal State</th><th></th><th></th><th>{federal_state}</th></tr><tr><th>Radius of analysis</th><th></th><th></th><th>{time} minutes of {movement}</th></tr><tr style="height: 30px;" />'
     response += f'<tr style="border-bottom: 1px solid #000;"><th>Demographic trend</th></tr><tr style="height: 5px;" /><tr><th>{countie[0]}, LK</th><th>2019 Actual</th><th>2030 Forecast</th><th>Change in %</th></tr><tr><td>Population</td><td>{data[0][19]}</td></tr><tr><td>Population 65-74</td><td>{peopleu75}</td><td>Not implemented yet</td><td>Not implemented yet</td></tr><tr><td>Population 75+</td><td>{peopleo75}</td><td>Not implemented yet</td><td>Not implemented yet</td></tr><tr><td>Patients receiving full inpatient care</td><td>{sum}</td><td>Not implemented yet</td><td>Not implemented yet</td></tr><tr style="height: 30px;" />'
     response += f'<tr style="border-bottom: 1px solid #000;"><th>Demand</th><td>Radius: {time} minutes of {movement}</td></tr><tr><td>Number of inpatients</td><td>{inpatients}</td></tr><tr><td>Number of inpatients forecast 2030</td><td></td><td>Not implemented yet</td></tr><tr style="height: 30px;" />'
-    response += f'<tr style="border-bottom: 1px solid #000;"><th>Supply</th><td>Radius: {time} minutes of {movement}</td></tr><tr><td>Beds</td><td>{beds_active}</td></tr><tr><td>Nursing homes</td><td>{nursingHomes_active}</td></tr><tr><td>Nursing homes in planning</td><td>{nursingHomes_planned}</td></tr><tr><td>Nursing homes under construction</td><td>{nursingHomes_construct}</td></tr><tr><td>Beds in planning</td><td>{beds_planned}</td></tr><tr><td>Beds under construction</td><td>{beds_construct}</td></tr><tr><td>Adjusted number of beds (incl. beds in planning and under construction</td><td>{beds_adjusted}</td></tr><tr><td>Occupancy rate</td><td>{occupancy_raw}%</td></tr><tr><td>Median Invest Cost</td><td>Not implemented yet</td></tr><tr style="height: 5px;" /><tr style="border-bottom: 1px solid #000;"><th>Surplus or deficit 2030 of beds IC</th><th></th><th>Not implemented yet</th></tr><tr style="height: 30px;" />'
-    response += f'<tr style="border-bottom: 1px solid #000;"><th>Market shares</th><td>Radius: {time} minutes of {movement}</td></tr><tr style="height: 15px;" /><tr><td>Number of operators</td><td>Not implemented yet</td></tr><tr><td>Median Number of beds</td><td>Not implemented yet</td></tr><tr><td>Median Year of construction</td><td>Not implemented yet</td></tr><tr><td>% Public operators</td><td>Not implemented yet</td></tr><tr><td>% Non-profit operators</td><td>Not implemented yet</td></tr><tr><td>% Private operators</td><td>Not implemented yet</td></tr>'
+    response += f'<tr style="border-bottom: 1px solid #000;"><th>Supply</th><td>Radius: {time} minutes of {movement}</td></tr><tr><td>Beds</td><td>{beds_active}</td></tr><tr><td>Nursing homes</td><td>{nursingHomes_active}</td></tr><tr><td>Nursing homes in planning</td><td>{nursingHomes_planned}</td></tr><tr><td>Nursing homes under construction</td><td>{nursingHomes_construct}</td></tr><tr><td>Beds in planning</td><td>{beds_planned}</td></tr><tr><td>Beds under construction</td><td>{beds_construct}</td></tr><tr><td>Adjusted number of beds (incl. beds in planning and under construction</td><td>{beds_adjusted}</td></tr><tr><td>Occupancy rate</td><td>{occupancy_raw}%</td></tr><tr><td>Median Invest Cost</td><td>{investMedian} €</td></tr><tr style="height: 5px;" /><tr style="border-bottom: 1px solid #000;"><th>Surplus or deficit 2030 of beds IC</th><th></th><th>Not implemented yet</th></tr><tr style="height: 30px;" />'
+    response += f'<tr style="border-bottom: 1px solid #000;"><th>Market shares</th><td>Radius: {time} minutes of {movement}</td></tr><tr style="height: 15px;" /><tr><td>Number of operators</td><td>{len(operator)}</td></tr><tr><td>Median Number of beds</td><td>{bedsMedian}</td></tr><tr><td>Median Year of construction</td><td>{yearMedian}</td></tr><tr><td>% Public operators</td><td>{op_public_percent}%</td></tr><tr><td>% Non-profit operators</td><td>{op_nonProfit_percent}%</td></tr><tr><td>% Private operators</td><td>{op_private_percent}%</td></tr>'
     response += '</table>'
     response += '</body></html>'
     
