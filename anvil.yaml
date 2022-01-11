@@ -21,5 +21,10 @@ native_deps: {head_html: '<script src=''https://api.mapbox.com/mapbox-gl-js/v2.1
     type=''text/css'' />
 
     '}
-db_schema: {}
+db_schema:
+  table_1:
+    title: Table 1
+    client: none
+    server: full
+    columns: []
 renamed: true
