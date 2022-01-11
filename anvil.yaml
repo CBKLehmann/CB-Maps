@@ -22,9 +22,12 @@ native_deps: {head_html: '<script src=''https://api.mapbox.com/mapbox-gl-js/v2.1
 
     '}
 db_schema:
-  table_1:
-    title: Table 1
+  pictures:
+    title: pictures
     client: none
     server: full
-    columns: []
+    columns:
+    - name: pic
+      admin_ui: {width: 200}
+      type: media
 renamed: true
