@@ -819,8 +819,6 @@ class Map2_0(Map2_0Template):
     
     donut = anvil.server.call('create_pieChart', labels, values)
     
-    print(donut.content_type)
-    
     response = '<html><head><title>Summary</title><style>table {border-collapse: collapse} td {max-width: 250px; height: 10px} th {height: 10px} .left {text-align: left} .right {text-align: right} .center {text-align: center}</style></head><body>'
     response += '<h1>Executive Summary</h1><br>'
     response += '<table>'
@@ -830,6 +828,7 @@ class Map2_0(Map2_0Template):
     response += f'<tr style="border-bottom: 1px solid #000;"><th class="left">Supply</th><td class="right">Radius:</td><td class="left"> {time} minutes of {movement}</td></tr><tr><td class="left">Beds</td><td class="right">{beds_active}</td></tr><tr><td class="left">Nursing homes</td><td class="right">{nursingHomes_active}</td></tr><tr><td class="left">Nursing homes in planning</td><td class="right">{nursingHomes_planned}</td></tr><tr><td class="left">Nursing homes under construction</td><td class="right">{nursingHomes_construct}</td></tr><tr><td class="left">Beds in planning</td><td class="right">{beds_planned}</td></tr><tr><td class="left">Beds under construction</td><td class="right">{beds_construct}</td></tr><tr><td class="left">Adjusted number of beds (incl. beds in planning and under construction</td><td class="right">{beds_adjusted}</td></tr><tr><td class="left">Occupancy rate</td><td class="right">{occupancy_raw}%</td></tr><tr><td class="left">Median Invest Cost</td><td class="right">{investMedian} €</td></tr><tr style="height: 5px;" /><tr style="border-bottom: 1px solid #000;"><th class="left">Surplus or deficit 2030 of beds IC</th><th></th><th class="right">Not implemented yet</th></tr><tr style="height: 30px;" />'
     response += f'<tr style="border-bottom: 1px solid #000;"><th class="left">Market shares</th><td class="right">Radius:</td><td class="left"> {time} minutes of {movement}</td></tr><tr style="height: 15px;" /><tr><td class="left">Number of operators</td><td class="right">{len(operator)}</td></tr><tr><td class="left">Median Number of beds</td><td class="right">{bedsMedian}</td></tr><tr><td class="left">Median Year of construction</td><td class="right">{yearMedian}</td></tr><tr><td class="left">% Public operators</td><td class="right">{op_public_percent}%</td></tr><tr><td class="left">% Non-profit operators</td><td class="right">{op_nonProfit_percent}%</td></tr><tr><td class="left">% Private operators</td><td class="right">{op_private_percent}%</td></tr>'
     response += '</table>'
+    response += f'<img src="{donut}">'
     response += '</body></html>'
     
     anvil.js.call('open_tab', response)
