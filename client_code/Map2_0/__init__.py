@@ -854,6 +854,8 @@ class Map2_0(Map2_0Template):
     response += '</td></tr></table></table>'
     response += '</body></html>'
     
+    anvil.server.call('write_PDF_File', response)
+    
     anvil.js.call('open_tab', response)
     
   #####  Button Functions   #####
