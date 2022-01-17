@@ -27,7 +27,8 @@ class Map2_0(Map2_0Template):
     self.init_components(**properties)
     self.dom = anvil.js.get_dom_node(self.spacer_1)
     self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
-    self.token = "pk.eyJ1IjoiYnJvb2tlbXllcnMiLCJhIjoiY2tsamtiZ3l0MW55YjJvb2lsbmNxaWo0dCJ9.9iOO0aFkAy0TAP_qjtSE-A"
+#     self.token = "pk.eyJ1IjoiYnJvb2tlbXllcnMiLCJhIjoiY2tsamtiZ3l0MW55YjJvb2lsbmNxaWo0dCJ9.9iOO0aFkAy0TAP_qjtSE-A"
+    self.token = 'pk.eyJ1Ijoic2hpbnlrYW1wZmtldWxlIiwiYSI6ImNreWluYm5jMTBrYXcydnFvbmt3a3RiMG8ifQ.UEt90g8gVzPhsJof0znguA'
 
   #This method is called when the HTML panel is shown on the screen
   def form_show(self, **event_args):
@@ -831,17 +832,17 @@ class Map2_0(Map2_0Template):
     logoPicture = app_tables.pictures.get(id=2)
     logoPic = logoPicture['pic']
     
-    mapPicture = app_tables.pictures.get(id=3)
-    mapPic = mapPicture['pic']
-    
     lng = self.marker['_lngLat']['lng']
     lat = self.marker['_lngLat']['lat']
     
-    mapRequest = f'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s-c+BFB273({lng},{lat})%5D%7D)/[5.98865807458, 47.3024876979, 15.0169958839, 54.983104153]/800x800?access_token={self.token}?addlayer={'id':}'
+    mapRequest = f'https://api.mapbox.com/styles/v1/shinykampfkeule/ckyimpqlg92o315qqw4ubxk6v/static/pin-s-c+BFB273({lng},{lat})%5D%7D)/[5.98865807458, 47.3024876979, 15.0169958839, 54.983104153]/800x800?access_token={self.token}'
     
     mapImage = anvil.http.request(mapRequest,json=False)
     
-    app_tables.pictures.add_row(id=4, pic=mapImage)
+    app_tables.pictures.add_row(id=3, pic=mapImage)
+    
+    mapPicture = app_tables.pictures.get(id=3)
+    mapPic = mapPicture['pic']
     
     response = '<html><head><title>Summary</title><style>.outerTable {border-collapse: collapse; padding: 0; margin: 0} .killMargin {border-collapse: collapse; padding: 0; margin: 0} .innerData {border-collapse: collapse; padding: 0; margin: 0; width: 900px} .innerData > * {padding: 0; margin: 0} .innerData > td {height: 10px} .innerPicture {border-collapse: collapse; padding: 0; margin: 0; width: 20%} .innerPicture > td {max-width: 1100px; height: 10px} th {height: 10px} .left {text-align: left} .right {text-align: right} .center {text-align: center} .donutImage {width: 450px; height: 300px} .barImage {width: 450px; height: 300px} .placeholder {width: 10%} .placeholder2 {height: 50px} .mapImage {width: 300px; height: 380px; display: block; margin-left: auto; margin-right: auto} .logoImage {position: relative; top: -50px; left: 1250px}</style></head><body>'
     response += f'<h1>Executive Summary</h1><img class="logoImage" id="logoImage" src="{logoPic.url}"><br>'
