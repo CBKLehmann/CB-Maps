@@ -834,7 +834,16 @@ class Map2_0(Map2_0Template):
     mapPicture = app_tables.pictures.get(id=3)
     mapPic = mapPicture['pic']
     
-    response = '<html><head><title>Summary</title><style>.outerTable {border-collapse: collapse; padding: 0; margin: 0} .killMargin {border-collapse: collapse; padding: 0; margin: 0} .innerData {border-collapse: collapse; padding: 0; margin: 0; width: 900px} .innerData > * {padding: 0; margin: 0} .innerData > td {height: 10px} .innerPicture {border-collapse: collapse; padding: 0; margin: 0; width: 20%} .innerPicture > td {max-width: 1100px; height: 10px} th {height: 10px} .left {text-align: left} .right {text-align: right} .center {text-align: center} .donutImage {width: 450px; height: 300px} .barImage {width: 450px; height: 300px} .placeholder {width: 10%} .mapImage {width: 300px; height: 380px; display: block; margin-left: auto; margin-right: auto} .logoImage {position: fixed; top: 0; right: 500px;}</style></head><body>'
+    lng = self.marker['_lngLat']['lng']
+    lat = self.marker['_lngLat']['lat']
+    
+    mapRequest = f'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s-c+BFB273({lng},{lat})%5D%7D)/[5.98865807458, 47.3024876979, 15.0169958839, 54.983104153]/800x800?access_token={self.token}' 
+    
+    mapImage = anvil.http.request(mapRequest,json=False)
+    
+    app_tables.pictures.add_row(id=4, pic=mapImage)
+    
+    response = '<html><head><title>Summary</title><style>.outerTable {border-collapse: collapse; padding: 0; margin: 0} .killMargin {border-collapse: collapse; padding: 0; margin: 0} .innerData {border-collapse: collapse; padding: 0; margin: 0; width: 900px} .innerData > * {padding: 0; margin: 0} .innerData > td {height: 10px} .innerPicture {border-collapse: collapse; padding: 0; margin: 0; width: 20%} .innerPicture > td {max-width: 1100px; height: 10px} th {height: 10px} .left {text-align: left} .right {text-align: right} .center {text-align: center} .donutImage {width: 450px; height: 300px} .barImage {width: 450px; height: 300px} .placeholder {width: 10%} .placeholder2 {height: 50px} .mapImage {width: 300px; height: 380px; display: block; margin-left: auto; margin-right: auto} .logoImage {position: relative; top: -50px; left: 1250px}</style></head><body>'
     response += f'<h1>Executive Summary</h1><img class="logoImage" id="logoImage" src="{logoPic.url}"><br>'
     response += '<table class="outerTable"><tr><td class="killMargin">'
     response += '<table class="innerData">'
@@ -847,9 +856,9 @@ class Map2_0(Map2_0Template):
     response += '</td><td class="placeholder killMargin"></td><td>'
     response += '<table class="innerPicture"><tr><td>'
     response += f'<img class="mapImage" id="mapImage" src="{mapPic.url}">'
-    response += '</td></tr><tr><th>DEMAND & SUPPLY</th></tr><tr><td>'
+    response += '</td></tr><tr><th class="placeholder2"></th></tr><tr><th>DEMAND & SUPPLY</th></tr><tr><td>'
     response += f'<img class="barImage" id="barImage" src="{barPic.url}">'
-    response += '</td></tr><tr><td>'
+    response += '</td></tr><tr><th class="placeholder2"></th></tr><tr><th>MARKET SHARES</th></tr><tr><td>'
     response += f'<img class="donutImage" id="donutImage" src="{donutPic.url}">'
     response += '</td></tr></table></table>'
     response += '</body></html>'
