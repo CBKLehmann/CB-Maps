@@ -837,7 +837,7 @@ class Map2_0(Map2_0Template):
     lng = self.marker['_lngLat']['lng']
     lat = self.marker['_lngLat']['lat']
     
-    mapRequest = f'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s-c+BFB273({lng},{lat})%5D%7D)/[5.98865807458, 47.3024876979, 15.0169958839, 54.983104153]/800x800?access_token={self.token}' 
+    mapRequest = f'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s-c+BFB273({lng},{lat})%5D%7D)/[5.98865807458, 47.3024876979, 15.0169958839, 54.983104153]/800x800?access_token={self.token}?addlayer={'id':}'
     
     mapImage = anvil.http.request(mapRequest,json=False)
     
