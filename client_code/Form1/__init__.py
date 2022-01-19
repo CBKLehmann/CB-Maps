@@ -12,6 +12,8 @@ class Form1(Form1Template):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
-    image_1 = Images.donutPic
+  def changeImage(self):
     
-    self.image_1.source = image_1
+    image = Images.donutPic
+    
+    self.image_1.source = image
