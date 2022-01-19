@@ -2,5 +2,9 @@ container:
   type: HtmlTemplate
   properties: {html: "<center style=\"font-style:italic; color:#888; margin: 3em;\"\
       >\n  (Insert your custom HTML here)\n</center>"}
-components: []
+components:
+- type: Image
+  properties: {}
+  name: image_1
+  layout_properties: {slot: default}
 is_package: true
