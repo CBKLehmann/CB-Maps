@@ -1,0 +1,265 @@
+<html>
+  <head>
+    <title>Summary</title>
+    <style>
+      .outerTable {{border-collapse: collapse; padding: 0; margin: 0}}
+      .killMargin {{border-collapse: collapse; padding: 0; margin: 0}}
+      .innerData {{border-collapse: collapse; padding: 0; margin: 0; width: 900px}}
+      .innerData > * {{padding: 0; margin: 0}} .innerData > td {{height: 10px}}
+      .innerPicture {{border-collapse: collapse; padding: 0; margin: 0; width: 20%}}
+      .innerPicture > td {{max-width: 1100px; height: 10px}}
+      th {{height: 10px}}
+      .left {{text-align: left}}
+      .right {{text-align: right}}
+      .center {{text-align: center}}
+      .donutImage {{width: 450px; height: 300px}}
+      .barImage {{width: 450px; height: 300px}}
+      .placeholder {{width: 10%}}
+      .placeholder2 {{height: 50px}}
+      .mapImage {{width: 400px; height: 400px; display: block; margin-left: auto; margin-right: auto}}
+      .logoImage {{position: relative; top: -50px; left: 1250px}}
+    </style>
+  </head>
+  <body>
+    <h1>Executive Summary</h1>
+    <img class="logoImage" id="logoImage" src={logoPic.url}>
+    <br>
+    <table class="outerTable">
+      <tr>
+        <td class="killMargin">
+          <table class="innerData">
+            <tr style="border-bottom: 1px solid #000;">
+              <th class="left">General Information</th>
+            </tr>
+            <tr style="height: 20px;" />
+            <tr>
+              <th class="left">Zip Code</th class="placeholder">
+              <th />
+              <th />
+              <th />
+              <th class="right">{zipcode}</th>
+            </tr>
+            <tr>
+              <th class="left">City</th>
+              <th class="placeholder"></th>
+              <th />
+              <th />
+              <th class="right">{city}</th>
+            </tr>
+            <tr>
+              <th class="left">District</th>
+              <th class="placeholder" />
+              <th />
+              <th />
+              <th class="right">{district}</th>
+            </tr>
+            <tr>
+              <th class="left">Federal State</th>
+              <th class="placeholder" />
+              <th />
+              <th />
+              <th class="right">{federal_state}</th>
+            </tr>
+            <tr>
+              <th class="left">Radius of analysis</th>
+              <th class="placeholder" />
+              <th />
+              <th />
+              <th class="right">{time} minutes of {movement}</th>
+            </tr>
+            <tr style="height: 30px;" />
+            <tr style="border-bottom: 1px solid #000;">
+              <th class="left">Demographic trend</th>
+            </tr>
+            <tr style="height: 5px;" />
+            <tr>
+              <th class="left">{countie[0]}, LK</th>
+              <th />
+              <th class="right">2019 Actual</th>
+              <th class="right">2030 Forecast</th>
+              <th class="center">Change in %</th>
+            </tr>
+            <tr>
+              <td class="left">Population</td>
+              <td />
+              <td class="right">{data[0][19]}</td>
+            </tr>
+            <tr>
+              <td class="left">Population 65-74</td>
+              <td />
+              <td class="right">{peopleu75}</td>
+              <td class="right">999999</td>
+              <td class="center">999%</td>
+            </tr>
+            <tr>
+              <td class="left">Population 75+</td>
+              <td />
+              <td class="right">{peopleo75}</td>
+              <td class="right">999999</td>
+              <td class="center">999%</td>
+            </tr>
+            <tr>
+              <td class="left">Patients receiving full inpatient care</td>
+              <td />
+              <td class="right">{sum}</td>
+              <td class="right">999999</td>
+              <td class="center">999%</td>
+            </tr>
+            <tr style="height: 30px;" />
+            <tr style="border-bottom: 1px solid #000;">
+              <th class="left">Demand</th>
+              <th />
+              <td class="right">Radius:</td>
+              <td class="left"> {time} minutes of {movement}</td>
+            </tr>
+            <tr>
+              <td class="left">Number of inpatients</td>
+              <td />
+              <td class="right">{inpatients}</td>
+            </tr>
+            <tr>
+              <td class="left">Number of inpatients forecast 2030</td>
+              <td />
+              <td />
+              <td class="right">999999</td>
+            </tr>
+            <tr style="height: 30px;" />
+            <tr style="border-bottom: 1px solid #000;">
+              <th class="left">Supply</th>
+              <th />
+              <td class="right">Radius:</td>
+              <td class="left"> {time} minutes of {movement}</td>
+            </tr>
+            <tr>
+              <td class="left">Beds</td>
+              <td />
+              <td class="right">{beds_active}</td>
+            </tr>
+            <tr>
+              <td class="left">Nursing homes</td>
+              <td />
+              <td class="right">{nursingHomes_active}</td>
+            </tr>
+            <tr>
+              <td class="left">Nursing homes in planning</td>
+              <td />
+              <td class="right">{nursingHomes_planned}</td>
+            </tr>
+            <tr>
+              <td class="left">Nursing homes under construction</td>
+              <td />
+              <td class="right">{nursingHomes_construct}</td>
+            </tr>
+            <tr>
+              <td class="left">Beds in planning</td>
+              <td />
+              <td class="right">{beds_planned}</td>
+            </tr>
+            <tr>
+              <td class="left">Beds under construction</td>
+              <td />
+              <td class="right">{beds_construct}</td>
+            </tr>
+            <tr>
+              <td class="left">Adjusted number of beds (incl. beds</td>
+              <td />
+            </tr>
+            <tr>
+              <td class="left">in planning and under construction</td>
+              <td />
+              <td class="right">{beds_adjusted}</td>
+            </tr>
+            <tr>
+              <td class="left">Occupancy rate</td>
+              <td />
+              <td class="right">{occupancy_raw}%</td>
+            </tr>
+            <tr>
+              <td class="left">Median Invest Cost</td>
+              <td />
+              <td class="right">{investMedian} &euro;</td>
+            </tr>
+            <tr style="height: 5px;" />
+            <tr style="border-bottom: 1px solid #000;">
+              <th class="left">Surplus or deficit 2030 of beds IC</th>
+              <th />
+              <th />
+              <th class="right">999999</th>
+            </tr>
+            <tr style="height: 30px;" />
+            <tr style="border-bottom: 1px solid #000;">
+              <th class="left">Market shares</th>
+              <th />
+              <td class="right">Radius:</td>
+              <td class="left"> {time} minutes of {movement}</td>
+            </tr>
+            <tr style="height: 15px;" />
+            <tr>
+              <td class="left">Number of operators</td>
+              <td />
+              <td class="right">{len(operator)}</td>
+            </tr>
+            <tr>
+              <td class="left">Median Number of beds</td>
+              <td />
+              <td class="right">{bedsMedian}</td>
+            </tr>
+            <tr>
+              <td class="left">Median Year of construction</td>
+              <td />
+              <td class="right">{yearMedian}</td>
+            </tr>
+            <tr>
+              <td class="left">% Public operators</td>
+              <td />
+              <td class="right">{op_public_percent}%</td>
+            </tr>
+            <tr>
+              <td class="left">% Non-profit operators</td>
+              <td />
+              <td class="right">{op_nonProfit_percent}%</td>
+            </tr>
+            <tr>
+              <td class="left">% Private operators</td>
+              <td />
+              <td class="right">{op_private_percent}%</td>
+            </tr>
+            </tr>
+    </table>
+      </td>
+    <td class="placeholder killMargin" />
+    <td>
+      <table class="innerPicture">
+        <tr>
+          <td>
+            <img class="mapImage" id="mapImage" src="{mapPic.url}">
+          </td>
+        </tr>
+        <tr>
+          <th class="placeholder2" />
+        </tr>
+        <tr>
+          <th>DEMAND & SUPPLY</th>
+        </tr>
+        <tr>
+          <td>
+            <img class="barImage" id="barImage" src={barPic.url}>
+          </td>
+        </tr>
+        <tr>
+          <th class="placeholder2" />
+        </tr>
+        <tr>
+          <th>MARKET SHARES</th>
+        </tr>
+        <tr>
+          <td>
+            <img class="donutImage" id="donutImage" src={donutPic.url}>
+          </td>
+        </tr>
+      </table>
+    </td>
+    </tr>
+  </table>
+</body>
+</html>
