@@ -12,6 +12,7 @@ import json
 from .. import Variables, Layer
 import anvil.media
 import plotly.graph_objects as go
+import plotly.express as px
 
 #Get global Variables
 global Variables, Layer
