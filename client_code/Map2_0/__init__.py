@@ -839,12 +839,12 @@ class Map2_0(Map2_0Template):
     
     mapImage = anvil.http.request(mapRequest,json=False)
     
-    app_tables.pictures.add_row(id=3, pic=mapImage)
+    app_tables.pictures.add_row(id=1, pic=mapImage)
     
-    mapPicture = app_tables.pictures.get(id=3)
+    mapPicture = app_tables.pictures.get(id=1)
     mapPic = mapPicture['pic']
     
-    sendData = [mapRequest, zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sum, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent] 
+    sendData = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sum, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent] 
     
     anvil.server.call('write_PDF_File', sendData)
     
