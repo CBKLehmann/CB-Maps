@@ -11,8 +11,6 @@ import anvil.http
 import json
 from .. import Variables, Layer
 import anvil.media
-import plotly.graph_objects as go
-import plotly.express as px
 
 #Get global Variables
 global Variables, Layer
@@ -819,7 +817,7 @@ class Map2_0(Map2_0Template):
     values = [{'topic': '% Public operators', 'value': len(operator_public)}, {'topic': '% Non-profit operators', 'value': len(operator_nonProfit)}, {'topic': '% Private operators', 'value': len(operator_private)}]
     
     anvil.server.call('create_pieChart', values)
-    
+
     barValues = [{'topic': 'Number of inpatients', 'value': inpatients}, {'topic': 'Beds', 'value': beds_active}, {'topic': 'Number of inpatients forecast 2030', 'value': (inpatients + 300)}, {'topic': 'Adjusted number of beds (incl. beds in planning and under construction)', 'value': beds_adjusted}]
     
     anvil.server.call('create_barChart', barValues)
@@ -840,9 +838,9 @@ class Map2_0(Map2_0Template):
     
     mapImage = anvil.http.request(mapRequest,json=False)
     
-    app_tables.pictures.add_row(id=1, pic=mapImage)
+    app_tables.pictures.add_row(id=3, pic=mapImage)
     
-    mapPicture = app_tables.pictures.get(id=1)
+    mapPicture = app_tables.pictures.get(id=3)
     mapPic = mapPicture['pic']
     
     sendData = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sum, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent] 
