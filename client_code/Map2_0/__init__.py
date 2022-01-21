@@ -1114,8 +1114,8 @@ class Map2_0(Map2_0Template):
 
 #     Form1.HtmlTemplate(html=response)
     
-#     pdf = anvil.server.call('create_pdf')
-#     anvil.media.download(pdf)
+    pdf = anvil.server.call('create_pdf')
+    anvil.media.download(pdf)
     
     anvil.js.call('open_tab', response)
     anvil.server.call("write_PDF_File", response)

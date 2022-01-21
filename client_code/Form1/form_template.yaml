@@ -2,5 +2,193 @@ container:
   type: HtmlTemplate
   properties: {tooltip: '', background: '', foreground: '', border: '', visible: true,
     role: null, html: ''}
-components: []
+components:
+- type: FlowPanel
+  properties: {}
+  name: flow_panel_1
+  layout_properties: {slot: default}
+  components:
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_4
+    layout_properties: {width: 21}
+  - type: RichText
+    properties: {role: null, align: left, tooltip: '', enable_slots: true, border: '',
+      foreground: '', visible: true, font_size: null, content: Executive Summary,
+      font: '', spacing_above: small, spacing_below: small, data: null, background: '',
+      format: markdown}
+    name: rich_text_1
+    layout_properties: {}
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_1
+    layout_properties: {width: 939}
+  - type: Image
+    properties: {role: null, vertical_align: center, height: 40, tooltip: '', border: '',
+      foreground: '', visible: true, display_mode: shrink_to_fit, spacing_above: small,
+      source: 'data:image/png;base64,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',
+      spacing_below: small, background: '', horizontal_align: center}
+    name: image_4
+    layout_properties: {width: 331}
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_4_copy
+    layout_properties: {width: 21}
+- type: FlowPanel
+  properties: {}
+  name: flow_panel_2
+  layout_properties: {slot: default}
+  components:
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_4_copy_2
+    layout_properties: {width: 21}
+  - type: DataGrid
+    properties:
+      role: null
+      columns:
+      - {id: YTHDQQ, title: General Information, data_key: GI, $$hashKey: 'object:30702',
+        expand: false}
+      - {id: OUBZBD, title: '', data_key: '', $$hashKey: 'object:30703'}
+      - {id: DURDKQ, title: '', data_key: '', $$hashKey: 'object:30704'}
+      - {id: AYXBBS, title: '', data_key: GI_value, $$hashKey: 'object:30774'}
+      auto_header: true
+      tooltip: ''
+      border: ''
+      foreground: ''
+      rows_per_page: 20
+      visible: true
+      wrap_on: never
+      show_page_controls: false
+      spacing_above: small
+      spacing_below: small
+      background: ''
+    name: data_grid_1
+    layout_properties: {grid_position: 'PVXAKP,VQUHWG LABEVI,HTKARR', width: 614.594}
+    components:
+    - type: RepeatingPanel
+      properties: {spacing_above: none, spacing_below: none, item_template: Form1.RowTemplate8}
+      name: repeating_panel_1
+      layout_properties: {}
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_2
+    layout_properties: {width: 153}
+  - type: Image
+    properties: {}
+    name: image_1
+    layout_properties: {grid_position: 'PVXAKP,USEFKT PYHQNM,BFSUON', width: 319}
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_4_copy_3
+    layout_properties: {width: 21}
+- type: FlowPanel
+  properties: {}
+  name: flow_panel_3
+  layout_properties: {slot: default}
+  components: []
+- type: FlowPanel
+  properties: {}
+  name: flow_panel_3_copy
+  layout_properties: {slot: default}
+- type: FlowPanel
+  properties: {}
+  name: flow_panel_2_copy_2
+  layout_properties: {slot: default}
+  components:
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_4_copy_6
+    layout_properties: {width: 21}
+  - type: DataGrid
+    properties:
+      role: null
+      columns:
+      - {id: YTHDQQ, title: Column 1, data_key: column_1, $$hashKey: 'object:30702',
+        expand: false}
+      - {id: OUBZBD, title: Column 2, data_key: column_2, $$hashKey: 'object:30703'}
+      - {id: DURDKQ, title: Column 3, data_key: column_3, $$hashKey: 'object:30704'}
+      - {id: AYXBBS, title: Column 4, data_key: column_4, $$hashKey: 'object:30774'}
+      auto_header: true
+      tooltip: ''
+      border: ''
+      foreground: ''
+      rows_per_page: 20
+      visible: true
+      wrap_on: never
+      show_page_controls: false
+      spacing_above: small
+      spacing_below: small
+      background: ''
+    name: data_grid_1_copy_2
+    layout_properties: {grid_position: 'PVXAKP,VQUHWG LABEVI,HTKARR', width: 510.594}
+    components:
+    - type: RepeatingPanel
+      properties: {spacing_above: none, spacing_below: none, item_template: Form1.RowTemplate8}
+      name: repeating_panel_1_copy_2
+      layout_properties: {}
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_2_copy_2
+    layout_properties: {width: 556}
+  - type: Image
+    properties: {}
+    name: image_1_copy_2
+    layout_properties: {grid_position: 'PVXAKP,USEFKT PYHQNM,BFSUON', width: 319}
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_4_copy_7
+    layout_properties: {width: 21}
+- type: FlowPanel
+  properties: {}
+  name: flow_panel_3_copy_2
+  layout_properties: {slot: default}
+- type: FlowPanel
+  properties: {}
+  name: flow_panel_2_copy
+  layout_properties: {slot: default}
+  components:
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_4_copy_4
+    layout_properties: {width: 21}
+  - type: DataGrid
+    properties:
+      role: null
+      columns:
+      - {id: YTHDQQ, title: Column 1, data_key: column_1, $$hashKey: 'object:30702',
+        expand: false}
+      - {id: OUBZBD, title: Column 2, data_key: column_2, $$hashKey: 'object:30703'}
+      - {id: DURDKQ, title: Column 3, data_key: column_3, $$hashKey: 'object:30704'}
+      - {id: AYXBBS, title: Column 4, data_key: column_4, $$hashKey: 'object:30774'}
+      auto_header: true
+      tooltip: ''
+      border: ''
+      foreground: ''
+      rows_per_page: 20
+      visible: true
+      wrap_on: never
+      show_page_controls: false
+      spacing_above: small
+      spacing_below: small
+      background: ''
+    name: data_grid_1_copy
+    layout_properties: {grid_position: 'PVXAKP,VQUHWG LABEVI,HTKARR', width: 510.594}
+    components:
+    - type: RepeatingPanel
+      properties: {spacing_above: none, spacing_below: none, item_template: Form1.RowTemplate8}
+      name: repeating_panel_1_copy
+      layout_properties: {}
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_2_copy
+    layout_properties: {width: 556}
+  - type: Image
+    properties: {}
+    name: image_1_copy
+    layout_properties: {grid_position: 'PVXAKP,USEFKT PYHQNM,BFSUON', width: 319}
+  - type: Spacer
+    properties: {height: 32}
+    name: spacer_4_copy_5
+    layout_properties: {width: 21}
 is_package: true
