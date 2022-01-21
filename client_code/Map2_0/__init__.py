@@ -1111,9 +1111,7 @@ class Map2_0(Map2_0Template):
     """
     
     sendData = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent]
-
-#     Form1.HtmlTemplate(html=response)
-    
+  
     pdf = anvil.server.call('create_pdf')
     anvil.media.download(pdf)
     
