@@ -12,7 +12,7 @@ components:
   layout_properties: {slot: default}
   components:
   - type: Spacer
-    properties: {visible: true, spacing_above: none, spacing_below: none, height: 1245,
+    properties: {visible: true, spacing_above: none, spacing_below: none, height: 1296,
       tooltip: ''}
     name: spacer_1
     layout_properties: {grid_position: 'QGFIHK,HAWKQF', full_width_row: true}
@@ -512,7 +512,3 @@ components:
   properties: {}
   name: mun_info
   layout_properties: {slot: ' .floating-menu'}
-- type: Spacer
-  properties: {height: 6}
-  name: spacer_2_copy
-  layout_properties: {}
