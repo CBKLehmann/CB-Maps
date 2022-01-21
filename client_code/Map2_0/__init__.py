@@ -9,7 +9,7 @@ from anvil.js.window import mapboxgl, MapboxGeocoder, document
 import anvil.js
 import anvil.http
 import json
-from .. import Variables, Layer, Images
+from .. import Variables, Layer, Images, Form1
 import anvil.media
 
 #Get global Variables
@@ -527,12 +527,12 @@ class Map2_0(Map2_0Template):
     if self.poi_category.visible == True:
     
       #Set Checkbox-Panel to invisible and change Arrow-Icon
-      self.icon_change(self.poi_category, False, self.poi_category, 'fa:angle-right')
+      self.icon_change(self.poi_category, False, self.poi_categories, 'fa:angle-right')
       
     else:
     
       #Set Checkbox-Panel to visible and change Arrow-Icon
-      self.icon_change(self.poi_category, True, self.poi_category, 'fa:angle-down')
+      self.icon_change(self.poi_category, True, self.poi_categories, 'fa:angle-down')
       
   def exp_care_db_click(self, **event_args):
     
@@ -658,13 +658,13 @@ class Map2_0(Map2_0Template):
     
     CareData = anvil.server.call('get_federalstate_data', federal_state, data[0][0])
     
-    sum = 0
+    sums = 0
     
     for el in CareData:
     
         if not el[27] == '-':
     
-            sum += int(el[27])
+            sums += int(el[27])
     
     # Get Data of Iso-Layer
     iso = dict(self.mapbox.getSource('iso'))
@@ -877,203 +877,203 @@ class Map2_0(Map2_0Template):
                 <tr style="border-bottom: 1px solid #000;">
                   <th class="left">General Information</th>
                 </tr>
-                <tr style="height: 20px;" />
+                <tr style="height: 20px;></tr>
                 <tr>
                   <th class="left">Zip Code</th class="placeholder">
-                  <th />
-                  <th />
-                  <th />
+                  <th></th>
+                  <th></th>
+                  <th></th>
                   <th class="right">{zipcode}</th>
                 </tr>
                 <tr>
                   <th class="left">City</th>
                   <th class="placeholder"></th>
-                  <th />
-                  <th />
+                  <th></th>
+                  <th></th>
                   <th class="right">{city}</th>
                 </tr>
                 <tr>
                   <th class="left">District</th>
-                  <th class="placeholder" />
-                  <th />
-                  <th />
+                  <th class="placeholder"></th>
+                  <th></th>
+                  <th></th>
                   <th class="right">{district}</th>
                 </tr>
                 <tr>
                   <th class="left">Federal State</th>
-                  <th class="placeholder" />
-                  <th />
-                  <th />
+                  <th class="placeholder"></th>
+                  <th></th>
+                  <th></th>
                   <th class="right">{federal_state}</th>
                 </tr>
                 <tr>
                   <th class="left">Radius of analysis</th>
-                  <th class="placeholder" />
-                  <th />
-                  <th />
+                  <th class="placeholder"></th>
+                  <th></th>
+                  <th></th>
                   <th class="right">{time} minutes of {movement}</th>
                 </tr>
-                <tr style="height: 30px;" />
+                <tr style="height: 30px;"></tr>
                 <tr style="border-bottom: 1px solid #000;">
                   <th class="left">Demographic trend</th>
                 </tr>
-                <tr style="height: 5px;" />
+                <tr style="height: 5px;"></tr>
                 <tr>
                   <th class="left">{countie[0]}, LK</th>
-                  <th />
+                  <th></th>
                     <th class="right">2019 Actual</th>
                     <th class="right">2030 Forecast</th>
                     <th class="center">Change in %</th>
                   </tr>
                   <tr>
                     <td class="left">Population</td>
-                    <td />
+                    <td></td>
                     <td class="right">{data[0][19]}</td>
                   </tr>
                   <tr>
                     <td class="left">Population 65-74</td>
-                    <td />
+                    <td></td>
                     <td class="right">{peopleu75}</td>
                     <td class="right">999999</td>
                     <td class="center">999%</td>
                   </tr>
                   <tr>
                     <td class="left">Population 75+</td>
-                    <td />
+                    <td></td>
                     <td class="right">{peopleo75}</td>
                     <td class="right">999999</td>
                     <td class="center">999%</td>
                   </tr>
                   <tr>
                     <td class="left">Patients receiving full inpatient care</td>
-                    <td />
-                    <td class="right">{sum}</td>
+                    <td></td>
+                    <td class="right">{sums}</td>
                     <td class="right">999999</td>
                     <td class="center">999%</td>
                   </tr>
-                  <tr style="height: 30px;" />
+                  <tr style="height: 30px;"></tr>
                   <tr style="border-bottom: 1px solid #000;">
                     <th class="left">Demand</th>
-                    <th />
+                    <th></th>
                     <td class="right">Radius:</td>
                     <td class="left"> {time} minutes of {movement}</td>
                   </tr>
                   <tr>
                     <td class="left">Number of inpatients</td>
-                    <td />
+                    <td></td>
                     <td class="right">{inpatients}</td>
                   </tr>
                   <tr>
                     <td class="left">Number of inpatients forecast 2030</td>
-                    <td />
-                    <td />
+                    <td></td>
+                    <td></td>
                     <td class="right">999999</td>
                   </tr>
-                  <tr style="height: 30px;" />
+                  <tr style="height: 30px;"></tr>
                   <tr style="border-bottom: 1px solid #000;">
                     <th class="left">Supply</th>
-                    <th />
+                    <th></th>
                     <td class="right">Radius:</td>
                     <td class="left"> {time} minutes of {movement}</td>
                   </tr>
                   <tr>
                     <td class="left">Beds</td>
-                    <td />
+                    <td></td>
                     <td class="right">{beds_active}</td>
                   </tr>
                   <tr>
                     <td class="left">Nursing homes</td>
-                    <td />
+                    <td></td>
                     <td class="right">{nursingHomes_active}</td>
                   </tr>
                   <tr>
                     <td class="left">Nursing homes in planning</td>
-                    <td />
+                    <td></td>
                     <td class="right">{nursingHomes_planned}</td>
                   </tr>
                   <tr>
                     <td class="left">Nursing homes under construction</td>
-                    <td />
+                    <td></td>
                     <td class="right">{nursingHomes_construct}</td>
                   </tr>
                   <tr>
                     <td class="left">Beds in planning</td>
-                    <td />
+                    <td></td>
                     <td class="right">{beds_planned}</td>
                   </tr>
                   <tr>
                     <td class="left">Beds under construction</td>
-                    <td />
+                    <td></td>
                     <td class="right">{beds_construct}</td>
                   </tr>
                   <tr>
                     <td class="left">Adjusted number of beds (incl. beds</td>
-                    <td />
+                    <td></td>
                   </tr>
                   <tr>
                     <td class="left">in planning and under construction</td>
-                    <td />
+                    <td></td>
                     <td class="right">{beds_adjusted}</td>
                   </tr>
                   <tr>
                     <td class="left">Occupancy rate</td>
-                    <td />
+                    <td></td>
                     <td class="right">{occupancy_raw}%</td>
                   </tr>
                   <tr>
                     <td class="left">Median Invest Cost</td>
-                    <td />
+                    <td></td>
                     <td class="right">{investMedian} &euro;</td>
                   </tr>
-                  <tr style="height: 5px;" />
+                  <tr style="height: 5px;"></tr>
                   <tr style="border-bottom: 1px solid #000;">
                     <th class="left">Surplus or deficit 2030 of beds IC</th>
-                    <th />
-                    <th />
+                    <th></th>
+                    <th></th>
                     <th class="right">999999</th>
                   </tr>
-                  <tr style="height: 30px;" />
+                  <tr style="height: 30px;"></tr>
                   <tr style="border-bottom: 1px solid #000;">
                     <th class="left">Market shares</th>
-                    <th />
+                    <th></th>
                     <td class="right">Radius:</td>
                     <td class="left"> {time} minutes of {movement}</td>
                   </tr>
-                  <tr style="height: 15px;" />
+                  <tr style="height: 15px;"></tr>
                   <tr>
                     <td class="left">Number of operators</td>
-                    <td />
+                    <td></td>
                     <td class="right">{len(operator)}</td>
                   </tr>
                   <tr>
                     <td class="left">Median Number of beds</td>
-                    <td />
+                    <td></td>
                     <td class="right">{bedsMedian}</td>
                   </tr>
                   <tr>
                     <td class="left">Median Year of construction</td>
-                    <td />
+                    <td></td>
                     <td class="right">{yearMedian}</td>
                   </tr>
                   <tr>
                     <td class="left">% Public operators</td>
-                    <td />
+                    <td></td>
                     <td class="right">{op_public_percent}%</td>
                   </tr>
                   <tr>
                     <td class="left">% Non-profit operators</td>
-                    <td />
+                    <td></td>
                     <td class="right">{op_nonProfit_percent}%</td>
                   </tr>
                   <tr>
                     <td class="left">% Private operators</td>
-                    <td />
+                    <td></td>
                     <td class="right">{op_private_percent}%</td>
                   </tr>
                 </tr>
               </table>
             </td>
-            <td class="placeholder killMargin" />
+            <td class="placeholder killMargin"></td>
             <td>
               <table class="innerPicture">
                 <tr>
@@ -1082,7 +1082,7 @@ class Map2_0(Map2_0Template):
                   </td>
                 </tr>
                 <tr>
-                  <th class="placeholder2" />
+                  <th class="placeholder2"></th>
                 </tr>
                 <tr>
                   <th>DEMAND & SUPPLY</th>
@@ -1093,7 +1093,7 @@ class Map2_0(Map2_0Template):
                   </td>
                 </tr>
                 <tr>
-                  <th class="placeholder2" />
+                  <th class="placeholder2"></th>
                 </tr>
                 <tr>
                   <th>MARKET SHARES</th>
@@ -1111,8 +1111,11 @@ class Map2_0(Map2_0Template):
     </html>
     """
     
-    sendData = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75,sum, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent]
+    sendData = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent]
     
+    
+    
+    Form1.HtmlTemplate(html=response)
     pdf = anvil.server.call('create_pdf')
     anvil.media.download(pdf)
     

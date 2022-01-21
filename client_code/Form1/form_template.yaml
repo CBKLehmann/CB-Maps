@@ -1,10 +1,6 @@
 container:
   type: HtmlTemplate
-  properties: {html: "<center style=\"font-style:italic; color:#888; margin: 3em;\"\
-      >\n  (Insert your custom HTML here)\n</center>"}
-components:
-- type: Image
-  properties: {}
-  name: image_1
-  layout_properties: {slot: default}
+  properties: {tooltip: '', background: '', foreground: '', border: '', visible: true,
+    role: null, html: '@theme:new_file.html'}
+components: []
 is_package: true
