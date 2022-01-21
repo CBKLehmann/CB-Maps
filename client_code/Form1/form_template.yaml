@@ -1,6 +1,6 @@
 container:
   type: HtmlTemplate
   properties: {tooltip: '', background: '', foreground: '', border: '', visible: true,
-    role: null, html: '@theme:new_file.html'}
+    role: null, html: ''}
 components: []
 is_package: true

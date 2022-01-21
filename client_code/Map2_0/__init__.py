@@ -844,83 +844,83 @@ class Map2_0(Map2_0Template):
     mapPic = mapPicture['pic']
     
     response : str = f"""
-    <html>
-      <head>
-        <title>Summary</title>
-        <style>
-          .outerTable {{border-collapse: collapse; padding: 0; margin: 0}}
-          .killMargin {{border-collapse: collapse; padding: 0; margin: 0}}
-          .innerData {{border-collapse: collapse; padding: 0; margin: 0; width: 900px}}
-          .innerData > * {{padding: 0; margin: 0}} .innerData > td {{height: 10px}}
-          .innerPicture {{border-collapse: collapse; padding: 0; margin: 0; width: 20%}}
-          .innerPicture > td {{max-width: 1100px; height: 10px}}
-          th {{height: 10px}}
-          .left {{text-align: left}}
-          .right {{text-align: right}}
-          .center {{text-align: center}}
-          .donutImage {{width: 450px; height: 300px}}
-          .barImage {{width: 450px; height: 300px}}
-          .placeholder {{width: 10%}}
-          .placeholder2 {{height: 50px}}
-          .mapImage {{width: 400px; height: 400px; display: block; margin-left: auto; margin-right: auto}}
-          .logoImage {{position: relative; top: -50px; left: 1250px}}
-        </style>
-      </head>
-      <body>
-        <h1>Executive Summary</h1>
-        <img class="logoImage" id="logoImage" src={logoPic.url}>
-        <br>
-        <table class="outerTable">
-          <tr>
-            <td class="killMargin">
-              <table class="innerData">
-                <tr style="border-bottom: 1px solid #000;">
-                  <th class="left">General Information</th>
-                </tr>
-                <tr style="height: 20px;></tr>
-                <tr>
-                  <th class="left">Zip Code</th class="placeholder">
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                  <th class="right">{zipcode}</th>
-                </tr>
-                <tr>
-                  <th class="left">City</th>
-                  <th class="placeholder"></th>
-                  <th></th>
-                  <th></th>
-                  <th class="right">{city}</th>
-                </tr>
-                <tr>
-                  <th class="left">District</th>
-                  <th class="placeholder"></th>
-                  <th></th>
-                  <th></th>
-                  <th class="right">{district}</th>
-                </tr>
-                <tr>
-                  <th class="left">Federal State</th>
-                  <th class="placeholder"></th>
-                  <th></th>
-                  <th></th>
-                  <th class="right">{federal_state}</th>
-                </tr>
-                <tr>
-                  <th class="left">Radius of analysis</th>
-                  <th class="placeholder"></th>
-                  <th></th>
-                  <th></th>
-                  <th class="right">{time} minutes of {movement}</th>
-                </tr>
-                <tr style="height: 30px;"></tr>
-                <tr style="border-bottom: 1px solid #000;">
-                  <th class="left">Demographic trend</th>
-                </tr>
-                <tr style="height: 5px;"></tr>
-                <tr>
-                  <th class="left">{countie[0]}, LK</th>
-                  <th></th>
+      <html>
+        <head>
+          <title>Summary</title>
+          <style>
+            .outerTable {{border-collapse: collapse; padding: 0; margin: 0}}
+            .killMargin {{border-collapse: collapse; padding: 0; margin: 0}}
+            .innerData {{border-collapse: collapse; padding: 0; margin: 0; width: 900px}}
+            .innerData > * {{padding: 0; margin: 0}} .innerData > td {{height: 10px}}
+            .innerPicture {{border-collapse: collapse; padding: 0; margin: 0; width: 20%}}
+            .innerPicture > td {{max-width: 1100px; height: 10px}}
+            th {{height: 10px}}
+            .left {{text-align: left}}
+            .right {{text-align: right}}
+            .center {{text-align: center}}
+            .donutImage {{width: 450px; height: 300px}}
+            .barImage {{width: 450px; height: 300px}}
+            .placeholder {{width: 10%}}
+            .placeholder2 {{height: 50px}}
+            .mapImage {{width: 400px; height: 400px; display: block; margin-left: auto; margin-right: auto}}
+            .logoImage {{position: relative; top: -50px; left: 1250px}}
+          </style>
+        </head>
+        <body>
+          <h1>Executive Summary</h1>
+          <img class="logoImage" id="logoImage" src={logoPic.url}>
+          <br>
+          <table class="outerTable">
+            <tr>
+              <td class="killMargin">
+                <table class="innerData">
+                  <tr style="border-bottom: 1px solid #000;">
+                    <th class="left">General Information</th>
+                  </tr>
+                  <tr style="height: 20px"></tr>
+                  <tr>
+                    <th class="left">Zip Code</th class="placeholder">
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th class="right">{zipcode}</th>
+                  </tr>
+                  <tr>
+                    <th class="left">City</th>
+                    <th class="placeholder"></th>
+                    <th></th>
+                    <th></th>
+                    <th class="right">{city}</th>
+                  </tr>
+                  <tr>
+                    <th class="left">District</th>
+                    <th class="placeholder"></th>
+                    <th></th>
+                    <th></th>
+                    <th class="right">{district}</th>
+                  </tr>
+                  <tr>
+                    <th class="left">Federal State</th>
+                    <th class="placeholder"></th>
+                    <th></th>
+                    <th></th>
+                    <th class="right">{federal_state}</th>
+                  </tr>
+                  <tr>
+                    <th class="left">Radius of analysis</th>
+                    <th class="placeholder"></th>
+                    <th></th>
+                    <th></th>
+                    <th class="right">{time} minutes of {movement}</th>
+                  </tr>
+                  <tr style="height: 30px;"></tr>
+                  <tr style="border-bottom: 1px solid #000;">
+                    <th class="left">Demographic trend</th>
+                  </tr>
+                  <tr style="height: 5px;"></tr>
+                  <tr>
+                    <th class="left">{countie[0]}, LK</th>
+                    <th></th>
                     <th class="right">2019 Actual</th>
                     <th class="right">2030 Forecast</th>
                     <th class="center">Change in %</th>
@@ -1070,57 +1070,55 @@ class Map2_0(Map2_0Template):
                     <td></td>
                     <td class="right">{op_private_percent}%</td>
                   </tr>
-                </tr>
-              </table>
-            </td>
-            <td class="placeholder killMargin"></td>
-            <td>
-              <table class="innerPicture">
-                <tr>
-                  <td>
-                    <img class="mapImage" id="mapImage" src="{mapPic.url}">
-                  </td>
-                </tr>
-                <tr>
-                  <th class="placeholder2"></th>
-                </tr>
-                <tr>
-                  <th>DEMAND & SUPPLY</th>
-                </tr>
-                <tr>
-                  <td>
-                    <img class="barImage" id="barImage" src={barPic.url}>
-                  </td>
-                </tr>
-                <tr>
-                  <th class="placeholder2"></th>
-                </tr>
-                <tr>
-                  <th>MARKET SHARES</th>
-                </tr>
-                <tr>
-                  <td>
-                    <img class="donutImage" id="donutImage" src={Images.donutPic}>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </body>
-    </html>
+                </table>
+              </td>
+              <td class="placeholder killMargin"></td>
+              <td>
+                <table class="innerPicture">
+                  <tr>
+                    <td>
+                      <img class="mapImage" id="mapImage" src="{mapPic.url}">
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="placeholder2"></th>
+                  </tr>
+                  <tr>
+                    <th>DEMAND & SUPPLY</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <img class="barImage" id="barImage" src={barPic.url}>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="placeholder2"></th>
+                  </tr>
+                  <tr>
+                    <th>MARKET SHARES</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <img class="donutImage" id="donutImage" src={Images.donutPic}>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+      </html>
     """
     
     sendData = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent]
+
+#     Form1.HtmlTemplate(html=response)
     
-    
-    
-    Form1.HtmlTemplate(html=response)
-    pdf = anvil.server.call('create_pdf')
-    anvil.media.download(pdf)
+#     pdf = anvil.server.call('create_pdf')
+#     anvil.media.download(pdf)
     
     anvil.js.call('open_tab', response)
-    anvil.server.call('write_PDF_File', response)
+    anvil.server.call("write_PDF_File", response)
     
   #####  Button Functions   #####
   ###############################
