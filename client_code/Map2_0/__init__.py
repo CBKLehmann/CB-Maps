@@ -534,13 +534,74 @@ class Map2_0(Map2_0Template):
       #Set Checkbox-Panel to visible and change Arrow-Icon
       self.icon_change(self.poi_category, True, self.poi_categories, 'fa:angle-down')
       
-  def exp_care_db_click(self, **event_args):
+  def Summary_click(self, **event_args):
+    
+    # Get Data of Iso-Layer
+    iso = dict(self.mapbox.getSource('iso'))
+    
+    # Create empty Bounding Box
+    bbox = [0, 0, 0, 0]
+
+    # Check every element in Iso-Data
+    for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+
+      # Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+      if el[0] < bbox[1] or bbox[1] == 0:
+
+        # Set BBox-Coordinate to new Element-Coordinate
+        bbox[1] = el[0]
+
+      # Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+      if el[0] > bbox[3] or bbox[3] == 0:
+
+        # Set BBox-Coordinate to new Element-Coordinate
+        bbox[3] = el[0]
+
+      # Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+      if el[1] < bbox[0] or bbox[0] == 0:
+
+        # Set BBox-Coordinate to new Element-Coordinate
+        bbox[0] = el[1]
+
+      # Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+      if el[1] > bbox[2] or bbox[2] == 0:
+
+        # Set BBox-Coordinate to new Element-Coordinate
+        bbox[2] = el[1]
     
     index = 1
     counter = 0
     
-    popup_text = '<html><head><title>Competitor Analysis</title><style>table {border-collapse: collapse; width: 100%} td {border-bottom: 1px solid black; text-align: center; min-width: 80px} th {background-color: #BFAD75; text-align: center; min-width: 80px; height: 30px}</style></head><body>'
-    popup_text += f'<table><tr><th>No.</th><th>Name</th><th>No. of beds</th><th>single rooms</th><th>double rooms</th><th>Patients</th><th>occupancy</th><th>year of construction</th><th>Status</th><th>Operator</th><th>Invest costs per day</th><th>MDK grade</th></tr>'
+    popup_text: str = f"""
+    <html>
+        <head>
+            <title>
+                Competitor Analysis
+            </title>
+            <style>
+                table {{border-collapse: collapse; width: 100%}} 
+                td {{border-bottom: 1px solid black; text-align: center; min-width: 80px}} 
+                th {{background-color: #BFAD75; text-align: center; min-width: 80px; height: 30px}}
+            </style>
+        </head>
+        <body>
+            <table>
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>No. of beds</th>
+                    <th>single rooms</th>
+                    <th>double rooms</th>
+                    <th>Patients</th>
+                    <th>occupancy</th>
+                    <th>year of construction</th>
+                    <th>Status</th>
+                    <th>Operator</th>
+                    <th>Invest costs per day</th><th>MDK grade</th>
+                </tr>
+    """
+    
+    dataComplete = []
     
     for el in Variables.pflegeDBEntries:
       
@@ -589,16 +650,13 @@ class Map2_0(Map2_0Template):
             
             invest = el[38]
           
-          popup_text += f'<tr><td>{index}</td><td>{el[5]}</td><td>{el[28]}</td><td>{el[31]}</td><td>{el[32]}</td><td>{el[27]}</td><td>{occupancy}</td><td>{el[33]}</td><td>{el[4]}</td><td>{el[6]}</td><td>{invest}</td><td>{el[26]}</td></tr>'
+          data = [index, el[5], el[28], el[31], el[32], el[27], occupancy, el[33], el[4], el[6], invest, el[26]]
+          dataComplete.append(data)
           index += 1
           
           break
-          
-    popup_text += '</table></body></html>'
   
-    anvil.js.call('open_tab', popup_text)
-    
-  def Summary_click(self, **event_args):
+    anvil.server.call('createStaticMapForCA', bbox, self.token, dataComplete)
     
     lngLat = [(dict(self.marker['_lngLat'])['lng']), (dict(self.marker['_lngLat'])['lat'])]
     
