@@ -644,7 +644,9 @@ class Map2_0(Map2_0Template):
             
           if not el[38] == '-':
             
-            invest = f'{el[38]} €'
+            invest = f'{el[38]}'
+            if len(invest) == 4:
+              invest += '0'
             
           else:
             
@@ -864,9 +866,18 @@ class Map2_0(Map2_0Template):
     investMedian = "{:.2f}".format(investMedian)
     bedsMedian = anvil.server.call('get_median', beds)
     yearMedian = round(anvil.server.call('get_median', year))
-    op_private_percent = round((len(operator_private) * 100) / len(operator))
-    op_nonProfit_percent = round((len(operator_nonProfit) * 100) / len(operator))
-    op_public_percent = round((len(operator_public) * 100) / len(operator))
+    if not operator_private == 0:
+      op_private_percent = round((len(operator_private) * 100) / len(operator))
+    else:
+      op_private_percent = 0
+    if not operator_nonProfit == 0:  
+      op_nonProfit_percent = round((len(operator_nonProfit) * 100) / len(operator))
+    else:
+      op_nonProfit_percent = 0
+    if not operator_public == 0:
+      op_public_percent = round((len(operator_public) * 100) / len(operator))
+    else:
+      op_public_percent = 0
     
     occupancy_raw = round((inpatients * 100) / beds_active)
         
