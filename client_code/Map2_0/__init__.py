@@ -572,35 +572,6 @@ class Map2_0(Map2_0Template):
     index = 1
     counter = 0
     
-    popup_text: str = f"""
-    <html>
-        <head>
-            <title>
-                Competitor Analysis
-            </title>
-            <style>
-                table {{border-collapse: collapse; width: 100%}} 
-                td {{border-bottom: 1px solid black; text-align: center; min-width: 80px}} 
-                th {{background-color: #BFAD75; text-align: center; min-width: 80px; height: 30px}}
-            </style>
-        </head>
-        <body>
-            <table>
-                <tr>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>No. of beds</th>
-                    <th>single rooms</th>
-                    <th>double rooms</th>
-                    <th>Patients</th>
-                    <th>occupancy</th>
-                    <th>year of construction</th>
-                    <th>Status</th>
-                    <th>Operator</th>
-                    <th>Invest costs per day</th><th>MDK grade</th>
-                </tr>
-    """
-    
     dataComplete = []
     
     for el in Variables.pflegeDBEntries:
@@ -652,13 +623,11 @@ class Map2_0(Map2_0Template):
             
             invest = el[38]
           
-          data = [index, el[5], el[28], el[31], el[32], el[27], occupancy, el[33], el[4], el[6], invest, el[26]]
+          data = [index, el[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;"), el[28], el[31], el[32], el[27], occupancy, el[33], el[4], el[6].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("'", "&prime;"), invest, el[26]]
           dataComplete.append(data)
           index += 1
           
           break
-  
-    anvil.server.call('createStaticMapForCA', bbox, self.token, dataComplete)
     
     lngLat = [(dict(self.marker['_lngLat'])['lng']), (dict(self.marker['_lngLat'])['lat'])]
     
@@ -776,6 +745,9 @@ class Map2_0(Map2_0Template):
     operator_public = []
     operator_nonProfit = []
     operator_private = []
+    pg3_cost = []
+    copayment_cost = []
+    board_cost = []
     
     for el in dataDB:
       
@@ -861,11 +833,29 @@ class Map2_0(Map2_0Template):
       if not el[33] == '-':
         
         year.append(int(el[33]))
+        
+      if not el[41] == '-':
+        
+        pg3_cost.append(float(el[41]))
+    
+      if not el[36] == '-':
+        
+        copayment_cost.append(float(el[36]))
+        
+      if not el[37] == '-':
+        
+        board_cost.append(float(el[37]))
     
     investMedian = anvil.server.call('get_median', investCost)
     investMedian = "{:.2f}".format(investMedian)
     bedsMedian = anvil.server.call('get_median', beds)
     yearMedian = round(anvil.server.call('get_median', year))
+    pg3Median = anvil.server.call('get_median', pg3_cost)
+    pg3Median = "{:.2f}".format(pg3Median)
+    copaymentMedian = anvil.server.call('get_median', copayment_cost)
+    copaymentMedian = "{:.2f}".format(copaymentMedian)
+    boardMedian = anvil.server.call('get_median', board_cost)
+    boardMedian = "{:.2f}".format(boardMedian)
     if not operator_private == 0:
       op_private_percent = round((len(operator_private) * 100) / len(operator))
     else:
@@ -883,13 +873,19 @@ class Map2_0(Map2_0Template):
         
     beds_adjusted = beds_active + beds_construct + beds_planned
     
-    values = [{'topic': '% Public operators', 'value': len(operator_public)}, {'topic': '% Non-profit operators', 'value': len(operator_nonProfit)}, {'topic': '% Private operators', 'value': len(operator_private)}]
+    valuesPieCA = [{'topic': 'Median Nursing charge (PG 3) in €', 'value': pg3Median}, {'topic': 'Median Specific co-payment in €', 'value': copaymentMedian}, {'topic': 'Median Invest Cost in €', 'value': investMedian}, {'topic': 'Median Board and lodging in €', 'value': boardMedian}]
     
-    anvil.server.call('create_pieChart', values)
+    anvil.server.call('create_pieChart', valuesPieCA, 'donutCA')
+  
+    anvil.server.call('createStaticMapForCA', bbox, self.token, dataComplete)
+    
+    valuesPieSum = [{'topic': '% Public operators', 'value': len(operator_public)}, {'topic': '% Non-profit operators', 'value': len(operator_nonProfit)}, {'topic': '% Private operators', 'value': len(operator_private)}]
+    
+    anvil.server.call('create_pieChart', valuesPieSum, 'donutSum')
 
-    barValues = [{'topic': 'Number of inpatients', 'value': inpatients}, {'topic': 'Beds', 'value': beds_active}, {'topic': 'Number of inpatients forecast 2030', 'value': (inpatients + 300)}, {'topic': 'Adjusted number of beds (incl. beds in planning and under construction)', 'value': beds_adjusted}]
+    valuesBarSum = [{'topic': 'Number of inpatients', 'value': inpatients}, {'topic': 'Beds', 'value': beds_active}, {'topic': 'Number of inpatients forecast 2030', 'value': (inpatients + 300)}, {'topic': 'Adjusted number of beds (incl. beds in planning and under construction)', 'value': beds_adjusted}]
     
-    anvil.server.call('create_barChart', barValues)
+    anvil.server.call('create_barChart', valuesBarSum)
     
     lng = self.marker['_lngLat']['lng']
     lat = self.marker['_lngLat']['lat']
