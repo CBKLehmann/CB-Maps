@@ -577,6 +577,12 @@ class Map2_0(Map2_0Template):
     request = "%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
     firstElement = True
     
+    lngLat = [(dict(self.marker['_lngLat'])['lng']), (dict(self.marker['_lngLat'])['lat'])]
+    
+    coords = []
+    
+    request += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lngLat[0]},{lngLat[1]}%5D%7D%7D"
+    
     for el in Variables.pflegeDBEntries:
       
       lng1 = '%.6f' % float(el[46])
@@ -588,15 +594,10 @@ class Map2_0(Map2_0Template):
         lat = '%.6f' % ele['_lngLat']['lat']
         
         if lng1 == lng and lat1 == lat:
-          
-          if firstElement == True:
-          
-            request += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23462eff%22%2C%22marker-size%22%3A%22medium%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lng1},{lat1}%5D%7D%7D"
-            firstElement = False
             
-          else:
+          request += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22{index}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lng1},{lat1}%5D%7D%7D"  
             
-            request += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23462eff%22%2C%22marker-size%22%3A%22medium%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lng1},{lat1}%5D%7D%7D"
+          coords.append([lng, lat])
           
           counter += 1
       
@@ -641,9 +642,11 @@ class Map2_0(Map2_0Template):
           
           break
     
-    request += "%5D%7D"
+    anvil.server.call('getDistance', lngLat, coords)
     
-    lngLat = [(dict(self.marker['_lngLat'])['lng']), (dict(self.marker['_lngLat'])['lat'])]
+#     request += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22{index}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lng1},{lat1}%5D%7D%7D"
+    
+    request += "%5D%7D"
     
     string = f'https://api.mapbox.com/geocoding/v5/mapbox.places/{lngLat[0]},{lngLat[1]}.json?access_token={self.token}'
     
