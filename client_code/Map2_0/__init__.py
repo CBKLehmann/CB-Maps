@@ -574,6 +574,9 @@ class Map2_0(Map2_0Template):
     
     dataComplete = []
     
+    request = "%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
+    firstElement = True
+    
     for el in Variables.pflegeDBEntries:
       
       lng1 = '%.6f' % float(el[46])
@@ -585,6 +588,15 @@ class Map2_0(Map2_0Template):
         lat = '%.6f' % ele['_lngLat']['lat']
         
         if lng1 == lng and lat1 == lat:
+          
+          if firstElement == True:
+          
+            request += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23462eff%22%2C%22marker-size%22%3A%22medium%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lng1},{lat1}%5D%7D%7D"
+            firstElement = False
+            
+          else:
+            
+            request += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23462eff%22%2C%22marker-size%22%3A%22medium%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lng1},{lat1}%5D%7D%7D"
           
           counter += 1
       
@@ -628,6 +640,8 @@ class Map2_0(Map2_0Template):
           index += 1
           
           break
+    
+    request += "%5D%7D"
     
     lngLat = [(dict(self.marker['_lngLat'])['lng']), (dict(self.marker['_lngLat'])['lat'])]
     
@@ -877,13 +891,13 @@ class Map2_0(Map2_0Template):
     
     anvil.server.call('create_pieChart', valuesPieCA, 'donutCA')
   
-    anvil.server.call('createStaticMapForCA', bbox, self.token, dataComplete)
+    anvil.server.call('createStaticMapForCA', bbox, self.token, dataComplete, request)
     
     valuesPieSum = [{'topic': '% Public operators', 'value': len(operator_public)}, {'topic': '% Non-profit operators', 'value': len(operator_nonProfit)}, {'topic': '% Private operators', 'value': len(operator_private)}]
     
     anvil.server.call('create_pieChart', valuesPieSum, 'donutSum')
 
-    valuesBarSum = [{'topic': 'Number of inpatients', 'value': inpatients}, {'topic': 'Beds', 'value': beds_active}, {'topic': 'Number of inpatients forecast 2030', 'value': (inpatients + 300)}, {'topic': 'Adjusted number of beds (incl. beds in planning and under construction)', 'value': beds_adjusted}]
+    valuesBarSum = [{'topic': 'Number of inpatients', 'value': inpatients}, {'topic': 'Beds', 'value': beds_active}, {'topic': 'Number of inpatients forecast 2030', 'value': (inpatients + 300)}, {'topic': 'Adjusted number of beds<br>(incl. beds in planning and under construction)', 'value': beds_adjusted}]
     
     anvil.server.call('create_barChart', valuesBarSum)
     
