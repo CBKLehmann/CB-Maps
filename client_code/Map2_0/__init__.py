@@ -390,6 +390,11 @@ class Map2_0(Map2_0Template):
     
     #Call create_icons-Function to set the Icons on Map and save last BBox of Pflege DB
     Variables.last_bbox_pdb = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_pdb, 'pflegeDB', Variables.icon_pflegeDB)
+    
+  def pdb_data_al_change(self, **event_args):
+  
+    #Call create_icons-Function to set the Icons on Map and save last BBox of Assisted Living DB
+    Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, 'assistedLiving', Variables.icon_al)
           
   ##### Check-Box Functions #####
   ###############################
@@ -595,7 +600,6 @@ class Map2_0(Map2_0Template):
         
         if lng1 == lng and lat1 == lat:
             
-          request += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22{index}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lng1},{lat1}%5D%7D%7D"  
             
           coords.append([lng, lat])
           
@@ -642,9 +646,13 @@ class Map2_0(Map2_0Template):
           
           break
     
-    anvil.server.call('getDistance', lngLat, coords)
+    sortedCoords = anvil.server.call('getDistance', lngLat, coords)
+    indexCoords = len(sortedCoords)
     
-#     request += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22{index}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lng1},{lat1}%5D%7D%7D"
+    for el in reversed(sortedCoords):
+    
+      request += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22{indexCoords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{el[0][0]},{el[0][1]}%5D%7D%7D"
+      indexCoords -= 1
     
     request += "%5D%7D"
     
@@ -1481,7 +1489,7 @@ class Map2_0(Map2_0Template):
   
   #This method is called from the check_box_change-Functions to place Icons on Map  
   def create_icons(self, check_box, last_bbox, category, picture):
-
+    
     # Check if Checkbox is checked
     if check_box == True:
     
@@ -1537,8 +1545,13 @@ class Map2_0(Map2_0Template):
           # Check if Category is PflegeDB
           if category == 'pflegeDB':
     
-            geojson = anvil.server.call('get_Care_DB_Data', bbox)
+            geojson = anvil.server.call('get_Care_DB_Data', bbox, 'CareDB_Pflegeheime')
             Variables.pflegeDBEntries = geojson
+        
+          elif category == 'assistedLiving':
+    
+            geojson = anvil.server.call('get_Care_DB_Data', bbox, 'CareDB_Betreutes_Wohnen')
+            Variables.assistedLivingEntries = geojson
     
           else:
     
@@ -1573,27 +1586,29 @@ class Map2_0(Map2_0Template):
     
               # Check if Category is not PflegeDB
               if not category == 'pflegeDB':
+          
+                if not category == 'assistedLiving':
     
-                # Get coordinates of current Icon
-                el_coords = ele['geometry']['coordinates']
-    
-                # Get different Informations from geojson
-                city = ele['properties']['city']
-                suburb = ele['properties']['suburb']
-                street = ele['properties']['street']
-                housenumber = ele['properties']['housenumber']
-                postcode = ele['properties']['postcode']
-                phone = ele['properties']['phone']
-                website = ele['properties']['website']
-                healthcare = ele['properties']['healthcare']
-                name = ele['properties']['name']
-                opening_hours = ele['properties']['opening_hours']
-                wheelchair = ele['properties']['wheelchair']
-                o_id = ele['properties']['id']
-                fax = ele['properties']['fax']
-                email = ele['properties']['email']
-                speciality = ele['properties']['healthcare:speciality']
-                operator = ele['properties']['operator']
+                  # Get coordinates of current Icon
+                  el_coords = ele['geometry']['coordinates']
+      
+                  # Get different Informations from geojson
+                  city = ele['properties']['city']
+                  suburb = ele['properties']['suburb']
+                  street = ele['properties']['street']
+                  housenumber = ele['properties']['housenumber']
+                  postcode = ele['properties']['postcode']
+                  phone = ele['properties']['phone']
+                  website = ele['properties']['website']
+                  healthcare = ele['properties']['healthcare']
+                  name = ele['properties']['name']
+                  opening_hours = ele['properties']['opening_hours']
+                  wheelchair = ele['properties']['wheelchair']
+                  o_id = ele['properties']['id']
+                  fax = ele['properties']['fax']
+                  email = ele['properties']['email']
+                  speciality = ele['properties']['healthcare:speciality']
+                  operator = ele['properties']['operator']
     
               # Check if Category is Bus or Tram
               if category == 'bus_stop' or category == 'tram_stop':
@@ -1709,6 +1724,111 @@ class Map2_0(Map2_0Template):
                   f'<b>PG 4: </b> {ele[42]}'
                   '<br>'
                   f'<b>PG 5: </b> {ele[43]}'
+                )
+    
+              elif category == 'assistedLiving':
+        
+                el_coords = [ele[27], ele[26]]
+    
+                if not ele[19] == 'nan':
+        
+                  wohnungen = int(float(ele[19]))
+          
+                else:
+              
+                  wohnungen = ele[19]
+                
+                if not ele[20] == 'nan':
+        
+                  ezAL = int(float(ele[20]))
+          
+                else:
+              
+                  ezAL = ele[20]
+                
+                if not ele[21] == 'nan':
+        
+                  dzAL = int(float(ele[21]))
+          
+                else:
+              
+                  dzAL = ele[21]
+                
+                if not ele[21] == 'nan':
+        
+                  mieteAb = str(int(float(ele[21]))) + ' €'
+          
+                else:
+              
+                  mieteAb = ele[21]
+                
+                if not ele[22] == 'nan':
+        
+                  mieteBis = str(int(float(ele[22]))) + ' €'
+          
+                else:
+              
+                  mieteBis = ele[22]
+    
+                # Create Popup for Element
+                popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                  f'<b>PM ID: </b> {ele[0]}'
+                  '<br>'
+                  f'<b>Träger ID: </b> {ele[1]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Sektor: </b> {ele[2]}'
+                  '<br>'
+                  f'<b>Art: </b> {ele[9]}'
+                  '<br>'
+                  f'<b>Spezialisierung: </b> {ele[25]}'
+                  '<br>'
+                  f'<b>Status: </b> {ele[3]}'
+                  '<br>'
+                  f'<b>Baujahr: </b> {ele[24]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Name: </b> {ele[4]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Betreiber: </b> {ele[5]}'
+                  '<br>'
+                  f'<b>Tochterfirma 1: </b> {ele[6]}'
+                  '<br>'
+                  f'<b>Tochterfirma 2: </b> {ele[7]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Straße: </b> {ele[9]}'
+                  '<br>'
+                  f'<b>Postleitzahl: </b> {ele[10]}'
+                  '<br>'
+                  f'<b>Ort: </b> {ele[11]}'
+                  '<br>'
+                  f'<b>Bundesland: </b> {ele[12]}'
+                  '<br>'
+                  f'<b>Gemeindeschlüssel: </b> {ele[13]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Telefon: </b> {ele[14]}'
+                  '<br>'
+                  f'<b>Fax: </b> {ele[15]}'
+                  '<br>'
+                  f'<b>E-Mail: </b> {ele[16]}'
+                  '<br>'
+                  f'<b>Webseite: </b> {ele[17]}'
+                  '<br>'
+                  f'<b>Domain: </b> {ele[18]}'
+                  '<br>'
+                  '<br>'
+                  f'<b>Anzahl Wohnungen: </b> {wohnungen}'
+                  '<br>'
+                  f'<b>Einzelzimmer: </b> {ezAL}'
+                  '<br>'
+                  f'<b>Doppelzimmer: </b> {dzAL}'
+                  '<br>'
+                  f'<b>Miete ab: </b> {mieteAb}'
+                  '<br>'
+                  f'<b>Miete bis: </b> {mieteBis}'
                 )
     
               # Check if Category is not Bus or Tram or PflegeDB
