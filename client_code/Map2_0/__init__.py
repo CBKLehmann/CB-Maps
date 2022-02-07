@@ -917,9 +917,12 @@ class Map2_0(Map2_0Template):
     
     mapRequestData = [lng, lat, self.token]
     
-    sendData = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent]
     
-    anvil.server.call("write_PDF_File", sendData, mapRequestData)
+    
+    sendData_Summary = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent]
+    sendData_ALAnalysis = [countie[0], data[0][19], peopleu75, peopleo75]
+    
+    anvil.server.call("write_PDF_File", sendData_Summary, mapRequestData, sendData_ALAnalysis)
     
     mapPDF = app_tables.pictures.search()[0]
     
