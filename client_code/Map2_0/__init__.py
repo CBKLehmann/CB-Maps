@@ -458,12 +458,7 @@ class Map2_0(Map2_0Template):
     #Call a Server Function
 #     anvil.server.call('manipulate')
 
-    counter = 0
-    for coords in Variables.activeIso['features'][0]['geometry']['coordinates'][0]:
-      counter += 1
-      print(coords)
-      print(counter)
-      print('########################################')
+    anvil.server.call('separateIso', Variables.activeIso)
     
   #This method is called when the Healthcare-Button is clicked
   def button_healthcare_click(self, **event_args):
