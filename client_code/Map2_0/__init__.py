@@ -456,7 +456,14 @@ class Map2_0(Map2_0Template):
   def admin_button_click(self, **event_args):
     
     #Call a Server Function
-    anvil.server.call('manipulate')
+#     anvil.server.call('manipulate')
+
+    counter = 0
+    for coords in Variables.activeIso['features'][0]['geometry']['coordinates'][0]:
+      counter += 1
+      print(coords)
+      print(counter)
+      print('########################################')
     
   #This method is called when the Healthcare-Button is clicked
   def button_healthcare_click(self, **event_args):
@@ -1108,10 +1115,10 @@ class Map2_0(Map2_0Template):
     request_string += f"&polygons=true&access_token={self.token}"
     
     #Get Data from request
-    response = anvil.http.request(request_string,json=True)
+    Variables.activeIso = anvil.http.request(request_string,json=True)
     
     #Attach Data to iso-source
-    self.mapbox.getSource('iso').setData(response)
+    self.mapbox.getSource('iso').setData(Variables.activeIso)
       
   #This method is called when the User clicked a Part of a Map-Layer
   def popup(self, click):
