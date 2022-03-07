@@ -458,9 +458,72 @@ class Map2_0(Map2_0Template):
     #Call a Server Function
 #     anvil.server.call('manipulate')
 
-    anvil.server.call('separateIso', Variables.activeIso)
+    sendData = anvil.server.call('separateIso', Variables.activeIso)
   
-    print('Fertig')
+    print(sendData)
+  
+    keyArray = ['Municipality']
+    areaArray = ['Area']
+    popArray = ['Population']
+    km2Array = ['Population per km2']
+  
+    tableContentMun: str = f"""
+        <tr>
+          <th>Municipality</th>
+      """
+  
+    for key in sendData['areas']:
+      
+      if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
+      
+        tableContentMun += f"""<th>{key}</th>"""
+        
+    tableContentMun += """</tr>"""
+          
+        keyArray.append(sendData['areas'][key][area])
+        areaArray.append(sendData['data'][key][0][9])
+        popArray.append(sendData['data'][key][0][10])
+        km2Array.append(sendData['data'][key][0][13])
+  
+  
+    htmlPlaceholder: str = f"""
+      <tr>
+        <td>Mun</td>
+        <td>Berlin</td>
+        <td>Ahrensfelde</td>
+      </tr>
+      <tr>
+        <td>Area</td>
+        <td>213</td>
+        <td>32</td>
+      </tr>
+      <tr>
+        <td>Population</td>
+        <td>646545</td>
+        <td>212125</td>
+      </tr>
+      <tr>
+        <td>Population per km2</td>
+        <td>3213</td>
+        <td>35153</td>
+      </tr> 
+    """
+  
+    html: str = f"""
+      <html>
+        <head>
+          <title>Iso-Layer People Data</title>
+          <style></style>
+          <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+        </head>
+        <body>
+          <table>
+          </table>
+        </body>
+      </html>
+    """
+  
+    anvil.js.call('open_tab', html)
     
   #This method is called when the Healthcare-Button is clicked
   def button_healthcare_click(self, **event_args):
