@@ -477,14 +477,60 @@ class Map2_0(Map2_0Template):
       if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
       
         tableContentMun += f"""<th>{key}</th>"""
+    
+    tableContentMun += """<th></th><th></th><th></th><th>Iso-Layer</th>"""
+    
+    for key in sendData['areas']:
+      
+      if 'Iso' in key:
         
-    tableContentMun += """</tr>"""
-          
-        keyArray.append(sendData['areas'][key][area])
-        areaArray.append(sendData['data'][key][0][9])
-        popArray.append(sendData['data'][key][0][10])
-        km2Array.append(sendData['data'][key][0][13])
+        tableContentMun += f"""<th>{key}</th>"""
+    
+    tableContentMun += """</tr><tr><td>Area</td>"""
+    
+    for key in sendData['areas']:
+      
+      if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
+        
+        tableContentMun += f"""<td>{sendData['data'][key][0][9]} km2</td>"""
+    
+    tableContentMun += """<td></td><td></td><td></td><td>Area</td>"""
+    
+    for key in sendData['areas']:
+      
+      if 'Iso' in key:
+        
+        tableContentMun += f"""<td>{round(sendData['areas'][key]['area_complete'], 2)} km2</td>"""
+    
+    tableContentMun += """</tr><tr><td>Population</td>"""
+    
+    for key in sendData['areas']:
+      
+      if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
+        
+        tableContentMun += f"""<td>{sendData['data'][key][0][10]}</td>"""
+    
+    for key in sendData['areas']:
+      
+      if 'Iso' in key:
+        
+        tableContentMun += f"""<td>{round(sendData['areas'][key]['pop_for_area'])}</td>"""
+       
+    tableContentMun += """</tr><tr><td>Population per km2</td>"""
+    
+    for key in sendData['areas']:
+      
+      if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
+        
+        tableContentMun += f"""<td>{sendData['data'][key][0][13]}</td>"""
   
+    for key in sendData['areas']:
+        
+      if 'Iso' in key:
+          
+        tableContentMun += f"""<td>{round((sendData['areas'][key]['pop_for_area'] / sendData['areas'][key]['area_complete']))}</td>"""
+      
+    tableContentMun += """</tr>"""
   
     htmlPlaceholder: str = f"""
       <tr>
@@ -518,6 +564,7 @@ class Map2_0(Map2_0Template):
         </head>
         <body>
           <table>
+            {tableContentMun}
           </table>
         </body>
       </html>
