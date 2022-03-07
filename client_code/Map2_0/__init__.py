@@ -459,6 +459,8 @@ class Map2_0(Map2_0Template):
 #     anvil.server.call('manipulate')
 
     anvil.server.call('separateIso', Variables.activeIso)
+  
+    print('Fertig')
     
   #This method is called when the Healthcare-Button is clicked
   def button_healthcare_click(self, **event_args):
