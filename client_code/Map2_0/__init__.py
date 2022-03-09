@@ -611,6 +611,48 @@ class Map2_0(Map2_0Template):
                                 <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[15] / 100))}</td>
                                 <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[16] / 100))}</td>
                               </tr>
+                              <tr>
+                                <td>Male</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[35] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[18] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[19] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[20] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[21] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[22] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[23] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[24] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[25] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[26] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[27] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[28] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[29] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[30] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[31] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[32] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[33] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[34] / 100))}</td>
+                              </tr>
+                              <tr>
+                                <td>Overall</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[35] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[36] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[37] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[38] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[39] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[40] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[41] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[42] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[43] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[44] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[45] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[46] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[47] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[48] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[49] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[50] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[51] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[52] / 100))}</td>
+                              </tr>
                               <tr></tr>
                             """
   
