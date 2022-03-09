@@ -460,8 +460,6 @@ class Map2_0(Map2_0Template):
     #Call a Server Function
 #     anvil.server.call('manipulate')
 
-    print(datetime.datetime.now())
-
     sendData = anvil.server.call('separateIso', Variables.activeIso)
     
     lk_Array = []
@@ -501,7 +499,7 @@ class Map2_0(Map2_0Template):
       
       if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
       
-        tableContentMun += f"""<th class='dataCell'>{key}</th>"""
+        tableContentMun += f"""<th class='dataCell width450'>{key}</th>"""
     
     tableContentMun += """<th></th><th></th><th></th><th class='dataCell'>Iso-Layer</th>"""
     
@@ -517,7 +515,7 @@ class Map2_0(Map2_0Template):
       
       if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
         
-        tableContentMun += f"""<td class='dataCell'>{sendData['data'][key][0][9]} km2</td>"""
+        tableContentMun += f"""<td class='dataCell'>{round(sendData['data'][key][0][9], 2)} km2</td>"""
     
     tableContentMun += """<td></td><td></td><td></td><td class='dataCell'>Area</td>"""
     
@@ -557,7 +555,7 @@ class Map2_0(Map2_0Template):
         
       if 'Iso' in key:
           
-        tableContentMun += f"""<td class='dataCell'>{round((sendData['areas'][key]['pop_for_area'] / sendData['areas'][key]['area_complete']))}</td>"""
+        tableContentMun += f"""<td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] / sendData['areas'][key]['area_complete'])}</td>"""
       
     tableContentMun += """</tr><tr class='emptyRow'></tr>"""
     
@@ -674,8 +672,6 @@ class Map2_0(Map2_0Template):
     """
   
     anvil.js.call('open_tab', html)
-    
-    print(datetime.datetime.now())
     
   #This method is called when the Healthcare-Button is clicked
   def button_healthcare_click(self, **event_args):
