@@ -11,6 +11,7 @@ import anvil.http
 import json
 from .. import Variables, Layer, Images
 import anvil.media
+import math
 
 #Get global Variables
 global Variables, Layer
@@ -460,7 +461,32 @@ class Map2_0(Map2_0Template):
 
     sendData = anvil.server.call('separateIso', Variables.activeIso)
   
-    print(sendData)
+#     print(sendData)
+    
+    lk_Array = []
+    value_Array = []
+    
+    for key in sendData['data']:
+      
+      lk_Array.append(key)
+      
+    counter = 2
+    
+    while not counter == len(sendData['data'][key][1]):
+      
+      value = 0
+      
+      for lk in lk_Array:
+        
+        value += sendData['data'][lk][1][counter]
+        
+      value = (round(value / 2 * 100) / 100)
+      
+      value_Array.append(value)
+      
+      counter += 1
+      
+    print(value_Array)
   
     keyArray = ['Municipality']
     areaArray = ['Area']
@@ -510,6 +536,8 @@ class Map2_0(Map2_0Template):
         
         tableContentMun += f"""<td>{sendData['data'][key][0][10]}</td>"""
     
+    tableContentMun += """<td></td><td></td><td></td><td>Population</td>"""
+    
     for key in sendData['areas']:
       
       if 'Iso' in key:
@@ -524,13 +552,67 @@ class Map2_0(Map2_0Template):
         
         tableContentMun += f"""<td>{sendData['data'][key][0][13]}</td>"""
   
+    tableContentMun += """<td></td><td></td><td></td><td>Population per km2</td>""" 
+  
     for key in sendData['areas']:
         
       if 'Iso' in key:
           
         tableContentMun += f"""<td>{round((sendData['areas'][key]['pop_for_area'] / sendData['areas'][key]['area_complete']))}</td>"""
       
-    tableContentMun += """</tr>"""
+    tableContentMun += """</tr><tr></tr>"""
+    
+    for key in sendData['areas']:
+      
+      if 'Iso' in key:
+    
+        tableContentMun += f"""<tr>
+                                <th>{key}</th>
+                              </tr>
+                              <tr>
+                                <th>Gender</th>
+                                <th>Overall</th>
+                                <th>Under 3</th>
+                                <th>3 to Under 6</th>
+                                <th>6 to Under 10</th>
+                                <th>10 to Under 15</th>
+                                <th>15 to Under 18</th>
+                                <th>18 to Under 20</th>
+                                <th>20 to Under 25</th>
+                                <th>25 to Under 30</th>
+                                <th>30 to Under 35</th>
+                                <th>35 to Under 40</th>
+                                <th>40 to Under 45</th>
+                                <th>45 to Under 50</th>
+                                <th>50 to Under 55</th>
+                                <th>55 to Under 60</th>
+                                <th>60 to Under 65</th>
+                                <th>65 to Under 75</th>
+                                <th>75 and Older</th>
+                              </tr>
+                              <tr>
+                                <td>Overall</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'])}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[0] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[1] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[2] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[3] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[4] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[5] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[6] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[7] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[8] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[9] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[10] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[11] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[12] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[13] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[14] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[15] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[16] / 100))}</td>
+                              </tr>
+                              <tr></tr>
+                            """
   
     htmlPlaceholder: str = f"""
       <tr>
