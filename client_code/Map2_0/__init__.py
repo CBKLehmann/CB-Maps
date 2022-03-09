@@ -12,6 +12,7 @@ import json
 from .. import Variables, Layer, Images
 import anvil.media
 import math
+import datetime
 
 #Get global Variables
 global Variables, Layer
@@ -459,9 +460,9 @@ class Map2_0(Map2_0Template):
     #Call a Server Function
 #     anvil.server.call('manipulate')
 
+    print(datetime.datetime.now())
+
     sendData = anvil.server.call('separateIso', Variables.activeIso)
-  
-#     print(sendData)
     
     lk_Array = []
     value_Array = []
@@ -485,8 +486,6 @@ class Map2_0(Map2_0Template):
       value_Array.append(value)
       
       counter += 1
-      
-    print(value_Array)
   
     keyArray = ['Municipality']
     areaArray = ['Area']
@@ -592,24 +591,24 @@ class Map2_0(Map2_0Template):
                               </tr>
                               <tr>
                                 <td class='dataCell'>Overall</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'])}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[0] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[1] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[2] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[3] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[4] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[5] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[6] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[7] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[8] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[9] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[10] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[11] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[12] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[13] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[14] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[15] / 100))}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[16] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[35] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[53] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[18] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[36] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[19] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[37] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[20] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[38] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[21] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[39] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[22] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[40] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[23] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[41] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[24] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[42] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[25] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[43] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[26] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[44] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[27] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[45] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[28] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[46] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[29] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[47] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[30] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[48] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[31] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[49] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[32] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[50] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[33] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[51] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[34] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[52] / 100))}</td>
                               </tr>
                               <tr>
                                 <td class='dataCell'>Male</td>
@@ -634,24 +633,24 @@ class Map2_0(Map2_0Template):
                               </tr>
                               <tr>
                                 <td class='dataCell'>Female</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[53] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[36] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[37] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[38] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[39] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[40] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[41] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[42] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[43] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[44] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[45] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[46] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[47] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[48] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[49] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[50] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[51] / 100) + 1)}</td>
-                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[52] / 100) + 1)}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[53] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[36] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[37] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[38] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[39] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[40] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[41] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[42] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[43] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[44] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[45] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[46] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[47] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[48] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[49] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[50] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[51] / 100))}</td>
+                                <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[52] / 100))}</td>
                               </tr>
                               <tr class='emptyRow'></tr>
                             """
@@ -675,6 +674,8 @@ class Map2_0(Map2_0Template):
     """
   
     anvil.js.call('open_tab', html)
+    
+    print(datetime.datetime.now())
     
   #This method is called when the Healthcare-Button is clicked
   def button_healthcare_click(self, **event_args):
