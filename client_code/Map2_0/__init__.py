@@ -634,7 +634,7 @@ class Map2_0(Map2_0Template):
                               </tr>
                               <tr>
                                 <td>Overall</td>
-                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[35] / 100))}</td>
+                                <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[53] / 100))}</td>
                                 <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[36] / 100))}</td>
                                 <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[37] / 100))}</td>
                                 <td>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[38] / 100))}</td>
