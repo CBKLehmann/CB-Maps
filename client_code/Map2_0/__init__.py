@@ -460,7 +460,7 @@ class Map2_0(Map2_0Template):
     #Call a Server Function
 #     anvil.server.call('manipulate')
 
-    sendData = anvil.server.call('separateIso', Variables.activeIso)
+    sendData = anvil.server.call('separate_iso', Variables.activeIso)
     
     lk_Array = []
     value_Array = []
@@ -860,7 +860,7 @@ class Map2_0(Map2_0Template):
           
           break
     
-    sortedCoords = anvil.server.call('getDistance', lngLat, coords)
+    sortedCoords = anvil.server.call('get_distance', lngLat, coords)
     indexCoords = len(sortedCoords)
     
     for el in reversed(sortedCoords):
@@ -916,7 +916,7 @@ class Map2_0(Map2_0Template):
     
     movement = self.profile_dropdown.selected_value.lower()
     
-    data = anvil.server.call('get_countie_data_from_DB', city, federal_state)
+    data = anvil.server.call('get_countie_data_from_db', city, federal_state)
     
     population = 0
     
@@ -1115,17 +1115,17 @@ class Map2_0(Map2_0Template):
     
     valuesPieCA = [{'topic': 'Median Nursing charge (PG 3) in €', 'value': pg3Median}, {'topic': 'Median Specific co-payment in €', 'value': copaymentMedian}, {'topic': 'Median Invest Cost in €', 'value': investMedian}, {'topic': 'Median Board and lodging in €', 'value': boardMedian}]
     
-    anvil.server.call('create_pieChart', valuesPieCA, 'donutCA')
+    anvil.server.call('create_pie_chart', valuesPieCA, 'donutCA')
   
-    anvil.server.call('createStaticMapForCA', bbox, self.token, dataComplete, request)
+    anvil.server.call('create_static_map_for_ca', bbox, self.token, dataComplete, request)
     
     valuesPieSum = [{'topic': '% Public operators', 'value': len(operator_public)}, {'topic': '% Non-profit operators', 'value': len(operator_nonProfit)}, {'topic': '% Private operators', 'value': len(operator_private)}]
     
-    anvil.server.call('create_pieChart', valuesPieSum, 'donutSum')
+    anvil.server.call('create_pie_chart', valuesPieSum, 'donutSum')
 
     valuesBarSum = [{'topic': 'Number of inpatients', 'value': inpatients}, {'topic': 'Beds', 'value': beds_active}, {'topic': 'Number of inpatients forecast 2030', 'value': (inpatients + 300)}, {'topic': 'Adjusted number of beds<br>(incl. beds in planning and under construction)', 'value': beds_adjusted}]
     
-    anvil.server.call('create_barChart', valuesBarSum)
+    anvil.server.call('create_bar_chart', valuesBarSum)
     
     lng = self.marker['_lngLat']['lng']
     lat = self.marker['_lngLat']['lat']
@@ -1775,12 +1775,12 @@ class Map2_0(Map2_0Template):
           # Check if Category is PflegeDB
           if category == 'pflegeDB':
     
-            geojson = anvil.server.call('get_Care_DB_Data', bbox, 'CareDB_Pflegeheime')
+            geojson = anvil.server.call('get_care_db_data', bbox, 'CareDB_Pflegeheime')
             Variables.pflegeDBEntries = geojson
         
           elif category == 'assistedLiving':
     
-            geojson = anvil.server.call('get_Care_DB_Data', bbox, 'CareDB_Betreutes_Wohnen')
+            geojson = anvil.server.call('get_care_db_data', bbox, 'CareDB_Betreutes_Wohnen')
             Variables.assistedLivingEntries = geojson
     
           else:
