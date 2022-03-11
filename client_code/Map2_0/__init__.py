@@ -815,7 +815,6 @@ class Map2_0(Map2_0Template):
         
         if lng1 == lng and lat1 == lat:
             
-            
           coords.append([lng, lat])
           
           counter += 1
@@ -918,6 +917,7 @@ class Map2_0(Map2_0Template):
     movement = self.profile_dropdown.selected_value.lower()
     
     data = anvil.server.call('get_countie_data_from_DB', city, federal_state)
+    
     population = 0
     
     countie = data[0][1].split(',')
