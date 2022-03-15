@@ -918,7 +918,7 @@ class Map2_0(Map2_0Template):
     
     data = anvil.server.call('get_countie_data_from_db', city, federal_state)
     
-    print('Data:' + data)
+    print('Data: ' + f'{data}')
     
     population = 0
     
