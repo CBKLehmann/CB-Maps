@@ -926,6 +926,8 @@ class Map2_0(Map2_0Template):
     
     peopleu75 = int((float(data[0][19]) * float(data[0][17])) / 100)
     peopleo75 = int((float(data[0][19]) * float(data[0][18])) / 100)
+    peopleu75FC = round(peopleu75 * float(data[1][0][20]))
+    peopleo75FC = round(peopleo75 * float(data[1][0][20]))
     
     CareData = anvil.server.call('get_federalstate_data', federal_state, data[0][0])
     
@@ -1134,8 +1136,6 @@ class Map2_0(Map2_0Template):
     
     mapRequestData = [lng, lat, self.token]
     
-    print(Variables.assistedLivingEntries[0])
-    
     apartments = 0
     
     for el in Variables.assistedLivingEntries:
@@ -1148,10 +1148,10 @@ class Map2_0(Map2_0Template):
     
     anvil.server.call('get_all_muni_in_counti', countie[0])
     
-    sendData_Summary = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent]
+    sendData_Summary = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent, peopleu75FC, data[1][0][19], peopleo75FC]
     sendData_ALAnalysis = [countie[0], data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k]
     
-    anvil.server.call("write_PDF_File", sendData_Summary, mapRequestData, sendData_ALAnalysis)
+    anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis)
     
     mapPDF = app_tables.pictures.search()[0]
     
