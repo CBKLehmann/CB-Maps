@@ -926,8 +926,8 @@ class Map2_0(Map2_0Template):
     
     peopleu75 = int((float(data[0][19]) * float(data[0][17])) / 100)
     peopleo75 = int((float(data[0][19]) * float(data[0][18])) / 100)
-    peopleu75FC = round(peopleu75 * float(data[1][0][20]))
-    peopleo75FC = round(peopleo75 * float(data[1][0][20]))
+    peopleu75FC = round(peopleu75 * float(data[1][20]))
+    peopleo75FC = round(peopleo75 * float(data[1][20]))
     
     CareData = anvil.server.call('get_federalstate_data', federal_state, data[0][0])
     
@@ -938,6 +938,8 @@ class Map2_0(Map2_0Template):
         if not el[27] == '-':
     
             sums += int(el[27])
+    
+    sumsFC = round(sums * float(data[1][20]))
     
     # Get Data of Iso-Layer
     iso = dict(self.mapbox.getSource('iso'))
@@ -1089,7 +1091,9 @@ class Map2_0(Map2_0Template):
       if not el[37] == '-':
         
         board_cost.append(float(el[37]))
-    
+  
+    inpatientsFC = round(sumsFC * (round(((inpatients * 100) / sums), 1) / 100))
+  
     investMedian = anvil.server.call('get_median', investCost)
     investMedian = "{:.2f}".format(investMedian)
     bedsMedian = anvil.server.call('get_median', beds)
@@ -1117,6 +1121,8 @@ class Map2_0(Map2_0Template):
         
     beds_adjusted = beds_active + beds_construct + beds_planned
     
+    beds_surplus = beds_adjusted - inpatientsFC
+    
     valuesPieCA = [{'topic': 'Median Nursing charge (PG 3) in €', 'value': pg3Median}, {'topic': 'Median Specific co-payment in €', 'value': copaymentMedian}, {'topic': 'Median Invest Cost in €', 'value': investMedian}, {'topic': 'Median Board and lodging in €', 'value': boardMedian}]
     
     anvil.server.call('create_pie_chart', valuesPieCA, 'donutCA')
@@ -1127,7 +1133,7 @@ class Map2_0(Map2_0Template):
     
     anvil.server.call('create_pie_chart', valuesPieSum, 'donutSum')
 
-    valuesBarSum = [{'topic': 'Number of inpatients', 'value': inpatients}, {'topic': 'Beds', 'value': beds_active}, {'topic': 'Number of inpatients forecast 2030', 'value': (inpatients + 300)}, {'topic': 'Adjusted number of beds<br>(incl. beds in planning and under construction)', 'value': beds_adjusted}]
+    valuesBarSum = [{'topic': 'Number of inpatients', 'value': inpatients}, {'topic': 'Beds', 'value': beds_active}, {'topic': 'Number of inpatients forecast 2030', 'value': inpatientsFC}, {'topic': 'Adjusted number of beds<br>(incl. beds in planning and under construction)', 'value': beds_adjusted}]
     
     anvil.server.call('create_bar_chart', valuesBarSum)
     
@@ -1148,7 +1154,7 @@ class Map2_0(Map2_0Template):
     
     anvil.server.call('get_all_muni_in_counti', countie[0])
     
-    sendData_Summary = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent, peopleu75FC, data[1][0][19], peopleo75FC]
+    sendData_Summary = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent, peopleu75FC, data[1][19], peopleo75FC, sumsFC, inpatientsFC, beds_surplus]
     sendData_ALAnalysis = [countie[0], data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k]
     
     anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis)
