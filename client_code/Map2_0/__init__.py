@@ -52,7 +52,7 @@ class Map2_0(Map2_0Template):
     
     #Initiate Listeners for different Functions  
     self.geocoder.on('result', self.move_marker)
-    self.marker.on('drag', self.marker_dragged) 
+    self.marker.on('dragend', self.marker_dragged) 
     self.mapbox.on('mousemove', 'bundeslaender', self.change_hover_state)
     self.mapbox.on('mouseleave', 'bundeslaender', self.change_hover_state)
     self.mapbox.on('mousemove', 'regierungsbezirke', self.change_hover_state)
