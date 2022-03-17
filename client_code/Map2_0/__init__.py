@@ -865,14 +865,16 @@ class Map2_0(Map2_0Template):
       time = "20"
     movement = self.profile_dropdown.selected_value.lower()
 
-    #Get Information from Database for County of Marker-Position and 
+    #Get Information from Database for County of Marker-Position
     countie_data = anvil.server.call("get_countie_data_from_db", city_Alt, federal_state)
+    countie = countie_data[0][1].split(',')
+
 
 
     population = 0
-    countie = countie_data[0][1].split(',')
+    
     #peopleu75 = int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)
-    peopleo75 = int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)
+    #peopleo75 = int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)
     peopleu75FC = round(peopleu75 * float(countie_data[1][20]))
     peopleo75FC = round(peopleo75 * float(countie_data[1][20]))
 
@@ -1063,7 +1065,31 @@ class Map2_0(Map2_0Template):
                         "countie": countie[0],
                         "population": countie_data[0][19],
                         "people_u75": int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100),
-                        "people_o75": , pat_rec_full_care, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent, peopleu75FC, countie_data[1][19], peopleo75FC, pat_rec_full_care_fc, inpatientsFC, beds_surplus, without_apartment}
+                        "people_o75": int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100),
+                        pat_rec_full_care,
+                        inpatients,
+                        beds_active,
+                        nursingHomes_active,
+                        nursingHomes_planned,
+                        nursingHomes_construct,
+                        beds_planned,
+                        beds_construct,
+                        beds_adjusted,
+                        occupancy_raw,
+                        investMedian,
+                        len(operator),
+                        bedsMedian,
+                        yearMedian,
+                        op_public_percent,
+                        op_nonProfit_percent,
+                        op_private_percent,
+                        peopleu75FC,
+                        countie_data[1][19],
+                        peopleo75FC,
+                        pat_rec_full_care_fc,
+                        inpatientsFC,
+                        beds_surplus,
+                        without_apartment}
     sendData_ALAnalysis = [countie[0], countie_data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k, peopleu75FC, peopleo75FC, countie_data[1][19], facilities_active, facilities_plan_build, apartments_plan_build, len(al_list), apartments_10km, (facilities_active - without_apartment), without_apartment, apartments_adjusted, facilities_building, (facilities_building - without_apartment_building), without_apartment_building, apartments_building, build_apartments_average, build_apartments_adjusted]    
     anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis)
     
