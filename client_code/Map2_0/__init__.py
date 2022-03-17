@@ -1005,7 +1005,11 @@ class Map2_0(Map2_0Template):
     
     print(countie[0])
     
-    for el in Variables.assistedLivingEntries:      
+    al_entries = anvil.server.call('get_al_for_countie', countie[0])
+    
+    print(len(al_entries))
+    
+    for el in al_entries:      
       facilities_overall += 1      
       if el[3] == "aktiv":      
         facilities_active += 1        
