@@ -836,10 +836,11 @@ class Map2_0(Map2_0Template):
     for el in marker_context:      
       if 'postcode' in el['id'] :        
         zipcode = el['text']       
-      elif 'locality' in el['id']:        
-        district = el['text'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig")        
+      elif 'locality' in el['id']:
+        district = el['text'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig") 
       elif 'place' in el['id']:
-        city = el['text'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig")        
+        city = el['text'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig")    
+        city_Alt = el['text']
       elif 'region' in el['id']:        
         federal_state = el['text']
         
@@ -852,8 +853,8 @@ class Map2_0(Map2_0Template):
     if time == '-1':      
       time = '20' 
       
-    movement = self.profile_dropdown.selected_value.lower()    
-    data = anvil.server.call('get_countie_data_from_db', city, federal_state)    
+    movement = self.profile_dropdown.selected_value.lower() 
+    data = anvil.server.call('get_countie_data_from_db', city_Alt, federal_state)    
     population = 0    
     countie = data[0][1].split(',')    
     peopleu75 = int((float(data[0][19]) * float(data[0][17])) / 100)
@@ -1002,16 +1003,18 @@ class Map2_0(Map2_0Template):
     apartments_planning = 0
     apartments_building = 0
     
+    print(countie[0])
+    
     for el in Variables.assistedLivingEntries:      
       facilities_overall += 1      
       if el[3] == "aktiv":      
         facilities_active += 1        
       elif el[3] == "in Planung":        
         facilities_planning += 1
-        apartments_planning += el[19]        
-      elif el[3] == "im Bau":        
+        apartments_planning += int(float(el[19]))       
+      elif el[3] == "im Bau": 
         facilities_building += 1
-        apartments_building += el[19]        
+        apartments_building += int(float(el[19]))        
       if not el[19] == 'nan':      
         apartments += int(float(el[19]))
     
@@ -1020,7 +1023,7 @@ class Map2_0(Map2_0Template):
     apartments_per_10k = apartments // (data[0][19] // 10000)    
     anvil.server.call('get_all_muni_in_counti', countie[0])
     
-    sendData_Summary = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent, peopleu75FC, data[1][19], peopleo75FC, sumsFC, inpatientsFC, beds_surplus]
+    sendData_Summary = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent, peopleu75FC, data[1][19], peopleo75FC, sumsFC, inpatientsFC, beds_surplus, city_Alt]
     sendData_ALAnalysis = [countie[0], data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k, peopleu75FC, peopleo75FC, data[1][19], facilities_active, facilities_plan_build, apartments_plan_build]    
     anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis)
     
