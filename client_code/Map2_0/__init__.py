@@ -955,7 +955,9 @@ class Map2_0(Map2_0Template):
         copayment_cost.append(float(care_entry[36]))
       if not care_entry[37] == "-":
         board_cost.append(float(care_entry[37]))
-  
+
+    ###HIER BITTE WEITERMACHEN###
+
     inpatientsFC = round(pat_rec_full_care_fc * (round(((inpatients * 100) / pat_rec_full_care), 1) / 100))  
     investMedian = anvil.server.call("get_median", invest_cost)
     investMedian = "{:.2f}".format(investMedian)
