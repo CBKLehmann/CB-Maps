@@ -807,7 +807,8 @@ class Map2_0(Map2_0Template):
               invest += "0"
           else:
             invest = entry_caredb[38]
-          data = {"index": index,
+          data = {
+                  "index": index,
                   "name": entry_caredb[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                   "platz_voll_pfl": entry_caredb[28],
                   "ez": entry_caredb[31],
@@ -818,7 +819,8 @@ class Map2_0(Map2_0Template):
                   "status": entry_caredb[4],
                   "betreiber": entry_caredb[6].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                   "invest": invest,
-                  "mdk_note": entry_caredb[26]}
+                  "mdk_note": entry_caredb[26]
+                 }
           data_comp_analysis.append(data)
           index += 1          
           break
@@ -869,38 +871,29 @@ class Map2_0(Map2_0Template):
     countie_data = anvil.server.call("get_countie_data_from_db", city_Alt, federal_state)
     countie = countie_data[0][1].split(',')
 
-
-
-    population = 0
-    
-    #peopleu75 = int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)
-    #peopleo75 = int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)
-    peopleu75FC = round(peopleu75 * float(countie_data[1][20]))
-    peopleo75FC = round(peopleo75 * float(countie_data[1][20]))
-
-
     #Get Entries from Care-Database based on Federal State
-    care_data = anvil.server.call("get_federalstate_data", federal_state, countie_data[0][0])
+    care_data_federal = anvil.server.call("get_federalstate_data", federal_state, countie_data[0][0])
 
     #Sum up all Patients in County
     pat_rec_full_care = 0
-    for entry_cd in care_data:
+    for entry_cd in care_data_federal:
         if not entry_cd[27] == '-':
             pat_rec_full_care += int(entry_cd[27])
     pat_rec_full_care_fc = round(pat_rec_full_care * float(countie_data[1][20]))
 
     #Get Data from Care-Database based on Iso-Layer
-    dataDB = anvil.server.call("get_iso_data", bbox)
+    care_data_iso = anvil.server.call("get_iso_data", bbox)
 
+    #Create Variables for different Values for Summary
     inpatients = 0
     beds_active = 0
     beds_planned = 0
     beds_construct = 0
-    nursingHomes_active = 0
-    nursingHomes_planned = 0
-    nursingHomes_construct = 0
+    nursing_homes_active = 0
+    nursing_homes_planned = 0
+    nursing_homes_construct = 0
     patients = 0
-    investCost = []
+    invest_cost = []
     operator = []
     beds = []
     year = []
@@ -911,59 +904,60 @@ class Map2_0(Map2_0Template):
     copayment_cost = []
     board_cost = []
     
-    for el in dataDB:      
-      bedsEL = 0      
-      if not el[27] == '-':        
-        inpatients += int(el[27])      
-      if el[4] == "aktiv":      
-        nursingHomes_active += 1        
-        if not el[28] == "-":          
-          beds_active += int(el[28])
-          bedsEL += int(el[28])          
-        if not el[29] == "-":         
-          beds_active += int(el[29])
-          bedsEL += int(el[29])        
-        if not el[30] == "-":          
-          beds_active += int(el[30])
-          bedsEL += int(el[30])          
-        beds.append(bedsEL)        
-      elif el[4] == "in Planung":        
-        nursingHomes_planned += 1        
-        if not el[31] == "-":          
-          beds_planned += int(el[31])          
-        if not el[32] == "-":          
-          beds_planned += (int(el[32]) * 2)        
-      elif el[4] == "im Bau":        
-        nursingHomes_construct += 1        
-        if not el[31] == "-":          
-          beds_construct += int(el[31])          
-        if not el[32] == "-":          
-          beds_construct += (int(el[32]) * 2)      
-      if not el[38] == "-":        
-        investCost.append(float(el[38]))        
-      if not el[6] == "-":        
-        if el[9] == "privat":          
-          if not el[6] in operator_private:          
-            operator_private.append(el[6])          
-        elif el[9] == "gemeinnützig":          
-          if not el[6] in operator_nonProfit:          
-            operator_nonProfit.append(el[6])          
-        elif el[9] == "kommunal":          
-          if not el[6] in operator_public:          
-            operator_public.append(el[6])        
-        if not el[6] in operator:          
-          operator.append(el[6])          
-      if not el[33] == "-":        
-        year.append(int(el[33]))        
-      if not el[41] == "-":        
-        pg3_cost.append(float(el[41]))    
-      if not el[36] == "-":
-        copayment_cost.append(float(el[36]))        
-      if not el[37] == "-":        
-        board_cost.append(float(el[37]))
+    #Get Values of Variables for every Entry in Care-Database inside Iso-Layer-Bounding-Box
+    for care_entry in care_data_iso:
+      beds_amount = 0
+      if not care_entry[27] == '-':
+        inpatients += int(care_entry[27])
+      if care_entry[4] == "aktiv":
+        nursing_homes_active += 1
+        if not care_entry[28] == "-":
+          beds_active += int(care_entry[28])
+          beds_amount += int(care_entry[28])
+        if not care_entry[29] == "-":
+          beds_active += int(care_entry[29])
+          beds_amount += int(care_entry[29])
+        if not care_entry[30] == "-":
+          beds_active += int(care_entry[30])
+          beds_amount += int(care_entry[30])
+        beds.append(beds_amount)
+      elif care_entry[4] == "in Planung":
+        nursing_homes_planned += 1
+        if not care_entry[31] == "-":
+          beds_planned += int(care_entry[31])
+        if not care_entry[32] == "-":
+          beds_planned += (int(care_entry[32]) * 2)
+      elif care_entry[4] == "im Bau":
+        nursing_homes_construct += 1
+        if not care_entry[31] == "-":
+          beds_construct += int(care_entry[31])
+        if not care_entry[32] == "-":
+          beds_construct += (int(care_entry[32]) * 2)
+      if not care_entry[38] == "-":
+        invest_cost.append(float(care_entry[38]))
+      if not care_entry[6] == "-":
+        if care_entry[9] == "privat":
+          if not care_entry[6] in operator_private:
+            operator_private.append(care_entry[6])
+        elif care_entry[9] == "gemeinnützig":
+          if not care_entry[6] in operator_nonProfit:
+            operator_nonProfit.append(care_entry[6])
+        elif care_entry[9] == "kommunal":
+          if not care_entry[6] in operator_public:
+            operator_public.append(care_entry[6])
+        if not care_entry[6] in operator:
+          operator.append(care_entry[6])
+      if not care_entry[33] == "-":
+        year.append(int(care_entry[33]))
+      if not care_entry[41] == "-":
+        pg3_cost.append(float(care_entry[41]))
+      if not care_entry[36] == "-":
+        copayment_cost.append(float(care_entry[36]))
+      if not care_entry[37] == "-":
+        board_cost.append(float(care_entry[37]))
   
     inpatientsFC = round(pat_rec_full_care_fc * (round(((inpatients * 100) / pat_rec_full_care), 1) / 100))  
-    investMedian = anvil.server.call("get_median", investCost)
+    investMedian = anvil.server.call("get_median", invest_cost)
     investMedian = "{:.2f}".format(investMedian)
     bedsMedian = anvil.server.call("get_median", beds)
     yearMedian = round(anvil.server.call("get_median", year))
@@ -1066,12 +1060,12 @@ class Map2_0(Map2_0Template):
                         "population": countie_data[0][19],
                         "people_u75": int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100),
                         "people_o75": int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100),
-                        pat_rec_full_care,
+                        "pat_rec_full_care": pat_rec_full_care,
                         inpatients,
                         beds_active,
-                        nursingHomes_active,
-                        nursingHomes_planned,
-                        nursingHomes_construct,
+                        nursing_homes_active,
+                        nursing_homes_planned,
+                        nursing_homes_construct,
                         beds_planned,
                         beds_construct,
                         beds_adjusted,
@@ -1083,10 +1077,10 @@ class Map2_0(Map2_0Template):
                         op_public_percent,
                         op_nonProfit_percent,
                         op_private_percent,
-                        peopleu75FC,
+                        "people_u75_fc": round((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])),
                         countie_data[1][19],
-                        peopleo75FC,
-                        pat_rec_full_care_fc,
+                        "people_o75_fc": round((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])),
+                        "pat_rec_full_care_fc": pat_rec_full_care_fc,
                         inpatientsFC,
                         beds_surplus,
                         without_apartment}
