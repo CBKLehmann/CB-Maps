@@ -756,13 +756,20 @@ class Map2_0(Map2_0Template):
       
   def Summary_click(self, **event_args):
     
-    # Get Data of Iso-Layer
-    iso = dict(self.mapbox.getSource('iso'))
+    #Code for everyone
     
-    # Create empty Bounding Box
-    bbox = [0, 0, 0, 0]
+    #Code only for Summary (+ Cover)
+    
+    #Code only for Nursing Competitor Analysis
 
-    # Check every element in Iso-Data
+    #Code only for Assisted Living Analysis  
+    
+    
+    
+    
+    #Create Bounding Box based on Iso-Layer
+    iso = dict(self.mapbox.getSource('iso'))
+    bbox = [0, 0, 0, 0]
     for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
       if el[0] < bbox[1] or bbox[1] == 0:
         bbox[1] = el[0]
@@ -773,9 +780,14 @@ class Map2_0(Map2_0Template):
       if el[1] > bbox[2] or bbox[2] == 0:
         bbox[2] = el[1]
     
+    
+    
+    
+    
+    
     index = 1
     counter = 0
-    dataComplete = []
+    data_comp_analysis = []
     coords = []
     firstElement = True   
     
@@ -783,36 +795,36 @@ class Map2_0(Map2_0Template):
     lngLat = [(dict(self.marker['_lngLat'])['lng']), (dict(self.marker['_lngLat'])['lat'])]    
     request += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lngLat[0]},{lngLat[1]}%5D%7D%7D"
     
-    for el in Variables.pflegeDBEntries:      
-      lng1 = '%.6f' % float(el[46])
-      lat1 = '%.6f' % float(el[45])
-      for ele in Variables.activeIcons['pflegeDB']:
-        lng = '%.6f' % ele['_lngLat']['lng']
-        lat = '%.6f' % ele['_lngLat']['lat']        
-        if lng1 == lng and lat1 == lat:            
-          coords.append([lng, lat])          
+    for entry in Variables.pflegeDBEntries:      
+      lng_entry = '%.6f' % float(entry[46])
+      lat_entry = '%.6f' % float(entry[45])
+      for icon in Variables.activeIcons['pflegeDB']:
+        lng_icon = '%.6f' % icon['_lngLat']['lng']
+        lat_icon = '%.6f' % icon['_lngLat']['lat']        
+        if lng_entry == lng_icon and lat_entry == lat_icon:            
+          coords.append([lng_icon, lat_icon])          
           counter += 1      
-          if el[27] == '-':            
+          if entry[27] == '-':            
             x = 0            
           else:           
-            x = int(el[27])            
-          if el[28] == '-':            
+            x = int(entry[27])            
+          if entry[28] == '-':            
             y = 0            
           else:            
-            y = int(el[28])          
+            y = int(entry[28])          
           if not x == 0 and not y == 0:            
             occupancy_raw = round((x * 100) / y)
             occupancy = f'{occupancy_raw} %'            
           else:            
             occupancy = '-'            
-          if not el[38] == '-':            
-            invest = f'{el[38]}'
+          if not entry[38] == '-':            
+            invest = f'{entry[38]}'
             if len(invest) == 4:
               invest += '0'            
           else:            
-            invest = el[38]
-          data = [index, el[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"), el[28], el[31], el[32], el[27], occupancy, el[33], el[4], el[6].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"), invest, el[26]]
-          dataComplete.append(data)
+            invest = entry[38]
+          data = [index, entry[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"), entry[28], entry[31], entry[32], entry[27], occupancy, entry[33], entry[4], entry[6].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"), invest, entry[26]]
+          data_comp_analysis.append(data)
           index += 1          
           break
     
@@ -986,7 +998,7 @@ class Map2_0(Map2_0Template):
     
     valuesPieCA = [{'topic': 'Median Nursing charge (PG 3) in €', 'value': pg3Median}, {'topic': 'Median Specific co-payment in €', 'value': copaymentMedian}, {'topic': 'Median Invest Cost in €', 'value': investMedian}, {'topic': 'Median Board and lodging in €', 'value': boardMedian}]    
     anvil.server.call('create_pie_chart', valuesPieCA, 'donutCA')  
-    anvil.server.call('create_static_map_for_ca', bbox, self.token, dataComplete, request)    
+    anvil.server.call('create_static_map_for_ca', bbox, self.token, data_comp_analysis, request)    
     valuesPieSum = [{'topic': '% Public operators', 'value': len(operator_public)}, {'topic': '% Non-profit operators', 'value': len(operator_nonProfit)}, {'topic': '% Private operators', 'value': len(operator_private)}]    
     anvil.server.call('create_pie_chart', valuesPieSum, 'donutSum')
     valuesBarSum = [{'topic': 'Number of inpatients', 'value': inpatients}, {'topic': 'Beds', 'value': beds_active}, {'topic': 'Number of inpatients forecast 2030', 'value': inpatientsFC}, {'topic': 'Adjusted number of beds<br>(incl. beds in planning and under construction)', 'value': beds_adjusted}]    
@@ -1003,6 +1015,7 @@ class Map2_0(Map2_0Template):
     apartments_planning = 0
     apartments_building = 0
     without_apartment = 0
+    without_apartment_building = 0
     
     al_entries = anvil.server.call('get_al_for_countie', countie[0])
     
@@ -1022,9 +1035,24 @@ class Map2_0(Map2_0Template):
         apartments_planning += int(float(el[19]))       
       elif el[3] == "im Bau": 
         facilities_building += 1
-        apartments_building += int(float(el[19]))        
+        if not el[19] == 'nan':
+          apartments_building += int(float(el[19]))
+        else:
+          without_apartment_building += 1
+          
+    if facilities_building > 0:
+      build_apartments_average = round(apartments_building / facilities_building)
+      build_apartments_adjusted = apartments_building + (build_apartments_average * without_apartment_building)
+    else:
+      build_apartments_average = 0
+      build_apartments_adjusted = 0
     
-    apartments_adjusted = apartments + (round(apartments / facilities_active) * without_apartment)
+    if facilities_active > 0:
+      apartments_average = round(apartments / facilities_active)
+      apartments_adjusted = apartments + (apartments_average * without_apartment)
+    else:
+      apartments_average = 0
+      apartments_adjusted = 0
     
     apartments_10km = 0
     
@@ -1038,7 +1066,7 @@ class Map2_0(Map2_0Template):
     anvil.server.call('get_all_muni_in_counti', countie[0])
     
     sendData_Summary = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent, peopleu75FC, data[1][19], peopleo75FC, sumsFC, inpatientsFC, beds_surplus, without_apartment]
-    sendData_ALAnalysis = [countie[0], data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k, peopleu75FC, peopleo75FC, data[1][19], facilities_active, facilities_plan_build, apartments_plan_build, len(al_list), apartments_10km, (facilities_active - without_apartment), without_apartment, apartments_adjusted]    
+    sendData_ALAnalysis = [countie[0], data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k, peopleu75FC, peopleo75FC, data[1][19], facilities_active, facilities_plan_build, apartments_plan_build, len(al_list), apartments_10km, (facilities_active - without_apartment), without_apartment, apartments_adjusted, facilities_building, (facilities_building - without_apartment_building), without_apartment_building, apartments_building, build_apartments_average, build_apartments_adjusted]    
     anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis)
     
     mapPDF = app_tables.pictures.search()[0]    
