@@ -1024,6 +1024,8 @@ class Map2_0(Map2_0Template):
         facilities_building += 1
         apartments_building += int(float(el[19]))        
     
+    apartments_adjusted = apartments + (round(apartments / facilities_active) * without_apartment)
+    
     apartments_10km = 0
     
     for el in al_list:
@@ -1032,11 +1034,11 @@ class Map2_0(Map2_0Template):
     
     facilities_plan_build = facilities_planning + facilities_building
     apartments_plan_build = apartments_planning + apartments_building    
-    apartments_per_10k = apartments // (data[0][19] // 10000)    
+    apartments_per_10k = apartments_adjusted // round(data[0][19] // 10000)    
     anvil.server.call('get_all_muni_in_counti', countie[0])
     
     sendData_Summary = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent, peopleu75FC, data[1][19], peopleo75FC, sumsFC, inpatientsFC, beds_surplus, without_apartment]
-    sendData_ALAnalysis = [countie[0], data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k, peopleu75FC, peopleo75FC, data[1][19], facilities_active, facilities_plan_build, apartments_plan_build, len(al_list), apartments_10km, (facilities_active - without_apartment), without_apartment]    
+    sendData_ALAnalysis = [countie[0], data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k, peopleu75FC, peopleo75FC, data[1][19], facilities_active, facilities_plan_build, apartments_plan_build, len(al_list), apartments_10km, (facilities_active - without_apartment), without_apartment, apartments_adjusted]    
     anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis)
     
     mapPDF = app_tables.pictures.search()[0]    
