@@ -764,15 +764,15 @@ class Map2_0(Map2_0Template):
     #Create Bounding Box based on Iso-Layer
     iso = dict(self.mapbox.getSource('iso'))
     bbox = [0, 0, 0, 0]
-    for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
-      if el[0] < bbox[1] or bbox[1] == 0:
-        bbox[1] = el[0]
-      if el[0] > bbox[3] or bbox[3] == 0:
-        bbox[3] = el[0]
-      if el[1] < bbox[0] or bbox[0] == 0:
-        bbox[0] = el[1]
-      if el[1] > bbox[2] or bbox[2] == 0:
-        bbox[2] = el[1]
+    for point in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      if point[0] < bbox[1] or bbox[1] == 0:
+        bbox[1] = point[0]
+      if point[0] > bbox[3] or bbox[3] == 0:
+        bbox[3] = point[0]
+      if point[1] < bbox[0] or bbox[0] == 0:
+        bbox[0] = point[1]
+      if point[1] > bbox[2] or bbox[2] == 0:
+        bbox[2] = point[1]
 
     #Get Data for Competitor Analysis
     index = 1
@@ -824,14 +824,14 @@ class Map2_0(Map2_0Template):
           break
 
     #Sort Coordinates by Distance
-    sortedCoords = anvil.server.call("get_distance", lng_lat_marker, coords)
-    indexCoords = len(sortedCoords)
+    sorted_coords = anvil.server.call("get_distance", lng_lat_marker, coords)
+    index_coords = len(sorted_coords)
 
     #Build Request-String for Mapbox Static-Map-API
     request_static_map = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lng_lat_marker['lng']},{lng_lat_marker['lat']}%5D%7D%7D"
-    for coordinate in reversed(sortedCoords):
-      request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22{indexCoords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0][0]},{coordinate[0][1]}%5D%7D%7D"
-      indexCoords -= 1
+    for coordinate in reversed(sorted_coords):
+      request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0][0]},{coordinate[0][1]}%5D%7D%7D"
+      index_coords -= 1
     request_static_map += "%5D%7D"
 
     #Get Place from Geocoder-API for Map-Marker
@@ -851,7 +851,7 @@ class Map2_0(Map2_0Template):
         district = info['text'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig")
       elif "place" in info['id']:
         city = info['text'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig")
-        city_Alt = info['text']
+        city_alt = info['text']
       elif "region" in info['id']:
         federal_state = info['text']
     if federal_state == "n.a.":
@@ -865,40 +865,31 @@ class Map2_0(Map2_0Template):
       time = "20"
     movement = self.profile_dropdown.selected_value.lower()
 
-    #Get Information from Database for County of Marker-Position
-    data = anvil.server.call("get_countie_data_from_db", city_Alt, federal_state)
-    
-    
+    #Get Information from Database for County of Marker-Position and 
+    countie_data = anvil.server.call("get_countie_data_from_db", city_Alt, federal_state)
+
+
     population = 0
-    countie = data[0][1].split(',')
-    peopleu75 = int((float(data[0][19]) * float(data[0][17])) / 100)
-    peopleo75 = int((float(data[0][19]) * float(data[0][18])) / 100)
-    peopleu75FC = round(peopleu75 * float(data[1][20]))
-    peopleo75FC = round(peopleo75 * float(data[1][20]))
-    CareData = anvil.server.call("get_federalstate_data", federal_state, data[0][0])
-    pat_rec_full_care = 0
-    
+    countie = countie_data[0][1].split(',')
+    #peopleu75 = int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)
+    peopleo75 = int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)
+    peopleu75FC = round(peopleu75 * float(countie_data[1][20]))
+    peopleo75FC = round(peopleo75 * float(countie_data[1][20]))
+
+
+    #Get Entries from Care-Database based on Federal State
+    care_data = anvil.server.call("get_federalstate_data", federal_state, countie_data[0][0])
+
     #Sum up all Patients in County
-    for entry_cd in CareData:    
-        if not entry_cd[27] == '-':    
-            pat_rec_full_care += int(entry_cd[27])    
-    pat_rec_full_care_fc = round(pat_rec_full_care * float(data[1][20]))
-    
-    
-    # Get Data of Iso-Layer
-    iso = dict(self.mapbox.getSource('iso'))    
-    bbox = [0, 0, 0, 0]
-    for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
-      if el[0] < bbox[1] or bbox[1] == 0:
-        bbox[1] = el[0]
-      if el[0] > bbox[3] or bbox[3] == 0:
-        bbox[3] = el[0]
-      if el[1] < bbox[0] or bbox[0] == 0:
-        bbox[0] = el[1]
-      if el[1] > bbox[2] or bbox[2] == 0:
-        bbox[2] = el[1]
-        
-    dataDB = anvil.server.call("get_iso_data", bbox)    
+    pat_rec_full_care = 0
+    for entry_cd in care_data:
+        if not entry_cd[27] == '-':
+            pat_rec_full_care += int(entry_cd[27])
+    pat_rec_full_care_fc = round(pat_rec_full_care * float(countie_data[1][20]))
+
+    #Get Data from Care-Database based on Iso-Layer
+    dataDB = anvil.server.call("get_iso_data", bbox)
+
     inpatients = 0
     beds_active = 0
     beds_planned = 0
@@ -1060,11 +1051,20 @@ class Map2_0(Map2_0Template):
     
     facilities_plan_build = facilities_planning + facilities_building
     apartments_plan_build = apartments_planning + apartments_building    
-    apartments_per_10k = apartments_adjusted // round(data[0][19] // 10000)    
+    apartments_per_10k = apartments_adjusted // round(countie_data[0][19] // 10000)    
     anvil.server.call("get_all_muni_in_counti", countie[0])
     
-    sendData_Summary = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, pat_rec_full_care, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent, peopleu75FC, data[1][19], peopleo75FC, pat_rec_full_care_fc, inpatientsFC, beds_surplus, without_apartment]
-    sendData_ALAnalysis = [countie[0], data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k, peopleu75FC, peopleo75FC, data[1][19], facilities_active, facilities_plan_build, apartments_plan_build, len(al_list), apartments_10km, (facilities_active - without_apartment), without_apartment, apartments_adjusted, facilities_building, (facilities_building - without_apartment_building), without_apartment_building, apartments_building, build_apartments_average, build_apartments_adjusted]    
+    sendData_Summary = {"zipcode": zipcode,
+                        "city": city,
+                        "district": district,
+                        "federal_state": federal_state,
+                        "time": time,
+                        "movement": movement,
+                        "countie": countie[0],
+                        "population": countie_data[0][19],
+                        "people_u75": int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100),
+                        "people_o75": , pat_rec_full_care, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent, peopleu75FC, countie_data[1][19], peopleo75FC, pat_rec_full_care_fc, inpatientsFC, beds_surplus, without_apartment}
+    sendData_ALAnalysis = [countie[0], countie_data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k, peopleu75FC, peopleo75FC, countie_data[1][19], facilities_active, facilities_plan_build, apartments_plan_build, len(al_list), apartments_10km, (facilities_active - without_apartment), without_apartment, apartments_adjusted, facilities_building, (facilities_building - without_apartment_building), without_apartment_building, apartments_building, build_apartments_average, build_apartments_adjusted]    
     anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis)
     
     mapPDF = app_tables.pictures.search()[0]    
