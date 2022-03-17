@@ -754,19 +754,13 @@ class Map2_0(Map2_0Template):
       #Set Checkbox-Panel to visible and change Arrow-Icon
       self.icon_change(self.poi_category, True, self.poi_categories, 'fa:angle-down')
       
-  def Summary_click(self, **event_args):
-    
-    #Code for everyone
-    
-    #Code only for Summary (+ Cover)
-    
-    #Code only for Nursing Competitor Analysis
+  def Summary_click(self, **event_args): 
+    #Create Variables for multiple Uses in Function
+    lng_lat_marker = {
+                      "lng": (dict(self.marker['_lngLat'])['lng']),
+                      "lat": (dict(self.marker['_lngLat'])['lat'])
+                     }
 
-    #Code only for Assisted Living Analysis  
-    
-    
-    
-    
     #Create Bounding Box based on Iso-Layer
     iso = dict(self.mapbox.getSource('iso'))
     bbox = [0, 0, 0, 0]
@@ -779,113 +773,121 @@ class Map2_0(Map2_0Template):
         bbox[0] = el[1]
       if el[1] > bbox[2] or bbox[2] == 0:
         bbox[2] = el[1]
-    
-    
-    
-    
-    
-    
+
+    #Get Data for Competitor Analysis
     index = 1
     counter = 0
     data_comp_analysis = []
     coords = []
-    firstElement = True   
-    
-    request = "%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
-    lngLat = [(dict(self.marker['_lngLat'])['lng']), (dict(self.marker['_lngLat'])['lat'])]    
-    request += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lngLat[0]},{lngLat[1]}%5D%7D%7D"
-    
-    for entry in Variables.pflegeDBEntries:      
-      lng_entry = '%.6f' % float(entry[46])
-      lat_entry = '%.6f' % float(entry[45])
+    for entry_caredb in Variables.pflegeDBEntries:
+      lng_entry = "%.6f" % float(entry_caredb[46])
+      lat_entry = "%.6f" % float(entry_caredb[45])
       for icon in Variables.activeIcons['pflegeDB']:
-        lng_icon = '%.6f' % icon['_lngLat']['lng']
-        lat_icon = '%.6f' % icon['_lngLat']['lat']        
-        if lng_entry == lng_icon and lat_entry == lat_icon:            
-          coords.append([lng_icon, lat_icon])          
-          counter += 1      
-          if entry[27] == '-':            
-            x = 0            
-          else:           
-            x = int(entry[27])            
-          if entry[28] == '-':            
-            y = 0            
-          else:            
-            y = int(entry[28])          
-          if not x == 0 and not y == 0:            
-            occupancy_raw = round((x * 100) / y)
-            occupancy = f'{occupancy_raw} %'            
-          else:            
-            occupancy = '-'            
-          if not entry[38] == '-':            
-            invest = f'{entry[38]}'
+        lng_icon = "%.6f" % icon['_lngLat']['lng']
+        lat_icon = "%.6f" % icon['_lngLat']['lat']
+        if lng_entry == lng_icon and lat_entry == lat_icon:
+          coords.append([lng_icon, lat_icon])
+          counter += 1
+          if entry_caredb[27] == "-":
+            anz_vers_pat = 0
+          else:
+            anz_vers_pat = int(entry_caredb[27])
+          if entry_caredb[28] == "-":
+            platz_voll_pfl = 0
+          else:
+            platz_voll_pfl = int(entry_caredb[28])
+          if not anz_vers_pat == 0 and not platz_voll_pfl == 0:
+            occupancy_raw = round((anz_vers_pat * 100) / platz_voll_pfl)
+            occupancy = f"{occupancy_raw} %"
+          else:
+            occupancy = "-"
+          if not entry_caredb[38] == "-":
+            invest = f"{entry_caredb[38]}"
             if len(invest) == 4:
-              invest += '0'            
-          else:            
-            invest = entry[38]
-          data = [index, entry[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"), entry[28], entry[31], entry[32], entry[27], occupancy, entry[33], entry[4], entry[6].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"), invest, entry[26]]
+              invest += "0"
+          else:
+            invest = entry_caredb[38]
+          data = {"index": index,
+                  "name": entry_caredb[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "platz_voll_pfl": entry_caredb[28],
+                  "ez": entry_caredb[31],
+                  "dz": entry_caredb[32],
+                  "anz_vers_pat": entry_caredb[27],
+                  "occupancy": occupancy,
+                  "baujahr": entry_caredb[33],
+                  "status": entry_caredb[4],
+                  "betreiber": entry_caredb[6].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "invest": invest,
+                  "mdk_note": entry_caredb[26]}
           data_comp_analysis.append(data)
           index += 1          
           break
-    
-    sortedCoords = anvil.server.call('get_distance', lngLat, coords)
+
+    #Sort Coordinates by Distance
+    sortedCoords = anvil.server.call("get_distance", lng_lat_marker, coords)
     indexCoords = len(sortedCoords)
-    
-    for el in reversed(sortedCoords):    
-      request += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22{indexCoords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{el[0][0]},{el[0][1]}%5D%7D%7D"
-      indexCoords -= 1      
-    request += "%5D%7D"
-    
-    string = f'https://api.mapbox.com/geocoding/v5/mapbox.places/{lngLat[0]},{lngLat[1]}.json?access_token={self.token}'
+
+    #Build Request-String for Mapbox Static-Map-API
+    request_static_map = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lng_lat_marker['lng']},{lng_lat_marker['lat']}%5D%7D%7D"
+    for coordinate in reversed(sortedCoords):
+      request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22{indexCoords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0][0]},{coordinate[0][1]}%5D%7D%7D"
+      indexCoords -= 1
+    request_static_map += "%5D%7D"
+
+    #Get Place from Geocoder-API for Map-Marker
+    string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{lng_lat_marker['lng']},{lng_lat_marker['lat']}.json?access_token={self.token}"
     response_data = anvil.http.request(string,json=True)
+    marker_context = response_data['features'][0]['context']
     
-    marker_context = response_data['features'][0]['context']    
-    zipcode = 'n.a.'
-    district = 'n.a.'
-    city = 'n.a.'
-    federal_state = 'n.a.'
-    
-    for el in marker_context:      
-      if 'postcode' in el['id'] :        
-        zipcode = el['text']       
-      elif 'locality' in el['id']:
-        district = el['text'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig") 
-      elif 'place' in el['id']:
-        city = el['text'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig")    
-        city_Alt = el['text']
-      elif 'region' in el['id']:        
-        federal_state = el['text']
-        
-    if federal_state == 'n.a.':      
-      federal_state = city      
-    if district == 'n.a.':      
+    #Get Information about Zipcode, District, City and Federal-State of Map-Marker-Position
+    zipcode = "n.a."
+    district = "n.a."
+    city = "n.a."
+    federal_state = "n.a."
+    for info in marker_context:
+      if "postcode" in info['id'] :
+        zipcode = info['text']
+      elif "locality" in info['id']:
+        district = info['text'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig")
+      elif "place" in info['id']:
+        city = info['text'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig")
+        city_Alt = info['text']
+      elif "region" in info['id']:
+        federal_state = info['text']
+    if federal_state == "n.a.":
+      federal_state = city
+    if district == "n.a.":
       district = city
-      
-    time = self.time_dropdown.selected_value    
-    if time == '-1':      
-      time = '20' 
-      
-    movement = self.profile_dropdown.selected_value.lower() 
-    data = anvil.server.call('get_countie_data_from_db', city_Alt, federal_state)    
-    population = 0    
-    countie = data[0][1].split(',')    
+
+    #Get Value of choosen Time and Movement
+    time = self.time_dropdown.selected_value
+    if time == "-1":
+      time = "20"
+    movement = self.profile_dropdown.selected_value.lower()
+
+    #Get Information from Database for County of Marker-Position
+    data = anvil.server.call("get_countie_data_from_db", city_Alt, federal_state)
+    
+    
+    population = 0
+    countie = data[0][1].split(',')
     peopleu75 = int((float(data[0][19]) * float(data[0][17])) / 100)
     peopleo75 = int((float(data[0][19]) * float(data[0][18])) / 100)
     peopleu75FC = round(peopleu75 * float(data[1][20]))
-    peopleo75FC = round(peopleo75 * float(data[1][20]))    
-    CareData = anvil.server.call('get_federalstate_data', federal_state, data[0][0])    
-    sums = 0
+    peopleo75FC = round(peopleo75 * float(data[1][20]))
+    CareData = anvil.server.call("get_federalstate_data", federal_state, data[0][0])
+    pat_rec_full_care = 0
     
-    for el in CareData:    
-        if not el[27] == '-':    
-            sums += int(el[27])    
-    sumsFC = round(sums * float(data[1][20]))
+    #Sum up all Patients in County
+    for entry_cd in CareData:    
+        if not entry_cd[27] == '-':    
+            pat_rec_full_care += int(entry_cd[27])    
+    pat_rec_full_care_fc = round(pat_rec_full_care * float(data[1][20]))
+    
     
     # Get Data of Iso-Layer
     iso = dict(self.mapbox.getSource('iso'))    
-    # Create empty Bounding Box
     bbox = [0, 0, 0, 0]
-    # Check every element in Iso-Data
     for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
       if el[0] < bbox[1] or bbox[1] == 0:
         bbox[1] = el[0]
@@ -896,7 +898,7 @@ class Map2_0(Map2_0Template):
       if el[1] > bbox[2] or bbox[2] == 0:
         bbox[2] = el[1]
         
-    dataDB = anvil.server.call('get_iso_data', bbox)    
+    dataDB = anvil.server.call("get_iso_data", bbox)    
     inpatients = 0
     beds_active = 0
     beds_planned = 0
@@ -920,63 +922,63 @@ class Map2_0(Map2_0Template):
       bedsEL = 0      
       if not el[27] == '-':        
         inpatients += int(el[27])      
-      if el[4] == 'aktiv':      
+      if el[4] == "aktiv":      
         nursingHomes_active += 1        
-        if not el[28] == '-':          
+        if not el[28] == "-":          
           beds_active += int(el[28])
           bedsEL += int(el[28])          
-        if not el[29] == '-':          
+        if not el[29] == "-":         
           beds_active += int(el[29])
           bedsEL += int(el[29])        
-        if not el[30] == '-':          
+        if not el[30] == "-":          
           beds_active += int(el[30])
           bedsEL += int(el[30])          
         beds.append(bedsEL)        
-      elif el[4] == 'in Planung':        
+      elif el[4] == "in Planung":        
         nursingHomes_planned += 1        
-        if not el[31] == '-':          
+        if not el[31] == "-":          
           beds_planned += int(el[31])          
-        if not el[32] == '-':          
+        if not el[32] == "-":          
           beds_planned += (int(el[32]) * 2)        
-      elif el[4] == 'im Bau':        
+      elif el[4] == "im Bau":        
         nursingHomes_construct += 1        
-        if not el[31] == '-':          
+        if not el[31] == "-":          
           beds_construct += int(el[31])          
-        if not el[32] == '-':          
+        if not el[32] == "-":          
           beds_construct += (int(el[32]) * 2)      
-      if not el[38] == '-':        
+      if not el[38] == "-":        
         investCost.append(float(el[38]))        
-      if not el[6] == '-':        
-        if el[9] == 'privat':          
+      if not el[6] == "-":        
+        if el[9] == "privat":          
           if not el[6] in operator_private:          
             operator_private.append(el[6])          
-        elif el[9] == 'gemeinnützig':          
+        elif el[9] == "gemeinnützig":          
           if not el[6] in operator_nonProfit:          
             operator_nonProfit.append(el[6])          
-        elif el[9] == 'kommunal':          
+        elif el[9] == "kommunal":          
           if not el[6] in operator_public:          
             operator_public.append(el[6])        
         if not el[6] in operator:          
           operator.append(el[6])          
-      if not el[33] == '-':        
+      if not el[33] == "-":        
         year.append(int(el[33]))        
-      if not el[41] == '-':        
+      if not el[41] == "-":        
         pg3_cost.append(float(el[41]))    
-      if not el[36] == '-':
+      if not el[36] == "-":
         copayment_cost.append(float(el[36]))        
-      if not el[37] == '-':        
+      if not el[37] == "-":        
         board_cost.append(float(el[37]))
   
-    inpatientsFC = round(sumsFC * (round(((inpatients * 100) / sums), 1) / 100))  
-    investMedian = anvil.server.call('get_median', investCost)
+    inpatientsFC = round(pat_rec_full_care_fc * (round(((inpatients * 100) / pat_rec_full_care), 1) / 100))  
+    investMedian = anvil.server.call("get_median", investCost)
     investMedian = "{:.2f}".format(investMedian)
-    bedsMedian = anvil.server.call('get_median', beds)
-    yearMedian = round(anvil.server.call('get_median', year))
-    pg3Median = anvil.server.call('get_median', pg3_cost)
+    bedsMedian = anvil.server.call("get_median", beds)
+    yearMedian = round(anvil.server.call("get_median", year))
+    pg3Median = anvil.server.call("get_median", pg3_cost)
     pg3Median = "{:.2f}".format(pg3Median)
-    copaymentMedian = anvil.server.call('get_median', copayment_cost)
+    copaymentMedian = anvil.server.call("get_median", copayment_cost)
     copaymentMedian = "{:.2f}".format(copaymentMedian)
-    boardMedian = anvil.server.call('get_median', board_cost)
+    boardMedian = anvil.server.call("get_median", board_cost)
     boardMedian = "{:.2f}".format(boardMedian)
     
     if not operator_private == 0:
@@ -996,17 +998,15 @@ class Map2_0(Map2_0Template):
     beds_adjusted = beds_active + beds_construct + beds_planned    
     beds_surplus = beds_adjusted - inpatientsFC
     
-    valuesPieCA = [{'topic': 'Median Nursing charge (PG 3) in €', 'value': pg3Median}, {'topic': 'Median Specific co-payment in €', 'value': copaymentMedian}, {'topic': 'Median Invest Cost in €', 'value': investMedian}, {'topic': 'Median Board and lodging in €', 'value': boardMedian}]    
-    anvil.server.call('create_pie_chart', valuesPieCA, 'donutCA')  
-    anvil.server.call('create_static_map_for_ca', bbox, self.token, data_comp_analysis, request)    
-    valuesPieSum = [{'topic': '% Public operators', 'value': len(operator_public)}, {'topic': '% Non-profit operators', 'value': len(operator_nonProfit)}, {'topic': '% Private operators', 'value': len(operator_private)}]    
-    anvil.server.call('create_pie_chart', valuesPieSum, 'donutSum')
-    valuesBarSum = [{'topic': 'Number of inpatients', 'value': inpatients}, {'topic': 'Beds', 'value': beds_active}, {'topic': 'Number of inpatients forecast 2030', 'value': inpatientsFC}, {'topic': 'Adjusted number of beds<br>(incl. beds in planning and under construction)', 'value': beds_adjusted}]    
-    anvil.server.call('create_bar_chart', valuesBarSum)
+    valuesPieCA = [{"topic": "Median Nursing charge (PG 3) in €", "value": pg3Median}, {"topic": "Median Specific co-payment in €", "value": copaymentMedian}, {"topic": "Median Invest Cost in €", "value": investMedian}, {"topic": "Median Board and lodging in €", "value": boardMedian}]    
+    anvil.server.call("create_pie_chart", valuesPieCA, "donutCA")  
+    anvil.server.call("create_static_map_for_ca", bbox, self.token, data_comp_analysis, request_static_map)    
+    valuesPieSum = [{"topic": "% Public operators", "value": len(operator_public)}, {"topic": "% Non-profit operators", "value": len(operator_nonProfit)}, {"topic": "% Private operators", "value": len(operator_private)}]    
+    anvil.server.call("create_pie_chart", valuesPieSum, "donutSum")
+    valuesBarSum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030", "value": inpatientsFC}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction)", "value": beds_adjusted}]    
+    anvil.server.call("create_bar_chart", valuesBarSum)
     
-    lng = self.marker['_lngLat']['lng']
-    lat = self.marker['_lngLat']['lat']    
-    mapRequestData = [lng, lat, self.token]    
+    mapRequestData = [lng_lat_marker['lng'], lng_lat_marker['lat'], self.token]    
     apartments = 0
     facilities_active = 0
     facilities_planning = 0
@@ -1017,16 +1017,14 @@ class Map2_0(Map2_0Template):
     without_apartment = 0
     without_apartment_building = 0
     
-    al_entries = anvil.server.call('get_al_for_countie', countie[0])
-    
-    marker_coords = dict(self.marker['_lngLat'])
-    al_list = anvil.server.call('get_all_al_in_10km', marker_coords, al_entries)
+    al_entries = anvil.server.call("get_al_for_countie", countie[0])
+    al_list = anvil.server.call("get_all_al_in_10km", lng_lat_marker, al_entries)
     
     for el in al_entries: 
       facilities_overall += 1      
       if el[3] == "aktiv":      
         facilities_active += 1
-        if not el[19] == 'nan':      
+        if not el[19] == "nan":      
           apartments += int(float(el[19]))
         else:
           without_apartment += 1
@@ -1035,7 +1033,7 @@ class Map2_0(Map2_0Template):
         apartments_planning += int(float(el[19]))       
       elif el[3] == "im Bau": 
         facilities_building += 1
-        if not el[19] == 'nan':
+        if not el[19] == "nan":
           apartments_building += int(float(el[19]))
         else:
           without_apartment_building += 1
@@ -1057,15 +1055,15 @@ class Map2_0(Map2_0Template):
     apartments_10km = 0
     
     for el in al_list:
-      if not el[19] == 'nan':
+      if not el[19] == "nan":
         apartments_10km += int(float(el[19]))
     
     facilities_plan_build = facilities_planning + facilities_building
     apartments_plan_build = apartments_planning + apartments_building    
     apartments_per_10k = apartments_adjusted // round(data[0][19] // 10000)    
-    anvil.server.call('get_all_muni_in_counti', countie[0])
+    anvil.server.call("get_all_muni_in_counti", countie[0])
     
-    sendData_Summary = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, sums, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent, peopleu75FC, data[1][19], peopleo75FC, sumsFC, inpatientsFC, beds_surplus, without_apartment]
+    sendData_Summary = [zipcode, city, district, federal_state, time, movement, countie[0], data[0][19], peopleu75, peopleo75, pat_rec_full_care, inpatients, beds_active, nursingHomes_active, nursingHomes_planned, nursingHomes_construct, beds_planned, beds_construct, beds_adjusted, occupancy_raw, investMedian, len(operator), bedsMedian, yearMedian, op_public_percent, op_nonProfit_percent, op_private_percent, peopleu75FC, data[1][19], peopleo75FC, pat_rec_full_care_fc, inpatientsFC, beds_surplus, without_apartment]
     sendData_ALAnalysis = [countie[0], data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k, peopleu75FC, peopleo75FC, data[1][19], facilities_active, facilities_plan_build, apartments_plan_build, len(al_list), apartments_10km, (facilities_active - without_apartment), without_apartment, apartments_adjusted, facilities_building, (facilities_building - without_apartment_building), without_apartment_building, apartments_building, build_apartments_average, build_apartments_adjusted]    
     anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis)
     
