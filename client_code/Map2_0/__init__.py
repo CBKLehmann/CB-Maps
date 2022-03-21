@@ -873,7 +873,7 @@ class Map2_0(Map2_0Template):
 
     #Get Entries from Care-Database based on Federal State
     care_data_federal = anvil.server.call("get_federalstate_data", federal_state, countie_data[0][0])
-
+    
     #Sum up all Patients in County
     pat_rec_full_care = 0
     for entry_cd in care_data_federal:
