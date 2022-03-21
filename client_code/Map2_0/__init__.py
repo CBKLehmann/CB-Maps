@@ -956,19 +956,14 @@ class Map2_0(Map2_0Template):
       if not care_entry[37] == "-":
         board_cost.append(float(care_entry[37]))
 
-    ###HIER BITTE WEITERMACHEN###
-
-    inpatientsFC = round(pat_rec_full_care_fc * (round(((inpatients * 100) / pat_rec_full_care), 1) / 100))  
-    investMedian = anvil.server.call("get_median", invest_cost)
-    investMedian = "{:.2f}".format(investMedian)
-    bedsMedian = anvil.server.call("get_median", beds)
-    yearMedian = round(anvil.server.call("get_median", year))
-    pg3Median = anvil.server.call("get_median", pg3_cost)
-    pg3Median = "{:.2f}".format(pg3Median)
-    copaymentMedian = anvil.server.call("get_median", copayment_cost)
-    copaymentMedian = "{:.2f}".format(copaymentMedian)
-    boardMedian = anvil.server.call("get_median", board_cost)
-    boardMedian = "{:.2f}".format(boardMedian)
+    #Get Data for Summary and Competitor-Analysis-Piechart
+    inpatients_fc = round(pat_rec_full_care_fc * (round(((inpatients * 100) / pat_rec_full_care), 1) / 100))  
+    invest_median = "{:.2f}".format(anvil.server.call("get_median", invest_cost))
+    beds_median = anvil.server.call("get_median", beds)
+    year_median = round(anvil.server.call("get_median", year))
+    pg3_median = "{:.2f}".format(anvil.server.call("get_median", pg3_cost))
+    copayment_median = "{:.2f}".format(anvil.server.call("get_median", copayment_cost))
+    board_median = "{:.2f}".format(anvil.server.call("get_median", board_cost))
     
     if not operator_private == 0:
       op_private_percent = round((len(operator_private) * 100) / len(operator))
@@ -985,9 +980,9 @@ class Map2_0(Map2_0Template):
     
     occupancy_raw = round((inpatients * 100) / beds_active)        
     beds_adjusted = beds_active + beds_construct + beds_planned    
-    beds_surplus = beds_adjusted - inpatientsFC
+    beds_surplus = beds_adjusted - inpatients_fc
     
-    valuesPieCA = [{"topic": "Median Nursing charge (PG 3) in €", "value": pg3Median}, {"topic": "Median Specific co-payment in €", "value": copaymentMedian}, {"topic": "Median Invest Cost in €", "value": investMedian}, {"topic": "Median Board and lodging in €", "value": boardMedian}]    
+    valuesPieCA = [{"topic": "Median Nursing charge (PG 3) in €", "value": pg3_median}, {"topic": "Median Specific co-payment in €", "value": copayment_median}, {"topic": "Median Invest Cost in €", "value": investMedian}, {"topic": "Median Board and lodging in €", "value": board_median}]    
     anvil.server.call("create_pie_chart", valuesPieCA, "donutCA")  
     anvil.server.call("create_static_map_for_ca", bbox, self.token, data_comp_analysis, request_static_map)    
     valuesPieSum = [{"topic": "% Public operators", "value": len(operator_public)}, {"topic": "% Non-profit operators", "value": len(operator_nonProfit)}, {"topic": "% Private operators", "value": len(operator_private)}]    
@@ -1072,10 +1067,10 @@ class Map2_0(Map2_0Template):
                         "beds_construct": beds_construct,
                         beds_adjusted,
                         occupancy_raw,
-                        investMedian,
+                        "invest_median": invest_median,
                         "operator": len(operator),
-                        bedsMedian,
-                        yearMedian,
+                        "beds_median": beds_median,
+                        "year_median": year_median,
                         op_public_percent,
                         op_nonProfit_percent,
                         op_private_percent,
@@ -1083,7 +1078,7 @@ class Map2_0(Map2_0Template):
                         countie_data[1][19],
                         "people_o75_fc": round((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])),
                         "pat_rec_full_care_fc": pat_rec_full_care_fc,
-                        inpatientsFC,
+                        "inpatients_fc": inpatients_fc,
                         beds_surplus,
                         without_apartment}
     sendData_ALAnalysis = [countie[0], countie_data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k, peopleu75FC, peopleo75FC, countie_data[1][19], facilities_active, facilities_plan_build, apartments_plan_build, len(al_list), apartments_10km, (facilities_active - without_apartment), without_apartment, apartments_adjusted, facilities_building, (facilities_building - without_apartment_building), without_apartment_building, apartments_building, build_apartments_average, build_apartments_adjusted]    
