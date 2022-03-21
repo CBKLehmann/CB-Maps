@@ -991,6 +991,7 @@ class Map2_0(Map2_0Template):
     apartments_building = 0
     without_apartment = 0
     without_apartment_building = 0
+    without_apartment_planning = 0
 
     #Get Assisted Living Facilities in Countie and inside 10km Radius of Marker
     al_entries = anvil.server.call("get_al_for_countie", countie[0])
@@ -1007,7 +1008,10 @@ class Map2_0(Map2_0Template):
           without_apartment += 1
       elif el[3] == "in Planung":
         facilities_planning += 1
-        apartments_planning += int(float(el[19]))
+        if not el[19] == "nan":
+          apartments_planning += int(float(el[19]))
+        else:
+          without_apartment_planning += 1
       elif el[3] == "im Bau":
         facilities_building += 1
         if not el[19] == "nan":
@@ -1026,6 +1030,12 @@ class Map2_0(Map2_0Template):
     else:
       apartments_average = 0
       apartments_adjusted = 0
+    if facilities_planning > 0:
+      planning_apartments_average = round(apartments_planning / facilities_planning)
+      planning_apartments_adjusted = apartments_planning + (planning_apartments_average * without_apartment_planning)
+    else:
+      planning_apartments_average = 0
+      planning_apartments_adjusted = 0
     facilities_plan_build = facilities_planning + facilities_building
     apartments_plan_build = apartments_planning + apartments_building
     apartments_per_10k = apartments_adjusted // round(countie_data[0][19] // 10000)
@@ -1102,7 +1112,12 @@ class Map2_0(Map2_0Template):
                            "without_apartment_building": without_apartment_building,
                            "apartments_building": apartments_building,
                            "build_apartments_average": build_apartments_average,
-                           "build_apartments_adjusted": build_apartments_adjusted}    
+                           "build_apartments_adjusted": build_apartments_adjusted,
+                           "apartments_planning": apartments_planning,
+                           "without_apartment_planning": without_apartment_planning,
+                           "facilities_planning": facilities_planning,
+                           "planning_apartments_average": planning_apartments_average,
+                           "planning_apartments_adjusted": planning_apartments_adjusted}
     
     #Create Summary-PDF
     anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis)
