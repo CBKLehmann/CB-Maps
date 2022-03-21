@@ -870,11 +870,11 @@ class Map2_0(Map2_0Template):
     #Get Information from Database for County of Marker-Position
     countie_data = anvil.server.call("get_countie_data_from_db", city_alt, federal_state)
     countie = countie_data[0][1].split(',')
+    
+    print(countie_data)
 
     #Get Entries from Care-Database based on Federal State
     care_data_federal = anvil.server.call("get_federalstate_data", federal_state, countie_data[0][0])
-    
-    print(care_data_federal)
     
     #Sum up all Patients in County
     pat_rec_full_care = 0
