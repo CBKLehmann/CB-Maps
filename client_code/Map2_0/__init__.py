@@ -964,7 +964,6 @@ class Map2_0(Map2_0Template):
     pg3_median = "{:.2f}".format(anvil.server.call("get_median", pg3_cost))
     copayment_median = "{:.2f}".format(anvil.server.call("get_median", copayment_cost))
     board_median = "{:.2f}".format(anvil.server.call("get_median", board_cost))
-    
     if not operator_private == 0:
       op_private_percent = round((len(operator_private) * 100) / len(operator))
     else:
@@ -977,19 +976,11 @@ class Map2_0(Map2_0Template):
       op_public_percent = round((len(operator_public) * 100) / len(operator))
     else:
       op_public_percent = 0
-    
     occupancy_raw = round((inpatients * 100) / beds_active)        
     beds_adjusted = beds_active + beds_construct + beds_planned    
     beds_surplus = beds_adjusted - inpatients_fc
-    
-    valuesPieCA = [{"topic": "Median Nursing charge (PG 3) in €", "value": pg3_median}, {"topic": "Median Specific co-payment in €", "value": copayment_median}, {"topic": "Median Invest Cost in €", "value": investMedian}, {"topic": "Median Board and lodging in €", "value": board_median}]    
-    anvil.server.call("create_pie_chart", valuesPieCA, "donutCA")  
-    anvil.server.call("create_static_map_for_ca", bbox, self.token, data_comp_analysis, request_static_map)    
-    valuesPieSum = [{"topic": "% Public operators", "value": len(operator_public)}, {"topic": "% Non-profit operators", "value": len(operator_nonProfit)}, {"topic": "% Private operators", "value": len(operator_private)}]    
-    anvil.server.call("create_pie_chart", valuesPieSum, "donutSum")
-    valuesBarSum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030", "value": inpatientsFC}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction)", "value": beds_adjusted}]    
-    anvil.server.call("create_bar_chart", valuesBarSum)
-    
+   
+    #Create Variables for different Values for Assisted Living Analysis
     mapRequestData = [lng_lat_marker['lng'], lng_lat_marker['lat'], self.token]    
     apartments = 0
     facilities_active = 0
@@ -1001,9 +992,11 @@ class Map2_0(Map2_0Template):
     without_apartment = 0
     without_apartment_building = 0
     
+    #Get Assisted Living Facilities in Countie and inside 10km Radius of Marker
     al_entries = anvil.server.call("get_al_for_countie", countie[0])
     al_list = anvil.server.call("get_all_al_in_10km", lng_lat_marker, al_entries)
     
+    #Get Data from Assisted Living Facilities
     for el in al_entries: 
       facilities_overall += 1      
       if el[3] == "aktiv":      
@@ -1047,6 +1040,14 @@ class Map2_0(Map2_0Template):
     apartments_per_10k = apartments_adjusted // round(countie_data[0][19] // 10000)    
     anvil.server.call("get_all_muni_in_counti", countie[0])
     
+    valuesPieCA = [{"topic": "Median Nursing charge (PG 3) in €", "value": pg3_median}, {"topic": "Median Specific co-payment in €", "value": copayment_median}, {"topic": "Median Invest Cost in €", "value": investMedian}, {"topic": "Median Board and lodging in €", "value": board_median}]    
+    anvil.server.call("create_pie_chart", valuesPieCA, "donutCA")  
+    anvil.server.call("create_static_map_for_ca", bbox, self.token, data_comp_analysis, request_static_map)    
+    valuesPieSum = [{"topic": "% Public operators", "value": len(operator_public)}, {"topic": "% Non-profit operators", "value": len(operator_nonProfit)}, {"topic": "% Private operators", "value": len(operator_private)}]    
+    anvil.server.call("create_pie_chart", valuesPieSum, "donutSum")
+    valuesBarSum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030", "value": inpatientsFC}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction)", "value": beds_adjusted}]    
+    anvil.server.call("create_bar_chart", valuesBarSum)
+    
     sendData_Summary = {"zipcode": zipcode,
                         "city": city,
                         "district": district,
@@ -1065,23 +1066,25 @@ class Map2_0(Map2_0Template):
                         "nursing_homes_construct": nursing_homes_construct,
                         "beds_planned": beds_planned,
                         "beds_construct": beds_construct,
-                        beds_adjusted,
-                        occupancy_raw,
+                        "beds_adjusted": beds_adjusted,
+                        "occupancy_raw": occupancy_raw,
                         "invest_median": invest_median,
                         "operator": len(operator),
                         "beds_median": beds_median,
                         "year_median": year_median,
-                        op_public_percent,
-                        op_nonProfit_percent,
-                        op_private_percent,
+                        "op_public_percent": op_public_percent,
+                        "op_nonProfit_percent": op_nonProfit_percent,
+                        "op_private_percent": op_private_percent,
                         "people_u75_fc": round((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])),
-                        countie_data[1][19],
+                        "forecast_change": countie_data[1][19],
                         "people_o75_fc": round((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])),
                         "pat_rec_full_care_fc": pat_rec_full_care_fc,
                         "inpatients_fc": inpatients_fc,
-                        beds_surplus,
-                        without_apartment}
+                        "beds_surplus": beds_surplus,
+                        "without_apartment": without_apartment}
+    
     sendData_ALAnalysis = [countie[0], countie_data[0][19], peopleu75, peopleo75, apartments, apartments_per_10k, peopleu75FC, peopleo75FC, countie_data[1][19], facilities_active, facilities_plan_build, apartments_plan_build, len(al_list), apartments_10km, (facilities_active - without_apartment), without_apartment, apartments_adjusted, facilities_building, (facilities_building - without_apartment_building), without_apartment_building, apartments_building, build_apartments_average, build_apartments_adjusted]    
+    
     anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis)
     
     mapPDF = app_tables.pictures.search()[0]    
