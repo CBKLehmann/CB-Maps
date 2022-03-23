@@ -1410,240 +1410,250 @@ class Map2_0(Map2_0Template):
       }
     })
     
-    #Add filled Layer for Federal states
-    self.mapbox.addLayer({
-      'id': 'bundeslaender',
-      'type': 'fill',
-      'source': {
-        'type': 'geojson',
-        'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'
-      },
-      'layout': {
-        'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-          'case',
-          ['boolean', ['feature-state', 'hover'], False],
-          0.75,
-          0.5
-        ]
-      }
-    }) 
+    layers = [{'id_fill': 'bundeslaender',
+               'id_outline': 'outlineBL', 
+               'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'}, 
+              {'id_fill': 'regierungsbezirke',
+               'id_outline': 'outlineRB', 
+               'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'},
+             {'id_fill': 'landkreise',
+               'id_outline': 'outlineLK', 
+               'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/landkreise.geojson'},]
     
-    #Add outlined Layer for Federal states
-    self.mapbox.addLayer({
-        'id': 'outlineBL',
-        'type': 'line',
-        'source': {
-          'type': 'geojson',
-          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'
-        },
-        'layout': {
-          'visibility': 'none'
-        },
-        'paint': {
-          'line-color': '#000',
-          'line-width': 2
-        }
-    })
+#     #Add filled Layer for Federal states
+#     self.mapbox.addLayer({
+#       'id': 'bundeslaender',
+#       'type': 'fill',
+#       'source': {
+#         'type': 'geojson',
+#         'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'
+#       },
+#       'layout': {
+#         'visibility': 'none'
+#       },
+#       'paint': {
+#         'fill-color': '#0080ff',
+#         'fill-opacity': [
+#           'case',
+#           ['boolean', ['feature-state', 'hover'], False],
+#           0.75,
+#           0.5
+#         ]
+#       }
+#     }) 
     
-    #Add filled Layer for government districts
-    self.mapbox.addLayer({
-      'id': 'regierungsbezirke',
-      'type': 'fill',
-      'source': {
-        'type': 'geojson',
-        'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'
-      },
-      'layout': {
-        'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-          'case',
-          ['boolean', ['feature-state', 'hover'], False],
-          0.75,
-          0.5
-        ]
-      }
-    }) 
+#     #Add outlined Layer for Federal states
+#     self.mapbox.addLayer({
+#         'id': 'outlineBL',
+#         'type': 'line',
+#         'source': {
+#           'type': 'geojson',
+#           'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json'
+#         },
+#         'layout': {
+#           'visibility': 'none'
+#         },
+#         'paint': {
+#           'line-color': '#000',
+#           'line-width': 2
+#         }
+#     })
+    
+#     #Add filled Layer for government districts
+#     self.mapbox.addLayer({
+#       'id': 'regierungsbezirke',
+#       'type': 'fill',
+#       'source': {
+#         'type': 'geojson',
+#         'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'
+#       },
+#       'layout': {
+#         'visibility': 'none'
+#       },
+#       'paint': {
+#         'fill-color': '#0080ff',
+#         'fill-opacity': [
+#           'case',
+#           ['boolean', ['feature-state', 'hover'], False],
+#           0.75,
+#           0.5
+#         ]
+#       }
+#     }) 
 
-    #Add outlined Layer for government districts
-    self.mapbox.addLayer({
-        'id': 'outlineRB',
-        'type': 'line',
-        'source': {
-          'type': 'geojson',
-          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'
-        },
-        'layout': {
-          'visibility': 'none'
-        },
-        'paint': {
-          'line-color': '#000',
-          'line-width': 1
-        }
-    })
+#     #Add outlined Layer for government districts
+#     self.mapbox.addLayer({
+#         'id': 'outlineRB',
+#         'type': 'line',
+#         'source': {
+#           'type': 'geojson',
+#           'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json'
+#         },
+#         'layout': {
+#           'visibility': 'none'
+#         },
+#         'paint': {
+#           'line-color': '#000',
+#           'line-width': 1
+#         }
+#     })
     
-    #Add filled Layer for rural districts
-    self.mapbox.addLayer({
-      'id': 'landkreise',
-      'type': 'fill',
-      'source': {
-        'type': 'geojson',
-        'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/landkreise.geojson'
-      },
-      'layout': {
-        'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-          'case',
-          ['boolean', ['feature-state', 'hover'], False],
-          0.75,
-          0.5
-        ]
-      }
-    })
+#     #Add filled Layer for rural districts
+#     self.mapbox.addLayer({
+#       'id': 'landkreise',
+#       'type': 'fill',
+#       'source': {
+#         'type': 'geojson',
+#         'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/landkreise.geojson'
+#       },
+#       'layout': {
+#         'visibility': 'none'
+#       },
+#       'paint': {
+#         'fill-color': '#0080ff',
+#         'fill-opacity': [
+#           'case',
+#           ['boolean', ['feature-state', 'hover'], False],
+#           0.75,
+#           0.5
+#         ]
+#       }
+#     })
     
-    #Add outlined Layer for rural districts
-    self.mapbox.addLayer({
-        'id': 'outlineLK',
-        'type': 'line',
-        'source': {
-          'type': 'geojson',
-          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/landkreise.geojson'
-        },
-        'layout': {
-          'visibility': 'none'
-        },
-        'paint': {
-          'line-color': '#000',
-          'line-width': 0.5
-        }
-    })
+#     #Add outlined Layer for rural districts
+#     self.mapbox.addLayer({
+#         'id': 'outlineLK',
+#         'type': 'line',
+#         'source': {
+#           'type': 'geojson',
+#           'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/landkreise.geojson'
+#         },
+#         'layout': {
+#           'visibility': 'none'
+#         },
+#         'paint': {
+#           'line-color': '#000',
+#           'line-width': 0.5
+#         }
+#     })
   
-    #Add filled Layer for municipalities
-    self.mapbox.addLayer({
-      'id': 'gemeinden',
-      'type': 'fill',
-      'source': {
-        'type': 'geojson',
-        'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
-      },
-      'layout': {
-        'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-          'case',
-          ['boolean', ['feature-state', 'hover'], False],
-          0.75,
-          0.5
-        ]
-      }
-    })
+#     #Add filled Layer for municipalities
+#     self.mapbox.addLayer({
+#       'id': 'gemeinden',
+#       'type': 'fill',
+#       'source': {
+#         'type': 'geojson',
+#         'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
+#       },
+#       'layout': {
+#         'visibility': 'none'
+#       },
+#       'paint': {
+#         'fill-color': '#0080ff',
+#         'fill-opacity': [
+#           'case',
+#           ['boolean', ['feature-state', 'hover'], False],
+#           0.75,
+#           0.5
+#         ]
+#       }
+#     })
 
-    #Add outlined Layer for municipalities
-    self.mapbox.addLayer({
-        'id': 'outlineGM',
-        'type': 'line',
-        'source': {
-          'type': 'geojson',
-          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
+#     #Add outlined Layer for municipalities
+#     self.mapbox.addLayer({
+#         'id': 'outlineGM',
+#         'type': 'line',
+#         'source': {
+#           'type': 'geojson',
+#           'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson'
 
-        },
-        'layout': {
-          'visibility': 'none'
-        },
-        'paint': {
-          'line-color': '#000',
-          'line-width': 0.5
-        }
-    })
+#         },
+#         'layout': {
+#           'visibility': 'none'
+#         },
+#         'paint': {
+#           'line-color': '#000',
+#           'line-width': 0.5
+#         }
+#     })
     
-    #Add filled Layer for berlin districts
-    self.mapbox.addLayer({
-      'id': 'bezirke',
-      'type': 'fill',
-      'source': {
-        'type': 'geojson',
-        'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson'
-      },
-      'layout': {
-        'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-          'case',
-          ['boolean', ['feature-state', 'hover'], False],
-          0.75,
-          0.5
-        ]
-      }
-    })
+#     #Add filled Layer for berlin districts
+#     self.mapbox.addLayer({
+#       'id': 'bezirke',
+#       'type': 'fill',
+#       'source': {
+#         'type': 'geojson',
+#         'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson'
+#       },
+#       'layout': {
+#         'visibility': 'none'
+#       },
+#       'paint': {
+#         'fill-color': '#0080ff',
+#         'fill-opacity': [
+#           'case',
+#           ['boolean', ['feature-state', 'hover'], False],
+#           0.75,
+#           0.5
+#         ]
+#       }
+#     })
 
-    #Add outlined Layer for municipalities
-    self.mapbox.addLayer({
-        'id': 'outlineBK',
-        'type': 'line',
-        'source': {
-          'type': 'geojson',
-          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson'
-        },
-        'layout': {
-          'visibility': 'none'
-        },
-        'paint': {
-          'line-color': '#000',
-          'line-width': 0.5
-        }
-    })
+#     #Add outlined Layer for municipalities
+#     self.mapbox.addLayer({
+#         'id': 'outlineBK',
+#         'type': 'line',
+#         'source': {
+#           'type': 'geojson',
+#           'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson'
+#         },
+#         'layout': {
+#           'visibility': 'none'
+#         },
+#         'paint': {
+#           'line-color': '#000',
+#           'line-width': 0.5
+#         }
+#     })
     
-    #Add filled Layer for Netherlands
-    self.mapbox.addLayer({
-      'id': 'netherlands',
-      'type': 'fill',
-      'source': {
-        'type': 'geojson',
-        'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson'
-      },
-      'layout': {
-        'visibility': 'none'
-      },
-      'paint': {
-        'fill-color': '#0080ff',
-        'fill-opacity': [
-          'case',
-          ['boolean', ['feature-state', 'hover'], False],
-          0.75,
-          0.5
-        ]
-      }
-    })
+#     #Add filled Layer for Netherlands
+#     self.mapbox.addLayer({
+#       'id': 'netherlands',
+#       'type': 'fill',
+#       'source': {
+#         'type': 'geojson',
+#         'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson'
+#       },
+#       'layout': {
+#         'visibility': 'none'
+#       },
+#       'paint': {
+#         'fill-color': '#0080ff',
+#         'fill-opacity': [
+#           'case',
+#           ['boolean', ['feature-state', 'hover'], False],
+#           0.75,
+#           0.5
+#         ]
+#       }
+#     })
 
-    #Add outlined Layer for Netherlands
-    self.mapbox.addLayer({
-        'id': 'outlineNL',
-        'type': 'line',
-        'source': {
-          'type': 'geojson',
-          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson'
-        },
-        'layout': {
-          'visibility': 'none'
-        },
-        'paint': {
-          'line-color': '#000',
-          'line-width': 0.5
-        }
-    })
+#     #Add outlined Layer for Netherlands
+#     self.mapbox.addLayer({
+#         'id': 'outlineNL',
+#         'type': 'line',
+#         'source': {
+#           'type': 'geojson',
+#           'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson'
+#         },
+#         'layout': {
+#           'visibility': 'none'
+#         },
+#         'paint': {
+#           'line-color': '#000',
+#           'line-width': 0.5
+#         }
+#     })
   
     #Check which Layer is active
     if Variables.activeLayer == 'bundeslaender':
