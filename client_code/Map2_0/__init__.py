@@ -24,30 +24,23 @@ class Map2_0(Map2_0Template):
   
   #Set Form properties and Data Bindings
   def __init__(self, **properties):
-    
     self.init_components(**properties)
     self.dom = anvil.js.get_dom_node(self.spacer_1)
     self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
 #     self.token = "pk.eyJ1IjoiYnJvb2tlbXllcnMiLCJhIjoiY2tsamtiZ3l0MW55YjJvb2lsbmNxaWo0dCJ9.9iOO0aFkAy0TAP_qjtSE-A"
     self.token = 'pk.eyJ1Ijoic2hpbnlrYW1wZmtldWxlIiwiYSI6ImNreWluYm5jMTBrYXcydnFvbmt3a3RiMG8ifQ.UEt90g8gVzPhsJof0znguA'
-
+  
   #This method is called when the HTML panel is shown on the screen
   def form_show(self, **event_args):
-    
-    #Initiate Map
+    #Initiate Map, Marker and Geocoder
     mapboxgl.accessToken = self.token
     self.mapbox = mapboxgl.Map({'container': self.dom,
                                 'style': 'mapbox://styles/mapbox/outdoors-v11',
                                 'center': [13.4092, 52.5167],
                                 'zoom': 8})
-      
-    #Initiate Marker
     self.marker = mapboxgl.Marker({'color': '#0000FF', 'draggable': True})
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
-      
-    #Initiate Geocoder
-    self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken,
-                                    'marker': False})
+    self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
     self.mapbox.addControl(self.geocoder)
     
     #Initiate Listeners for different Functions  
