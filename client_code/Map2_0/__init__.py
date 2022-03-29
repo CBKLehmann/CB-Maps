@@ -1046,7 +1046,7 @@ class Map2_0(Map2_0Template):
     anvil.server.call("create_pie_chart", values_pie_sum, "donut_sum")
     values_bar_sum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030", "value": inpatients_fc}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction)", "value": beds_adjusted}]
     anvil.server.call("create_bar_chart", values_bar_sum, "bar")
-    anvil.server.call("create_static_map", bbox, self.token, data_comp_analysis, request_static_map, "CA")
+    anvil.server.call("create_static_map_ca", bbox, self.token, data_comp_analysis, request_static_map)
     
     #Create Data-Objects for Summary
     sendData_Summary = {"zipcode": zipcode,
