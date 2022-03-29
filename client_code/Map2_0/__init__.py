@@ -2129,9 +2129,17 @@ class Map2_0(Map2_0Template):
               else:
                 occupancy = "-"
               if not entry[38] == "-":
-                invest = f"{entry[38]}"
-                if len(invest) == 4:
-                  invest += "0"
+                print('########################')
+                print(entry[38])
+                print(len(entry[38]))
+                if len(entry[38]) == 4:
+                  print(entry[38].index("."))
+                  if entry[38].index(".") == 2:
+                    invest += "0"
+                  else:
+                    invest = entry[38]
+                else:
+                  invest = entry[38]
               else:
                 invest = entry[38]
               data = {
