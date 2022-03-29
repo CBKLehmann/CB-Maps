@@ -767,7 +767,7 @@ class Map2_0(Map2_0Template):
       if point[1] > bbox[2] or bbox[2] == 0:
         bbox[2] = point[1]
 
-    #Get Data for Competitor Analysis
+    #Get Data for Competitor Analysis Nursing Homes
     index = 1
     counter = 0
     data_comp_analysis = []
@@ -817,7 +817,58 @@ class Map2_0(Map2_0Template):
           data_comp_analysis.append(data)
           index += 1          
           break
-
+    
+    #Get Data for Competitor Analysis Assisted Living
+    index = 1
+    counter = 0
+    data_comp_analysis_al = []
+    coords_al = []
+    for entry_caredb_al in Variables.assistedLivingEntries:
+      print(entry_caredb_al)
+      lng_entry = "%.6f" % float(entry_caredb_al[27])
+      lat_entry = "%.6f" % float(entry_caredb_al[26])
+      for icon in Variables.activeIcons['assistedLiving']:
+        lng_icon = "%.6f" % icon['_lngLat']['lng']
+        lat_icon = "%.6f" % icon['_lngLat']['lat']
+        if lng_entry == lng_icon and lat_entry == lat_icon:
+          coords_al.append([lng_icon, lat_icon])
+          counter += 1
+          if entry_caredb_al[27] == "-":
+            anz_vers_pat = 0
+          else:
+            anz_vers_pat = int(entry_caredb[27])
+          if entry_caredb[28] == "-":
+            platz_voll_pfl = 0
+          else:
+            platz_voll_pfl = int(entry_caredb[28])
+          if not anz_vers_pat == 0 and not platz_voll_pfl == 0:
+            occupancy_raw = round((anz_vers_pat * 100) / platz_voll_pfl)
+            occupancy = f"{occupancy_raw} %"
+          else:
+            occupancy = "-"
+          if not entry_caredb[38] == "-":
+            invest = f"{entry_caredb[38]}"
+            if len(invest) == 4:
+              invest += "0"
+          else:
+            invest = entry_caredb[38]
+          data = {
+                  "index": index,
+                  "name": entry_caredb[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "operator": entry_caredb[28],
+                  "type": entry_caredb[31],
+                  "city": entry_caredb[32],
+                  "status": entry_caredb[27],
+                  "no_of_apts": occupancy,
+                  "apt_size": entry_caredb[33],
+                  "rent_month": entry_caredb[4],
+                  "service_fee_month": entry_caredb[6].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "total_monthly_rent": invest,
+                 }
+          data_comp_analysis.append(data)
+          index += 1          
+          break
+    
     #Sort Coordinates by Distance
     sorted_coords = anvil.server.call("get_distance", lng_lat_marker, coords)
     index_coords = len(sorted_coords)
@@ -1047,6 +1098,7 @@ class Map2_0(Map2_0Template):
     values_bar_sum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030", "value": inpatients_fc}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction)", "value": beds_adjusted}]
     anvil.server.call("create_bar_chart", values_bar_sum, "bar")
     anvil.server.call("create_static_map_ca", bbox, self.token, data_comp_analysis, request_static_map)
+    anvil.server.call("create_static_map.bewo", bbox, self.token)
     
     #Create Data-Objects for Summary
     sendData_Summary = {"zipcode": zipcode,
@@ -2147,4 +2199,87 @@ class Map2_0(Map2_0Template):
     
     return (request_string)
   
+  #Organize Data for Compettior Analysis
+  def organize_ca_data(self, entries, topic):
+    
+    # Create Variables
+    index = 1
+    counter = 0
+    data_comp_analysis = []
+    coords = []
+    
+    for entry in entries:
+      lng_entry = "%.6f" % float(entry_caredb_al[27])
+      lat_entry = "%.6f" % float(entry_caredb_al[26])
+      for icon in Variables.activeIcons[topic]:
+          lng_icon = "%.6f" % icon['_lngLat']['lng']
+          lat_icon = "%.6f" % icon['_lngLat']['lat']
+          if lng_entry == lng_icon and lat_entry == lat_icon:
+            coords_al.append([lng_icon, lat_icon])
+            counter += 1
+            if topic == "pflegeDB":
+              if entry[27] == "-":
+                anz_vers_pat = 0
+              else:
+                anz_vers_pat = int(entry[27])
+              if entry[28] == "-":
+                platz_voll_pfl = 0
+              else:
+                platz_voll_pfl = int(entry[28])
+              if not anz_vers_pat == 0 and not platz_voll_pfl == 0:
+                occupancy_raw = round((anz_vers_pat * 100) / platz_voll_pfl)
+                occupancy = f"{occupancy_raw} %"
+              else:
+                occupancy = "-"
+              if not entry[38] == "-":
+                invest = f"{entry[38]}"
+                if len(invest) == 4:
+                  invest += "0"
+                else:
+                  invest = entry[38]
+                  data = {
+                    "index": index,
+                    "name": entry[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                    "platz_voll_pfl": platz_voll_pfl,
+                    "ez": entry[31],
+                    "dz": entry[32],
+                    "anz_vers_pat": anz_vers_pat,
+                    "occupancy": occupancy,
+                    "baujahr": entry[33],
+                    "status": entry[4],
+                    "betreiber": entry[6].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                    "invest": invest,
+                    "mdk_note": entry[26]
+                  }
+                  data_comp_analysis.append(data)
+                  index += 1
+                  break
+            elif topic == "assistedLiving":
+              if entry[19] == 'nan':
+                number_apts = 0
+              else:
+                number_apts = int(entry[19])
+              data = {
+                "index": index,
+                "name": entry[4].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                "operator": entry[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                "type": entry[8].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                "city": entry[12].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                "status": entry[3].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                "number_apts": number_apts
+              }
+              data_comp_analysis.append(data)
+              index += 1
+              break
+    # Sort Coordinates by Distance
+    sorted_coords = anvil.server.call("get_distance", lng_lat_marker, coords)
+    index_coords = len(sorted_coords)
+    
+    #Build Request-String for Mapbox Static-Map-API
+    request_static_map = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{lng_lat_marker['lng']},{lng_lat_marker['lat']}%5D%7D%7D"
+    for coordinate in reversed(sorted_coords):
+      request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0][0]},{coordinate[0][1]}%5D%7D%7D"
+      index_coords -= 1
+    request_static_map += "%5D%7D"
+    
   #####   Extra Functions   #####
