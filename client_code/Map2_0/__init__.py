@@ -2132,10 +2132,10 @@ class Map2_0(Map2_0Template):
                 print('########################')
                 print(entry[38])
                 print(len(entry[38]))
+                print(entry[38].index("."))
                 if len(entry[38]) == 4:
-                  print(entry[38].index("."))
                   if entry[38].index(".") == 2:
-                    invest += "0"
+                    invest = entry[38] + "0"
                   else:
                     invest = entry[38]
                 else:
