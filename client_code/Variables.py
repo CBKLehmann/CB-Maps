@@ -52,3 +52,4 @@ icon_al = 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AA
 pflegeDBEntries = []
 assistedLivingEntries = []
 activeIso = 0
+marker_icons_checked = 6

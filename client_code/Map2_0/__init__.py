@@ -20,7 +20,7 @@ global Variables, Layer
 #Definition of every function inside Map2_0
 class Map2_0(Map2_0Template):
 
-  ##### General Functions #####  
+##### General Functions #####  
   
   #Set Form properties and Data Bindings
   def __init__(self, **properties):
@@ -65,66 +65,37 @@ class Map2_0(Map2_0Template):
     self.mapbox.on('click', self.poi)
     self.mapbox.on('styledata', self.place_layer)
  
-  #####  General Functions  #####
-  ###############################
-  ##### Check-Box Functions #####
+#####  General Functions  #####
+###############################
+##### Check-Box Functions #####
 
   #This method is called when one of the Marker-Icon-Types should be hidden or shown
   def check_box_marker_icons_change(self, **event_args):
     if dict(event_args)['sender'].text == 'Capital Bay':
       self.show_hide_marker(self.check_box_cb.checked, 'cb_marker')
-  
-  #This method is called when the Check Box for CapitalBay-Icons is checked or unchecked
-  def check_box_cb_change(self, **event_args):
-    
-    #Call Function to show or hide Markers
-    self.show_hide_marker(self.check_box_cb.checked, 'cb_marker')
+    elif dict(event_args)['sender'].text == 'Competitors':
+      self.show_hide_marker(self.check_box_kk.checked, 'kk_marker')
+    elif dict(event_args)['sender'].text == 'Hotels':
+      self.show_hide_marker(self.check_box_h.checked, 'h_marker')
+    elif dict(event_args)['sender'].text == 'Hospitals':
+      self.show_hide_marker(self.check_box_kh.checked, 'kh_marker')
+    elif dict(event_args)['sender'].text == 'Schools':
+      self.show_hide_marker(self.check_box_s.checked, 's_marker')
+    elif dict(event_args)['sender'].text == 'Stores':
+      self.show_hide_marker(self.check_box_g.checked, 'lg_marker')
 
-  #This method is called when the Check Box for Konkurrent-Icons is checked or unchecked      
-  def check_box_kk_change(self, **event_args):
+  #This method is call when all of the Marker-Icon-Types should be hidden or shown
+  def button_marker_icons_change(self, **event_args):
+    all_marker = self.icon_categories.get_components()
     
-    #Call Function to show or hide Markers
-    self.show_hide_marker(self.check_box_kk.checked, 'kk_marker')
-
-  #This method is called when the Check Box for Hotel-Icons is checked or unchecked      
-  def check_box_h_change(self, **event_args):
-    
-    #Call Function to show or hide Markers
-    self.show_hide_marker(self.check_box_h.checked, 'h_marker')
-
-  #This method is called when the Check Box for Krankenhaus-Icons is checked or unchecked      
-  def check_box_kh_change(self, **event_args):
-    
-    #Call Function to show or hide Markers
-    self.show_hide_marker(self.check_box_kh.checked, 'kh_marker')
-
-  #This method is called when the Check Box for Schule-Icons is checked or unchecked     
-  def check_box_s_change(self, **event_args):
-    
-    #Call Function to show or hide Markers
-    self.show_hide_marker(self.check_box_s.checked, 's_marker')
-
-  #This method is called when the Check Box for Geschäfte-Icons is checked or unchecked      
-  def check_box_g_change(self, **event_args):
-    
-    #Call Function to show or hide Markers
-    self.show_hide_marker(self.check_box_g.checked, 'lg_marker')
-
-  #This method is called when the Check Box for All-Icons is checked or unchecked      
-  def check_box_all_change(self, **event_args):
+    if dict(event_args)['sender'].text == "Show All": 
+      marker_state = True
+    elif dict(event_args)['sender'].text == "Hide All":
+      marker_state = False
       
-    #Get all Marker-Categoried and Status of Checkbox
-    marker = self.icon_categories.get_components()
-    check_box = self.check_box_all.checked
-      
-    #Loop through every Marker-Category
-    for el in marker:
-        
-      #Call Function to show or hide Markers on Map
-      self.show_hide_marker(check_box, el.tooltip)
-        
-      #Check every Checkbox for every Icon
-      el.checked = check_box
+    for marker in all_marker:
+      self.show_hide_marker(marker_state, marker.tooltip)
+      marker.checked = marker_state
     
   #This method is called when the Check Box for Bundesländer-Layer is checked or unchecked
   def check_box_bl_change(self, **event_args):
@@ -1920,7 +1891,7 @@ class Map2_0(Map2_0Template):
       
       #Check if Check Box is checked and id exist 
       if check_box == True and marker_id in Variables.marker:
-          
+        
         #Add Marker to Map
         el.addTo(self.mapbox)
           
