@@ -285,7 +285,7 @@ components:
         background: '', bold: false, group_name: radioGroup1, underline: false}
       name: radio_button_om
       layout_properties: {grid_position: 'HOUZUH,ZMPNGY'}
-      event_bindings: {clicked: radio_button_om_clicked}
+      event_bindings: {clicked: radio_button_map_change_clicked}
     - type: RadioButton
       properties: {role: null, selected: false, align: left, tooltip: '', border: '',
         enabled: true, foreground: '', value: '', visible: true, text: Satellite Map,
@@ -293,7 +293,7 @@ components:
         background: '', bold: false, group_name: radioGroup1, underline: false}
       name: radio_button_sm
       layout_properties: {grid_position: 'XJXIJY,OTUDAD'}
-      event_bindings: {clicked: radio_button_sm_clicked}
+      event_bindings: {clicked: radio_button_map_change_clicked}
   - type: Button
     properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: Point of Interests, font_size: null, font: '',

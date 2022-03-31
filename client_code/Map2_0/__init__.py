@@ -147,8 +147,8 @@ class Map2_0(Map2_0Template):
     
     #Change Active Layer to show
     self.change_active_Layer([layer_name, outline_name], inactive_layers, new_visibility, inactive_checkboxes)
-   
-  
+
+
   #This method is called when various Check Boxes for different POI Categories get checked or unchecked
   def check_box_poi_change(self, **event_args):
     if dict(event_args)['sender'].text == "veterinary":
@@ -184,72 +184,64 @@ class Map2_0(Map2_0Template):
     elif dict(event_args)['sender'].text == "Assisted Living DB":
       Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
 
-  
+
   #This method is called when the Check Box for POI based on HFCIG is checked or unchecked
   def checkbox_poi_x_hfcig_change(self, **event_args):
-      
-    #Get all categories of healthcare_poi_container
     checkbox =  self.poi_categories_healthcare_container.get_components()
       
-    #Check if checkbox is checked
     if self.checkbox_poi_x_hfcig.checked == True:
-        
       bbox = self.create_bounding_box()
-           
-      #Do for every categories inside healthcare_poi_container
-      for el in checkbox:
-        
-        #Check if categories-checkbox is checked
-        if el.checked == True:
-          
-          #Loop through every Element in global Icon-Elements 
-          for ele in Variables.icons[f'{el.text.replace(" ", "_").replace("-", "_")}']:
-            
-            #Get coordinates of current Icon
-            ele_coords = dict(ele['_lngLat'])
-            
-            #Check if Icon is inside visible Bounding Box
-            if bbox[0] > ele_coords['lat'] or ele_coords['lat'] > bbox[2]:
-              if bbox[1] > ele_coords['lng'] or ele_coords['lng'] > bbox[3]:
-                ele.remove()
-  
-    #Do if checkbox is unchecked
+      for category in checkbox:
+        if category.checked == True:
+          for marker in Variables.icons[f'{category.text.replace(" ", "_").replace("-", "_")}']:
+            marker_coords = dict(marker['_lngLat'])
+            if not (bbox[0] < marker_coords['lat'] < bbox[2] and bbox[1] < marker_coords['lng'] < bbox[3]):
+              marker.remove()
     else:  
-      
-      #Get visible Bounding Box of Map
       bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
-
           
-  ##### Check-Box Functions #####
-  ###############################
-  #####  Button Functions   #####
+##### Check-Box Functions #####
+###############################
+#####  Button Functions   #####
 
   #This method is called when the Button for toggling the Marker-Popups got clicked    
   def button_infos_click(self, **event_args):
-  
-    #Call JS-Function for Show or Hide Popup
     anvil.js.call('hide_show_Popup')   
+
     
   #This method is called when the Button for changing the Map-Style to "Satellite Map" got clicked    
-  def radio_button_sm_clicked(self, **event_args):
-  
-    #Set new Mapstyle
-    self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
-    
-    #Call Function to reload Layers
-    self.mapbox.on('styledata', self.place_layer)
-
-  #This method is called when the Button for changing the Map-Style to "Outdoor Map" got clicked
-  def radio_button_om_clicked(self, **event_args):
-  
-    #Set new Mapstyle
-    self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
-    
-    #Call Function to reload Layers
+  def radio_button_map_change_clicked(self, **event_args):
+    if dict(event_args)['sender'].text == "Satellite Map":
+      self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
+    else:
+      self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
     self.mapbox.on('load', self.place_layer)
     
+  
+  def button_toggle_menu_parts(self, **event_args):
+    if dict(event_args)['sender'].text == "Distance-Layer":
+      container = self.dist_container
+      container_state = not self.dist_container.visible
+      icon_container = self.dist_layer
+      icon_icon =
+  
+  def dist_layer_click(self, **event_args):
+    print(dict(event_args)['sender'].text)
+    #Check if Checkbox-Panel is visible or not
+    if self.dist_container.visible == True:
+    
+      #Set Checkbox-Panel to invisible and change Arrow-Icon
+      self.icon_change(self.dist_container, False, self.dist_layer, 'fa:angle-right')
+      
+    else:
+    
+      #Set Checkbox-Panel to visible and change Arrow-Icon
+      self.icon_change(self.dist_container, True, self.dist_layer, 'fa:angle-down')
+  
   #This method is called when the Button Icons is clicked
   def button_icons_click(self, **event_args):
+    
+    print(dict(event_args)['sender'].text)
     
     #Check if Checkbox-Panel is visible or not
     if self.icon_categories_all.visible == True:
@@ -264,7 +256,7 @@ class Map2_0(Map2_0Template):
 
   #This method is called when the Button Icons is clicked
   def button_overlay_click(self, **event_args):
-  
+    print(dict(event_args)['sender'].text)
     #Check if Checkbox-Panel is visible or not
     if self.layer_categories.visible == True:
     
@@ -497,7 +489,7 @@ class Map2_0(Map2_0Template):
     
   #This method is called when the Healthcare-Button is clicked
   def button_healthcare_click(self, **event_args):
-    
+    print(dict(event_args)['sender'].text)
     #Check if Checkbox-Panel is visible or not
     if self.poi_categories_healthcare_container.visible == True:
     
@@ -511,7 +503,7 @@ class Map2_0(Map2_0Template):
   
   #This method is called when the Miscelanious-Button is clicked
   def misc_button_click(self, **event_args):
-    
+    print(dict(event_args)['sender'].text)
     #Check if Checkbox-Panel is visible or not
     if self.Misc_Container.visible == True:
     
@@ -525,7 +517,7 @@ class Map2_0(Map2_0Template):
 
   #This method is called when the ÖPNV-Button is clicked
   def opnv_button_click(self, **event_args):
-    
+    print(dict(event_args)['sender'].text)
     #Check if Checkbox-Panel is visible or not
     if self.opnv_container.visible == True:
     
@@ -537,21 +529,8 @@ class Map2_0(Map2_0Template):
       #Set Checkbox-Panel to visible and change Arrow-Icon
       self.icon_change(self.opnv_container, True, self.opnv_button, 'fa:angle-down')
       
-  def dist_layer_click(self, **event_args):
-
-    #Check if Checkbox-Panel is visible or not
-    if self.dist_container.visible == True:
-    
-      #Set Checkbox-Panel to invisible and change Arrow-Icon
-      self.icon_change(self.dist_container, False, self.dist_layer, 'fa:angle-right')
-      
-    else:
-    
-      #Set Checkbox-Panel to visible and change Arrow-Icon
-      self.icon_change(self.dist_container, True, self.dist_layer, 'fa:angle-down')
-      
   def map_styles_click(self, **event_args):
-    
+    print(dict(event_args)['sender'].text)
     #Check if Checkbox-Panel is visible or not
     if self.checkbox_map_style.visible == True:
     
@@ -564,7 +543,7 @@ class Map2_0(Map2_0Template):
       self.icon_change(self.checkbox_map_style, True, self.map_styles, 'fa:angle-down')
 
   def poi_categories_click(self, **event_args):
-    
+    print(dict(event_args)['sender'].text)
     #Check if Checkbox-Panel is visible or not
     if self.poi_category.visible == True:
     
@@ -2023,36 +2002,38 @@ class Map2_0(Map2_0Template):
   def create_bounding_box(self):
     
     # Get Data of Iso-Layer
-        iso = dict(self.mapbox.getSource('iso'))
-  
-        # Create empty Bounding Box
-        bbox = [0, 0, 0, 0]
-  
-        # Check every element in Iso-Data
-        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
-  
-          # Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
-          if el[0] < bbox[1] or bbox[1] == 0:
-    
-            # Set BBox-Coordinate to new Element-Coordinate
-            bbox[1] = el[0]
-  
-          # Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
-          if el[0] > bbox[3] or bbox[3] == 0:
-    
-            # Set BBox-Coordinate to new Element-Coordinate
-            bbox[3] = el[0]
-  
-          # Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
-          if el[1] < bbox[0] or bbox[0] == 0:
-    
-            # Set BBox-Coordinate to new Element-Coordinate
-            bbox[0] = el[1]
-  
-          # Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
-          if el[1] > bbox[2] or bbox[2] == 0:
-    
-            # Set BBox-Coordinate to new Element-Coordinate
-            bbox[2] = el[1]
+    iso = dict(self.mapbox.getSource('iso'))
+
+    # Create empty Bounding Box
+    bbox = [0, 0, 0, 0]
+
+    # Check every element in Iso-Data
+    for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+
+      # Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+      if el[0] < bbox[1] or bbox[1] == 0:
+
+        # Set BBox-Coordinate to new Element-Coordinate
+        bbox[1] = el[0]
+
+      # Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+      if el[0] > bbox[3] or bbox[3] == 0:
+
+        # Set BBox-Coordinate to new Element-Coordinate
+        bbox[3] = el[0]
+
+      # Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+      if el[1] < bbox[0] or bbox[0] == 0:
+
+        # Set BBox-Coordinate to new Element-Coordinate
+        bbox[0] = el[1]
+
+      # Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+      if el[1] > bbox[2] or bbox[2] == 0:
+
+        # Set BBox-Coordinate to new Element-Coordinate
+        bbox[2] = el[1]
+        
+    return bbox
     
   #####   Extra Functions   #####
