@@ -194,38 +194,7 @@ class Map2_0(Map2_0Template):
     #Check if checkbox is checked
     if self.checkbox_poi_x_hfcig.checked == True:
         
-      #Get Data of Iso-Layer
-      iso = dict(self.mapbox.getSource('iso'))
-        
-      #Create empty Bounding Box
-      bbox = [0, 0, 0, 0]
-      
-      #Check every element in Iso-Data
-      for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
-      
-        #Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
-        if el[0] < bbox[1] or bbox[1] == 0:
-    
-          #Set BBox-Coordinate to new Element-Coordinate
-          bbox[1] = el[0]
-            
-        #Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
-        if el[0] > bbox[3] or bbox[3] == 0:
-  
-          #Set BBox-Coordinate to new Element-Coordinate
-          bbox[3] = el[0]
-          
-        #Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
-        if el[1] < bbox[0] or bbox[0] == 0:
-    
-          #Set BBox-Coordinate to new Element-Coordinate
-          bbox[0] = el[1]
-          
-        #Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
-        if el[1] > bbox[2] or bbox[2] == 0:
-  
-          #Set BBox-Coordinate to new Element-Coordinate
-          bbox[2] = el[1]
+      bbox = self.create_bounding_box()
            
       #Do for every categories inside healthcare_poi_container
       for el in checkbox:
@@ -2053,6 +2022,37 @@ class Map2_0(Map2_0Template):
   
   def create_bounding_box(self):
     
+    # Get Data of Iso-Layer
+        iso = dict(self.mapbox.getSource('iso'))
+  
+        # Create empty Bounding Box
+        bbox = [0, 0, 0, 0]
+  
+        # Check every element in Iso-Data
+        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+  
+          # Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] < bbox[1] or bbox[1] == 0:
     
+            # Set BBox-Coordinate to new Element-Coordinate
+            bbox[1] = el[0]
+  
+          # Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[0] > bbox[3] or bbox[3] == 0:
+    
+            # Set BBox-Coordinate to new Element-Coordinate
+            bbox[3] = el[0]
+  
+          # Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] < bbox[0] or bbox[0] == 0:
+    
+            # Set BBox-Coordinate to new Element-Coordinate
+            bbox[0] = el[1]
+  
+          # Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+          if el[1] > bbox[2] or bbox[2] == 0:
+    
+            # Set BBox-Coordinate to new Element-Coordinate
+            bbox[2] = el[1]
     
   #####   Extra Functions   #####
