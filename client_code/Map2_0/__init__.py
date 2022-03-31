@@ -209,7 +209,7 @@ class Map2_0(Map2_0Template):
     anvil.js.call('hide_show_Popup')   
 
     
-  #This method is called when the Button for changing the Map-Style to "Satellite Map" got clicked    
+  #This method is called when one of the Buttons for changing the Map-Style got clicked    
   def radio_button_map_change_clicked(self, **event_args):
     if dict(event_args)['sender'].text == "Satellite Map":
       self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
@@ -218,56 +218,76 @@ class Map2_0(Map2_0Template):
     self.mapbox.on('load', self.place_layer)
     
   
+  #This method is called when one of the Submenus should be opened or closed
   def button_toggle_menu_parts(self, **event_args):
     if dict(event_args)['sender'].text == "Distance-Layer":
       container = self.dist_container
       container_state = not self.dist_container.visible
       icon_container = self.dist_layer
-      icon_icon =
-  
-  def dist_layer_click(self, **event_args):
-    print(dict(event_args)['sender'].text)
-    #Check if Checkbox-Panel is visible or not
-    if self.dist_container.visible == True:
-    
-      #Set Checkbox-Panel to invisible and change Arrow-Icon
-      self.icon_change(self.dist_container, False, self.dist_layer, 'fa:angle-right')
+      if container_state == False:
+        icon = "fa:angle-right"
+      else:
+        icon = "fa:angle-down"
+    elif dict(event_args)['sender'].text == "Marker-Icons":
+      container = self.icon_categories_all
+      container_state = not self.icon_categories_all.visible
+      icon_container = self.button_icons
+      if container_state == False:
+        icon = "fa:angle-right"
+      else:
+        icon = "fa:angle-down"
+    elif dict(event_args)['sender'].text == "Overlays":
+      container = self.layer_categories
+      container_state = not self.layer_categories.visible
+      icon_container = self.button_overlay
+      if container_state == False:
+        icon = "fa:angle-right"
+      else:
+        icon = "fa:angle-down"
+    elif dict(event_args)['sender'].text == "Map-Styles":
+      container = self.checkbox_map_style
+      container_state = not self.checkbox_map_style.visible
+      icon_container = self.map_styles
+      if container_state == False:
+        icon = "fa:angle-right"
+      else:
+        icon = "fa:angle-down"
+    elif dict(event_args)['sender'].text == "Point of Interests":
+      container = self.poi_category
+      container_state = not self.poi_category.visible
+      icon_container = self.poi_categories
+      if container_state == False:
+        icon = "fa:angle-right"
+      else:
+        icon = "fa:angle-down"
+    elif dict(event_args)['sender'].text == "Healthcare":
+      container = self.poi_categories_healthcare_container
+      container_state = not self.poi_categories_healthcare_container.visible
+      icon_container = self.button_healthcare
+      if container_state == False:
+        icon = "fa:angle-right"
+      else:
+        icon = "fa:angle-down"
+    elif dict(event_args)['sender'].text == "Miscelaneous":
+      container = self.misc_container
+      container_state = not self.misc_container.visible
+      icon_container = self.misc_button
+      if container_state == False:
+        icon = "fa:angle-right"
+      else:
+        icon = "fa:angle-down"
+    elif dict(event_args)['sender'].text == "ÖPNV":
+      container = self.opnv_container
+      container_state = not self.opnv_container.visible
+      icon_container = self.opnv_button
+      if container_state == False:
+        icon = "fa:angle-right"
+      else:
+        icon = "fa:angle-down"
       
-    else:
-    
-      #Set Checkbox-Panel to visible and change Arrow-Icon
-      self.icon_change(self.dist_container, True, self.dist_layer, 'fa:angle-down')
-  
-  #This method is called when the Button Icons is clicked
-  def button_icons_click(self, **event_args):
-    
-    print(dict(event_args)['sender'].text)
-    
-    #Check if Checkbox-Panel is visible or not
-    if self.icon_categories_all.visible == True:
-    
-      #Set Checkbox-Panel to invisible and change Arrow-Icon
-      self.icon_change(self.icon_categories_all, False, self.button_icons, 'fa:angle-right')
-      
-    else:
-      
-      #Set Checkbox-Panel to visible and change Arrow-Icon
-      self.icon_change(self.icon_categories_all, True, self.button_icons, 'fa:angle-down')
-
-  #This method is called when the Button Icons is clicked
-  def button_overlay_click(self, **event_args):
-    print(dict(event_args)['sender'].text)
-    #Check if Checkbox-Panel is visible or not
-    if self.layer_categories.visible == True:
-    
-      #Set Checkbox-Panel to invisible and change Arrow-Icon
-      self.icon_change(self.layer_categories, False, self.button_overlay, 'fa:angle-right')
-      
-    else:
-      
-      #Set Checkbox-Panel to visible and change Arrow-Icon
-      self.icon_change(self.layer_categories, True, self.button_overlay, 'fa:angle-down')
-      
+    self.icon_change(container, container_state, icon_container, icon)
+   
+  #######Noch bearbeiten#######
   #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
   def admin_button_click(self, **event_args):
     
@@ -487,74 +507,8 @@ class Map2_0(Map2_0Template):
   
     anvil.js.call('open_tab', html)
     
-  #This method is called when the Healthcare-Button is clicked
-  def button_healthcare_click(self, **event_args):
-    print(dict(event_args)['sender'].text)
-    #Check if Checkbox-Panel is visible or not
-    if self.poi_categories_healthcare_container.visible == True:
-    
-      #Set Checkbox-Panel to invisible and change Arrow-Icon
-      self.icon_change(self.poi_categories_healthcare_container, False, self.button_healthcare, 'fa:angle-right')
-      
-    else:
-      
-      #Set Checkbox-Panel to visible and change Arrow-Icon
-      self.icon_change(self.poi_categories_healthcare_container, True, self.button_healthcare, 'fa:angle-down')
-  
-  #This method is called when the Miscelanious-Button is clicked
-  def misc_button_click(self, **event_args):
-    print(dict(event_args)['sender'].text)
-    #Check if Checkbox-Panel is visible or not
-    if self.Misc_Container.visible == True:
-    
-      #Set Checkbox-Panel to invisible and change Arrow-Icon
-      self.icon_change(self.Misc_Container, False, self.misc_button, 'fa:angle-right')
-      
-    else:
-    
-      #Set Checkbox-Panel to visible and change Arrow-Icon
-      self.icon_change(self.Misc_Container, True, self.misc_button, 'fa:angle-down')
-
-  #This method is called when the ÖPNV-Button is clicked
-  def opnv_button_click(self, **event_args):
-    print(dict(event_args)['sender'].text)
-    #Check if Checkbox-Panel is visible or not
-    if self.opnv_container.visible == True:
-    
-      #Set Checkbox-Panel to invisible and change Arrow-Icon
-      self.icon_change(self.opnv_container, False, self.opnv_button, 'fa:angle-right')
-      
-    else:
-    
-      #Set Checkbox-Panel to visible and change Arrow-Icon
-      self.icon_change(self.opnv_container, True, self.opnv_button, 'fa:angle-down')
-      
-  def map_styles_click(self, **event_args):
-    print(dict(event_args)['sender'].text)
-    #Check if Checkbox-Panel is visible or not
-    if self.checkbox_map_style.visible == True:
-    
-      #Set Checkbox-Panel to invisible and change Arrow-Icon
-      self.icon_change(self.checkbox_map_style, False, self.map_styles, 'fa:angle-right')
-      
-    else:
-    
-      #Set Checkbox-Panel to visible and change Arrow-Icon
-      self.icon_change(self.checkbox_map_style, True, self.map_styles, 'fa:angle-down')
-
-  def poi_categories_click(self, **event_args):
-    print(dict(event_args)['sender'].text)
-    #Check if Checkbox-Panel is visible or not
-    if self.poi_category.visible == True:
-    
-      #Set Checkbox-Panel to invisible and change Arrow-Icon
-      self.icon_change(self.poi_category, False, self.poi_categories, 'fa:angle-right')
-      
-    else:
-    
-      #Set Checkbox-Panel to visible and change Arrow-Icon
-      self.icon_change(self.poi_category, True, self.poi_categories, 'fa:angle-down')
-      
+  #######Noch bearbeiten#######
+  #This methos is called when the User want's to generate a Market Summary
   def Summary_click(self, **event_args): 
     #Create Variables for multiple Uses in Function
     lng_lat_marker = {
@@ -838,6 +792,7 @@ class Map2_0(Map2_0Template):
                         "without_apartment": without_apartment} 
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
+                           "population_int": countie_data[0][19]
                            "people_u75": "{:,}".format(int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)),
                            "people_o75": "{:,}".format(int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)),
                            "apartments": "{:,}".format(apartments),
@@ -873,22 +828,14 @@ class Map2_0(Map2_0Template):
     mapPDF = app_tables.pictures.search()[0]    
     anvil.media.download(mapPDF['pic'])
     
-  #####  Button Functions   #####
-  ###############################
-  #####  Dropdown Functions #####
+#####  Button Functions   #####
+###############################
+#####  Dropdown Functions #####
 
-  #This method is called when the Time-Dropdown-Menu has changed  
-  def time_dropdown_change(self, **event_args):
-  
-    #Set iso-Layer for new Time-Option
+  #This method is called when the Dropdown-Menu has changed
+  def distance_dropdown_change(self, **event_args):
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-    
-  #This method is called when the Profile-Dropdown-Menu has changed  
-  def profile_dropdown_change(self, **event_args):
   
-    #Set iso-Layer for new Profile-Option 
-    self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-
   #####  Dropdown Functions #####
   ###############################
   #####  Upload Functions   #####
@@ -1770,11 +1717,11 @@ class Map2_0(Map2_0Template):
       Variables.activeLayer = None
     
   #This method is called from different Menu-Collapsables
-  def icon_change(self, container, container_state, icon, icon_icon):
+  def icon_change(self, container, container_state, icon_container, icon):
     
     #Change State of Button and Image of Icon
     container.visible = container_state
-    icon.icon = icon_icon
+    icon_container.icon = icon
   
   #This method is called from the file uploader to set Markers based on Excel-Data
   def set_excel_markers(self, el, el_className, el_image, marker_cat, coords, marker_list, color):
@@ -1938,10 +1885,6 @@ class Map2_0(Map2_0Template):
               else:
                 occupancy = "-"
               if not entry[38] == "-":
-                print('########################')
-                print(entry[38])
-                print(len(entry[38]))
-                print(entry[38].index("."))
                 if len(entry[38]) == 4:
                   if entry[38].index(".") == 2:
                     invest = entry[38] + "0"

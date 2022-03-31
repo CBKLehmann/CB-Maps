@@ -30,7 +30,7 @@ components:
       background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: dist_layer
     layout_properties: {grid_position: 'UXARRM,SMPAHC'}
-    event_bindings: {click: dist_layer_click}
+    event_bindings: {click: button_toggle_menu_parts}
   - type: LinearPanel
     properties: {}
     name: linear_panel_1
@@ -64,7 +64,7 @@ components:
           include_placeholder: false
         name: time_dropdown
         layout_properties: {grid_position: 'HLOXGP,GRIYLK', slot: .floating-menu}
-        event_bindings: {change: time_dropdown_change}
+        event_bindings: {change: distance_dropdown_change}
       - type: Spacer
         properties: {height: 7}
         name: spacer_5
@@ -91,7 +91,7 @@ components:
           include_placeholder: false
         name: profile_dropdown
         layout_properties: {grid_position: 'GMMXUD,NKRTFT'}
-        event_bindings: {change: profile_dropdown_change}
+        event_bindings: {change: distance_dropdown_change}
   - type: Button
     properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: Marker-Icons, font_size: null, font: '',
@@ -99,7 +99,7 @@ components:
       background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: button_icons
     layout_properties: {grid_position: 'UJHSOK,KUGVSB'}
-    event_bindings: {click: button_icons_click}
+    event_bindings: {click: button_toggle_menu_parts}
   - type: LinearPanel
     properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
       border: '', visible: false, role: null, tooltip: ''}
@@ -209,7 +209,7 @@ components:
       underline: false, icon: 'fa:angle-right'}
     name: button_overlay
     layout_properties: {grid_position: 'FCPOMN,NTZMHZ'}
-    event_bindings: {click: button_overlay_click}
+    event_bindings: {click: button_toggle_menu_parts}
   - type: LinearPanel
     properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
       border: '', visible: false, role: null, tooltip: ''}
@@ -271,7 +271,7 @@ components:
       background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: map_styles
     layout_properties: {grid_position: 'MKLHBF,IQYDQP'}
-    event_bindings: {click: map_styles_click}
+    event_bindings: {click: button_toggle_menu_parts}
   - type: LinearPanel
     properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
       border: '', visible: false, role: null, tooltip: ''}
@@ -301,7 +301,7 @@ components:
       background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: poi_categories
     layout_properties: {grid_position: 'TOBGKI,VFJINZ'}
-    event_bindings: {click: poi_categories_click}
+    event_bindings: {click: button_toggle_menu_parts}
   - type: LinearPanel
     properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
       border: '', visible: false, role: null, tooltip: ''}
@@ -315,12 +315,12 @@ components:
       components:
       - type: Button
         properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-          foreground: '', visible: true, text: healthcare, font_size: null, font: '',
+          foreground: '', visible: true, text: Healthcare, font_size: null, font: '',
           spacing_above: small, icon_align: left, spacing_below: small, italic: false,
           background: '', bold: false, underline: false, icon: 'fa:angle-right'}
         name: button_healthcare
         layout_properties: {grid_position: 'ZEHIQE,IWWKRO'}
-        event_bindings: {click: button_healthcare_click}
+        event_bindings: {click: button_toggle_menu_parts}
       - type: LinearPanel
         properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
           border: '', visible: false, role: null, tooltip: ''}
@@ -403,11 +403,11 @@ components:
           background: '', bold: false, underline: false, icon: 'fa:angle-right'}
         name: misc_button
         layout_properties: {grid_position: 'ONQFBJ,TCVIOF'}
-        event_bindings: {click: misc_button_click}
+        event_bindings: {click: button_toggle_menu_parts}
       - type: LinearPanel
         properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
           border: '', visible: false, role: null, tooltip: ''}
-        name: Misc_Container
+        name: misc_container
         layout_properties: {grid_position: 'RUIDQY,DLITNR'}
         components:
         - type: CheckBox
@@ -454,7 +454,7 @@ components:
           underline: false, icon: 'fa:angle-right'}
         name: opnv_button
         layout_properties: {grid_position: 'AZHSKZ,SAKXKE'}
-        event_bindings: {click: opnv_button_click}
+        event_bindings: {click: button_toggle_menu_parts}
       - type: LinearPanel
         properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
           border: '', visible: false, role: null, tooltip: ''}
