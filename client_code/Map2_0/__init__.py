@@ -102,15 +102,49 @@ class Map2_0(Map2_0Template):
     layer_name = dict(event_args)["sender"].text.replace(" ", "_")
     outline_name = "outline_" + layer_name
     visibility = self.mapbox.getLayoutProperty(layer_name, "visibility")
-    all_layers = ["federal_states", "administrative_districts", "counties", "municipalities", "districts", "netherlands"]
+    all_layers = [
+      {
+        'name': "federal_states",
+        'checkbox': self.check_box_fs
+      }, 
+      {
+        'name': "administrative_districts",
+        'checkbox': self.check_box_ad
+      }, 
+      {
+        'name': "counties",
+        'checkbox': self.check_box_c
+      }, 
+      {
+        'name': "municipalities",
+        'checkbox': self.check_box_m
+      }, 
+      {
+        'name': "districts",
+        'checkbox': self.check_box_d
+      }, 
+      {
+        'name': "netherlands",
+        'checkbox': self.check_box_nl
+      }
+    ]
+    inactive_layers = []
+    inactive_checkboxes = []
+    
+    print(visibility)
     
     if visibility == "none":
       new_visibility = "visible"
     else:
       new_visibility = "none"
-      
+    
+    for layer in all_layers:
+      if not layer == layer_name:
+        inactive_layers.append([layer['name'], "outline_" + layer['name']])
+        inactive_checkboxes.append(layer['checkbox'])
+    
     #Change Active Layer to show
-    self.change_active_Layer([layer_name, outline_name], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], new_visibility, [self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt, self.check_box_nl])
+    self.change_active_Layer([layer_name, outline_name], inactive_layers, new_visibility, inactive_checkboxes)
     
   #This method is called when the Check Box for Regierungsbezirke-Layer is checked or unchecked
   def check_box_rb_change(self, **event_args):
@@ -1332,24 +1366,24 @@ class Map2_0(Map2_0Template):
                'id_outline': 'outline_federal_states', 
                'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json',
                'line_width': 2}, 
-              {'id_fill': 'regierungsbezirke',
-               'id_outline': 'outlineRB', 
+              {'id_fill': 'administrative_districts',
+               'id_outline': 'outline_administrative_districts', 
                'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json',
                'line_width': 1},
-             {'id_fill': 'landkreise',
-               'id_outline': 'outlineLK', 
+             {'id_fill': 'counties',
+               'id_outline': 'outline_counties', 
                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/landkreise.geojson',
                'line_width': 0.5},
-             {'id_fill': 'gemeinden',
-               'id_outline': 'outlineGM', 
+             {'id_fill': 'municipalities',
+               'id_outline': 'outline_municipalities', 
                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson',
                'line_width': 0.5},
-             {'id_fill': 'bezirke',
-               'id_outline': 'outlineBK', 
+             {'id_fill': 'districts',
+               'id_outline': 'outline_districts', 
                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson',
                'line_width': 0.5},
              {'id_fill': 'netherlands',
-               'id_outline': 'outlineNL', 
+               'id_outline': 'outline_netherlands', 
                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson',
                'line_width': 0.5}]
     
@@ -1903,6 +1937,8 @@ class Map2_0(Map2_0Template):
     
     #Check if Layer is visible or not
     for el in layer:
+    
+      print(el)
     
       #Hide active Layer
       self.mapbox.setLayoutProperty(el, 'visibility', visibility)
