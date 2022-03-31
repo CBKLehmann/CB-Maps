@@ -14,56 +14,58 @@ import anvil.media
 import math
 import datetime
 
+
 #Get global Variables
 global Variables, Layer
+
 
 #Definition of every function inside Map2_0
 class Map2_0(Map2_0Template):
 
 ##### General Functions #####  
-  
+
   #Set Form properties and Data Bindings
   def __init__(self, **properties):
     self.init_components(**properties)
     self.dom = anvil.js.get_dom_node(self.spacer_1)
     self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
-    self.token = 'pk.eyJ1Ijoic2hpbnlrYW1wZmtldWxlIiwiYSI6ImNreWluYm5jMTBrYXcydnFvbmt3a3RiMG8ifQ.UEt90g8gVzPhsJof0znguA'
+    self.token = "pk.eyJ1Ijoic2hpbnlrYW1wZmtldWxlIiwiYSI6ImNreWluYm5jMTBrYXcydnFvbmt3a3RiMG8ifQ.UEt90g8gVzPhsJof0znguA"
+  
   
   #This method is called when the HTML panel is shown on the screen
   def form_show(self, **event_args):
     #Initiate Map, Marker and Geocoder
     mapboxgl.accessToken = self.token
     self.mapbox = mapboxgl.Map({'container': self.dom,
-                                'style': 'mapbox://styles/mapbox/outdoors-v11',
+                                'style': "mapbox://styles/mapbox/outdoors-v11",
                                 'center': [13.4092, 52.5167],
                                 'zoom': 8})
-    self.marker = mapboxgl.Marker({'color': '#0000FF', 'draggable': True})
+    self.marker = mapboxgl.Marker({'color': "#0000FF", 'draggable': True})
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
     self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
     self.mapbox.addControl(self.geocoder)
     
     #Initiate Listeners for different Functions  
-    self.geocoder.on('result', self.move_marker)
-    self.marker.on('dragend', self.marker_dragged) 
-    self.mapbox.on('mousemove', 'bundeslaender', self.change_hover_state)
-    self.mapbox.on('mouseleave', 'bundeslaender', self.change_hover_state)
-    self.mapbox.on('mousemove', 'regierungsbezirke', self.change_hover_state)
-    self.mapbox.on('mouseleave', 'regierungsbezirke', self.change_hover_state)
-    self.mapbox.on('mousemove', 'landkreise', self.change_hover_state)
-    self.mapbox.on('mouseleave', 'landkreise', self.change_hover_state)
-    self.mapbox.on('mousemove', 'gemeinden', self.change_hover_state)
-    self.mapbox.on('mouseleave', 'gemeinden', self.change_hover_state)
-    self.mapbox.on('mousemove', 'bezirke', self.change_hover_state)
-    self.mapbox.on('mouseleave', 'bezirke', self.change_hover_state)
-    self.mapbox.on('mousemove', 'netherlands', self.change_hover_state)
-    self.mapbox.on('mouseleave', 'netherlands', self.change_hover_state)
-    self.mapbox.on('click', 'bundeslaender', self.popup)
-    self.mapbox.on('click', 'regierungsbezirke', self.popup)
-    self.mapbox.on('click', 'landkreise', self.popup)
-    self.mapbox.on('click', 'gemeinden', self.popup)
-    self.mapbox.on('click', 'bezirke', self.popup)
-    self.mapbox.on('click', self.poi)
-    self.mapbox.on('styledata', self.place_layer)
+    self.geocoder.on("result", self.move_marker)
+    self.marker.on("dragend", self.marker_dragged) 
+    self.mapbox.on("mousemove", "federal_states", self.change_hover_state)
+    self.mapbox.on("mouseleave", "federal_states", self.change_hover_state)
+    self.mapbox.on("mousemove", "administrative_districts", self.change_hover_state)
+    self.mapbox.on("mouseleave", "administrative_districts", self.change_hover_state)
+    self.mapbox.on("mousemove", "counties", self.change_hover_state)
+    self.mapbox.on("mouseleave", "counties", self.change_hover_state)
+    self.mapbox.on("mousemove", "municipalities", self.change_hover_state)
+    self.mapbox.on("mouseleave", "municipalities", self.change_hover_state)
+    self.mapbox.on("mousemove", "districts", self.change_hover_state)
+    self.mapbox.on("mouseleave", "districts", self.change_hover_state)
+    self.mapbox.on("mousemove", 'netherlands', self.change_hover_state)
+    self.mapbox.on("mouseleave", 'netherlands', self.change_hover_state)
+    self.mapbox.on("click", "federal_states", self.popup)
+    self.mapbox.on("click", "administrative_districts", self.popup)
+    self.mapbox.on("click", "counties", self.popup)
+    self.mapbox.on("click", "municipalities", self.popup)
+    self.mapbox.on("click", "districts", self.popup)
+    self.mapbox.on("styledata", self.place_layer)
  
 #####  General Functions  #####
 ###############################
@@ -71,19 +73,20 @@ class Map2_0(Map2_0Template):
 
   #This method is called when one of the Marker-Icon-Types should be hidden or shown
   def check_box_marker_icons_change(self, **event_args):
-    if dict(event_args)['sender'].text == 'Capital Bay':
-      self.show_hide_marker(self.check_box_cb.checked, 'cb_marker')
-    elif dict(event_args)['sender'].text == 'Competitors':
-      self.show_hide_marker(self.check_box_kk.checked, 'kk_marker')
-    elif dict(event_args)['sender'].text == 'Hotels':
-      self.show_hide_marker(self.check_box_h.checked, 'h_marker')
-    elif dict(event_args)['sender'].text == 'Hospitals':
-      self.show_hide_marker(self.check_box_kh.checked, 'kh_marker')
-    elif dict(event_args)['sender'].text == 'Schools':
-      self.show_hide_marker(self.check_box_s.checked, 's_marker')
-    elif dict(event_args)['sender'].text == 'Stores':
-      self.show_hide_marker(self.check_box_g.checked, 'lg_marker')
+    if dict(event_args)['sender'].text == "Capital Bay":
+      self.show_hide_marker(self.check_box_cb.checked, "cb_marker")
+    elif dict(event_args)['sender'].text == "Competitors":
+      self.show_hide_marker(self.check_box_kk.checked, "kk_marker")
+    elif dict(event_args)['sender'].text == "Hotels":
+      self.show_hide_marker(self.check_box_h.checked, "h_marker")
+    elif dict(event_args)['sender'].text == "Hospitals":
+      self.show_hide_marker(self.check_box_kh.checked, "kh_marker")
+    elif dict(event_args)['sender'].text == "Schools":
+      self.show_hide_marker(self.check_box_s.checked, "s_marker")
+    elif dict(event_args)['sender'].text == "Stores":
+      self.show_hide_marker(self.check_box_g.checked, "lg_marker")
 
+      
   #This method is call when all of the Marker-Icon-Types should be hidden or shown
   def button_marker_icons_change(self, **event_args):
     all_marker = self.icon_categories.get_components()
@@ -96,10 +99,11 @@ class Map2_0(Map2_0Template):
     for marker in all_marker:
       self.show_hide_marker(marker_state, marker.tooltip)
       marker.checked = marker_state
-    
+   
+  
   #This method is called when the Check Box for Bundesländer-Layer is checked or unchecked
-  def check_box_bl_change(self, **event_args):
-    layer_name = dict(event_args)["sender"].text.replace(" ", "_")
+  def check_box_overlays_change(self, **event_args):
+    layer_name = dict(event_args)['sender'].text.replace(" ", "_")
     outline_name = "outline_" + layer_name
     visibility = self.mapbox.getLayoutProperty(layer_name, "visibility")
     all_layers = [
@@ -131,159 +135,56 @@ class Map2_0(Map2_0Template):
     inactive_layers = []
     inactive_checkboxes = []
     
-    print(visibility)
-    
     if visibility == "none":
       new_visibility = "visible"
     else:
       new_visibility = "none"
     
     for layer in all_layers:
-      if not layer == layer_name:
+      if not layer['name'] == layer_name:
         inactive_layers.append([layer['name'], "outline_" + layer['name']])
         inactive_checkboxes.append(layer['checkbox'])
     
     #Change Active Layer to show
     self.change_active_Layer([layer_name, outline_name], inactive_layers, new_visibility, inactive_checkboxes)
-    
-  #This method is called when the Check Box for Regierungsbezirke-Layer is checked or unchecked
-  def check_box_rb_change(self, **event_args):
-      
-    #Get Visibility of Layer
-    visibility = self.mapbox.getLayoutProperty('regierungsbezirke', 'visibility')
-      
-    #Check state of visibility
-    if visibility == 'none':
-      
-      #Change Active Layer to show
-      self.change_active_Layer(['regierungsbezirke', 'outlineRB'], [['bundeslaender', 'outlineBL'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'visible', [self.check_box_bl, self.check_box_lk, self.check_box_gm, self.check_box_dt, self.check_box_nl])
-    
-    #Check state of visibility
-    elif visibility == 'visible':
-      
-      #Change Active Layer to hide
-      self.change_active_Layer(['regierungsbezirke', 'outlineRB'], [['bundeslaender', 'outlineBL'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'none', [self.check_box_bl, self.check_box_lk, self.check_box_gm, self.check_box_dt, self.check_box_nl])
+   
   
-  #This method is called when the Check Box for Landkreise-Layer is checked or unchecked
-  def check_box_lk_change(self, **event_args):
+  #This method is called when various Check Boxes for different POI Categories get checked or unchecked
+  def check_box_poi_change(self, **event_args):
+    if dict(event_args)['sender'].text == "veterinary":
+      Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
+    elif dict(event_args)['sender'].text == "social facility":
+      Variables.last_bbox_soc = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, "social_facility", Variables.icon_social)   
+    elif dict(event_args)['sender'].text == "pharmacy":
+      Variables.last_bbox_pha = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
+    elif dict(event_args)['sender'].text == "nursing-home":
+      Variables.last_bbox_nur = self.create_icons(self.check_box_nur.checked, Variables.last_bbox_nur, "nursing_home", Variables.icon_nursing)
+    elif dict(event_args)['sender'].text == "hospital":
+      Variables.last_bbox_hos = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
+    elif dict(event_args)['sender'].text == "clinic":
+      Variables.last_bbox_cli = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
+    elif dict(event_args)['sender'].text == "dentist":
+      Variables.last_bbox_den = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
+    elif dict(event_args)['sender'].text == "doctors":
+      Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)      
+    elif dict(event_args)['sender'].text == "supermarket":
+      Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
+    elif dict(event_args)['sender'].text == "restaurant":
+      Variables.last_bbox_res = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant)  
+    elif dict(event_args)['sender'].text == "cafe":
+      Variables.last_bbox_caf = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
+    elif dict(event_args)['sender'].text == "university":
+      Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, "university", Variables.icon_university)  
+    elif dict(event_args)['sender'].text == "bus stop":
+      Variables.last_bbox_bus = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)  
+    elif dict(event_args)['sender'].text == "tram stop":
+      Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
+    elif dict(event_args)['sender'].text == "Nursing Homes DB":
+      Variables.last_bbox_nh = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
+    elif dict(event_args)['sender'].text == "Assisted Living DB":
+      Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
 
-    #Get Visibility of Layer
-    visibility = self.mapbox.getLayoutProperty('landkreise', 'visibility')
-      
-    #Check state of visibility
-    if visibility == 'none':
-      
-      #Change Active Layer to show
-      self.change_active_Layer(['landkreise', 'outlineLK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_gm, self.check_box_dt, self.check_box_nl])
-    
-    #Check state of visibility
-    elif visibility == 'visible':
-    
-      #Change Active Layer to hide
-      self.change_active_Layer(['landkreise', 'outlineLK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_gm, self.check_box_dt, self.check_box_nl])
-
-  #This method is called when the Check Box for Gemeinden-Layer is checked or unchecked
-  def check_box_gm_change(self, **event_args):
-      
-    #Get Visibility of Layer
-    visibility = self.mapbox.getLayoutProperty('gemeinden', 'visibility')
-      
-    #Check state of visibility
-    if visibility == 'none':
-      
-      #Change Active Layer to show
-      self.change_active_Layer(['gemeinden', 'outlineGM'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_dt, self.check_box_nl])
-      
-    #Check state of visibility
-    elif visibility == 'visible':
-      
-      #Change Active Layer to hide
-      self.change_active_Layer(['gemeinden', 'outlineGM'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_dt, self.check_box_nl])
-    
-  #This method is called when the Check Box for Gemeinden-Layer is checked or unchecked
-  def check_box_dt_change(self, **event_args):
-
-    #Get Visibility of Layer
-    visibility = self.mapbox.getLayoutProperty('bezirke', 'visibility')
-    
-    #Check state of visibility
-    if visibility == 'none':
-    
-      #Change Active Layer to show
-      self.change_active_Layer(['bezirke', 'outlineBK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['netherlands', 'outlineNL']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_nl])
-    
-    #Check state of visibility
-    elif visibility == 'visible':
-    
-      #Change Active Layer to hide
-      self.change_active_Layer(['bezirke', 'outlineBK'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['netherlands', 'outlineNL']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_nl])
-    
-  #This method is called when the Check Box for Niederlande-Layer is checked or unchecked  
-  def check_box_nl_change(self, **event_args):
-
-    #Get Visibility of Layer
-    visibility = self.mapbox.getLayoutProperty('netherlands', 'visibility')
-    
-    #Check state of visibility
-    if visibility == 'none':
-    
-      #Change Active Layer to show
-      self.change_active_Layer(['netherlands', 'outlineNL'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'visible', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt])
-    
-    #Check state of visibility
-    elif visibility == 'visible':
-    
-      #Change Active Layer to hide
-      self.change_active_Layer(['netherlands', 'outlineNL'], [['bundeslaender', 'outlineBL'], ['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK']], 'none', [self.check_box_bl, self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt])
-    
-  #This method is called when the Check Box for POI 'doctors' is checked or unchecked
-  def check_box_doc_change(self, **event_args):
   
-    #Call create_icons-Function to set the Icons on Map and save last BBox of doctors
-    Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, 'doctors', Variables.icon_doctors)
-  
-  #This method is called when the Check Box for POI 'dentist' is checked or unchecked
-  def check_box_den_change(self, **event_args):
-  
-    #Call create_icons-Function to set the Icons on Map and save last BBox of dentist
-    Variables.last_bbox_den = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, 'dentist', Variables.icon_dentist)
-  
-  #This method is called when the Check Box for POI 'clinic' is checked or unchecked
-  def check_box_cli_change(self, **event_args):
-    
-    #Call create_icons-Function to set the Icons on Map and save last BBox of clinics
-    Variables.last_bbox_cli = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, 'clinic', Variables.icon_clinics)
-
-  #This method is called when the Check Box for POI 'hospital' is checked or unchecked
-  def check_box_hos_change(self, **event_args):
-  
-    #Call create_icons-Function to set the Icons on Map and save last BBox of hospital
-    Variables.last_bbox_hos = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, 'hospital', Variables.icon_hospital)
-
-  #This method is called when the Check Box for POI 'nursing_home' is checked or unchecked
-  def check_box_nur_change(self, **event_args):
-    
-    #Call create_icons-Function to set the Icons on Map and save last BBox of nursing_home
-    Variables.last_bbox_nur = self.create_icons(self.check_box_nur.checked, Variables.last_bbox_nur, 'nursing_home', Variables.icon_nursing)
-  
-  #This method is called when the Check Box for POI 'pharmacy' is checked or unchecked
-  def check_box_pha_change(self, **event_args):
-    
-    #Call create_icons-Function to set the Icons on Map and save last BBox of pharmacy
-    Variables.last_bbox_pha = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, 'pharmacy', Variables.icon_pharmacy)
-
-  #This method is called when the Check Box for POI 'social_facility' is checked or unchecked
-  def check_box_soc_change(self, **event_args):
-    
-    #Call create_icons-Function to set the Icons on Map and save last BBox of social_facility
-    Variables.last_bbox_soc = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, 'social_facility', Variables.icon_social)
-
-  #This method is called when the Check Box for POI 'doctors' is checked or unchecked
-  def check_box_vet_change(self, **event_args):
-    
-    #Call create_icons-Function to set the Icons on Map and save last BBox of veterinary
-    Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, 'veterinary', Variables.icon_veterinary)
-      
   #This method is called when the Check Box for POI based on HFCIG is checked or unchecked
   def checkbox_poi_x_hfcig_change(self, **event_args):
       
@@ -333,69 +234,22 @@ class Map2_0(Map2_0Template):
         if el.checked == True:
           
           #Loop through every Element in global Icon-Elements 
-          for ele in Variables.icons[f'{el.text}']:
+          for ele in Variables.icons[f'{el.text.replace(" ", "_").replace("-", "_")}']:
             
             #Get coordinates of current Icon
             ele_coords = dict(ele['_lngLat'])
             
             #Check if Icon is inside visible Bounding Box
-            if bbox[0] > ele_coords['lat'] or ele_coords['lat'] > bbox[2] and bbox[1] > ele_coords['lng'] or ele_coords['lng'] < bbox[3]:
-  
-              #Remove Element from Map
-              ele.remove()
+            if bbox[0] > ele_coords['lat'] or ele_coords['lat'] > bbox[2]:
+              if bbox[1] > ele_coords['lng'] or ele_coords['lng'] > bbox[3]:
+                ele.remove()
   
     #Do if checkbox is unchecked
     else:  
       
       #Get visible Bounding Box of Map
       bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
-    
-  #This method is called when the Check Box for POI 'bus' is checked or unchecked    
-  def check_box_bus_change(self, **event_args):
-    
-    #Call create_icons-Function to set the Icons on Map and save last BBox of bus_stop
-    Variables.last_bbox_bus = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, 'bus_stop', Variables.icon_bus)
-  
-  #This method is called when the Check Box for POI 'tram' is checked or unchecked
-  def check_box_tra_change(self, **event_args):
-    
-    #Call create_icons-Function to set the Icons on Map and save last BBox of tram_stop
-    Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, 'tram_stop', Variables.icon_tram)
-   
-  #This method is called when the Check Box for POI 'supermarket' is checked or unchecked
-  def check_box_sma_change(self, **event_args):
-    
-    #Call create_icons-Function to set the Icons on Map and save last BBox of supermarket
-    Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, 'supermarket', Variables.icon_supermarket)
 
-  #This method is called when the Check Box for POI 'restaurant' is checked or unchecked
-  def check_box_res_change(self, **event_args):
-    
-    #Call create_icons-Function to set the Icons on Map and save last BBox of restaurant
-    Variables.last_bbox_res = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, 'restaurant', Variables.icon_restaurant)
-
-  #This method is called when the Check Box for POI 'cafe' is checked or unchecked  
-  def check_box_cafe_change(self, **event_args):
-    
-    #Call create_icons-Function to set the Icons on Map and save last BBox of cafe
-    Variables.last_bbox_caf = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, 'cafe', Variables.icon_cafe)
-
-  #This method is called when the Check Box for POI 'university' is checked or unchecked  
-  def check_box_uni_change(self, **event_args):
-    
-    #Call create_icons-Function to set the Icons on Map and save last BBox of university
-    Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, 'university', Variables.icon_university)
-   
-  #This method is called when the Check Box for POI 'Pflege DB' is checked or unchecked
-  def pdb_data_cb_change(self, **event_args):
-    
-    #Call create_icons-Function to set the Icons on Map and save last BBox of Pflege DB
-    Variables.last_bbox_pdb = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_pdb, 'pflegeDB', Variables.icon_pflegeDB)
-    
-  def pdb_data_al_change(self, **event_args):
-  
-    #Call create_icons-Function to set the Icons on Map and save last BBox of Assisted Living DB
-    Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, 'assistedLiving', Variables.icon_al)
           
   ##### Check-Box Functions #####
   ###############################
@@ -774,10 +628,10 @@ class Map2_0(Map2_0Template):
         bbox[2] = point[1]
 
     #Get Data for Competitor Analysis Nursing Homes
-    data_comp_analysis_nh = self.organize_ca_data(Variables.pflegeDBEntries, 'pflegeDB', lng_lat_marker)
+    data_comp_analysis_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', lng_lat_marker)
     
     #Get Data for Competitor Analysis Assisted Living
-    data_comp_analysis_al = self.organize_ca_data(Variables.assistedLivingEntries, 'assistedLiving', lng_lat_marker)
+    data_comp_analysis_al = self.organize_ca_data(Variables.assisted_living_entries, 'assisted_living', lng_lat_marker)
 
     #Get Place from Geocoder-API for Map-Marker
     string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{lng_lat_marker['lng']},{lng_lat_marker['lat']}.json?access_token={self.token}"
@@ -1519,15 +1373,15 @@ class Map2_0(Map2_0Template):
         if bbox[0] < last_bbox[0] or bbox[1] < last_bbox[1] or bbox[2] > last_bbox[2] or bbox[3] > last_bbox[3]:
     
           # Check if Category is PflegeDB
-          if category == 'pflegeDB':
+          if category == 'nursing_homes':
     
             geojson = anvil.server.call('get_care_db_data', bbox, 'CareDB_Pflegeheime')
-            Variables.pflegeDBEntries = geojson
+            Variables.nursing_homes_entries = geojson
         
-          elif category == 'assistedLiving':
+          elif category == 'assisted_living':
     
             geojson = anvil.server.call('get_care_db_data', bbox, 'CareDB_Betreutes_Wohnen')
-            Variables.assistedLivingEntries = geojson
+            Variables.assisted_living_entries = geojson
     
           else:
     
@@ -1561,9 +1415,9 @@ class Map2_0(Map2_0Template):
               el.style.backgroundImage = f'url({picture})'
     
               # Check if Category is not PflegeDB
-              if not category == 'pflegeDB':
+              if not category == 'nursing_homes':
           
-                if not category == 'assistedLiving':
+                if not category == 'assisted_living':
     
                   # Get coordinates of current Icon
                   el_coords = ele['geometry']['coordinates']
@@ -1597,7 +1451,7 @@ class Map2_0(Map2_0Template):
                 )
                 
               # Check if Category is PflegeDB
-              elif category == 'pflegeDB':
+              elif category == 'nursing_homes':
     
                 el_coords = [ele[46], ele[45]]
     
@@ -1702,7 +1556,7 @@ class Map2_0(Map2_0Template):
                   f'<b>PG 5: </b> {ele[43]}'
                 )
     
-              elif category == 'assistedLiving':
+              elif category == 'assisted_living':
         
                 el_coords = [ele[27], ele[26]]
     
@@ -1890,7 +1744,7 @@ class Map2_0(Map2_0Template):
           Variables.last_cat = f'{category}'
           Variables.activeIcons.update({f'{category}': icons})
   
-      # Do if Bounding Box is the same as least Request
+      # Do if Bounding Box is the same as last Request
       else:
   
         # Loop through every Element in global Icon-Elements
@@ -1937,8 +1791,6 @@ class Map2_0(Map2_0Template):
     
     #Check if Layer is visible or not
     for el in layer:
-    
-      print(el)
     
       #Hide active Layer
       self.mapbox.setLayoutProperty(el, 'visibility', visibility)
@@ -2111,7 +1963,7 @@ class Map2_0(Map2_0Template):
     coords = []
 
     for entry in entries:
-      if topic == "pflegeDB":
+      if topic == "nursing_homes":
         lat_entry = "%.6f" % float(entry[45])
         lng_entry = "%.6f" % float(entry[46])
       else:
@@ -2123,7 +1975,7 @@ class Map2_0(Map2_0Template):
           if lng_entry == lng_icon and lat_entry == lat_icon:
             coords.append([lng_icon, lat_icon])
             counter += 1
-            if topic == "pflegeDB":
+            if topic == "nursing_homes":
               if entry[27] == "-":
                 anz_vers_pat = 0
               else:
@@ -2168,7 +2020,7 @@ class Map2_0(Map2_0Template):
               data_comp_analysis.append(data)
               index += 1
               break
-            elif topic == "assistedLiving":
+            elif topic == "assisted_living":
               if entry[19] == 'nan':
                 number_apts = 0
               else:
@@ -2198,5 +2050,9 @@ class Map2_0(Map2_0Template):
     request_static_map += "%5D%7D"
     
     return({"data": data_comp_analysis, "request": request_static_map})
+  
+  def create_bounding_box(self):
+    
+    
     
   #####   Extra Functions   #####

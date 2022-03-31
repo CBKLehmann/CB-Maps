@@ -223,7 +223,7 @@ components:
         background: '', bold: false, checked: false, underline: false}
       name: check_box_fs
       layout_properties: {grid_position: 'SZBLCG,MBBZCQ'}
-      event_bindings: {change: check_box_bl_change}
+      event_bindings: {change: check_box_overlays_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: administrative districts,
@@ -231,7 +231,7 @@ components:
         background: '', bold: false, checked: false, underline: false}
       name: check_box_ad
       layout_properties: {grid_position: 'GPVKXD,IDANFD'}
-      event_bindings: {change: check_box_rb_change}
+      event_bindings: {change: check_box_overlays_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: counties,
@@ -239,7 +239,7 @@ components:
         background: '', bold: false, checked: false, underline: false}
       name: check_box_c
       layout_properties: {grid_position: 'LYVJDW,TTVIWB'}
-      event_bindings: {change: check_box_lk_change}
+      event_bindings: {change: check_box_overlays_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: municipalities,
@@ -247,7 +247,7 @@ components:
         background: '', bold: false, checked: false, underline: false}
       name: check_box_m
       layout_properties: {}
-      event_bindings: {change: check_box_gm_change}
+      event_bindings: {change: check_box_overlays_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: districts,
@@ -255,7 +255,7 @@ components:
         background: '', bold: false, checked: false, underline: false}
       name: check_box_d
       layout_properties: {}
-      event_bindings: {change: check_box_dt_change}
+      event_bindings: {change: check_box_overlays_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: netherlands,
@@ -263,7 +263,7 @@ components:
         background: '', bold: false, checked: false, underline: false}
       name: check_box_nl
       layout_properties: {}
-      event_bindings: {change: check_box_nl_change}
+      event_bindings: {change: check_box_overlays_change}
   - type: Button
     properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: Map-Styles, font_size: null, font: '',
@@ -334,7 +334,7 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_vet
           layout_properties: {grid_position: 'JKWUCP,EVQSQL'}
-          event_bindings: {change: check_box_vet_change}
+          event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: social facility,
@@ -342,7 +342,7 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_soc
           layout_properties: {grid_position: 'LUJUAK,AZVFFA'}
-          event_bindings: {change: check_box_soc_change}
+          event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: pharmacy,
@@ -350,7 +350,7 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_pha
           layout_properties: {grid_position: 'JJBYJR,ZOJXFK'}
-          event_bindings: {change: check_box_pha_change}
+          event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: nursing-home,
@@ -358,7 +358,7 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_nur
           layout_properties: {grid_position: 'VNCKHP,IDRKGC'}
-          event_bindings: {change: check_box_nur_change}
+          event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: hospital,
@@ -366,7 +366,7 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_hos
           layout_properties: {grid_position: 'QZYNDT,PKLPPS'}
-          event_bindings: {change: check_box_hos_change}
+          event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: clinic,
@@ -374,7 +374,7 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_cli
           layout_properties: {grid_position: 'XSETJK,XFTLHQ'}
-          event_bindings: {change: check_box_cli_change}
+          event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: dentist,
@@ -382,7 +382,7 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_den
           layout_properties: {grid_position: 'WHBPXX,XMGVSC'}
-          event_bindings: {change: check_box_den_change}
+          event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: doctors,
@@ -390,7 +390,7 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_doc
           layout_properties: {grid_position: 'QXNBHZ,PREEKW'}
-          event_bindings: {change: check_box_doc_change}
+          event_bindings: {change: check_box_poi_change}
     - type: LinearPanel
       properties: {}
       name: linear_panel_4
@@ -417,7 +417,7 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_sma
           layout_properties: {}
-          event_bindings: {change: check_box_sma_change}
+          event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: restaurant,
@@ -425,7 +425,7 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_res
           layout_properties: {}
-          event_bindings: {change: check_box_res_change}
+          event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: cafe,
@@ -433,7 +433,7 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_cafe
           layout_properties: {}
-          event_bindings: {change: check_box_cafe_change}
+          event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: university,
@@ -441,7 +441,7 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_uni
           layout_properties: {}
-          event_bindings: {change: check_box_uni_change}
+          event_bindings: {change: check_box_poi_change}
     - type: LinearPanel
       properties: {}
       name: linear_panel_3
@@ -470,7 +470,7 @@ components:
           layout_properties:
             col_widths: {}
             grid_position: ZDVRVV,DQFEMK
-          event_bindings: {change: check_box_bus_change}
+          event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: tram stop,
@@ -480,7 +480,7 @@ components:
           layout_properties:
             col_widths: {}
             grid_position: XJQLUU,VWETYL
-          event_bindings: {change: check_box_tra_change}
+          event_bindings: {change: check_box_poi_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: Nursing Homes DB,
@@ -488,7 +488,7 @@ components:
         background: '', bold: false, checked: false, underline: false}
       name: pdb_data_cb
       layout_properties: {grid_position: 'PRSIWR,SBEUXJ'}
-      event_bindings: {change: pdb_data_cb_change}
+      event_bindings: {change: check_box_poi_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: Assisted Living DB,
@@ -496,7 +496,7 @@ components:
         background: '', bold: false, checked: false, underline: false}
       name: pdb_data_al
       layout_properties: {}
-      event_bindings: {change: pdb_data_al_change}
+      event_bindings: {change: check_box_poi_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: POI based on HFCIG,
