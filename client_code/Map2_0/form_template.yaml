@@ -119,7 +119,7 @@ components:
           background: '', bold: false, checked: true, underline: false}
         name: check_box_cb
         layout_properties: {grid_position: 'GDRGJX,FBWUOL'}
-        event_bindings: {change: check_box_cb_change}
+        event_bindings: {change: check_box_marker_icons_change}
       - type: CheckBox
         properties: {role: null, align: left, tooltip: kk_marker, border: '', enabled: true,
           foreground: '', allow_indeterminate: false, visible: true, text: Competitors,
@@ -127,7 +127,7 @@ components:
           background: '', bold: false, checked: true, underline: false}
         name: check_box_kk
         layout_properties: {grid_position: 'CDUFFW,FSJVQZ'}
-        event_bindings: {change: check_box_kk_change}
+        event_bindings: {change: check_box_cb_change}
       - type: CheckBox
         properties: {role: null, align: left, tooltip: h_marker, border: '', enabled: true,
           foreground: '', allow_indeterminate: false, visible: true, text: Hotels,
@@ -135,7 +135,7 @@ components:
           background: '', bold: false, checked: true, underline: false}
         name: check_box_h
         layout_properties: {grid_position: 'WUMQCG,IZCPMA'}
-        event_bindings: {change: check_box_h_change}
+        event_bindings: {change: check_box_cb_change}
       - type: CheckBox
         properties: {role: null, align: left, tooltip: kh_marker, border: '', enabled: true,
           foreground: '', allow_indeterminate: false, visible: true, text: Hospitals,
@@ -143,7 +143,7 @@ components:
           background: '', bold: false, checked: true, underline: false}
         name: check_box_kh
         layout_properties: {grid_position: 'DFXNFJ,CTWJTI'}
-        event_bindings: {change: check_box_kh_change}
+        event_bindings: {change: check_box_cb_change}
       - type: CheckBox
         properties: {role: null, align: left, tooltip: s_marker, border: '', enabled: true,
           foreground: '', allow_indeterminate: false, visible: true, text: Schools,
@@ -151,7 +151,7 @@ components:
           background: '', bold: false, checked: true, underline: false}
         name: check_box_s
         layout_properties: {grid_position: 'NLGYBD,BOPYTQ'}
-        event_bindings: {change: check_box_s_change}
+        event_bindings: {change: check_box_cb_change}
       - type: CheckBox
         properties: {role: null, align: left, tooltip: lg_marker, border: '', enabled: true,
           foreground: '', allow_indeterminate: false, visible: true, text: Stores,
@@ -159,7 +159,7 @@ components:
           background: '', bold: false, checked: true, underline: false}
         name: check_box_g
         layout_properties: {grid_position: 'VOTZNR,EHLICD'}
-        event_bindings: {change: check_box_g_change}
+        event_bindings: {change: check_box_cb_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', allow_indeterminate: false, visible: true, text: All, font_size: null,
