@@ -99,22 +99,19 @@ class Map2_0(Map2_0Template):
     
   #This method is called when the Check Box for Bundesländer-Layer is checked or unchecked
   def check_box_bl_change(self, **event_args):
-      
-    #Get Visibility of Layer
-    visibility = self.mapbox.getLayoutProperty('bundeslaender', 'visibility')
+    layer_name = dict(event_args)["sender"].text.replace(" ", "_")
+    outline_name = "outline_" + layer_name
+    visibility = self.mapbox.getLayoutProperty(layer_name, "visibility")
+    all_layers = ["federal_states", "administrative_districts", "counties", "municipalities", "districts", "netherlands"]
     
-    #Check state of visibility
-    if visibility == 'none':
+    if visibility == "none":
+      new_visibility = "visible"
+    else:
+      new_visibility = "none"
       
-      #Change Active Layer to show
-      self.change_active_Layer(['bundeslaender', 'outlineBL'], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'visible', [self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt, self.check_box_nl])
+    #Change Active Layer to show
+    self.change_active_Layer([layer_name, outline_name], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], new_visibility, [self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt, self.check_box_nl])
     
-    #Check state of visibility
-    elif visibility == 'visible':
-      
-      #Change Active Layer to hide
-      self.change_active_Layer(['bundeslaender', 'outlineBL'], [['regierungsbezirke', 'outlineRB'], ['landkreise', 'outlineLK'], ['gemeinden', 'outlineGM'], ['bezirke', 'outlineBK'], ['netherlands', 'outlineNL']], 'none', [self.check_box_rb, self.check_box_lk, self.check_box_gm, self.check_box_dt, self.check_box_nl])
-  
   #This method is called when the Check Box for Regierungsbezirke-Layer is checked or unchecked
   def check_box_rb_change(self, **event_args):
       
@@ -1331,8 +1328,8 @@ class Map2_0(Map2_0Template):
       }
     })
     
-    layers = [{'id_fill': 'bundeslaender',
-               'id_outline': 'outlineBL', 
+    layers = [{'id_fill': 'federal_states',
+               'id_outline': 'outline_federal_states', 
                'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json',
                'line_width': 2}, 
               {'id_fill': 'regierungsbezirke',
