@@ -792,13 +792,17 @@ class Map2_0(Map2_0Template):
                         "without_apartment": without_apartment} 
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
-                           "population_int": countie_data[0][19]
+                           "population_int": countie_data[0][19],
                            "people_u75": "{:,}".format(int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)),
+                           "people_u75_int": int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100),
                            "people_o75": "{:,}".format(int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)),
+                           "people_o75_int": int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100),
                            "apartments": "{:,}".format(apartments),
                            "apartments_per_10k": "{:,}".format(apartments_per_10k),
                            "people_u75_fc": "{:,}".format(round((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20]))),
+                           "people_u75_fc_int": round((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])),
                            "people_o75_fc": "{:,}".format(round((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20]))),
+                           "people_o75_fc_int": round((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])),
                            "forecast_change": countie_data[1][19],
                            "facilities_active": "{:,}".format(facilities_active),
                            "facilities_plan_build": "{:,}".format(facilities_plan_build),
@@ -808,17 +812,20 @@ class Map2_0(Map2_0Template):
                            "with_apartment": "{:,}".format(facilities_active - without_apartment),
                            "without_apartment": "{:,}".format(without_apartment),
                            "apartments_adjusted": "{:,}".format(apartments_adjusted),
+                           "apartments_adjusted_int": apartments_adjusted,
                            "facilities_building": "{:,}".format(facilities_building),
                            "with_apartment_building": "{:,}".format(facilities_building - without_apartment_building),
                            "without_apartment_building": "{:,}".format(without_apartment_building),
                            "apartments_building": "{:,}".format(apartments_building),
                            "build_apartments_average": "{:,}".format(build_apartments_average),
                            "build_apartments_adjusted": "{:,}".format(build_apartments_adjusted),
+                           "build_apartments_adjusted_int": build_apartments_adjusted,
                            "apartments_planning": "{:,}".format(apartments_planning),
                            "without_apartment_planning": "{:,}".format(without_apartment_planning),
                            "facilities_planning": "{:,}".format(facilities_planning),
                            "planning_apartments_average": "{:,}".format(planning_apartments_average),
-                           "planning_apartments_adjusted": "{:,}".format(planning_apartments_adjusted)
+                           "planning_apartments_adjusted": "{:,}".format(planning_apartments_adjusted),
+                           "planning_apartments_adjusted_int": planning_apartments_adjusted
                           }
     
     #Create Summary-PDF
