@@ -750,6 +750,7 @@ class Map2_0(Map2_0Template):
     people_o75 = int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)
     people_u75_fc = round(people_u75 * float(countie_data[1][20]))
     people_o75_fc = round(people_o75 * float(countie_data[1][20]))
+    apartments_plan_build_adjusted = build_apartments_adjusted + planning_apartments_adjusted
         
     #Get level, multiplier, surplus, demand and potential for Assisted Living Analysis
     if countie_data[0][19] < 30001:
@@ -893,7 +894,8 @@ class Map2_0(Map2_0Template):
                            "demand_2022": demand2022,
                            "surplus_2040": surplus2040,
                            "demand_2040": demand2040,
-                           "demand_potential": demand_potential
+                           "demand_potential": demand_potential,
+                           "apartments_plan_build_adjusted": apartments_plan_build_adjusted
                           }
     
     #Create Summary-PDF
