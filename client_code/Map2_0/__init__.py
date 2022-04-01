@@ -745,6 +745,37 @@ class Map2_0(Map2_0Template):
       if not el[19] == "nan":
         apartments_10km += int(float(el[19]))
 
+    #Get level, multiplier, surplus, demand and potential for Assisted Living Analysis
+    if countie_data[0][19] < 30001:
+      level = "national level"
+      multiplier = 0.03
+    elif countie_data[0][19] < 260000:
+      level = "small city"
+      multiplier = 0.05
+    else:
+      level = "top 30 city"
+      multiplier = 0.07
+    surplus2022 = round(apartments_adjusted - (((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * multiplier) / 1.5))
+    if surplus2022 > 0:
+      demand2022 = -abs(surplus2022)
+    else:
+      demand2022 = abs(surplus2022)
+    surplus2040 = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + (int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * multiplier) / 1.5))
+    if surplus2040 > 0:
+      demand2040 = -abs(surplus2040)
+    else:
+      demand2040 = abs(surplus2040)
+    if demand2040 <= -200:
+      demand_potential = "very low"
+    elif demand2040 <= 0:
+      demand_potential = "low"
+    elif demand2040 <= 200:
+      demand_potential = "average"
+    elif demand2040 <= 500:
+      demand_potential = "strong"
+    else:
+      demand_potential = "very strong"
+        
     #Create Charts and Static Map for Analysis
     values_pie_ca = [{"topic": "Median Nursing charge (PG 3) in €", "value": pg3_median}, {"topic": "Median Specific co-payment in €", "value": copayment_median}, {"topic": "Median Invest Cost in €", "value": invest_median}, {"topic": "Median Board and lodging in €", "value": board_median}]
     anvil.server.call("create_pie_chart", values_pie_ca, "donut_ca")
@@ -792,17 +823,12 @@ class Map2_0(Map2_0Template):
                         "without_apartment": without_apartment} 
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
-                           "population_int": countie_data[0][19],
                            "people_u75": "{:,}".format(int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)),
-                           "people_u75_int": int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100),
                            "people_o75": "{:,}".format(int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)),
-                           "people_o75_int": int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100),
                            "apartments": "{:,}".format(apartments),
                            "apartments_per_10k": "{:,}".format(apartments_per_10k),
                            "people_u75_fc": "{:,}".format(round((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20]))),
-                           "people_u75_fc_int": round((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])),
                            "people_o75_fc": "{:,}".format(round((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20]))),
-                           "people_o75_fc_int": round((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])),
                            "forecast_change": countie_data[1][19],
                            "facilities_active": "{:,}".format(facilities_active),
                            "facilities_plan_build": "{:,}".format(facilities_plan_build),
@@ -812,20 +838,56 @@ class Map2_0(Map2_0Template):
                            "with_apartment": "{:,}".format(facilities_active - without_apartment),
                            "without_apartment": "{:,}".format(without_apartment),
                            "apartments_adjusted": "{:,}".format(apartments_adjusted),
-                           "apartments_adjusted_int": apartments_adjusted,
                            "facilities_building": "{:,}".format(facilities_building),
                            "with_apartment_building": "{:,}".format(facilities_building - without_apartment_building),
                            "without_apartment_building": "{:,}".format(without_apartment_building),
                            "apartments_building": "{:,}".format(apartments_building),
                            "build_apartments_average": "{:,}".format(build_apartments_average),
                            "build_apartments_adjusted": "{:,}".format(build_apartments_adjusted),
-                           "build_apartments_adjusted_int": build_apartments_adjusted,
                            "apartments_planning": "{:,}".format(apartments_planning),
                            "without_apartment_planning": "{:,}".format(without_apartment_planning),
                            "facilities_planning": "{:,}".format(facilities_planning),
                            "planning_apartments_average": "{:,}".format(planning_apartments_average),
                            "planning_apartments_adjusted": "{:,}".format(planning_apartments_adjusted),
-                           "planning_apartments_adjusted_int": planning_apartments_adjusted
+                           "average_with_apartments": "{:,}".format(apartments_adjusted - apartments),
+                           "planned_with_apartments": "{:,}".format(facilities_planning - without_apartment_planning),
+                           "total_facility": "{:,}".format(facilities_active + facilities_building + facilities_planning),
+                           "total_apartments": "{:,}".format(apartments + (facilities_building - without_apartment_building) + apartments_planning),
+                           "total_apartments_adjusted": "{:,}".format(apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted),
+                           "demand_1_2022": "{:,}".format(round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.01) / 1.5)),
+                           "demand_1_2022_surplus": "{:,}".format(apartments_adjusted - round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.01) / 1.5)),
+                           "demand_1_2040": "{:,}".format(round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.01) / 1.5)),
+                           "demand_1_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.01) / 1.5)))),
+                           "demand_2_2022": "{:,}".format(round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.02) / 1.5)),
+                           "demand_2_2022_surplus": "{:,}".format(apartments_adjusted - round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.02) / 1.5)),
+                           "demand_2_2040": "{:,}".format(round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.02) / 1.5)),
+                           "demand_2_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.02) / 1.5)))),
+                           "demand_3_2022": "{:,}".format(round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.03) / 1.5)),
+                           "demand_3_2022_surplus": "{:,}".format(apartments_adjusted - round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.03) / 1.5)),
+                           "demand_3_2040": "{:,}".format(round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.03) / 1.5)),
+                           "demand_3_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.03) / 1.5)))),
+                           "demand_4_2022": "{:,}".format(round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.04) / 1.5)),
+                           "demand_4_2022_surplus": "{:,}".format(apartments_adjusted - round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.04) / 1.5)),
+                           "demand_4_2040": "{:,}".format(round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.04) / 1.5)),
+                           "demand_4_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.04) / 1.5)))),
+                           "demand_5_2022": "{:,}".format(round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.05) / 1.5)),
+                           "demand_5_2022_surplus": "{:,}".format(apartments_adjusted - round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.05) / 1.5)),
+                           "demand_5_2040": "{:,}".format(round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.05) / 1.5)),
+                           "demand_5_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.05) / 1.5)))),
+                           "demand_7_2022": "{:,}".format(round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.07) / 1.5)),
+                           "demand_7_2022_surplus": "{:,}".format(apartments_adjusted - round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.07) / 1.5)),
+                           "demand_7_2040": "{:,}".format(round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.07) / 1.5)),
+                           "demand_7_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.07) / 1.5)))),
+                           "demand_9_2022": "{:,}".format(round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.09) / 1.5)),
+                           "demand_9_2022_surplus": "{:,}".format(apartments_adjusted - round(((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100) + int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * 0.09) / 1.5)),
+                           "demand_9_2040": "{:,}".format(round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.09) / 1.5)),
+                           "demand_9_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round((((int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)) * float(countie_data[1][20])) + ((int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)) * float(countie_data[1][20])) * 0.09) / 1.5)))),
+                           "level": level,
+                           "surplus_2022": surplus2022,
+                           "demand_2022": demand2022,
+                           "surplus_2040": surplus2040,
+                           "demand_2040": demand2040,
+                           "demand_potential": demand_potential
                           }
     
     #Create Summary-PDF
