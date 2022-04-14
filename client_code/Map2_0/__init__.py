@@ -509,7 +509,9 @@ class Map2_0(Map2_0Template):
     
   #######Noch bearbeiten#######
   #This methos is called when the User want's to generate a Market Summary
-  def Summary_click(self, **event_args): 
+  def Summary_click(self, **event_args):
+    unique_code = anvil.server.call("get_unique_code")
+    
     #Create Variables for multiple Uses in Function
     lng_lat_marker = {
                       "lng": (dict(self.marker['_lngLat'])['lng']),
@@ -785,13 +787,13 @@ class Map2_0(Map2_0Template):
         
     #Create Charts and Static Map for Analysis
     values_pie_ca = [{"topic": "Median Nursing charge (PG 3) in €", "value": pg3_median}, {"topic": "Median Specific co-payment in €", "value": copayment_median}, {"topic": "Median Invest Cost in €", "value": invest_median}, {"topic": "Median Board and lodging in €", "value": board_median}]
-    anvil.server.call("create_pie_chart", values_pie_ca, "donut_ca")
+    anvil.server.call("create_pie_chart", values_pie_ca, f"donut_ca_{unique_code}")
     values_pie_sum = [{"topic": "% Public operators", "value": len(operator_public)}, {"topic": "% Non-profit operators", "value": len(operator_nonProfit)}, {"topic": "% Private operators", "value": len(operator_private)}]
-    anvil.server.call("create_pie_chart", values_pie_sum, "donut_sum")
+    anvil.server.call("create_pie_chart", values_pie_sum, f"donut_sum_{unique_code}")
     values_bar_sum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030", "value": inpatients_fc}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction)", "value": beds_adjusted}]
-    anvil.server.call("create_bar_chart", values_bar_sum, "bar")
-    anvil.server.call("create_static_map_ca", bbox, self.token, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'])
-    anvil.server.call("create_static_map_bewo", bbox, self.token, data_comp_analysis_al['data'], data_comp_analysis_al['request'])
+    anvil.server.call("create_bar_chart", values_bar_sum, f"bar_{unique_code}")
+    anvil.server.call("create_static_map_ca", bbox, self.token, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], unique_code)
+    anvil.server.call("create_static_map_bewo", bbox, self.token, data_comp_analysis_al['data'], data_comp_analysis_al['request'], unique_code)
     
     #Create Data-Objects for Summary
     sendData_Summary = {"zipcode": zipcode,
@@ -899,7 +901,7 @@ class Map2_0(Map2_0Template):
                           }
     
     #Create Summary-PDF
-    anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis)
+    anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code)
     
     #Get PDF from Table and start Download
     mapPDF = app_tables.pictures.search()[0]    
