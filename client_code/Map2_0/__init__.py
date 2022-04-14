@@ -923,87 +923,90 @@ class Map2_0(Map2_0Template):
     #Call Server-Function to safe the File  
     data = anvil.server.call('save_local_excel_file', file)
     
-    #Initialise Variables
-    markercount = 0
-    cb_marker = []
-    kk_marker = []
-    h_marker = []
-    kh_marker = []
-    s_marker = []
-    lg_marker = []
-    
-    #Add Marker while Markercount is under Amount of Adresses inside provided File
-    while markercount < len(data):
+    if data == None:
+      alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
+    else:
+      #Initialise Variables
+      markercount = 0
+      cb_marker = []
+      kk_marker = []
+      h_marker = []
+      kh_marker = []
+      s_marker = []
+      lg_marker = []
       
-      #Get Coordinates of provided Adress for Marker
-      req_str = self.build_request_string(data[markercount])
-      req_str += f'.json?access_token={self.token}'
-      coords = anvil.http.request(req_str,json=True)
-      coordinates = coords['features'][0]['geometry']['coordinates']
+      #Add Marker while Markercount is under Amount of Adresses inside provided File
+      while markercount < len(data):
+        
+        #Get Coordinates of provided Adress for Marker
+        req_str = self.build_request_string(data[markercount])
+        req_str += f'.json?access_token={self.token}'
+        coords = anvil.http.request(req_str,json=True)
+        coordinates = coords['features'][0]['geometry']['coordinates']
+        
+        #Create HTML Element for Marker
+        el = document.createElement('div')
+        width = 20
+        height = 20
+        el.className = 'marker'
+        el.style.width = f'{width}px'
+        el.style.height = f'{height}px'
+        el.style.backgroundSize = '100%'
+        el.style.backgroundrepeat = 'no-repeat'
+        
+        #Check which Icon the provided Adress has
+        if data[markercount]['Icon'] == 'CapitalBay':
+          
+          #Set Markers based on Excel
+          self.markerCB_static = None
+          self.set_excel_markers(el, 'markerCB', Variables.imageCB, self.markerCB_static, coordinates, cb_marker, data[markercount]['Pinfarbe'])
+        
+        #Check which Icon the provided Adress has
+        elif data[markercount]['Icon'] == 'Konkurrent':
+          
+          #Set Markers based on Excel
+          self.markerKK_static = None
+          self.set_excel_markers(el, 'markerKK', Variables.imageKK, self.markerKK_static, coordinates, kk_marker, data[markercount]['Pinfarbe'])  
+          
+        #Check which Icon the provided Adress has
+        elif data[markercount]['Icon'] == 'Hotel':
+          
+          #Set Markers based on Excel
+          self.markerH_static = None
+          self.set_excel_markers(el, 'markerH', Variables.imageH, self.markerH_static, coordinates, h_marker, data[markercount]['Pinfarbe'])
+          
+        #Check which Icon the provided Adress has
+        elif data[markercount]['Icon'] == 'Krankenhaus':     
+          
+          #Set Markers based on Excel
+          self.markerKH_static = None
+          self.set_excel_markers(el, 'markerKH', Variables.imageKH, self.markerKH_static, coordinates, kh_marker, data[markercount]['Pinfarbe'])
+          
+        #Check which Icon the provided Adress has
+        elif data[markercount]['Icon'] == 'Laden':     
+          
+          #Set Markers based on Excel
+          self.markerLG_static = None
+          self.set_excel_markers(el, 'markerLG', Variables.imageLG, self.markerLG_static, coordinates, lg_marker, data[markercount]['Pinfarbe'])
+          
+        #Check which Icon the provided Adress has
+        elif data[markercount]['Icon'] == 'Schule':       
+          
+          #Set Markers based on Excel
+          self.markerS_static = None
+          self.set_excel_markers(el, 'markerS', Variables.imageS, self.markerS_static, coordinates, s_marker, data[markercount]['Pinfarbe'])
+          
+        #Create Popup for Marker and add it to the Map
+        popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
+        popup.setHTML(data[markercount]['Informationen'])
+        popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
+        popup_static.addTo(self.mapbox)
+        
+        #Increase Markercount
+        markercount += 1
       
-      #Create HTML Element for Marker
-      el = document.createElement('div')
-      width = 20
-      height = 20
-      el.className = 'marker'
-      el.style.width = f'{width}px'
-      el.style.height = f'{height}px'
-      el.style.backgroundSize = '100%'
-      el.style.backgroundrepeat = 'no-repeat'
-      
-      #Check which Icon the provided Adress has
-      if data[markercount]['Icon'] == 'CapitalBay':
-        
-        #Set Markers based on Excel
-        self.markerCB_static = None
-        self.set_excel_markers(el, 'markerCB', Variables.imageCB, self.markerCB_static, coordinates, cb_marker, data[markercount]['Pinfarbe'])
-      
-      #Check which Icon the provided Adress has
-      elif data[markercount]['Icon'] == 'Konkurrent':
-        
-        #Set Markers based on Excel
-        self.markerKK_static = None
-        self.set_excel_markers(el, 'markerKK', Variables.imageKK, self.markerKK_static, coordinates, kk_marker, data[markercount]['Pinfarbe'])  
-        
-      #Check which Icon the provided Adress has
-      elif data[markercount]['Icon'] == 'Hotel':
-        
-        #Set Markers based on Excel
-        self.markerH_static = None
-        self.set_excel_markers(el, 'markerH', Variables.imageH, self.markerH_static, coordinates, h_marker, data[markercount]['Pinfarbe'])
-        
-      #Check which Icon the provided Adress has
-      elif data[markercount]['Icon'] == 'Krankenhaus':     
-        
-        #Set Markers based on Excel
-        self.markerKH_static = None
-        self.set_excel_markers(el, 'markerKH', Variables.imageKH, self.markerKH_static, coordinates, kh_marker, data[markercount]['Pinfarbe'])
-        
-      #Check which Icon the provided Adress has
-      elif data[markercount]['Icon'] == 'Laden':     
-        
-        #Set Markers based on Excel
-        self.markerLG_static = None
-        self.set_excel_markers(el, 'markerLG', Variables.imageLG, self.markerLG_static, coordinates, lg_marker, data[markercount]['Pinfarbe'])
-        
-      #Check which Icon the provided Adress has
-      elif data[markercount]['Icon'] == 'Schule':       
-        
-        #Set Markers based on Excel
-        self.markerS_static = None
-        self.set_excel_markers(el, 'markerS', Variables.imageS, self.markerS_static, coordinates, s_marker, data[markercount]['Pinfarbe'])
-        
-      #Create Popup for Marker and add it to the Map
-      popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
-      popup.setHTML(data[markercount]['Informationen'])
-      popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
-      popup_static.addTo(self.mapbox)
-      
-      #Increase Markercount
-      markercount += 1
-    
-    #Add Marker-Arrays to global Variable Marker
-    Variables.marker.update({'cb_marker': cb_marker, 'kk_marker': kk_marker, 'h_marker': h_marker, 'kh_marker': kh_marker, 's_marker': s_marker, 'lg_marker': lg_marker})
+      #Add Marker-Arrays to global Variable Marker
+      Variables.marker.update({'cb_marker': cb_marker, 'kk_marker': kk_marker, 'h_marker': h_marker, 'kh_marker': kh_marker, 's_marker': s_marker, 'lg_marker': lg_marker})
     
   #####  Upload Functions   #####
   ###############################
