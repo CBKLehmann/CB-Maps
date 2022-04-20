@@ -900,10 +900,7 @@ class Map2_0(Map2_0Template):
                           }
     
     #Create Summary-PDF
-    anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, self.token, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'])
-    
-    anvil.server.call("create_static_map_ca", bbox, self.token, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], unique_code)
-    anvil.server.call("create_static_map_bewo", bbox, self.token, data_comp_analysis_al['data'], data_comp_analysis_al['request'], unique_code)
+    anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, self.token, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], data_comp_analysis_al['data'], data_comp_analysis_al['request'])
     
     #Get PDF from Table and start Download
     mapPDF = app_tables.pictures.search()[0]    
