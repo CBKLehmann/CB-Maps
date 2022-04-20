@@ -1352,7 +1352,6 @@ class Map2_0(Map2_0Template):
           # Check if Category is PflegeDB
           if category == 'nursing_homes':
             geojson = anvil.server.call('get_care_db_data', bbox, 'CareDB_Pflegeheime')
-            print(geojson)
             Variables.nursing_homes_entries = geojson
         
           elif category == 'assisted_living':
