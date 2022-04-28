@@ -7,7 +7,8 @@ startup: {type: form, module: Map2_0}
 package_name: How_Far_Can_I_Go_
 allow_embedding: false
 name: Maps2.0
-runtime_options: {version: 2, client_version: '3', server_version: python3-sandbox}
+runtime_options: {version: 2, client_version: '3', server_version: python3-sandbox,
+  server_spec: null}
 metadata: {description: An app using Mapbox's Isochrone API which tells you how far you can travel given a certain amount of time.}
 startup_form: Map2_0
 native_deps: {head_html: '<script src=''https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js''></script>
