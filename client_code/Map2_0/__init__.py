@@ -1429,9 +1429,7 @@ class Map2_0(Map2_0Template):
               # Check if Category is PflegeDB
               elif category == 'nursing_homes':
     
-                print(ele[45])
-    
-                el_coords = [ele[45], ele[46]]
+                el_coords = [ele[46], ele[45]]
     
                 # Create Popup for Element
                 popup = mapboxgl.Popup({'offset': 25}).setHTML(
