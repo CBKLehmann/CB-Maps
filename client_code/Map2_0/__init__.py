@@ -734,9 +734,6 @@ class Map2_0(Map2_0Template):
       apartments_average = 0
       apartments_adjusted = 0
     if facilities_planning > 0 and apartments_planning > 0:
-      print(apartments_planning)
-      print(facilities_planning)
-      print(without_apartment_planning)
       planning_apartments_average = round(apartments_planning / (facilities_planning - without_apartment_planning))
       planning_apartments_adjusted = apartments_planning + (planning_apartments_average * without_apartment_planning)
     else:
@@ -1363,7 +1360,6 @@ class Map2_0(Map2_0Template):
           if category == 'nursing_homes':
             geojson = anvil.server.call('get_care_db_data', bbox, 'CareDB_Pflegeheime')
             Variables.nursing_homes_entries = geojson
-            print(geojson)
         
           elif category == 'assisted_living':
     
