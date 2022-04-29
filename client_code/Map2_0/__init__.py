@@ -187,19 +187,21 @@ class Map2_0(Map2_0Template):
 
   #This method is called when the Check Box for POI based on HFCIG is checked or unchecked
   def checkbox_poi_x_hfcig_change(self, **event_args):
-    checkbox =  self.poi_categories_healthcare_container.get_components()
+    #checkbox =  self.poi_categories_healthcare_container.get_components()
       
     if self.checkbox_poi_x_hfcig.checked == True:
       bbox = self.create_bounding_box()
-      for category in checkbox:
-        if category.checked == True:
-          for marker in Variables.icons[f'{category.text.replace(" ", "_").replace("-", "_")}']:
-            marker_coords = dict(marker['_lngLat'])
-            if not (bbox[0] < marker_coords['lat'] < bbox[2] and bbox[1] < marker_coords['lng'] < bbox[3]):
-              marker.remove()
+#       for category in checkbox:
+#         if category.checked == True:
+#           for marker in Variables.icons[f'{category.text.replace(" ", "_").replace("-", "_")}']:
+#             marker_coords = dict(marker['_lngLat'])
+#             if not (bbox[0] < marker_coords['lat'] < bbox[2] and bbox[1] < marker_coords['lng'] < bbox[3]):
+#               marker.remove()
     else:  
       bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
-          
+    
+    self.refresh_icons()  
+        
 ##### Check-Box Functions #####
 ###############################
 #####  Button Functions   #####
@@ -916,6 +918,8 @@ class Map2_0(Map2_0Template):
   #This method is called when the Dropdown-Menu has changed
   def distance_dropdown_change(self, **event_args):
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
+    
+    self.refresh_icons()
   
   #####  Dropdown Functions #####
   ###############################
@@ -1023,13 +1027,17 @@ class Map2_0(Map2_0Template):
     lnglat = result['result']['geometry']['coordinates']
     self.marker.setLngLat(lnglat)
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
+    
+    self.refresh_icons()
   
   #This method is called when the draggable Marker was moved
   def marker_dragged(self, drag):
   
     #Set iso-Layer for new Markerposition
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-
+    
+    self.refresh_icons()
+    
   #This method is called when the draggable Marker was moved or when the Geocoder was used
   def get_iso(self, profile, contours_minutes):
   
@@ -2062,5 +2070,68 @@ class Map2_0(Map2_0Template):
         bbox[2] = el[1]
         
     return bbox
+  
+  def refresh_icons(self):
     
+    checkbox =  self.poi_category.get_components()
+    for el in checkbox:
+      if isinstance(el, anvil.LinearPanel):
+        for component in el.get_components():
+          if isinstance(component, anvil.LinearPanel):
+            for ele in component.get_components():
+              self.change_icons(ele.text)
+      elif isinstance(el, anvil.CheckBox):
+        self.change_icons(el.text)
+  
+  def change_icons(self, checkbox):
+    
+    if checkbox == "veterinary" and self.check_box_vet.checked == True:
+      Variables.last_bbox_vet = self.create_icons(False, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
+      Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
+    elif checkbox == "social facility" and self.check_box_soc.checked == True:
+      Variables.last_bbox_soc = self.create_icons(False, Variables.last_bbox_soc, "social_facility", Variables.icon_social)  
+      Variables.last_bbox_soc = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, "social_facility", Variables.icon_social)   
+    elif checkbox == "pharmacy" and self.check_box_pha.checked == True:
+      Variables.last_bbox_pha = self.create_icons(False, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
+      Variables.last_bbox_pha = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
+    elif checkbox == "nursing-home" and self.check_box_nur.checked == True:
+      Variables.last_bbox_nur = self.create_icons(False, Variables.last_bbox_nur, "nursing_home", Variables.icon_nursing)
+      Variables.last_bbox_nur = self.create_icons(self.check_box_nur.checked, Variables.last_bbox_nur, "nursing_home", Variables.icon_nursing)
+    elif checkbox == "hospital" and self.check_box_hos.checked == True:
+      Variables.last_bbox_hos = self.create_icons(False, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
+      Variables.last_bbox_hos = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
+    elif checkbox == "clinic" and self.check_box_cli.checked == True:
+      Variables.last_bbox_cli = self.create_icons(False, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
+      Variables.last_bbox_cli = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
+    elif checkbox == "dentist" and self.check_box_den.checked == True:
+      Variables.last_bbox_den = self.create_icons(False, Variables.last_bbox_den, "dentist", Variables.icon_dentist) 
+      Variables.last_bbox_den = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
+    elif checkbox == "doctors" and self.check_box_doc.checked == True:
+      Variables.last_bbox_doc = self.create_icons(False, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)
+      Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)      
+    elif checkbox == "supermarket" and self.check_box_sma.checked == True:
+      Variables.last_bbox_sma = self.create_icons(False, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
+      Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
+    elif checkbox == "restaurant" and self.check_box_res.checked == True:
+      Variables.last_bbox_res = self.create_icons(False, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant) 
+      Variables.last_bbox_res = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant)  
+    elif checkbox == "cafe" and self.check_box_cafe.checked == True:
+      Variables.last_bbox_caf = self.create_icons(False, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
+      Variables.last_bbox_caf = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
+    elif checkbox == "university" and self.check_box_uni.checked == True:
+      Variables.last_bbox_uni = self.create_icons(False, Variables.last_bbox_uni, "university", Variables.icon_university) 
+      Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, "university", Variables.icon_university)  
+    elif checkbox == "bus stop" and self.check_box_bus.checked == True:
+      Variables.last_bbox_bus = self.create_icons(False, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)
+      Variables.last_bbox_bus = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)  
+    elif checkbox == "tram stop" and self.check_box_tra.checked == True:
+      Variables.last_bbox_tra = self.create_icons(False, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
+      Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
+    elif checkbox == "Nursing Homes DB" and self.pdb_data_cb.checked == True:
+      Variables.last_bbox_nh = self.create_icons(False, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
+      Variables.last_bbox_nh = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
+    elif checkbox == "Assisted Living DB" and self.pdb_data_al.checked == True:
+      Variables.last_bbox_al = self.create_icons(False, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+      Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+  
   #####   Extra Functions   #####
