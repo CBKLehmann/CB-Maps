@@ -550,6 +550,7 @@ class Map2_0(Map2_0Template):
     city = "n.a."
     federal_state = "n.a."
     for info in marker_context:
+      print(info)
       if "postcode" in info['id'] :
         zipcode = info['text']
       elif "locality" in info['id']:
