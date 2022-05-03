@@ -750,6 +750,9 @@ class Map2_0(Map2_0Template):
         apartments_10km += int(float(el[19]))
 
     #Get different Values for Assisted Living Analysis and/or Executive Summary
+    print(countie_data[2][81])
+    print(countie_data[2][92])
+    print(countie_data[2][103])
     people_u75 = int((float(countie_data[0][19]) * float(countie_data[0][17])) / 100)
     people_o75 = int((float(countie_data[0][19]) * float(countie_data[0][18])) / 100)
     people_u75_fc = round(people_u75 * float(countie_data[1][20]))
