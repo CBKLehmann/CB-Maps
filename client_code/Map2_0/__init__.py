@@ -577,12 +577,17 @@ class Map2_0(Map2_0Template):
     #Get Entries from Care-Database based on Federal State
     care_data_federal = anvil.server.call("get_federalstate_data", federal_state, countie_data[0][0])
     
+    #Get different Values for Assisted Living Analysis and/or Executive Summary
+    people_u80 = int(countie_data[2][80]) + int(countie_data[2][91])
+    people_o80 = int(countie_data[2][102])
+    people_u80_fc = int(countie_data[2][84]) + int(countie_data[2][95])
+    people_o80_fc = int(countie_data[2][106])
+    change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
+    change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
+    
     #Sum up all Patients in County
-    pat_rec_full_care = 0
-    for entry_cd in care_data_federal:
-        if not entry_cd[27] == '-':
-            pat_rec_full_care += int(entry_cd[27])
-    pat_rec_full_care_fc = round(pat_rec_full_care * float(countie_data[1][20]))
+    pat_rec_full_care = int((people_u80 + people_o80) * countie_data[3][1])
+    pat_rec_full_care_fc = int((people_u80_fc + people_o80_fc) * countie_data[3][2])
 
     #Get Data from Care-Database based on Iso-Layer
     care_data_iso = anvil.server.call("get_iso_data", bbox)
@@ -748,17 +753,8 @@ class Map2_0(Map2_0Template):
     for el in al_list:
       if not el[19] == "nan":
         apartments_10km += int(float(el[19]))
-
-    #Get different Values for Assisted Living Analysis and/or Executive Summary
-    people_u80 = int(countie_data[2][80]) + int(countie_data[2][91])
-    people_o80 = int(countie_data[2][102])
-    people_u80_fc = int(countie_data[2][84]) + int(countie_data[2][95])
-    people_o80_fc = int(countie_data[2][106])
-    change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
-    change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
+        
     apartments_plan_build_adjusted = build_apartments_adjusted + planning_apartments_adjusted
-    
-    print(((people_u80_fc * 100) / people_u80) - 100)
         
     #Get level, multiplier, surplus, demand and potential for Assisted Living Analysis
     if countie_data[0][19] < 30001:
