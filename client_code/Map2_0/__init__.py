@@ -586,8 +586,10 @@ class Map2_0(Map2_0Template):
     change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
     
     #Sum up all Patients in County
-    pat_rec_full_care = int((people_u80 + people_o80) * countie_data[3][1])
-    pat_rec_full_care_fc = int((people_u80_fc + people_o80_fc) * countie_data[3][2])
+    population_fc = int(countie_data[2][7]) + int(countie_data[2][18]) + int(countie_data[2][29]) + int(countie_data[2][40]) + int(countie_data[2][51]) + int(countie_data[2][62]) + int(countie_data[2][73]) + int(countie_data[2][84]) + int(countie_data[2][95]) + int(countie_data[2][106])
+    pat_rec_full_care = int(countie_data[0][19] * countie_data[3][1] * countie_data[3][8])
+    pat_rec_full_care_fc = int(population_fc * countie_data[3][2] * countie_data[3][9])
+    change_pat_rec = float("{:.2f}".format(((pat_rec_full_care_fc * 100) / pat_rec_full_care) - 100))
 
     #Get Data from Care-Database based on Iso-Layer
     care_data_iso = anvil.server.call("get_iso_data", bbox)
@@ -831,7 +833,8 @@ class Map2_0(Map2_0Template):
                         "pat_rec_full_care_fc": "{:,}".format(pat_rec_full_care_fc),
                         "inpatients_fc": "{:,}".format(inpatients_fc),
                         "beds_surplus": "{:,}".format(beds_surplus),
-                        "without_apartment": without_apartment} 
+                        "without_apartment": without_apartment,
+                        "change_pat_rec": change_pat_rec} 
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
                            "people_u80": "{:,}".format(people_u80),
@@ -900,7 +903,8 @@ class Map2_0(Map2_0Template):
                            "surplus_2040": surplus2040,
                            "demand_2040": demand2040,
                            "demand_potential": demand_potential,
-                           "apartments_plan_build_adjusted": apartments_plan_build_adjusted
+                           "apartments_plan_build_adjusted": apartments_plan_build_adjusted,
+                           "change_pat_rec": change_pat_rec
                           }
     
     #Create Summary-PDF
