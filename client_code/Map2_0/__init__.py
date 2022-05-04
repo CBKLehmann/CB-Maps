@@ -572,7 +572,6 @@ class Map2_0(Map2_0Template):
 
     #Get Information from Database for County of Marker-Position
     countie_data = anvil.server.call("get_countie_data_from_db", city_alt, federal_state)
-    print(countie_data)
     countie = countie_data[0][1].split(',')
 
     #Get Entries from Care-Database based on Federal State
@@ -835,7 +834,8 @@ class Map2_0(Map2_0Template):
                         "inpatients_fc": "{:,}".format(inpatients_fc),
                         "beds_surplus": "{:,}".format(beds_surplus),
                         "without_apartment": without_apartment,
-                        "change_pat_rec": change_pat_rec} 
+                        "change_pat_rec": change_pat_rec,
+                        "city_population": countie_data[3][10]}
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
                            "people_u80": "{:,}".format(people_u80),
