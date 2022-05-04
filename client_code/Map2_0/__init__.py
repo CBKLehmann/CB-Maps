@@ -632,6 +632,7 @@ class Map2_0(Map2_0Template):
           beds_amount += int(care_entry[30])
         beds.append(beds_amount)
       elif care_entry[4] == "in Planung":
+        print(care_entry)
         nursing_homes_planned += 1
         if not care_entry[31] == "-":
           beds_planned += int(care_entry[31])
