@@ -2035,6 +2035,10 @@ class Map2_0(Map2_0Template):
     index_coords = len(sorted_coords)
 
     #Build Request-String for Mapbox Static-Map-API
+    iso_data = dict(self.mapbox.getSource('iso'))
+    print(iso_data)    
+    
+
     request_static_map = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{marker_coords['lng']},{marker_coords['lat']}%5D%7D%7D"
     for coordinate in reversed(sorted_coords):
       request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0][0]},{coordinate[0][1]}%5D%7D%7D"
