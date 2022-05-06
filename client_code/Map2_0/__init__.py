@@ -700,6 +700,8 @@ class Map2_0(Map2_0Template):
     beds_adjusted = beds_active + beds_construct + beds_planned
     beds_surplus = beds_adjusted - inpatients_fc
 
+    print(occupancy_raw)
+    
     #Create Variables for different Values for Assisted Living Analysis
     mapRequestData = [lng_lat_marker['lng'], lng_lat_marker['lat'], self.token]
     apartments = 0
