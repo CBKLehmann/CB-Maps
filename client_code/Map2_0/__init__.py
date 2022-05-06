@@ -738,13 +738,13 @@ class Map2_0(Map2_0Template):
           apartments_building += int(float(el[19]))
         else:
           without_apartment_building += 1
-    if facilities_building > 0:
+    if facilities_building > 0 and apartments_building > 0 and without_apartment_building > 0:
       build_apartments_average = round(apartments_building / (facilities_building - without_apartment_building))
       build_apartments_adjusted = apartments_building + (build_apartments_average * without_apartment_building)
     else:
       build_apartments_average = 0
       build_apartments_adjusted = 0
-    if facilities_active > 0:
+    if facilities_active > 0 and apartments > 0:
       apartments_average = round(apartments / facilities_active)
       apartments_adjusted = apartments + (apartments_average * without_apartment)
     else:
@@ -920,7 +920,7 @@ class Map2_0(Map2_0Template):
                           }
     
     #Create Summary-PDF
-    anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, self.token, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], data_comp_analysis_al['data'], data_comp_analysis_al['request'], data_comp_analysis_al['request2'])
+    anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, self.token, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], data_comp_analysis_al['data'], data_comp_analysis_al['request'])
     
     #Get PDF from Table and start Download
     mapPDF = app_tables.pictures.search()[0]    
