@@ -693,6 +693,8 @@ class Map2_0(Map2_0Template):
         op_public_percent = round((len(operator_public) * 100) / len(operator))
     else:
       op_public_percent = 0
+    print(inpatients)
+    print(beds_active)
     if not inpatients == 0 and beds_active == 0:
       occupancy_raw = round((inpatients * 100) / beds_active)
     else:
