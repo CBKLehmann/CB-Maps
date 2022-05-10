@@ -1096,6 +1096,8 @@ class Map2_0(Map2_0Template):
     #Build request_string
     request_string += f"&polygons=true&access_token={self.token}"
     
+    print(request_string)
+    
     #Get Data from request
     Variables.activeIso = anvil.http.request(request_string,json=True)
     
