@@ -578,24 +578,41 @@ class Map2_0(Map2_0Template):
     care_data_federal = anvil.server.call("get_federalstate_data", federal_state, countie_data[0][0])
     
     inpatients_lk = 0
+    beds_lk = 0
     for el in care_data_federal:
       if not el[27] == '-':
         inpatients_lk += int(el[27])
-    
-    alert(inpatients_lk)
+      if not el[28] == '-':
+        beds_lk += int(el[28])
+      if not el[29] == '-':
+        beds_lk += int(el[29])
+      if not el[30] == '-':
+        beds_lk += int(el[30])
+    occupancy_lk = float("{:.2f}".format((inpatients_lk * 100) / beds_lk))
     
     #Get different Values for Assisted Living Analysis and/or Executive Summary
     people_u80 = int(countie_data[2][80]) + int(countie_data[2][91])
     people_o80 = int(countie_data[2][102])
     people_u80_fc = int(countie_data[2][84]) + int(countie_data[2][95])
     people_o80_fc = int(countie_data[2][106])
+    people_u80_fc_35 = int(countie_data[2][86]) + int(countie_data[2][97])
+    people_o80_fc_35 = int(countie_data[2][108])
     change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
     change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
     
     #Sum up all Patients in County
     population_fc = int(countie_data[2][7]) + int(countie_data[2][18]) + int(countie_data[2][29]) + int(countie_data[2][40]) + int(countie_data[2][51]) + int(countie_data[2][62]) + int(countie_data[2][73]) + int(countie_data[2][84]) + int(countie_data[2][95]) + int(countie_data[2][106])
-    pat_rec_full_care = int(countie_data[0][19] * countie_data[3][1] * countie_data[3][8])
-    pat_rec_full_care_fc = int(population_fc * countie_data[3][2] * countie_data[3][9])
+    quote_change_30 = countie_data[3][2] / countie_data[3][1]
+    pat_rec_full_care_fc = int(inpatients_lk * quote_change_30)
+    quote_change_35 = countie_data[3][3] / countie_data[3][2]
+    pat_rec_full_care_fc_35 = int(pat_rec_full_care_fc * quote_change_35)
+    pq_20 = inpatients_lk / int(countie_data[0][19]) / float(countie_data[3][8])
+    print(pq_20)
+    hq_20 = inpatients_lk / int(countie_data[0][19]) / ((countie_data[3][1] + pq_20) / 2)
+    print(hq_20)
+    pat_rec_full_care = inpatients_lk
+#     pat_rec_full_care = int(countie_data[0][19] * countie_data[3][1] * countie_data[3][8])
+#     pat_rec_full_care_fc = int(population_fc * countie_data[3][2] * countie_data[3][9])
     change_pat_rec = float("{:.2f}".format(((pat_rec_full_care_fc * 100) / pat_rec_full_care) - 100))
 
     #Get Data from Care-Database based on Iso-Layer
@@ -700,8 +717,6 @@ class Map2_0(Map2_0Template):
         op_public_percent = round((len(operator_public) * 100) / len(operator))
     else:
       op_public_percent = 0
-    print(inpatients)
-    print(beds_active)
     if not inpatients == 0 and not beds_active == 0:
       occupancy_raw = round((inpatients * 100) / beds_active)
     else:
@@ -828,7 +843,7 @@ class Map2_0(Map2_0Template):
                         "population": "{:,}".format(countie_data[0][19]),
                         "people_u80": "{:,}".format(people_u80),
                         "people_o80": "{:,}".format(people_o80),
-                        "pat_rec_full_care": "{:,}".format(pat_rec_full_care),
+                        "pat_rec_full_care": "{:,}".format(inpatients_lk),
                         "inpatients": "{:,}".format(inpatients),
                         "beds_active": "{:,}".format(beds_active),
                         "nursing_homes_active": nursing_homes_active,
@@ -854,7 +869,11 @@ class Map2_0(Map2_0Template):
                         "beds_surplus": "{:,}".format(beds_surplus),
                         "without_apartment": without_apartment,
                         "change_pat_rec": "{:,}".format(change_pat_rec),
-                        "city_population": "{:,}".format(countie_data[4][10])}
+                        "city_population": "{:,}".format(countie_data[4][10]),
+                        "occupancy_lk": "{:,}".format(occupancy_lk),
+                        "people_u80_fc_35": "{:,}".format(people_u80_fc_35),
+                        "people_o80_fc_35": "{:,}".format(people_o80_fc_35),
+                        "pat_rec_full_care_fc_35": "{:,}".format(pat_rec_full_care_fc_35)}
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
                            "people_u80": "{:,}".format(people_u80),
@@ -1570,7 +1589,7 @@ class Map2_0(Map2_0Template):
         
                 el_coords = [ele[27], ele[26]]
     
-                if not ele[19] == 'nan':
+                if not ele[19] == '-':
         
                   wohnungen = int(float(ele[19]))
           
@@ -1578,15 +1597,15 @@ class Map2_0(Map2_0Template):
               
                   wohnungen = ele[19]
                 
-                if not ele[20] == 'nan':
-        
+                if not ele[20] == '-':
+                  
                   ezAL = int(float(ele[20]))
           
                 else:
               
                   ezAL = ele[20]
                 
-                if not ele[21] == 'nan':
+                if not ele[21] == '-':
         
                   dzAL = int(float(ele[21]))
           
@@ -1594,7 +1613,7 @@ class Map2_0(Map2_0Template):
               
                   dzAL = ele[21]
                 
-                if not ele[21] == 'nan':
+                if not ele[21] == '-':
         
                   mieteAb = str(int(float(ele[21]))) + ' €'
           
@@ -1602,7 +1621,7 @@ class Map2_0(Map2_0Template):
               
                   mieteAb = ele[21]
                 
-                if not ele[22] == 'nan':
+                if not ele[22] == '-':
         
                   mieteBis = str(int(float(ele[22]))) + ' €'
           
@@ -2027,7 +2046,7 @@ class Map2_0(Map2_0Template):
               index += 1
               break
             elif topic == "assisted_living":
-              if entry[19] == 'nan':
+              if entry[19] == '-':
                 number_apts = 0
               else:
                 number_apts = int(float(entry[19]))
