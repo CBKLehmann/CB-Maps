@@ -577,6 +577,13 @@ class Map2_0(Map2_0Template):
     #Get Entries from Care-Database based on Federal State
     care_data_federal = anvil.server.call("get_federalstate_data", federal_state, countie_data[0][0])
     
+    inpatients_lk = 0
+    for el in care_data_federal:
+      if not el[27] == '-':
+        inpatients_lk += int(el[27])
+    
+    alert(inpatients_lk)
+    
     #Get different Values for Assisted Living Analysis and/or Executive Summary
     people_u80 = int(countie_data[2][80]) + int(countie_data[2][91])
     people_o80 = int(countie_data[2][102])
