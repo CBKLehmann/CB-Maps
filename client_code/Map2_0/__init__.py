@@ -606,29 +606,34 @@ class Map2_0(Map2_0Template):
 #     pat_rec_full_care_fc = int(inpatients_lk * quote_change_30)
     
     population_fc = int(countie_data[2][7]) + int(countie_data[2][18]) + int(countie_data[2][29]) + int(countie_data[2][40]) + int(countie_data[2][51]) + int(countie_data[2][62]) + int(countie_data[2][73]) + int(countie_data[2][84]) + int(countie_data[2][95]) + int(countie_data[2][106])
+    population_fc_35 = int(countie_data[2][9]) + int(countie_data[2][20]) + int(countie_data[2][31]) + int(countie_data[2][42]) + int(countie_data[2][53]) + int(countie_data[2][64]) + int(countie_data[2][75]) + int(countie_data[2][86]) + int(countie_data[2][97]) + int(countie_data[2][108])
     
     pq_20_own = (inpatients_lk / int(countie_data[0][19]) / float(countie_data[3][8]))
     pq_20_raw = float("{:.3f}".format((pq_20_own + float(countie_data[3][1])) / 2))
     pq_20_perc = pq_20_raw * 100
     hq_20 = inpatients_lk / int(countie_data[0][19]) / ((float(countie_data[3][1]) + pq_20_raw) / 2)
-    hq_20_perc = hq_20 * 100
+    hq_20_perc = round((hq_20 * 100), 1)
     pat_rec_full_care = inpatients_lk
-    pat_rec_full_care_fc = population_fc * pq_20_raw * hq_20
-    pq_30_raw = float("{:.3f}".format(((pat_rec_full_care_fc / population_fc / hq_20) + int(countie_data[3][2])) / 2))
-    pq_30_perc = pq_30_raw * 100
-    part1 = round(((pq_20_perc - float(countie_data[3][2]) * 100) ** 2), 2)
-    part2 = (round((pq_20_own *100), 1) - pq_20_perc) ** 2
-    final = round((pq_20_own *100), 1) + round(math.sqrt(part1 + part2), 1)
-    pat_rec_full_care_fc_s2 = round(population_fc * (final / 100) * hq_20)
-    print(population_fc)
-    print(final / 100)
+    pat_rec_full_care_fc = round(population_fc * pq_20_raw * hq_20)
+    print(population_fc_35)
+    print(pq_20_raw)
     print(hq_20)
-    print(pat_rec_full_care_fc_s2)
+    pat_rec_full_care_fc_35 = round(population_fc_35 * pq_20_raw * hq_20)
+    pq_30_raw = float("{:.3f}".format(((pat_rec_full_care_fc / population_fc / hq_20) + float(countie_data[3][2])) / 2))
+    pq_30_perc = pq_30_raw * 100
+    pq_35_raw = float("{:.3f}".format(((pat_rec_full_care_fc_35 / population_fc_35 / hq_20) + float(countie_data[3][3])) / 2))
+    pq_35_perc = pq_35_raw * 100
+    part1_30 = round(((pq_20_perc - float(countie_data[3][2]) * 100) ** 2), 2)
+    part2_all = (round((pq_20_own *100), 1) - pq_20_perc) ** 2
+    final_30 = round((pq_20_own *100), 1) + round((math.sqrt(part1_30 + part2_all) * 0.3), 1)
+    pat_rec_full_care_fc_s2 = round(population_fc * (final_30 / 100) * hq_20)
     quote_change_30 = (quote_change_30 - 1) * countie_data[3][1]
- 
+    part1_35 = round(((pq_20_perc - float(countie_data[3][3]) * 100) ** 2), 2)
+    final_35 = round((pq_20_own *100), 1) + round((math.sqrt(part1_35 + part2_all) * 0.3), 1)
+    pat_rec_full_care_fc_35_s2 = round(population_fc_35 * (final_35 / 100) * hq_20)
     
-    quote_change_35 = countie_data[3][3] / countie_data[3][2]
-    pat_rec_full_care_fc_35 = int(pat_rec_full_care_fc * quote_change_35)
+#     quote_change_35 = countie_data[3][3] / countie_data[3][2]
+#     pat_rec_full_care_fc_35 = int(pat_rec_full_care_fc * quote_change_35)
     
     
 #     pat_rec_full_care_fc_30 = population_fc * pq_30 * hq_20
@@ -719,6 +724,9 @@ class Map2_0(Map2_0Template):
 
     #Get Data for Summary and Competitor-Analysis-Piechart
     inpatients_fc = round(pat_rec_full_care_fc * (round(((inpatients * 100) / pat_rec_full_care), 1) / 100))
+    inpatients_fc_v2 = round(pat_rec_full_care_fc_s2 * (round(((inpatients * 100) / pat_rec_full_care), 1) / 100))
+    inpatients_fc_35 = round(pat_rec_full_care_fc_35 * (round(((inpatients * 100) / pat_rec_full_care), 1) / 100))
+    inpatients_fc_35_v2 = round(pat_rec_full_care_fc_35_s2 * (round(((inpatients * 100) / pat_rec_full_care), 1) / 100))
     invest_median = "{:.2f}".format(anvil.server.call("get_median", invest_cost))
     beds_median = anvil.server.call("get_median", beds)
     year_median = round(anvil.server.call("get_median", year))
@@ -746,6 +754,9 @@ class Map2_0(Map2_0Template):
       occupancy_raw = 0
     beds_adjusted = beds_active + beds_construct + beds_planned
     beds_surplus = beds_adjusted - inpatients_fc
+    beds_surplus_35 = beds_adjusted - inpatients_fc_35
+    beds_surplus_v2 = beds_adjusted - inpatients_fc_v2
+    beds_surplus_35_v2 = beds_adjusted - inpatients_fc_35_v2
 
     #Create Variables for different Values for Assisted Living Analysis
     mapRequestData = [lng_lat_marker['lng'], lng_lat_marker['lat'], self.token]
@@ -899,7 +910,20 @@ class Map2_0(Map2_0Template):
                         "pat_rec_full_care_fc_35": "{:,}".format(pat_rec_full_care_fc_35),
                         "nursing_home_rate": "{:,}".format(hq_20_perc),
                         "care_rate": "{:,}".format(pq_20_perc),
-                        "pat_rec_full_care_fc_s2": "{:,}".format(pat_rec_full_care_fc_s2)}
+                        "pat_rec_full_care_fc_s2": "{:,}".format(pat_rec_full_care_fc_s2),
+                        "care_rate_v2": "{:,}".format(final_30),
+                        "nh_rate_30": "{:,}".format(pq_30_perc),
+                        "care_rate_v2_35": "{:,}".format(final_35),
+                        "population_30": "{:,}".format(population_fc),
+                        "population_35": "{:,}".format(population_fc_35),
+                        "nh_rate_35": "{:,}".format(pq_35_perc),
+                        "pat_rec_full_care_fc_35_s2": "{:,}".format(pat_rec_full_care_fc_35_s2),
+                        "inpatients_fc_35": "{:,}".format(inpatients_fc_35),
+                        "inpatients_fc_v2": "{:,}".format(inpatients_fc_v2),
+                        "inpatients_fc_35_v2": "{:,}".format(inpatients_fc_35_v2),
+                        "beds_surplus_35": "{:,}".format(beds_surplus_35),
+                        "beds_surplus_v2": "{:,}".format(beds_surplus_v2),
+                        "beds_surplus_35_v2": "{:,}".format(beds_surplus_35_v2)}
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
                            "people_u80": "{:,}".format(people_u80),
