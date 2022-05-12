@@ -610,18 +610,20 @@ class Map2_0(Map2_0Template):
     pq_20_own = (inpatients_lk / int(countie_data[0][19]) / float(countie_data[3][8]))
     pq_20_raw = float("{:.3f}".format((pq_20_own + float(countie_data[3][1])) / 2))
     pq_20_perc = pq_20_raw * 100
-    hq_20 = inpatients_lk / int(countie_data[0][19]) / ((countie_data[3][1] + pq_20) / 2)
+    hq_20 = inpatients_lk / int(countie_data[0][19]) / ((float(countie_data[3][1]) + pq_20_raw) / 2)
+    hq_20_perc = hq_20 * 100
     pat_rec_full_care = inpatients_lk
-    pat_rec_full_care_fc = population_fc * pq_20 * hq_20
+    pat_rec_full_care_fc = population_fc * pq_20_raw * hq_20
     pq_30_raw = float("{:.3f}".format(((pat_rec_full_care_fc / population_fc / hq_20) + int(countie_data[3][2])) / 2))
     pq_30_perc = pq_30_raw * 100
-    print(pq_20_raw)
-    print(pq_30_raw)
-    print(pq_30_perc)
-    part1 = (float("{:.2f}".format(pq_30 * 100)) - int(countie_data[3][2])) ** 2
-    print(part1)
-    pq_30_s2 = pq_30 + math.sqrt(((float("{:.2f}".format(pq_30 * 100)) - int(countie_data[3][2])) ** 2) + (float("{:.2f}".format(pq_20_raw * 100)) - float("{:.2f}".format(pq_30 * 100))))
-    print(pq_30_s2)
+    part1 = round(((pq_20_perc - float(countie_data[3][2]) * 100) ** 2), 2)
+    part2 = (round((pq_20_own *100), 1) - pq_20_perc) ** 2
+    final = round((pq_20_own *100), 1) + round(math.sqrt(part1 + part2), 1)
+    pat_rec_full_care_fc_s2 = round(population_fc * (final / 100) * hq_20)
+    print(population_fc)
+    print(final / 100)
+    print(hq_20)
+    print(pat_rec_full_care_fc_s2)
     quote_change_30 = (quote_change_30 - 1) * countie_data[3][1]
  
     
@@ -895,8 +897,9 @@ class Map2_0(Map2_0Template):
                         "people_u80_fc_35": "{:,}".format(people_u80_fc_35),
                         "people_o80_fc_35": "{:,}".format(people_o80_fc_35),
                         "pat_rec_full_care_fc_35": "{:,}".format(pat_rec_full_care_fc_35),
-                        "nursing_home_rate": "{:,}".format(hq_20),
-                        "care_rate": "{:,}".format(pq_20)}
+                        "nursing_home_rate": "{:,}".format(hq_20_perc),
+                        "care_rate": "{:,}".format(pq_20_perc),
+                        "pat_rec_full_care_fc_s2": "{:,}".format(pat_rec_full_care_fc_s2)}
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
                            "people_u80": "{:,}".format(people_u80),
