@@ -602,15 +602,16 @@ class Map2_0(Map2_0Template):
     
     #Sum up all Patients in County
     population_fc = int(countie_data[2][7]) + int(countie_data[2][18]) + int(countie_data[2][29]) + int(countie_data[2][40]) + int(countie_data[2][51]) + int(countie_data[2][62]) + int(countie_data[2][73]) + int(countie_data[2][84]) + int(countie_data[2][95]) + int(countie_data[2][106])
+    print(count)
     quote_change_30 = countie_data[3][2] / countie_data[3][1]
     pat_rec_full_care_fc = int(inpatients_lk * quote_change_30)
     quote_change_35 = countie_data[3][3] / countie_data[3][2]
     pat_rec_full_care_fc_35 = int(pat_rec_full_care_fc * quote_change_35)
     pq_20 = inpatients_lk / int(countie_data[0][19]) / float(countie_data[3][8])
-    print(pq_20)
     hq_20 = inpatients_lk / int(countie_data[0][19]) / ((countie_data[3][1] + pq_20) / 2)
-    print(hq_20)
     pat_rec_full_care = inpatients_lk
+    pq_30 = ((pat_rec_full_care_fc / population_fc / hq20) + int(countie_data[3][2])) / 2
+#     hq_30 = pat_rec_full_care_fc /
 #     pat_rec_full_care = int(countie_data[0][19] * countie_data[3][1] * countie_data[3][8])
 #     pat_rec_full_care_fc = int(population_fc * countie_data[3][2] * countie_data[3][9])
     change_pat_rec = float("{:.2f}".format(((pat_rec_full_care_fc * 100) / pat_rec_full_care) - 100))
