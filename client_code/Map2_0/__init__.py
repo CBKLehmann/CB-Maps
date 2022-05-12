@@ -601,16 +601,36 @@ class Map2_0(Map2_0Template):
     change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
     
     #Sum up all Patients in County
-    population_fc = int(countie_data[2][7]) + int(countie_data[2][18]) + int(countie_data[2][29]) + int(countie_data[2][40]) + int(countie_data[2][51]) + int(countie_data[2][62]) + int(countie_data[2][73]) + int(countie_data[2][84]) + int(countie_data[2][95]) + int(countie_data[2][106])
-    print(count)
+    
     quote_change_30 = countie_data[3][2] / countie_data[3][1]
-    pat_rec_full_care_fc = int(inpatients_lk * quote_change_30)
-    quote_change_35 = countie_data[3][3] / countie_data[3][2]
-    pat_rec_full_care_fc_35 = int(pat_rec_full_care_fc * quote_change_35)
-    pq_20 = inpatients_lk / int(countie_data[0][19]) / float(countie_data[3][8])
+#     pat_rec_full_care_fc = int(inpatients_lk * quote_change_30)
+    
+    population_fc = int(countie_data[2][7]) + int(countie_data[2][18]) + int(countie_data[2][29]) + int(countie_data[2][40]) + int(countie_data[2][51]) + int(countie_data[2][62]) + int(countie_data[2][73]) + int(countie_data[2][84]) + int(countie_data[2][95]) + int(countie_data[2][106])
+    
+    pq_20_own = (inpatients_lk / int(countie_data[0][19]) / float(countie_data[3][8]))
+    pq_20_raw = float("{:.3f}".format((pq_20_own + float(countie_data[3][1])) / 2))
+    pq_20_perc = pq_20_raw * 100
     hq_20 = inpatients_lk / int(countie_data[0][19]) / ((countie_data[3][1] + pq_20) / 2)
     pat_rec_full_care = inpatients_lk
-    pq_30 = ((pat_rec_full_care_fc / population_fc / hq20) + int(countie_data[3][2])) / 2
+    pat_rec_full_care_fc = population_fc * pq_20 * hq_20
+    pq_30_raw = float("{:.3f}".format(((pat_rec_full_care_fc / population_fc / hq_20) + int(countie_data[3][2])) / 2))
+    pq_30_perc = pq_30_raw * 100
+    print(pq_20_raw)
+    print(pq_30_raw)
+    print(pq_30_perc)
+    part1 = (float("{:.2f}".format(pq_30 * 100)) - int(countie_data[3][2])) ** 2
+    print(part1)
+    pq_30_s2 = pq_30 + math.sqrt(((float("{:.2f}".format(pq_30 * 100)) - int(countie_data[3][2])) ** 2) + (float("{:.2f}".format(pq_20_raw * 100)) - float("{:.2f}".format(pq_30 * 100))))
+    print(pq_30_s2)
+    quote_change_30 = (quote_change_30 - 1) * countie_data[3][1]
+ 
+    
+    quote_change_35 = countie_data[3][3] / countie_data[3][2]
+    pat_rec_full_care_fc_35 = int(pat_rec_full_care_fc * quote_change_35)
+    
+    
+#     pat_rec_full_care_fc_30 = population_fc * pq_30 * hq_20
+    
 #     hq_30 = pat_rec_full_care_fc /
 #     pat_rec_full_care = int(countie_data[0][19] * countie_data[3][1] * countie_data[3][8])
 #     pat_rec_full_care_fc = int(population_fc * countie_data[3][2] * countie_data[3][9])
@@ -874,7 +894,9 @@ class Map2_0(Map2_0Template):
                         "occupancy_lk": "{:,}".format(occupancy_lk),
                         "people_u80_fc_35": "{:,}".format(people_u80_fc_35),
                         "people_o80_fc_35": "{:,}".format(people_o80_fc_35),
-                        "pat_rec_full_care_fc_35": "{:,}".format(pat_rec_full_care_fc_35)}
+                        "pat_rec_full_care_fc_35": "{:,}".format(pat_rec_full_care_fc_35),
+                        "nursing_home_rate": "{:,}".format(hq_20),
+                        "care_rate": "{:,}".format(pq_20)}
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
                            "people_u80": "{:,}".format(people_u80),
@@ -1406,6 +1428,7 @@ class Map2_0(Map2_0Template):
           # Check if Category is PflegeDB
           if category == 'nursing_homes':
             geojson = anvil.server.call('get_care_db_data', bbox, 'CareDB_Pflegeheime')
+            print(geojson)
             Variables.nursing_homes_entries = geojson
         
           elif category == 'assisted_living':
