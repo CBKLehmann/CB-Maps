@@ -635,7 +635,7 @@ class Map2_0(Map2_0Template):
     pat_rec_full_care_fc_35 = int(pat_rec_full_care_fc * quote_change_35)
     
     
-    pat_rec_full_care_fc_30 = population_fc * pq_30 * hq_20
+    pat_rec_full_care_fc_30 = population_fc * pq_30_raw * hq_20
     
 #     hq_30 = pat_rec_full_care_fc /
     pat_rec_full_care = int(countie_data[0][19] * countie_data[3][1] * countie_data[3][8])
@@ -645,9 +645,42 @@ class Map2_0(Map2_0Template):
 ################################################Alte Berechnungen################################################
 ################################################Neue Berechnungen################################################
 
-    new_care_rate = inpatients_lk / (people_u80 + people_o80)
-  
-    print(new_care_rate)
+    nursing_home_rate = countie_data[3][8]
+    new_r_care_rate_raw = float("{:.3f}".format(inpatients_lk / (people_u80 + people_o80)))
+    new_r_care_rate_perc = "{:.1f}".format(new_r_care_rate_raw * 100)
+    new_care_rate_raw = float("{:.3f}".format(inpatients_lk / round((nursing_home_rate * countie_data[0][19]) + 1)))
+    new_care_rate_perc = "{:.1f}".format(new_care_rate_raw * 100)
+    pat_rec_full_care_fc_30_v1 = round(new_r_care_rate_raw * (people_u80_fc + people_o80_fc))
+    care_rate_30_v1_raw = float("{:.3f}".format(pat_rec_full_care_fc_30_v1 / (population_fc * nursing_home_rate)))
+    care_rate_30_v1_perc = "{:.1f}".format(care_rate_30_v1_raw * 100)   
+    pat_rec_full_care_fc_30_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc + people_o80_fc))
+    care_rate_30_v2_raw = float("{:.3f}".format(pat_rec_full_care_fc_30_v2 / (population_fc * nursing_home_rate)))
+    care_rate_30_v2_perc = "{:.1f}".format(care_rate_30_v2_raw * 100)
+    pat_rec_full_care_fc_35_v1 = round(new_r_care_rate_raw * (people_u80_fc_35 + people_o80_fc_35))
+    care_rate_35_v1_raw = float("{:.3f}".format(pat_rec_full_care_fc_35_v1 / (population_fc_35 * nursing_home_rate)))
+    care_rate_35_v1_perc = "{:.1f}".format(care_rate_35_v1_raw * 100)
+    pat_rec_full_care_fc_35_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc_35 + people_o80_fc_35))
+    care_rate_35_v2_raw = float("{:.3f}".format(pat_rec_full_care_fc_35_v2 / (population_fc_35 * nursing_home_rate)))
+    care_rate_35_v2_perc = "{:.1f}".format(care_rate_35_v2_raw * 100)
+    
+    print(f'Nursing Home Rate: {nursing_home_rate}')
+    print(f'RCR (RAW): {new_r_care_rate_raw}')
+    print(f'RCR (Percentage): {new_r_care_rate_perc}')
+    print(f'CR 2020 (RAW): {new_care_rate_raw}')
+    print(f'CR 2020 (Percentage): {new_care_rate_perc}')
+    print(f'Beds LK: {beds_lk}')
+    print(f'Patients Full Care 2030 V1: {pat_rec_full_care_fc_30_v1}')
+    print(f'Care Rate 2030 V1 (RAW): {care_rate_30_v1_raw}')
+    print(f'Care Rate 2030 V1 (Percentage): {care_rate_30_v1_perc}')
+    print(f'Patients Full Care 2030 V2: {pat_rec_full_care_fc_30_v2}')
+    print(f'Care Rate 2030 V2 (RAW): {care_rate_30_v2_raw}')
+    print(f'Care Rate 2030 V2 (Percentage): {care_rate_30_v2_perc}')
+    print(f'Patients Full Care 2035 V1: {pat_rec_full_care_fc_35_v1}')
+    print(f'Care Rate 2035 V1 (RAW): {care_rate_35_v1_raw}')
+    print(f'Care Rate 2035 V1 (Percentage): {care_rate_35_v1_perc}')
+    print(f'Patients Full Care 2035 V2: {pat_rec_full_care_fc_35_v2}')
+    print(f'Care Rate 2035 V2 (RAW): {care_rate_35_v2_raw}')
+    print(f'Care Rate 2035 V2 (Percentage): {care_rate_35_v2_perc}')
 
 ################################################Neue Berechnungen################################################
   
@@ -766,6 +799,24 @@ class Map2_0(Map2_0Template):
     beds_surplus_v2 = beds_adjusted - inpatients_fc_v2
     beds_surplus_35_v2 = beds_adjusted - inpatients_fc_35_v2
 
+################################################Neue Berechnungen################################################
+
+    care_rate_break_even_raw = float("{:.3f}".format((beds_adjusted * 0.95) / (countie_data[0][19] * nursing_home_rate)))
+    care_rate_break_even_perc = "{:.1f}".format(care_rate_break_even_raw * 100)
+    care_rate_break_even_30_raw = float("{:.3f}".format((beds_adjusted * 0.95) / (population_fc * nursing_home_rate)))
+    care_rate_break_even_30_perc = "{:.1f}".format(care_rate_break_even_30_raw * 100)
+    care_rate_break_even_35_raw = float("{:.3f}".format((beds_adjusted * 0.95) / (population_fc_35 * nursing_home_rate)))
+    care_rate_break_even_35_perc = "{:.1f}".format(care_rate_break_even_35_raw * 100)
+    
+    print(f'Care Rate Break Even (RAW): {care_rate_break_even_raw}')
+    print(f'Care Rate Break Even (Percentage): {care_rate_break_even_perc}')
+    print(f'Care Rate Break Even 30 (RAW): {care_rate_break_even_30_raw}')
+    print(f'Care Rate Break Even 30 (Percentage): {care_rate_break_even_30_perc}')
+    print(f'Care Rate Break Even 35 (RAW): {care_rate_break_even_35_raw}')
+    print(f'Care Rate Break Even 35 (Percentage): {care_rate_break_even_35_perc}')
+
+################################################Neue Berechnungen################################################
+    
     #Create Variables for different Values for Assisted Living Analysis
     mapRequestData = [lng_lat_marker['lng'], lng_lat_marker['lat'], self.token]
     apartments = 0
@@ -1463,7 +1514,6 @@ class Map2_0(Map2_0Template):
           # Check if Category is PflegeDB
           if category == 'nursing_homes':
             geojson = anvil.server.call('get_care_db_data', bbox, 'CareDB_Pflegeheime')
-            print(geojson)
             Variables.nursing_homes_entries = geojson
         
           elif category == 'assisted_living':
