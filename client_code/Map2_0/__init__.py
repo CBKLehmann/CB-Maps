@@ -2169,11 +2169,23 @@ class Map2_0(Map2_0Template):
     index_coords = len(sorted_coords)
 
     #Build Request-String for Mapbox Static-Map-API
-    request_static_map = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{marker_coords['lng']},{marker_coords['lat']}%5D%7D%7D"
+    request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{marker_coords['lng']},{marker_coords['lat']}%5D%7D%7D"
+    request_static_map = request_static_map_raw
     for coordinate in reversed(sorted_coords):
       request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0][0]},{coordinate[0][1]}%5D%7D%7D"
       index_coords -= 1
     request_static_map += "%5D%7D"
+    
+    print(len(request_static_map))
+    
+    if len(request_static_map) > 8192:
+      request_static_map = request_static_map_raw
+      request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22MultiPoint%22%2C%22coordinates%22%3A%5B"
+      for coordinate in reversed(sorted_coords):
+        request_static_map += f"%5B{coordinate[0][0]},{coordinate[0][1]}%5D%2C"
+      request_static_map = request_static_map[:-3] + f'%5D%7D%7D'
+    
+    print(len(request_static_map))
     
     return({"data": data_comp_analysis, "request": request_static_map, "request2": Variables.activeIso})
   
