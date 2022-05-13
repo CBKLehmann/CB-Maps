@@ -600,6 +600,8 @@ class Map2_0(Map2_0Template):
     change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
     change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
     
+################################################Alte Berechnungen################################################
+    
     #Sum up all Patients in County
     
     quote_change_30 = countie_data[3][2] / countie_data[3][1]
@@ -615,9 +617,6 @@ class Map2_0(Map2_0Template):
     hq_20_perc = round((hq_20 * 100), 1)
     pat_rec_full_care = inpatients_lk
     pat_rec_full_care_fc = round(population_fc * pq_20_raw * hq_20)
-    print(population_fc_35)
-    print(pq_20_raw)
-    print(hq_20)
     pat_rec_full_care_fc_35 = round(population_fc_35 * pq_20_raw * hq_20)
     pq_30_raw = float("{:.3f}".format(((pat_rec_full_care_fc / population_fc / hq_20) + float(countie_data[3][2])) / 2))
     pq_30_perc = pq_30_raw * 100
@@ -632,17 +631,26 @@ class Map2_0(Map2_0Template):
     final_35 = round((pq_20_own *100), 1) + round((math.sqrt(part1_35 + part2_all) * 0.3), 1)
     pat_rec_full_care_fc_35_s2 = round(population_fc_35 * (final_35 / 100) * hq_20)
     
-#     quote_change_35 = countie_data[3][3] / countie_data[3][2]
-#     pat_rec_full_care_fc_35 = int(pat_rec_full_care_fc * quote_change_35)
+    quote_change_35 = countie_data[3][3] / countie_data[3][2]
+    pat_rec_full_care_fc_35 = int(pat_rec_full_care_fc * quote_change_35)
     
     
-#     pat_rec_full_care_fc_30 = population_fc * pq_30 * hq_20
+    pat_rec_full_care_fc_30 = population_fc * pq_30 * hq_20
     
 #     hq_30 = pat_rec_full_care_fc /
-#     pat_rec_full_care = int(countie_data[0][19] * countie_data[3][1] * countie_data[3][8])
-#     pat_rec_full_care_fc = int(population_fc * countie_data[3][2] * countie_data[3][9])
+    pat_rec_full_care = int(countie_data[0][19] * countie_data[3][1] * countie_data[3][8])
+    pat_rec_full_care_fc = int(population_fc * countie_data[3][2] * countie_data[3][9])
     change_pat_rec = float("{:.2f}".format(((pat_rec_full_care_fc * 100) / pat_rec_full_care) - 100))
 
+################################################Alte Berechnungen################################################
+################################################Neue Berechnungen################################################
+
+    new_care_rate = inpatients_lk / (people_u80 + people_o80)
+  
+    print(new_care_rate)
+
+################################################Neue Berechnungen################################################
+  
     #Get Data from Care-Database based on Iso-Layer
     care_data_iso = anvil.server.call("get_iso_data", bbox)
 
