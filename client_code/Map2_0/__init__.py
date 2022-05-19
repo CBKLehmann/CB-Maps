@@ -545,7 +545,6 @@ class Map2_0(Map2_0Template):
     string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{lng_lat_marker['lng']},{lng_lat_marker['lat']}.json?access_token={self.token}"
     response_data = anvil.http.request(string,json=True)
     marker_context = response_data['features'][0]['context']
-    print(marker_context)
     
     #Get Information about Zipcode, District, City and Federal-State of Map-Marker-Position
     zipcode = "n.a."
@@ -650,7 +649,7 @@ class Map2_0(Map2_0Template):
 ################################################Neue Berechnungen################################################
 
     nursing_home_rate = float(countie_data[3][8])
-    nursing_home_rate_perc = nursing_home_rate * 100
+    nursing_home_rate_perc = "{:.1f}".format(nursing_home_rate * 100)
     new_r_care_rate_raw = float("{:.3f}".format(inpatients_lk / (people_u80 + people_o80)))
     new_r_care_rate_perc = "{:.1f}".format(new_r_care_rate_raw * 100)
     new_care_rate_raw = float("{:.3f}".format(inpatients_lk / round((nursing_home_rate * countie_data[0][19]) + 1)))
