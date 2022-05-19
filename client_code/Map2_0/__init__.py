@@ -510,7 +510,7 @@ class Map2_0(Map2_0Template):
 #     """
   
 #     anvil.js.call('open_tab', html)
-  
+
   #######Noch bearbeiten#######
   #This methos is called when the User want's to generate a Market Summary
   def Summary_click(self, **event_args):
@@ -545,6 +545,7 @@ class Map2_0(Map2_0Template):
     string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{lng_lat_marker['lng']},{lng_lat_marker['lat']}.json?access_token={self.token}"
     response_data = anvil.http.request(string,json=True)
     marker_context = response_data['features'][0]['context']
+    print(marker_context)
     
     #Get Information about Zipcode, District, City and Federal-State of Map-Marker-Position
     zipcode = "n.a."
@@ -2176,16 +2177,11 @@ class Map2_0(Map2_0Template):
       index_coords -= 1
     request_static_map += "%5D%7D"
     
-    print(len(request_static_map))
-    
     if len(request_static_map) > 8192:
       request_static_map = f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22large%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22MultiPoint%22%2C%22coordinates%22%3A%5B%5B{marker_coords['lng']},{marker_coords['lat']}%5D%2C"
       for coordinate in reversed(sorted_coords):
         request_static_map += f"%5B{coordinate[0][0]},{coordinate[0][1]}%5D%2C"
       request_static_map = request_static_map[:-3] + f'%5D%7D%7D'
-    
-    print(request_static_map)
-    print(len(request_static_map))
     
     return({"data": data_comp_analysis, "request": request_static_map, "request2": Variables.activeIso})
   
