@@ -582,6 +582,8 @@ class Map2_0(Map2_0Template):
     inpatients_lk = 0
     beds_lk = 0
     for el in care_data_federal:
+      print(el)
+      print('###########################')
       if not el[27] == '-':
         inpatients_lk += int(el[27])
       if not el[28] == '-':
