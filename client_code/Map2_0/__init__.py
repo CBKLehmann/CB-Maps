@@ -582,8 +582,6 @@ class Map2_0(Map2_0Template):
     inpatients_lk = 0
     beds_lk = 0
     for el in care_data_federal:
-      print(el)
-      print('###########################')
       if not el[27] == '-':
         inpatients_lk += int(el[27])
       if not el[28] == '-':
@@ -2109,15 +2107,17 @@ class Map2_0(Map2_0Template):
             counter += 1
             if topic == "nursing_homes":
               if entry[27] == "-":
-                anz_vers_pat = 0
+                anz_vers_pat = "-"
               else:
                 anz_vers_pat = int(entry[27])
               if entry[28] == "-":
-                platz_voll_pfl = 0
+                platz_voll_pfl = "-"
               else:
                 platz_voll_pfl = int(entry[28])
-              if not anz_vers_pat == 0 and not platz_voll_pfl == 0:
+              if not anz_vers_pat == "-" and not platz_voll_pfl == "-":
                 occupancy_raw = round((anz_vers_pat * 100) / platz_voll_pfl)
+                if occupancy_raw > 100:
+                  occupancy_raw = 100
                 occupancy = f"{occupancy_raw} %"
               else:
                 occupancy = "-"
