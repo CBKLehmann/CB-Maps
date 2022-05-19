@@ -555,9 +555,9 @@ class Map2_0(Map2_0Template):
       if "postcode" in info['id'] :
         zipcode = info['text']
       elif "locality" in info['id']:
-        district = info['text'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig")
+        district = info['text']
       elif "place" in info['id']:
-        city = info['text'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig")
+        city = info['text']
         city_alt = info['text']
       elif "region" in info['id']:
         federal_state = info['text']
