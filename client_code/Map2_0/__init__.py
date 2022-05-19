@@ -785,8 +785,10 @@ class Map2_0(Map2_0Template):
     beds_surplus_35 = beds_adjusted - inpatients_fc_35
     beds_surplus_v2 = beds_adjusted - inpatients_fc_v2
     beds_surplus_35_v2 = beds_adjusted - inpatients_fc_35_v2
-    beds_in_reserve_20 = round(beds_adjusted * (1 - (occupancy_raw / 100)))
+    beds_in_reserve_20 = round(beds_active * (1 - (occupancy_raw / 100)))
     beds_in_reserve_fc = round(beds_adjusted * 0.05)
+    beds_surplus_30_avg = round((beds_surplus + beds_surplus_v2) / 2)
+    beds_surplus_35_avg = round((beds_surplus_35 + beds_surplus_35_v2) / 2)
     
 ################################################Neue Berechnungen################################################
 
@@ -994,7 +996,9 @@ class Map2_0(Map2_0Template):
                         "beds_35_v1": "{:,}".format(beds_35_v1),
                         "beds_35_v2": "{:,}".format(beds_35_v2),
                         "inpatents_fc_30_avg": "{:,}".format(inpatents_fc_30_avg),
-                        "inpatents_fc_35_avg": "{:,}".format(inpatents_fc_35_avg)}
+                        "inpatents_fc_35_avg": "{:,}".format(inpatents_fc_35_avg),
+                        "beds_surplus_30_avg": "{:,}".format(beds_surplus_30_avg),
+                        "beds_surplus_35_avg": "{:,}".format(beds_surplus_35_avg)}
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
                            "people_u80": "{:,}".format(people_u80),
