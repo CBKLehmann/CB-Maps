@@ -753,6 +753,8 @@ class Map2_0(Map2_0Template):
     inpatients_fc_v2 = round(pat_rec_full_care_fc_30_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
     inpatients_fc_35 = round(pat_rec_full_care_fc_35_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
     inpatients_fc_35_v2 = round(pat_rec_full_care_fc_35_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
+    inpatents_fc_30_avg = (inpatients_fc + inpatients_fc_v2) / 2
+    inpatents_fc_35_avg = (inpatients_fc_35 + inpatients_fc_35_v2) / 2
     invest_median = "{:.2f}".format(anvil.server.call("get_median", invest_cost))
     beds_median = anvil.server.call("get_median", beds)
     year_median = round(anvil.server.call("get_median", year))
@@ -794,10 +796,14 @@ class Map2_0(Map2_0Template):
     care_rate_break_even_30_perc = "{:.1f}".format(care_rate_break_even_30_raw * 100)
     care_rate_break_even_35_raw = float("{:.3f}".format((beds_adjusted * 0.95) / (population_fc_35 * nursing_home_rate)))
     care_rate_break_even_35_perc = "{:.1f}".format(care_rate_break_even_35_raw * 100)
-    free_beds_30_v1 = round((pat_rec_full_care_fc_30_v1 / 0.95), 2) - pat_rec_full_care_fc_30_v1
-    free_beds_30_v2 = round((pat_rec_full_care_fc_30_v2 / 0.95), 2) - pat_rec_full_care_fc_30_v2
-    free_beds_35_v1 = round((pat_rec_full_care_fc_35_v1 / 0.95), 2) - pat_rec_full_care_fc_35_v1
-    free_beds_35_v2 = round((pat_rec_full_care_fc_35_v2 / 0.95), 2) - pat_rec_full_care_fc_35_v2
+    beds_30_v1 = round((pat_rec_full_care_fc_30_v1 / 0.95), 2)
+    beds_30_v2 = round((pat_rec_full_care_fc_30_v2 / 0.95), 2)
+    beds_35_v1 = round((pat_rec_full_care_fc_35_v1 / 0.95), 2)
+    beds_35_v2 = round((pat_rec_full_care_fc_35_v2 / 0.95), 2)
+    free_beds_30_v1 =  beds_30_v1 - pat_rec_full_care_fc_30_v1
+    free_beds_30_v2 =  beds_30_v2 - pat_rec_full_care_fc_30_v2
+    free_beds_35_v1 =  beds_35_v1 - pat_rec_full_care_fc_35_v1
+    free_beds_35_v2 =  beds_35_v2 - pat_rec_full_care_fc_35_v2
     
 
 ################################################Neue Berechnungen################################################
@@ -982,7 +988,13 @@ class Map2_0(Map2_0Template):
                         "free_beds_30_v1": "{:,}".format(free_beds_30_v1),
                         "free_beds_30_v2": "{:,}".format(free_beds_30_v2),
                         "free_beds_35_v1": "{:,}".format(free_beds_35_v1),
-                        "free_beds_35_v2": "{:,}".format(free_beds_35_v2)}
+                        "free_beds_35_v2": "{:,}".format(free_beds_35_v2),
+                        "beds_30_v1": "{:,}".format(beds_30_v1),
+                        "beds_30_v2": "{:,}".format(beds_30_v2),
+                        "beds_35_v1": "{:,}".format(beds_35_v1),
+                        "beds_35_v2": "{:,}".format(beds_35_v2),
+                        "inpatents_fc_30_avg": "{:,}".format(inpatents_fc_30_avg),
+                        "inpatents_fc_35_avg": "{:,}".format(inpatents_fc_35_avg)}
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
                            "people_u80": "{:,}".format(people_u80),
