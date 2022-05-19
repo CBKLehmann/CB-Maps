@@ -794,6 +794,10 @@ class Map2_0(Map2_0Template):
     care_rate_break_even_30_perc = "{:.1f}".format(care_rate_break_even_30_raw * 100)
     care_rate_break_even_35_raw = float("{:.3f}".format((beds_adjusted * 0.95) / (population_fc_35 * nursing_home_rate)))
     care_rate_break_even_35_perc = "{:.1f}".format(care_rate_break_even_35_raw * 100)
+    free_beds_30_v1 = round((pat_rec_full_care_fc_30_v1 / 0.95), 2) - pat_rec_full_care_fc_30_v1
+    free_beds_30_v2 = round((pat_rec_full_care_fc_30_v2 / 0.95), 2) - pat_rec_full_care_fc_30_v2
+    free_beds_35_v1 = round((pat_rec_full_care_fc_35_v1 / 0.95), 2) - pat_rec_full_care_fc_35_v1
+    free_beds_35_v2 = round((pat_rec_full_care_fc_35_v2 / 0.95), 2) - pat_rec_full_care_fc_35_v2
     
 
 ################################################Neue Berechnungen################################################
@@ -974,7 +978,11 @@ class Map2_0(Map2_0Template):
                         "beds_lk": "{:,}".format(beds_lk),
                         "free_beds_lk" : "{:,}".format(free_beds_lk),
                         "beds_in_reserve_20": "{:,}".format(beds_in_reserve_20),
-                        "beds_in_reserve_fc": "{:,}".format(beds_in_reserve_fc)}
+                        "beds_in_reserve_fc": "{:,}".format(beds_in_reserve_fc),
+                        "free_beds_30_v1": "{:,}".format(free_beds_30_v1),
+                        "free_beds_30_v2": "{:,}".format(free_beds_30_v2),
+                        "free_beds_35_v1": "{:,}".format(free_beds_35_v1),
+                        "free_beds_35_v2": "{:,}".format(free_beds_35_v2)}
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
                            "people_u80": "{:,}".format(people_u80),
