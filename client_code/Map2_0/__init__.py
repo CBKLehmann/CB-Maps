@@ -2027,7 +2027,6 @@ class Map2_0(Map2_0Template):
   def organize_ca_data(self, entries, topic, marker_coords):
     
     # Create Variables
-    index = 1
     counter = 0
     data_comp_analysis = []
     coords = []
@@ -2072,7 +2071,6 @@ class Map2_0(Map2_0Template):
               else:
                 invest = entry[38]
               data = {
-                "index": index,
                 "name": entry[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "platz_voll_pfl": platz_voll_pfl,
                 "ez": entry[31],
@@ -2087,7 +2085,6 @@ class Map2_0(Map2_0Template):
                 "coords": [lng_icon, lat_icon]
               }
               data_comp_analysis.append(data)
-              index += 1
               break
             elif topic == "assisted_living":
               if entry[19] == '-':
@@ -2095,7 +2092,6 @@ class Map2_0(Map2_0Template):
               else:
                 number_apts = int(float(entry[19]))
               data = {
-                "index": index,
                 "name": entry[4].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "operator": entry[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "type": entry[8].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
@@ -2105,7 +2101,6 @@ class Map2_0(Map2_0Template):
                 "coords": [lng_icon, lat_icon]
               }
               data_comp_analysis.append(data)
-              index += 1
               break
               
     # Sort Coordinates by Distance
@@ -2119,7 +2114,6 @@ class Map2_0(Map2_0Template):
     request_static_map = request_static_map_raw
     
     for coordinate in reversed(sorted_coords):
-      print(coordinate)
       counter += 1
       if counter == 10 or counter == len(sorted_coords):
         request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
