@@ -2119,18 +2119,23 @@ class Map2_0(Map2_0Template):
     
   def build_req_string(self, res_data):
 
+    edt_res_data = res_data 
+    
     home_address = None
     
     if Variables.home_address_nh == None:
       if Variables.home_address_al == None:
         print('Nothing there!')
       else:
-        home_address = Variables.home_address_al[0]
+        home_address = Variables.home_address_al
     else:
-      home_address = Variables.home_address_nh[0]
-        
-    print(home_address)
-    print(res_data)
+      home_address = Variables.home_address_nh
+
+    if home_address in res_data['sorted_coords']:
+      ha_index = res_data['sorted_coords'].index(home_address)
+      print(res_data['sorted_coords'][ha_index])
+      del edt_res_data['sorted_coords'][ha_index]
+      res_data['sorted_coords'][ha_index].append('home')
     
     #Build Request-String for Mapbox Static-Map-API
     counter = 0
@@ -2138,11 +2143,11 @@ class Map2_0(Map2_0Template):
     request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D"
     request_static_map = request_static_map_raw
     
-    index_coords = len(res_data['sorted_coords'])
+    index_coords = len(edt_res_data['sorted_coords'])
     
-    for coordinate in reversed(res_data['sorted_coords']):
+    for coordinate in reversed(edt_res_data['sorted_coords']):
       counter += 1
-      if counter == 10 or counter == len(res_data['sorted_coords']):
+      if counter == 10 or counter == len(edt_res_data['sorted_coords']):
         request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
         counter = 0
         request.append(request_static_map)
@@ -2151,7 +2156,7 @@ class Map2_0(Map2_0Template):
       else:
         request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
         index_coords -= 1
-
+        
     return({"data": res_data['sorted_coords'], "request": request, "request2": Variables.activeIso})
   
   def create_bounding_box(self):
