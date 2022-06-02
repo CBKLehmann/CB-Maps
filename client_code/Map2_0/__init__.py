@@ -2110,7 +2110,6 @@ class Map2_0(Map2_0Template):
               
     # Sort Coordinates by Distance
     sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
-#     print(sorted_coords)
     index_coords = len(sorted_coords)
 
     #Build Request-String for Mapbox Static-Map-API
@@ -2132,7 +2131,7 @@ class Map2_0(Map2_0Template):
         request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
         index_coords -= 1
 
-    return({"data": data_comp_analysis, "request": request, "request2": Variables.activeIso})
+    return({"data": sorted_coords, "request": request, "request2": Variables.activeIso})
   
   def create_bounding_box(self):
     
