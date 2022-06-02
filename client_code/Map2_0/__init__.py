@@ -1259,7 +1259,7 @@ class Map2_0(Map2_0Template):
   def popup(self, click):
   
     #Check which Layer is active
-    if click.features[0].layer.source == 'bundeslaender':
+    if click.features[0].layer.source == 'federal_states':
       
       #Create Popup and add it to the Map
       bl_name = click.features[0].properties.name
@@ -1268,7 +1268,7 @@ class Map2_0(Map2_0Template):
       popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}').addTo(self.mapbox)
     
     #Check which Layer is active
-    elif click.features[0].layer.source == 'regierungsbezirke':
+    elif click.features[0].layer.source == 'administrative_districts':
       
       #Create Popup and add it to the Map
       bl_name = click.features[0].properties.NAME_1
@@ -1277,7 +1277,7 @@ class Map2_0(Map2_0Template):
       popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Regierungsbezirk:</b> {rb_name}').addTo(self.mapbox)
     
     #Check which Layer is active
-    elif click.features[0].layer.source == 'landkreise':
+    elif click.features[0].layer.source == 'counties':
       
       #Create Popup and add it to the Map
       bl_name = click.features[0].properties.lan_name
@@ -1285,7 +1285,7 @@ class Map2_0(Map2_0Template):
       clicked_lngLat = dict(click.lngLat)
       popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Landkreis:</b> {lk_name}').addTo(self.mapbox)
   
-    elif click.features[0].layer.source == 'gemeinden':
+    elif click.features[0].layer.source == 'municipalities':
       
       if hasattr(click.features[0].properties, 'GEN'):
         
@@ -1298,7 +1298,11 @@ class Map2_0(Map2_0Template):
       key = click.features[0].properties.AGS
       data = anvil.server.call('get_data_from_database', key)
     
-      popup_text = f'<button type="button" onClick="hide_mun_info()">&#10006;</button><br><br><h3>Municipality: {gm_name}</h3><b>ID:</b> {key}<br><b>Area:</b> {"{:.2f}".format(data[0][9])}km&sup2;<br><br><b>Population:</b> {data[0][10]}<br><b>per km&sup2:</b> {data[0][13]}<br><br><table><tr><th class="firstCol">Gender</th><th>Overall</th><th>Under 3</th><th>3 to <br>Under 6</th><th>6 to <br>Under 10</th><th>10 to Under 15</th><th>15 to Under 18</th><th>18 to Under 20</th><th>20 to Under 25</th><th>25 to Under 30</th><th>30 to Under 35</th><th>35 to Under 40</th><th>40 to Under 45</th><th>45 to Under 50</th><th>50 to Under 55</th><th>55 to Under 60</th><th>60 to Under 65</th><th>65 to Under 75</th><th>75 and older</th></tr><tr><th class="firstCol">Overall</th><td>100%</td><td>{"{:.1f}".format(data[1][2])}%</td><td>{"{:.1f}".format(data[1][3])}%</td><td>{"{:.1f}".format(data[1][4])}%</td><td>{"{:.1f}".format(data[1][5])}%</td><td>{"{:.1f}".format(data[1][6])}%</td><td>{"{:.1f}".format(data[1][7])}%</td><td>{"{:.1f}".format(data[1][8])}%</td><td>{"{:.1f}".format(data[1][9])}%</td><td>{"{:.1f}".format(data[1][10])}%</td><td>{"{:.1f}".format(data[1][11])}%</td><td>{"{:.1f}".format(data[1][12])}%</td><td>{"{:.1f}".format(data[1][13])}%</td><td>{"{:.1f}".format(data[1][14])}%</td><td>{"{:.1f}".format(data[1][15])}%</td><td>{"{:.1f}".format(data[1][16])}%</td><td>{"{:.1f}".format(data[1][17])}%</td><td>{"{:.1f}".format(data[1][18])}%</td></tr><tr><th class="firstCol">Male</th><td>{"{:.1f}".format(data[1][37])}%</td><td>{"{:.1f}".format(data[1][20])}%</td><td>{"{:.1f}".format(data[1][21])}%</td><td>{"{:.1f}".format(data[1][22])}%</td><td>{"{:.1f}".format(data[1][23])}%</td><td>{data[1][24]}%</td><td>{"{:.1f}".format(data[1][25])}%</td><td>{"{:.1f}".format(data[1][26])}%</td><td>{"{:.1f}".format(data[1][27])}%</td><td>{"{:.1f}".format(data[1][28])}%</td><td>{"{:.1f}".format(data[1][29])}%</td><td>{"{:.1f}".format(data[1][30])}%</td><td>{"{:.1f}".format(data[1][31])}%</td><td>{"{:.1f}".format(data[1][32])}%</td><td>{"{:.1f}".format(data[1][33])}%</td><td>{"{:.1f}".format(data[1][34])}%</td><td>{"{:.1f}".format(data[1][35])}%</td><td>{"{:.1f}".format(data[1][36])}%</td></tr><tr><th class="firstCol">Female</th><td>{"{:.1f}".format(data[1][55])}%</td><td>{"{:.1f}".format(data[1][38])}%</td><td>{"{:.1f}".format(data[1][39])}%</td><td>{"{:.1f}".format(data[1][40])}%</td><td>{"{:.1f}".format(data[1][41])}%</td><td>{"{:.1f}".format(data[1][42])}%</td><td>{data[1][43]}%</td><td>{"{:.1f}".format(data[1][44])}%</td><td>{"{:.1f}".format(data[1][45])}%</td><td>{"{:.1f}".format(data[1][46])}%</td> <td>{"{:.1f}".format(data[1][47])}%</td><td>{"{:.1f}".format(data[1][48])}%</td><td>{"{:.1f}".format(data[1][49])}%</td><td>{"{:.1f}".format(data[1][50])}%</td><td>{"{:.1f}".format(data[1][51])}%</td><td>{"{:.1f}".format(data[1][52])}%</td><td>{"{:.1f}".format(data[1][53])}%</td><td>{"{:.1f}".format(data[1][54])}%</td></tr></table><br><br><br><b>Grad der Verstädterung:</b> {data[0][18]}'
+      print(data)
+    
+      popup_text = f'<button type="button" onClick="hide_mun_info()">&#10006;</button><br><br><h3>Municipality: {gm_name}</h3><b>ID:</b> {key}<br><b>Area:</b> {"{:.2f}".format(float(data[0][9]))}km&sup2;<br><br><b>Population:</b> {data[0][10]}<br><b>per km&sup2:</b> {data[0][13]}<br><br><table><tr><th class="firstCol">Gender</th><th>Overall</th><th>Under 3</th><th>3 to <br>Under 6</th><th>6 to <br>Under 10</th><th>10 to Under 15</th><th>15 to Under 18</th><th>18 to Under 20</th><th>20 to Under 25</th><th>25 to Under 30</th><th>30 to Under 35</th><th>35 to Under 40</th><th>40 to Under 45</th><th>45 to Under 50</th><th>50 to Under 55</th><th>55 to Under 60</th><th>60 to Under 65</th><th>65 to Under 75</th><th>75 and older</th></tr><tr><th class="firstCol">Overall</th><td>100%</td><td>{"{:.1f}".format(float(data[2][2]))}%</td><td>{"{:.1f}".format(float(data[2][3]))}%</td><td>{"{:.1f}".format(float(data[2][4]))}%</td><td>{"{:.1f}".format(float(data[2][5]))}%</td><td>{"{:.1f}".format(float(data[2][6]))}%</td><td>{"{:.1f}".format(float(data[2][7]))}%</td><td>{"{:.1f}".format(float(data[2][8]))}%</td><td>{"{:.1f}".format(float(data[2][9]))}%</td><td>{"{:.1f}".format(float(data[2][10]))}%</td><td>{"{:.1f}".format(float(data[2][11]))}%</td><td>{"{:.1f}".format(float(data[2][12]))}%</td><td>{"{:.1f}".format(float(data[2][13]))}%</td><td>{"{:.1f}".format(float(data[2][14]))}%</td><td>{"{:.1f}".format(float(data[2][15]))}%</td><td>{"{:.1f}".format(float(data[2][16]))}%</td><td>{"{:.1f}".format(float(data[2][17]))}%</td><td>{"{:.1f}".format(float(data[2][18]))}%</td></tr><tr><th class="firstCol">Male</th><td>{"{:.1f}".format(float(data[2][37]))}%</td><td>{"{:.1f}".format(float(data[1][20]))}%</td><td>{"{:.1f}".format(float(data[1][21]))}%</td><td>{"{:.1f}".format(float(data[1][22]))}%</td><td>{"{:.1f}".format(float(data[1][23]))}%</td><td>{data[1][24]}%</td><td>{"{:.1f}".format(float(data[1][25]))}%</td><td>{"{:.1f}".format(float(data[1][26]))}%</td><td>{"{:.1f}".format((data[1][27]))}%</td><td>{"{:.1f}".format(float(data[1][28]))}%</td><td>{"{:.1f}".format(float(data[1][29]))}%</td><td>{"{:.1f}".format(float(data[1][30]))}%</td><td>{"{:.1f}".format(float(data[1][31]))}%</td><td>{"{:.1f}".format(float(data[1][32]))}%</td><td>{"{:.1f}".format(float(data[1][33]))}%</td><td>{"{:.1f}".format(float(data[1][34]))}%</td><td>{"{:.1f}".format(float(data[1][35]))}%</td><td>{"{:.1f}".format(float(data[1][36]))}%</td></tr><tr><th class="firstCol">Female</th><td>{"{:.1f}".format(float(data[1][55]))}%</td><td>{"{:.1f}".format(float(data[1][38]))}%</td><td>{"{:.1f}".format(float(data[1][39]))}%</td><td>{"{:.1f}".format(float(data[1][40]))}%</td><td>{"{:.1f}".format(float(data[1][41]))}%</td><td>{"{:.1f}".format(float(data[1][42]))}%</td><td>{data[1][43]}%</td><td>{"{:.1f}".format(float(data[1][44]))}%</td><td>{"{:.1f}".format(float(data[1][45]))}%</td><td>{"{:.1f}".format(float(data[1][46]))}%</td><td>{"{:.1f}".format(float(data[1][47]))}%</td><td>{"{:.1f}".format(float(data[1][48]))}%</td><td>{"{:.1f}".format(float(data[1][49]))}%</td><td>{"{:.1f}".format(float(data[1][50]))}%</td><td>{"{:.1f}".format(float(data[1][51]))}%</td><td>{"{:.1f}".format(float(data[1][52]))}%</td><td>{"{:.1f}".format(float(data[1][53]))}%</td><td>{"{:.1f}".format(float(data[1][54]))}%</td></tr></table><br><br><br><b>Grad der Verstädterung:</b> {data[0][18]}'
+      
+      print(popup)
       
       anvil.js.call('show_mun_info', popup_text)
       
@@ -1988,10 +1992,6 @@ class Map2_0(Map2_0Template):
   #This method is called when the Mouse is moved inside or out of an active Layer
   def change_hover_state(self, mouse):
     
-    print('##############################')
-    print(Variables.hoveredStateId)
-    print(Variables.activeLayer)
-    
     # Check if Layer is already hovered
     if Variables.hoveredStateId != None:
   
@@ -2010,7 +2010,7 @@ class Map2_0(Map2_0Template):
         Variables.hoveredStateId = mouse.features[0].id
     
         # Change hover-State to True
-        self.mapbox.setFeatureState({'source': 'Variables.activeLayer', 'id': Variables.hoveredStateId}, {'hover': True})
+        self.mapbox.setFeatureState({'source': Variables.activeLayer, 'id': Variables.hoveredStateId}, {'hover': True})
   
   #Builds request-String for geocoder
   def build_request_string(self, marker):
