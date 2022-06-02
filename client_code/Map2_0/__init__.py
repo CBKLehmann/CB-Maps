@@ -511,6 +511,8 @@ class Map2_0(Map2_0Template):
   
 #     anvil.js.call('open_tab', html)
 
+    print('Done')
+
   #######Noch bearbeiten#######
   #This methos is called when the User want's to generate a Market Summary
   def Summary_click(self, **event_args):
@@ -1437,40 +1439,8 @@ class Map2_0(Map2_0Template):
           }
       })
   
-    #Check which Layer is active
-    if Variables.activeLayer == 'bundeslaender':
-  
-      #Set Visibility to visible
-      self.mapbox.setLayoutProperty('bundeslaender', 'visibility', 'visible')
-      self.mapbox.setLayoutProperty('outlineBL', 'visibility', 'visible')
-    
-    #Check which Layer is active
-    elif Variables.activeLayer == 'regierungsbezirke':
-    
-      #Set Visibility to visible
-      self.mapbox.setLayoutProperty('regierungsbezirke', 'visibility', 'visible')
-      self.mapbox.setLayoutProperty('outlineRB', 'visibility', 'visible')
-    
-    #Check which Layer is active
-    elif Variables.activeLayer == 'landkreise':
-      
-      #Set Visibility to visible
-      self.mapbox.setLayoutProperty('landkreise', 'visibility', 'visible')
-      self.mapbox.setLayoutProperty('outlineLK', 'visibility', 'visible')
-    
-    #Check which Layer is active
-    elif Variables.activeLayer == 'gemeinden':
-      
-      #Set Visibility to visible
-      self.mapbox.setLayoutProperty('gemeinden', 'visibility', 'visible')
-      self.mapbox.setLayoutProperty('outlineGM', 'visibility', 'visible')
-      
-    #Check which Layer is active
-    elif Variables.activeLayer == 'ber_dist':
-      
-      #Set Visibility to visible
-      self.mapbox.setLayoutProperty('ber_dist', 'visibility', 'visible')
-      self.mapbox.setLayoutProperty('outlineBD', 'visibility', 'visible')
+    self.mapbox.setLayoutProperty(Variables.activeLayer, 'visibility', 'visible')
+    self.mapbox.setLayoutProperty(f'outline_{Variables.activeLayer}', 'visibility', 'visible')
   
   #This method is called from the check_box_change-Functions to place Icons on Map  
   def create_icons(self, check_box, last_bbox, category, picture):
@@ -2018,38 +1988,15 @@ class Map2_0(Map2_0Template):
   #This method is called when the Mouse is moved inside or out of an active Layer
   def change_hover_state(self, mouse):
     
+    print('##############################')
+    print(Variables.hoveredStateId)
+    print(Variables.activeLayer)
+    
     # Check if Layer is already hovered
     if Variables.hoveredStateId != None:
-    
-      # Check if active Layer is Bundesländer
-      if Variables.activeLayer == 'bundeslaender':
   
-        # Change hover-State to False and set global-variable 'hoveredStateId' to None
-        self.mapbox.setFeatureState({'source': 'bundeslaender', 'id': Variables.hoveredStateId}, {'hover': False})
-    
-      # Check if active Layer is Regierungsbezirke
-      elif Variables.activeLayer == 'regierungsbezirke':
-  
-        # Change hover-State to False and set global-variable 'hoveredStateId' to None
-        self.mapbox.setFeatureState({'source': 'regierungsbezirke', 'id': Variables.hoveredStateId}, {'hover': False})
-  
-          # Check if active Layer is Landkreise
-      elif Variables.activeLayer == 'landkreise':
-  
-        # Change hover-State to False and set global-variable 'hoveredStateId' to None
-        self.mapbox.setFeatureState({'source': 'landkreise', 'id': Variables.hoveredStateId}, {'hover': False})
-  
-      # Check if active Layer is Gemeinden
-      elif Variables.activeLayer == 'gemeinden':
-  
-        # Change hover-State to False and set global-variable 'hoveredStateId' to None
-        self.mapbox.setFeatureState({'source': 'gemeinden', 'id': Variables.hoveredStateId}, {'hover': False})
-        
-      # Check if active Layer is Gemeinden
-      elif Variables.activeLayer == 'bezirke':
-  
-        # Change hover-State to False and set global-variable 'hoveredStateId' to None
-        self.mapbox.setFeatureState({'source': 'bezirke', 'id': Variables.hoveredStateId}, {'hover': False})
+      # Change hover-State to False and set global-variable 'hoveredStateId' to None
+      self.mapbox.setFeatureState({'source': Variables.activeLayer, 'id': Variables.hoveredStateId}, {'hover': False})
       
       Variables.hoveredStateId = None
     
@@ -2062,35 +2009,8 @@ class Map2_0(Map2_0Template):
         # Change global hoveredStateID to new active Layer-id
         Variables.hoveredStateId = mouse.features[0].id
     
-        # Check if active Layer is Bundesländer
-        if Variables.activeLayer == 'bundeslaender':
-    
-          # Change hover-State to True
-          self.mapbox.setFeatureState({'source': 'bundeslaender', 'id': Variables.hoveredStateId}, {'hover': True})
-    
-        # Check if active Layer is Regierungsbezirke
-        elif Variables.activeLayer == 'regierungsbezirke':
-    
-          # Change hover-State to True
-          self.mapbox.setFeatureState({'source': 'regierungsbezirke', 'id': Variables.hoveredStateId}, {'hover': True})
-    
-        # Check if active Layer is Landkreise
-        elif Variables.activeLayer == 'landkreise':
-    
-          # Change hover-State to True
-          self.mapbox.setFeatureState({'source': 'landkreise', 'id': Variables.hoveredStateId}, {'hover': True})
-    
-        # Check if active Layer is Gemeinden
-        elif Variables.activeLayer == 'gemeinden':
-    
-          # Change hover-State to True
-          self.mapbox.setFeatureState({'source': 'gemeinden', 'id': Variables.hoveredStateId}, {'hover': True})
-        
-        # Check if active Layer is Gemeinden
-        elif Variables.activeLayer == 'bezirke':
-    
-          # Change hover-State to True
-          self.mapbox.setFeatureState({'source': 'bezirke', 'id': Variables.hoveredStateId}, {'hover': True})
+        # Change hover-State to True
+        self.mapbox.setFeatureState({'source': 'Variables.activeLayer', 'id': Variables.hoveredStateId}, {'hover': True})
   
   #Builds request-String for geocoder
   def build_request_string(self, marker):
