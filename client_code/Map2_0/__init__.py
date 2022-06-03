@@ -537,12 +537,14 @@ class Map2_0(Map2_0Template):
       if point[1] > bbox[2] or bbox[2] == 0:
         bbox[2] = point[1]
 
-    #Get Data for Competitor Analysis Nursing Homes
-    data_comp_analysis_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', lng_lat_marker)
+    #Get organized Coords for both Competitor Analysis
+    coords_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', lng_lat_marker)
+    coords_al = self.organize_ca_data(Variables.assisted_living_entries, 'assisted_living', lng_lat_marker)
+        
+    #Get Data for both Competitor Analysis
+    data_comp_analysis_nh = self.build_req_string(coords_nh)
+    data_comp_analysis_al = self.build_req_string(coords_al)
     
-    #Get Data for Competitor Analysis Assisted Living
-    data_comp_analysis_al = self.organize_ca_data(Variables.assisted_living_entries, 'assisted_living', lng_lat_marker)
-
     #Get Place from Geocoder-API for Map-Marker
     string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{lng_lat_marker['lng']},{lng_lat_marker['lat']}.json?access_token={self.token}"
     response_data = anvil.http.request(string,json=True)
@@ -2027,7 +2029,6 @@ class Map2_0(Map2_0Template):
   def organize_ca_data(self, entries, topic, marker_coords):
     
     # Create Variables
-    index = 1
     counter = 0
     data_comp_analysis = []
     coords = []
@@ -2072,7 +2073,6 @@ class Map2_0(Map2_0Template):
               else:
                 invest = entry[38]
               data = {
-                "index": index,
                 "name": entry[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "platz_voll_pfl": platz_voll_pfl,
                 "ez": entry[31],
@@ -2083,10 +2083,10 @@ class Map2_0(Map2_0Template):
                 "status": entry[4],
                 "betreiber": entry[6].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "invest": invest,
-                "mdk_note": entry[26]
+                "mdk_note": entry[26],
+                "coords": [lng_icon, lat_icon]
               }
               data_comp_analysis.append(data)
-              index += 1
               break
             elif topic == "assisted_living":
               if entry[19] == '-':
@@ -2094,41 +2094,73 @@ class Map2_0(Map2_0Template):
               else:
                 number_apts = int(float(entry[19]))
               data = {
-                "index": index,
                 "name": entry[4].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "operator": entry[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "type": entry[8].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "city": entry[12].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "status": entry[3].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                "number_apts": number_apts
+                "number_apts": number_apts,
+                "coords": [lng_icon, lat_icon]
               }
               data_comp_analysis.append(data)
-              index += 1
               break
-
+              
     # Sort Coordinates by Distance
-    sorted_coords = anvil.server.call("get_distance", marker_coords, coords)
-    index_coords = len(sorted_coords)
+    sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
+    if sorted_coords[0][1] == 0.0:
+      if topic == 'nursing_homes':
+        Variables.home_address_nh = sorted_coords[0]
+      else:
+        Variables.home_address_al = sorted_coords[0]
+    
+    res_data = {'sorted_coords': sorted_coords, 'marker_coords': marker_coords}
+    
+    return res_data
+    
+  def build_req_string(self, res_data):
+    
+    home_address = None
+    
+    if Variables.home_address_nh == None:
+      if Variables.home_address_al == None:
+        print('Nothing there!')
+      else:
+        home_address = Variables.home_address_al
+    else:
+      home_address = Variables.home_address_nh
 
+    if home_address in res_data['sorted_coords']:
+      ha_index = res_data['sorted_coords'].index(home_address)
+      res_data['sorted_coords'][ha_index].append('home')
+    
     #Build Request-String for Mapbox Static-Map-API
     counter = 0
     request = []
-    request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{marker_coords['lng']},{marker_coords['lat']}%5D%7D%7D"
+    request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D"
     request_static_map = request_static_map_raw
     
-    for coordinate in reversed(sorted_coords):
+    index_coords = len(res_data['sorted_coords']) - 1
+    last_coords = []
+    
+    for coordinate in reversed(res_data['sorted_coords']):
+      print(last_coords)
+      print(coordinate[0]['coords'])
       counter += 1
-      if counter == 10 or counter == len(sorted_coords):
-        request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0][0]},{coordinate[0][1]}%5D%7D%7D%5D%7D"
-        counter = 0
-        request.append(request_static_map)
-        request_static_map = request_static_map_raw
+      if (counter == 10 or counter == len(res_data['sorted_coords']) - 1) and not 'home' in coordinate:
+        if not coordinate[0]['coords'] == last_coords:
+          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+          counter = 0
+          request.append(request_static_map)
+          request_static_map = request_static_map_raw
         index_coords -= 1
-      else:
-        request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0][0]},{coordinate[0][1]}%5D%7D%7D"
+      elif not 'home' in coordinate:
+        if not coordinate[0]['coords'] == last_coords:
+          print('Hello')
+          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
         index_coords -= 1
-
-    return({"data": data_comp_analysis, "request": request, "request2": Variables.activeIso})
+      last_coords = coordinate[0]['coords']
+      
+    return({"data": res_data['sorted_coords'], "request": request, "request2": Variables.activeIso})
   
   def create_bounding_box(self):
     

@@ -53,3 +53,5 @@ nursing_homes_entries = []
 assisted_living_entries = []
 activeIso = 0
 marker_icons_checked = 6
+home_address_nh = None
+home_address_al = None
