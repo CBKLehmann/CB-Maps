@@ -2107,11 +2107,12 @@ class Map2_0(Map2_0Template):
               
     # Sort Coordinates by Distance
     sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
-    if sorted_coords[0][1] == 0.0:
-      if topic == 'nursing_homes':
-        Variables.home_address_nh = sorted_coords[0]
-      else:
-        Variables.home_address_al = sorted_coords[0]
+    for entry in sorted_coords:
+      if entry[1] == 0:
+        if topic == 'nursing_homes':
+          Variables.home_address_nh.append(entry)
+        else:
+          Variables.home_address_al.append(entry)
     
     res_data = {'sorted_coords': sorted_coords, 'marker_coords': marker_coords}
     
@@ -2121,15 +2122,16 @@ class Map2_0(Map2_0Template):
     
     home_address = None
     
-    if Variables.home_address_nh == None:
-      if not Variables.home_address_al == None:
+    if Variables.home_address_nh == []:
+      if not Variables.home_address_al == []:
         home_address = Variables.home_address_al
     else:
       home_address = Variables.home_address_nh
       
-    if home_address in res_data['sorted_coords']:
-      ha_index = res_data['sorted_coords'].index(home_address)
-      res_data['sorted_coords'][ha_index].append('home')
+    for entry in home_address:  
+      if entry in res_data['sorted_coords']:
+        ha_index = res_data['sorted_coords'].index(entry)
+        res_data['sorted_coords'][ha_index].append('home')
     
     #Build Request-String for Mapbox Static-Map-API
     counter = 0
@@ -2138,38 +2140,51 @@ class Map2_0(Map2_0Template):
     request_static_map = request_static_map_raw
     
     index_coords = len(res_data['sorted_coords'])
+    print(index_coords)
+    for entry in res_data['sorted_coords']:
+      print(entry)
+      if 'home' in entry:
+        index_coords - 1
+    print(index_coords)
     last_coords = []
+    complete_counter = 0
     
     print('#####################################')
+    print(len(res_data['sorted_coords']))
     for coordinate in reversed(res_data['sorted_coords']):
+      print(complete_counter)
+      print(coordinate)
       counter += 1
-      print(counter)
-      if counter == 10:
-        if not 'home' in coordinate:
-          if not coordinate[0]['coords'] == last_coords:
-            request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords - 1}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-            counter = 0
-            request.append(request_static_map)
-            request_static_map = request_static_map_raw
-            print(request_static_map)
-            print('10 Entries')
-            print('#####################################')
-        index_coords -= 1
-      elif counter == len(res_data['sorted_coords']) - 1:
+      if complete_counter == len(res_data['sorted_coords']) - 1:
         print('End of Entries')
         if not coordinate[0]['coords'] == last_coords:
-          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords - 1}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+        print(request_static_map)
         counter = 0
         request.append(request_static_map)
         request_static_map = request_static_map_raw
         index_coords -= 1
-        print(request_static_map)
-        print('#####################################')
-      elif not 'home' in coordinate:
-        print('I am an entrie')
-        if not coordinate[0]['coords'] == last_coords:
-          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords - 1}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+      elif counter == 10:
+        if not 'home' in coordinate:
+          if not coordinate[0]['coords'] == last_coords:
+            request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+            counter = 0
+            request.append(request_static_map)
+            request_static_map = request_static_map_raw
         index_coords -= 1
+      elif not 'home' in coordinate:
+        if not coordinate[0]['coords'] == last_coords:
+          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+        index_coords -= 1
+      else:
+        request_static_map += f"%5D%7D"
+        print(request_static_map)
+        counter = 0
+        request.append(request_static_map)
+        request_static_map = request_static_map_raw
+        break
+        
+      complete_counter += 1
       last_coords = coordinate[0]['coords']
       
     return({"data": res_data['sorted_coords'], "request": request, "request2": Variables.activeIso})
