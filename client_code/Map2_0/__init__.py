@@ -826,9 +826,9 @@ class Map2_0(Map2_0Template):
     without_apartment = 0
     without_apartment_building = 0
     without_apartment_planning = 0
-
+    
     #Get Assisted Living Facilities in Countie and inside 10km Radius of Marker
-    al_entries = anvil.server.call("get_al_for_countie", countie[0])
+    al_entries = anvil.server.call("get_al_for_countie", countie_data[0][0])
     al_list = anvil.server.call("get_all_al_in_10km", lng_lat_marker, al_entries)
 
     #Get Data from Assisted Living Facilities
@@ -2122,9 +2122,7 @@ class Map2_0(Map2_0Template):
     home_address = None
     
     if Variables.home_address_nh == None:
-      if Variables.home_address_al == None:
-        print('Nothing there!')
-      else:
+      if not Variables.home_address_al == None:
         home_address = Variables.home_address_al
     else:
       home_address = Variables.home_address_nh
@@ -2143,8 +2141,6 @@ class Map2_0(Map2_0Template):
     last_coords = []
     
     for coordinate in reversed(res_data['sorted_coords']):
-      print(last_coords)
-      print(coordinate[0]['coords'])
       counter += 1
       if (counter == 10 or counter == len(res_data['sorted_coords']) - 1) and not 'home' in coordinate:
         if not coordinate[0]['coords'] == last_coords:
@@ -2155,7 +2151,6 @@ class Map2_0(Map2_0Template):
         index_coords -= 1
       elif not 'home' in coordinate:
         if not coordinate[0]['coords'] == last_coords:
-          print('Hello')
           request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
         index_coords -= 1
       last_coords = coordinate[0]['coords']
