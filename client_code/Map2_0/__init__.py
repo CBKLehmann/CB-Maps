@@ -922,7 +922,7 @@ class Map2_0(Map2_0Template):
     anvil.server.call("create_bar_chart", values_bar_sum, f"bar_v1_{unique_code}")
     values_bar_sum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030 Scenario 2", "value": inpatients_fc_v2}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2030", "value": beds_adjusted}, {"topic": "Number of inpatients forecast 2035 Scenario 2", "value": inpatients_fc_35_v2}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2035", "value": beds_adjusted}]
     anvil.server.call("create_bar_chart", values_bar_sum, f"bar_v2_{unique_code}")
-    anvil.server.call("create_bar_chart", [{"topic": f"{countie[0]}, LK 2022", "value": demand2022}, {"topic": f"{countie[0]}, LK 2040", "value": demand2040}], f"bar_al_{unique_code}")
+    anvil.server.call("create_bar_chart", [{"topic": f"{countie[0]}, LK 2022", "value": demand2022}, {"topic": f"{countie[0]}, LK 2030", "value": demand2040}], f"bar_al_{unique_code}")
     
     #Create Data-Objects for Summary
     sendData_Summary = {"zipcode": zipcode,
@@ -1077,7 +1077,7 @@ class Map2_0(Map2_0Template):
                           }
     
     #Create Summary-PDF
-    anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, self.token, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], data_comp_analysis_al['data'], data_comp_analysis_al['request'])
+    anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], data_comp_analysis_al['data'], data_comp_analysis_al['request'])
     
     #Get PDF from Table and start Download
     mapPDF = app_tables.pictures.search()[0]    
@@ -2137,7 +2137,7 @@ class Map2_0(Map2_0Template):
     request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D"
     request_static_map = request_static_map_raw
     
-    index_coords = len(res_data['sorted_coords']) - 1
+    index_coords = len(res_data['sorted_coords'])
     last_coords = []
     
     for coordinate in reversed(res_data['sorted_coords']):
