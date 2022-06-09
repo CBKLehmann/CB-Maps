@@ -2126,7 +2126,7 @@ class Map2_0(Map2_0Template):
         home_address = Variables.home_address_al
     else:
       home_address = Variables.home_address_nh
-
+      
     if home_address in res_data['sorted_coords']:
       ha_index = res_data['sorted_coords'].index(home_address)
       res_data['sorted_coords'][ha_index].append('home')
@@ -2140,18 +2140,20 @@ class Map2_0(Map2_0Template):
     index_coords = len(res_data['sorted_coords'])
     last_coords = []
     
+    print('#############################################')
     for coordinate in reversed(res_data['sorted_coords']):
+      print(coordinate)
       counter += 1
       if (counter == 10 or counter == len(res_data['sorted_coords']) - 1) and not 'home' in coordinate:
         if not coordinate[0]['coords'] == last_coords:
-          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords - 1}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
           counter = 0
           request.append(request_static_map)
           request_static_map = request_static_map_raw
         index_coords -= 1
       elif not 'home' in coordinate:
         if not coordinate[0]['coords'] == last_coords:
-          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords - 1}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
         index_coords -= 1
       last_coords = coordinate[0]['coords']
       
