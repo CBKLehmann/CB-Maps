@@ -846,6 +846,7 @@ th, td {
   border-radius: 5px;
   left: calc(40% - 400px);
   top: calc(45% - 200px);
+  display: table;
 }
 
 .setHomeAddressForm {
@@ -867,18 +868,10 @@ th, td {
   z-index: 9000;
   background-color: rgba(0, 0, 0, 0.5);
   position: relative;
-  bottom: 125%;
+  bottom: 129%;
   display: none;
 }
 
-/* .content {
+.content {
   overflow-y: hidden
-} */
-
-.anvil-role-newpopup {
-  background-color: black;
-/*   height: 50px;
-  width: 50px;
-  position:relative;
-  top: 50px; */
 }

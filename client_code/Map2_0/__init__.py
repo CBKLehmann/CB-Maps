@@ -2110,16 +2110,44 @@ class Map2_0(Map2_0Template):
     sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
     for entry in sorted_coords:
       if entry[1] <= 0.01:
-        anvil.js.call('addHomeAddress')
+        anvil.js.call('addHomeAddress', entry)
         res = 'none'
         while res == 'none':
           res = anvil.js.call('getResponse')
           time.sleep(.5)
-        print(res)
-        if topic == 'nursing_homes':
-          Variables.home_address_nh.append(entry)
-        else:
-          Variables.home_address_al.append(entry)
+        if res == 'yes':
+          if topic == 'nursing_homes':
+            Variables.home_address_nh.append(entry)
+          else:
+            Variables.home_address_al.append(entry)
+      anvil.js.call('resetResponse')
+      
+    if topic == 'nursing_homes':
+      if Variables.home_address_nh == []:
+        anvil.js.call('addData', 'nursing_homes', marker_coords)
+    else:
+      if Variables.home_address_al == []:
+        anvil.js.call('addData', 'assisted_living', marker_coords)
+      
+    if topic == 'nursing_homes':
+      if not Variables.home_address_nh == []:
+        home_address = Variables.home_address_nh
+    elif topic == 'assisted_living':
+      if not Variables.home_address_al == []:
+        home_address = Variables.home_address_al
+    gres = 'none'
+    while gres == 'none':
+      res = anvil.js.call('getResponse')
+      time.sleep(.5)
+      if not res == 'none':
+        gres = 'true'
+    if not res == 'dismiss':
+      home_address = res
+    else:
+      home_address = []
+    anvil.js.call('resetResponse')
+    
+    sorted_coords.insert(0, home_address)
     
     res_data = {'sorted_coords': sorted_coords, 'marker_coords': marker_coords}
     
@@ -2127,16 +2155,10 @@ class Map2_0(Map2_0Template):
     
   def build_req_string(self, res_data, topic):
     
-    home_address = None
-    
-    if topic == 'nursing_homes':
-      if not Variables.home_address_nh == []:
-        home_address = Variables.home_address_nh
-    elif topic == 'assisted_living':
-      if not Variables.home_address_al == []:
-        home_address = Variables.home_address_al
+    home_address = []
       
-    for entry in home_address:  
+    for entry in home_address:
+      print
       if entry in res_data['sorted_coords']:
         ha_index = res_data['sorted_coords'].index(entry)
         res_data['sorted_coords'][ha_index].append('home')
@@ -2155,6 +2177,7 @@ class Map2_0(Map2_0Template):
     complete_counter = 0
     
     for coordinate in reversed(res_data['sorted_coords']):
+      print(coordinate)
       counter += 1
       if complete_counter == len(res_data['sorted_coords']) - 1:
         if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:

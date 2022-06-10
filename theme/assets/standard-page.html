@@ -13,8 +13,8 @@
       <div anvil-slot-repeat="default" class="anvil-measure-this"></div>
       <div id="darkBackground" class="darkBackground">
       	<div id="setHomeAddress" class="setHomeAddress">
-        <form class=setHomeAddressForm>
-          <p>
+        <form class='setHomeAddressForm' id='inputForm'>
+          <p id="text">
             Found following Address with less than 10 Meters Distance to set Marker: 
             <br>
             <b>
@@ -107,9 +107,11 @@
   
   function addHomeAddress(data) {
     document.getElementById('darkBackground').style.display = 'block'
+    document.getElementById('text').innerHTML = `Found the following Object with less than 10 meters distance to set Marker:<br><b>${data[0].name}</b><br>Do you want to mark the Object as your marker address ?`
     document.querySelectorAll('.setHomeAddressButton').forEach(item => {
       item.addEventListener('click', event => {
         response = event.path[0].value
+        document.getElementById('darkBackground').style.display = 'none'
       })
     })
   }
@@ -118,4 +120,56 @@
     return(response)
   }
   
+  function resetResponse() {
+    response = 'none'
+  }
+  
+  function addData(topic, marker_coords) {
+    complete = document.getElementById('setHomeAddress')
+    
+    if (topic === 'nursing_homes') {
+      complete.innerHTML = `<p id="text">Do you want to add additional Informations for your address in ${topic} ?</p><br><form id="inputForm"><label>name<input type="text" id="name" name="name"></label><br><label>no. of beds<input type="text" id="nob" name="nob"></label><br><label>single rooms<input type="text" id="sr" name="sr"></label><br><label>double rooms<input type="text" id="dr" name="dr"></label><br><label>patients<input type="text" id="patients" name="patients"></label><br><label>occupancy<input type="text" id="occupancy" name="occupancy"></label><br><label>year of construction<input type="text" id="yoc" name="yoc"></label><br><label>status<input type="text" id="status" name="status"></label><br><label>operator<input type="text" id="operator" name="operator"></label><br><label>invest cost per day<input type="text" id="icpd" name="icpd"></label><br><label>mdk grade<input type="text" id="mdkg" name="mdkg"></label></form><button class='setHomeDataButton' type='button' value='save'>Save</button><button class='setHomeDataButton' type='button' value='dismiss'>Dismiss</button>`
+    } else if (topic === 'assisted_living') {
+      complete.innerHTML = `<p id="text">Do you want to add additional Informations for your address in ${topic} ?</p><br><form id="inputForm"><label>name<input type="text" id="name" name="name"></label><br><label>operator<input type="text" id="operator" name="operator"></label><br><label>type<input type="text" id="type" name="type"></label><br><label>city<input type="text" id="city" name="city"></label><br><label>status<input type="text" id="status" name="status"></label><br><label>no. of apts.<input type="text" id="noa" name="noa"></label></form><button class='setHomeDataButton' type='button' value='save'>Save</button><button class='setHomeDataButton' type='button' value='dismiss'>Dismiss</button>`
+    }
+    form = document.getElementById('inputForm')
+    document.getElementById('darkBackground').style.display = 'block'
+    document.querySelectorAll('.setHomeDataButton').forEach(item => {
+      item.addEventListener('click', event => {
+        if (event.target.value !== 'dismiss') {
+          let data
+          if (topic === 'nursing_homes') {
+           data = [{
+          	'name': event.path[1].childNodes[2][0].value,
+          	'platz_voll_pfl': event.path[1].childNodes[2][1].value,
+          	'ez': event.path[1].childNodes[2][2].value,
+          	'dz': event.path[1].childNodes[2][3].value,
+          	'anz_vers_pat': event.path[1].childNodes[2][4].value,
+          	'occupancy': event.path[1].childNodes[2][5].value,
+          	'baujahr': event.path[1].childNodes[2][6].value,
+          	'status': event.path[1].childNodes[2][7].value,
+          	'betreiber': event.path[1].childNodes[2][8].value,
+          	'invest': event.path[1].childNodes[2][9].value,
+          	'mdk_note': event.path[1].childNodes[2][10].value,
+            'coords': marker_coords
+           }, 0]
+          } else {
+            data = {
+              'name': event.path[1].childNodes[2][0].value,
+              'operator': event.path[1].childNodes[2][1].value,
+              'type': event.path[1].childNodes[2][2].value,
+              'city': event.path[1].childNodes[2][3].value,
+              'status': event.path[1].childNodes[2][4].value,
+              'noa': event.path[1].childNodes[2][5].value,
+              'coords': marker_coords
+          	}
+          } 
+          response = data 
+      	} else {
+          response = 'dismiss'
+        }
+        document.getElementById('darkBackground').style.display = 'none'
+      })
+    })
+  }
 </script> 
