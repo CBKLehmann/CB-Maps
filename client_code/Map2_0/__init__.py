@@ -542,8 +542,8 @@ class Map2_0(Map2_0Template):
     coords_al = self.organize_ca_data(Variables.assisted_living_entries, 'assisted_living', lng_lat_marker)
         
     #Get Data for both Competitor Analysis
-    data_comp_analysis_nh = self.build_req_string(coords_nh)
-    data_comp_analysis_al = self.build_req_string(coords_al)
+    data_comp_analysis_nh = self.build_req_string(coords_nh, 'nursing_homes')
+    data_comp_analysis_al = self.build_req_string(coords_al, 'assisted_living')
     
     #Get Place from Geocoder-API for Map-Marker
     string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{lng_lat_marker['lng']},{lng_lat_marker['lat']}.json?access_token={self.token}"
@@ -2108,7 +2108,10 @@ class Map2_0(Map2_0Template):
     # Sort Coordinates by Distance
     sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
     for entry in sorted_coords:
-      if entry[1] == 0:
+      if entry[1] <= 0.01:
+        document.getElementById('darkBackground').style.display = 'block'
+#         res = anvil.js.call('addHomeAddress', 'Hello')
+#         print(res)
         if topic == 'nursing_homes':
           Variables.home_address_nh.append(entry)
         else:
@@ -2118,15 +2121,16 @@ class Map2_0(Map2_0Template):
     
     return res_data
     
-  def build_req_string(self, res_data):
+  def build_req_string(self, res_data, topic):
     
     home_address = None
     
-    if Variables.home_address_nh == []:
+    if topic == 'nursing_homes':
+      if not Variables.home_address_nh == []:
+        home_address = Variables.home_address_nh
+    elif topic == 'assisted_living':
       if not Variables.home_address_al == []:
         home_address = Variables.home_address_al
-    else:
-      home_address = Variables.home_address_nh
       
     for entry in home_address:  
       if entry in res_data['sorted_coords']:
@@ -2149,8 +2153,10 @@ class Map2_0(Map2_0Template):
     for coordinate in reversed(res_data['sorted_coords']):
       counter += 1
       if complete_counter == len(res_data['sorted_coords']) - 1:
-        if not coordinate[0]['coords'] == last_coords:
+        if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
           request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+        else:
+          request_static_map += f"%5D%7D"
         counter = 0
         request.append(request_static_map)
         request_static_map = request_static_map_raw

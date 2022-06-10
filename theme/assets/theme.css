@@ -837,3 +837,48 @@ th, td {
 .firstCol {
   width: 80px
 }
+
+.setHomeAddress {
+  position: relative;
+  width: 800px;
+  height: 400px;
+  background-color: white;
+  border-radius: 5%;
+  left: calc(40% - 400px);
+  top: calc(45% - 200px);
+}
+
+.setHomeAddressForm {
+  position: relative;
+  top: 8vh;
+  font-size: 2rem;
+  text-align: center;
+  line-height: 5vh;
+}
+
+.setHomeAddressButton {
+  width: 5vw;
+  height: 5vh;
+}
+
+.darkBackground {
+  width: 100vw;
+  height: 100vh;
+  z-index: 9000;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: relative;
+  bottom: 125%;
+  display: none;
+}
+
+.content {
+  overflow-y: hidden
+}
+
+.anvil-role-newpopup {
+  background-color: black;
+  height: 50px;
+  width: 50px;
+  position:relative;
+  top: 50px;
+}

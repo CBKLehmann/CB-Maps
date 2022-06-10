@@ -16,6 +16,10 @@ components:
       tooltip: ''}
     name: spacer_1
     layout_properties: {grid_position: 'QGFIHK,HAWKQF', full_width_row: true}
+  - type: form:Form1
+    properties: {}
+    name: custom_1
+    layout_properties: {grid_position: 'KXUWTA,FBPKAI'}
 - type: ColumnPanel
   properties: {role: null, tooltip: '', border: '', foreground: '', visible: true,
     wrap_on: mobile, col_spacing: medium, spacing_above: small, col_widths: '{}',
