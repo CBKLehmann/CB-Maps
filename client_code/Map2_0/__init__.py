@@ -2110,8 +2110,11 @@ class Map2_0(Map2_0Template):
     sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
     for entry in sorted_coords:
       if entry[1] <= 0.01:
-        res = anvil.js.call('addHomeAddress', 'Hello')
-        time.sleep(5)
+        anvil.js.call('addHomeAddress')
+        res = 'none'
+        while res == 'none':
+          res = anvil.js.call('getResponse')
+          time.sleep(.5)
         print(res)
         if topic == 'nursing_homes':
           Variables.home_address_nh.append(entry)
