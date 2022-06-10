@@ -873,5 +873,18 @@ th, td {
 }
 
 .content {
-  overflow-y: hidden
+  overflow-y: hidden;
+}
+
+.inputForm {
+  display: table;
+}
+
+.table-row {
+  display: table-row;
+  max-height: 20px;
+}
+
+.table-cell {
+  display: table-cell;
 }

@@ -128,9 +128,9 @@
     complete = document.getElementById('setHomeAddress')
     
     if (topic === 'nursing_homes') {
-      complete.innerHTML = `<p id="text">Do you want to add additional Informations for your address in ${topic} ?</p><br><form id="inputForm"><label>name<input type="text" id="name" name="name"></label><br><label>no. of beds<input type="text" id="nob" name="nob"></label><br><label>single rooms<input type="text" id="sr" name="sr"></label><br><label>double rooms<input type="text" id="dr" name="dr"></label><br><label>patients<input type="text" id="patients" name="patients"></label><br><label>occupancy<input type="text" id="occupancy" name="occupancy"></label><br><label>year of construction<input type="text" id="yoc" name="yoc"></label><br><label>status<input type="text" id="status" name="status"></label><br><label>operator<input type="text" id="operator" name="operator"></label><br><label>invest cost per day<input type="text" id="icpd" name="icpd"></label><br><label>mdk grade<input type="text" id="mdkg" name="mdkg"></label></form><button class='setHomeDataButton' type='button' value='save'>Save</button><button class='setHomeDataButton' type='button' value='dismiss'>Dismiss</button>`
+      complete.innerHTML = `<p id="text">Do you want to add additional Informations for your address in ${topic} ?</p><br><form id="inputForm" class="inputForm"><div class="table-row"><label class="table-cell">name</label><input type="text" id="name" name="name" class="table-cell"></div><div class="table-row"><label class="table-row">no. of beds</label><input type="text" id="nob" name="nob"></div><label>single rooms<input type="text" id="sr" name="sr"></label><br><label>double rooms<input type="text" id="dr" name="dr"></label><br><label>patients<input type="text" id="patients" name="patients"></label><br><label>occupancy<input type="text" id="occupancy" name="occupancy"></label><br><label>year of construction<input type="text" id="yoc" name="yoc"></label><br><label>status<input type="text" id="status" name="status"></label><br><label>operator<input type="text" id="operator" name="operator"></label><br><label>invest cost per day<input type="text" id="icpd" name="icpd"></label><br><label>mdk grade<input type="text" id="mdkg" name="mdkg"></label></form><button class='setHomeDataButton' type='button' value='save'>Save</button><button class='setHomeDataButton' type='button' value='dismiss'>Dismiss</button>`
     } else if (topic === 'assisted_living') {
-      complete.innerHTML = `<p id="text">Do you want to add additional Informations for your address in ${topic} ?</p><br><form id="inputForm"><label>name<input type="text" id="name" name="name"></label><br><label>operator<input type="text" id="operator" name="operator"></label><br><label>type<input type="text" id="type" name="type"></label><br><label>city<input type="text" id="city" name="city"></label><br><label>status<input type="text" id="status" name="status"></label><br><label>no. of apts.<input type="text" id="noa" name="noa"></label></form><button class='setHomeDataButton' type='button' value='save'>Save</button><button class='setHomeDataButton' type='button' value='dismiss'>Dismiss</button>`
+      complete.innerHTML = `<p id="text">Do you want to add additional Informations for your address in ${topic} ?</p><br><form id="inputForm" class="inputForm"><div class="table-row"><label class="table-cell">name</label><input type="text" id="name" name="name" class="table-cell"></div><div class="table-row"><label class="table-cell">operator</label><input type="text" id="operator" name="operator" class="table-cell"></div><div class="table-row"></div><div class="table-row"><label class="table-cell">type</label><input type="text" id="type" name="type" class="table-cell"></div><div class="table-row"></div><div class="table-row"><label class="table-cell">city</label><input type="text" id="city" name="city" class="table-cell"></div><div class="table-row"></div><div class="table-row"><label class="table-cell">status</label><input type="text" id="status" name="status" class="table-cell"></div><div class="table-row"></div><div class="table-row"><label class="table-cell">no. of apts.</label><input type="text" id="noa" name="noa" class="table-cell"></div></form><button class='setHomeDataButton' type='button' value='save'>Save</button><button class='setHomeDataButton' type='button' value='dismiss'>Dismiss</button>`
     }
     form = document.getElementById('inputForm')
     document.getElementById('darkBackground').style.display = 'block'
@@ -152,17 +152,17 @@
           	'invest': event.path[1].childNodes[2][9].value,
           	'mdk_note': event.path[1].childNodes[2][10].value,
             'coords': marker_coords
-           }, 0]
+           }, 0, 'home']
           } else {
-            data = {
+            data = [{
               'name': event.path[1].childNodes[2][0].value,
               'operator': event.path[1].childNodes[2][1].value,
               'type': event.path[1].childNodes[2][2].value,
               'city': event.path[1].childNodes[2][3].value,
               'status': event.path[1].childNodes[2][4].value,
-              'noa': event.path[1].childNodes[2][5].value,
+              'number_apts': event.path[1].childNodes[2][5].value,
               'coords': marker_coords
-          	}
+          	}, 0, 'home']
           } 
           response = data 
       	} else {

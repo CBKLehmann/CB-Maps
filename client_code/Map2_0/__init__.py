@@ -2128,26 +2128,34 @@ class Map2_0(Map2_0Template):
     else:
       if Variables.home_address_al == []:
         anvil.js.call('addData', 'assisted_living', marker_coords)
-      
+    
+    preventLoop = True
     if topic == 'nursing_homes':
       if not Variables.home_address_nh == []:
         home_address = Variables.home_address_nh
+      else:
+        preventLoop = False
     elif topic == 'assisted_living':
       if not Variables.home_address_al == []:
         home_address = Variables.home_address_al
-    gres = 'none'
-    while gres == 'none':
-      res = anvil.js.call('getResponse')
-      time.sleep(.5)
-      if not res == 'none':
-        gres = 'true'
-    if not res == 'dismiss':
-      home_address = res
-    else:
-      home_address = []
-    anvil.js.call('resetResponse')
+      else:
+        preventLoop = False
     
-    sorted_coords.insert(0, home_address)
+    if preventLoop == False:
+      gres = 'none'
+      while gres == 'none':
+        res = anvil.js.call('getResponse')
+        time.sleep(.5)
+        if not res == 'none':
+          gres = 'true'
+      if not res == 'dismiss':
+        home_address = res
+      else:
+        home_address = []
+      anvil.js.call('resetResponse')
+    
+      if not home_address == []:
+        sorted_coords.insert(0, home_address)
     
     res_data = {'sorted_coords': sorted_coords, 'marker_coords': marker_coords}
     
@@ -2158,7 +2166,6 @@ class Map2_0(Map2_0Template):
     home_address = []
       
     for entry in home_address:
-      print
       if entry in res_data['sorted_coords']:
         ha_index = res_data['sorted_coords'].index(entry)
         res_data['sorted_coords'][ha_index].append('home')
@@ -2177,6 +2184,7 @@ class Map2_0(Map2_0Template):
     complete_counter = 0
     
     for coordinate in reversed(res_data['sorted_coords']):
+      print('########################')
       print(coordinate)
       counter += 1
       if complete_counter == len(res_data['sorted_coords']) - 1:
