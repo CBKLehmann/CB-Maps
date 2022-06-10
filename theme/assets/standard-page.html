@@ -25,8 +25,8 @@
             <br>
           	Do you want to mark the address as your marker address ?
           </p>
-          <button class=setHomeAddressButton onClick='returnAnswer("yes")' type='button'>Yes</button>
-          <button class=setHomeAddressButton onClick='returnAnswer("no")' type='button'>No</button>
+          <button class='setHomeAddressButton' type='button'>Yes</button>
+          <button class='setHomeAddressButton' type='button'>No</button>
         </form>
       </div>
       </div>
@@ -103,12 +103,12 @@
   }
   
   function addHomeAddress(data) {
-    console.log(data)
     document.getElementById('darkBackground').style.display = 'block'
-  }
-  
-  function returnAnswer(answer) {
-    console.log(answer)
+    document.querySelectorAll('.setHomeAddressButton').forEach(item => {
+      item.addEventListener('click', event => {
+        return(event)
+      })
+    })
   }
   
 </script> 
