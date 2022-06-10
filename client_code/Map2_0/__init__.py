@@ -2109,7 +2109,9 @@ class Map2_0(Map2_0Template):
     sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
     for entry in sorted_coords:
       if entry[1] <= 0.01:
-        document.getElementById('darkBackground').style.display = 'block'
+        setAddress = document.getElementById('darkBackground')
+        print(dict(setAddress))
+        setAddress.style.display = 'block'
 #         res = anvil.js.call('addHomeAddress', 'Hello')
 #         print(res)
         if topic == 'nursing_homes':

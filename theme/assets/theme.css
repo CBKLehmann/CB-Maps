@@ -871,14 +871,14 @@ th, td {
   display: none;
 }
 
-.content {
+/* .content {
   overflow-y: hidden
-}
+} */
 
 .anvil-role-newpopup {
   background-color: black;
-  height: 50px;
+/*   height: 50px;
   width: 50px;
   position:relative;
-  top: 50px;
+  top: 50px; */
 }
