@@ -13,22 +13,7 @@
       <div anvil-slot-repeat="default" class="anvil-measure-this"></div>
       <div id="darkBackground" class="darkBackground">
       	<div id="setHomeAddress" class="setHomeAddress">
-        <form class='setHomeAddressForm' id='inputForm'>
-          <p id="text">
-            Found following Address with less than 10 Meters Distance to set Marker: 
-            <br>
-            <b>
-            Beispielheim Beispielissimus
-            <br>
-            Am Beipielweg 35, 23754 Beispielstadt
-            </b>
-            <br>
-          	Do you want to mark the address as your marker address ?
-          </p>
-          <button class='setHomeAddressButton' type='button' value='yes'>Yes</button>
-          <button class='setHomeAddressButton' type='button' value='no'>No</button>
-        </form>
-      </div>
+      	</div>
       </div>
       <div class="placeholder drop-here" anvil-if-slot-empty="default" anvil-drop-slot="default">Drop a ColumnPanel here.</div>
     </div>
@@ -107,7 +92,7 @@
   
   function addHomeAddress(data) {
     document.getElementById('darkBackground').style.display = 'block'
-    document.getElementById('text').innerHTML = `Found the following Object with less than 10 meters distance to set Marker:<br><b>${data[0].name}</b><br>Do you want to mark the Object as your marker address ?`
+    document.getElementById('setHomeAddress').innerHTML = `<form class='setHomeAddressForm' id='inputForm'><p id='text'>Found the following Object with less than 10 meters distance to set Marker:<br><b>${data[0].name}</b><br>Do you want to mark the Object as your marker address ?</p><button class='setHomeAddressButton' type='button' value='yes'>Yes</button><button class='setHomeAddressButton' type='button' value='no'>No</button></form>`
     document.querySelectorAll('.setHomeAddressButton').forEach(item => {
       item.addEventListener('click', event => {
         response = event.path[0].value
@@ -120,7 +105,8 @@
     return(response)
   }
   
-  function resetResponse() {
+  function resetResponse(topic) {
+    console.log(topic)
     response = 'none'
   }
   

@@ -2034,6 +2034,11 @@ class Map2_0(Map2_0Template):
     data_comp_analysis = []
     coords = []
 
+    if topic == 'nursing_homes':
+      Variables.home_address_nh = []
+    else:
+      Variables.home_address_al = []
+    
     for entry in entries:
       if topic == "nursing_homes":
         lat_entry = "%.6f" % float(entry[45])
@@ -2152,7 +2157,7 @@ class Map2_0(Map2_0Template):
         home_address = res
       else:
         home_address = []
-      anvil.js.call('resetResponse')
+      anvil.js.call('resetResponse', topic)
     
       if not home_address == []:
         sorted_coords.insert(0, home_address)
@@ -2163,9 +2168,8 @@ class Map2_0(Map2_0Template):
     
   def build_req_string(self, res_data, topic):
     
-    home_address = []
-      
     for entry in home_address:
+      print(entry)
       if entry in res_data['sorted_coords']:
         ha_index = res_data['sorted_coords'].index(entry)
         res_data['sorted_coords'][ha_index].append('home')
@@ -2173,7 +2177,7 @@ class Map2_0(Map2_0Template):
     #Build Request-String for Mapbox Static-Map-API
     counter = 0
     request = []
-    request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D"
+    request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
     request_static_map = request_static_map_raw
     
     index_coords = len(res_data['sorted_coords'])
@@ -2184,15 +2188,12 @@ class Map2_0(Map2_0Template):
     complete_counter = 0
     
     for coordinate in reversed(res_data['sorted_coords']):
-      print('########################')
-      print(coordinate)
       counter += 1
       if complete_counter == len(res_data['sorted_coords']) - 1:
         if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
-          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-        else:
-          request_static_map += f"%5D%7D"
+          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
         counter = 0
+        request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
         request.append(request_static_map)
         request_static_map = request_static_map_raw
         index_coords -= 1
@@ -2206,7 +2207,9 @@ class Map2_0(Map2_0Template):
         index_coords -= 1
       elif not 'home' in coordinate:
         if not coordinate[0]['coords'] == last_coords:
-          request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+          if not counter == 1:
+            request_static_map += f"%2C"
+          request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
         index_coords -= 1
       else:
         request_static_map += f"%5D%7D"
