@@ -2163,6 +2163,8 @@ class Map2_0(Map2_0Template):
     
   def build_req_string(self, res_data, topic):
     
+    print(res_data['sorted_coords'])
+    
     home_address = []
       
     for entry in home_address:
