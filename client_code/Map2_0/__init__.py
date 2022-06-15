@@ -294,8 +294,7 @@ class Map2_0(Map2_0Template):
   #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
   def admin_button_click(self, **event_args):
 
-    print(dict(self.marker['_lngLat']))
-    anvil.server.call('create_iso_map', Variables.activeIso, dict(self.marker['_lngLat']))
+    anvil.server.call('create_iso_map', Variables.activeIso, self.create_bounding_box())
     
 #     #Call a Server Function
 #     anvil.server.call('manipulate')
