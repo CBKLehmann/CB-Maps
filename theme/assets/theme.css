@@ -840,7 +840,7 @@ th, td {
 
 .setHomeAddress {
   position: relative;
-  width: 800px;
+  width: 1000px;
   height: 400px;
   background-color: white;
   border-radius: 5px;
@@ -877,6 +877,10 @@ th, td {
   margin-bottom: 2rem;
 }
 
+table {
+  margin-bottom: 2rem;
+}
+
 table, td {
   border: none;
 }
@@ -885,13 +889,15 @@ td {
   min-width: 15rem;
   text-align: left;
   padding-left: 1rem;
-}
-
-tr {
-  padding-bottom: 1rem
+  padding-bottom: .5rem;
 }
 
 .text {
   padding-left: 1rem;
-  margin: 1rem 0 0 0
+  margin: 1rem 0 0 0;
+}
+
+.setHomeDataButton {
+  margin-bottom: 1rem;
+  margin-left: 1rem;
 }

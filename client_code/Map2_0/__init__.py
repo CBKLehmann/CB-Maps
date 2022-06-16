@@ -2115,7 +2115,7 @@ class Map2_0(Map2_0Template):
     sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
     for entry in sorted_coords:
       if entry[1] <= 0.01:
-        anvil.js.call('addHomeAddress', entry)
+        anvil.js.call('addHomeAddress', entry, topic)
         res = 'none'
         while res == 'none':
           res = anvil.js.call('getResponse')
