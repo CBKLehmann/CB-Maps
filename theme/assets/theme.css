@@ -874,17 +874,24 @@ th, td {
 
 .content {
   overflow-y: hidden;
+  margin-bottom: 2rem;
 }
 
-.inputForm {
-  display: table;
+table, td {
+  border: none;
 }
 
-.table-row {
-  display: table-row;
-  max-height: 20px;
+td {
+  min-width: 15rem;
+  text-align: left;
+  padding-left: 1rem;
 }
 
-.table-cell {
-  display: table-cell;
+tr {
+  padding-bottom: 1rem
+}
+
+.text {
+  padding-left: 1rem;
+  margin: 1rem 0 0 0
 }
