@@ -1,40 +1,30 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" rel="preload" as="font" crossorigin="anonymous">
 
 <div class="structure">
-<!--   <div class="app-bar" anvil-drop-container=".anvil-container" anvil-drop-redirect=".placeholder">
-    <a class="sidebar-toggle" anvil-if-slot-empty="top-left-btn" anvil-hide-if-slot-empty="left-nav" anvil-drop-slot="top-left-btn" href="javascript:void(0)"><i class="fa fa-bars"></i></a>
-    <a class="sidebar-toggle anvil-designer-only" anvil-if-slot-empty="top-left-btn" anvil-if-slot-empty="left-nav" anvil-drop-slot="top-left-btn"><i class="fa fa-blank"></i></a>
-    <div class="top-left-btn" anvil-slot="top-left-btn"></div>
-    <div class="title" anvil-slot="title">
-      <div class="placeholder anvil-designer-only" anvil-if-slot-empty="title" anvil-drop-here>Drop title here</div>
-    </div>
-    <div class="app-bar-nav" anvil-slot="nav-right">
-      <div class="placeholder anvil-designer-only" anvil-if-slot-empty="nav-right" anvil-drop-here>Drop a FlowPanel here</div>
-    </div>
-    <div style="clear:both"></div>
-  </div> -->
-
   <div class="floating-menu" anvil-drop-here anvil-slot=" .floating-menu" id="info">
   </div>
-  
   <div class="nav-holder">
     <div class="left-nav anvil-measure-this" anvil-slot-repeat="left-nav" anvil-drop-container=">.anvil-container">
     </div>
     <div class="left-nav-placeholder anvil-designer-only" anvil-if-slot-empty="left-nav" anvil-drop-slot="left-nav">
       <div class="prompt">To add a sidebar, drop a ColumnPanel here.</div>
     </div>
-
     <div class="content">
-      <div id="test"></div>
       <div anvil-slot-repeat="default" class="anvil-measure-this"></div>
+      <div id="darkBackground" class="darkBackground">
+      	<div id="setHomeAddress" class="setHomeAddress">
+      	</div>
+      </div>
       <div class="placeholder drop-here" anvil-if-slot-empty="default" anvil-drop-slot="default">Drop a ColumnPanel here.</div>
     </div>
   </div>
   <div class="nav-shield"></div>
 </div>
-<div anvil-drop-default anvil-drop-redirect=".placeholder" anvil-drop-container=".anvil-container"></div>
 
 <script>
+  
+  let response = 'none';
+  
   function hideSidebar() {
     var ln = $('.structure > .nav-holder > .left-nav');
     ln.animate({left: -ln.outerWidth()}, function() {
@@ -98,5 +88,74 @@
     tab.document.write(html);
     tab.document.close();
     
+  }
+  
+  function addHomeAddress(data, topic) {
+    document.getElementById('darkBackground').style.display = 'block'
+    document.getElementById('setHomeAddress').innerHTML = `<form class='setHomeAddressForm' id='inputForm'><p id='text'>Found the following Object for ${topic} with less than 10 meters distance to set Marker:<br><b>${data[0].name}</b><br>Do you want to mark the Object as your marker address ?</p><button class='setHomeAddressButton' type='button' value='yes'>Yes</button><button class='setHomeAddressButton' type='button' value='no'>No</button></form>`
+    document.querySelectorAll('.setHomeAddressButton').forEach(item => {
+      item.addEventListener('click', event => {
+        response = event.path[0].value
+        document.getElementById('darkBackground').style.display = 'none'
+      })
+    })
+  }
+  
+  function getResponse() {
+    return(response)
+  }
+  
+  function resetResponse(topic) {
+    console.log(topic)
+    response = 'none'
+  }
+  
+  function addData(topic, marker_coords) {
+    complete = document.getElementById('setHomeAddress')
+    
+    if (topic === 'nursing_homes') {
+      complete.innerHTML = `<p id="text" class="text">Do you want to add additional Informations for your address in ${topic} ?</p><br><form id="inputForm" class="inputForm"><table><tr><td>name</td><td><input type="text" id="name" name="name"></td></tr><tr><td>no. of beds</td><td><input type="text" id="nob" name="nob"></td></tr><tr><td>single rooms</td><td><input type="text" id="sr" name="sr"></td></tr><tr><td>double rooms</td><td><input type="text" id="dr" name="dr"></td></tr><tr><td>patients</td><td><input type="text" id="patients" name="patients"></td></tr><tr><td>occupancy</td><td><input type="text" id="occupancy" name="occupancy"></td></tr><tr><td>year of construction</td><td><input type="text" id="yoc" name="yoc"></td></tr><tr><td>status</td><td><input type="text" id="status" name="status"></td></tr><tr><td>operator</td><td><input type="text" id="operator" name="operator"></td></tr><tr><td>invest cost per day</td><td><input type="text" id="icpd" name="icpd"></td></tr><tr><td>mdk grade</td><td><input type="text" id="mdkg" name="mdkg"></td></tr></table></form><button class='setHomeDataButton' type='button' value='save'>Save</button><button class='setHomeDataButton' type='button' value='dismiss'>Dismiss</button>`
+    } else if (topic === 'assisted_living') {
+      complete.innerHTML = `<p id="text" class="text">Do you want to add additional Informations for your address in ${topic} ?</p><br><form id="inputForm" class="inputForm"><table><tr><td>name</td><td><input type="text" id="name" name="name"></td></tr><tr><td>operator</td><td><input type="text" id="operator" name="operator"></td></tr><tr><td>type</td><td><input type="text" id="type" name="type"></td></tr><tr><td>city</td><td><input type="text" id="city" name="city"></td></tr><tr><td>status</td><td><input type="text" id="status" name="status"></td></tr><tr><td>no. of apts.</td><td><input type="text" id="noa" name="noa"></td></tr></table><button class='setHomeDataButton' type='button' value='save'>Save</button><button class='setHomeDataButton' type='button' value='dismiss'>Dismiss</button>`
+    }
+    form = document.getElementById('inputForm')
+    document.getElementById('darkBackground').style.display = 'block'
+    document.querySelectorAll('.setHomeDataButton').forEach(item => {
+      item.addEventListener('click', event => {
+        if (event.target.value !== 'dismiss') {
+          let data
+          if (topic === 'nursing_homes') {
+           data = [{
+          	'name': event.path[1].childNodes[2][0].value,
+          	'platz_voll_pfl': event.path[1].childNodes[2][1].value,
+          	'ez': event.path[1].childNodes[2][2].value,
+          	'dz': event.path[1].childNodes[2][3].value,
+          	'anz_vers_pat': event.path[1].childNodes[2][4].value,
+          	'occupancy': event.path[1].childNodes[2][5].value,
+          	'baujahr': event.path[1].childNodes[2][6].value,
+          	'status': event.path[1].childNodes[2][7].value,
+          	'betreiber': event.path[1].childNodes[2][8].value,
+          	'invest': event.path[1].childNodes[2][9].value,
+          	'mdk_note': event.path[1].childNodes[2][10].value,
+            'coords': marker_coords
+           }, 0, 'home']
+          } else {
+            data = [{
+              'name': event.path[1].childNodes[2][0].value,
+              'operator': event.path[1].childNodes[2][1].value,
+              'type': event.path[1].childNodes[2][2].value,
+              'city': event.path[1].childNodes[2][3].value,
+              'status': event.path[1].childNodes[2][4].value,
+              'number_apts': event.path[1].childNodes[2][5].value,
+              'coords': marker_coords
+          	}, 0, 'home']
+          } 
+          response = data 
+      	} else {
+          response = 'dismiss'
+        }
+        document.getElementById('darkBackground').style.display = 'none'
+      })
+    })
   }
 </script> 
