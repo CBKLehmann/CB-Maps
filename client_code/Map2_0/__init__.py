@@ -67,7 +67,7 @@ class Map2_0(Map2_0Template):
     self.mapbox.on("click", "municipalities", self.popup)
     self.mapbox.on("click", "districts", self.popup)
     self.mapbox.on("styledata", self.place_layer)
- 
+
 #####  General Functions  #####
 ###############################
 ##### Check-Box Functions #####
