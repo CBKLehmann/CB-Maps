@@ -762,12 +762,13 @@ class Map2_0(Map2_0Template):
     inpatents_fc_35_avg = round((inpatients_fc_35 + inpatients_fc_35_v2) / 2)
     alert("Position Info for Dev")
     invest_median = "{:.2f}".format(anvil.server.call("get_median", invest_cost))
+    alert("Position Info for Dev" + inve)
     beds_median = anvil.server.call("get_median", beds)
+    alert("Position Info for Dev")
     year_median = round(anvil.server.call("get_median", year))
     pg3_median = "{:.2f}".format(anvil.server.call("get_median", pg3_cost))
     copayment_median = "{:.2f}".format(anvil.server.call("get_median", copayment_cost))
     board_median = "{:.2f}".format(anvil.server.call("get_median", board_cost))
-    alert("Position Info for Dev")
     if not len(operator_private) == 0:
       if not len(operator) == 0:
         op_private_percent = round((len(operator_private) * 100) / len(operator))
