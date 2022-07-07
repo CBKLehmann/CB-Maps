@@ -30,7 +30,7 @@ class Map2_0(Map2_0Template):
     self.init_components(**properties)
     self.dom = anvil.js.get_dom_node(self.spacer_1)
     self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
-    self.token = "pk.eyJ1Ijoic2hpbnlrYW1wZmtldWxlIiwiYSI6ImNreWluYm5jMTBrYXcydnFvbmt3a3RiMG8ifQ.UEt90g8gVzPhsJof0znguA"
+    self.token = anvil.server.call('get_token')
   
   
   #This method is called when the HTML panel is shown on the screen
