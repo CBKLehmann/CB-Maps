@@ -676,7 +676,7 @@ class Map2_0(Map2_0Template):
   
     #Get Data from Care-Database based on Iso-Layer
     care_data_iso = anvil.server.call("get_iso_data", bbox)
-
+    
     #Create Variables for different Values for Summary
     inpatients = 0
     beds_active = 0
@@ -760,12 +760,14 @@ class Map2_0(Map2_0Template):
     inpatients_fc_35_v2 = round(pat_rec_full_care_fc_35_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
     inpatents_fc_30_avg = round((inpatients_fc + inpatients_fc_v2) / 2)
     inpatents_fc_35_avg = round((inpatients_fc_35 + inpatients_fc_35_v2) / 2)
+    alert("Position Info for Dev")
     invest_median = "{:.2f}".format(anvil.server.call("get_median", invest_cost))
     beds_median = anvil.server.call("get_median", beds)
     year_median = round(anvil.server.call("get_median", year))
     pg3_median = "{:.2f}".format(anvil.server.call("get_median", pg3_cost))
     copayment_median = "{:.2f}".format(anvil.server.call("get_median", copayment_cost))
     board_median = "{:.2f}".format(anvil.server.call("get_median", board_cost))
+    alert("Position Info for Dev")
     if not len(operator_private) == 0:
       if not len(operator) == 0:
         op_private_percent = round((len(operator_private) * 100) / len(operator))
@@ -2202,7 +2204,6 @@ class Map2_0(Map2_0Template):
         if not request_static_map == request_static_map_raw:
           request_static_map += f"%2C"
         request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
-        print(request_static_map)
         request.append(request_static_map)
         request_static_map = request_static_map_raw
         index_coords -= 1
