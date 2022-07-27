@@ -896,7 +896,7 @@ class Map2_0(Map2_0Template):
       multiplier = 0.07
     surplus2022 = round(apartments_adjusted - (((people_u80 + people_o80) * multiplier) / 1.5))
     if surplus2022 > 0:
-      print(demand2022)
+      demand2022 = -abs(surplus2022)
     else:
       demand2022 = abs(surplus2022)
     surplus2040 = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (((people_u80_fc + people_o80_fc) * multiplier) / 1.5))
