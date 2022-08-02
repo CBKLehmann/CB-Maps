@@ -168,6 +168,8 @@ class Map2_0(Map2_0Template):
       Variables.last_bbox_den = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
     elif dict(event_args)['sender'].text == "doctors":
       Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)      
+    elif dict(event_args)['sender'].text == "nursing-schools":
+      Variables.last_bbox_nsc = self.create_icons(self.check_box_nsc.checked, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools) 
     elif dict(event_args)['sender'].text == "supermarket":
       Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
     elif dict(event_args)['sender'].text == "restaurant":
@@ -1451,7 +1453,7 @@ class Map2_0(Map2_0Template):
     
     # Check if Checkbox is checked
     if check_box == True:
-    
+
       # Check if Checkbox for Iso-Layer' is checked
       if self.checkbox_poi_x_hfcig.checked == True:
   
@@ -1510,6 +1512,10 @@ class Map2_0(Map2_0Template):
     
             geojson = anvil.server.call('get_care_db_data', bbox, 'CareDB_Betreutes_Wohnen')
             Variables.assisted_living_entries = geojson
+
+          elif category == 'nursing-schools':
+
+            geojson = anvil.server.call('get_einrichtungen', bbox)
     
           else:
     
@@ -1546,27 +1552,46 @@ class Map2_0(Map2_0Template):
               if not category == 'nursing_homes':
           
                 if not category == 'assisted_living':
-    
-                  # Get coordinates of current Icon
-                  el_coords = ele['geometry']['coordinates']
-      
-                  # Get different Informations from geojson
-                  city = ele['properties']['city']
-                  suburb = ele['properties']['suburb']
-                  street = ele['properties']['street']
-                  housenumber = ele['properties']['housenumber']
-                  postcode = ele['properties']['postcode']
-                  phone = ele['properties']['phone']
-                  website = ele['properties']['website']
-                  healthcare = ele['properties']['healthcare']
-                  name = ele['properties']['name']
-                  opening_hours = ele['properties']['opening_hours']
-                  wheelchair = ele['properties']['wheelchair']
-                  o_id = ele['properties']['id']
-                  fax = ele['properties']['fax']
-                  email = ele['properties']['email']
-                  speciality = ele['properties']['healthcare:speciality']
-                  operator = ele['properties']['operator']
+
+                  if not category == 'nursing-schools':
+                  
+                    # Get coordinates of current Icon
+                    el_coords = ele['geometry']['coordinates']
+        
+                    # Get different Informations from geojson
+                    city = ele['properties']['city']
+                    suburb = ele['properties']['suburb']
+                    street = ele['properties']['street']
+                    housenumber = ele['properties']['housenumber']
+                    postcode = ele['properties']['postcode']
+                    phone = ele['properties']['phone']
+                    website = ele['properties']['website']
+                    healthcare = ele['properties']['healthcare']
+                    name = ele['properties']['name']
+                    opening_hours = ele['properties']['opening_hours']
+                    wheelchair = ele['properties']['wheelchair']
+                    o_id = ele['properties']['id']
+                    fax = ele['properties']['fax']
+                    email = ele['properties']['email']
+                    speciality = ele['properties']['healthcare:speciality']
+                    operator = ele['properties']['operator']
+
+                  else:
+
+                    name = ele['name']
+                    street = ele['street']
+                    postcode = ele['postcode']
+                    city = ele['city']
+                    telefon = ele['telefon']
+                    email = ele['email']
+                    web = ele['web']
+                    degree = ele['degree']
+                    parttime_education = ele['parttime-education']
+                    certificate = ele['certificate']
+                    district_code = ele['district-code']
+                    inserted = ele['inserted']
+                    updated = ele['updated']
+                    el_coords = [ ele['longitude'], ele['lattitude'] ]
     
               # Check if Category is Bus or Tram
               if category == 'bus_stop' or category == 'tram_stop':
@@ -1788,7 +1813,44 @@ class Map2_0(Map2_0Template):
                   '<br>'
                   f'<b>Miete bis: </b> {mieteBis}'
                 )
-    
+
+              elif category == 'nursing-schools':
+
+                popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                  f'<b>Name:</b>'
+                  f'<br>'
+                  f'&nbsp;&nbsp;{name}'
+                  f'<b>Adresse:</b>'
+                  f'<br>'
+                  f'&nbsp;&nbsp;{street}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;{postcode}, {city}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;district code: {district_code}'
+                  f'<br>'
+                  f'<b>Kontakt</b>'
+                  f'<br>'
+                  f'&nbsp;&nbsp;Telefon: {telefon}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;Email: {email}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;Webseite:'
+                  f'<br>'
+                  f'&nbsp;&nbsp;&nbsp;&nbsp;{web}'
+                  f'<br>'
+                  f'<b>Infos</b>'
+                  f'<br>'
+                  f'&nbsp;&nbsp;Degree: {degree}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;parttime education: {parttime_education}'
+                  f'br'
+                  f'&nbsp;&nbsp;certificate: {certificate}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;inserted: {inserted}'
+                  f'<br>'
+                  f'&nbsp;&nbsp;updated: {updated}'
+                )
+                
               # Check if Category is not Bus or Tram or PflegeDB
               else:
     
@@ -2319,7 +2381,10 @@ class Map2_0(Map2_0Template):
       Variables.last_bbox_den = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
     elif checkbox == "doctors" and self.check_box_doc.checked == True:
       Variables.last_bbox_doc = self.create_icons(False, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)
-      Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)      
+      Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)
+    elif checkbox == "nursing-schools" and self.check_box_nsc.checked == True:
+      Variables.last_bbox_nsc = self.create_icons(False, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools)
+      Variables.last_bbox_nsc = self.create_icons(self.check_box_nsc.checked, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools)    
     elif checkbox == "supermarket" and self.check_box_sma.checked == True:
       Variables.last_bbox_sma = self.create_icons(False, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
       Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
