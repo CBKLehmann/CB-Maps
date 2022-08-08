@@ -1,41 +1,40 @@
-#Import of different Modules
+# Import of different Modules
+
+
 from ._anvil_designer import Map2_0Template
 from anvil import *
+from anvil.tables import app_tables
+from anvil.js.window import mapboxgl, MapboxGeocoder, document
+from .. import Variables, Layer, Images
 import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
-from anvil.tables import app_tables
-from anvil.js.window import mapboxgl, MapboxGeocoder, document
 import anvil.js
 import anvil.http
 import json
-from .. import Variables, Layer, Images
+import Functions
 import anvil.media
 import math
 import datetime
 import time
 
+global Variables, Layer, Images
 
-#Get global Variables
-global Variables, Layer
-
-
-#Definition of every function inside Map2_0
 class Map2_0(Map2_0Template):
+  # Definition of every base function inside Map2_0
 
-##### General Functions #####  
-
-  #Set Form properties and Data Bindings
   def __init__(self, **properties):
+    # Set Form properties and Data Bindings
+    
     self.init_components(**properties)
     self.dom = anvil.js.get_dom_node(self.spacer_1)
     self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
     self.token = anvil.server.call('get_token')
+
   
-  
-  #This method is called when the HTML panel is shown on the screen
   def form_show(self, **event_args):
-    #Initiate Map, Marker and Geocoder
+    # Initiate Map and set Listener on Page Load
+    
     mapboxgl.accessToken = self.token
     self.mapbox = mapboxgl.Map({'container': self.dom,
                                 'style': "mapbox://styles/mapbox/outdoors-v11",
@@ -45,8 +44,7 @@ class Map2_0(Map2_0Template):
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
     self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
     self.mapbox.addControl(self.geocoder)
-    
-    #Initiate Listeners for different Functions  
+      
     self.geocoder.on("result", self.move_marker)
     self.marker.on("dragend", self.marker_dragged) 
     self.mapbox.on("mousemove", "federal_states", self.change_hover_state)
@@ -67,29 +65,28 @@ class Map2_0(Map2_0Template):
     self.mapbox.on("click", "municipalities", self.popup)
     self.mapbox.on("click", "districts", self.popup)
     self.mapbox.on("styledata", self.place_layer)
- 
-#####  General Functions  #####
-###############################
-##### Check-Box Functions #####
 
-  #This method is called when one of the Marker-Icon-Types should be hidden or shown
+  
   def check_box_marker_icons_change(self, **event_args):
+    # Show or Hide Marker-Icon-Types
+    
     if dict(event_args)['sender'].text == "Capital Bay":
-      self.show_hide_marker(self.check_box_cb.checked, "cb_marker")
+      Functions.show_hide_marker(self, self.check_box_cb.checked, "cb_marker")
     elif dict(event_args)['sender'].text == "Competitors":
-      self.show_hide_marker(self.check_box_kk.checked, "kk_marker")
+      Functions.show_hide_marker(self, self.check_box_kk.checked, "kk_marker")
     elif dict(event_args)['sender'].text == "Hotels":
-      self.show_hide_marker(self.check_box_h.checked, "h_marker")
+      Functions.show_hide_marker(self, self.check_box_h.checked, "h_marker")
     elif dict(event_args)['sender'].text == "Hospitals":
-      self.show_hide_marker(self.check_box_kh.checked, "kh_marker")
+      Functions.show_hide_marker(self, self.check_box_kh.checked, "kh_marker")
     elif dict(event_args)['sender'].text == "Schools":
-      self.show_hide_marker(self.check_box_s.checked, "s_marker")
+      Functions.show_hide_marker(self, self.check_box_s.checked, "s_marker")
     elif dict(event_args)['sender'].text == "Stores":
-      self.show_hide_marker(self.check_box_g.checked, "lg_marker")
+      Functions.show_hide_marker(self, self.check_box_g.checked, "lg_marker")
 
-      
-  #This method is call when all of the Marker-Icon-Types should be hidden or shown
+
   def button_marker_icons_change(self, **event_args):
+    # Show or Hide all Marker Icons
+    
     all_marker = self.icon_categories.get_components()
     
     if dict(event_args)['sender'].text == "Show All": 
@@ -98,15 +95,19 @@ class Map2_0(Map2_0Template):
       marker_state = False
       
     for marker in all_marker:
-      self.show_hide_marker(marker_state, marker.tooltip)
+      Functions.show_hide_marker(self, marker_state, marker.tooltip)
       marker.checked = marker_state
    
   
-  #This method is called when the Check Box for Bundesländer-Layer is checked or unchecked
   def check_box_overlays_change(self, **event_args):
+    #Change Overlays based on checked Checkbox
+    
     layer_name = dict(event_args)['sender'].text.replace(" ", "_")
     outline_name = "outline_" + layer_name
     visibility = self.mapbox.getLayoutProperty(layer_name, "visibility")
+    inactive_layers = []
+    inactive_checkboxes = []
+    
     all_layers = [
       {
         'name': "federal_states",
@@ -133,8 +134,6 @@ class Map2_0(Map2_0Template):
         'checkbox': self.check_box_nl
       }
     ]
-    inactive_layers = []
-    inactive_checkboxes = []
     
     if visibility == "none":
       new_visibility = "visible"
@@ -146,12 +145,12 @@ class Map2_0(Map2_0Template):
         inactive_layers.append([layer['name'], "outline_" + layer['name']])
         inactive_checkboxes.append(layer['checkbox'])
     
-    #Change Active Layer to show
-    self.change_active_Layer([layer_name, outline_name], inactive_layers, new_visibility, inactive_checkboxes)
+    Functions.change_active_Layer(self, [layer_name, outline_name], inactive_layers, new_visibility, inactive_checkboxes)
 
 
-  #This method is called when various Check Boxes for different POI Categories get checked or unchecked
   def check_box_poi_change(self, **event_args):
+    # Check or uncheck various Check Boxes for different POI Categories
+    
     if dict(event_args)['sender'].text == "veterinary":
       Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
     elif dict(event_args)['sender'].text == "social facility":
@@ -225,72 +224,51 @@ class Map2_0(Map2_0Template):
   
   #This method is called when one of the Submenus should be opened or closed
   def button_toggle_menu_parts(self, **event_args):
-    if dict(event_args)['sender'].text == "Distance-Layer":
-      container = self.dist_container
-      container_state = not self.dist_container.visible
-      icon_container = self.dist_layer
-      if container_state == False:
-        icon = "fa:angle-right"
-      else:
-        icon = "fa:angle-down"
-    elif dict(event_args)['sender'].text == "Marker-Icons":
-      container = self.icon_categories_all
-      container_state = not self.icon_categories_all.visible
-      icon_container = self.button_icons
-      if container_state == False:
-        icon = "fa:angle-right"
-      else:
-        icon = "fa:angle-down"
-    elif dict(event_args)['sender'].text == "Overlays":
-      container = self.layer_categories
-      container_state = not self.layer_categories.visible
-      icon_container = self.button_overlay
-      if container_state == False:
-        icon = "fa:angle-right"
-      else:
-        icon = "fa:angle-down"
-    elif dict(event_args)['sender'].text == "Map-Styles":
-      container = self.checkbox_map_style
-      container_state = not self.checkbox_map_style.visible
-      icon_container = self.map_styles
-      if container_state == False:
-        icon = "fa:angle-right"
-      else:
-        icon = "fa:angle-down"
-    elif dict(event_args)['sender'].text == "Point of Interests":
-      container = self.poi_category
-      container_state = not self.poi_category.visible
-      icon_container = self.poi_categories
-      if container_state == False:
-        icon = "fa:angle-right"
-      else:
-        icon = "fa:angle-down"
-    elif dict(event_args)['sender'].text == "Healthcare":
-      container = self.poi_categories_healthcare_container
-      container_state = not self.poi_categories_healthcare_container.visible
-      icon_container = self.button_healthcare
-      if container_state == False:
-        icon = "fa:angle-right"
-      else:
-        icon = "fa:angle-down"
-    elif dict(event_args)['sender'].text == "Miscelaneous":
-      container = self.misc_container
-      container_state = not self.misc_container.visible
-      icon_container = self.misc_button
-      if container_state == False:
-        icon = "fa:angle-right"
-      else:
-        icon = "fa:angle-down"
-    elif dict(event_args)['sender'].text == "ÖPNV":
-      container = self.opnv_container
-      container_state = not self.opnv_container.visible
-      icon_container = self.opnv_button
-      if container_state == False:
-        icon = "fa:angle-right"
-      else:
-        icon = "fa:angle-down"
-      
-    self.icon_change(container, container_state, icon_container, icon)
+
+    toggler = {
+      'Distance-Layer': {
+        'container': self.dist_container,
+        'icon_container': self.dist_layer
+      },
+      'Marker-Icons': {
+        'container': self.icon_categories_all,
+        'icon_container': self.button_icons
+      },
+      'Overlays': {
+        'container': self.layer_categories,
+        'icon_container': self.button_overlay
+      },
+      'Map-Styles': {
+        'container': self.checkbox_map_style,
+        'icon_container': self.map_styles
+      },
+      'Point of Interests': {
+        'container': self.poi_category,
+        'icon_container': self.poi_categories
+      },
+      'Healthcare': {
+        'container': self.poi_categories_healthcare_container,
+        'icon_container': self.button_healthcare
+      },
+      'Miscelaneous': {
+        'container': self.misc_container,
+        'icon_container': self.misc_button
+      },
+      'ÖPNV': {
+        'container': self.opnv_container,
+        'icon_container': self.opnv_button
+      }
+    }
+    
+    sender = dict(event_args)['sender'].text
+    container = toggler[sender]['container']
+    container.visible = not container.visible
+    icon_container = toggler[sender]['icon_container']
+    
+    if container.visible:
+      icon_container.icon = "fa:angle-down"
+    else:
+      icon_container.icon = "fa:angle-right"
    
   #######Noch bearbeiten#######
   #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
@@ -1957,67 +1935,8 @@ class Map2_0(Map2_0Template):
     
     # Send Value back to origin Function
     return (last_bbox)
-  
-  #This method is called from different Marker-Checkboxes to hide/show there markers
-  def show_hide_marker(self, check_box, marker_id):
+
       
-    #Show Marker and Icon
-    for el in Variables.marker[marker_id]:  
-      
-      #Check if Check Box is checked and id exist 
-      if check_box == True and marker_id in Variables.marker:
-        
-        #Add Marker to Map
-        el.addTo(self.mapbox)
-          
-      #Check if Check Box is unchecked and id exist  
-      elif check_box == False and marker_id in Variables.marker:
-    
-        #Remove Marker from Map
-        el.remove()
-  
-  #This method is called when the active Layer is changed
-  def change_active_Layer(self, layer, inactive_layer, visibility, other_checkbox):
-    
-    #Check if Layer is visible or not
-    for el in layer:
-    
-      #Hide active Layer
-      self.mapbox.setLayoutProperty(el, 'visibility', visibility)
-  
-      #Do for every inactive Layer
-      for el in inactive_layer:
-  
-        #Do for every Sub-Layer of inactive Layer
-        for ele in el:
-  
-          #Set visiblity to 'not visible'
-          self.mapbox.setLayoutProperty(ele, 'visibility', 'none')
-    
-    #Do for every Checkbox
-    for el in other_checkbox:
-    
-      #Uncheck Check Box from other Layers
-      el.checked = False
-    
-    #Check visibility
-    if visibility == 'visible':
-    
-      #Set active Layer to Bundesländer
-      Variables.activeLayer = layer[0]
-        
-    else:
-      
-      #Set active Layer to Bundesländer
-      Variables.activeLayer = None
-    
-  #This method is called from different Menu-Collapsables
-  def icon_change(self, container, container_state, icon_container, icon):
-    
-    #Change State of Button and Image of Icon
-    container.visible = container_state
-    icon_container.icon = icon
-  
   #This method is called from the file uploader to set Markers based on Excel-Data
   def set_excel_markers(self, el, el_className, el_image, marker_cat, coords, marker_list, color):
     
@@ -2409,5 +2328,3 @@ class Map2_0(Map2_0Template):
     elif checkbox == "Assisted Living DB" and self.pdb_data_al.checked == True:
       Variables.last_bbox_al = self.create_icons(False, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
       Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
-  
-  #####   Extra Functions   #####
