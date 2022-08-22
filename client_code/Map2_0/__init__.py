@@ -189,20 +189,13 @@ class Map2_0(Map2_0Template):
 
   #This method is called when the Check Box for POI based on HFCIG is checked or unchecked
   def checkbox_poi_x_hfcig_change(self, **event_args):
-    #checkbox =  self.poi_categories_healthcare_container.get_components()
       
     if self.checkbox_poi_x_hfcig.checked == True:
-      bbox = self.create_bounding_box()
-#       for category in checkbox:
-#         if category.checked == True:
-#           for marker in Variables.icons[f'{category.text.replace(" ", "_").replace("-", "_")}']:
-#             marker_coords = dict(marker['_lngLat'])
-#             if not (bbox[0] < marker_coords['lat'] < bbox[2] and bbox[1] < marker_coords['lng'] < bbox[3]):
-#               marker.remove()
+      bbox = self.create_bounding_box(self)
     else:  
       bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
     
-    self.refresh_icons()  
+    Functions.refresh_icons(self)
         
 ##### Check-Box Functions #####
 ###############################
@@ -2225,55 +2218,7 @@ class Map2_0(Map2_0Template):
       request_static_map = request_static_map_raw
     
     return({"data": res_data['sorted_coords'], "request": request, "request2": Variables.activeIso})
-  
-  def create_bounding_box(self):
-    
-    # Get Data of Iso-Layer
-    iso = dict(self.mapbox.getSource('iso'))
 
-    # Create empty Bounding Box
-    bbox = [0, 0, 0, 0]
-
-    # Check every element in Iso-Data
-    for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
-
-      # Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
-      if el[0] < bbox[1] or bbox[1] == 0:
-
-        # Set BBox-Coordinate to new Element-Coordinate
-        bbox[1] = el[0]
-
-      # Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
-      if el[0] > bbox[3] or bbox[3] == 0:
-
-        # Set BBox-Coordinate to new Element-Coordinate
-        bbox[3] = el[0]
-
-      # Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
-      if el[1] < bbox[0] or bbox[0] == 0:
-
-        # Set BBox-Coordinate to new Element-Coordinate
-        bbox[0] = el[1]
-
-      # Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
-      if el[1] > bbox[2] or bbox[2] == 0:
-
-        # Set BBox-Coordinate to new Element-Coordinate
-        bbox[2] = el[1]
-        
-    return bbox
-  
-  def refresh_icons(self):
-    
-    checkbox =  self.poi_category.get_components()
-    for el in checkbox:
-      if isinstance(el, anvil.LinearPanel):
-        for component in el.get_components():
-          if isinstance(component, anvil.LinearPanel):
-            for ele in component.get_components():
-              self.change_icons(ele.text)
-      elif isinstance(el, anvil.CheckBox):
-        self.change_icons(el.text)
   
   def change_icons(self, checkbox):
     
