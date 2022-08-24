@@ -1175,7 +1175,7 @@ class Map2_0(Map2_0Template):
     self.marker.setLngLat(lnglat)
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
     
-    self.refresh_icons()
+    Functions.refresh_icons(self)
   
   #This method is called when the draggable Marker was moved
   def marker_dragged(self, drag):
