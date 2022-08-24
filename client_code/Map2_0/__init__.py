@@ -191,7 +191,7 @@ class Map2_0(Map2_0Template):
   def checkbox_poi_x_hfcig_change(self, **event_args):
       
     if self.checkbox_poi_x_hfcig.checked == True:
-      bbox = self.create_bounding_box(self)
+      bbox = Functions.create_bounding_box(self)
     else:  
       bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
     
@@ -1066,7 +1066,7 @@ class Map2_0(Map2_0Template):
   def distance_dropdown_change(self, **event_args):
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
     
-    self.refresh_icons()
+    Functions.refresh_icons(self)
   
   #####  Dropdown Functions #####
   ###############################
