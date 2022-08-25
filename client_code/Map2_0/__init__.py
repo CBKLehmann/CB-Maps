@@ -523,6 +523,8 @@ class Map2_0(Map2_0Template):
     string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{lng_lat_marker['lng']},{lng_lat_marker['lat']}.json?access_token={self.token}"
     response_data = anvil.http.request(string,json=True)
     marker_context = response_data['features'][0]['context']
+    print(marker_context)
+    print(response_data)
     
     #Get Information about Zipcode, District, City and Federal-State of Map-Marker-Position
     zipcode = "n.a."
