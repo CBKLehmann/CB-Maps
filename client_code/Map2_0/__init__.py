@@ -553,8 +553,10 @@ class Map2_0(Map2_0Template):
       time = "20"
     movement = self.profile_dropdown.selected_value.lower()
 
+    marker_coords = dict(self.marker.getLngLat())
+    
     #Get Information from Database for County of Marker-Position
-    countie_data = anvil.server.call("get_countie_data_from_db", city_alt, federal_state)
+    countie_data = anvil.server.call("get_countie_data_from_db", city_alt, federal_state, marker_coords)
     countie = countie_data[0][1].split(',')
 
     #Get Entries from Care-Database based on Federal State
@@ -861,6 +863,7 @@ class Map2_0(Map2_0Template):
     apartments_plan_build_adjusted = build_apartments_adjusted + planning_apartments_adjusted
         
     #Get level, multiplier, surplus, demand and potential for Assisted Living Analysis
+    print(countie_data)
     if countie_data[4][10] < 30001:
       level = "national level"
       multiplier = 0.03
@@ -1186,7 +1189,7 @@ class Map2_0(Map2_0Template):
     #Set iso-Layer for new Markerposition
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
     
-    self.refresh_icons()
+    Functions.refresh_icons()
     
   #This method is called when the draggable Marker was moved or when the Geocoder was used
   def get_iso(self, profile, contours_minutes):
