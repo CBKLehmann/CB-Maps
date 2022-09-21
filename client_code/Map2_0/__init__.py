@@ -630,8 +630,11 @@ class Map2_0(Map2_0Template):
 
 ################################################Alte Berechnungen################################################
 ################################################Neue Berechnungen################################################
-
+    
     nursing_home_rate = float(countie_data[3][8])
+    print(countie_data[0][19])
+    print(nursing_home_rate)
+    print(inpatients_lk)
     nursing_home_rate_perc = "{:.1f}".format(nursing_home_rate * 100)
     new_r_care_rate_raw = float("{:.3f}".format(inpatients_lk / (people_u80 + people_o80)))
     new_r_care_rate_perc = "{:.1f}".format(new_r_care_rate_raw * 100)
@@ -1189,7 +1192,7 @@ class Map2_0(Map2_0Template):
     #Set iso-Layer for new Markerposition
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
     
-    Functions.refresh_icons()
+    Functions.refresh_icons(self)
     
   #This method is called when the draggable Marker was moved or when the Geocoder was used
   def get_iso(self, profile, contours_minutes):
