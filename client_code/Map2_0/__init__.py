@@ -524,7 +524,6 @@ class Map2_0(Map2_0Template):
     response_data = anvil.http.request(string,json=True)
     string_test = f"https://nominatim.openstreetmap.org/reverse?format=geojson&addressdetails=1&lat={lng_lat_marker['lat']}&lon={lng_lat_marker['lng']}"
     response_data_test = anvil.http.request(string_test,json=True)
-    print(response_data_test)
     marker_context = response_data['features'][0]['context']
     
     #Get Information about Zipcode, District, City and Federal-State of Map-Marker-Position
@@ -564,6 +563,7 @@ class Map2_0(Map2_0Template):
     
     inpatients_lk = 0
     beds_lk = 0
+    print(care_data_federal)
     for el in care_data_federal:
       if not el[27] == '-':
         inpatients_lk += int(el[27])
@@ -866,7 +866,6 @@ class Map2_0(Map2_0Template):
     apartments_plan_build_adjusted = build_apartments_adjusted + planning_apartments_adjusted
         
     #Get level, multiplier, surplus, demand and potential for Assisted Living Analysis
-    print(countie_data)
     if countie_data[4][10] < 30001:
       level = "national level"
       multiplier = 0.03
