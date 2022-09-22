@@ -563,7 +563,6 @@ class Map2_0(Map2_0Template):
     
     inpatients_lk = 0
     beds_lk = 0
-    print(care_data_federal)
     for el in care_data_federal:
       if not el[27] == '-':
         inpatients_lk += int(el[27])
@@ -632,9 +631,6 @@ class Map2_0(Map2_0Template):
 ################################################Neue Berechnungen################################################
     
     nursing_home_rate = float(countie_data[3][8])
-    print(countie_data[0][19])
-    print(nursing_home_rate)
-    print(inpatients_lk)
     nursing_home_rate_perc = "{:.1f}".format(nursing_home_rate * 100)
     new_r_care_rate_raw = float("{:.3f}".format(inpatients_lk / (people_u80 + people_o80)))
     new_r_care_rate_perc = "{:.1f}".format(new_r_care_rate_raw * 100)
@@ -2141,7 +2137,7 @@ class Map2_0(Map2_0Template):
       else:
         home_address = []
       anvil.js.call('resetResponse', topic)
-    
+      
       if not home_address == []:
         sorted_coords.insert(0, home_address)
     
