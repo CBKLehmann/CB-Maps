@@ -265,8 +265,8 @@ class Map2_0(Map2_0Template):
    
   #######Noch bearbeiten#######
   #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
-  def admin_button_click(self, **event_args):
-
+  def admin_button_click(self, **event_args): 
+    
     anvil.server.call('create_iso_map', Variables.activeIso, self.create_bounding_box())
     
 #     #Call a Server Function
@@ -490,7 +490,10 @@ class Map2_0(Map2_0Template):
   #######Noch bearbeiten#######
   #This methos is called when the User want's to generate a Market Summary
   def Summary_click(self, **event_args):
+    
     unique_code = anvil.server.call("get_unique_code")
+
+    searched_address = anvil.js.call('getSearchedAddress')
     
     #Create Variables for multiple Uses in Function
     lng_lat_marker = {
@@ -981,7 +984,8 @@ class Map2_0(Map2_0Template):
                         "inpatents_fc_30_avg": "{:,}".format(inpatents_fc_30_avg),
                         "inpatents_fc_35_avg": "{:,}".format(inpatents_fc_35_avg),
                         "beds_surplus_30_avg": "{:,}".format(beds_surplus_30_avg),
-                        "beds_surplus_35_avg": "{:,}".format(beds_surplus_35_avg)}
+                        "beds_surplus_35_avg": "{:,}".format(beds_surplus_35_avg),
+                        "searched_address": searched_address}
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
                            "people_u80": "{:,}".format(people_u80),
