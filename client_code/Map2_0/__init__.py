@@ -491,10 +491,8 @@ class Map2_0(Map2_0Template):
   #This methos is called when the User want's to generate a Market Summary
   def Summary_click(self, **event_args):
 
-    print(self.pdb_data_cb.checked)
-    print(self.pdb_data_al.checked)
-
-###########################Generell###########################
+    nh_checked = self.pdb_data_cb.checked
+    al_checked = self.pdb_data_al.checked
 
     unique_code = anvil.server.call("get_unique_code")
     searched_address = anvil.js.call('getSearchedAddress')
@@ -569,8 +567,6 @@ class Map2_0(Map2_0Template):
     people_o80_fc_35 = int(countie_data[2][108])
     change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
     change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
-    
-###########################NH###########################
 
     #Get organized Coords for Nursing Homes
     coords_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', lng_lat_marker)
@@ -594,30 +590,12 @@ class Map2_0(Map2_0Template):
 
     population_fc = int(countie_data[2][7]) + int(countie_data[2][18]) + int(countie_data[2][29]) + int(countie_data[2][40]) + int(countie_data[2][51]) + int(countie_data[2][62]) + int(countie_data[2][73]) + int(countie_data[2][84]) + int(countie_data[2][95]) + int(countie_data[2][106])
     population_fc_35 = int(countie_data[2][9]) + int(countie_data[2][20]) + int(countie_data[2][31]) + int(countie_data[2][42]) + int(countie_data[2][53]) + int(countie_data[2][64]) + int(countie_data[2][75]) + int(countie_data[2][86]) + int(countie_data[2][97]) + int(countie_data[2][108])
-    
-###########################AL###########################
   
     #Get organized Coords for both Assisted Living
     coords_al = self.organize_ca_data(Variables.assisted_living_entries, 'assisted_living', lng_lat_marker)
         
     #Get Data for both Assisted Living
-    data_comp_analysis_al = self.build_req_string(coords_al, 'assisted_living')
-
-
-#################################################################################    
-    
-  
-    
-    
-    
-################################################Alte Berechnungen################################################
-  
-    #Potentiell obsolete Variablen
-    pat_rec_full_care = int(countie_data[0][19] * countie_data[3][1] * countie_data[3][8])
-    pat_rec_full_care_fc = int(population_fc * countie_data[3][2] * countie_data[3][9])
-
-################################################Alte Berechnungen################################################
-################################################Neue Berechnungen################################################
+    data_comp_analysis_al = self.build_req_string(coords_al, 'assisted_living')   
     
     nursing_home_rate = float(countie_data[3][8])
     nursing_home_rate_perc = "{:.1f}".format(nursing_home_rate * 100)
@@ -637,11 +615,7 @@ class Map2_0(Map2_0Template):
     pat_rec_full_care_fc_35_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc_35 + people_o80_fc_35))
     care_rate_35_v2_raw = float("{:.3f}".format(pat_rec_full_care_fc_35_v2 / (population_fc_35 * nursing_home_rate)))
     care_rate_35_v2_perc = "{:.1f}".format(care_rate_35_v2_raw * 100)
-
-    #Wird benötigt aber abhängig von 2 potentiell obsoleten Variablen
     change_pat_rec = float("{:.2f}".format(((pat_rec_full_care_fc_30_v1 * 100) / inpatients_lk) - 100))
-    
-################################################Neue Berechnungen################################################
   
     #Get Data from Care-Database based on Iso-Layer
     care_data_iso = anvil.server.call("get_iso_data", bbox)
@@ -974,7 +948,8 @@ class Map2_0(Map2_0Template):
                         "inpatents_fc_35_avg": "{:,}".format(inpatents_fc_35_avg),
                         "beds_surplus_30_avg": "{:,}".format(beds_surplus_30_avg),
                         "beds_surplus_35_avg": "{:,}".format(beds_surplus_35_avg),
-                        "searched_address": searched_address}
+                        "searched_address": searched_address,
+                        "nh_checked": nh_checked}
     sendData_ALAnalysis = {"countie": countie[0],
                            "population": "{:,}".format(countie_data[0][19]),
                            "people_u80": "{:,}".format(people_u80),
@@ -1045,8 +1020,8 @@ class Map2_0(Map2_0Template):
                            "demand_potential": demand_potential,
                            "apartments_plan_build_adjusted": apartments_plan_build_adjusted,
                            "change_pat_rec": change_pat_rec,
-                           "city": city
-                          }
+                           "city": city,
+                           "al_checked": al_checked}
     
     #Create Summary-PDF
     anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], data_comp_analysis_al['data'], data_comp_analysis_al['request'])
