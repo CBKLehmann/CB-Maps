@@ -490,11 +490,15 @@ class Map2_0(Map2_0Template):
   #######Noch bearbeiten#######
   #This methos is called when the User want's to generate a Market Summary
   def Summary_click(self, **event_args):
-    
-    unique_code = anvil.server.call("get_unique_code")
 
+    print(self.pdb_data_cb.checked)
+    print(self.pdb_data_al.checked)
+
+###########################Generell###########################
+
+    unique_code = anvil.server.call("get_unique_code")
     searched_address = anvil.js.call('getSearchedAddress')
-    
+
     #Create Variables for multiple Uses in Function
     lng_lat_marker = {
                       "lng": (dict(self.marker['_lngLat'])['lng']),
@@ -514,21 +518,13 @@ class Map2_0(Map2_0Template):
       if point[1] > bbox[2] or bbox[2] == 0:
         bbox[2] = point[1]
 
-    #Get organized Coords for both Competitor Analysis
-    coords_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', lng_lat_marker)
-    coords_al = self.organize_ca_data(Variables.assisted_living_entries, 'assisted_living', lng_lat_marker)
-        
-    #Get Data for both Competitor Analysis
-    data_comp_analysis_nh = self.build_req_string(coords_nh, 'nursing_homes')
-    data_comp_analysis_al = self.build_req_string(coords_al, 'assisted_living')
-    
     #Get Place from Geocoder-API for Map-Marker
     string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{lng_lat_marker['lng']},{lng_lat_marker['lat']}.json?access_token={self.token}"
     response_data = anvil.http.request(string,json=True)
     string_test = f"https://nominatim.openstreetmap.org/reverse?format=geojson&addressdetails=1&lat={lng_lat_marker['lat']}&lon={lng_lat_marker['lng']}"
     response_data_test = anvil.http.request(string_test,json=True)
     marker_context = response_data['features'][0]['context']
-    
+
     #Get Information about Zipcode, District, City and Federal-State of Map-Marker-Position
     zipcode = "n.a."
     district = "n.a."
@@ -556,14 +552,32 @@ class Map2_0(Map2_0Template):
     movement = self.profile_dropdown.selected_value.lower()
 
     marker_coords = dict(self.marker.getLngLat())
-    
+
     #Get Information from Database for County of Marker-Position
     countie_data = anvil.server.call("get_countie_data_from_db", city_alt, federal_state, marker_coords)
     countie = countie_data[0][1].split(',')
 
     #Get Entries from Care-Database based on Federal State
     care_data_federal = anvil.server.call("get_federalstate_data", federal_state, countie_data[0][0])
+
+    #Get different Values for Assisted Living Analysis and/or Executive Summary
+    people_u80 = int(countie_data[2][80]) + int(countie_data[2][91])
+    people_o80 = int(countie_data[2][102])
+    people_u80_fc = int(countie_data[2][84]) + int(countie_data[2][95])
+    people_o80_fc = int(countie_data[2][106])
+    people_u80_fc_35 = int(countie_data[2][86]) + int(countie_data[2][97])
+    people_o80_fc_35 = int(countie_data[2][108])
+    change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
+    change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
     
+###########################NH###########################
+
+    #Get organized Coords for Nursing Homes
+    coords_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', lng_lat_marker)
+
+    #Get Data for both Nursing Homes
+    data_comp_analysis_nh = self.build_req_string(coords_nh, 'nursing_homes')
+
     inpatients_lk = 0
     beds_lk = 0
     for el in care_data_federal:
@@ -577,58 +591,30 @@ class Map2_0(Map2_0Template):
         beds_lk += int(el[30])
     occupancy_lk = float("{:.2f}".format((inpatients_lk * 100) / beds_lk))
     free_beds_lk = beds_lk - inpatients_lk
-    
-    #Get different Values for Assisted Living Analysis and/or Executive Summary
-    people_u80 = int(countie_data[2][80]) + int(countie_data[2][91])
-    people_o80 = int(countie_data[2][102])
-    people_u80_fc = int(countie_data[2][84]) + int(countie_data[2][95])
-    people_o80_fc = int(countie_data[2][106])
-    people_u80_fc_35 = int(countie_data[2][86]) + int(countie_data[2][97])
-    people_o80_fc_35 = int(countie_data[2][108])
-    change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
-    change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
-    
-################################################Alte Berechnungen################################################
-    
-    #Sum up all Patients in County
-    
-    quote_change_30 = countie_data[3][2] / countie_data[3][1]
-#     pat_rec_full_care_fc = int(inpatients_lk * quote_change_30)
-    
+
     population_fc = int(countie_data[2][7]) + int(countie_data[2][18]) + int(countie_data[2][29]) + int(countie_data[2][40]) + int(countie_data[2][51]) + int(countie_data[2][62]) + int(countie_data[2][73]) + int(countie_data[2][84]) + int(countie_data[2][95]) + int(countie_data[2][106])
     population_fc_35 = int(countie_data[2][9]) + int(countie_data[2][20]) + int(countie_data[2][31]) + int(countie_data[2][42]) + int(countie_data[2][53]) + int(countie_data[2][64]) + int(countie_data[2][75]) + int(countie_data[2][86]) + int(countie_data[2][97]) + int(countie_data[2][108])
     
-    pq_20_own = (inpatients_lk / int(countie_data[0][19]) / float(countie_data[3][8]))
-    pq_20_raw = float("{:.3f}".format((pq_20_own + float(countie_data[3][1])) / 2))
-    pq_20_perc = pq_20_raw * 100
-    hq_20 = inpatients_lk / int(countie_data[0][19]) / ((float(countie_data[3][1]) + pq_20_raw) / 2)
-    hq_20_perc = round((hq_20 * 100), 1)
-    pat_rec_full_care = inpatients_lk
-    pat_rec_full_care_fc = round(population_fc * pq_20_raw * hq_20)
-    pat_rec_full_care_fc_35 = round(population_fc_35 * pq_20_raw * hq_20)
-    pq_30_raw = float("{:.3f}".format(((pat_rec_full_care_fc / population_fc / hq_20) + float(countie_data[3][2])) / 2))
-    pq_30_perc = pq_30_raw * 100
-    pq_35_raw = float("{:.3f}".format(((pat_rec_full_care_fc_35 / population_fc_35 / hq_20) + float(countie_data[3][3])) / 2))
-    pq_35_perc = pq_35_raw * 100
-    part1_30 = round(((pq_20_perc - float(countie_data[3][2]) * 100) ** 2), 2)
-    part2_all = (round((pq_20_own *100), 1) - pq_20_perc) ** 2
-    final_30 = round((pq_20_own *100), 1) + round((math.sqrt(part1_30 + part2_all) * 0.3), 1)
-    pat_rec_full_care_fc_s2 = round(population_fc * (final_30 / 100) * hq_20)
-    quote_change_30 = (quote_change_30 - 1) * countie_data[3][1]
-    part1_35 = round(((pq_20_perc - float(countie_data[3][3]) * 100) ** 2), 2)
-    final_35 = round((pq_20_own *100), 1) + round((math.sqrt(part1_35 + part2_all) * 0.3), 1)
-    pat_rec_full_care_fc_35_s2 = round(population_fc_35 * (final_35 / 100) * hq_20)
+###########################AL###########################
+  
+    #Get organized Coords for both Assisted Living
+    coords_al = self.organize_ca_data(Variables.assisted_living_entries, 'assisted_living', lng_lat_marker)
+        
+    #Get Data for both Assisted Living
+    data_comp_analysis_al = self.build_req_string(coords_al, 'assisted_living')
+
+
+#################################################################################    
     
-    quote_change_35 = countie_data[3][3] / countie_data[3][2]
-    pat_rec_full_care_fc_35 = int(pat_rec_full_care_fc * quote_change_35)
+  
     
     
-    pat_rec_full_care_fc_30 = population_fc * pq_30_raw * hq_20
     
-#     hq_30 = pat_rec_full_care_fc /
+################################################Alte Berechnungen################################################
+  
+    #Potentiell obsolete Variablen
     pat_rec_full_care = int(countie_data[0][19] * countie_data[3][1] * countie_data[3][8])
     pat_rec_full_care_fc = int(population_fc * countie_data[3][2] * countie_data[3][9])
-    change_pat_rec = float("{:.2f}".format(((pat_rec_full_care_fc * 100) / pat_rec_full_care) - 100))
 
 ################################################Alte Berechnungen################################################
 ################################################Neue Berechnungen################################################
@@ -652,6 +638,9 @@ class Map2_0(Map2_0Template):
     care_rate_35_v2_raw = float("{:.3f}".format(pat_rec_full_care_fc_35_v2 / (population_fc_35 * nursing_home_rate)))
     care_rate_35_v2_perc = "{:.1f}".format(care_rate_35_v2_raw * 100)
 
+    #Wird benötigt aber abhängig von 2 potentiell obsoleten Variablen
+    change_pat_rec = float("{:.2f}".format(((pat_rec_full_care_fc_30_v1 * 100) / inpatients_lk) - 100))
+    
 ################################################Neue Berechnungen################################################
   
     #Get Data from Care-Database based on Iso-Layer
