@@ -2173,49 +2173,60 @@ class Map2_0(Map2_0Template):
         index_coords -= 1
     last_coords = []
     complete_counter = 0
-    dupe_coord = False
+
+    test_counter = 0
+    last_coord_dist = 0 
+    for coordinate in res_data['sorted_coords']:
+      if not last_coord_dist == coordinate[1]:
+        if not 'home' in coordinate:
+          for second_coordinate in res_data['sorted_coords']:
+            if not coordinate == second_coordinate and coordinate[1] == second_coordinate[1]:
+              test_counter += 1
+      last_coord_dist = coordinate[1]
+    index_coords -= test_counter
+
+    last_coord_dist = 0
     
     for coordinate in reversed(res_data['sorted_coords']):
-      if not dupe_coord:
+      if not last_coord_dist == coordinate[1]:
         counter += 1
-      else:
-        dupe_coord = False
-      if complete_counter == len(res_data['sorted_coords']) - 1:
-        if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
-          if not counter == 1:
+        if complete_counter == len(res_data['sorted_coords']) - 1:
+          if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
+            if not counter == 1:
+              request_static_map += f"%2C"
+            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+          counter = 0
+          if not request_static_map == request_static_map_raw:
             request_static_map += f"%2C"
-          request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
-        counter = 0
-        if not request_static_map == request_static_map_raw:
-          request_static_map += f"%2C"
-        request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
-        request.append(request_static_map)
-        request_static_map = request_static_map_raw
-        index_coords -= 1
-      elif counter == 10:
-        if not 'home' in coordinate:
+          request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
+          request.append(request_static_map)
+          request_static_map = request_static_map_raw
+          index_coords -= 1
+        elif counter == 10:
+          if not 'home' in coordinate:
+            if not coordinate[0]['coords'] == last_coords:
+              request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+              counter = 0
+              request.append(request_static_map)
+              request_static_map = request_static_map_raw
+            else:
+              dupe_coord = True
+          index_coords -= 1
+        elif not 'home' in coordinate:
           if not coordinate[0]['coords'] == last_coords:
-            request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-            counter = 0
-            request.append(request_static_map)
-            request_static_map = request_static_map_raw
+            if not counter == 1:
+              request_static_map += f"%2C"
+            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
           else:
             dupe_coord = True
-        index_coords -= 1
-      elif not 'home' in coordinate:
-        if not coordinate[0]['coords'] == last_coords:
-          if not counter == 1:
-            request_static_map += f"%2C"
-          request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+          index_coords -= 1
         else:
-          dupe_coord = True
-        index_coords -= 1
-      else:
-        request_static_map += f"%5D%7D"
-        counter = 0
-        request.append(request_static_map)
-        request_static_map = request_static_map_raw
-        break
+          request_static_map += f"%5D%7D"
+          counter = 0
+          request.append(request_static_map)
+          request_static_map = request_static_map_raw
+          break
+      last_coord_dist = coordinate[1]
         
       complete_counter += 1
       last_coords = coordinate[0]['coords']
