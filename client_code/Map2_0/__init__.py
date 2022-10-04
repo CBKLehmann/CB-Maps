@@ -552,7 +552,7 @@ class Map2_0(Map2_0Template):
     marker_coords = dict(self.marker.getLngLat())
 
     #Get Information from Database for County of Marker-Position
-    countie_data = anvil.server.call("get_countie_data_from_db", city_alt, federal_state, marker_coords)
+    countie_data = anvil.server.call("get_countie_data_from_db", city_alt, marker_coords)
     countie = countie_data[0][1].split(',')
 
     #Get Entries from Care-Database based on Federal State
