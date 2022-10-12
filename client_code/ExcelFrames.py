@@ -3337,3 +3337,2119 @@ nca_data = {
             }
         ]
     }
+ala_data = {
+        'title': 'ASSISTED_LIVING_ANALYSIS',
+        'print_area': 'A1:F57',
+        'fit_to_pages': (1, 1),
+        'columns_width': [39, 15.91, 16.33, 16.08, 16.73, 17.36],
+        'data': [
+            {
+                'type': 'text',
+                'insert': 'merge',
+                'cell': 'A1:C1',
+                'content': 'ASSISTED LIVING ANALYSIS',
+                'format': {
+                    'align': 'left',
+                    'valign': 'vcenter',
+                    'font_size': 24,
+                    'font': 'Segoe UI Black',
+                    'color': '#BFB273'
+                }
+            },
+            {
+                'type': 'image',
+                'cell': 'E1',
+                'file': 'Logo2.png',
+                'style': {
+                    'x_scale': .21,
+                    'y_scale': .09,
+                    'y_offset': 10,
+                    'x_offset': 130
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A4',
+                'content': 'District Summary',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A5',
+                'content': 'Population Salzlandkreis, LK',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A6',
+                'content': 'Population 65-79',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A7',
+                'content': 'Population 80+',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A8',
+                'content': 'Population 65-79 (2030)',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A9',
+                'content': 'Population 80+ (2030)',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A10',
+                'content': 'inpatient care forecast district (2022-2030)',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A11',
+                'content': 'active assisted apts. (adjusted)',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A12',
+                'content': 'active apts. per 10.000 population',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A13',
+                'content': 'active assisted living facilities',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A14',
+                'content': 'planned/under construction assisted living facilities',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A15',
+                'content': 'planned/under construction assisted apts. (adjusted)',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A16',
+                'content': 'assisted Living facilities within 10km',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A17',
+                'content': 'apts. within 10km',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A21',
+                'content': 'Assisted Living Analysis in the region',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A22',
+                'content': 'Supply',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A23',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'border': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A24',
+                'content': 'active BW with apt. numbers',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A25',
+                'content': 'active BW without apt. numbers',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A26',
+                'content': 'active subtotal',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A27',
+                'content': 'under construction BW facilities with apt. Numbers',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A28',
+                'content': 'under construction BW facilities without apt. Numbers',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A29',
+                'content': 'under construction subtotal adjusted',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A30',
+                'content': 'planed BW facilities with apt. Numbers',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A31',
+                'content': 'planed BW facilities without apt. numbers',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A32',
+                'content': 'in planning subtotal adjusted',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A33',
+                'content': 'Total',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A35',
+                'content': 'Demand',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A36',
+                'content': '*Assume: % of 65+ population are in need of Assisted Living apt.',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'border': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A37',
+                'content': 0.01,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '0%'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A38',
+                'content': 0.02,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '0%'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A39',
+                'content': 0.03,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#F1EFE2',
+                    'num_format': '0%'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A40',
+                'content': 0.04,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '0%'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A41',
+                'content': 0.05,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7',
+                    'num_format': '0%'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A42',
+                'content': 0.07,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#BFB273',
+                    'num_format': '0%'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A43',
+                'content': 0.09,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '0%'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A45',
+                'content': '* assume every apt accommodates 1,5 person',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'merge',
+                'cell': 'A47:B47',
+                'content': 'REGIONAL DEMAND FOR ASSISTED LIVING',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'color': '#BFB273',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A48',
+                'content': 'Holzminden',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A49',
+                'content': 'Holzminden, LK 2022',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A50',
+                'content': 'Holzminden, LK 2030',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A51',
+                'content': 'potential demand in 2030 is',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B4',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B5',
+                'content': 3669491,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B6',
+                'content': 484900,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B7',
+                'content': 227100,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B8',
+                'content': 559500,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B9',
+                'content': 239600,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B10',
+                'content': 0.1206,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '0.00%'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B11',
+                'content': 13870,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B12',
+                'content': 37,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B13',
+                'content': 211,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B14',
+                'content': 11,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B15',
+                'content': 1257,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B16',
+                'content': 77,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B17',
+                'content': 4889,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B21',
+                'content': 'Berlin, LK',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B22',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B23',
+                'content': 'Facility No.',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'border': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B24',
+                'content': 168,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B25',
+                'content': 43,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B26',
+                'content': 211,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B27',
+                'content': 5,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B28',
+                'content': 1,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B29',
+                'content': 6,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B30',
+                'content': 3,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B31',
+                'content': 2,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B32',
+                'content': 5,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B33',
+                'content': 222,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B35',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B36',
+                'content': 'Demand in 2022',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'border': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B37',
+                'content': 125,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B38',
+                'content': 250,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B39',
+                'content': 375,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#F1EFE2',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B40',
+                'content': 500,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B41',
+                'content': 625,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B42',
+                'content': 875,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#BFB273',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B43',
+                'content': 1125,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B48',
+                'content': 'national level',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B49',
+                'content': -56,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0',
+                    'align': 'left'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B50',
+                'content': -123,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0',
+                    'align': 'left'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B51',
+                'content': 'low',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '0.00%',
+                    'color': 'red'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C4',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C5',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C6',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C7',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C8',
+                'content': 0.1274,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '0.00%'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C9',
+                'content': 0.003,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '0.00%'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C10',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C11',
+                'content': 'apts',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C12',
+                'content': 'apts',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C13',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C14',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C15',
+                'content': 'apts',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C16',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C17',
+                'content': 'apts',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bottom': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C22',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C23',
+                'content': 'apartments',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'border': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C24',
+                'content': 308,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C25',
+                'content': 0,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C26',
+                'content': 308,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C27',
+                'content': 29,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C28',
+                'content': 0,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C29',
+                'content': 29,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C30',
+                'content': 70,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C31',
+                'content': 0,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C32',
+                'content': 70,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C33',
+                'content': 407,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C35',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C36',
+                'content': '+surplus/-deficit (2022)',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'border': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C37',
+                'content': 306,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C38',
+                'content': 181,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C39',
+                'content': 56,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#F1EFE2',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C40',
+                'content': -69,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C41',
+                'content': -194,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C42',
+                'content': -443,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#BFB273',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C43',
+                'content': -693,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D22',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D23',
+                'content': 'average apt./Facility',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'border': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D24',
+                'content': 62,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D25',
+                'content': 0,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D26',
+                'content': 431,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7',
+                    'bold': True,
+                    'color': 'red'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D27',
+                'content': 29,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D28',
+                'content': 0,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D29',
+                'content': 29,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7',
+                    'bold': True,
+                    'color': 'red'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D30',
+                'content': 35,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D31',
+                'content': 0,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D32',
+                'content': 70,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7',
+                    'bold': True,
+                    'color': 'red'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D33',
+                'content': 530,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bold': True,
+                    'color': 'red'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D35',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D36',
+                'content': 'Demand in 2030',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'border': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D37',
+                'content': 136,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D38',
+                'content': 271,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D39',
+                'content': 407,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#F1EFE2',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D40',
+                'content': 542,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D41',
+                'content': 678,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D42',
+                'content': 949,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#BFB273',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D43',
+                'content': 1220,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'merge',
+                'cell': 'E26:F26',
+                'content': '(Existing apts in Pro-Forma)',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'num_format': '0.00%',
+                    'color': 'red'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'merge',
+                'cell': 'E33:F33',
+                'content': '(Existing apts in Pro-Forma)',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'num_format': '0.00%',
+                    'color': 'red'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'E35',
+                'content': '',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'bg_color': '#E5E0C7'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'E36',
+                'content': '+surplus/-deficit (2030)',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bold': True,
+                    'border': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'E37',
+                'content': 395,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'E38',
+                'content': 259,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'E39',
+                'content': 123,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#F1EFE2',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'E40',
+                'content': -12,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'E41',
+                'content': -148,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#E5E0C7',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'E42',
+                'content': -419,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'bg_color': '#BFB273',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'E43',
+                'content': -690,
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'border': True,
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'F39',
+                'content': 'national level',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bg_color': '#F1EFE2',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'F41',
+                'content': 'small city',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bg_color': '#E5E0C7',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'F42',
+                'content': 'top 30 city',
+                'format': {
+                    'text_wrap': 'true',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI',
+                    'bg_color': '#BFB273',
+                    'bold': True
+                }
+            },
+            {
+                'type': 'chart',
+                'subtype': 'column',
+                'position': 'C45',
+                'series': [
+                    {
+                        'values': '=ASSISTED_LIVING_ANALYSIS!$B$49',
+                        'name': 'Holzminden, LK 2022',
+                        'data_labels': {
+                            'value': True,
+                            'position': 'inside_end',
+                            'font': {
+                                'color': '#FFFFFF',
+                                'name': 'Segoe UI'
+                            }
+                        },
+                        'fill': {
+                            'color': '#404040'
+                        },
+                        'overlap': -60
+                    },
+                    {
+                        'values': '=ASSISTED_LIVING_ANALYSIS!$B$50',
+                        'name': 'Holzminden, LK 2030',
+                        'data_labels': {
+                            'value': True,
+                            'position': 'inside_end',
+                            'font': {
+                                'name': 'Segoe UI'
+                            }
+                        },
+                        'fill': {
+                            'color': '#BFB273'
+                        }
+                    }
+                ],
+                'styles': {
+                    'x_axis': {
+                        'visible': False
+                    },
+                    'y_axis': {
+                        'visible': True,
+                        'major_gridlines': {
+                            'visible': True
+                        }
+                    },
+                    'legend': {
+                        'position': 'bottom',
+                        'name_font': {
+                            'name': 'Segoe UI'
+                        },
+                        'layout': {
+                            'x': 0,
+                            'y': .9,
+                            'width': 1,
+                            'height': .1
+                        }
+                    },
+                    'plotarea': {
+                        'layout': {
+                            'x': .1,
+                            'y': .2,
+                            'width': .8,
+                            'height': .6
+                        }
+                    },
+                    'chartarea': {
+                        'border': {
+                            'none': True
+                        }
+                    },
+                    'size': {
+                        'width': 430,
+                        'height': 250
+                    },
+                    'chart': {
+                        'x_offset': 30
+                    },
+                    'title': {
+                        'name': 'REGIONAL DEMAND FOR ASSISTED LIVING',
+                        'name_font': {
+                            'size': 12,
+                            'name': 'Segoe UI Black'
+                        }
+                    }
+                }
+            }
+        ]
+    }

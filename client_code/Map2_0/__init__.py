@@ -566,7 +566,9 @@ class Map2_0(Map2_0Template):
     people_u80_fc_35 = int(countie_data[2][86]) + int(countie_data[2][97])
     people_o80_fc_35 = int(countie_data[2][108])
     change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
+    change_u80_raw = change_u80 / 100
     change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
+    change_o80_raw = change_o80 / 100
 
     #Get organized Coords for Nursing Homes
     coords_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', lng_lat_marker)
@@ -616,7 +618,8 @@ class Map2_0(Map2_0Template):
     pat_rec_full_care_fc_35_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc_35 + people_o80_fc_35))
     care_rate_35_v2_raw = float("{:.3f}".format(pat_rec_full_care_fc_35_v2 / (population_fc_35 * nursing_home_rate)))
     care_rate_35_v2_perc = "{:.1f}".format(care_rate_35_v2_raw * 100)
-    change_pat_rec = float("{:.2f}".format(((pat_rec_full_care_fc_30_v1 * 100) / inpatients_lk) - 100))
+    change_pat_rec_raw = pat_rec_full_care_fc_30_v1 / inpatients_lk - 1
+    change_pat_rec = float("{:.2f}".format(change_pat_rec_raw * 100))
   
     #Get Data from Care-Database based on Iso-Layer
     care_data_iso = anvil.server.call("get_iso_data", bbox)
@@ -708,9 +711,12 @@ class Map2_0(Map2_0Template):
     invest_median = "{:.2f}".format(invest_med)
     beds_median = anvil.server.call("get_median", beds)
     year_median = round(anvil.server.call("get_median", year))
-    pg3_median = "{:.2f}".format(anvil.server.call("get_median", pg3_cost))
-    copayment_median = "{:.2f}".format(anvil.server.call("get_median", copayment_cost))
-    board_median = "{:.2f}".format(anvil.server.call("get_median", board_cost))
+    pg3_median_raw = anvil.server.call("get_median", pg3_cost)
+    pg3_median = "{:.2f}".format(pg3_median_raw)
+    copayment_median_raw = anvil.server.call("get_median", copayment_cost)
+    copayment_median = "{:.2f}".format(copayment_median_raw)
+    board_median_raw = anvil.server.call("get_median", board_cost)
+    board_median = "{:.2f}".format(board_median_raw)
     if not len(operator_private) == 0:
       if not len(operator) == 0:
         op_private_percent = round((len(operator_private) * 100) / len(operator))
@@ -988,13 +994,12 @@ class Map2_0(Map2_0Template):
 
       # Copy and Fill Dataframe for Nursing Home Competitor Analysis
       nurscomp_frame = ExcelFrames.nca_data.copy()
-      # nurscomp_frame['data'][2]['content'] = Insert mapfile (perhaps on Server)
-      nurscomp_frame['data'][7]['content'] = pg3_median
-      nurscomp_frame['data'][8]['content'] = copayment_median
-      nurscomp_frame['data'][9]['content'] = invest_median
-      nurscomp_frame['data'][10]['content'] = board_median
+      nurscomp_frame['data'][7]['content'] = pg3_median_raw
+      nurscomp_frame['data'][8]['content'] = copayment_median_raw
+      nurscomp_frame['data'][9]['content'] = invest_med
+      nurscomp_frame['data'][10]['content'] = board_median_raw
       nurscomp_frame['row_count'] = len(data_comp_analysis_nh['data']) + 1
-
+      
       start_row = 33
       index = 0
       subindex = 1
@@ -1354,7 +1359,86 @@ class Map2_0(Map2_0Template):
           })
         start_row += 1
 
-      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] ,cover_frame, summary_frame, nurscomp_frame)
+      # Copy and Fill Dataframe for Assisted Living Analysis
+      assliv_frame = ExcelFrames.ala_data.copy()
+      assliv_frame['data'][3]['content'] = f'Population {countie[0]}'
+      assliv_frame['data'][40]['content'] = f'Population {countie[0]}'
+      assliv_frame['data'][41]['content'] = f'Population {countie[0]}, LK 2022'
+      assliv_frame['data'][42]['content'] = f'Population {countie[0]}, LK 2030'
+      assliv_frame['data'][45]['content'] = countie_data[0][19]
+      assliv_frame['data'][46]['content'] = people_u80
+      assliv_frame['data'][47]['content'] = people_o80
+      assliv_frame['data'][48]['content'] = people_u80_fc
+      assliv_frame['data'][49]['content'] = people_o80_fc
+      assliv_frame['data'][50]['content'] = change_pat_rec_raw
+      assliv_frame['data'][51]['content'] = apartments_adjusted
+      assliv_frame['data'][52]['content'] = apartments_per_10k
+      assliv_frame['data'][53]['content'] = facilities_active
+      assliv_frame['data'][54]['content'] = facilities_plan_build
+      assliv_frame['data'][55]['content'] = apartments_plan_build_adjusted
+      assliv_frame['data'][56]['content'] = len(al_list)
+      assliv_frame['data'][57]['content'] = apartments_10km
+      assliv_frame['data'][58]['content'] = f'Population {countie[0]}, LK'
+      assliv_frame['data'][61]['content'] = facilities_active - without_apartment
+      assliv_frame['data'][62]['content'] = without_apartment
+      assliv_frame['data'][63]['content'] = facilities_active
+      assliv_frame['data'][64]['content'] = facilities_building - without_apartment_building
+      assliv_frame['data'][65]['content'] = without_apartment_building
+      assliv_frame['data'][66]['content'] = facilities_building
+      assliv_frame['data'][67]['content'] = facilities_planning - without_apartment_planning
+      assliv_frame['data'][68]['content'] = without_apartment_planning
+      assliv_frame['data'][69]['content'] = facilities_planning
+      assliv_frame['data'][70]['content'] = facilities_active + facilities_building + facilities_planning
+      assliv_frame['data'][73]['content'] = round(((people_u80 + people_o80) * 0.01) / 1.5)
+      assliv_frame['data'][74]['content'] = round(((people_u80 + people_o80) * 0.02) / 1.5)
+      assliv_frame['data'][75]['content'] = round(((people_u80 + people_o80) * 0.03) / 1.5)
+      assliv_frame['data'][76]['content'] = round(((people_u80 + people_o80) * 0.04) / 1.5)
+      assliv_frame['data'][77]['content'] = round(((people_u80 + people_o80) * 0.05) / 1.5)
+      assliv_frame['data'][78]['content'] = round(((people_u80 + people_o80) * 0.07) / 1.5)
+      assliv_frame['data'][79]['content'] = round(((people_u80 + people_o80) * 0.09) / 1.5)
+      assliv_frame['data'][80]['content'] = level
+      assliv_frame['data'][81]['content'] = demand2022
+      assliv_frame['data'][82]['content'] = demand2040
+      assliv_frame['data'][83]['content'] = demand_potential
+      assliv_frame['data'][88]['content'] = change_u80_raw
+      assliv_frame['data'][89]['content'] = change_o80_raw
+      assliv_frame['data'][100]['content'] = apartments
+      assliv_frame['data'][102]['content'] = apartments
+      assliv_frame['data'][103]['content'] = apartments_building
+      assliv_frame['data'][105]['content'] = apartments_building
+      assliv_frame['data'][106]['content'] = apartments_planning
+      assliv_frame['data'][108]['content'] = apartments_planning
+      assliv_frame['data'][109]['content'] = apartments + (facilities_building - without_apartment_building) + apartments_planning
+      assliv_frame['data'][112]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.01) / 1.5)
+      assliv_frame['data'][113]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.02) / 1.5)
+      assliv_frame['data'][114]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.03) / 1.5)
+      assliv_frame['data'][115]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.04) / 1.5)
+      assliv_frame['data'][116]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.05) / 1.5)
+      assliv_frame['data'][117]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.07) / 1.5)
+      assliv_frame['data'][118]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.09) / 1.5)
+      assliv_frame['data'][121]['content'] = apartments_average
+      assliv_frame['data'][123]['content'] = apartments_adjusted
+      assliv_frame['data'][124]['content'] = build_apartments_average
+      assliv_frame['data'][126]['content'] = build_apartments_adjusted
+      assliv_frame['data'][127]['content'] = planning_apartments_average
+      assliv_frame['data'][129]['content'] = planning_apartments_adjusted
+      assliv_frame['data'][130]['content'] = apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted
+      assliv_frame['data'][133]['content'] = round(((people_u80_fc + people_o80_fc) * 0.01) / 1.5)
+      assliv_frame['data'][134]['content'] = round(((people_u80_fc + people_o80_fc) * 0.02) / 1.5)
+      assliv_frame['data'][135]['content'] = round(((people_u80_fc + people_o80_fc) * 0.03) / 1.5)
+      assliv_frame['data'][136]['content'] = round(((people_u80_fc + people_o80_fc) * 0.04) / 1.5)
+      assliv_frame['data'][137]['content'] = round(((people_u80_fc + people_o80_fc) * 0.05) / 1.5)
+      assliv_frame['data'][138]['content'] = round(((people_u80_fc + people_o80_fc) * 0.07) / 1.5)
+      assliv_frame['data'][139]['content'] = round(((people_u80_fc + people_o80_fc) * 0.09) / 1.5)
+      assliv_frame['data'][144]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.01) / 1.5)))
+      assliv_frame['data'][145]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.02) / 1.5)))
+      assliv_frame['data'][146]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.03) / 1.5)))
+      assliv_frame['data'][147]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.04) / 1.5)))
+      assliv_frame['data'][148]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.05) / 1.5)))
+      assliv_frame['data'][149]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.07) / 1.5)))
+      assliv_frame['data'][150]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.09) / 1.5)))
+      
+      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame)
 
     else:
       #Create Charts and Static Map for Analysis
