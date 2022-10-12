@@ -5,7 +5,7 @@ from ._anvil_designer import Map2_0Template
 from anvil import *
 from anvil.tables import app_tables
 from anvil.js.window import mapboxgl, MapboxGeocoder, document
-from .. import Variables, Layer, Images
+from .. import Variables, Layer, Images, ExcelFrames
 import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
@@ -18,7 +18,7 @@ import math
 import datetime
 import time
 
-global Variables, Layer, Images
+global Variables, Layer, Images, ExcelFrames
 
 class Map2_0(Map2_0Template):
   # Definition of every base function inside Map2_0
@@ -586,6 +586,7 @@ class Map2_0(Map2_0Template):
       if not el[30] == '-':
         beds_lk += int(el[30])
     occupancy_lk = float("{:.2f}".format((inpatients_lk * 100) / beds_lk))
+    occupancy_lk_raw = occupancy_lk / 100
     free_beds_lk = beds_lk - inpatients_lk
 
     population_fc = int(countie_data[2][7]) + int(countie_data[2][18]) + int(countie_data[2][29]) + int(countie_data[2][40]) + int(countie_data[2][51]) + int(countie_data[2][62]) + int(countie_data[2][73]) + int(countie_data[2][84]) + int(countie_data[2][95]) + int(countie_data[2][106])
@@ -859,9 +860,51 @@ class Map2_0(Map2_0Template):
       demand_potential = "very strong"
 
     if event_args['sender'] == self.excel_summary:
-      data_frame = {'type': None, 'insert': 'None', 'cell': None, 'content': None, 'format': None}
-      print('Edit me !')
-      # Edit here
+
+      # Copy and Fill Dataframe for Excel-Cover
+      cover_frame = ExcelFrames.cover_data.copy()
+      cover_frame['data'][1]['content'] = zipcode
+      cover_frame['data'][2]['content'] = city.upper()
+
+      # Copy and Fill Dataframe for Excel-Summary
+      summary_frame = ExcelFrames.summary_data.copy()
+      summary_frame['data'][10]['content'] = f"Population {city}"
+      summary_frame['data'][11]['content'] = f"{countie[0]}, LK"
+      summary_frame['data'][71]['content'] = countie_data[4][10]
+      summary_frame['data'][73]['content'] = countie_data[0][19]
+      summary_frame['data'][74]['content'] = people_u80
+      summary_frame['data'][75]['content'] = people_o80
+      summary_frame['data'][77]['content'] = care_rate_break_even_raw
+      summary_frame['data'][78]['content'] = new_care_rate_raw
+      summary_frame['data'][79]['content'] = nursing_home_rate
+      summary_frame['data'][80]['content'] = inpatients_lk
+      summary_frame['data'][81]['content'] = occupancy_lk_raw
+      summary_frame['data'][82]['content'] = beds_lk
+      summary_frame['data'][83]['content'] = 
+      summary_frame['data'][84]['content'] =
+      summary_frame['data'][85]['content'] =
+      summary_frame['data'][86]['content'] =
+      summary_frame['data'][87]['content'] =
+      summary_frame['data'][88]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+      # summary_frame['data'][11]['content'] =
+
+      anvil.server.call('write_excel_file', cover_frame)
+
     else:
       #Create Charts and Static Map for Analysis
       values_pie_ca = [{"topic": "Median Nursing charge (PG 3) in €", "value": pg3_median}, {"topic": "Median Specific co-payment in €", "value": copayment_median}, {"topic": "Median Invest Cost in €", "value": invest_median}, {"topic": "Median Board and lodging in €", "value": board_median}]
