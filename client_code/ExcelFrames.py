@@ -2621,7 +2621,7 @@ summary_data = {
                         }
                     },
                     {
-                        'values': '=SUMMARY!$C$64',
+                        'values': '=SUMMARY!$C$56',
                         'name': 'Adjusted number of beds (incl. beds in planning and under construction) 2030',
                         'data_labels': {
                             'value': True
@@ -2645,7 +2645,7 @@ summary_data = {
                         }
                     },
                     {
-                        'values': '=SUMMARY!$D$64',
+                        'values': '=SUMMARY!$D$56',
                         'name': 'Adjusted number of beds (incl. beds in planning and under construction) 2035',
                         'data_labels': {
                             'value': True
@@ -2747,7 +2747,7 @@ summary_data = {
                         }
                     },
                     {
-                        'values': '=SUMMARY!$C$69',
+                        'values': '=SUMMARY!$C$56',
                         'name': 'Adjusted number of beds (incl. beds in planning and under construction) 2030',
                         'data_labels': {
                             'value': True
@@ -2771,7 +2771,7 @@ summary_data = {
                         }
                     },
                     {
-                        'values': '=SUMMARY!$D$69',
+                        'values': '=SUMMARY!$D$56',
                         'name': 'Adjusted number of beds (incl. beds in planning and under construction) 2035',
                         'data_labels': {
                             'value': True

@@ -714,28 +714,36 @@ class Map2_0(Map2_0Template):
     if not len(operator_private) == 0:
       if not len(operator) == 0:
         op_private_percent = round((len(operator_private) * 100) / len(operator))
+        op_private_raw = op_private_percent / 100
     else:
       op_private_percent = 0
+      op_private_raw = 0
     if not len(operator_nonProfit) == 0:
       if not len(operator) == 0:
         op_nonProfit_percent = round((len(operator_nonProfit) * 100) / len(operator))
+        op_nonProfit_raw = op_nonProfit_percent / 100
     else:
       op_nonProfit_percent = 0
+      op_nonProfit_raw = 0
     if not len(operator_public) == 0:
       if not len(operator) == 0:
         op_public_percent = round((len(operator_public) * 100) / len(operator))
+        op_public_raw = op_public_percent / 100
     else:
       op_public_percent = 0
+      op_public_raw = 0
     if not inpatients == 0 and not beds_active == 0:
-      occupancy_raw = round((inpatients * 100) / beds_active)
+      occupancy_percent = round((inpatients * 100) / beds_active)
+      occupancy_raw = occupancy_percent / 100
     else:
+      occupancy_percent = 0
       occupancy_raw = 0
     beds_adjusted = beds_active + beds_construct + beds_planned
     beds_surplus = beds_adjusted - inpatients_fc
     beds_surplus_35 = beds_adjusted - inpatients_fc_35
     beds_surplus_v2 = beds_adjusted - inpatients_fc_v2
     beds_surplus_35_v2 = beds_adjusted - inpatients_fc_35_v2
-    beds_in_reserve_20 = round(beds_active * (1 - (occupancy_raw / 100)))
+    beds_in_reserve_20 = round(beds_active * (1 - occupancy_raw))
     beds_in_reserve_fc = round(beds_adjusted * 0.05)
     beds_surplus_30_avg = round((beds_surplus + beds_surplus_v2) / 2)
     beds_surplus_35_avg = round((beds_surplus_35 + beds_surplus_35_v2) / 2)
@@ -861,49 +869,133 @@ class Map2_0(Map2_0Template):
 
     if event_args['sender'] == self.excel_summary:
 
-      # Copy and Fill Dataframe for Excel-Cover
-      cover_frame = ExcelFrames.cover_data.copy()
-      cover_frame['data'][1]['content'] = zipcode
-      cover_frame['data'][2]['content'] = city.upper()
+      try:
+        # Copy and Fill Dataframe for Excel-Cover
+        cover_frame = ExcelFrames.cover_data.copy()
+        cover_frame['data'][1]['content'] = zipcode
+        cover_frame['data'][2]['content'] = city.upper()
+      except Exception as err:
+        print('Something happened while creating Cover-Dataframe')
+        print(sys.exc_info())
+        print(err)
 
-      # Copy and Fill Dataframe for Excel-Summary
-      summary_frame = ExcelFrames.summary_data.copy()
-      summary_frame['data'][10]['content'] = f"Population {city}"
-      summary_frame['data'][11]['content'] = f"{countie[0]}, LK"
-      summary_frame['data'][71]['content'] = countie_data[4][10]
-      summary_frame['data'][73]['content'] = countie_data[0][19]
-      summary_frame['data'][74]['content'] = people_u80
-      summary_frame['data'][75]['content'] = people_o80
-      summary_frame['data'][77]['content'] = care_rate_break_even_raw
-      summary_frame['data'][78]['content'] = new_care_rate_raw
-      summary_frame['data'][79]['content'] = nursing_home_rate
-      summary_frame['data'][80]['content'] = inpatients_lk
-      summary_frame['data'][81]['content'] = occupancy_lk_raw
-      summary_frame['data'][82]['content'] = beds_lk
-      summary_frame['data'][83]['content'] = 
-      summary_frame['data'][84]['content'] =
-      summary_frame['data'][85]['content'] =
-      summary_frame['data'][86]['content'] =
-      summary_frame['data'][87]['content'] =
-      summary_frame['data'][88]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-      # summary_frame['data'][11]['content'] =
-
-      anvil.server.call('write_excel_file', cover_frame)
+      try:
+        # Copy and Fill Dataframe for Excel-Summary
+        summary_frame = ExcelFrames.summary_data.copy()
+        summary_frame['data'][9]['content'] = f"Population {city}"
+        summary_frame['data'][10]['content'] = f"{countie[0]}, LK"
+        summary_frame['data'][37]['content'] = f"In 2030 the number of inpatients will based on our scenarios be between {inpatients_fc} and {inpatients_fc_v2} (in average about {inpatents_fc_30_avg})."
+        summary_frame['data'][38]['content'] = f"In 2035 the number of inpatients will based on our scenarios be between {inpatients_fc_35} and {inpatients_fc_35_v2} (in average about {inpatents_fc_35_avg})."
+        summary_frame['data'][59]['content'] = f"In 2030 the surplus/deficit on beds based on our scenarios is between {beds_surplus} and {beds_surplus_v2} (in average {beds_surplus_30_avg})."
+        summary_frame['data'][60]['content'] = f"In 2035 the surplus/deficit on beds based on our scenarios is between {beds_surplus_35} and {beds_surplus_35_v2} (in average {beds_surplus_35_avg})."
+        summary_frame['data'][70]['content'] = countie_data[4][10]
+        summary_frame['data'][72]['content'] = countie_data[0][19]
+        summary_frame['data'][73]['content'] = people_u80
+        summary_frame['data'][74]['content'] = people_o80
+        summary_frame['data'][76]['content'] = care_rate_break_even_raw
+        summary_frame['data'][77]['content'] = new_care_rate_raw
+        summary_frame['data'][78]['content'] = nursing_home_rate
+        summary_frame['data'][79]['content'] = inpatients_lk
+        summary_frame['data'][80]['content'] = occupancy_lk_raw
+        summary_frame['data'][81]['content'] = beds_lk
+        summary_frame['data'][82]['content'] = free_beds_lk
+        summary_frame['data'][83]['content'] = new_care_rate_raw
+        summary_frame['data'][84]['content'] = nursing_home_rate
+        summary_frame['data'][85]['content'] = inpatients_lk
+        summary_frame['data'][86]['content'] = occupancy_lk_raw
+        summary_frame['data'][87]['content'] = beds_lk
+        summary_frame['data'][88]['content'] = free_beds_lk
+        summary_frame['data'][90]['content'] = inpatients
+        summary_frame['data'][92]['content'] = beds_active
+        summary_frame['data'][93]['content'] = nursing_homes_active
+        summary_frame['data'][94]['content'] = nursing_homes_planned
+        summary_frame['data'][95]['content'] = nursing_homes_construct
+        summary_frame['data'][96]['content'] = beds_planned
+        summary_frame['data'][97]['content'] = beds_construct
+        summary_frame['data'][98]['content'] = beds_active
+        summary_frame['data'][99]['content'] = occupancy_raw
+        summary_frame['data'][100]['content'] = beds_in_reserve_20
+        summary_frame['data'][101]['content'] = f"{invest_median}€"
+        summary_frame['data'][103]['content'] = beds_adjusted
+        summary_frame['data'][104]['content'] = inpatients
+        summary_frame['data'][105]['content'] = beds_adjusted
+        summary_frame['data'][106]['content'] = inpatients
+        summary_frame['data'][108]['content'] = len(operator)
+        summary_frame['data'][109]['content'] = beds_median
+        summary_frame['data'][110]['content'] = year_median
+        summary_frame['data'][111]['content'] = op_public_raw
+        summary_frame['data'][112]['content'] = op_nonProfit_raw
+        summary_frame['data'][113]['content'] = op_private_raw
+        summary_frame['data'][117]['content'] = population_fc
+        summary_frame['data'][118]['content'] = people_u80_fc
+        summary_frame['data'][119]['content'] = people_o80_fc
+        summary_frame['data'][121]['content'] = care_rate_break_even_30_raw
+        summary_frame['data'][122]['content'] = care_rate_30_v1_raw
+        summary_frame['data'][123]['content'] = nursing_home_rate
+        summary_frame['data'][124]['content'] = pat_rec_full_care_fc_30_v1
+        summary_frame['data'][125]['content'] = 0.95
+        summary_frame['data'][126]['content'] = beds_30_v1
+        summary_frame['data'][127]['content'] = free_beds_30_v1
+        summary_frame['data'][128]['content'] = care_rate_30_v2_raw
+        summary_frame['data'][129]['content'] = nursing_home_rate
+        summary_frame['data'][130]['content'] = pat_rec_full_care_fc_30_v2
+        summary_frame['data'][131]['content'] = 0.95
+        summary_frame['data'][132]['content'] = beds_30_v2
+        summary_frame['data'][133]['content'] = free_beds_30_v2
+        summary_frame['data'][134]['content'] = f"{time} minutes of {movement}"
+        summary_frame['data'][135]['content'] = inpatients_fc
+        summary_frame['data'][136]['content'] = inpatients_fc_v2
+        summary_frame['data'][137]['content'] = f"{time} minutes of {movement}"
+        summary_frame['data'][138]['content'] = beds_adjusted
+        summary_frame['data'][139]['content'] = 0.95
+        summary_frame['data'][140]['content'] = beds_in_reserve_fc
+        summary_frame['data'][141]['content'] = f"{time} minutes of {movement}"
+        summary_frame['data'][142]['content'] = beds_adjusted
+        summary_frame['data'][143]['content'] = inpatients_fc
+        summary_frame['data'][144]['content'] = beds_surplus
+        summary_frame['data'][145]['content'] = beds_adjusted
+        summary_frame['data'][146]['content'] = inpatients_fc_v2
+        summary_frame['data'][147]['content'] = beds_surplus_v2
+        summary_frame['data'][148]['content'] = f"{time} minutes of {movement}"
+        summary_frame['data'][150]['content'] = zipcode
+        summary_frame['data'][151]['content'] = city
+        summary_frame['data'][152]['content'] = countie[0]
+        summary_frame['data'][153]['content'] = federal_state
+        summary_frame['data'][154]['content'] = f"{time} minutes of {movement}"
+        summary_frame['data'][155]['content'] = searched_address
+        summary_frame['data'][158]['content'] = population_fc_35
+        summary_frame['data'][159]['content'] = people_u80_fc_35
+        summary_frame['data'][160]['content'] = people_o80_fc_35
+        summary_frame['data'][162]['content'] = care_rate_break_even_35_raw
+        summary_frame['data'][163]['content'] = care_rate_35_v1_raw
+        summary_frame['data'][164]['content'] = nursing_home_rate
+        summary_frame['data'][165]['content'] = pat_rec_full_care_fc_35_v1
+        summary_frame['data'][166]['content'] = 0.95
+        summary_frame['data'][167]['content'] = beds_35_v1
+        summary_frame['data'][168]['content'] = free_beds_35_v1
+        summary_frame['data'][169]['content'] = care_rate_35_v2_raw
+        summary_frame['data'][170]['content'] = nursing_home_rate
+        summary_frame['data'][171]['content'] = pat_rec_full_care_fc_35_v2
+        summary_frame['data'][172]['content'] = 0.95
+        summary_frame['data'][173]['content'] = beds_35_v2
+        summary_frame['data'][174]['content'] = free_beds_35_v2
+        summary_frame['data'][176]['content'] = inpatients_fc_35
+        summary_frame['data'][177]['content'] = inpatients_fc_35_v2
+        summary_frame['data'][179]['content'] = beds_adjusted
+        summary_frame['data'][180]['content'] = 0.95
+        summary_frame['data'][181]['content'] = beds_in_reserve_fc
+        summary_frame['data'][183]['content'] = beds_adjusted
+        summary_frame['data'][184]['content'] = inpatients_fc_35
+        summary_frame['data'][185]['content'] = beds_surplus_35
+        summary_frame['data'][186]['content'] = beds_adjusted
+        summary_frame['data'][187]['content'] = inpatients_fc_35_v2
+        summary_frame['data'][188]['content'] = beds_surplus_35_v2
+      except Exception as err:
+        print('Something happened while creating Summary-Dataframe')
+        print(sys.exc_info())
+        print(err)
+        
+      anvil.server.call('write_excel_file', mapRequestData, cover_frame, summary_frame)
 
     else:
       #Create Charts and Static Map for Analysis
@@ -937,7 +1029,7 @@ class Map2_0(Map2_0Template):
                           "beds_planned": "{:,}".format(beds_planned),
                           "beds_construct": "{:,}".format(beds_construct),
                           "beds_adjusted": "{:,}".format(beds_adjusted),
-                          "occupancy_raw": occupancy_raw,
+                          "occupancy_percent": occupancy_percent,
                           "invest_median": invest_median,
                           "operator": len(operator),
                           "beds_median": beds_median,
