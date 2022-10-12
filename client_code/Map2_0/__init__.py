@@ -993,12 +993,13 @@ class Map2_0(Map2_0Template):
       nurscomp_frame['data'][8]['content'] = copayment_median
       nurscomp_frame['data'][9]['content'] = invest_median
       nurscomp_frame['data'][10]['content'] = board_median
+      nurscomp_frame['row_count'] = len(data_comp_analysis_nh['data']) + 1
 
       start_row = 33
-      index = 1
+      index = 0
       subindex = 1
       last_coords_dist = 0
-      home_entries = 0 # Perhaps not used ?!?
+      home_entries = 0
       
       for competitor in data_comp_analysis_nh['data']:
         if 'home' in competitor:
@@ -1170,8 +1171,9 @@ class Map2_0(Map2_0Template):
               'bg_color': '#FEA036'
             }
           })
+          home_entries += 1
         else:
-          if not last_coords_dist == competitor[1] and not last_coords_dist == 0:
+          if not last_coords_dist == competitor[1]:
             index += 1
             subindex = 1
             shown_index = f'{index}'
@@ -1181,10 +1183,17 @@ class Map2_0(Map2_0Template):
           else:
             shown_index = f'{index}'
             if not data_comp_analysis_nh['data'].index(competitor) == home_entries:
-              if not data_comp_analysis_nh['data'].index(competitor) == 1:
                 subindex += 1
                 shown_index = f'{index}.{subindex}'
           last_coords_dist = competitor[1]
+          if len(competitor[0]['name']) > 40:
+            name_size = 8
+          else:
+            name_size = 11
+          if len(competitor[0]['betreiber']) > 40:
+            op_size = 8
+          else:
+            op_size = 11
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
@@ -1208,6 +1217,7 @@ class Map2_0(Map2_0Template):
               'align': 'center',
               'valign': 'vcenter',
               'font': 'Segoe UI',
+              'font_size': name_size,
               'bottom': True
             }
           })
@@ -1312,6 +1322,7 @@ class Map2_0(Map2_0Template):
               'align': 'center',
               'valign': 'vcenter',
               'font': 'Segoe UI',
+              'font_size': op_size,
               'bottom': True
             }
           })
@@ -1342,7 +1353,8 @@ class Map2_0(Map2_0Template):
             }
           })
         start_row += 1
-      anvil.server.call('write_excel_file', mapRequestData, cover_frame, summary_frame, nurscomp_frame)
+
+      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] ,cover_frame, summary_frame, nurscomp_frame)
 
     else:
       #Create Charts and Static Map for Analysis
