@@ -52,12 +52,11 @@ cover_data = {
     {
       'type': 'image',
       'cell': 'D41',
-      'file': 'Logo2.png',
+      'file': 'img/Logo2.png',
       'style': {}
     }
   ]
 }
-
 summary_data = {
         'title': 'SUMMARY',
         'print_area': 'A1:M80',
@@ -2566,7 +2565,7 @@ summary_data = {
             {
                 'type': 'image',
                 'cell': 'K1',
-                'file': 'Logo2.png',
+                'file': 'img/Logo2.png',
                 'style': {
                     'x_scale': .21,
                     'y_scale': .09,
@@ -2902,6 +2901,438 @@ summary_data = {
                         }
                     },
                     'chart': {}
+                }
+            }
+        ]
+    }
+nca_data = {
+        'title': 'COMPETITOR_ANALYSIS_NH',
+        'print_area': 'A1:L1048576',
+        'fit_to_pages': (1, 0),
+        'columns_width': [5.82, 28, 9.64, 8.91, 9.36, 9.73, 12.18, 14.36, 10.55, 18.64, 13.73, 13.45],
+        'row_height': 33,
+        'row_start': 31,
+        'row_count': 6,
+        'data': [
+            {
+                'type': 'text',
+                'insert': 'merge',
+                'cell': 'A1:G1',
+                'content': 'NURSING COMPETITOR ANALYSIS',
+                'format': {
+                    'align': 'left',
+                    'valign': 'vcenter',
+                    'font_size': 24,
+                    'font': 'Segoe UI Black',
+                    'color': '#BFB273'
+                }
+            },
+            {
+                'type': 'image',
+                'cell': 'K1',
+                'file': 'Logo2.png',
+                'style': {
+                    'x_scale': .21,
+                    'y_scale': .09,
+                    'y_offset': 10,
+                    'x_offset': 80
+                }
+            },
+            {
+                'type': 'image',
+                'cell': 'A4',
+                'file': 'map_image_5a7990_nh.png',
+                'style': {
+                    'x_scale': .8,
+                    'y_scale': .8
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'J5',
+                'content': 'Median Nursing charge (PG 3)',
+                'format': {
+                    'align': 'right',
+                    'valign': 'vcenter',
+                    'font_size': 11,
+                    'font': 'Segoe UI',
+                    'num_format': '#,##0',
+                    'color': '#FFFFFF'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'J6',
+                'content': 'Median Specific co-payment',
+                'format': {
+                    'align': 'right',
+                    'valign': 'vcenter',
+                    'font_size': 11,
+                    'font': 'Segoe UI',
+                    'num_format': '#,##0',
+                    'color': '#FFFFFF'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'J7',
+                'content': 'Median Invest costs',
+                'format': {
+                    'align': 'right',
+                    'valign': 'vcenter',
+                    'font_size': 11,
+                    'font': 'Segoe UI',
+                    'num_format': '#,##0',
+                    'color': '#FFFFFF'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'J8',
+                'content': 'Median Board and lodging',
+                'format': {
+                    'align': 'right',
+                    'valign': 'vcenter',
+                    'font_size': 11,
+                    'font': 'Segoe UI',
+                    'num_format': '#,##0',
+                    'color': '#FFFFFF'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'K5',
+                'content': 54.33,
+                'format': {
+                    'align': 'right',
+                    'valign': 'vcenter',
+                    'font_size': 11,
+                    'font': 'Segoe UI',
+                    'num_format': '#,##0.00 €',
+                    'color': '#FFFFFF'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'K6',
+                'content': 12.84,
+                'format': {
+                    'align': 'right',
+                    'valign': 'vcenter',
+                    'font_size': 11,
+                    'font': 'Segoe UI',
+                    'num_format': '#,##0.00 €',
+                    'color': '#FFFFFF'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'K7',
+                'content': 18.92,
+                'format': {
+                    'align': 'right',
+                    'valign': 'vcenter',
+                    'font_size': 11,
+                    'font': 'Segoe UI',
+                    'num_format': '#,##0.00 €',
+                    'color': '#FFFFFF'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'K8',
+                'content': 18.36,
+                'format': {
+                    'align': 'right',
+                    'valign': 'vcenter',
+                    'font_size': 11,
+                    'font': 'Segoe UI',
+                    'num_format': '#,##0.00 €',
+                    'color': '#FFFFFF'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A32',
+                'content': 'No.',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273',
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B32',
+                'content': 'Name',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273',
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C32',
+                'content': 'No. of beds',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273',
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D32',
+                'content': 'single rooms',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273',
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'E32',
+                'content': 'double rooms',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273',
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'F32',
+                'content': 'Patients',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273',
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'G32',
+                'content': 'occupancy',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273',
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'H32',
+                'content': 'year of construction',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273',
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'I32',
+                'content': 'Status',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273',
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'J32',
+                'content': 'Operator',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273',
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'K32',
+                'content': 'Invest costs per day',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273',
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'L32',
+                'content': 'MDK grade',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273',
+                    'num_format': '#,##0'
+                }
+            },
+            {
+                'type': 'chart',
+                'subtype': 'doughnut',
+                'position': 'J4',
+                'series': [
+                    {
+                        'name': 'MEDIAN PRICE COMPOSITION',
+                        'categories': '=COMPETITOR_ANALYSIS_NH!$J$5:JK$8',
+                        'values': '=COMPETITOR_ANALYSIS_NH!$K$5:$K$8',
+                        'data_labels': {
+                            'value': True,
+                            'custom': [
+                                {
+                                    'value': 'COMPETITOR_ANALYSIS_NH!$K$5',
+                                    'font': {
+                                        'color': '#FFFFFF',
+                                        'name': 'Segoe UI Black',
+                                        'size': 10
+                                    }
+                                },
+                                {
+                                    'value': 'COMPETITOR_ANALYSIS_NH!$K$6',
+                                    'font': {
+                                        'color': '#000000',
+                                        'name': 'Segoe UI Black',
+                                        'size': 10
+                                    }
+                                },
+                                {
+                                    'value': 'COMPETITOR_ANALYSIS_NH!$K$7',
+                                    'font': {
+                                        'color': '#000000',
+                                        'name': 'Segoe UI Black',
+                                        'size': 10
+                                    }
+                                },
+                                {
+                                    'value': 'COMPETITOR_ANALYSIS_NH!$K$8',
+                                    'font': {
+                                        'color': '#000000',
+                                        'name': 'Segoe UI Black',
+                                        'size': 10
+                                    }
+                                }
+                            ]
+                        },
+                        'points': [
+                            {
+                                'fill': {
+                                    'color': '#404040'
+                                }
+                            },
+                            {
+                                'fill': {
+                                    'color': '#D9D9D6'
+                                }
+                            },
+                            {
+                                'fill': {
+                                    'color': '#BFB273'
+                                }
+                            },
+                            {
+                                'fill': {
+                                    'color': '#E5E0C7'
+                                }
+                            }
+                        ]
+                    }
+                ],
+                'styles': {
+                    'title': {
+                        'name': 'MEDIAN PRICE COMPOSITION'
+                    },
+                    'legend': {
+                        'position': 'bottom',
+                        'name_font': {
+                            'name': 'Segoe UI'
+                        },
+                        'layout': {
+                            'x': 0,
+                            'y': .8,
+                            'width': 1,
+                            'height': .2
+                        }
+                    },
+                    'size': {
+                        'width': 330,
+                        'height': 450
+                    },
+                    'chartarea': {
+                        'border': {
+                            'none': True
+                        }
+                    },
+                    'plotarea': {
+                        'layout': {
+                            'x': .1,
+                            'y': .2,
+                            'width': .8,
+                            'height': .5
+                        }
+                    },
+                    'chart': {
+                        'x_offset': 5
+                    }
                 }
             }
         ]
