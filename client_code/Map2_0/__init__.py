@@ -3,6 +3,8 @@
 
 from ._anvil_designer import Map2_0Template
 from anvil import *
+import anvil.google.auth, anvil.google.drive
+from anvil.google.drive import app_files
 from anvil.tables import app_tables
 from anvil.js.window import mapboxgl, MapboxGeocoder, document
 from .. import Variables, Layer, Images, ExcelFrames
