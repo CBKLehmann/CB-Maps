@@ -1035,7 +1035,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'B{start_row}',
-            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1057,7 +1057,8 @@ class Map2_0(Map2_0Template):
               'valign': 'vcenter',
               'font': 'Segoe UI',
               'bottom': True,
-              'bg_color': '#FEA036'
+              'bg_color': '#FEA036',
+              'num_format': '#,##0'
             }
           })
           nurscomp_frame['data'].append({
@@ -1071,7 +1072,8 @@ class Map2_0(Map2_0Template):
               'valign': 'vcenter',
               'font': 'Segoe UI',
               'bottom': True,
-              'bg_color': '#FEA036'
+              'bg_color': '#FEA036',
+              'num_format': '#,##0'
             }
           })
           nurscomp_frame['data'].append({
@@ -1085,7 +1087,8 @@ class Map2_0(Map2_0Template):
               'valign': 'vcenter',
               'font': 'Segoe UI',
               'bottom': True,
-              'bg_color': '#FEA036'
+              'bg_color': '#FEA036',
+              'num_format': '#,##0'
             }
           })
           nurscomp_frame['data'].append({
@@ -1099,7 +1102,8 @@ class Map2_0(Map2_0Template):
               'valign': 'vcenter',
               'font': 'Segoe UI',
               'bottom': True,
-              'bg_color': '#FEA036'
+              'bg_color': '#FEA036',
+              'num_format': '#,##0'
             }
           })
           nurscomp_frame['data'].append({
@@ -1148,7 +1152,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'J{start_row}',
-            'content': competitor[0]['betreiber'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'content': competitor[0]['betreiber'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1159,18 +1163,24 @@ class Map2_0(Map2_0Template):
               'bg_color': '#FEA036'
             }
           })
+          if not competitor[0]['invest'] == 'N/A':
+            print(competitor[0]['invest'])
+            invest = f"{competitor[0]['invest']}€"
+          else:
+            invest = competitor[0]['invest']
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
             'cell': f'K{start_row}',
-            'content': competitor[0]['invest'],
+            'content': invest,
             'format': {
               'text_wrap': 'true',
               'align': 'center',
               'valign': 'vcenter',
               'font': 'Segoe UI',
               'bottom': True,
-              'bg_color': '#FEA036'
+              'bg_color': '#FEA036',
+              'num_format': '#,##0.00€'
             }
           })
           nurscomp_frame['data'].append({
@@ -1227,7 +1237,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'B{start_row}',
-            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1247,7 +1257,8 @@ class Map2_0(Map2_0Template):
               'align': 'center',
               'valign': 'vcenter',
               'font': 'Segoe UI',
-              'bottom': True
+              'bottom': True,
+              'num_format': '#,##0'
             }
           })
           nurscomp_frame['data'].append({
@@ -1260,7 +1271,8 @@ class Map2_0(Map2_0Template):
               'align': 'center',
               'valign': 'vcenter',
               'font': 'Segoe UI',
-              'bottom': True
+              'bottom': True,
+              'num_format': '#,##0'
             }
           })
           nurscomp_frame['data'].append({
@@ -1273,7 +1285,8 @@ class Map2_0(Map2_0Template):
               'align': 'center',
               'valign': 'vcenter',
               'font': 'Segoe UI',
-              'bottom': True
+              'bottom': True,
+              'num_format': '#,##0'
             }
           })
           nurscomp_frame['data'].append({
@@ -1286,7 +1299,8 @@ class Map2_0(Map2_0Template):
               'align': 'center',
               'valign': 'vcenter',
               'font': 'Segoe UI',
-              'bottom': True
+              'bottom': True,
+              'num_format': '#,##0'
             }
           })
           nurscomp_frame['data'].append({
@@ -1332,7 +1346,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'J{start_row}',
-            'content': competitor[0]['betreiber'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'content': competitor[0]['betreiber'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1342,17 +1356,22 @@ class Map2_0(Map2_0Template):
               'bottom': True
             }
           })
+          if not competitor[0]['invest'] == 'N/A':
+            invest = f"{competitor[0]['invest']}€"
+          else:
+            invest = competitor[0]['invest']
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
             'cell': f'K{start_row}',
-            'content': competitor[0]['invest'],
+            'content': invest,
             'format': {
               'text_wrap': 'true',
               'align': 'center',
               'valign': 'vcenter',
               'font': 'Segoe UI',
-              'bottom': True
+              'bottom': True,
+              'num_format': '#,##0.00€'
             }
           })
           nurscomp_frame['data'].append({
@@ -1448,7 +1467,9 @@ class Map2_0(Map2_0Template):
       assliv_frame['data'][148]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.05) / 1.5)))
       assliv_frame['data'][149]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.07) / 1.5)))
       assliv_frame['data'][150]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.09) / 1.5)))
-
+      assliv_frame['data'][154]['series'][0]['name'] = f'{countie[0]}, LK 2022'
+      assliv_frame['data'][154]['series'][1]['name'] = f'{countie[0]}, LK 2030'
+      
       # Copy and Fill Dataframe for Assisted Living Competitor Analysis
       alca_frame = copy.deepcopy(ExcelFrames.alca_data)
       alca_frame['row_count'] = len(data_comp_analysis_al['data']) + 1
@@ -1487,7 +1508,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'B{start_row}',
-            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1502,7 +1523,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'C{start_row}',
-            'content': competitor[0]['operator'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'content': competitor[0]['operator'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1517,7 +1538,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'D{start_row}',
-            'content': competitor[0]['type'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'content': competitor[0]['type'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1531,7 +1552,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'E{start_row}',
-            'content': competitor[0]['city'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'content': competitor[0]['city'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1623,7 +1644,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'C{start_row}',
-            'content': competitor[0]['operator'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'content': competitor[0]['operator'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1637,7 +1658,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'D{start_row}',
-            'content': competitor[0]['type'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'content': competitor[0]['type'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1650,7 +1671,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'E{start_row}',
-            'content': competitor[0]['city'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'content': competitor[0]['city'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1687,7 +1708,7 @@ class Map2_0(Map2_0Template):
           })
         start_row += 1
       
-      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame)
+      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked)
 
     else:
       #Create Charts and Static Map for Analysis

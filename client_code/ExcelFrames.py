@@ -1361,7 +1361,8 @@ summary_data = {
                     'valign': 'vcenter',
                     'font_size': 11,
                     'font': 'Segoe UI',
-                    'text_wrap': 'true'
+                    'text_wrap': 'true',
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4169,7 +4170,8 @@ ala_data = {
                     'valign': 'vcenter',
                     'font': 'Segoe UI',
                     'border': True,
-                    'bg_color': '#E5E0C7'
+                    'bg_color': '#E5E0C7',
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4208,7 +4210,8 @@ ala_data = {
                     'valign': 'vcenter',
                     'font': 'Segoe UI',
                     'border': True,
-                    'bg_color': '#E5E0C7'
+                    'bg_color': '#E5E0C7',
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4247,7 +4250,8 @@ ala_data = {
                     'valign': 'vcenter',
                     'font': 'Segoe UI',
                     'border': True,
-                    'bg_color': '#E5E0C7'
+                    'bg_color': '#E5E0C7',
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4260,7 +4264,8 @@ ala_data = {
                     'valign': 'vcenter',
                     'font': 'Segoe UI',
                     'border': True,
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4326,7 +4331,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bg_color': '#F1EFE2',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4353,7 +4359,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bg_color': '#E5E0C7',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4367,7 +4374,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bg_color': '#BFB273',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4682,7 +4690,8 @@ ala_data = {
                     'valign': 'vcenter',
                     'font': 'Segoe UI',
                     'border': True,
-                    'bg_color': '#E5E0C7'
+                    'bg_color': '#E5E0C7',
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4721,7 +4730,8 @@ ala_data = {
                     'valign': 'vcenter',
                     'font': 'Segoe UI',
                     'border': True,
-                    'bg_color': '#E5E0C7'
+                    'bg_color': '#E5E0C7',
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4760,7 +4770,8 @@ ala_data = {
                     'valign': 'vcenter',
                     'font': 'Segoe UI',
                     'border': True,
-                    'bg_color': '#E5E0C7'
+                    'bg_color': '#E5E0C7',
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4773,7 +4784,8 @@ ala_data = {
                     'valign': 'vcenter',
                     'font': 'Segoe UI',
                     'border': True,
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4839,7 +4851,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bg_color': '#F1EFE2',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4866,7 +4879,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bg_color': '#E5E0C7',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4880,7 +4894,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bg_color': '#BFB273',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -4960,7 +4975,8 @@ ala_data = {
                     'border': True,
                     'bg_color': '#E5E0C7',
                     'bold': True,
-                    'color': 'red'
+                    'color': 'red',
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -5001,7 +5017,8 @@ ala_data = {
                     'border': True,
                     'bg_color': '#E5E0C7',
                     'bold': True,
-                    'color': 'red'
+                    'color': 'red',
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -5042,7 +5059,8 @@ ala_data = {
                     'border': True,
                     'bg_color': '#E5E0C7',
                     'bold': True,
-                    'color': 'red'
+                    'color': 'red',
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -5056,7 +5074,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bold': True,
-                    'color': 'red'
+                    'color': 'red',
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -5122,7 +5141,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bg_color': '#F1EFE2',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -5149,7 +5169,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bg_color': '#E5E0C7',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -5163,7 +5184,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bg_color': '#BFB273',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -5268,7 +5290,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bg_color': '#F1EFE2',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -5295,7 +5318,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bg_color': '#E5E0C7',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
@@ -5309,7 +5333,8 @@ ala_data = {
                     'font': 'Segoe UI',
                     'border': True,
                     'bg_color': '#BFB273',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '#,##0'
                 }
             },
             {
