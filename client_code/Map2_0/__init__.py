@@ -1418,10 +1418,7 @@ class Map2_0(Map2_0Template):
             'cell': f'A{start_row}',
             'content': 'S',
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
               'bg_color': '#FEA036'
             }
@@ -1432,10 +1429,7 @@ class Map2_0(Map2_0Template):
             'cell': f'B{start_row}',
             'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'font_size': name_size,
               'bottom': True,
               'bg_color': '#FEA036'
@@ -1447,10 +1441,7 @@ class Map2_0(Map2_0Template):
             'cell': f'C{start_row}',
             'content': competitor[0]['operator'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'font_size': op_size,
               'bottom': True,
               'bg_color': '#FEA036'
@@ -1462,10 +1453,7 @@ class Map2_0(Map2_0Template):
             'cell': f'D{start_row}',
             'content': competitor[0]['type'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
               'bg_color': '#FEA036'
             }
@@ -1476,10 +1464,7 @@ class Map2_0(Map2_0Template):
             'cell': f'E{start_row}',
             'content': competitor[0]['city'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
               'bg_color': '#FEA036'
             }
@@ -1490,10 +1475,7 @@ class Map2_0(Map2_0Template):
             'cell': f'F{start_row}',
             'content': competitor[0]['status'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
               'bg_color': '#FEA036'
             }
@@ -1504,10 +1486,7 @@ class Map2_0(Map2_0Template):
             'cell': f'G{start_row}',
             'content': competitor[0]['number_apts'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
               'bg_color': '#FEA036'
             }
@@ -1541,10 +1520,7 @@ class Map2_0(Map2_0Template):
             'cell': f'A{start_row}',
             'content': f'{shown_index}',
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True
             }
           })
@@ -1554,10 +1530,7 @@ class Map2_0(Map2_0Template):
             'cell': f'B{start_row}',
             'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'font_size': name_size,
               'bottom': True
             }
@@ -1568,10 +1541,7 @@ class Map2_0(Map2_0Template):
             'cell': f'C{start_row}',
             'content': competitor[0]['operator'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'font_size': op_size,
               'bottom': True
             }
@@ -1582,10 +1552,7 @@ class Map2_0(Map2_0Template):
             'cell': f'D{start_row}',
             'content': competitor[0]['type'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True
             }
           })
@@ -1595,10 +1562,7 @@ class Map2_0(Map2_0Template):
             'cell': f'E{start_row}',
             'content': competitor[0]['city'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True
             }
           })
@@ -1608,10 +1572,7 @@ class Map2_0(Map2_0Template):
             'cell': f'F{start_row}',
             'content': competitor[0]['status'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True
             }
           })
@@ -1621,10 +1582,7 @@ class Map2_0(Map2_0Template):
             'cell': f'G{start_row}',
             'content': competitor[0]['number_apts'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True
             }
           })
