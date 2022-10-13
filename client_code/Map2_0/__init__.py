@@ -17,6 +17,7 @@ import anvil.media
 import math
 import datetime
 import time
+import copy
 
 global Variables, Layer, Images, ExcelFrames
 
@@ -876,12 +877,12 @@ class Map2_0(Map2_0Template):
     if event_args['sender'] == self.excel_summary:
 
       # Copy and Fill Dataframe for Excel-Cover
-      cover_frame = ExcelFrames.cover_data.copy()
+      cover_frame = copy.deepcopy(ExcelFrames.cover_data)
       cover_frame['data'][1]['content'] = zipcode
       cover_frame['data'][2]['content'] = city.upper()
 
       # Copy and Fill Dataframe for Excel-Summary
-      summary_frame = ExcelFrames.summary_data.copy()
+      summary_frame = copy.deepcopy(ExcelFrames.summary_data)
       summary_frame['data'][9]['content'] = f"Population {city}"
       summary_frame['data'][10]['content'] = f"{countie[0]}, LK"
       summary_frame['data'][37]['content'] = f"In 2030 the number of inpatients will based on our scenarios be between {inpatients_fc} and {inpatients_fc_v2} (in average about {inpatents_fc_30_avg})."
@@ -993,7 +994,7 @@ class Map2_0(Map2_0Template):
 
 
       # Copy and Fill Dataframe for Nursing Home Competitor Analysis
-      nurscomp_frame = ExcelFrames.nca_data.copy()
+      nurscomp_frame = copy.deepcopy(ExcelFrames.nca_data)
       nurscomp_frame['data'][7]['content'] = pg3_median_raw
       nurscomp_frame['data'][8]['content'] = copayment_median_raw
       nurscomp_frame['data'][9]['content'] = invest_med
@@ -1008,6 +1009,14 @@ class Map2_0(Map2_0Template):
       
       for competitor in data_comp_analysis_nh['data']:
         if 'home' in competitor:
+          if len(competitor[0]['name']) > 35:
+            name_size = 8
+          else:
+            name_size = 11
+          if len(competitor[0]['betreiber']) > 35:
+            op_size = 8
+          else:
+            op_size = 11
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
@@ -1026,12 +1035,13 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'B{start_row}',
-            'content': competitor[0]['name'],
+            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
               'valign': 'vcenter',
               'font': 'Segoe UI',
+              'font_size': name_size,
               'bottom': True,
               'bg_color': '#FEA036'
             }
@@ -1138,12 +1148,13 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'J{start_row}',
-            'content': competitor[0]['betreiber'],
+            'content': competitor[0]['betreiber'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
               'valign': 'vcenter',
               'font': 'Segoe UI',
+              'font_size': op_size,
               'bottom': True,
               'bg_color': '#FEA036'
             }
@@ -1191,11 +1202,11 @@ class Map2_0(Map2_0Template):
                 subindex += 1
                 shown_index = f'{index}.{subindex}'
           last_coords_dist = competitor[1]
-          if len(competitor[0]['name']) > 40:
+          if len(competitor[0]['name']) > 35:
             name_size = 8
           else:
             name_size = 11
-          if len(competitor[0]['betreiber']) > 40:
+          if len(competitor[0]['betreiber']) > 35:
             op_size = 8
           else:
             op_size = 11
@@ -1216,7 +1227,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'B{start_row}',
-            'content': competitor[0]['name'],
+            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1321,7 +1332,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'J{start_row}',
-            'content': competitor[0]['betreiber'],
+            'content': competitor[0]['betreiber'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
             'format': {
               'text_wrap': 'true',
               'align': 'center',
@@ -1360,7 +1371,7 @@ class Map2_0(Map2_0Template):
         start_row += 1
 
       # Copy and Fill Dataframe for Assisted Living Analysis
-      assliv_frame = ExcelFrames.ala_data.copy()
+      assliv_frame = copy.deepcopy(ExcelFrames.ala_data)
       assliv_frame['data'][3]['content'] = f'Population {countie[0]}'
       assliv_frame['data'][40]['content'] = f'Population {countie[0]}'
       assliv_frame['data'][41]['content'] = f'Population {countie[0]}, LK 2022'
@@ -1378,7 +1389,7 @@ class Map2_0(Map2_0Template):
       assliv_frame['data'][55]['content'] = apartments_plan_build_adjusted
       assliv_frame['data'][56]['content'] = len(al_list)
       assliv_frame['data'][57]['content'] = apartments_10km
-      assliv_frame['data'][58]['content'] = f'Population {countie[0]}, LK'
+      assliv_frame['data'][58]['content'] = f'{countie[0]}, LK'
       assliv_frame['data'][61]['content'] = facilities_active - without_apartment
       assliv_frame['data'][62]['content'] = without_apartment
       assliv_frame['data'][63]['content'] = facilities_active
@@ -1437,8 +1448,246 @@ class Map2_0(Map2_0Template):
       assliv_frame['data'][148]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.05) / 1.5)))
       assliv_frame['data'][149]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.07) / 1.5)))
       assliv_frame['data'][150]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.09) / 1.5)))
+
+      # Copy and Fill Dataframe for Assisted Living Competitor Analysis
+      alca_frame = copy.deepcopy(ExcelFrames.alca_data)
+      alca_frame['row_count'] = len(data_comp_analysis_al['data']) + 1
       
-      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame)
+      start_row = 30
+      index = 0
+      subindex = 1
+      last_coords_dist = 0
+      home_entries = 0
+      
+      for competitor in data_comp_analysis_al['data']:
+        if 'home' in competitor:
+          if len(competitor[0]['name']) > 35:
+            name_size = 8
+          else:
+            name_size = 11
+          if len(competitor[0]['operator']) > 35:
+            op_size = 8
+          else:
+            op_size = 11
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'A{start_row}',
+            'content': 'S',
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'bottom': True,
+              'bg_color': '#FEA036'
+            }
+          })
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'B{start_row}',
+            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'font_size': name_size,
+              'bottom': True,
+              'bg_color': '#FEA036'
+            }
+          })
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'C{start_row}',
+            'content': competitor[0]['operator'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'font_size': op_size,
+              'bottom': True,
+              'bg_color': '#FEA036'
+            }
+          })
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'D{start_row}',
+            'content': competitor[0]['type'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'bottom': True,
+              'bg_color': '#FEA036'
+            }
+          })
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'E{start_row}',
+            'content': competitor[0]['city'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'bottom': True,
+              'bg_color': '#FEA036'
+            }
+          })
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'F{start_row}',
+            'content': competitor[0]['status'],
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'bottom': True,
+              'bg_color': '#FEA036'
+            }
+          })
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'G{start_row}',
+            'content': competitor[0]['number_apts'],
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'bottom': True,
+              'bg_color': '#FEA036'
+            }
+          })
+          home_entries += 1
+        else:
+          if not last_coords_dist == competitor[1]:
+            index += 1
+            subindex = 1
+            shown_index = f'{index}'
+            if len(data_comp_analysis_al['data']) > data_comp_analysis_al['data'].index(competitor) + 1:
+              if competitor[0]['coords'] == data_comp_analysis_al['data'][data_comp_analysis_al['data'].index(competitor) + 1][0]['coords']:
+                shown_index = f'{index}.{subindex}'
+          else:
+            shown_index = f'{index}'
+            if not data_comp_analysis_al['data'].index(competitor) == home_entries:
+                subindex += 1
+                shown_index = f'{index}.{subindex}'
+          last_coords_dist = competitor[1]
+          if len(competitor[0]['name']) > 35:
+            name_size = 8
+          else:
+            name_size = 11
+          if len(competitor[0]['operator']) > 35:
+            op_size = 8
+          else:
+            op_size = 11
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'A{start_row}',
+            'content': f'{shown_index}',
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'bottom': True
+            }
+          })
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'B{start_row}',
+            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'font_size': name_size,
+              'bottom': True
+            }
+          })
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'C{start_row}',
+            'content': competitor[0]['operator'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'font_size': op_size,
+              'bottom': True
+            }
+          })
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'D{start_row}',
+            'content': competitor[0]['type'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'bottom': True
+            }
+          })
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'E{start_row}',
+            'content': competitor[0]['city'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'bottom': True
+            }
+          })
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'F{start_row}',
+            'content': competitor[0]['status'],
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'bottom': True
+            }
+          })
+          alca_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'G{start_row}',
+            'content': competitor[0]['number_apts'],
+            'format': {
+              'text_wrap': 'true',
+              'align': 'center',
+              'valign': 'vcenter',
+              'font': 'Segoe UI',
+              'bottom': True
+            }
+          })
+        start_row += 1
+      
+      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame)
 
     else:
       #Create Charts and Static Map for Analysis
@@ -2585,20 +2834,20 @@ class Map2_0(Map2_0Template):
             counter += 1
             if topic == "nursing_homes":
               if entry[27] == "-":
-                anz_vers_pat = "-"
+                anz_vers_pat = "N/A"
               else:
                 anz_vers_pat = int(entry[27])
               if entry[28] == "-":
-                platz_voll_pfl = "-"
+                platz_voll_pfl = "N/A"
               else:
                 platz_voll_pfl = int(entry[28])
-              if not anz_vers_pat == "-" and not platz_voll_pfl == "-":
+              if not anz_vers_pat == "N/A" and not platz_voll_pfl == "N/A":
                 occupancy_raw = round((anz_vers_pat * 100) / platz_voll_pfl)
                 if occupancy_raw > 100:
                   occupancy_raw = 100
                 occupancy = f"{occupancy_raw} %"
               else:
-                occupancy = "-"
+                occupancy = "N/A"
               if not entry[38] == "-":
                 if len(entry[38]) == 4:
                   if entry[38].index(".") == 2:
@@ -2608,19 +2857,39 @@ class Map2_0(Map2_0Template):
                 else:
                   invest = entry[38]
               else:
-                invest = entry[38]
+                invest = "N/A"
+              if entry[31] == "-":
+                ez = "N/A"
+              else:
+                ez = int(entry[31])
+              if entry[32] == "-":
+                dz = "N/A"
+              else:
+                dz = int(entry[32])
+              if entry[33] == "-":
+                year = "N/A"
+              else:
+                year = int(entry[33])
+              if entry[6] == "-":
+                operator = "N/A"
+              else:
+                operator = entry[6]
+              if entry[26] == "-":
+                mdk = "N/A"
+              else:
+                mdk = entry[26]
               data = {
                 "name": entry[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "platz_voll_pfl": platz_voll_pfl,
-                "ez": entry[31],
-                "dz": entry[32],
+                "ez": ez,
+                "dz": dz,
                 "anz_vers_pat": anz_vers_pat,
                 "occupancy": occupancy,
-                "baujahr": entry[33],
+                "baujahr": year,
                 "status": entry[4],
-                "betreiber": entry[6].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                "betreiber": operator.replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "invest": invest,
-                "mdk_note": entry[26],
+                "mdk_note": mdk,
                 "coords": [lng_icon, lat_icon]
               }
               data_comp_analysis.append(data)
@@ -2630,9 +2899,13 @@ class Map2_0(Map2_0Template):
                 number_apts = 'N/A'
               else:
                 number_apts = int(float(entry[19]))
+              if entry[5] == '-':
+                operator = 'N/A'
+              else:
+                operator = entry[5]
               data = {
                 "name": entry[4].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                "operator": entry[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                "operator": operator.replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "type": entry[8].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "city": entry[12].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "status": entry[3].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),

@@ -2930,7 +2930,7 @@ nca_data = {
             {
                 'type': 'image',
                 'cell': 'K1',
-                'file': 'Logo2.png',
+                'file': 'img/Logo2.png',
                 'style': {
                     'x_scale': .21,
                     'y_scale': .09,
@@ -3359,7 +3359,7 @@ ala_data = {
             {
                 'type': 'image',
                 'cell': 'E1',
-                'file': 'Logo2.png',
+                'file': 'img/Logo2.png',
                 'style': {
                     'x_scale': .21,
                     'y_scale': .09,
@@ -5449,6 +5449,141 @@ ala_data = {
                             'name': 'Segoe UI Black'
                         }
                     }
+                }
+            }
+        ]
+    }
+alca_data = {
+        'title': 'ASS_LIVING_COMPETITOR_ANALYSIS',
+        'print_area': 'A1:G1048576',
+        'fit_to_pages': (1, 0),
+        'columns_width': [5.27, 37.18, 34.27, 14, 16.91, 14.09, 10.55],
+        'row_height': 40,
+        'row_start': 28,
+        'row_count': 7,
+        'data': [
+            {
+                'type': 'text',
+                'insert': 'merge',
+                'cell': 'A1:E1',
+                'content': 'ASSISTED LIVING COMPETITOR ANALYSIS',
+                'format': {
+                    'align': 'left',
+                    'valign': 'vcenter',
+                    'font_size': 24,
+                    'font': 'Segoe UI Black',
+                    'color': '#BFB273'
+                }
+            },
+            {
+                'type': 'image',
+                'cell': 'F1',
+                'file': 'img/Logo2.png',
+                'style': {
+                    'x_scale': .21,
+                    'y_scale': .09,
+                    'y_offset': 10,
+                    'x_offset': 50
+                }
+            },
+            {
+                'type': 'image',
+                'cell': 'A4',
+                'file': 'map_image_5a7990_nh.png',
+                'style': {
+                    'x_scale': .7,
+                    'y_scale': .7
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A29',
+                'content': 'No.',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B29',
+                'content': 'Name',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C29',
+                'content': 'Operator',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D29',
+                'content': 'Type',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'E29',
+                'content': 'City',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'F29',
+                'content': 'Status',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'G29',
+                'content': 'No. of apts.',
+                'format': {
+                    'text_wrap': 'true',
+                    'align': 'center',
+                    'valign': 'vcenter',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
                 }
             }
         ]
