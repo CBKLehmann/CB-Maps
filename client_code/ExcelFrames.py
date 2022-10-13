@@ -18,7 +18,6 @@ cover_data = {
       'content': 'MARKET STUDY',
       'format': {
         'align': 'center',
-        'valign': 'vcenter',
         'font_size': 72,
         'font': 'Segoe UI Black'
       }
@@ -30,7 +29,6 @@ cover_data = {
       'content': None,
       'format': {
         'align': 'center',
-        'valign': 'vcenter',
         'font_size': 48,
         'font': 'Segoe UI Black',
         'color': '#BFB273'
@@ -43,7 +41,6 @@ cover_data = {
       'content': None,
       'format': {
         'align': 'center',
-        'valign': 'vcenter',
         'font_size': 48,
         'font': 'Segoe UI Black',
         'color': '#BFB273'
@@ -71,8 +68,6 @@ summary_data = {
                 'cell': 'A1:B1',
                 'content': 'EXECUTIVE SUMMARY',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
                     'font_size': 24,
                     'font': 'Segoe UI Black',
                     'color': '#BFB273'
@@ -84,10 +79,6 @@ summary_data = {
                 'cell': 'A4',
                 'content': 'General Information',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -98,10 +89,6 @@ summary_data = {
                 'cell': 'A6',
                 'content': 'Zip Code',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -111,10 +98,6 @@ summary_data = {
                 'cell': 'A7',
                 'content': 'City',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -124,10 +107,6 @@ summary_data = {
                 'cell': 'A8',
                 'content': 'District',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -137,10 +116,6 @@ summary_data = {
                 'cell': 'A9',
                 'content': 'Federal State',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -150,10 +125,6 @@ summary_data = {
                 'cell': 'A10',
                 'content': 'Radius of analysis',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -163,10 +134,6 @@ summary_data = {
                 'cell': 'A11',
                 'content': 'Address',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -176,10 +143,6 @@ summary_data = {
                 'cell': 'A13',
                 'content': 'Demographic trend',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -189,13 +152,6 @@ summary_data = {
                 'insert': 'write',
                 'cell': 'A14',
                 'content': 'Population Berlin',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
@@ -203,10 +159,6 @@ summary_data = {
                 'cell': 'A15',
                 'content': 'Berlin, LK',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -215,50 +167,25 @@ summary_data = {
                 'insert': 'write',
                 'cell': 'A16',
                 'content': 'Population',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A17',
                 'content': 'There of Population 65-79',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A18',
                 'content': 'There of Population 80+',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'A20',
+                'insert': 'merge',
+                'cell': 'A20:B20',
                 'content': 'Patients receiving full inpatient care scenarios',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -268,24 +195,13 @@ summary_data = {
                 'insert': 'write',
                 'cell': 'A21',
                 'content': 'Break even care rate',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'A22',
+                'insert': 'merge',
+                'cell': 'A22:E22',
                 'content': 'Each percent-point greater than the break even care rate indicates an increasing demand on care capacities.',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'italic': True
                 }
             },
@@ -295,23 +211,15 @@ summary_data = {
                 'cell': 'A24',
                 'content': 'Scenario 1',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'italic': True
                 }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'A25',
+                'insert': 'merge',
+                'cell': 'A25:H25',
                 'content': 'In scenario 1 the relative situation (product of nursing home rate and care rate) as in 2020 is assumed to be constant for the entire forecasting period.',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'italic': True
                 }
             },
@@ -320,78 +228,36 @@ summary_data = {
                 'insert': 'write',
                 'cell': 'A26',
                 'content': 'Care Rate of Population',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A27',
                 'content': 'There of nursing home rate',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A28',
                 'content': 'Patients receiving full inpatient care',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A29',
                 'content': 'Occupancy rate',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A30',
                 'content': 'Beds',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A31',
                 'content': 'Free Beds',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
@@ -399,23 +265,15 @@ summary_data = {
                 'cell': 'A33',
                 'content': 'Scenario 2',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'italic': True
                 }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'A34',
+                'insert': 'merge',
+                'cell': 'A34:H34',
                 'content': 'In scenario 2 we assume a very small increase rate of the product of care rate and nursing home rate of about 0.003 percent-points.',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'italic': True
                 }
             },
@@ -424,78 +282,36 @@ summary_data = {
                 'insert': 'write',
                 'cell': 'A35',
                 'content': 'Care Rate of Population',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A36',
                 'content': 'There of nursing home rate',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A37',
                 'content': 'Patients receiving full inpatient care',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A38',
                 'content': 'Occupancy rate',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A39',
                 'content': 'Beds',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A40',
                 'content': 'Free Beds',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
@@ -503,10 +319,6 @@ summary_data = {
                 'cell': 'A42',
                 'content': 'Demand',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -516,63 +328,34 @@ summary_data = {
                 'insert': 'write',
                 'cell': 'A43',
                 'content': 'Number of inpatients',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A44',
                 'content': 'Number of inpatients forecast Scenario 1',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A45',
                 'content': 'Number of inpatients forecast Scenario 2',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'A46',
+                'insert': 'merge',
+                'cell': 'A46:E46',
                 'content': 'In 2030 the number of inpatients will based on our scenarios be between 64 and 69 (in average about 66).',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'italic': True
                 }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'A47',
+                'insert': 'merge',
+                'cell': 'A47:E47',
                 'content': 'In 2035 the number of inpatients will based on our scenarios be between 67 and 72 (in average about 70).',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'italic': True
                 }
             },
@@ -582,10 +365,6 @@ summary_data = {
                 'cell': 'A49',
                 'content': 'Supply',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -595,130 +374,60 @@ summary_data = {
                 'insert': 'write',
                 'cell': 'A50',
                 'content': 'Beds',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A51',
                 'content': 'Nursing homes',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A52',
                 'content': 'Nursing homes in planning',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A53',
                 'content': 'Nursing homes under construction',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A54',
                 'content': 'Beds in planning',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A55',
                 'content': 'Beds under construction',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A56',
                 'content': 'Adjusted number of beds \n(incl. beds in planning and under construction)',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'text_wrap': 'true'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A57',
                 'content': 'Occupancy rate',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A58',
                 'content': 'Beds in reserve',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A59',
                 'content': 'Median Invest Cost',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
@@ -726,10 +435,6 @@ summary_data = {
                 'cell': 'A61',
                 'content': 'Surplus or deficit of beds IC',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -740,10 +445,6 @@ summary_data = {
                 'cell': 'A62',
                 'content': 'Scenario 1',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'italic': True
                 }
             },
@@ -752,39 +453,18 @@ summary_data = {
                 'insert': 'write',
                 'cell': 'A63',
                 'content': 'Supply',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A64',
                 'content': 'Demand',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A65',
                 'content': 'surplus/deficit',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
@@ -792,10 +472,6 @@ summary_data = {
                 'cell': 'A67',
                 'content': 'Scenario 2',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'italic': True
                 }
             },
@@ -804,63 +480,34 @@ summary_data = {
                 'insert': 'write',
                 'cell': 'A68',
                 'content': 'Supply',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A69',
                 'content': 'Demand',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A70',
                 'content': 'surplus/deficit',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'A71',
+                'insert': 'merge',
+                'cell': 'A71:E71',
                 'content': 'In 2030 the surplus/deficit on beds based on our scenarios is between 8 and 3 (in average 6).',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'italic': True
                 }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'A72',
+                'insert': 'merge',
+                'cell': 'A72:E72',
                 'content': 'In 2035 the surplus/deficit on beds based on our scenarios is between 5 and 0 (in average 2).',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'italic': True
                 }
             },
@@ -870,10 +517,6 @@ summary_data = {
                 'cell': 'A74',
                 'content': 'Market shares',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -883,78 +526,36 @@ summary_data = {
                 'insert': 'write',
                 'cell': 'A75',
                 'content': 'Number of operators',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A76',
                 'content': 'Median Number of beds',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A77',
                 'content': 'Median Year of construction',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A78',
                 'content': '% Public operators',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A79',
                 'content': '% Non-profit operators',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A80',
                 'content': '% Private operators',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
             },
             {
                 'type': 'text',
@@ -962,10 +563,6 @@ summary_data = {
                 'cell': 'B4',
                 'content': '',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -976,10 +573,6 @@ summary_data = {
                 'cell': 'B13',
                 'content': '',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -990,11 +583,7 @@ summary_data = {
                 'cell': 'B14',
                 'content': 3664088,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1004,9 +593,6 @@ summary_data = {
                 'content': '2020 Actual',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -1016,11 +602,7 @@ summary_data = {
                 'cell': 'B16',
                 'content': 3669491,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1029,11 +611,7 @@ summary_data = {
                 'cell': 'B17',
                 'content': 484900,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1042,11 +620,7 @@ summary_data = {
                 'cell': 'B18',
                 'content': 227100,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1055,10 +629,6 @@ summary_data = {
                 'cell': 'B20',
                 'content': '',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -1070,9 +640,6 @@ summary_data = {
                 'content': .016,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1083,9 +650,6 @@ summary_data = {
                 'content': .042,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1096,9 +660,6 @@ summary_data = {
                 'content': .183,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1108,11 +669,7 @@ summary_data = {
                 'cell': 'B28',
                 'content': 28525,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1122,9 +679,6 @@ summary_data = {
                 'content': .8539,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1134,11 +688,7 @@ summary_data = {
                 'cell': 'B30',
                 'content': 33406,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1147,11 +697,7 @@ summary_data = {
                 'cell': 'B31',
                 'content': 4881,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1161,9 +707,6 @@ summary_data = {
                 'content': .042,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1174,9 +717,6 @@ summary_data = {
                 'content': .183,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1186,11 +726,7 @@ summary_data = {
                 'cell': 'B37',
                 'content': 28525,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1200,9 +736,6 @@ summary_data = {
                 'content': .8539,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1212,11 +745,7 @@ summary_data = {
                 'cell': 'B39',
                 'content': 33406,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1225,11 +754,7 @@ summary_data = {
                 'cell': 'B40',
                 'content': 4881,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1239,9 +764,6 @@ summary_data = {
                 'content': 'Radius:',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bottom': True,
                     'bold': True
                 }
@@ -1252,11 +774,7 @@ summary_data = {
                 'cell': 'B43',
                 'content': 70,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1266,9 +784,6 @@ summary_data = {
                 'content': 'Radius:',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bottom': True,
                     'bold': True
                 }
@@ -1279,11 +794,7 @@ summary_data = {
                 'cell': 'B50',
                 'content': 72,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1292,11 +803,7 @@ summary_data = {
                 'cell': 'B51',
                 'content': 2,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1305,11 +812,7 @@ summary_data = {
                 'cell': 'B52',
                 'content': 0,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1318,11 +821,7 @@ summary_data = {
                 'cell': 'B53',
                 'content': 0,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1331,11 +830,7 @@ summary_data = {
                 'cell': 'B54',
                 'content': 0,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1344,11 +839,7 @@ summary_data = {
                 'cell': 'B55',
                 'content': 0,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1357,12 +848,7 @@ summary_data = {
                 'cell': 'B56',
                 'content': 72,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'text_wrap': 'true',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1372,9 +858,6 @@ summary_data = {
                 'content': .97,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0%'
                 }
             },
@@ -1384,11 +867,7 @@ summary_data = {
                 'cell': 'B58',
                 'content': 2,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1398,9 +877,6 @@ summary_data = {
                 'content': 15.18,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '#,##0.00 €'
                 }
             },
@@ -1411,9 +887,6 @@ summary_data = {
                 'content': 'Radius:',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bottom': True,
                     'bold': True
                 }
@@ -1424,11 +897,7 @@ summary_data = {
                 'cell': 'B63',
                 'content': 72,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1437,11 +906,7 @@ summary_data = {
                 'cell': 'B64',
                 'content': 70,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1450,11 +915,7 @@ summary_data = {
                 'cell': 'B68',
                 'content': 72,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1463,11 +924,7 @@ summary_data = {
                 'cell': 'B69',
                 'content': 70,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1477,9 +934,6 @@ summary_data = {
                 'content': 'Radius:',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bottom': True,
                     'bold': True
                 }
@@ -1490,11 +944,7 @@ summary_data = {
                 'cell': 'B75',
                 'content': 1,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1503,11 +953,7 @@ summary_data = {
                 'cell': 'B76',
                 'content': 36,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1517,9 +963,7 @@ summary_data = {
                 'content': 1996,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI'
+                    'num_format': '0'
                 }
             },
             {
@@ -1529,9 +973,6 @@ summary_data = {
                 'content': .7,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0%'
                 }
             },
@@ -1542,9 +983,6 @@ summary_data = {
                 'content': .2,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0%'
                 }
             },
@@ -1555,9 +993,6 @@ summary_data = {
                 'content': .1,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0%'
                 }
             },
@@ -1568,9 +1003,6 @@ summary_data = {
                 'content': '',
                 'format': {
                     'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -1582,9 +1014,6 @@ summary_data = {
                 'content': '',
                 'format': {
                     'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -1596,9 +1025,6 @@ summary_data = {
                 'content': '2030 Forecast',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -1608,11 +1034,7 @@ summary_data = {
                 'cell': 'C16',
                 'content': 3877900,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1621,11 +1043,7 @@ summary_data = {
                 'cell': 'C17',
                 'content': 559500,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1634,11 +1052,7 @@ summary_data = {
                 'cell': 'C18',
                 'content': 239600,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1647,10 +1061,6 @@ summary_data = {
                 'cell': 'C20',
                 'content': '',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -1662,9 +1072,6 @@ summary_data = {
                 'content': .019,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1675,9 +1082,6 @@ summary_data = {
                 'content': .045,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1688,9 +1092,6 @@ summary_data = {
                 'content': .183,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1700,11 +1101,7 @@ summary_data = {
                 'cell': 'C28',
                 'content': 31964,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1714,9 +1111,6 @@ summary_data = {
                 'content': .95,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1726,11 +1120,7 @@ summary_data = {
                 'cell': 'C30',
                 'content': 33646,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1739,11 +1129,7 @@ summary_data = {
                 'cell': 'C31',
                 'content': 1682,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1753,9 +1139,6 @@ summary_data = {
                 'content': .048,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1766,9 +1149,6 @@ summary_data = {
                 'content': .183,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1778,11 +1158,7 @@ summary_data = {
                 'cell': 'C37',
                 'content': 34361,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1792,9 +1168,6 @@ summary_data = {
                 'content': .95,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -1804,11 +1177,7 @@ summary_data = {
                 'cell': 'C39',
                 'content': 36169,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1817,23 +1186,15 @@ summary_data = {
                 'cell': 'C40',
                 'content': 1751,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'C42',
+                'insert': 'merge',
+                'cell': 'C42:D42',
                 'content': '15 minutes of walking',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -1844,11 +1205,7 @@ summary_data = {
                 'cell': 'C44',
                 'content': 64,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1857,23 +1214,15 @@ summary_data = {
                 'cell': 'C45',
                 'content': 69,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'C49',
+                'insert': 'merge',
+                'cell': 'C49:D49',
                 'content': '15 minutes of walking',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -1884,11 +1233,7 @@ summary_data = {
                 'cell': 'C56',
                 'content': 72,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1898,9 +1243,6 @@ summary_data = {
                 'content': .95,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0%'
                 }
             },
@@ -1910,23 +1252,15 @@ summary_data = {
                 'cell': 'C58',
                 'content': 4,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'C61',
+                'insert': 'merge',
+                'cell': 'C61:D61',
                 'content': '15 minutes of walking',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -1937,11 +1271,7 @@ summary_data = {
                 'cell': 'C63',
                 'content': 72,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1950,11 +1280,7 @@ summary_data = {
                 'cell': 'C64',
                 'content': 64,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1963,11 +1289,7 @@ summary_data = {
                 'cell': 'C65',
                 'content': 8,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1976,11 +1298,7 @@ summary_data = {
                 'cell': 'C68',
                 'content': 72,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -1989,11 +1307,7 @@ summary_data = {
                 'cell': 'C69',
                 'content': 69,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2002,23 +1316,15 @@ summary_data = {
                 'cell': 'C70',
                 'content': 3,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'C74',
+                'insert': 'merge',
+                'cell': 'C74:D74',
                 'content': '15 minutes of walking',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -2029,10 +1335,6 @@ summary_data = {
                 'cell': 'D4',
                 'content': '',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -2044,10 +1346,8 @@ summary_data = {
                 'content': 10178,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'bold': True
+                    'bold': True,
+                    'num_format': '0'
                 }
             },
             {
@@ -2057,9 +1357,6 @@ summary_data = {
                 'content': 'Berlin',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -2070,9 +1367,6 @@ summary_data = {
                 'content': 'Berlin',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -2083,35 +1377,26 @@ summary_data = {
                 'content': 'Berlin',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'D10',
+                'insert': 'merge',
+                'cell': 'C10:D10',
                 'content': '15 minutes of walking',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'D11',
+                'insert': 'merge',
+                'cell': 'B11:D11',
                 'content': 'Blumberger Damm 201, 12687 Berlin, Germany',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -2121,10 +1406,6 @@ summary_data = {
                 'cell': 'D13',
                 'content': '',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -2136,9 +1417,6 @@ summary_data = {
                 'content': '2035 Forecast',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True
                 }
             },
@@ -2148,11 +1426,7 @@ summary_data = {
                 'cell': 'D16',
                 'content': 3921400,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2161,11 +1435,7 @@ summary_data = {
                 'cell': 'D17',
                 'content': 587600,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2174,11 +1444,7 @@ summary_data = {
                 'cell': 'D18',
                 'content': 244300,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2187,10 +1453,6 @@ summary_data = {
                 'cell': 'D20',
                 'content': '',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -2202,9 +1464,6 @@ summary_data = {
                 'content': .02,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -2215,9 +1474,6 @@ summary_data = {
                 'content': .046,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -2228,9 +1484,6 @@ summary_data = {
                 'content': .183,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -2240,11 +1493,7 @@ summary_data = {
                 'cell': 'D28',
                 'content': 33276,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2254,9 +1503,6 @@ summary_data = {
                 'content': .95,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -2266,11 +1512,7 @@ summary_data = {
                 'cell': 'D30',
                 'content': 35027,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2279,11 +1521,7 @@ summary_data = {
                 'cell': 'D31',
                 'content': 1808,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2293,9 +1531,6 @@ summary_data = {
                 'content': .05,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -2306,9 +1541,6 @@ summary_data = {
                 'content': .183,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -2318,11 +1550,7 @@ summary_data = {
                 'cell': 'D37',
                 'content': 35772,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2332,9 +1560,6 @@ summary_data = {
                 'content': .95,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0.0%'
                 }
             },
@@ -2344,11 +1569,7 @@ summary_data = {
                 'cell': 'D39',
                 'content': 37655,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2357,11 +1578,7 @@ summary_data = {
                 'cell': 'D40',
                 'content': 1883,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2370,10 +1587,6 @@ summary_data = {
                 'cell': 'D42',
                 'content': '',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -2384,11 +1597,7 @@ summary_data = {
                 'cell': 'D44',
                 'content': 67,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2397,11 +1606,7 @@ summary_data = {
                 'cell': 'D45',
                 'content': 72,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2410,10 +1615,6 @@ summary_data = {
                 'cell': 'D49',
                 'content': '',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -2424,11 +1625,7 @@ summary_data = {
                 'cell': 'D56',
                 'content': 72,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2438,9 +1635,6 @@ summary_data = {
                 'content': .95,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '0%'
                 }
             },
@@ -2450,11 +1644,7 @@ summary_data = {
                 'cell': 'D58',
                 'content': 4,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2463,10 +1653,6 @@ summary_data = {
                 'cell': 'D61',
                 'content': '',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'bold': True,
                     'bottom': True
                 }
@@ -2477,11 +1663,7 @@ summary_data = {
                 'cell': 'D63',
                 'content': 72,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2490,11 +1672,7 @@ summary_data = {
                 'cell': 'D64',
                 'content': 67,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2503,11 +1681,7 @@ summary_data = {
                 'cell': 'D65',
                 'content': 5,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2516,11 +1690,7 @@ summary_data = {
                 'cell': 'D68',
                 'content': 72,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2529,11 +1699,7 @@ summary_data = {
                 'cell': 'D69',
                 'content': 72,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
+                    'align': 'right'
                 }
             },
             {
@@ -2542,25 +1708,7 @@ summary_data = {
                 'cell': 'D70',
                 'content': 0,
                 'format': {
-                    'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D74',
-                'content': '',
-                'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'bold': True,
-                    'bottom': True
+                    'align': 'right'
                 }
             },
             {
@@ -2921,8 +2069,6 @@ nca_data = {
                 'cell': 'A1:G1',
                 'content': 'NURSING COMPETITOR ANALYSIS',
                 'format': {
-                    'align': 'left',
-                    'valign': 'vcenter',
                     'font_size': 24,
                     'font': 'Segoe UI Black',
                     'color': '#BFB273'
@@ -2955,10 +2101,6 @@ nca_data = {
                 'content': 'Median Nursing charge (PG 3)',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0',
                     'color': '#FFFFFF'
                 }
             },
@@ -2969,10 +2111,6 @@ nca_data = {
                 'content': 'Median Specific co-payment',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0',
                     'color': '#FFFFFF'
                 }
             },
@@ -2983,10 +2121,6 @@ nca_data = {
                 'content': 'Median Invest costs',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0',
                     'color': '#FFFFFF'
                 }
             },
@@ -2997,10 +2131,6 @@ nca_data = {
                 'content': 'Median Board and lodging',
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
-                    'num_format': '#,##0',
                     'color': '#FFFFFF'
                 }
             },
@@ -3011,9 +2141,6 @@ nca_data = {
                 'content': 54.33,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '#,##0.00 €',
                     'color': '#FFFFFF'
                 }
@@ -3025,9 +2152,6 @@ nca_data = {
                 'content': 12.84,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '#,##0.00 €',
                     'color': '#FFFFFF'
                 }
@@ -3039,9 +2163,6 @@ nca_data = {
                 'content': 18.92,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '#,##0.00 €',
                     'color': '#FFFFFF'
                 }
@@ -3053,9 +2174,6 @@ nca_data = {
                 'content': 18.36,
                 'format': {
                     'align': 'right',
-                    'valign': 'vcenter',
-                    'font_size': 11,
-                    'font': 'Segoe UI',
                     'num_format': '#,##0.00 €',
                     'color': '#FFFFFF'
                 }
@@ -3066,12 +2184,9 @@ nca_data = {
                 'cell': 'A32',
                 'content': 'No.',
                 'format': {
-                    'text_wrap': 'true',
                     'align': 'center',
-                    'valign': 'vcenter',
                     'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273',
-                    'num_format': '#,##0'
+                    'bg_color': '#BFB273'
                 }
             },
             {
@@ -3080,12 +2195,9 @@ nca_data = {
                 'cell': 'B32',
                 'content': 'Name',
                 'format': {
-                    'text_wrap': 'true',
                     'align': 'center',
-                    'valign': 'vcenter',
                     'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273',
-                    'num_format': '#,##0'
+                    'bg_color': '#BFB273'
                 }
             },
             {
@@ -3094,12 +2206,9 @@ nca_data = {
                 'cell': 'C32',
                 'content': 'No. of beds',
                 'format': {
-                    'text_wrap': 'true',
                     'align': 'center',
-                    'valign': 'vcenter',
                     'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273',
-                    'num_format': '#,##0'
+                    'bg_color': '#BFB273'
                 }
             },
             {
@@ -3108,12 +2217,9 @@ nca_data = {
                 'cell': 'D32',
                 'content': 'single rooms',
                 'format': {
-                    'text_wrap': 'true',
                     'align': 'center',
-                    'valign': 'vcenter',
                     'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273',
-                    'num_format': '#,##0'
+                    'bg_color': '#BFB273'
                 }
             },
             {
@@ -3122,12 +2228,9 @@ nca_data = {
                 'cell': 'E32',
                 'content': 'double rooms',
                 'format': {
-                    'text_wrap': 'true',
                     'align': 'center',
-                    'valign': 'vcenter',
                     'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273',
-                    'num_format': '#,##0'
+                    'bg_color': '#BFB273'
                 }
             },
             {
@@ -3136,12 +2239,9 @@ nca_data = {
                 'cell': 'F32',
                 'content': 'Patients',
                 'format': {
-                    'text_wrap': 'true',
                     'align': 'center',
-                    'valign': 'vcenter',
                     'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273',
-                    'num_format': '#,##0'
+                    'bg_color': '#BFB273'
                 }
             },
             {
@@ -3150,12 +2250,9 @@ nca_data = {
                 'cell': 'G32',
                 'content': 'occupancy',
                 'format': {
-                    'text_wrap': 'true',
                     'align': 'center',
-                    'valign': 'vcenter',
                     'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273',
-                    'num_format': '#,##0'
+                    'bg_color': '#BFB273'
                 }
             },
             {
@@ -3164,12 +2261,9 @@ nca_data = {
                 'cell': 'H32',
                 'content': 'year of construction',
                 'format': {
-                    'text_wrap': 'true',
                     'align': 'center',
-                    'valign': 'vcenter',
                     'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273',
-                    'num_format': '#,##0'
+                    'bg_color': '#BFB273'
                 }
             },
             {
@@ -3178,12 +2272,9 @@ nca_data = {
                 'cell': 'I32',
                 'content': 'Status',
                 'format': {
-                    'text_wrap': 'true',
                     'align': 'center',
-                    'valign': 'vcenter',
                     'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273',
-                    'num_format': '#,##0'
+                    'bg_color': '#BFB273'
                 }
             },
             {
@@ -3192,12 +2283,9 @@ nca_data = {
                 'cell': 'J32',
                 'content': 'Operator',
                 'format': {
-                    'text_wrap': 'true',
                     'align': 'center',
-                    'valign': 'vcenter',
                     'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273',
-                    'num_format': '#,##0'
+                    'bg_color': '#BFB273'
                 }
             },
             {
@@ -3206,12 +2294,9 @@ nca_data = {
                 'cell': 'K32',
                 'content': 'Invest costs per day',
                 'format': {
-                    'text_wrap': 'true',
                     'align': 'center',
-                    'valign': 'vcenter',
                     'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273',
-                    'num_format': '#,##0'
+                    'bg_color': '#BFB273'
                 }
             },
             {
@@ -3220,12 +2305,9 @@ nca_data = {
                 'cell': 'L32',
                 'content': 'MDK grade',
                 'format': {
-                    'text_wrap': 'true',
                     'align': 'center',
-                    'valign': 'vcenter',
                     'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273',
-                    'num_format': '#,##0'
+                    'bg_color': '#BFB273'
                 }
             },
             {

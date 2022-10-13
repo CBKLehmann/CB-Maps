@@ -991,6 +991,7 @@ class Map2_0(Map2_0Template):
       summary_frame['data'][186]['content'] = beds_adjusted
       summary_frame['data'][187]['content'] = inpatients_fc_35_v2
       summary_frame['data'][188]['content'] = beds_surplus_35_v2
+      summary_frame['data'][190]['file'] = f"tmp/summaryMap_{unique_code}.png"
 
 
       # Copy and Fill Dataframe for Nursing Home Competitor Analysis
@@ -1023,10 +1024,7 @@ class Map2_0(Map2_0Template):
             'cell': f'A{start_row}',
             'content': 'S',
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
               'bg_color': '#FEA036'
             }
@@ -1037,10 +1035,7 @@ class Map2_0(Map2_0Template):
             'cell': f'B{start_row}',
             'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'font_size': name_size,
               'bottom': True,
               'bg_color': '#FEA036'
@@ -1052,13 +1047,9 @@ class Map2_0(Map2_0Template):
             'cell': f'C{start_row}',
             'content': competitor[0]['platz_voll_pfl'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
-              'bg_color': '#FEA036',
-              'num_format': '#,##0'
+              'bg_color': '#FEA036'
             }
           })
           nurscomp_frame['data'].append({
@@ -1067,13 +1058,9 @@ class Map2_0(Map2_0Template):
             'cell': f'D{start_row}',
             'content': competitor[0]['ez'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
-              'bg_color': '#FEA036',
-              'num_format': '#,##0'
+              'bg_color': '#FEA036'
             }
           })
           nurscomp_frame['data'].append({
@@ -1082,13 +1069,9 @@ class Map2_0(Map2_0Template):
             'cell': f'E{start_row}',
             'content': competitor[0]['dz'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
-              'bg_color': '#FEA036',
-              'num_format': '#,##0'
+              'bg_color': '#FEA036'
             }
           })
           nurscomp_frame['data'].append({
@@ -1097,13 +1080,9 @@ class Map2_0(Map2_0Template):
             'cell': f'F{start_row}',
             'content': competitor[0]['anz_vers_pat'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
-              'bg_color': '#FEA036',
-              'num_format': '#,##0'
+              'bg_color': '#FEA036'
             }
           })
           nurscomp_frame['data'].append({
@@ -1112,10 +1091,7 @@ class Map2_0(Map2_0Template):
             'cell': f'G{start_row}',
             'content': competitor[0]['occupancy'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
               'bg_color': '#FEA036'
             }
@@ -1126,12 +1102,10 @@ class Map2_0(Map2_0Template):
             'cell': f'H{start_row}',
             'content': competitor[0]['baujahr'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
-              'bg_color': '#FEA036'
+              'bg_color': '#FEA036',
+              'num_format': '0'
             }
           })
           nurscomp_frame['data'].append({
@@ -1140,10 +1114,7 @@ class Map2_0(Map2_0Template):
             'cell': f'I{start_row}',
             'content': competitor[0]['status'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
               'bg_color': '#FEA036'
             }
@@ -1154,10 +1125,7 @@ class Map2_0(Map2_0Template):
             'cell': f'J{start_row}',
             'content': competitor[0]['betreiber'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'font_size': op_size,
               'bottom': True,
               'bg_color': '#FEA036'
@@ -1174,10 +1142,7 @@ class Map2_0(Map2_0Template):
             'cell': f'K{start_row}',
             'content': invest,
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
               'bg_color': '#FEA036',
               'num_format': '#,##0.00€'
@@ -1189,10 +1154,7 @@ class Map2_0(Map2_0Template):
             'cell': f'L{start_row}',
             'content': competitor[0]['mdk_note'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
               'bg_color': '#FEA036'
             }
@@ -1226,10 +1188,7 @@ class Map2_0(Map2_0Template):
             'cell': f'A{start_row}',
             'content': f'{shown_index}',
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True
             }
           })
@@ -1239,10 +1198,7 @@ class Map2_0(Map2_0Template):
             'cell': f'B{start_row}',
             'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'font_size': name_size,
               'bottom': True
             }
@@ -1253,12 +1209,8 @@ class Map2_0(Map2_0Template):
             'cell': f'C{start_row}',
             'content': competitor[0]['platz_voll_pfl'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
-              'bottom': True,
-              'num_format': '#,##0'
+              'bottom': True
             }
           })
           nurscomp_frame['data'].append({
@@ -1267,12 +1219,8 @@ class Map2_0(Map2_0Template):
             'cell': f'D{start_row}',
             'content': competitor[0]['ez'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
-              'bottom': True,
-              'num_format': '#,##0'
+              'bottom': True
             }
           })
           nurscomp_frame['data'].append({
@@ -1281,12 +1229,8 @@ class Map2_0(Map2_0Template):
             'cell': f'E{start_row}',
             'content': competitor[0]['dz'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
-              'bottom': True,
-              'num_format': '#,##0'
+              'bottom': True
             }
           })
           nurscomp_frame['data'].append({
@@ -1295,12 +1239,8 @@ class Map2_0(Map2_0Template):
             'cell': f'F{start_row}',
             'content': competitor[0]['anz_vers_pat'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
-              'bottom': True,
-              'num_format': '#,##0'
+              'bottom': True
             }
           })
           nurscomp_frame['data'].append({
@@ -1309,10 +1249,7 @@ class Map2_0(Map2_0Template):
             'cell': f'G{start_row}',
             'content': competitor[0]['occupancy'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True
             }
           })
@@ -1322,10 +1259,7 @@ class Map2_0(Map2_0Template):
             'cell': f'H{start_row}',
             'content': competitor[0]['baujahr'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True
             }
           })
@@ -1335,10 +1269,7 @@ class Map2_0(Map2_0Template):
             'cell': f'I{start_row}',
             'content': competitor[0]['status'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True
             }
           })
@@ -1348,10 +1279,7 @@ class Map2_0(Map2_0Template):
             'cell': f'J{start_row}',
             'content': competitor[0]['betreiber'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'font_size': op_size,
               'bottom': True
             }
@@ -1366,10 +1294,7 @@ class Map2_0(Map2_0Template):
             'cell': f'K{start_row}',
             'content': invest,
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True,
               'num_format': '#,##0.00€'
             }
@@ -1380,10 +1305,7 @@ class Map2_0(Map2_0Template):
             'cell': f'L{start_row}',
             'content': competitor[0]['mdk_note'],
             'format': {
-              'text_wrap': 'true',
               'align': 'center',
-              'valign': 'vcenter',
-              'font': 'Segoe UI',
               'bottom': True
             }
           })
