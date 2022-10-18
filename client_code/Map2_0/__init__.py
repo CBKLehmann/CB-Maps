@@ -1262,7 +1262,8 @@ class Map2_0(Map2_0Template):
             'content': competitor[0]['baujahr'],
             'format': {
               'align': 'center',
-              'bottom': True
+              'bottom': True,
+              'num_format': '0'
             }
           })
           nurscomp_frame['data'].append({
