@@ -269,8 +269,19 @@ class Map2_0(Map2_0Template):
   #######Noch bearbeiten#######
   #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
   def admin_button_click(self, **event_args): 
+
+    date = datetime.datetime.now() - datetime.timedelta(days=30)
+    print(date)
+    # raw_date = '2022-10-18 10:52:03.509000'
+    # date = datetime.datetime.strptime(raw_date, '%Y-%m-%d %H:%M:%S.%f')
     
-    anvil.server.call('create_iso_map', Variables.activeIso, self.create_bounding_box())
+    for file in app_files.test_ordner.list_files():
+      file_time = datetime.datetime.strptime(file._obj['createdDate'], '%Y-%m-%dT%H:%M:%S.%fZ') + datetime.timedelta(hours=2)
+      print(True if file_time >= date else False)
+      if file_time <= date:
+        file.delete()
+    
+    # anvil.server.call('create_iso_map', Variables.activeIso, self.create_bounding_box())
     
 #     #Call a Server Function
 #     anvil.server.call('manipulate')
@@ -1765,6 +1776,8 @@ class Map2_0(Map2_0Template):
     #Get PDF from Table and start Download
     mapPDF = app_tables.pictures.search()[0]    
     anvil.media.download(mapPDF['pic'])
+    file = app_files.test_ordner.create_file(f'MarketStudy_{unique_code}', mapPDF['pic'])
+    print(file._obj['alternateLink'])
 
     
 #####  Button Functions   #####
