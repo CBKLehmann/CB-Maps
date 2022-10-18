@@ -523,6 +523,14 @@ components:
       name: Summary
       layout_properties: {grid_position: 'DKUUUF,TBTQVD'}
       event_bindings: {click: Summary_click}
+    - type: Button
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+        foreground: '', visible: true, text: SUMMARY (EXCEL), font_size: null, font: '',
+        spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+        background: '', bold: false, underline: false, icon: ''}
+      name: excel_summary
+      layout_properties: {}
+      event_bindings: {click: Summary_click}
   - type: Button
     properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
       foreground: '', visible: false, text: Admin-Button, font_size: null, font: '',
@@ -542,3 +550,10 @@ components:
   properties: {}
   name: mun_info
   layout_properties: {slot: ' .floating-menu'}
+- type: Button
+  properties: {role: null, align: left, tooltip: '', border: '', enabled: true, foreground: '',
+    visible: true, text: Summary, font_size: null, font: '', spacing_above: small,
+    icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+    underline: false, icon: ''}
+  name: Summary_copy
+  layout_properties: {grid_position: 'DKUUUF,TBTQVD'}
