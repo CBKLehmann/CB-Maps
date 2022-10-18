@@ -51,7 +51,7 @@ cover_data = {
     {
       'type': 'image',
       'cell': 'D41',
-      'file': 'img/Logo2.png',
+      'file': 'img/Logo_Capital Bay_pos.png',
       'style': {}
     }
   ]
@@ -1716,7 +1716,7 @@ summary_data = {
             {
                 'type': 'image',
                 'cell': 'K1',
-                'file': 'img/Logo2.png',
+                'file': 'img/Logo_Capital Bay_pos.png',
                 'style': {
                     'x_scale': .21,
                     'y_scale': .09,
@@ -2079,7 +2079,7 @@ nca_data = {
             {
                 'type': 'image',
                 'cell': 'K1',
-                'file': 'img/Logo2.png',
+                'file': 'img/Logo_Capital Bay_pos.png',
                 'style': {
                     'x_scale': .21,
                     'y_scale': .09,
@@ -2442,7 +2442,7 @@ ala_data = {
             {
                 'type': 'image',
                 'cell': 'E1',
-                'file': 'img/Logo2.png',
+                'file': 'img/Logo_Capital Bay_pos.png',
                 'style': {
                     'x_scale': .21,
                     'y_scale': .09,
@@ -4095,7 +4095,7 @@ alca_data = {
             {
                 'type': 'image',
                 'cell': 'F1',
-                'file': 'img/Logo2.png',
+                'file': 'img/Logo_Capital Bay_pos.png',
                 'style': {
                     'x_scale': .21,
                     'y_scale': .09,
