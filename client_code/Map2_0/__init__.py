@@ -1775,7 +1775,8 @@ class Map2_0(Map2_0Template):
     mapExcel = app_tables.pictures.search()[1]
     anvil.media.download(mapPDF['pic'])
     anvil.media.download(mapExcel['pic'])
-    file = app_files.market_studies.create_file(f'MarketStudy_{unique_code}', mapPDF['pic'])
+    
+    file = app_files.market_studies.create_file(f'MarketStudy_{unique_code}.pdf', mapPDF['pic'])
     print(file._obj['alternateLink'])
 
     
