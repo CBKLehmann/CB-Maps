@@ -270,16 +270,8 @@ class Map2_0(Map2_0Template):
   #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
   def admin_button_click(self, **event_args): 
 
-    date = datetime.datetime.now() - datetime.timedelta(days=30)
+    date = datetime.datetime.now()
     print(date)
-    # raw_date = '2022-10-18 10:52:03.509000'
-    # date = datetime.datetime.strptime(raw_date, '%Y-%m-%d %H:%M:%S.%f')
-    
-    for file in app_files.test_ordner.list_files():
-      file_time = datetime.datetime.strptime(file._obj['createdDate'], '%Y-%m-%dT%H:%M:%S.%fZ') + datetime.timedelta(hours=2)
-      print(True if file_time >= date else False)
-      if file_time <= date:
-        file.delete()
     
     # anvil.server.call('create_iso_map', Variables.activeIso, self.create_bounding_box())
     
@@ -1771,10 +1763,13 @@ class Map2_0(Map2_0Template):
     anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], data_comp_analysis_al['data'], data_comp_analysis_al['request'])
     
     #Get PDF from Table and start Download
-    mapPDF = app_tables.pictures.search()[0]
-    mapExcel = app_tables.pictures.search()[1]
+    mapPDF = app_tables.pictures.search()[1]
+    mapExcel = app_tables.pictures.search()[0]
     anvil.media.download(mapPDF['pic'])
     anvil.media.download(mapExcel['pic'])
+
+    print(mapPDF['pic'].url)
+    anvil.js.call('show_mun_info', f'<h1>Download Link for Market Study PDF</h1><br><br><p id="toCopyText">{mapPDF["pic"].url}</p><br><button type="button" onClick="copy_to_clipboard()">Copy Link</button><br><br><button type="button" onClick="hide_mun_info()">&#10006;</button>')
 
     
 #####  Button Functions   #####

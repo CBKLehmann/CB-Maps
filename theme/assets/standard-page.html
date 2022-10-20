@@ -81,6 +81,13 @@
     document.getElementById('info').style.display = 'none'
     
   }
+
+  function copy_to_clipboard() {
+    let copyText = document.getElementById('toCopyText')
+    console.log(copyText)
+    navigator.clipboard.writeText(copyText.innerHTML)
+    alert("Copied the text: " + copyText.innerHTML)
+  }
   
   function open_tab(html) {
     
