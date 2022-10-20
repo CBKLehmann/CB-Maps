@@ -1765,9 +1765,12 @@ class Map2_0(Map2_0Template):
     #Get PDF from Table and start Download
     mapPDF = app_tables.pictures.search()[1]
     mapExcel = app_tables.pictures.search()[0]
+    folder = app_files.market_studies
+    file = folder.create_file(f"market_study_{unique_code}", mapPDF['pic'])
     anvil.media.download(mapPDF['pic'])
     anvil.media.download(mapExcel['pic'])
-    anvil.js.call('show_mun_info', f'<h1>Download Link for Market Study PDF</h1><br><br><p id="toCopyText">{mapPDF["pic"].url}</p><br><button type="button" onClick="copy_to_clipboard()">Copy Link</button><br><br><button type="button" onClick="hide_mun_info()">&#10006;</button>')
+    
+    anvil.js.call('show_mun_info', f'<h1>Google Drive Share Link for Market Study PDF</h1><br><br><p id="toCopyText">{file._obj["alternateLink"]}</p><br><button type="button" onClick="copy_to_clipboard()">Copy Link</button><br><br><button type="button" onClick="hide_mun_info()">&#10006;</button>')
 
     
 #####  Button Functions   #####
