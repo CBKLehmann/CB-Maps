@@ -1767,8 +1767,6 @@ class Map2_0(Map2_0Template):
     mapExcel = app_tables.pictures.search()[0]
     anvil.media.download(mapPDF['pic'])
     anvil.media.download(mapExcel['pic'])
-
-    print(mapPDF['pic'].url)
     anvil.js.call('show_mun_info', f'<h1>Download Link for Market Study PDF</h1><br><br><p id="toCopyText">{mapPDF["pic"].url}</p><br><button type="button" onClick="copy_to_clipboard()">Copy Link</button><br><br><button type="button" onClick="hide_mun_info()">&#10006;</button>')
 
     
