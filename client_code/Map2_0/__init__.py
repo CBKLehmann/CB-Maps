@@ -533,6 +533,7 @@ class Map2_0(Map2_0Template):
     zipcode = "n.a."
     district = "n.a."
     city = "n.a."
+    city_alt = "n.a."
     federal_state = "n.a."
     for info in marker_context:
       if "postcode" in info['id'] :
