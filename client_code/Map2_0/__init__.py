@@ -1766,19 +1766,22 @@ class Map2_0(Map2_0Template):
     #Get PDF from Table and start Download
     mapPDF = app_tables.pictures.search()[1]
     mapExcel = app_tables.pictures.search()[0]
-    folder = app_files.market_studies
-    file = folder.create_file(f"market_study_{unique_code}", mapPDF['pic'])
     anvil.media.download(mapPDF['pic'])
     anvil.media.download(mapExcel['pic'])
-    
-    anvil.js.call('show_mun_info', f'<h1>Google Drive Share Link for Market Study PDF</h1><br><br><p id="toCopyText">{file._obj["alternateLink"]}</p><br><button type="button" onClick="copy_to_clipboard()">Copy Link</button><br><br><button type="button" onClick="hide_mun_info()">&#10006;</button>')
+    Variables.unique_code = unique_code
 
+  
+  def upload_mspdf_change(self, file, **event_args):
+    #This method is called when the Dropdown-Menu has changed
+    folder = app_files.market_studies
+    file = folder.create_file(f"market_study_{Variables.unique_code}", file)
+    anvil.js.call('show_mun_info', f'<h1>Google Drive Share Link for Market Study PDF</h1><br><br><p id="toCopyText">{file._obj["alternateLink"]}</p><br><button type="button" onClick="copy_to_clipboard()">Copy Link</button><br><br><button type="button" onClick="hide_mun_info()">&#10006;</button>')
+    self.upload_mspdf.clear()
     
 #####  Button Functions   #####
 ###############################
 #####  Dropdown Functions #####
 
-  #This method is called when the Dropdown-Menu has changed
   def distance_dropdown_change(self, **event_args):
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
     
@@ -3024,3 +3027,4 @@ class Map2_0(Map2_0Template):
     elif checkbox == "Assisted Living DB" and self.pdb_data_al.checked == True:
       Variables.last_bbox_al = self.create_icons(False, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
       Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+

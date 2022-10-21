@@ -59,3 +59,4 @@ activeIso = 0
 marker_icons_checked = 6
 home_address_nh = []
 home_address_al = []
+unique_code = None
