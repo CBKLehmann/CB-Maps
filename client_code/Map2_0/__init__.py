@@ -1612,13 +1612,9 @@ class Map2_0(Map2_0Template):
     t.add_component(CheckBox(text="Assisted Living Analysis", checked=True))
     t.add_component(CheckBox(text="Assisted Living Competitor Analysis", checked=True))
     alert(content=t, title="Choose Pages to create")
-    checkboxes = []
+    checkboxes = {}
     for checkbox in t.get_components():
-      insert_checkbox = {
-        f'{checkbox.text.replace(" ", "_")}': checkbox.checked
-      }
-      checkboxes.append(insert_checkbox)
-    print(checkboxes)
+      checkboxes[f'{checkbox.text.replace(" ", "_")}'] = checkbox.checked
     
     anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, Variables.tm_mode, checkboxes)
 
