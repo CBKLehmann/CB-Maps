@@ -2230,7 +2230,7 @@ class Map2_0(Map2_0Template):
         
           elif category == 'assisted_living':
     
-            geojson = anvil.server.call('get_care_db_data', bbox, 'CareDB_Betreutes_Wohnen')
+            geojson = anvil.server.call('get_care_db_data', bbox, 'BetreutesWohnen')
             Variables.assisted_living_entries = geojson
 
           elif category == 'nursing-schools':
