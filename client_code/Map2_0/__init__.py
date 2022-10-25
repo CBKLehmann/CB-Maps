@@ -1790,11 +1790,13 @@ class Map2_0(Map2_0Template):
     #   anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], data_comp_analysis_al['data'], data_comp_analysis_al['request'])
     
     # #Get PDF from Table and start Download
-    # mapPDF = app_tables.pictures.search()[1]
-    # mapExcel = app_tables.pictures.search()[0]
-    # anvil.media.download(mapPDF['pic'])
-    # anvil.media.download(mapExcel['pic'])
-    # Variables.unique_code = unique_code
+    table = app_tables.pictures.search()
+    print(table)
+    mapPDF = app_tables.pictures.search()[1]
+    mapExcel = app_tables.pictures.search()[0]
+    anvil.media.download(mapPDF['pic'])
+    anvil.media.download(mapExcel['pic'])
+    Variables.unique_code = unique_code
 
   
   def upload_mspdf_change(self, file, **event_args):

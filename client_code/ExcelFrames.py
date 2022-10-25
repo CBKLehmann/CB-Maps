@@ -2987,8 +2987,8 @@ ala_data = {
             },
             {
                 'type': 'text',
-                'insert': 'write',
-                'cell': 'B21',
+                'insert': 'merge',
+                'cell': 'B21:D21',
                 'content': 'Berlin, LK',
                 'format': {
                     'bold': True
