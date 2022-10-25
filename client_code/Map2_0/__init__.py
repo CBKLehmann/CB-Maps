@@ -573,6 +573,7 @@ class Map2_0(Map2_0Template):
 
     #Get Information from Database for County of Marker-Position
     countie_data = anvil.server.call("get_countie_data_from_db", city_alt, marker_coords)
+    print(countie_data)
     countie = countie_data[0][1].split(',')
 
     #Get Entries from Care-Database based on Federal State
@@ -2430,108 +2431,73 @@ class Map2_0(Map2_0Template):
                 )
     
               elif category == 'assisted_living':
-        
-                el_coords = [ele[27], ele[26]]
-    
-                if not ele[19] == '-':
-        
-                  wohnungen = int(float(ele[19]))
-          
-                else:
-              
-                  wohnungen = ele[19]
-                
-                if not ele[20] == '-':
-                  
-                  ezAL = int(float(ele[20]))
-          
-                else:
-              
-                  ezAL = ele[20]
-                
-                if not ele[21] == '-':
-        
-                  dzAL = int(float(ele[21]))
-          
-                else:
-              
-                  dzAL = ele[21]
-                
-                if not ele[21] == '-':
-        
-                  mieteAb = str(int(float(ele[21]))) + ' €'
-          
-                else:
-              
-                  mieteAb = ele[21]
-                
-                if not ele[22] == '-':
-        
-                  mieteBis = str(int(float(ele[22]))) + ' €'
-          
-                else:
-              
-                  mieteBis = ele[22]
+
+                el_coords = [ele['coord_lon'], ele['coord_lat']]
+                wohnungen = "N.A." if ele['anz_wohnungen'] == "-" else ele['anz_wohnungen']
+                ez = "N.A." if ele['ez'] == "-" else ele['ez']
+                dz = "N.A." if ele['dz'] == "-" else ele['dz']
+                miete_ab = "N.A." if ele['miete_ab'] == "-" else f"{ele['miete_ab']} €"
+                miete_bis = "N.A." if ele['miete_bis'] == "-" else f"{ele['miete_bis']} €"
     
                 # Create Popup for Element
                 popup = mapboxgl.Popup({'offset': 25}).setHTML(
-                  f'<b>PM ID: </b> {ele[0]}'
-                  '<br>'
-                  f'<b>Träger ID: </b> {ele[1]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Sektor: </b> {ele[2]}'
-                  '<br>'
-                  f'<b>Art: </b> {ele[9]}'
-                  '<br>'
-                  f'<b>Spezialisierung: </b> {ele[25]}'
-                  '<br>'
-                  f'<b>Status: </b> {ele[3]}'
-                  '<br>'
-                  f'<b>Baujahr: </b> {ele[24]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Name: </b> {ele[4]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Betreiber: </b> {ele[5]}'
-                  '<br>'
-                  f'<b>Tochterfirma 1: </b> {ele[6]}'
-                  '<br>'
-                  f'<b>Tochterfirma 2: </b> {ele[7]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Straße: </b> {ele[9]}'
-                  '<br>'
-                  f'<b>Postleitzahl: </b> {ele[10]}'
-                  '<br>'
-                  f'<b>Ort: </b> {ele[11]}'
-                  '<br>'
-                  f'<b>Bundesland: </b> {ele[12]}'
-                  '<br>'
-                  f'<b>Gemeindeschlüssel: </b> {ele[13]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Telefon: </b> {ele[14]}'
-                  '<br>'
-                  f'<b>Fax: </b> {ele[15]}'
-                  '<br>'
-                  f'<b>E-Mail: </b> {ele[16]}'
-                  '<br>'
-                  f'<b>Webseite: </b> {ele[17]}'
-                  '<br>'
-                  f'<b>Domain: </b> {ele[18]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Anzahl Wohnungen: </b> {wohnungen}'
-                  '<br>'
-                  f'<b>Einzelzimmer: </b> {ezAL}'
-                  '<br>'
-                  f'<b>Doppelzimmer: </b> {dzAL}'
-                  '<br>'
-                  f'<b>Miete ab: </b> {mieteAb}'
-                  '<br>'
-                  f'<b>Miete bis: </b> {mieteBis}'
+                  f"<b>PM ID: </b> {ele['pm_id']}"
+                  "<br>"
+                  f"<b>Träger ID: </b> {ele['traeger_id']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Sektor: </b> {ele['sektor']}"
+                  "<br>"
+                  f"<b>Art: </b> {ele['art']}"
+                  "<br>"
+                  f"<b>Spezialisierung: </b> {ele['spezialisierung']}"
+                  "<br>"
+                  f"<b>Status: </b> {ele['status']}"
+                  "<br>"
+                  f"<b>Baujahr: </b> {ele['baujahr']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Name: </b> {ele['name']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Betreiber: </b> {ele['betreiber']}"
+                  "<br>"
+                  f"<b>Tochterfirma 1: </b> {ele['tochterfirma1']}"
+                  "<br>"
+                  f"<b>Tochterfirma 2: </b> {ele['tochterfirma2']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Straße: </b> {ele['strasse']}"
+                  "<br>"
+                  f"<b>Postleitzahl: </b> {ele['plz']}"
+                  "<br>"
+                  f"<b>Ort: </b> {ele['ort']}"
+                  "<br>"
+                  f"<b>Bundesland: </b> {ele['bundesland']}"
+                  "<br>"
+                  f"<b>Gemeindeschlüssel: </b> {ele['gemeindeschluessel']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Telefon: </b> {ele['telefon']}"
+                  "<br>"
+                  f"<b>Fax: </b> {ele['fax']}"
+                  "<br>"
+                  f"<b>E-Mail: </b> {ele['email']}"
+                  "<br>"
+                  f"<b>Webseite: </b> {ele['webseite']}"
+                  "<br>"
+                  f"<b>Domain: </b> {ele['domain']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Anzahl Wohnungen: </b> {wohnungen}"
+                  "<br>"
+                  f"<b>Einzelzimmer: </b> {ez}"
+                  "<br>"
+                  f"<b>Doppelzimmer: </b> {dz}"
+                  "<br>"
+                  f"<b>Miete ab: </b> {miete_ab}"
+                  "<br>"
+                  f"<b>Miete bis: </b> {miete_bis}"
                 )
 
               elif category == 'nursing-schools':
