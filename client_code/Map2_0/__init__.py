@@ -2326,107 +2326,107 @@ class Map2_0(Map2_0Template):
               # Check if Category is PflegeDB
               elif category == 'nursing_homes':
     
-                el_coords = [ele[46], ele[45]]
+                el_coords = [ele['coord_lon'], ele['coord_lat']]
     
                 # Create Popup for Element
                 popup = mapboxgl.Popup({'offset': 25}).setHTML(
-                  f'<b>PM ID: </b> {ele[0]}'
-                  '<br>'
-                  f'<b>Träger ID: </b> {ele[1]}'
-                  '<br>'
-                  f'<b>IK_Nummer: </b> {ele[2]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Sektor: </b> {ele[3]}'
-                  '<br>'
-                  f'<b>Art: </b> {ele[9]}'
-                  '<br>'
-                  f'<b>Spezialisierung: </b> {ele[44]}'
-                  '<br>'
-                  f'<b>Status: </b> {ele[4]}'
-                  '<br>'
-                  f'<b>Baujahr: </b> {ele[33]}'
-                  '<br>'
-                  f'<b>Modernisierungsjahr: </b> {ele[34]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Name: </b> {ele[5]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Betreiber: </b> {ele[6]}'
-                  '<br>'
-                  f'<b>Tochterfirma 1: </b> {ele[7]}'
-                  '<br>'
-                  f'<b>Tochterfirma 2: </b> {ele[8]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Straße: </b> {ele[10]}'
-                  '<br>'
-                  f'<b>Postleitzahl: </b> {ele[11]}'
-                  '<br>'
-                  f'<b>Ort: </b> {ele[12]}'
-                  '<br>'
-                  f'<b>Bundesland: </b> {ele[13]}'
-                  '<br>'
-                  f'<b>Gemeindeschlüssel: </b> {ele[14]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Telefon: </b> {ele[15]}'
-                  '<br>'
-                  f'<b>Fax: </b> {ele[16]}'
-                  '<br>'
-                  f'<b>E-Mail: </b> {ele[17]}'
-                  '<br>'
-                  f'<b>Webseite: </b> {ele[18]}'
-                  '<br>'
-                  f'<b>Domain: </b> {ele[19]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>MDK Datum: </b> {ele[20]}'
-                  '<br>'
-                  f'<b>Pflege und medizinische Versorgung: </b> {ele[21]}'
-                  '<br>'
-                  f'<b>Umgang mit demenzkranken Bewohnern: </b> {ele[22]}'
-                  '<br>'
-                  f'<b>Soziale Betreuung und Alltagsgestaltung: </b> {ele[23]}'
-                  '<br>'
-                  f'<b>Wohnen, Verpflegung, Hauswirtschaft und Hygiene: </b> {ele[24]}'
-                  '<br>'
-                  f'<b>Befragung der Bewohner: </b> {ele[25]}'
-                  '<br>'
-                  f'<b>MDK Note: </b> {ele[26]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Anzahl versorgte Patienten: </b> {ele[27]}'
-                  '<br>'
-                  f'<b>Platzzahl vollständige Pflege: </b> {ele[28]}'
-                  '<br>'
-                  f'<b>Platzzahl Kurzzeitpflege: </b> {ele[29]}'
-                  '<br>'
-                  f'<b>Platzzahl Nachtpflege: </b> {ele[30]}'
-                  '<br>'
-                  f'<b>Einzelzimmer: </b> {ele[31]}'
-                  '<br>'
-                  f'<b>Doppelzimmer: </b> {ele[32]}'
-                  '<br>'
-                  '<br>'
-                  f'<b>Ausbildungsumlage: </b> {ele[35]}'
-                  '<br>'
-                  f'<b>EEE: </b> {ele[36]}'
-                  '<br>'
-                  f'<b>UuV: </b> {ele[37]}'
-                  '<br>'
-                  f'<b>Invest: </b> {ele[38]}'
-                  '<br>'
-                  f'<b>PG 1: </b> {ele[39]}'
-                  '<br>'
-                  f'<b>PG 2: </b> {ele[40]}'
-                  '<br>'
-                  f'<b>PG 3: </b> {ele[41]}'
-                  '<br>'
-                  f'<b>PG 4: </b> {ele[42]}'
-                  '<br>'
-                  f'<b>PG 5: </b> {ele[43]}'
+                  f"<b>PM ID: </b> {ele['pm_id']}"
+                  "<br>"
+                  f"<b>Träger ID: </b> {ele['traeger_id']}"
+                  "<br>"
+                  f"<b>IK_Nummer: </b> {ele['ik_nummer']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Sektor: </b> {ele['sektor']}"
+                  "<br>"
+                  f"<b>Art: </b> {ele['art']}"
+                  "<br>"
+                  f"<b>Spezialisierung: </b> {ele['spezialisierung']}"
+                  "<br>"
+                  f"<b>Status: </b> {ele['status']}"
+                  "<br>"
+                  f"<b>Baujahr: </b> {ele['baujahr']}"
+                  "<br>"
+                  f"<b>Modernisierungsjahr: </b> {ele['modernisierung']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Name: </b> {ele['name']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Betreiber: </b> {ele['betreiber']}"
+                  "<br>"
+                  f"<b>Tochterfirma 1: </b> {ele['tochterfirma1']}"
+                  "<br>"
+                  f"<b>Tochterfirma 2: </b> {ele['tochterfirma2']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Straße: </b> {ele['strasse']}"
+                  "<br>"
+                  f"<b>Postleitzahl: </b> {ele['plz']}"
+                  "<br>"
+                  f"<b>Ort: </b> {ele['ort']}"
+                  "<br>"
+                  f"<b>Bundesland: </b> {ele['bundesland']}"
+                  "<br>"
+                  f"<b>Gemeindeschlüssel: </b> {ele['gemeindeschluessel']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Telefon: </b> {ele['telefon']}"
+                  "<br>"
+                  f"<b>Fax: </b> {ele['fax']}"
+                  "<br>"
+                  f"<b>E-Mail: </b> {ele['email']}"
+                  "<br>"
+                  f"<b>Webseite: </b> {ele['webseite']}"
+                  "<br>"
+                  f"<b>Domain: </b> {ele['domain']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>MDK Datum: </b> {ele['mdk_datum']}"
+                  "<br>"
+                  f"<b>Pflege und medizinische Versorgung: </b> {ele['pfl_u_med_vers']}"
+                  "<br>"
+                  f"<b>Umgang mit demenzkranken Bewohnern: </b> {ele['umg_mit_dem_bew']}"
+                  "<br>"
+                  f"<b>Soziale Betreuung und Alltagsgestaltung: </b> {ele['soz_betrualltag']}"
+                  "<br>"
+                  f"<b>Wohnen, Verpflegung, Hauswirtschaft und Hygiene: </b> {ele['wohn_verpfl_hausw_hyg']}"
+                  "<br>"
+                  f"<b>Befragung der Bewohner: </b> {ele['befr_bew']}"
+                  "<br>"
+                  f"<b>MDK Note: </b> {ele['mdk_note']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Anzahl versorgte Patienten: </b> {ele['anz_vers_pat']}"
+                  "<br>"
+                  f"<b>Platzzahl vollständige Pflege: </b> {ele['platz_voll_pfl']}"
+                  "<br>"
+                  f"<b>Platzzahl Kurzzeitpflege: </b> {ele['platz_kurzpfl']}"
+                  "<br>"
+                  f"<b>Platzzahl Nachtpflege: </b> {ele['platz_nachtpfl']}"
+                  "<br>"
+                  f"<b>Einzelzimmer: </b> {ele['ez']}"
+                  "<br>"
+                  f"<b>Doppelzimmer: </b> {ele['dz']}"
+                  "<br>"
+                  "<br>"
+                  f"<b>Ausbildungsumlage: </b> {ele['ausbildungsumlage']}"
+                  "<br>"
+                  f"<b>EEE: </b> {ele['eee']}"
+                  "<br>"
+                  f"<b>UuV: </b> {ele['uuv']}"
+                  "<br>"
+                  f"<b>Invest: </b> {ele['invest']}"
+                  "<br>"
+                  f"<b>PG 1: </b> {ele['pg_1']}"
+                  "<br>"
+                  f"<b>PG 2: </b> {ele['pg_2']}"
+                  "<br>"
+                  f"<b>PG 3: </b> {ele['pg_3']}"
+                  "<br>"
+                  f"<b>PG 4: </b> {ele['pg_4']}"
+                  "<br>"
+                  f"<b>PG 5: </b> {ele['pg_5']}"
                 )
     
               elif category == 'assisted_living':
