@@ -852,7 +852,7 @@ class Map2_0(Map2_0Template):
       planning_apartments_adjusted = 0
     facilities_plan_build = facilities_planning + facilities_building
     apartments_plan_build = apartments_planning + apartments_building
-    apartments_per_10k = apartments_adjusted // round(countie_data['ex_dem_lk']['all_compl	'] // 10000)
+    apartments_per_10k = apartments_adjusted // round(countie_data['ex_dem_lk']['all_compl'] // 10000)
       
     #Get Data for apartments in 10km Radius
     apartments_10km = 0
@@ -907,7 +907,7 @@ class Map2_0(Map2_0Template):
     summary_frame['data'][59]['content'] = f"In 2030 the surplus/deficit on beds based on our scenarios is between {beds_surplus} and {beds_surplus_v2} (in average {beds_surplus_30_avg})."
     summary_frame['data'][60]['content'] = f"In 2035 the surplus/deficit on beds based on our scenarios is between {beds_surplus_35} and {beds_surplus_35_v2} (in average {beds_surplus_35_avg})."
     summary_frame['data'][70]['content'] = countie_data['dem_city']['bevoelkerung_ges']
-    summary_frame['data'][72]['content'] = countie_data['ex_dem_lk']['all_compl	']
+    summary_frame['data'][72]['content'] = countie_data['ex_dem_lk']['all_compl']
     summary_frame['data'][73]['content'] = people_u80
     summary_frame['data'][74]['content'] = people_o80
     summary_frame['data'][76]['content'] = care_rate_break_even_raw
@@ -1335,7 +1335,7 @@ class Map2_0(Map2_0Template):
     assliv_frame['data'][40]['content'] = f'Population {countie[0]}'
     assliv_frame['data'][41]['content'] = f'Population {countie[0]}, LK 2022'
     assliv_frame['data'][42]['content'] = f'Population {countie[0]}, LK 2030'
-    assliv_frame['data'][45]['content'] = countie_data['ex_dem_lk	']['all_compl	']
+    assliv_frame['data'][45]['content'] = countie_data['ex_dem_lk']['all_compl']
     assliv_frame['data'][46]['content'] = people_u80
     assliv_frame['data'][47]['content'] = people_o80
     assliv_frame['data'][48]['content'] = people_u80_fc
@@ -2729,7 +2729,6 @@ class Map2_0(Map2_0Template):
       Variables.home_address_al = []
     
     for entry in entries:
-      print(entry)
       if topic == "nursing_homes":
         lat_entry = "%.6f" % float(entry['coord_lat'])
         lng_entry = "%.6f" % float(entry['coord_lon'])
@@ -2776,27 +2775,27 @@ class Map2_0(Map2_0Template):
                 dz = "N/A"
               else:
                 dz = int(entry['dz'])
-              if entry[33] == "-":
+              if entry['baujahr'] == "-":
                 year = "N/A"
               else:
-                year = int(entry[33])
-              if entry[6] == "-":
+                year = int(entry['baujahr'])
+              if entry['betreiber'] == "-":
                 operator = "N/A"
               else:
-                operator = entry[6]
-              if entry[26] == "-":
+                operator = entry['betreiber']
+              if entry['mdk_note'] == "-":
                 mdk = "N/A"
               else:
-                mdk = entry[26]
+                mdk = entry['mdk_note']
               data = {
-                "name": entry[5].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "platz_voll_pfl": platz_voll_pfl,
                 "ez": ez,
                 "dz": dz,
                 "anz_vers_pat": anz_vers_pat,
                 "occupancy": occupancy,
                 "baujahr": year,
-                "status": entry[4],
+                "status": entry['status'],
                 "betreiber": operator.replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "invest": invest,
                 "mdk_note": mdk,
@@ -2805,20 +2804,20 @@ class Map2_0(Map2_0Template):
               data_comp_analysis.append(data)
               break
             elif topic == "assisted_living":
-              if entry[19] == '-':
+              if entry['anz_wohnungen'] == '-':
                 number_apts = 'N/A'
               else:
-                number_apts = int(float(entry[19]))
-              if entry[5] == '-':
+                number_apts = int(float(entry['anz_wohnungen']))
+              if entry['betreiber'] == '-':
                 operator = 'N/A'
               else:
-                operator = entry[5]
+                operator = entry['betreiber']
               data = {
-                "name": entry[4].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "operator": operator.replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                "type": entry[8].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                "city": entry[12].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                "status": entry[3].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                "type": entry['art'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                "city": entry['ort'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                "status": entry['status'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                 "number_apts": number_apts,
                 "coords": [lng_icon, lat_icon]
               }
