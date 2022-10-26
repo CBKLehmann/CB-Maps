@@ -572,20 +572,19 @@ class Map2_0(Map2_0Template):
     marker_coords = dict(self.marker.getLngLat())
 
     #Get Information from Database for County of Marker-Position
-    countie_data = anvil.server.call("get_countie_data_from_db", city_alt, marker_coords)
-    print(countie_data)
-    countie = countie_data[0][1].split(',')
+    countie_data = anvil.server.call("get_countie_data_from_db", marker_coords)
+    countie = countie_data['ex_dem_lk']['name'].split(',')
 
     #Get Entries from Care-Database based on Federal State
-    care_data_federal = anvil.server.call("get_federalstate_data", federal_state, countie_data[0][0])
+    care_data_federal = anvil.server.call("get_federalstate_data", federal_state, countie_data['ex_dem_lk']['key'])
 
     #Get different Values for Assisted Living Analysis and/or Executive Summary
-    people_u80 = int(countie_data[2][80]) + int(countie_data[2][91])
-    people_o80 = int(countie_data[2][102])
-    people_u80_fc = int(countie_data[2][84]) + int(countie_data[2][95])
-    people_o80_fc = int(countie_data[2][106])
-    people_u80_fc_35 = int(countie_data[2][86]) + int(countie_data[2][97])
-    people_o80_fc_35 = int(countie_data[2][108])
+    people_u80 = int(countie_data['dem_fc_lk']['g_65tou70_2020_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2020_abs'])
+    people_o80 = int(countie_data['dem_fc_lk']['g_80plus_2020_abs'])
+    people_u80_fc = int(countie_data['dem_fc_lk']['g_65tou70_2030_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2030_abs'])
+    people_o80_fc = int(countie_data['dem_fc_lk']['g_80plus_2030_abs'])
+    people_u80_fc_35 = int(countie_data['dem_fc_lk']['g_65tou70_2035_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2035_abs'])
+    people_o80_fc_35 = int(countie_data['dem_fc_lk']['g_80plus_2035_abs'])
     change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
     change_u80_raw = change_u80 / 100
     change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
@@ -612,8 +611,8 @@ class Map2_0(Map2_0Template):
     occupancy_lk_raw = occupancy_lk / 100
     free_beds_lk = beds_lk - inpatients_lk
 
-    population_fc = int(countie_data[2][7]) + int(countie_data[2][18]) + int(countie_data[2][29]) + int(countie_data[2][40]) + int(countie_data[2][51]) + int(countie_data[2][62]) + int(countie_data[2][73]) + int(countie_data[2][84]) + int(countie_data[2][95]) + int(countie_data[2][106])
-    population_fc_35 = int(countie_data[2][9]) + int(countie_data[2][20]) + int(countie_data[2][31]) + int(countie_data[2][42]) + int(countie_data[2][53]) + int(countie_data[2][64]) + int(countie_data[2][75]) + int(countie_data[2][86]) + int(countie_data[2][97]) + int(countie_data[2][108])
+    population_fc = int(countie_data['dem_fc_lk']['g_u6_2030_abs']) + int(countie_data['dem_fc_lk']['g_6tou10_2030_abs']) + int(countie_data['dem_fc_lk']['g_10tou16_2030_abs']) + int(countie_data['dem_fc_lk']['g_16tou20_2030_abs']) + int(countie_data['dem_fc_lk']['g_20tou30_2030_abs']) + int(countie_data['dem_fc_lk']['g_30tou50_2030_abs']) + int(countie_data['dem_fc_lk']['g_50tou65_2030_abs']) + int(countie_data['dem_fc_lk']['g_65tou70_2030_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2030_abs']) + int(countie_data['dem_fc_lk']['g_80plus_2030_abs'])
+    population_fc_35 = int(countie_data['dem_fc_lk']['g_u6_2035_abs']) + int(countie_data['dem_fc_lk']['g_6tou10_2035_abs']) + int(countie_data['dem_fc_lk']['g_10tou16_2035_abs']) + int(countie_data['dem_fc_lk']['g_16tou20_2035_abs']) + int(countie_data['dem_fc_lk']['g_20tou30_2035_abs']) + int(countie_data['dem_fc_lk']['g_30tou50_2035_abs']) + int(countie_data['dem_fc_lk']['g_50tou65_2035_abs']) + int(countie_data['dem_fc_lk']['g_65tou70_2035_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2035_abs']) + int(countie_data['dem_fc_lk']['g_80plus_2035_abs'])
   
     #Get organized Coords for both Assisted Living
     coords_al = self.organize_ca_data(Variables.assisted_living_entries, 'assisted_living', lng_lat_marker)
@@ -621,11 +620,11 @@ class Map2_0(Map2_0Template):
     #Get Data for both Assisted Living
     data_comp_analysis_al = self.build_req_string(coords_al, 'assisted_living')   
     
-    nursing_home_rate = float(countie_data[3][8])
+    nursing_home_rate = float(countie_data['pfleg_stat_lk']['heimquote2019'])
     nursing_home_rate_perc = "{:.1f}".format(nursing_home_rate * 100)
     new_r_care_rate_raw = float("{:.3f}".format(inpatients_lk / (people_u80 + people_o80)))
     new_r_care_rate_perc = "{:.1f}".format(new_r_care_rate_raw * 100)
-    new_care_rate_raw = float("{:.3f}".format(inpatients_lk / round((nursing_home_rate * countie_data[0][19]) + 1)))
+    new_care_rate_raw = float("{:.3f}".format(inpatients_lk / round((nursing_home_rate * countie_data['ex_dem_lk']['all_compl']) + 1)))
     new_care_rate_perc = "{:.1f}".format(new_care_rate_raw * 100)
     pat_rec_full_care_fc_30_v1 = round(new_r_care_rate_raw * (people_u80_fc + people_o80_fc))
     care_rate_30_v1_raw = float("{:.3f}".format(pat_rec_full_care_fc_30_v1 / (population_fc * nursing_home_rate)))
@@ -777,7 +776,7 @@ class Map2_0(Map2_0Template):
     
 ################################################Neue Berechnungen################################################
 
-    care_rate_break_even_raw = float("{:.3f}".format((beds_adjusted * 0.95) / (countie_data[0][19] * nursing_home_rate)))
+    care_rate_break_even_raw = float("{:.3f}".format((beds_adjusted * 0.95) / (countie_data['ex_dem_lk']['all_compl'] * nursing_home_rate)))
     care_rate_break_even_perc = "{:.1f}".format(care_rate_break_even_raw * 100)
     care_rate_break_even_30_raw = float("{:.3f}".format((beds_adjusted * 0.95) / (population_fc * nursing_home_rate)))
     care_rate_break_even_30_perc = "{:.1f}".format(care_rate_break_even_30_raw * 100)
@@ -809,7 +808,7 @@ class Map2_0(Map2_0Template):
     without_apartment_planning = 0
     
     #Get Assisted Living Facilities in Countie and inside 10km Radius of Marker
-    al_entries = anvil.server.call("get_al_for_countie", countie_data[0][0])
+    al_entries = anvil.server.call("get_al_for_countie", countie_data['ex_dem_lk']['key'])
     al_list = anvil.server.call("get_all_al_in_10km", lng_lat_marker, al_entries)
 
     #Get Data from Assisted Living Facilities
@@ -853,7 +852,7 @@ class Map2_0(Map2_0Template):
       planning_apartments_adjusted = 0
     facilities_plan_build = facilities_planning + facilities_building
     apartments_plan_build = apartments_planning + apartments_building
-    apartments_per_10k = apartments_adjusted // round(countie_data[0][19] // 10000)
+    apartments_per_10k = apartments_adjusted // round(countie_data['ex_dem_lk']['all_compl	'] // 10000)
       
     #Get Data for apartments in 10km Radius
     apartments_10km = 0
@@ -864,10 +863,10 @@ class Map2_0(Map2_0Template):
     apartments_plan_build_adjusted = build_apartments_adjusted + planning_apartments_adjusted
         
     #Get level, multiplier, surplus, demand and potential for Assisted Living Analysis
-    if countie_data[4][10] < 30001:
+    if countie_data['dem_city']['bevoelkerung_ges'] < 30001:
       level = "national level"
       multiplier = 0.03
-    elif countie_data[4][10] < 260000:
+    elif countie_data['dem_city']['bevoelkerung_ges'] < 260000:
       level = "small city"
       multiplier = 0.05
     else:
@@ -907,8 +906,8 @@ class Map2_0(Map2_0Template):
     summary_frame['data'][38]['content'] = f"In 2035 the number of inpatients will based on our scenarios be between {inpatients_fc_35} and {inpatients_fc_35_v2} (in average about {inpatents_fc_35_avg})."
     summary_frame['data'][59]['content'] = f"In 2030 the surplus/deficit on beds based on our scenarios is between {beds_surplus} and {beds_surplus_v2} (in average {beds_surplus_30_avg})."
     summary_frame['data'][60]['content'] = f"In 2035 the surplus/deficit on beds based on our scenarios is between {beds_surplus_35} and {beds_surplus_35_v2} (in average {beds_surplus_35_avg})."
-    summary_frame['data'][70]['content'] = countie_data[4][10]
-    summary_frame['data'][72]['content'] = countie_data[0][19]
+    summary_frame['data'][70]['content'] = countie_data['dem_city']['bevoelkerung_ges']
+    summary_frame['data'][72]['content'] = countie_data['ex_dem_lk']['all_compl	']
     summary_frame['data'][73]['content'] = people_u80
     summary_frame['data'][74]['content'] = people_o80
     summary_frame['data'][76]['content'] = care_rate_break_even_raw
@@ -1336,7 +1335,7 @@ class Map2_0(Map2_0Template):
     assliv_frame['data'][40]['content'] = f'Population {countie[0]}'
     assliv_frame['data'][41]['content'] = f'Population {countie[0]}, LK 2022'
     assliv_frame['data'][42]['content'] = f'Population {countie[0]}, LK 2030'
-    assliv_frame['data'][45]['content'] = countie_data[0][19]
+    assliv_frame['data'][45]['content'] = countie_data['ex_dem_lk	']['all_compl	']
     assliv_frame['data'][46]['content'] = people_u80
     assliv_frame['data'][47]['content'] = people_o80
     assliv_frame['data'][48]['content'] = people_u80_fc
@@ -1641,7 +1640,7 @@ class Map2_0(Map2_0Template):
     #                       "time": time,
     #                       "movement": movement,
     #                       "countie": countie[0],
-    #                       "population": "{:,}".format(countie_data[0][19]),
+    #                       "population": "{:,}".format(countie_data['ex_dem_lk']['all_compl']),
     #                       "people_u80": "{:,}".format(people_u80),
     #                       "people_o80": "{:,}".format(people_o80),
     #                       "pat_rec_full_care": "{:,}".format(inpatients_lk),
@@ -1670,7 +1669,7 @@ class Map2_0(Map2_0Template):
     #                       "beds_surplus": "{:,}".format(beds_surplus),
     #                       "without_apartment": without_apartment,
     #                       "change_pat_rec": "{:,}".format(change_pat_rec),
-    #                       "city_population": "{:,}".format(countie_data[4][10]),
+    #                       "city_population": "{:,}".format(countie_data['dem_city']['bevoelkerung_ges']),
     #                       "occupancy_lk": "{:,}".format(occupancy_lk),
     #                       "people_u80_fc_35": "{:,}".format(people_u80_fc_35),
     #                       "people_o80_fc_35": "{:,}".format(people_o80_fc_35),
@@ -1715,7 +1714,7 @@ class Map2_0(Map2_0Template):
     #                       "searched_address": searched_address,
     #                       "nh_checked": nh_checked}
     #   sendData_ALAnalysis = {"countie": countie[0],
-    #                         "population": "{:,}".format(countie_data[0][19]),
+    #                         "population": "{:,}".format(countie_data['ex_dem_lk']['all_compl']),
     #                         "people_u80": "{:,}".format(people_u80),
     #                         "people_o80": "{:,}".format(people_o80),
     #                         "apartments": "{:,}".format(apartments),
@@ -2730,12 +2729,13 @@ class Map2_0(Map2_0Template):
       Variables.home_address_al = []
     
     for entry in entries:
+      print(entry)
       if topic == "nursing_homes":
-        lat_entry = "%.6f" % float(entry[45])
-        lng_entry = "%.6f" % float(entry[46])
+        lat_entry = "%.6f" % float(entry['coord_lat'])
+        lng_entry = "%.6f" % float(entry['coord_lon'])
       else:
-        lat_entry = "%.6f" % float(entry[26])
-        lng_entry = "%.6f" % float(entry[27])
+        lat_entry = "%.6f" % float(entry['coord_lat'])
+        lng_entry = "%.6f" % float(entry['coord_lon'])
       for icon in Variables.activeIcons[topic]:
           lng_icon = "%.6f" % icon['_lngLat']['lng']
           lat_icon = "%.6f" % icon['_lngLat']['lat']
@@ -2743,14 +2743,14 @@ class Map2_0(Map2_0Template):
             coords.append([lng_icon, lat_icon])
             counter += 1
             if topic == "nursing_homes":
-              if entry[27] == "-":
+              if entry['anz_vers_pat'] == "-":
                 anz_vers_pat = "N/A"
               else:
-                anz_vers_pat = int(entry[27])
-              if entry[28] == "-":
+                anz_vers_pat = int(entry['anz_vers_pat'])
+              if entry['platz_voll_pfl'] == "-":
                 platz_voll_pfl = "N/A"
               else:
-                platz_voll_pfl = int(entry[28])
+                platz_voll_pfl = int(entry['platz_voll_pfl'])
               if not anz_vers_pat == "N/A" and not platz_voll_pfl == "N/A":
                 occupancy_raw = round((anz_vers_pat * 100) / platz_voll_pfl)
                 if occupancy_raw > 100:
@@ -2758,24 +2758,24 @@ class Map2_0(Map2_0Template):
                 occupancy = f"{occupancy_raw} %"
               else:
                 occupancy = "N/A"
-              if not entry[38] == "-":
-                if len(entry[38]) == 4:
-                  if entry[38].index(".") == 2:
-                    invest = entry[38] + "0"
+              if not entry['invest'] == "-":
+                if len(entry['invest']) == 4:
+                  if entry['invest'].index(".") == 2:
+                    invest = entry['invest'] + "0"
                   else:
-                    invest = entry[38]
+                    invest = entry['invest']
                 else:
-                  invest = entry[38]
+                  invest = entry['invest']
               else:
                 invest = "N/A"
-              if entry[31] == "-":
+              if entry['ez'] == "-":
                 ez = "N/A"
               else:
-                ez = int(entry[31])
-              if entry[32] == "-":
+                ez = int(entry['ez'])
+              if entry['dz'] == "-":
                 dz = "N/A"
               else:
-                dz = int(entry[32])
+                dz = int(entry['dz'])
               if entry[33] == "-":
                 year = "N/A"
               else:
