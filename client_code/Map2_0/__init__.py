@@ -572,11 +572,11 @@ class Map2_0(Map2_0Template):
     marker_coords = dict(self.marker.getLngLat())
 
     #Get Information from Database for County of Marker-Position
-    countie_data = anvil.server.call("get_countie_data_from_db", marker_coords)
+    countie_data = anvil.server.call("get_demographic_district_data", marker_coords)
     countie = countie_data['ex_dem_lk']['name'].split(',')
 
-    #Get Entries from Care-Database based on Federal State
-    care_data_federal = anvil.server.call("get_federalstate_data", federal_state, countie_data['ex_dem_lk']['key'])
+    #Get Entries from Care-Database based on District
+    care_data_district = anvil.server.call("get_care_district_data", countie_data['ex_dem_lk']['key'])
 
     #Get different Values for Assisted Living Analysis and/or Executive Summary
     people_u80 = int(countie_data['dem_fc_lk']['g_65tou70_2020_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2020_abs'])
@@ -598,15 +598,16 @@ class Map2_0(Map2_0Template):
 
     inpatients_lk = 0
     beds_lk = 0
-    for el in care_data_federal:
-      if not el[27] == '-':
-        inpatients_lk += int(el[27])
-      if not el[28] == '-':
-        beds_lk += int(el[28])
-      if not el[29] == '-':
-        beds_lk += int(el[29])
-      if not el[30] == '-':
-        beds_lk += int(el[30])
+    for el in care_data_district:
+      print(el)
+      if not el['anz_vers_pat'] == '-':
+        inpatients_lk += int(el['anz_vers_pat'])
+      if not el['platz_voll_pfl'] == '-':
+        beds_lk += int(el['platz_voll_pfl'])
+      if not el['platz_kurzpfl'] == '-':
+        beds_lk += int(el['platz_kurzpfl'])
+      if not el['platz_nachtpfl'] == '-':
+        beds_lk += int(el['platz_nachtpfl'])
     occupancy_lk = float("{:.2f}".format((inpatients_lk * 100) / beds_lk))
     occupancy_lk_raw = occupancy_lk / 100
     free_beds_lk = beds_lk - inpatients_lk
