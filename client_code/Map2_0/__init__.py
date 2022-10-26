@@ -599,7 +599,6 @@ class Map2_0(Map2_0Template):
     inpatients_lk = 0
     beds_lk = 0
     for el in care_data_district:
-      print(el)
       if not el['anz_vers_pat'] == '-':
         inpatients_lk += int(el['anz_vers_pat'])
       if not el['platz_voll_pfl'] == '-':
@@ -668,58 +667,58 @@ class Map2_0(Map2_0Template):
     #Get Values of Variables for every Entry in Care-Database inside Iso-Layer-Bounding-Box
     for care_entry in care_data_iso:
       beds_amount = 0
-      if not care_entry[27] == '-':
-        inpatients += int(care_entry[27])
-      if care_entry[4] == "aktiv":
+      if not care_entry['anz_vers_pat'] == '-':
+        inpatients += int(care_entry['anz_vers_pat'])
+      if care_entry['status'] == "aktiv":
         nursing_homes_active += 1
-        if not care_entry[28] == "-":
-          beds_active += int(care_entry[28])
-          beds_amount += int(care_entry[28])
-        if not care_entry[29] == "-":
-          beds_active += int(care_entry[29])
-          beds_amount += int(care_entry[29])
-        if not care_entry[30] == "-":
-          beds_active += int(care_entry[30])
-          beds_amount += int(care_entry[30])
+        if not care_entry['platz_voll_pfl'] == "-":
+          beds_active += int(care_entry['platz_voll_pfl'])
+          beds_amount += int(care_entry['platz_voll_pfl'])
+        if not care_entry['platz_kurzpfl'] == "-":
+          beds_active += int(care_entry['platz_kurzpfl'])
+          beds_amount += int(care_entry['platz_kurzpfl'])
+        if not care_entry['platz_nachtpfl'] == "-":
+          beds_active += int(care_entry['platz_nachtpfl'])
+          beds_amount += int(care_entry['platz_nachtpfl'])
         beds.append(beds_amount)
-      elif care_entry[4] == "in Planung":
+      elif care_entry['status'] == "in Planung":
         nursing_homes_planned += 1
-        if not care_entry[28] == "-":
-          beds_planned += int(care_entry[28])
-        if not care_entry[29] == "-":
-          beds_planned += int(care_entry[29])
-        if not care_entry[30] == "-":
-          beds_planned += int(care_entry[30])
-      elif care_entry[4] == "im Bau":
+        if not care_entry['platz_voll_pfl'] == "-":
+          beds_planned += int(care_entry['platz_voll_pfl'])
+        if not care_entry['platz_kurzpfl'] == "-":
+          beds_planned += int(care_entry['platz_kurzpfl'])
+        if not care_entry['platz_nachtpfl'] == "-":
+          beds_planned += int(care_entry['platz_nachtpfl'])
+      elif care_entry['status'] == "im Bau":
         nursing_homes_construct += 1
-        if not care_entry[28] == "-":
-          beds_construct += int(care_entry[28])
-        if not care_entry[29] == "-":
-          beds_construct += int(care_entry[29])
-        if not care_entry[30] == "-":
-          beds_construct += int(care_entry[30])
-      if not care_entry[38] == "-":
-        invest_cost.append(float(care_entry[38]))
-      if not care_entry[6] == "-":
-        if care_entry[9] == "privat":
-          if not care_entry[6] in operator_private:
-            operator_private.append(care_entry[6])
-        elif care_entry[9] == "gemeinnützig":
-          if not care_entry[6] in operator_nonProfit:
-            operator_nonProfit.append(care_entry[6])
-        elif care_entry[9] == "kommunal":
-          if not care_entry[6] in operator_public:
-            operator_public.append(care_entry[6])
-        if not care_entry[6] in operator:
-          operator.append(care_entry[6])
-      if not care_entry[33] == "-":
-        year.append(int(care_entry[33]))
-      if not care_entry[41] == "-":
-        pg3_cost.append(float(care_entry[41]))
-      if not care_entry[36] == "-":
-        copayment_cost.append(float(care_entry[36]))
-      if not care_entry[37] == "-":
-        board_cost.append(float(care_entry[37]))
+        if not care_entry['platz_voll_pfl'] == "-":
+          beds_construct += int(care_entry['platz_voll_pfl'])
+        if not care_entry['platz_kurzpfl'] == "-":
+          beds_construct += int(care_entry['platz_kurzpfl'])
+        if not care_entry['platz_nachtpfl'] == "-":
+          beds_construct += int(care_entry['platz_nachtpfl'])
+      if not care_entry['invest'] == "-":
+        invest_cost.append(float(care_entry['invest']))
+      if not care_entry['betreiber'] == "-":
+        if care_entry['art'] == "privat":
+          if not care_entry['betreiber'] in operator_private:
+            operator_private.append(care_entry['betreiber'])
+        elif care_entry['art'] == "gemeinnützig":
+          if not care_entry['betreiber'] in operator_nonProfit:
+            operator_nonProfit.append(care_entry['betreiber'])
+        elif care_entry['art'] == "kommunal":
+          if not care_entry['betreiber'] in operator_public:
+            operator_public.append(care_entry['betreiber'])
+        if not care_entry['betreiber'] in operator:
+          operator.append(care_entry['betreiber'])
+      if not care_entry['baujahr'] == "-":
+        year.append(int(care_entry['baujahr']))
+      if not care_entry['pg_3'] == "-":
+        pg3_cost.append(float(care_entry['pg_3']))
+      if not care_entry['eee'] == "-":
+        copayment_cost.append(float(care_entry['eee']))
+      if not care_entry['uuv'] == "-":
+        board_cost.append(float(care_entry['uuv']))
 
     #Get Data for Summary and Competitor-Analysis-Piechart
     inpatients_fc = round(pat_rec_full_care_fc_30_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
