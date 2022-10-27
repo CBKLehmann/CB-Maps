@@ -808,28 +808,28 @@ class Map2_0(Map2_0Template):
     without_apartment_planning = 0
     
     #Get Assisted Living Facilities in Countie and inside 10km Radius of Marker
-    al_entries = anvil.server.call("get_al_for_countie", countie_data['ex_dem_lk']['key'])
+    al_entries = anvil.server.call("get_al_for_district", countie_data['ex_dem_lk']['key'])
     al_list = anvil.server.call("get_all_al_in_10km", lng_lat_marker, al_entries)
 
     #Get Data from Assisted Living Facilities
     for el in al_entries:
       facilities_overall += 1
-      if el[3] == "aktiv":
+      if el['status'] == "aktiv":
         facilities_active += 1
-        if not el[19] == "-":
-          apartments += int(float(el[19]))
+        if not el['anz_wohnungen'] == "-":
+          apartments += int(float(el['anz_wohnungen']))
         else:
           without_apartment += 1
-      elif el[3] == "in Planung":
+      elif el['status'] == "in Planung":
         facilities_planning += 1
-        if not el[19] == "-":
-          apartments_planning += int(float(el[19]))
+        if not el['anz_wohnungen'] == "-":
+          apartments_planning += int(float(el['anz_wohnungen']))
         else:
           without_apartment_planning += 1
-      elif el[3] == "im Bau":
+      elif el['status'] == "im Bau":
         facilities_building += 1
-        if not el[19] == "-":
-          apartments_building += int(float(el[19]))
+        if not el['anz_wohnungen'] == "-":
+          apartments_building += int(float(el['anz_wohnungen']))
         else:
           without_apartment_building += 1
     if facilities_building > 0 and apartments_building > 0 and without_apartment_building > 0:
@@ -857,8 +857,8 @@ class Map2_0(Map2_0Template):
     #Get Data for apartments in 10km Radius
     apartments_10km = 0
     for el in al_list:
-      if not el[19] == "-":
-        apartments_10km += int(float(el[19]))
+      if not el['anz_wohnungen'] == "-":
+        apartments_10km += int(float(el['anz_wohnungen']))
         
     apartments_plan_build_adjusted = build_apartments_adjusted + planning_apartments_adjusted
         
