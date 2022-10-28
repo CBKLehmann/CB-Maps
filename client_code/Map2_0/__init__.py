@@ -1791,10 +1791,9 @@ class Map2_0(Map2_0Template):
     
     # #Get PDF from Table and start Download
     table = app_tables.pictures.search()
-    print(table)
-    mapPDF = app_tables.pictures.search()[1]
+    # mapPDF = app_tables.pictures.search()[1]
     mapExcel = app_tables.pictures.search()[0]
-    anvil.media.download(mapPDF['pic'])
+    # anvil.media.download(mapPDF['pic'])
     anvil.media.download(mapExcel['pic'])
     Variables.unique_code = unique_code
 
