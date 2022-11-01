@@ -271,10 +271,9 @@ class Map2_0(Map2_0Template):
   def admin_button_click(self, **event_args): 
 
     date = datetime.datetime.now()
-    anvil.server.call('test_i_love_pdf')
+    # anvil.server.call('test_i_love_pdf')
+    anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self))
     print(date)
-    
-    # anvil.server.call('create_iso_map', Variables.activeIso, self.create_bounding_box())
     
 #     #Call a Server Function
 #     anvil.server.call('manipulate')
