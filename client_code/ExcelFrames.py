@@ -1976,6 +1976,9 @@ summary_data = {
                 }
             },
             {
+              # Insert Progress Chart here
+            },
+            {
                 'type': 'chart',
                 'subtype': 'doughnut',
                 'position': 'F69',
