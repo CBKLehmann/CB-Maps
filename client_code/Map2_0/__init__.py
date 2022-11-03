@@ -1614,7 +1614,8 @@ class Map2_0(Map2_0Template):
     checkboxes = {}
     for checkbox in t.get_components():
       checkboxes[f'{checkbox.text.replace(" ", "_")}'] = checkbox.checked
-    
+
+    anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
     anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, Variables.tm_mode, checkboxes)
 
     if not Variables.tm_mode:
