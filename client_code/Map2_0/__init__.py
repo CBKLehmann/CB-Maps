@@ -272,7 +272,6 @@ class Map2_0(Map2_0Template):
 
     date = datetime.datetime.now()
     # anvil.server.call('test_i_love_pdf')
-    anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self))
     print(date)
     
 #     #Call a Server Function
@@ -891,7 +890,12 @@ class Map2_0(Map2_0Template):
       demand_potential = "strong"
     else:
       demand_potential = "very strong"
-  
+
+    splittet_route = searched_address.split(',')[0].split(' ')
+    street = splittet_route[0]
+    number = splittet_route[1]
+    purchase_power = anvil.server.call('get_purchasing_power', locality=city, postalCode=zipcode,route=street, streetNumber=number, location={'lat': lng_lat_marker['lat'], 'lon': lng_lat_marker['lng']})
+      
     # Copy and Fill Dataframe for Excel-Cover
     cover_frame = copy.deepcopy(ExcelFrames.cover_data)
     cover_frame['data'][1]['content'] = zipcode
