@@ -895,7 +895,7 @@ class Map2_0(Map2_0Template):
     splittet_route = searched_address.split(',')[0].split(' ')
     street = splittet_route[0]
     number = splittet_route[1]
-    purchase_power = anvil.server.call('get_purchasing_power', locality=city, postalCode=zipcode,route=street, streetNumber=number, location={'lat': lng_lat_marker['lat'], 'lon': lng_lat_marker['lng']})
+    purchase_power = anvil.server.call('get_purchasing_power', locality=city, postal_code=zipcode,route=street, street_number=number, location={'lat': lng_lat_marker['lat'], 'lon': lng_lat_marker['lng']})
       
     # Copy and Fill Dataframe for Excel-Cover
     cover_frame = copy.deepcopy(ExcelFrames.cover_data)
@@ -1012,7 +1012,10 @@ class Map2_0(Map2_0Template):
     summary_frame['data'][186]['content'] = beds_adjusted
     summary_frame['data'][187]['content'] = inpatients_fc_35_v2
     summary_frame['data'][188]['content'] = beds_surplus_35_v2
-    summary_frame['data'][190]['file'] = f"tmp/summaryMap_{unique_code}.png"
+    summary_frame['data'][189]['content'] = purchase_power
+    summary_frame['data'][190]['content'] = 100 - purchase_power
+    summary_frame['data'][191]['content'] = purchase_power
+    summary_frame['data'][194]['file'] = f"tmp/summaryMap_{unique_code}.png"
 
 
     # Copy and Fill Dataframe for Nursing Home Competitor Analysis

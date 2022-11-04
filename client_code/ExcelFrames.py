@@ -51,7 +51,7 @@ cover_data = {
     {
       'type': 'image',
       'cell': 'D41',
-      'file': 'img/Logo_Capital Bay_pos.png',
+      'file': 'img/cb_logo.png',
       'style': {}
     }
   ]
@@ -1714,9 +1714,50 @@ summary_data = {
                 }
             },
             {
+                'type': 'text',
+                'insert': 'merge',
+                'cell': 'F29:M30',
+                'content': 0,
+                'format': {
+                    'align': 'center',
+                    'font_size': 20,
+                    'font': "Segoe UI Black",
+                    'num_format': '0.00'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'BB2',
+                'content': 100,
+                'format': {
+                    'num_format': '0.00'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'BB1',
+                'content': 0,
+                'format': {
+                    'num_format': '0.00'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'merge',
+                'cell': 'F27:M28',
+                'content': 'Purchasing Power',
+                'format': {
+                    'align': 'center',
+                    'font_size': 20,
+                    'font': "Segoe UI Black"
+                }
+            },
+            {
                 'type': 'image',
                 'cell': 'K1',
-                'file': 'img/Logo_Capital Bay_pos.png',
+                'file': 'img/cb_logo.png',
                 'style': {
                     'x_scale': .21,
                     'y_scale': .09,
@@ -1976,7 +2017,59 @@ summary_data = {
                 }
             },
             {
-              # Insert Progress Chart here
+                'type': 'chart',
+                'subtype': 'bar',
+                'spec_type': 'stacked',
+                'position': 'F31',
+                'series': [
+                    {
+                        'values': '=SUMMARY!$BB$1',
+                        'fill': {
+                            'color': '#BFB273'
+                        }
+                    },
+                    {
+                        'values': '=SUMMARY!$BB$2',
+                        'fill': {
+                            'color': '#404040'
+                        }
+                    }
+                ],
+                'styles': {
+                    'x_axis': {
+                        'visible': False,
+                        'major_gridlines': {
+                            'visible': False
+                        }
+                    },
+                    'y_axis': {
+                        'visible': False,
+                        'major_gridlines': {
+                            'visible': False
+                        }
+                    },
+                    'legend': {
+                        'none': True
+                    },
+                    'plotarea': {
+                        'layout': {
+                            'x': .1,
+                            'y': 0,
+                            'width': .9,
+                            'height': 1
+                        }
+                    },
+                    'chartarea': {
+                        'border': {
+                            'none': True
+                        }
+                    },
+                    'size': {
+                        'width': 430,
+                        'height': 50
+                    },
+                    'chart': {}
+                }
             },
             {
                 'type': 'chart',
@@ -2082,7 +2175,7 @@ nca_data = {
             {
                 'type': 'image',
                 'cell': 'K1',
-                'file': 'img/Logo_Capital Bay_pos.png',
+                'file': 'img/cb_logo.png',
                 'style': {
                     'x_scale': .21,
                     'y_scale': .09,
@@ -2445,7 +2538,7 @@ ala_data = {
             {
                 'type': 'image',
                 'cell': 'E1',
-                'file': 'img/Logo_Capital Bay_pos.png',
+                'file': 'img/cb_logo.png',
                 'style': {
                     'x_scale': .21,
                     'y_scale': .09,
@@ -4098,7 +4191,7 @@ alca_data = {
             {
                 'type': 'image',
                 'cell': 'F1',
-                'file': 'img/Logo_Capital Bay_pos.png',
+                'file': 'img/cb_logo.png',
                 'style': {
                     'x_scale': .21,
                     'y_scale': .09,
