@@ -272,7 +272,7 @@ class Map2_0(Map2_0Template):
 
     date = datetime.datetime.now()
     # anvil.server.call('test_i_love_pdf')
-    anvil.server.call('test_chart')
+    anvil.server.call('micmaccircle')
     print(date)
     
 #     #Call a Server Function
