@@ -212,7 +212,7 @@ class Map2_0(Map2_0Template):
   #This method is called when one of the Buttons for changing the Map-Style got clicked    
   def radio_button_map_change_clicked(self, **event_args):
     if dict(event_args)['sender'].text == "Satellite Map":
-      self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
+      self.mapbox.setStyle('mapbox://styles/mapbox/light-v11') ##mapbox://styles/mapbox/satellite-streets-v11
     else:
       self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
     self.mapbox.on('load', self.place_layer)
@@ -2324,7 +2324,7 @@ class Map2_0(Map2_0Template):
               # Create HTML Element for Icon
               el = document.createElement('div')
               el.className = 'marker'
-              el.style.width = '32px'
+              el.style.width = '40px'
               el.style.height = '44px'
               el.style.backgroundSize = '100%'
               el.style.backgroundrepeat = 'no-repeat'
