@@ -2325,7 +2325,7 @@ class Map2_0(Map2_0Template):
               el = document.createElement('div')
               el.className = 'marker'
               el.style.width = '32px'
-              el.style.height = '42px'
+              el.style.height = '44px'
               el.style.backgroundSize = '100%'
               el.style.backgroundrepeat = 'no-repeat'
     
