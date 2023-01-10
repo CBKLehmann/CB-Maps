@@ -188,6 +188,8 @@ class Map2_0(Map2_0Template):
       Variables.last_bbox_nh = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
     elif dict(event_args)['sender'].text == "Assisted Living DB":
       Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+    elif dict(event_args)['sender'].text == "Podiatrist":
+      Variables.last_bbox_pdt = self.create_icons(self.check_box_pdt.checked, Variables.last_bbox_pdt, "podiatrist", Variables.icon_podiatrist)
 
 
   #This method is called when the Check Box for POI based on HFCIG is checked or unchecked
