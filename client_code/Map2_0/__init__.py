@@ -43,7 +43,7 @@ class Map2_0(Map2_0Template):
                                 'style': "mapbox://styles/mapbox/outdoors-v11",
                                 'center': [13.4092, 52.5167],
                                 'zoom': 8})
-    self.marker = mapboxgl.Marker({'color': "#0000FF", 'draggable': True})
+    self.marker = mapboxgl.Marker({'color': "#0000FF", 'draggable': True, 'symbol': Variables.icon_assisted_living})
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
     self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
     self.mapbox.addControl(self.geocoder)
@@ -2328,6 +2328,17 @@ class Map2_0(Map2_0Template):
               el.style.height = '25px'
               el.style.backgroundSize = '100%'
               el.style.backgroundrepeat = 'no-repeat'
+
+              marker = document.createElement('div')
+              el.className = 'marker'
+              marker.style.position = 'absolute'
+              marker.style.top = '40%'
+              marker.style.left: '50%'
+              marker.style.marginLeft: '115px'
+              marker.style.borderRadius: '50%'
+              marker.style.border: '8px solid #fff'
+              marker.style.width: '8px'
+              marker.style.height: '8px'
     
               # Create Icon
               el.style.backgroundImage = f'url({picture})'
@@ -2647,7 +2658,7 @@ class Map2_0(Map2_0Template):
                 )
     
               # Add Icon to the Map
-              newicon = mapboxgl.Marker(el).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+              newicon = mapboxgl.Marker(marker).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
     
               # Add current Element-Icon to Icon-Array
               icons.append(newicon)
