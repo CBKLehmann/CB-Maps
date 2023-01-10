@@ -43,7 +43,7 @@ class Map2_0(Map2_0Template):
                                 'style': "mapbox://styles/mapbox/outdoors-v11",
                                 'center': [13.4092, 52.5167],
                                 'zoom': 8})
-    self.marker = mapboxgl.Marker({'color': "#0000FF", 'draggable': True, 'symbol': Variables.icon_assisted_living})
+    self.marker = mapboxgl.Marker({'color': "#2A2A2A", 'draggable': True, 'symbol': Variables.icon_assisted_living})
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
     self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
     self.mapbox.addControl(self.geocoder)
@@ -212,9 +212,11 @@ class Map2_0(Map2_0Template):
   #This method is called when one of the Buttons for changing the Map-Style got clicked    
   def radio_button_map_change_clicked(self, **event_args):
     if dict(event_args)['sender'].text == "Satellite Map":
-      self.mapbox.setStyle('mapbox://styles/mapbox/light-v11') ##mapbox://styles/mapbox/satellite-streets-v11
-    else:
+      self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
+    elif dict(event_args)['sender'].text == "Outdoor-Map":
       self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
+    elif dict(event_args)['sender'].text == "IM-Map":
+      self.mapbox.setStyle('mapbox://styles/shinykampfkeule/clcqbbo8b00ug14s17s6621rf')
     self.mapbox.on('load', self.place_layer)
     
   
@@ -2014,8 +2016,8 @@ class Map2_0(Map2_0Template):
                             'source': 'iso',
                             'layout': {},
                             'paint': {
-                            'fill-color': '#ebb400',
-                            'fill-opacity': 0.3
+                            'fill-color': '#ccb666',
+                            'fill-opacity': .3
                             }
                           })
     
