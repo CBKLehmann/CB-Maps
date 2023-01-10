@@ -2324,8 +2324,8 @@ class Map2_0(Map2_0Template):
               # Create HTML Element for Icon
               el = document.createElement('div')
               el.className = 'marker'
-              el.style.width = '25px'
-              el.style.height = '25px'
+              el.style.width = '32px'
+              el.style.height = '42px'
               el.style.backgroundSize = '100%'
               el.style.backgroundrepeat = 'no-repeat'
     
