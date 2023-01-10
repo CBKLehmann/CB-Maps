@@ -2330,18 +2330,21 @@ class Map2_0(Map2_0Template):
               el.style.backgroundrepeat = 'no-repeat'
 
               marker = document.createElement('div')
-              el.className = 'marker'
+              marker.className = 'marker'
               marker.style.position = 'absolute'
               marker.style.top = '40%'
-              marker.style.left: '50%'
-              marker.style.marginLeft: '115px'
-              marker.style.borderRadius: '50%'
-              marker.style.border: '8px solid #fff'
-              marker.style.width: '8px'
-              marker.style.height: '8px'
+              marker.style.left = '50%'
+              marker.style.marginLeft = '115px'
+              marker.style.borderRadius = '50%'
+              marker.style.border = '8px solid #000'
+              marker.style.width = '8px'
+              marker.style.height = '8px'
+              marker.innerHTML = ".marker::after {position: absolute;content: '';width: 0px;height: 0px;bottom: -30px;left: -6px;border: 10px solid transparent;border-top: 17px solid #fff;}"
+
+              el.appendChild(marker)
     
               # Create Icon
-              el.style.backgroundImage = f'url({picture})'
+              # el.style.backgroundImage = f'url({picture})'
     
               # Check if Category is not PflegeDB
               if not category == 'nursing_homes':
@@ -2658,7 +2661,7 @@ class Map2_0(Map2_0Template):
                 )
     
               # Add Icon to the Map
-              newicon = mapboxgl.Marker(marker).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+              newicon = mapboxgl.Marker(el).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
     
               # Add current Element-Icon to Icon-Array
               icons.append(newicon)
