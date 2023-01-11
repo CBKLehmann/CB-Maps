@@ -37,6 +37,10 @@ class Map2_0(Map2_0Template):
   
   def form_show(self, **event_args):
     # Initiate Map and set Listener on Page Load
+
+    self.select_all_hc.tag.categorie = 'Healthcare'
+    self.select_all_misc.tag.categorie = 'Miscelaneous'
+    self.select_all_opnv.tag.categorie = 'ÖPNV'
     
     mapboxgl.accessToken = self.token
     self.mapbox = mapboxgl.Map({'container': self.dom,
@@ -1665,10 +1669,22 @@ class Map2_0(Map2_0Template):
           year_of_construction_comp += entry[0]['baujahr']
           year_of_construction_comp_amount += 1
 
-    ez_rate_comp = round(ez_rate_comp / ez_comp_amount)
-    i_cost_comp = round(i_cost_comp / i_cost_comp_amount, 2)
-    occupancy_comp = round(occupancy_comp /occupancy_comp_amount)
-    year_of_construction_comp = round(year_of_construction_comp / year_of_construction_comp_amount)
+    if not ez_comp_amount == 0:
+      ez_rate_comp = round(ez_rate_comp / ez_comp_amount)
+    else:
+      ez_rate_comp = 0
+    if not i_cost_comp_amount == 0:
+      i_cost_comp = round(i_cost_comp / i_cost_comp_amount, 2)
+    else:
+      i_cost_comp = 0
+    if not occupancy_comp_amount == 0:
+      occupancy_comp = round(occupancy_comp /occupancy_comp_amount)
+    else:
+      occupancy_comp = 0
+    if not year_of_construction_comp_amount == 0:
+      year_of_construction_comp = round(year_of_construction_comp / year_of_construction_comp_amount)
+    else:
+      year_of_construction_comp = 0
 
     print('###### Asset ######')
     print(f'ez_rate_asset: {ez_rate_asset}')
@@ -3091,3 +3107,41 @@ class Map2_0(Map2_0Template):
     elif checkbox == "Assisted Living DB" and self.pdb_data_al.checked == True:
       Variables.last_bbox_al = self.create_icons(False, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
       Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+
+  def select_all_change(self, **event_args):
+    if event_args['sender'].tag.categorie == 'Healthcare':
+        self.check_box_vet.checked = event_args['sender'].checked
+        self.check_box_soc.checked = event_args['sender'].checked
+        self.check_box_pha.checked = event_args['sender'].checked
+        self.check_box_hos.checked = event_args['sender'].checked
+        self.check_box_cli.checked = event_args['sender'].checked
+        self.check_box_den.checked = event_args['sender'].checked
+        self.check_box_doc.checked = event_args['sender'].checked
+        self.check_box_nsc.checked = event_args['sender'].checked
+        self.check_box_pdt.checked = event_args['sender'].checked
+        self.check_box_hd.checked = event_args['sender'].checked
+        self.check_box_vet.raise_event('change')
+        self.check_box_soc.raise_event('change')
+        self.check_box_pha.raise_event('change')
+        self.check_box_hos.raise_event('change')
+        self.check_box_cli.raise_event('change')
+        self.check_box_den.raise_event('change')
+        self.check_box_doc.raise_event('change')
+        self.check_box_nsc.raise_event('change')
+        self.check_box_pdt.raise_event('change')
+        self.check_box_hd.raise_event('change')
+    elif event_args['sender'].tag.categorie == 'Miscelaneous':
+      self.check_box_sma.checked = event_args['sender'].checked
+      self.check_box_res.checked = event_args['sender'].checked
+      self.check_box_cafe.checked = event_args['sender'].checked
+      self.check_box_uni.checked = event_args['sender'].checked
+      self.check_box_sma.raise_event('change')
+      self.check_box_res.raise_event('change')
+      self.check_box_cafe.raise_event('change')
+      self.check_box_uni.raise_event('change')
+    elif event_args['sender'].tag.categorie == 'ÖPNV':
+      self.check_box_bus.checked = event_args['sender'].checked
+      self.check_box_tra.checked = event_args['sender'].checked
+      self.check_box_bus.raise_event('change')
+      self.check_box_tra.raise_event('change')
+    pass

@@ -360,6 +360,14 @@ components:
         components:
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+            foreground: '', allow_indeterminate: false, visible: true, text: select all,
+            font_size: null, font: '', spacing_above: small, spacing_below: small,
+            italic: false, background: '', bold: false, checked: false, underline: false}
+          name: select_all_hc
+          layout_properties: {}
+          event_bindings: {change: select_all_change}
+        - type: CheckBox
+          properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: veterinary,
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
@@ -382,14 +390,6 @@ components:
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_pha
           layout_properties: {grid_position: 'JJBYJR,ZOJXFK'}
-          event_bindings: {change: check_box_poi_change}
-        - type: CheckBox
-          properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-            foreground: '', allow_indeterminate: false, visible: true, text: nursing-home,
-            font_size: null, font: '', spacing_above: small, spacing_below: small,
-            italic: false, background: '', bold: false, checked: false, underline: false}
-          name: check_box_nur
-          layout_properties: {grid_position: 'VNCKHP,IDRKGC'}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -468,6 +468,14 @@ components:
         components:
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+            foreground: '', allow_indeterminate: false, visible: true, text: select all,
+            font_size: null, font: '', spacing_above: small, spacing_below: small,
+            italic: false, background: '', bold: false, checked: false, underline: false}
+          name: select_all_misc
+          layout_properties: {}
+          event_bindings: {change: select_all_change}
+        - type: CheckBox
+          properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: supermarket,
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
@@ -517,6 +525,14 @@ components:
         name: opnv_container
         layout_properties: {grid_position: 'IVRQEB,XXWHKW'}
         components:
+        - type: CheckBox
+          properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+            foreground: '', allow_indeterminate: false, visible: true, text: select all,
+            font_size: null, font: '', spacing_above: small, spacing_below: small,
+            italic: false, background: '', bold: false, checked: false, underline: false}
+          name: select_all_opnv
+          layout_properties: {}
+          event_bindings: {change: select_all_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
             foreground: '', allow_indeterminate: false, visible: true, text: bus stop,
