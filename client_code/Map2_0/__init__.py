@@ -1699,7 +1699,7 @@ class Map2_0(Map2_0Template):
     home = False
     for nursing_home in nursing_homes_federal_state:
       for facility in home_facilities:
-        if facility['name'] == nursing_home['name']:
+        if facility[0]['name'] == nursing_home['name']:
           home = True
       if not home:
         if not entry[0]['ez'] == 'N/A':
@@ -1722,15 +1722,15 @@ class Map2_0(Map2_0Template):
     if not i_cost_state_amount == 0:
       i_cost_state = round(i_cost_state / i_cost_state_amount, 2)
     else:
-      i_cost_comp = 0
-    if not occupancy_comp_amount == 0:
-      occupancy_comp = round(occupancy_comp /occupancy_comp_amount)
+      i_cost_state = 0
+    if not occupancy_state_amount == 0:
+      occupancy_state = round(occupancy_state /occupancy_state_amount)
     else:
-      occupancy_comp = 0
-    if not year_of_construction_comp_amount == 0:
-      year_of_construction_comp = round(year_of_construction_comp / year_of_construction_comp_amount)
+      occupancy_state = 0
+    if not year_of_construction_state_amount == 0:
+      year_of_construction_state = round(year_of_construction_state / year_of_construction_state_amount)
     else:
-      year_of_construction_comp = 0
+      year_of_construction_state = 0
     
     print('###### Asset ######')
     print(f'ez_rate_asset: {ez_rate_asset}')
@@ -1746,6 +1746,15 @@ class Map2_0(Map2_0Template):
     print(f'occupancy_comp_amount: {occupancy_comp_amount}')
     print(f'year_of_construction_comp: {year_of_construction_comp}')
     print(f'year_of_construction_comp_amount: {year_of_construction_comp_amount}')
+    print('###### Federal State ######')
+    print(f'ez_rate_state: {ez_rate_state}')
+    print(f'ez_state_amount: {ez_state_amount}')
+    print(f'i_cost_state: {i_cost_asset}')
+    print(f'i_cost_comp_amount: {i_cost_state_amount}')
+    print(f'occupancy_state: {occupancy_asset}')
+    print(f'occupancy_state_amount: {occupancy_state_amount}')
+    print(f'year_of_construction_state: {year_of_construction_state}')
+    print(f'year_of_construction_state_amount: {year_of_construction_state_amount}')
       
   ##### Analysis Addition to Market Study #####
     
