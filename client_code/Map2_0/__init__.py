@@ -1630,134 +1630,191 @@ class Map2_0(Map2_0Template):
       checkboxes[f'{checkbox.text.replace(" ", "_")}'] = checkbox.checked
 
     ##### Analysis Addition to Market Study #####
-    # print(data_comp_analysis_nh['data'])
-    # print(data_comp_analysis_al['data'])
-
-    ez_rate_asset = 0
-    ez_rate_comp = 0
-    ez_comp_amount = 0
-    ez_rate_state = 0
-    ez_state_amount = 0
-    i_cost_asset = 0
-    i_cost_comp = 0
-    i_cost_comp_amount = 0
-    i_cost_state = 0
-    i_cost_state_amount = 0
-    occupancy_asset = 0
-    occupancy_comp = 0
-    occupancy_comp_amount = 0
-    occupancy_state = 0
-    occupancy_state_amount = 0
-    year_of_construction_asset = 0
-    year_of_construction_comp = 0
-    year_of_construction_comp_amount = 0
-    year_of_construction_state = 0
-    year_of_construction_state_amount = 0
 
     home_facilities = []
+    
+    ez_rate_asset = 0
+    i_cost_asset = 0
+    occupancy_asset = 0
+    year_of_construction_asset = 0
+    ez_total_comp = 0
+    room_total_comp = 0
+    ez_weight_avg_comp = 0
     
     for entry in data_comp_analysis_nh['data']:
       if entry[len(entry) - 1] == 'home':
         home_facilities.append(entry)
-        ez_rate_asset = entry[0]['ez']
+        if entry[0]['ez'] == 'N/A':
+          ez_rate_asset = 0
+        elif entry[0]['dz'] == 'N/A':
+          ez_rate_asset = 100
+        else:
+          ez_rate_asset = round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz'])))
         i_cost_asset = float(entry[0]['invest'])
         occupancy_asset = int(entry[0]['occupancy'].split(" ")[0])
         year_of_construction_asset = entry[0]['baujahr']
       else:
-        if not entry[0]['ez'] == 'N/A':
-          ez_rate_comp += int(entry[0]['ez'])
-          ez_comp_amount += 1
-        if not entry[0]['invest'] == 'N/A':
-          i_cost_comp += float(entry[0]['invest'])
-          i_cost_comp_amount += 1
-        if not entry[0]['occupancy'] == 'N/A':
-          occupancy_comp += float(entry[0]['occupancy'].split(" ")[0])
-          occupancy_comp_amount += 1
-        if not entry[0]['baujahr'] == 'N/A':
-          year_of_construction_comp += entry[0]['baujahr']
-          year_of_construction_comp_amount += 1
+        if entry[0]['dz'] == 'N/A':
+          if not entry[0]['ez'] == 'N/A':
+            ez_total_comp += int(entry[0]['ez'])
+            room_total_comp += int(entry[0]['ez'])
+        elif not entry[0]['ez'] == 'N/A':
+          ez_total_comp += int(entry[0]['ez'])
+          room_total_comp += (int(entry[0]['ez']) + int(entry[0]['dz']))
+        # if not entry[0]['invest'] == 'N/A':
+        #   i_cost_comp += float(entry[0]['invest'])
+        #   i_cost_comp_amount += 1
+        # if not entry[0]['occupancy'] == 'N/A':
+        #   occupancy_comp += float(entry[0]['occupancy'].split(" ")[0])
+        #   occupancy_comp_amount += 1
+        # if not entry[0]['baujahr'] == 'N/A':
+        #   year_of_construction_comp += entry[0]['baujahr']
+        #   year_of_construction_comp_amount += 1
 
-    if not ez_comp_amount == 0:
-      ez_rate_comp = round(ez_rate_comp / ez_comp_amount)
-    else:
-      ez_rate_comp = 0
-    if not i_cost_comp_amount == 0:
-      i_cost_comp = round(i_cost_comp / i_cost_comp_amount, 2)
-    else:
-      i_cost_comp = 0
-    if not occupancy_comp_amount == 0:
-      occupancy_comp = round(occupancy_comp /occupancy_comp_amount)
-    else:
-      occupancy_comp = 0
-    if not year_of_construction_comp_amount == 0:
-      year_of_construction_comp = round(year_of_construction_comp / year_of_construction_comp_amount)
-    else:
-      year_of_construction_comp = 0
+    ez_weight_avg_comp = round(100 + (((ez_total_comp / room_total_comp) - 1) * 100))
+    print(ez_weight_avg_comp)
+      
+    ###Old###
+    # ez_rate_asset = 0
+    # ez_rate_comp = 0
+    # ez_comp_amount = 0
+    # ez_rate_state = 0
+    # ez_state_amount = 0
+    # i_cost_asset = 0
+    # i_cost_comp = 0
+    # i_cost_comp_amount = 0
+    # i_cost_state = 0
+    # i_cost_state_amount = 0
+    # occupancy_asset = 0
+    # occupancy_comp = 0
+    # occupancy_comp_amount = 0
+    # occupancy_state = 0
+    # occupancy_state_amount = 0
+    # year_of_construction_asset = 0
+    # year_of_construction_comp = 0
+    # year_of_construction_comp_amount = 0
+    # year_of_construction_state = 0
+    # year_of_construction_state_amount = 0
 
-    nursing_homes_federal_state = anvil.server.call('get_nursing_homes_federal_states', federal_state)
-
-    home = False
-    for nursing_home in nursing_homes_federal_state:
-      print(nursing_home)
-      for facility in home_facilities:
-        if facility[0]['name'] == nursing_home['name']:
-          home = True
-      if not home:
-        if not nursing_home['ez'] == '-':
-          ez_rate_state += int(nursing_home['ez'])
-          ez_state_amount += 1
-        if not nursing_home['invest'] == '-':
-          i_cost_state += float(nursing_home['invest'])
-          i_cost_state_amount += 1
-        if not nursing_home['anz_vers_pat'] == '-' and not nursing_home['platz_voll_pfl'] == '-':
-          occupancy_state += float((int(nursing_home['anz_vers_pat']) * 100) / int(nursing_home['platz_voll_pfl']))
-          occupancy_state_amount += 1
-        if not nursing_home['baujahr'] == '-':
-          year_of_construction_state += int(nursing_home['baujahr'])
-          year_of_construction_state_amount += 1
-      else:
-        home = False
-
-    if not ez_state_amount == 0:
-      ez_rate_state = round(ez_rate_state / ez_state_amount)
-    else:
-      ez_rate_state = 0
-    if not i_cost_state_amount == 0:
-      i_cost_state = round(i_cost_state / i_cost_state_amount, 2)
-    else:
-      i_cost_state = 0
-    if not occupancy_state_amount == 0:
-      occupancy_state = round(occupancy_state /occupancy_state_amount)
-    else:
-      occupancy_state = 0
-    if not year_of_construction_state_amount == 0:
-      year_of_construction_state = round(year_of_construction_state / year_of_construction_state_amount)
-    else:
-      year_of_construction_state = 0
+    # home_facilities = []
     
-    print('###### Asset ######')
-    print(f'ez_rate_asset: {ez_rate_asset}')
-    print(f'i_cost_asset: {i_cost_asset}')
-    print(f'occupancy_asset: {occupancy_asset}')
-    print(f'year_of_construction_asset: {year_of_construction_asset}')
-    print('###### Competitors ######')
-    print(f'ez_rate_comp: {ez_rate_comp}')
-    print(f'ez_comp_amount: {ez_comp_amount}')
-    print(f'i_cost_comp: {i_cost_comp}')
-    print(f'i_cost_comp_amount: {i_cost_comp_amount}')
-    print(f'occupancy_comp: {occupancy_comp}')
-    print(f'occupancy_comp_amount: {occupancy_comp_amount}')
-    print(f'year_of_construction_comp: {year_of_construction_comp}')
-    print(f'year_of_construction_comp_amount: {year_of_construction_comp_amount}')
-    print('###### Federal State ######')
-    print(f'ez_rate_state: {ez_rate_state}')
-    print(f'ez_state_amount: {ez_state_amount}')
-    print(f'i_cost_state: {i_cost_asset}')
-    print(f'i_cost_comp_amount: {i_cost_state_amount}')
-    print(f'occupancy_state: {occupancy_state}')
-    print(f'occupancy_state_amount: {occupancy_state_amount}')
-    print(f'year_of_construction_state: {year_of_construction_state}')
-    print(f'year_of_construction_state_amount: {year_of_construction_state_amount}')
+    # for entry in data_comp_analysis_nh['data']:
+    #   if entry[len(entry) - 1] == 'home':
+    #     home_facilities.append(entry)
+    #     if entry[0]['ez'] == 'N/A':
+    #       ez_rate_asset = 0
+    #     elif entry[0]['dz'] == 'N/A':
+    #       ez_rate_asset = 100
+    #     else:
+    #       ez_rate_asset = round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz'])))
+    #     i_cost_asset = float(entry[0]['invest'])
+    #     occupancy_asset = int(entry[0]['occupancy'].split(" ")[0])
+    #     year_of_construction_asset = entry[0]['baujahr']
+    #   else:
+    #     if entry[0]['dz'] == 'N/A':
+    #       if not entry[0]['ez'] == 'N/A':
+    #         print(entry[0]['ez'])
+    #         print('##############################')
+    #         ez_rate_comp += 100
+    #         ez_comp_amount += int(entry[0]['ez'])
+    #     elif not entry[0]['ez'] == 'N/A':
+    #       print(entry[0]['ez'])
+    #       print(entry[0]['dz'])
+    #       ez_rate_comp += round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz'])))
+    #       ez_comp_amount += int(entry[0]['ez'])
+    #       print(round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz']))))
+    #       print('##############################')
+    #     if not entry[0]['invest'] == 'N/A':
+    #       i_cost_comp += float(entry[0]['invest'])
+    #       i_cost_comp_amount += 1
+    #     if not entry[0]['occupancy'] == 'N/A':
+    #       occupancy_comp += float(entry[0]['occupancy'].split(" ")[0])
+    #       occupancy_comp_amount += 1
+    #     if not entry[0]['baujahr'] == 'N/A':
+    #       year_of_construction_comp += entry[0]['baujahr']
+    #       year_of_construction_comp_amount += 1
+
+    # if not ez_comp_amount == 0:
+    #   ez_rate_comp = round(ez_rate_comp / ez_comp_amount)
+    # else:
+    #   ez_rate_comp = 0
+    # if not i_cost_comp_amount == 0:
+    #   i_cost_comp = round(i_cost_comp / i_cost_comp_amount, 2)
+    # else:
+    #   i_cost_comp = 0
+    # if not occupancy_comp_amount == 0:
+    #   occupancy_comp = round(occupancy_comp /occupancy_comp_amount)
+    # else:
+    #   occupancy_comp = 0
+    # if not year_of_construction_comp_amount == 0:
+    #   year_of_construction_comp = round(year_of_construction_comp / year_of_construction_comp_amount)
+    # else:
+    #   year_of_construction_comp = 0
+
+    # nursing_homes_federal_state = anvil.server.call('get_nursing_homes_federal_states', federal_state)
+
+    # home = False
+    # for nursing_home in nursing_homes_federal_state:
+    #   # print(nursing_home)
+    #   for facility in home_facilities:
+    #     if facility[0]['name'] == nursing_home['name']:
+    #       home = True
+    #   if not home:
+    #     if not nursing_home['ez'] == '-':
+    #       ez_rate_state += int(nursing_home['ez'])
+    #       ez_state_amount += 1
+    #     if not nursing_home['invest'] == '-':
+    #       i_cost_state += float(nursing_home['invest'])
+    #       i_cost_state_amount += 1
+    #     if not nursing_home['anz_vers_pat'] == '-' and not nursing_home['platz_voll_pfl'] == '-':
+    #       occupancy_state += float((int(nursing_home['anz_vers_pat']) * 100) / int(nursing_home['platz_voll_pfl']))
+    #       occupancy_state_amount += 1
+    #     if not nursing_home['baujahr'] == '-':
+    #       year_of_construction_state += int(nursing_home['baujahr'])
+    #       year_of_construction_state_amount += 1
+    #   else:
+    #     home = False
+
+    # if not ez_state_amount == 0:
+    #   ez_rate_state = round(ez_rate_state / ez_state_amount)
+    # else:
+    #   ez_rate_state = 0
+    # if not i_cost_state_amount == 0:
+    #   i_cost_state = round(i_cost_state / i_cost_state_amount, 2)
+    # else:
+    #   i_cost_state = 0
+    # if not occupancy_state_amount == 0:
+    #   occupancy_state = round(occupancy_state /occupancy_state_amount)
+    # else:
+    #   occupancy_state = 0
+    # if not year_of_construction_state_amount == 0:
+    #   year_of_construction_state = round(year_of_construction_state / year_of_construction_state_amount)
+    # else:
+    #   year_of_construction_state = 0
+    
+    # print('###### Asset ######')
+    # print(f'ez_rate_asset: {ez_rate_asset}')
+    # print(f'i_cost_asset: {i_cost_asset}')
+    # print(f'occupancy_asset: {occupancy_asset}')
+    # print(f'year_of_construction_asset: {year_of_construction_asset}')
+    # print('###### Competitors ######')
+    # print(f'ez_rate_comp: {ez_rate_comp}')
+    # print(f'ez_comp_amount: {ez_comp_amount}')
+    # print(f'i_cost_comp: {i_cost_comp}')
+    # print(f'i_cost_comp_amount: {i_cost_comp_amount}')
+    # print(f'occupancy_comp: {occupancy_comp}')
+    # print(f'occupancy_comp_amount: {occupancy_comp_amount}')
+    # print(f'year_of_construction_comp: {year_of_construction_comp}')
+    # print(f'year_of_construction_comp_amount: {year_of_construction_comp_amount}')
+    # print('###### Federal State ######')
+    # print(f'ez_rate_state: {ez_rate_state}')
+    # print(f'ez_state_amount: {ez_state_amount}')
+    # print(f'i_cost_state: {i_cost_asset}')
+    # print(f'i_cost_comp_amount: {i_cost_state_amount}')
+    # print(f'occupancy_state: {occupancy_state}')
+    # print(f'occupancy_state_amount: {occupancy_state_amount}')
+    # print(f'year_of_construction_state: {year_of_construction_state}')
+    # print(f'year_of_construction_state_amount: {year_of_construction_state_amount}')
       
   ##### Analysis Addition to Market Study #####
     
