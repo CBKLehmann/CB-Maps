@@ -1637,20 +1637,28 @@ class Map2_0(Map2_0Template):
     ez_rate_comp = 0
     ez_comp_amount = 0
     ez_rate_state = 0
+    ez_state_amount = 0
     i_cost_asset = 0
     i_cost_comp = 0
     i_cost_comp_amount = 0
     i_cost_state = 0
+    i_cost_state_amount = 0
     occupancy_asset = 0
     occupancy_comp = 0
     occupancy_comp_amount = 0
+    occupancy_state = 0
+    occupancy_state_amount = 0
     year_of_construction_asset = 0
     year_of_construction_comp = 0
     year_of_construction_comp_amount = 0
+    year_of_construction_state = 0
+    year_of_construction_state_amount = 0
+
+    home_facilities = []
     
     for entry in data_comp_analysis_nh['data']:
       if entry[len(entry) - 1] == 'home':
-        print(entry)
+        home_facilities.append(entry)
         ez_rate_asset = entry[0]['ez']
         i_cost_asset = float(entry[0]['invest'])
         occupancy_asset = int(entry[0]['occupancy'].split(" ")[0])
@@ -1686,6 +1694,44 @@ class Map2_0(Map2_0Template):
     else:
       year_of_construction_comp = 0
 
+    nursing_homes_federal_state = anvil.server.call('get_nursing_homes_federal_states', federal_state)
+
+    home = False
+    for nursing_home in nursing_homes_federal_state:
+      for facility in home_facilities:
+        if facility['name'] == nursing_home['name']:
+          home = True
+      if not home:
+        if not entry[0]['ez'] == 'N/A':
+          ez_rate_state += int(entry[0]['ez'])
+          ez_state_amount += 1
+        if not entry[0]['invest'] == 'N/A':
+          i_cost_state += float(entry[0]['invest'])
+          i_cost_state_amount += 1
+        if not entry[0]['occupancy'] == 'N/A':
+          occupancy_state += float(entry[0]['occupancy'].split(" ")[0])
+          occupancy_state_amount += 1
+        if not entry[0]['baujahr'] == 'N/A':
+          year_of_construction_state += entry[0]['baujahr']
+          year_of_construction_state_amount += 1
+
+    if not ez_state_amount == 0:
+      ez_rate_state = round(ez_rate_state / ez_state_amount)
+    else:
+      ez_rate_state = 0
+    if not i_cost_state_amount == 0:
+      i_cost_state = round(i_cost_state / i_cost_state_amount, 2)
+    else:
+      i_cost_comp = 0
+    if not occupancy_comp_amount == 0:
+      occupancy_comp = round(occupancy_comp /occupancy_comp_amount)
+    else:
+      occupancy_comp = 0
+    if not year_of_construction_comp_amount == 0:
+      year_of_construction_comp = round(year_of_construction_comp / year_of_construction_comp_amount)
+    else:
+      year_of_construction_comp = 0
+    
     print('###### Asset ######')
     print(f'ez_rate_asset: {ez_rate_asset}')
     print(f'i_cost_asset: {i_cost_asset}')
