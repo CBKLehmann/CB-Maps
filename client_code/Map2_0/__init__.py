@@ -1697,22 +1697,19 @@ class Map2_0(Map2_0Template):
     nursing_homes_federal_state = anvil.server.call('get_nursing_homes_federal_states', federal_state)
 
     home = False
-    index = 0
     for nursing_home in nursing_homes_federal_state:
-      index += 1
       print(nursing_home)
       for facility in home_facilities:
         if facility[0]['name'] == nursing_home['name']:
           home = True
       if not home:
-        print(index)
         if not nursing_home['ez'] == '-':
           ez_rate_state += int(nursing_home['ez'])
           ez_state_amount += 1
         if not nursing_home['invest'] == '-':
           i_cost_state += float(nursing_home['invest'])
           i_cost_state_amount += 1
-        if not nursing_home['anz_vers_pat'] == '-' and not nursing_home['platz_voll_pfl']:
+        if not nursing_home['anz_vers_pat'] == '-' and not nursing_home['platz_voll_pfl'] == '-':
           occupancy_state += float((int(nursing_home['anz_vers_pat']) * 100) / int(nursing_home['platz_voll_pfl']))
           occupancy_state_amount += 1
         if not nursing_home['baujahr'] == '-':
@@ -1757,7 +1754,7 @@ class Map2_0(Map2_0Template):
     print(f'ez_state_amount: {ez_state_amount}')
     print(f'i_cost_state: {i_cost_asset}')
     print(f'i_cost_comp_amount: {i_cost_state_amount}')
-    print(f'occupancy_state: {occupancy_asset}')
+    print(f'occupancy_state: {occupancy_state}')
     print(f'occupancy_state_amount: {occupancy_state_amount}')
     print(f'year_of_construction_state: {year_of_construction_state}')
     print(f'year_of_construction_state_amount: {year_of_construction_state_amount}')
