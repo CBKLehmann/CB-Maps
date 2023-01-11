@@ -153,7 +153,6 @@ class Map2_0(Map2_0Template):
 
   def check_box_poi_change(self, **event_args):
     # Check or uncheck various Check Boxes for different POI Categories
-    
     if dict(event_args)['sender'].text == "veterinary":
       Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
     elif dict(event_args)['sender'].text == "social facility":
@@ -190,6 +189,8 @@ class Map2_0(Map2_0Template):
       Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
     elif dict(event_args)['sender'].text == "podiatrist":
       Variables.last_bbox_pdt = self.create_icons(self.check_box_pdt.checked, Variables.last_bbox_pdt, "podiatrist", Variables.icon_podiatrist)
+    elif dict(event_args)['sender'].text == "hairdresser":
+      Variables.last_bbox_hd = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
 
 
   #This method is called when the Check Box for POI based on HFCIG is checked or unchecked
@@ -2238,8 +2239,6 @@ class Map2_0(Map2_0Template):
   
   #This method is called from the check_box_change-Functions to place Icons on Map  
   def create_icons(self, check_box, last_bbox, category, picture):
-
-    print('Hello')
     
     # Check if Checkbox is checked
     if check_box == True:
@@ -2320,8 +2319,6 @@ class Map2_0(Map2_0Template):
     
           # Do if Elements are under 3000
           else:
-
-            print(geojson)
     
             #Create empty Icons Array to save Elements
             icons = []
