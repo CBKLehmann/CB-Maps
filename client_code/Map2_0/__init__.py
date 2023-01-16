@@ -54,6 +54,7 @@ class Map2_0(Map2_0Template):
     el.style.height = '40px'
     el.style.backgroundSize = '100%'
     el.style.backgroundrepeat = 'no-repeat'
+    el.style.zIndex = '9001'
     el.style.backgroundImage = f'url({Variables.icon_home})'
     
     self.marker = mapboxgl.Marker({'color': "#2A2A2A", 'draggable': True, 'element': el})
@@ -85,34 +86,26 @@ class Map2_0(Map2_0Template):
   
   def check_box_marker_icons_change(self, **event_args):
     # Show or Hide Marker-Icon-Types
-    
-    if dict(event_args)['sender'].text == "Capital Bay":
-      Functions.show_hide_marker(self, self.check_box_cb.checked, "cb_marker")
-    elif dict(event_args)['sender'].text == "Competitors":
-      Functions.show_hide_marker(self, self.check_box_kk.checked, "kk_marker")
-    elif dict(event_args)['sender'].text == "Hotels":
-      Functions.show_hide_marker(self, self.check_box_h.checked, "h_marker")
-    elif dict(event_args)['sender'].text == "Hospitals":
-      Functions.show_hide_marker(self, self.check_box_kh.checked, "kh_marker")
-    elif dict(event_args)['sender'].text == "Schools":
-      Functions.show_hide_marker(self, self.check_box_s.checked, "s_marker")
-    elif dict(event_args)['sender'].text == "Stores":
-      Functions.show_hide_marker(self, self.check_box_g.checked, "lg_marker")
-
+    Functions.show_hide_marker(self, event_args['sender'].checked, event_args['sender'].text)
 
   def button_marker_icons_change(self, **event_args):
     # Show or Hide all Marker Icons
     
-    all_marker = self.icon_categories.get_components()
+    all_marker = self.icon_grid.get_components()
     
     if dict(event_args)['sender'].text == "Show All": 
       marker_state = True
+      self.show_marker.enabled = False
+      self.hide_marker.enabled = True
     elif dict(event_args)['sender'].text == "Hide All":
       marker_state = False
+      self.show_marker.enabled = True
+      self.hide_marker.enabled = False
       
     for marker in all_marker:
-      Functions.show_hide_marker(self, marker_state, marker.tooltip)
-      marker.checked = marker_state
+      if not type(marker) is Label:
+        Functions.show_hide_marker(self, marker_state, marker.text)
+        marker.checked = marker_state
    
   
   def check_box_overlays_change(self, **event_args):
@@ -2046,89 +2039,48 @@ class Map2_0(Map2_0Template):
       #Initialise Variables
       markercount = 0
       excel_markers = {}
-      cb_marker = []
-      kk_marker = []
-      h_marker = []
-      kh_marker = []
-      s_marker = []
-      lg_marker = []
+      added_portfolios = []
+
+      self.icon_grid.row_spacing = 0
       
       #Add Marker while Markercount is under Amount of Adresses inside provided File
       while markercount < len(data[0]):
+
+        portfolio_name = data[0][markercount]['Teilportfolio']
+        color = data[1][portfolio_name]
+
+        if not portfolio_name in added_portfolios:
+          added_portfolios.append(portfolio_name)
+          checkbox = CheckBox(checked=True, text=portfolio_name, spacing_above='none', spacing_below='none')
+          checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+          icon = Label(icon='fa:circle', foreground=color, spacing_above='none', spacing_below='none')
+          self.icon_grid.add_component(checkbox, row=portfolio_name, col_xs=0, width_xs=8)
+          self.icon_grid.add_component(icon, row=portfolio_name, col_xs=8, width_xs=1)
         
         #Get Coordinates of provided Adress for Marker
         req_str = self.build_request_string(data[0][markercount])
         req_str += f'.json?access_token={self.token}'
         coords = anvil.http.request(req_str,json=True)
         coordinates = coords['features'][0]['geometry']['coordinates']
-        
-        #Create HTML Element for Marker
-        el = document.createElement('div')
-        width = 20
-        height = 20
-        el.className = 'marker'
-        el.style.width = f'{width}px'
-        el.style.height = f'{height}px'
-        el.style.backgroundSize = '100%'
-        el.style.backgroundrepeat = 'no-repeat'
 
-        print(data[0][markercount])
-        print(data[1])
+        if not portfolio_name in excel_markers.keys():
+          excel_markers[portfolio_name] = {'color': data[1][portfolio_name], 'static': 'none', 'marker': []}
+        new_list = self.set_excel_markers(excel_markers[portfolio_name]['static'], coordinates, excel_markers[portfolio_name]['marker'], excel_markers[portfolio_name]['color'])
+        excel_markers[portfolio_name]['marker'] = new_list
         
-        # #Check which Icon the provided Adress has
-        
-        # if data[0][markercount]['Icon'] == 'CapitalBay':
-          
-        #   #Set Markers based on Excel
-        #   self.markerCB_static = None
-        #   self.set_excel_markers(el, 'markerCB', Variables.imageCB, self.markerCB_static, coordinates, cb_marker, data[markercount]['Pinfarbe'])
-        
-        # #Check which Icon the provided Adress has
-        # elif data[markercount]['Icon'] == 'Konkurrent':
-          
-        #   #Set Markers based on Excel
-        #   self.markerKK_static = None
-        #   self.set_excel_markers(el, 'markerKK', Variables.imageKK, self.markerKK_static, coordinates, kk_marker, data[markercount]['Pinfarbe'])  
-          
-        # #Check which Icon the provided Adress has
-        # elif data[markercount]['Icon'] == 'Hotel':
-          
-        #   #Set Markers based on Excel
-        #   self.markerH_static = None
-        #   self.set_excel_markers(el, 'markerH', Variables.imageH, self.markerH_static, coordinates, h_marker, data[markercount]['Pinfarbe'])
-          
-        # #Check which Icon the provided Adress has
-        # elif data[markercount]['Icon'] == 'Krankenhaus':     
-          
-        #   #Set Markers based on Excel
-        #   self.markerKH_static = None
-        #   self.set_excel_markers(el, 'markerKH', Variables.imageKH, self.markerKH_static, coordinates, kh_marker, data[markercount]['Pinfarbe'])
-          
-        # #Check which Icon the provided Adress has
-        # elif data[markercount]['Icon'] == 'Laden':     
-          
-        #   #Set Markers based on Excel
-        #   self.markerLG_static = None
-        #   self.set_excel_markers(el, 'markerLG', Variables.imageLG, self.markerLG_static, coordinates, lg_marker, data[markercount]['Pinfarbe'])
-          
-        # #Check which Icon the provided Adress has
-        # elif data[markercount]['Icon'] == 'Schule':       
-          
-        #   #Set Markers based on Excel
-        #   self.markerS_static = None
-        #   self.set_excel_markers(el, 'markerS', Variables.imageS, self.markerS_static, coordinates, s_marker, data[markercount]['Pinfarbe'])
-          
         #Create Popup for Marker and add it to the Map
-        popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
-        popup.setHTML(data[0][markercount]['Informationen'])
-        popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[0][markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
-        popup_static.addTo(self.mapbox)
+        # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
+        # popup.setHTML(data[0][markercount]['Informationen'])
+        # popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[0][markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
+        # popup_static.addTo(self.mapbox)
         
         #Increase Markercount
         markercount += 1
-      
+        
       #Add Marker-Arrays to global Variable Marker
-      Variables.marker.update({'cb_marker': cb_marker, 'kk_marker': kk_marker, 'h_marker': h_marker, 'kh_marker': kh_marker, 's_marker': s_marker, 'lg_marker': lg_marker})
+      Variables.marker.update(excel_markers)
+
+      self.hide_marker.enabled = True
     
   #####  Upload Functions   #####
   ###############################
@@ -2866,37 +2818,16 @@ class Map2_0(Map2_0Template):
 
       
   #This method is called from the file uploader to set Markers based on Excel-Data
-  def set_excel_markers(self, el, el_className, el_image, marker_cat, coords, marker_list, color):
+  def set_excel_markers(self, marker_cat, coords, marker_list, color):
     
-    # Create Icon
-    el.className = el_className
-    el.style.backgroundImage = el_image
-    
-    # Check wich Markercolor the provided Adress has and color the Marker
-    if color == 'Rot':
-      marker_cat = mapboxgl.Marker({'color': '#FF0000', 'draggable': False})
-    elif color == 'Gelb':
-      marker_cat = mapboxgl.Marker({'color': '#FFFF00', 'draggable': False})
-    elif color == 'Grün':
-      marker_cat = mapboxgl.Marker({'color': '#92D050', 'draggable': False})
-    elif color == 'Blau':
-      marker_cat = mapboxgl.Marker({'color': '#00B0F0', 'draggable': False})
-    elif color == 'Lila':
-      marker_cat = mapboxgl.Marker({'color': '#D427F1', 'draggable': False})
-    elif color == 'Orange':
-      marker_cat = mapboxgl.Marker({'color': '#FFC000', 'draggable': False})
-    elif color == 'Dunkelgrün':
-      marker_cat = mapboxgl.Marker({'color': '#00B050', 'draggable': False})
+    marker_cat = mapboxgl.Marker({'color': color, 'draggable': False})
     
     # Add Marker to the Map
     newmarker = marker_cat.setLngLat(coords).addTo(self.mapbox)
-    
-    # Add Icon to the Map
-    newicon = mapboxgl.Marker(el).setLngLat(coords).setOffset([0, -22]).addTo(self.mapbox)
-    
-    # Add Marker and Icon to Marker-Array
+
+    # Add Marker Marker-Array
     marker_list.append(newmarker)
-    marker_list.append(newicon)
+    return(marker_list)
     
   #This method is called when the Mouse is moved inside or out of an active Layer
   def change_hover_state(self, mouse):
