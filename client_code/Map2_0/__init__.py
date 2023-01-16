@@ -57,7 +57,7 @@ class Map2_0(Map2_0Template):
     el.style.zIndex = '9001'
     el.style.backgroundImage = f'url({Variables.icon_home})'
     
-    self.marker = mapboxgl.Marker({'color': "#2A2A2A", 'draggable': True, 'element': el})
+    self.marker = mapboxgl.Marker({'color': "#2A2A2A", 'draggable': True, 'element': el, 'anchor': 'bottom'})
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
     self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
     self.mapbox.addControl(self.geocoder)
@@ -2756,7 +2756,7 @@ class Map2_0(Map2_0Template):
                 )
     
               # Add Icon to the Map
-              newicon = mapboxgl.Marker(el).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+              newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
     
               # Add current Element-Icon to Icon-Array
               icons.append(newicon)
