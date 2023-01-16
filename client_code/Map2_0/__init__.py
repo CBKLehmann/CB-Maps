@@ -295,7 +295,8 @@ class Map2_0(Map2_0Template):
     date = datetime.datetime.now()
     # anvil.server.call('test_i_love_pdf')
     # anvil.server.call('micmaccircle')
-    anvil.server.call('read_regularien')
+    # anvil.server.call('read_regularien')
+    anvil.server.call('get_db_stations')
     print(date)
     
 #     #Call a Server Function
@@ -2159,15 +2160,15 @@ class Map2_0(Map2_0Template):
                                    })
       
       #Construct and add isoLayer
-      self.isoLayer = self.mapbox.addLayer({'id': 'isoLayer',
+      self.mapbox.addLayer({'id': 'isoLayer',
                             'type': 'fill',
                             'source': 'iso',
-                            'layout': {},
+                            'layout': {'visibility': 'visible'},
                             'paint': {
-                            'fill-color': '#35B7FF',
+                            'fill-color': '#A6A18A',
                             'fill-opacity': 0.3,
-                            'fill-outline-color': '#0400FF'
-                            }
+                            'fill-outline-color': '#4D4A3F'
+                            },
                           })
     
     #Get iso-coordinates based of the marker-coordinates
@@ -3277,7 +3278,9 @@ class Map2_0(Map2_0Template):
     pass
 
   def iso_layer_active_change(self, **event_args):
-    print(event_args['sender'].checked)
-    print(self.isoLayer)
+    if event_args['sender'].checked:
+      self.mapbox.setLayoutProperty('isoLayer', 'visibility', 'visible')
+    else:
+      self.mapbox.setLayoutProperty('isoLayer', 'visibility', 'none')
     pass
 
