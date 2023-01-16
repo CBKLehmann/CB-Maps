@@ -47,7 +47,16 @@ class Map2_0(Map2_0Template):
                                 'style': "mapbox://styles/mapbox/outdoors-v11",
                                 'center': [13.4092, 52.5167],
                                 'zoom': 8})
-    self.marker = mapboxgl.Marker({'color': "#2A2A2A", 'draggable': True, 'symbol': Variables.icon_assisted_living})
+    # Create HTML Element for Icon
+    el = document.createElement('div')
+    el.className = 'marker'
+    el.style.width = '40px'
+    el.style.height = '40px'
+    el.style.backgroundSize = '100%'
+    el.style.backgroundrepeat = 'no-repeat'
+    el.style.backgroundImage = f'url({Variables.icon_home})'
+    
+    self.marker = mapboxgl.Marker({'color': "#2A2A2A", 'draggable': True, 'element': el})
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
     self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
     self.mapbox.addControl(self.geocoder)
@@ -2462,7 +2471,7 @@ class Map2_0(Map2_0Template):
               el = document.createElement('div')
               el.className = 'marker'
               el.style.width = '40px'
-              el.style.height = '44px'
+              el.style.height = '40px'
               el.style.backgroundSize = '100%'
               el.style.backgroundrepeat = 'no-repeat'
     
