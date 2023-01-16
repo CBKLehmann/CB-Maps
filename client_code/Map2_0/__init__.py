@@ -232,8 +232,12 @@ class Map2_0(Map2_0Template):
     elif dict(event_args)['sender'].text == "Outdoor-Map":
       self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
     elif dict(event_args)['sender'].text == "IM-Map":
-      self.mapbox.setStyle('mapbox://styles/mapbox/light-v11') #mapbox://styles/shinykampfkeule/clcqbbo8b00ug14s17s6621rf
+      self.mapbox.setStyle('mapbox://styles/mapbox/streets-v11')
     self.mapbox.on('load', self.place_layer)
+    #shinykampfkeule/clcylq1kd000c14p5w6tgrpyz
+    #mapbox://styles/shinykampfkeule/clcqbbo8b00ug14s17s6621rf
+    #mapbox://styles/mapbox/light-v11
+    #mapbox://styles/shinykampfkeule/clcylq1kd000c14p5w6tgrpyz
     
   
   #This method is called when one of the Submenus should be opened or closed
@@ -2155,13 +2159,14 @@ class Map2_0(Map2_0Template):
                                    })
       
       #Construct and add isoLayer
-      self.mapbox.addLayer({'id': 'isoLayer',
+      self.isoLayer = self.mapbox.addLayer({'id': 'isoLayer',
                             'type': 'fill',
                             'source': 'iso',
                             'layout': {},
                             'paint': {
                             'fill-color': '#35B7FF',
-                            'fill-opacity': .3
+                            'fill-opacity': 0.3,
+                            'fill-outline-color': '#0400FF'
                             }
                           })
     
@@ -3270,3 +3275,9 @@ class Map2_0(Map2_0Template):
       self.check_box_bus.raise_event('change')
       self.check_box_tra.raise_event('change')
     pass
+
+  def iso_layer_active_change(self, **event_args):
+    print(event_args['sender'].checked)
+    print(self.isoLayer)
+    pass
+
