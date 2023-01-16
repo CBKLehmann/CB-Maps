@@ -223,7 +223,7 @@ class Map2_0(Map2_0Template):
     elif dict(event_args)['sender'].text == "Outdoor-Map":
       self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
     elif dict(event_args)['sender'].text == "IM-Map":
-      self.mapbox.setStyle('mapbox://styles/shinykampfkeule/clcqbbo8b00ug14s17s6621rf')
+      self.mapbox.setStyle('mapbox://styles/mapbox/light-v11') #mapbox://styles/shinykampfkeule/clcqbbo8b00ug14s17s6621rf
     self.mapbox.on('load', self.place_layer)
     
   
@@ -2151,7 +2151,7 @@ class Map2_0(Map2_0Template):
                             'source': 'iso',
                             'layout': {},
                             'paint': {
-                            'fill-color': '#ccb666',
+                            'fill-color': '#35B7FF',
                             'fill-opacity': .3
                             }
                           })
