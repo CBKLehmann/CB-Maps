@@ -8,6 +8,7 @@ from anvil.google.drive import app_files
 from anvil.tables import app_tables
 from anvil.js.window import mapboxgl, MapboxGeocoder, document
 from .. import Variables, Layer, Images, ExcelFrames
+from .Color_for_Cluster import Color_for_Cluster
 import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
@@ -33,17 +34,32 @@ class Map2_0(Map2_0Template):
     self.dom = anvil.js.get_dom_node(self.spacer_1)
     self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
     self.token = anvil.server.call('get_token')
+    self.app_url = anvil.server.call('get_app_url')
 
   
   def form_show(self, **event_args):
     # Initiate Map and set Listener on Page Load
+
+    self.select_all_hc.tag.categorie = 'Healthcare'
+    self.select_all_misc.tag.categorie = 'Miscelaneous'
+    self.select_all_opnv.tag.categorie = 'ÖPNV'
     
     mapboxgl.accessToken = self.token
     self.mapbox = mapboxgl.Map({'container': self.dom,
                                 'style': "mapbox://styles/mapbox/outdoors-v11",
                                 'center': [13.4092, 52.5167],
                                 'zoom': 8})
-    self.marker = mapboxgl.Marker({'color': "#0000FF", 'draggable': True})
+    # Create HTML Element for Icon
+    el = document.createElement('div')
+    el.className = 'marker'
+    el.style.width = '40px'
+    el.style.height = '40px'
+    el.style.backgroundSize = '100%'
+    el.style.backgroundrepeat = 'no-repeat'
+    el.style.zIndex = '9001'
+    el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/CB_MapPin_Location.png)'
+    
+    self.marker = mapboxgl.Marker({'draggable': True, 'element': el, 'anchor': 'bottom'})
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
     self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
     self.mapbox.addControl(self.geocoder)
@@ -72,34 +88,26 @@ class Map2_0(Map2_0Template):
   
   def check_box_marker_icons_change(self, **event_args):
     # Show or Hide Marker-Icon-Types
-    
-    if dict(event_args)['sender'].text == "Capital Bay":
-      Functions.show_hide_marker(self, self.check_box_cb.checked, "cb_marker")
-    elif dict(event_args)['sender'].text == "Competitors":
-      Functions.show_hide_marker(self, self.check_box_kk.checked, "kk_marker")
-    elif dict(event_args)['sender'].text == "Hotels":
-      Functions.show_hide_marker(self, self.check_box_h.checked, "h_marker")
-    elif dict(event_args)['sender'].text == "Hospitals":
-      Functions.show_hide_marker(self, self.check_box_kh.checked, "kh_marker")
-    elif dict(event_args)['sender'].text == "Schools":
-      Functions.show_hide_marker(self, self.check_box_s.checked, "s_marker")
-    elif dict(event_args)['sender'].text == "Stores":
-      Functions.show_hide_marker(self, self.check_box_g.checked, "lg_marker")
-
+    Functions.show_hide_marker(self, event_args['sender'].checked, event_args['sender'].text)
 
   def button_marker_icons_change(self, **event_args):
     # Show or Hide all Marker Icons
     
-    all_marker = self.icon_categories.get_components()
+    all_marker = self.icon_grid.get_components()
     
     if dict(event_args)['sender'].text == "Show All": 
       marker_state = True
+      self.show_marker.enabled = False
+      self.hide_marker.enabled = True
     elif dict(event_args)['sender'].text == "Hide All":
       marker_state = False
+      self.show_marker.enabled = True
+      self.hide_marker.enabled = False
       
     for marker in all_marker:
-      Functions.show_hide_marker(self, marker_state, marker.tooltip)
-      marker.checked = marker_state
+      if not type(marker) is Label:
+        Functions.show_hide_marker(self, marker_state, marker.text)
+        marker.checked = marker_state
    
   
   def check_box_overlays_change(self, **event_args):
@@ -153,7 +161,6 @@ class Map2_0(Map2_0Template):
 
   def check_box_poi_change(self, **event_args):
     # Check or uncheck various Check Boxes for different POI Categories
-    
     if dict(event_args)['sender'].text == "veterinary":
       Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
     elif dict(event_args)['sender'].text == "social facility":
@@ -188,6 +195,10 @@ class Map2_0(Map2_0Template):
       Variables.last_bbox_nh = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
     elif dict(event_args)['sender'].text == "Assisted Living DB":
       Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+    elif dict(event_args)['sender'].text == "podiatrist":
+      Variables.last_bbox_pdt = self.create_icons(self.check_box_pdt.checked, Variables.last_bbox_pdt, "podiatrist", Variables.icon_podiatrist)
+    elif dict(event_args)['sender'].text == "hairdresser":
+      Variables.last_bbox_hd = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
 
 
   #This method is called when the Check Box for POI based on HFCIG is checked or unchecked
@@ -213,9 +224,15 @@ class Map2_0(Map2_0Template):
   def radio_button_map_change_clicked(self, **event_args):
     if dict(event_args)['sender'].text == "Satellite Map":
       self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
-    else:
+    elif dict(event_args)['sender'].text == "Outdoor-Map":
       self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
+    elif dict(event_args)['sender'].text == "IM-Map":
+      self.mapbox.setStyle('mapbox://styles/mapbox/streets-v11')
     self.mapbox.on('load', self.place_layer)
+    #shinykampfkeule/clcylq1kd000c14p5w6tgrpyz
+    #mapbox://styles/shinykampfkeule/clcqbbo8b00ug14s17s6621rf
+    #mapbox://styles/mapbox/light-v11
+    #mapbox://styles/shinykampfkeule/clcylq1kd000c14p5w6tgrpyz
     
   
   #This method is called when one of the Submenus should be opened or closed
@@ -226,7 +243,7 @@ class Map2_0(Map2_0Template):
         'container': self.dist_container,
         'icon_container': self.dist_layer
       },
-      'Marker-Icons': {
+      'Import & Cluster': {
         'container': self.icon_categories_all,
         'icon_container': self.button_icons
       },
@@ -272,7 +289,9 @@ class Map2_0(Map2_0Template):
 
     date = datetime.datetime.now()
     # anvil.server.call('test_i_love_pdf')
-    anvil.server.call('micmaccircle')
+    # anvil.server.call('micmaccircle')
+    # anvil.server.call('read_regularien')
+    anvil.server.call('get_db_stations')
     print(date)
     
 #     #Call a Server Function
@@ -892,7 +911,7 @@ class Map2_0(Map2_0Template):
     else:
       demand_potential = "very strong"
 
-    purchase_power = anvil.server.call('get_purchasing_power', locality='TotallyNotNeeded', postal_code='69420', route='WhoCaresStreet', street_number='1337', location={'lat': lng_lat_marker['lat'], 'lon': lng_lat_marker['lng']})
+    purchase_power = anvil.server.call('get_purchasing_power', location={'lat': lng_lat_marker['lat'], 'lon': lng_lat_marker['lng']})
       
     # Copy and Fill Dataframe for Excel-Cover
     cover_frame = copy.deepcopy(ExcelFrames.cover_data)
@@ -1620,6 +1639,195 @@ class Map2_0(Map2_0Template):
     for checkbox in t.get_components():
       checkboxes[f'{checkbox.text.replace(" ", "_")}'] = checkbox.checked
 
+    ##### Analysis Addition to Market Study #####
+
+    home_facilities = []
+    
+    ez_rate_asset = 0
+    i_cost_asset = 0
+    occupancy_asset = 0
+    year_of_construction_asset = 0
+    ez_total_comp = 0
+    room_total_comp = 0
+    ez_weight_avg_comp = 0
+    
+    for entry in data_comp_analysis_nh['data']:
+      if entry[len(entry) - 1] == 'home':
+        home_facilities.append(entry)
+        if entry[0]['ez'] == 'N/A':
+          ez_rate_asset = 0
+        elif entry[0]['dz'] == 'N/A':
+          ez_rate_asset = 100
+        else:
+          ez_rate_asset = round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz'])))
+        i_cost_asset = float(entry[0]['invest'])
+        occupancy_asset = int(entry[0]['occupancy'].split(" ")[0])
+        year_of_construction_asset = entry[0]['baujahr']
+      else:
+        if entry[0]['dz'] == 'N/A':
+          if not entry[0]['ez'] == 'N/A':
+            ez_total_comp += int(entry[0]['ez'])
+            room_total_comp += int(entry[0]['ez'])
+        elif not entry[0]['ez'] == 'N/A':
+          ez_total_comp += int(entry[0]['ez'])
+          room_total_comp += (int(entry[0]['ez']) + int(entry[0]['dz']))
+        # if not entry[0]['invest'] == 'N/A':
+        #   i_cost_comp += float(entry[0]['invest'])
+        #   i_cost_comp_amount += 1
+        # if not entry[0]['occupancy'] == 'N/A':
+        #   occupancy_comp += float(entry[0]['occupancy'].split(" ")[0])
+        #   occupancy_comp_amount += 1
+        # if not entry[0]['baujahr'] == 'N/A':
+        #   year_of_construction_comp += entry[0]['baujahr']
+        #   year_of_construction_comp_amount += 1
+
+    ez_weight_avg_comp = round(100 + (((ez_total_comp / room_total_comp) - 1) * 100))
+    print(ez_weight_avg_comp)
+      
+    ###Old###
+    # ez_rate_asset = 0
+    # ez_rate_comp = 0
+    # ez_comp_amount = 0
+    # ez_rate_state = 0
+    # ez_state_amount = 0
+    # i_cost_asset = 0
+    # i_cost_comp = 0
+    # i_cost_comp_amount = 0
+    # i_cost_state = 0
+    # i_cost_state_amount = 0
+    # occupancy_asset = 0
+    # occupancy_comp = 0
+    # occupancy_comp_amount = 0
+    # occupancy_state = 0
+    # occupancy_state_amount = 0
+    # year_of_construction_asset = 0
+    # year_of_construction_comp = 0
+    # year_of_construction_comp_amount = 0
+    # year_of_construction_state = 0
+    # year_of_construction_state_amount = 0
+
+    # home_facilities = []
+    
+    # for entry in data_comp_analysis_nh['data']:
+    #   if entry[len(entry) - 1] == 'home':
+    #     home_facilities.append(entry)
+    #     if entry[0]['ez'] == 'N/A':
+    #       ez_rate_asset = 0
+    #     elif entry[0]['dz'] == 'N/A':
+    #       ez_rate_asset = 100
+    #     else:
+    #       ez_rate_asset = round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz'])))
+    #     i_cost_asset = float(entry[0]['invest'])
+    #     occupancy_asset = int(entry[0]['occupancy'].split(" ")[0])
+    #     year_of_construction_asset = entry[0]['baujahr']
+    #   else:
+    #     if entry[0]['dz'] == 'N/A':
+    #       if not entry[0]['ez'] == 'N/A':
+    #         print(entry[0]['ez'])
+    #         print('##############################')
+    #         ez_rate_comp += 100
+    #         ez_comp_amount += int(entry[0]['ez'])
+    #     elif not entry[0]['ez'] == 'N/A':
+    #       print(entry[0]['ez'])
+    #       print(entry[0]['dz'])
+    #       ez_rate_comp += round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz'])))
+    #       ez_comp_amount += int(entry[0]['ez'])
+    #       print(round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz']))))
+    #       print('##############################')
+    #     if not entry[0]['invest'] == 'N/A':
+    #       i_cost_comp += float(entry[0]['invest'])
+    #       i_cost_comp_amount += 1
+    #     if not entry[0]['occupancy'] == 'N/A':
+    #       occupancy_comp += float(entry[0]['occupancy'].split(" ")[0])
+    #       occupancy_comp_amount += 1
+    #     if not entry[0]['baujahr'] == 'N/A':
+    #       year_of_construction_comp += entry[0]['baujahr']
+    #       year_of_construction_comp_amount += 1
+
+    # if not ez_comp_amount == 0:
+    #   ez_rate_comp = round(ez_rate_comp / ez_comp_amount)
+    # else:
+    #   ez_rate_comp = 0
+    # if not i_cost_comp_amount == 0:
+    #   i_cost_comp = round(i_cost_comp / i_cost_comp_amount, 2)
+    # else:
+    #   i_cost_comp = 0
+    # if not occupancy_comp_amount == 0:
+    #   occupancy_comp = round(occupancy_comp /occupancy_comp_amount)
+    # else:
+    #   occupancy_comp = 0
+    # if not year_of_construction_comp_amount == 0:
+    #   year_of_construction_comp = round(year_of_construction_comp / year_of_construction_comp_amount)
+    # else:
+    #   year_of_construction_comp = 0
+
+    # nursing_homes_federal_state = anvil.server.call('get_nursing_homes_federal_states', federal_state)
+
+    # home = False
+    # for nursing_home in nursing_homes_federal_state:
+    #   # print(nursing_home)
+    #   for facility in home_facilities:
+    #     if facility[0]['name'] == nursing_home['name']:
+    #       home = True
+    #   if not home:
+    #     if not nursing_home['ez'] == '-':
+    #       ez_rate_state += int(nursing_home['ez'])
+    #       ez_state_amount += 1
+    #     if not nursing_home['invest'] == '-':
+    #       i_cost_state += float(nursing_home['invest'])
+    #       i_cost_state_amount += 1
+    #     if not nursing_home['anz_vers_pat'] == '-' and not nursing_home['platz_voll_pfl'] == '-':
+    #       occupancy_state += float((int(nursing_home['anz_vers_pat']) * 100) / int(nursing_home['platz_voll_pfl']))
+    #       occupancy_state_amount += 1
+    #     if not nursing_home['baujahr'] == '-':
+    #       year_of_construction_state += int(nursing_home['baujahr'])
+    #       year_of_construction_state_amount += 1
+    #   else:
+    #     home = False
+
+    # if not ez_state_amount == 0:
+    #   ez_rate_state = round(ez_rate_state / ez_state_amount)
+    # else:
+    #   ez_rate_state = 0
+    # if not i_cost_state_amount == 0:
+    #   i_cost_state = round(i_cost_state / i_cost_state_amount, 2)
+    # else:
+    #   i_cost_state = 0
+    # if not occupancy_state_amount == 0:
+    #   occupancy_state = round(occupancy_state /occupancy_state_amount)
+    # else:
+    #   occupancy_state = 0
+    # if not year_of_construction_state_amount == 0:
+    #   year_of_construction_state = round(year_of_construction_state / year_of_construction_state_amount)
+    # else:
+    #   year_of_construction_state = 0
+    
+    # print('###### Asset ######')
+    # print(f'ez_rate_asset: {ez_rate_asset}')
+    # print(f'i_cost_asset: {i_cost_asset}')
+    # print(f'occupancy_asset: {occupancy_asset}')
+    # print(f'year_of_construction_asset: {year_of_construction_asset}')
+    # print('###### Competitors ######')
+    # print(f'ez_rate_comp: {ez_rate_comp}')
+    # print(f'ez_comp_amount: {ez_comp_amount}')
+    # print(f'i_cost_comp: {i_cost_comp}')
+    # print(f'i_cost_comp_amount: {i_cost_comp_amount}')
+    # print(f'occupancy_comp: {occupancy_comp}')
+    # print(f'occupancy_comp_amount: {occupancy_comp_amount}')
+    # print(f'year_of_construction_comp: {year_of_construction_comp}')
+    # print(f'year_of_construction_comp_amount: {year_of_construction_comp_amount}')
+    # print('###### Federal State ######')
+    # print(f'ez_rate_state: {ez_rate_state}')
+    # print(f'ez_state_amount: {ez_state_amount}')
+    # print(f'i_cost_state: {i_cost_asset}')
+    # print(f'i_cost_comp_amount: {i_cost_state_amount}')
+    # print(f'occupancy_state: {occupancy_state}')
+    # print(f'occupancy_state_amount: {occupancy_state_amount}')
+    # print(f'year_of_construction_state: {year_of_construction_state}')
+    # print(f'year_of_construction_state_amount: {year_of_construction_state_amount}')
+      
+  ##### Analysis Addition to Market Study #####
+    
     anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
     anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, Variables.tm_mode, checkboxes)
 
@@ -1823,6 +2031,13 @@ class Map2_0(Map2_0Template):
 
   #This method is called when a new file is loaded into the FileLoader
   def file_loader_upload_change(self, file, **event_args):
+    #Initialise Variables
+    excel_markers = {}
+    added_clusters = []
+    colors = ['blue', 'green', 'grey', 'lightblue', 'orange', 'pink', 'red', 'white', 'yellow', 'gold']
+
+    #Create Settings
+    self.icon_grid.row_spacing = 0
     
     #Call Server-Function to safe the File  
     data = anvil.server.call('save_local_excel_file', file)
@@ -1830,87 +2045,54 @@ class Map2_0(Map2_0Template):
     if data == None:
       alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
     else:
-      #Initialise Variables
-      markercount = 0
-      cb_marker = []
-      kk_marker = []
-      h_marker = []
-      kh_marker = []
-      s_marker = []
-      lg_marker = []
-      
-      #Add Marker while Markercount is under Amount of Adresses inside provided File
-      while markercount < len(data):
-        
-        #Get Coordinates of provided Adress for Marker
-        req_str = self.build_request_string(data[markercount])
+      for asset in data:
+
+        # Create HTML Element for Icon
+        el = document.createElement('div')
+        el.className = f'{asset["address"]}'
+        el.style.width = '40px'
+        el.style.height = '40px'
+        el.style.backgroundSize = '100%'
+        el.style.backgroundrepeat = 'no-repeat'
+        el.style.zIndex = '9001'
+
+        cluster_name = asset['cluster']
+
+        if cluster_name not in added_clusters:
+          color = alert(content=Color_for_Cluster(cluster=cluster_name, colors=colors), large=True, buttons=[], dismissible=False)
+          colors.remove(color[0])
+          checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none')
+          checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+          icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none')
+          self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=0, width_xs=8)
+          self.icon_grid.add_component(icon, row=cluster_name, col_xs=8, width_xs=1)
+          added_clusters.append(cluster_name)
+
+        # #Get Coordinates of provided Adress for Marker
+        req_str = self.build_request_string(asset)
         req_str += f'.json?access_token={self.token}'
         coords = anvil.http.request(req_str,json=True)
         coordinates = coords['features'][0]['geometry']['coordinates']
+
+        if not cluster_name in excel_markers.keys():
+          excel_markers[cluster_name] = {'color': color, 'static': 'none', 'marker': []}
+        el.style.backgroundImage = f'url({excel_markers[cluster_name]["color"][2]})'
+        new_list = self.set_excel_markers(excel_markers[cluster_name]['static'], coordinates, excel_markers[cluster_name]['marker'], el)
+        excel_markers[cluster_name]['marker'] = new_list
         
-        #Create HTML Element for Marker
-        el = document.createElement('div')
-        width = 20
-        height = 20
-        el.className = 'marker'
-        el.style.width = f'{width}px'
-        el.style.height = f'{height}px'
-        el.style.backgroundSize = '100%'
-        el.style.backgroundrepeat = 'no-repeat'
-        
-        #Check which Icon the provided Adress has
-        if data[markercount]['Icon'] == 'CapitalBay':
-          
-          #Set Markers based on Excel
-          self.markerCB_static = None
-          self.set_excel_markers(el, 'markerCB', Variables.imageCB, self.markerCB_static, coordinates, cb_marker, data[markercount]['Pinfarbe'])
-        
-        #Check which Icon the provided Adress has
-        elif data[markercount]['Icon'] == 'Konkurrent':
-          
-          #Set Markers based on Excel
-          self.markerKK_static = None
-          self.set_excel_markers(el, 'markerKK', Variables.imageKK, self.markerKK_static, coordinates, kk_marker, data[markercount]['Pinfarbe'])  
-          
-        #Check which Icon the provided Adress has
-        elif data[markercount]['Icon'] == 'Hotel':
-          
-          #Set Markers based on Excel
-          self.markerH_static = None
-          self.set_excel_markers(el, 'markerH', Variables.imageH, self.markerH_static, coordinates, h_marker, data[markercount]['Pinfarbe'])
-          
-        #Check which Icon the provided Adress has
-        elif data[markercount]['Icon'] == 'Krankenhaus':     
-          
-          #Set Markers based on Excel
-          self.markerKH_static = None
-          self.set_excel_markers(el, 'markerKH', Variables.imageKH, self.markerKH_static, coordinates, kh_marker, data[markercount]['Pinfarbe'])
-          
-        #Check which Icon the provided Adress has
-        elif data[markercount]['Icon'] == 'Laden':     
-          
-          #Set Markers based on Excel
-          self.markerLG_static = None
-          self.set_excel_markers(el, 'markerLG', Variables.imageLG, self.markerLG_static, coordinates, lg_marker, data[markercount]['Pinfarbe'])
-          
-        #Check which Icon the provided Adress has
-        elif data[markercount]['Icon'] == 'Schule':       
-          
-          #Set Markers based on Excel
-          self.markerS_static = None
-          self.set_excel_markers(el, 'markerS', Variables.imageS, self.markerS_static, coordinates, s_marker, data[markercount]['Pinfarbe'])
-          
-        #Create Popup for Marker and add it to the Map
-        popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
-        popup.setHTML(data[markercount]['Informationen'])
-        popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
-        popup_static.addTo(self.mapbox)
+        # Create Popup for Marker and add it to the Map
+        # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
+        # popup.setHTML(data[0][markercount]['Informationen'])
+        # popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[0][markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
+        # popup_static.addTo(self.mapbox)
         
         #Increase Markercount
-        markercount += 1
-      
-      #Add Marker-Arrays to global Variable Marker
-      Variables.marker.update({'cb_marker': cb_marker, 'kk_marker': kk_marker, 'h_marker': h_marker, 'kh_marker': kh_marker, 's_marker': s_marker, 'lg_marker': lg_marker})
+        # markercount += 1
+        
+      # Add Marker-Arrays to global Variable Marker
+      Variables.marker.update(excel_markers)
+
+      self.hide_marker.enabled = True
     
   #####  Upload Functions   #####
   ###############################
@@ -1950,11 +2132,12 @@ class Map2_0(Map2_0Template):
       self.mapbox.addLayer({'id': 'isoLayer',
                             'type': 'fill',
                             'source': 'iso',
-                            'layout': {},
+                            'layout': {'visibility': 'visible'},
                             'paint': {
-                            'fill-color': '#ebb400',
-                            'fill-opacity': 0.3
-                            }
+                            'fill-color': '#A6A18A',
+                            'fill-opacity': 0.3,
+                            'fill-outline-color': '#4D4A3F'
+                            },
                           })
     
     #Get iso-coordinates based of the marker-coordinates
@@ -2262,8 +2445,8 @@ class Map2_0(Map2_0Template):
               # Create HTML Element for Icon
               el = document.createElement('div')
               el.className = 'marker'
-              el.style.width = '25px'
-              el.style.height = '25px'
+              el.style.width = '40px'
+              el.style.height = '40px'
               el.style.backgroundSize = '100%'
               el.style.backgroundrepeat = 'no-repeat'
     
@@ -2585,7 +2768,7 @@ class Map2_0(Map2_0Template):
                 )
     
               # Add Icon to the Map
-              newicon = mapboxgl.Marker(el).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+              newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
     
               # Add current Element-Icon to Icon-Array
               icons.append(newicon)
@@ -2647,37 +2830,16 @@ class Map2_0(Map2_0Template):
 
       
   #This method is called from the file uploader to set Markers based on Excel-Data
-  def set_excel_markers(self, el, el_className, el_image, marker_cat, coords, marker_list, color):
-    
-    # Create Icon
-    el.className = el_className
-    el.style.backgroundImage = el_image
-    
-    # Check wich Markercolor the provided Adress has and color the Marker
-    if color == 'Rot':
-      marker_cat = mapboxgl.Marker({'color': '#FF0000', 'draggable': False})
-    elif color == 'Gelb':
-      marker_cat = mapboxgl.Marker({'color': '#FFFF00', 'draggable': False})
-    elif color == 'Grün':
-      marker_cat = mapboxgl.Marker({'color': '#92D050', 'draggable': False})
-    elif color == 'Blau':
-      marker_cat = mapboxgl.Marker({'color': '#00B0F0', 'draggable': False})
-    elif color == 'Lila':
-      marker_cat = mapboxgl.Marker({'color': '#D427F1', 'draggable': False})
-    elif color == 'Orange':
-      marker_cat = mapboxgl.Marker({'color': '#FFC000', 'draggable': False})
-    elif color == 'Dunkelgrün':
-      marker_cat = mapboxgl.Marker({'color': '#00B050', 'draggable': False})
+  def set_excel_markers(self, marker_cat, coords, marker_list, el):
+
+    marker_cat = mapboxgl.Marker({'draggable': False, 'element': el, 'anchor': 'bottom'})
     
     # Add Marker to the Map
     newmarker = marker_cat.setLngLat(coords).addTo(self.mapbox)
-    
-    # Add Icon to the Map
-    newicon = mapboxgl.Marker(el).setLngLat(coords).setOffset([0, -22]).addTo(self.mapbox)
-    
-    # Add Marker and Icon to Marker-Array
+
+    # Add Marker Marker-Array
     marker_list.append(newmarker)
-    marker_list.append(newicon)
+    return(marker_list)
     
   #This method is called when the Mouse is moved inside or out of an active Layer
   def change_hover_state(self, mouse):
@@ -2703,17 +2865,20 @@ class Map2_0(Map2_0Template):
         self.mapbox.setFeatureState({'source': Variables.activeLayer, 'id': Variables.hoveredStateId}, {'hover': True})
   
   #Builds request-String for geocoder
-  def build_request_string(self, marker):
+  def build_request_string(self, asset):
     
     #Create basic request String
     request_string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/"
+
+    split_address = asset['map_address'].split(' ')
+    street = split_address[0]
+    housenumber = split_address[1]
     
     #Create and Send Request String based on given Marker
-    request_string += str(marker['Straße']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
-    request_string += str(marker['Hausnummer']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
-    request_string += str(marker['Bezirk']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
-    request_string += str(marker['Stadt']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
-    request_string += str(marker['Postleitzahl'])
+    request_string += str(street).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+    request_string += str(housenumber).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+    request_string += str(asset['city']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+    request_string += str(asset['zip'])
     
     return (request_string)
   
@@ -3024,3 +3189,49 @@ class Map2_0(Map2_0Template):
     elif checkbox == "Assisted Living DB" and self.pdb_data_al.checked == True:
       Variables.last_bbox_al = self.create_icons(False, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
       Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+
+  def select_all_change(self, **event_args):
+    if event_args['sender'].tag.categorie == 'Healthcare':
+        self.check_box_vet.checked = event_args['sender'].checked
+        self.check_box_soc.checked = event_args['sender'].checked
+        self.check_box_pha.checked = event_args['sender'].checked
+        self.check_box_hos.checked = event_args['sender'].checked
+        self.check_box_cli.checked = event_args['sender'].checked
+        self.check_box_den.checked = event_args['sender'].checked
+        self.check_box_doc.checked = event_args['sender'].checked
+        self.check_box_nsc.checked = event_args['sender'].checked
+        self.check_box_pdt.checked = event_args['sender'].checked
+        self.check_box_hd.checked = event_args['sender'].checked
+        self.check_box_vet.raise_event('change')
+        self.check_box_soc.raise_event('change')
+        self.check_box_pha.raise_event('change')
+        self.check_box_hos.raise_event('change')
+        self.check_box_cli.raise_event('change')
+        self.check_box_den.raise_event('change')
+        self.check_box_doc.raise_event('change')
+        self.check_box_nsc.raise_event('change')
+        self.check_box_pdt.raise_event('change')
+        self.check_box_hd.raise_event('change')
+    elif event_args['sender'].tag.categorie == 'Miscelaneous':
+      self.check_box_sma.checked = event_args['sender'].checked
+      self.check_box_res.checked = event_args['sender'].checked
+      self.check_box_cafe.checked = event_args['sender'].checked
+      self.check_box_uni.checked = event_args['sender'].checked
+      self.check_box_sma.raise_event('change')
+      self.check_box_res.raise_event('change')
+      self.check_box_cafe.raise_event('change')
+      self.check_box_uni.raise_event('change')
+    elif event_args['sender'].tag.categorie == 'ÖPNV':
+      self.check_box_bus.checked = event_args['sender'].checked
+      self.check_box_tra.checked = event_args['sender'].checked
+      self.check_box_bus.raise_event('change')
+      self.check_box_tra.raise_event('change')
+    pass
+
+  def iso_layer_active_change(self, **event_args):
+    if event_args['sender'].checked:
+      self.mapbox.setLayoutProperty('isoLayer', 'visibility', 'visible')
+    else:
+      self.mapbox.setLayoutProperty('isoLayer', 'visibility', 'none')
+    pass
+
