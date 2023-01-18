@@ -2098,6 +2098,7 @@ class Map2_0(Map2_0Template):
       Variables.marker.update(excel_markers)
 
       self.hide_marker.enabled = True
+      self.change_cluster_color.enabled = True
     
   #####  Upload Functions   #####
   ###############################
@@ -3239,4 +3240,20 @@ class Map2_0(Map2_0Template):
     else:
       self.mapbox.setLayoutProperty('isoLayer', 'visibility', 'none')
     pass
+
+  def hide_ms_marker_change(self, **event_args):
+    """This method is called when this checkbox is checked or unchecked"""
+    if event_args['sender'].checked:
+      self.marker.remove()
+    else:
+      self.marker.addTo(self.mapbox)
+    pass
+
+  def change_cluster_color_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    from .Change_Cluster_Color import Change_Cluster_Color
+    alert(content=Change_Cluster_Color(components=self.icon_grid.get_components()), dismissible=False, large=True, buttons=[])
+    pass
+
+
 
