@@ -3252,7 +3252,9 @@ class Map2_0(Map2_0Template):
   def change_cluster_color_click(self, **event_args):
     """This method is called when the button is clicked"""
     from .Change_Cluster_Color import Change_Cluster_Color
-    alert(content=Change_Cluster_Color(components=self.icon_grid.get_components()), dismissible=False, large=True, buttons=[])
+    response = alert(content=Change_Cluster_Color(components=self.icon_grid.get_components()), dismissible=False, large=True, buttons=[], role='custom_alert')
+    print(response)
+    print(Variables.marker)
     pass
 
 

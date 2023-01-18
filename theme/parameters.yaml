@@ -34,6 +34,7 @@ roles:
 - {name: show_button, components: null}
 - {name: gm_info, components: null}
 - {name: newpopup, components: null}
+- {name: custom_alert, components: null}
 color_scheme:
   preset_groups:
   - name: Primary Colour
