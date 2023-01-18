@@ -29,12 +29,17 @@ class Map2_0(Map2_0Template):
 
   def __init__(self, **properties):
     # Set Form properties and Data Bindings
-    
-    self.init_components(**properties)
-    self.dom = anvil.js.get_dom_node(self.spacer_1)
-    self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
-    self.token = anvil.server.call('get_token')
-    self.app_url = anvil.server.call('get_app_url')
+    maintenance = False
+
+    if maintenance:
+      from .Maintenance import Maintenance
+      alert(content=Maintenance(), dismissible=False, buttons=[], large=True)
+    else:
+      self.init_components(**properties)
+      self.dom = anvil.js.get_dom_node(self.spacer_1)
+      self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
+      self.token = anvil.server.call('get_token')
+      self.app_url = anvil.server.call('get_app_url')
 
   
   def form_show(self, **event_args):

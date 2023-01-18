@@ -1,0 +1,36 @@
+container:
+  type: ColumnPanel
+  properties: {col_widths: '{}'}
+components:
+- type: GridPanel
+  properties: {}
+  name: grid_panel_1
+  layout_properties: {grid_position: 'AETMNK,ULSQYC'}
+  components:
+  - type: Label
+    properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
+      visible: true, text: Wartungsmodus / Under Maintenance, font_size: 40, font: '',
+      spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: true, underline: false, icon: ''}
+    name: label_1
+    layout_properties: {row: PLMLKU, width_xs: 12, col_xs: 0, width: 970}
+  - type: Label
+    properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
+      visible: true, text: "Die Seite befindet sich aktuell im Wartungsmodus und sollte\
+        \ in K\xfcrze wieder zur Verf\xfcgung stehen. \nDies ist kein ungewollter\
+        \ Fehler ! Vielen Dank f\xfcr eure Geduld.", font_size: 18, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: label_2
+    layout_properties: {row: LOONGP, width_xs: 12, col_xs: 0, width: 970}
+  - type: Label
+    properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'This Page is currently under Maintenance and should be
+        soon available again.
+
+        This is not an unwanted Error ! Thanks for your patience. ', font_size: 18,
+      font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false, icon: ''}
+    name: label_3
+    layout_properties: {row: VRAHKG, width_xs: 12, col_xs: 0, width: 970}
+is_package: true
