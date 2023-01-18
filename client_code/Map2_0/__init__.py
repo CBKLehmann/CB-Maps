@@ -2037,37 +2037,54 @@ class Map2_0(Map2_0Template):
     if data == None:
       alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
     else:
-      #Initialise Variables
-      markercount = 0
-      excel_markers = {}
-      added_portfolios = []
-
-      self.icon_grid.row_spacing = 0
-      
-      #Add Marker while Markercount is under Amount of Adresses inside provided File
-      while markercount < len(data[0]):
-
-        portfolio_name = data[0][markercount]['Teilportfolio']
-        color = data[1][portfolio_name]
-
-        if not portfolio_name in added_portfolios:
-          added_portfolios.append(portfolio_name)
-          checkbox = CheckBox(checked=True, text=portfolio_name, spacing_above='none', spacing_below='none')
-          checkbox.add_event_handler('change', self.check_box_marker_icons_change)
-          icon = Label(icon='fa:circle', foreground=color, spacing_above='none', spacing_below='none')
-          self.icon_grid.add_component(checkbox, row=portfolio_name, col_xs=0, width_xs=8)
-          self.icon_grid.add_component(icon, row=portfolio_name, col_xs=8, width_xs=1)
+      for asset in data:
+        print(asset)
         
-        #Get Coordinates of provided Adress for Marker
+        # #Get Coordinates of provided Adress for Marker
         req_str = self.build_request_string(data[0][markercount])
         req_str += f'.json?access_token={self.token}'
         coords = anvil.http.request(req_str,json=True)
         coordinates = coords['features'][0]['geometry']['coordinates']
 
-        if not portfolio_name in excel_markers.keys():
-          excel_markers[portfolio_name] = {'color': data[1][portfolio_name], 'static': 'none', 'marker': []}
-        new_list = self.set_excel_markers(excel_markers[portfolio_name]['static'], coordinates, excel_markers[portfolio_name]['marker'], excel_markers[portfolio_name]['color'])
-        excel_markers[portfolio_name]['marker'] = new_list
+
+
+
+
+
+
+        
+      #Initialise Variables
+      # markercount = 0
+      # excel_markers = {}
+      # added_portfolios = []
+
+      # self.icon_grid.row_spacing = 0
+      
+      #Add Marker while Markercount is under Amount of Adresses inside provided File
+      # while markercount < len(data[0]):
+        
+
+        # portfolio_name = data[0][markercount]['Teilportfolio']
+        # color = data[1][portfolio_name]
+
+        # if not portfolio_name in added_portfolios:
+        #   added_portfolios.append(portfolio_name)
+        #   checkbox = CheckBox(checked=True, text=portfolio_name, spacing_above='none', spacing_below='none')
+        #   checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+        #   icon = Label(icon='fa:circle', foreground=color, spacing_above='none', spacing_below='none')
+        #   self.icon_grid.add_component(checkbox, row=portfolio_name, col_xs=0, width_xs=8)
+        #   self.icon_grid.add_component(icon, row=portfolio_name, col_xs=8, width_xs=1)
+        
+        # #Get Coordinates of provided Adress for Marker
+        # req_str = self.build_request_string(data[0][markercount])
+        # req_str += f'.json?access_token={self.token}'
+        # coords = anvil.http.request(req_str,json=True)
+        # coordinates = coords['features'][0]['geometry']['coordinates']
+
+        # if not portfolio_name in excel_markers.keys():
+        #   excel_markers[portfolio_name] = {'color': data[1][portfolio_name], 'static': 'none', 'marker': []}
+        # new_list = self.set_excel_markers(excel_markers[portfolio_name]['static'], coordinates, excel_markers[portfolio_name]['marker'], excel_markers[portfolio_name]['color'])
+        # excel_markers[portfolio_name]['marker'] = new_list
         
         # Create Popup for Marker and add it to the Map
         # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
