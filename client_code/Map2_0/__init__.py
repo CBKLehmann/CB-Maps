@@ -8,6 +8,7 @@ from anvil.google.drive import app_files
 from anvil.tables import app_tables
 from anvil.js.window import mapboxgl, MapboxGeocoder, document
 from .. import Variables, Layer, Images, ExcelFrames
+from .Color_for_Cluster import Color_for_Cluster
 import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
@@ -58,7 +59,7 @@ class Map2_0(Map2_0Template):
     el.style.zIndex = '9001'
     el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/CB_MapPin_Location.png)'
     
-    self.marker = mapboxgl.Marker({'color': "#2A2A2A", 'draggable': True, 'element': el, 'anchor': 'bottom'})
+    self.marker = mapboxgl.Marker({'draggable': True, 'element': el, 'anchor': 'bottom'})
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
     self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
     self.mapbox.addControl(self.geocoder)
@@ -242,7 +243,7 @@ class Map2_0(Map2_0Template):
         'container': self.dist_container,
         'icon_container': self.dist_layer
       },
-      'Marker-Icons': {
+      'Import & Cluster': {
         'container': self.icon_categories_all,
         'icon_container': self.button_icons
       },
@@ -1827,185 +1828,185 @@ class Map2_0(Map2_0Template):
       
   ##### Analysis Addition to Market Study #####
     
-    # anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
-    # anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, Variables.tm_mode, checkboxes)
+    anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
+    anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, Variables.tm_mode, checkboxes)
 
-    # if not Variables.tm_mode:
-    #   #Create Charts and Static Map for Analysis
-    #   values_pie_ca = [{"topic": "Median Nursing charge (PG 3) in €", "value": pg3_median}, {"topic": "Median Specific co-payment in €", "value": copayment_median}, {"topic": "Median Invest Cost in €", "value": invest_median}, {"topic": "Median Board and lodging in €", "value": board_median}]
-    #   anvil.server.call("create_pie_chart", values_pie_ca, f"donut_ca_{unique_code}", 'donut_ca')
-    #   values_pie_sum = [{"topic": "% Public operators", "value": len(operator_public)}, {"topic": "% Non-profit operators", "value": len(operator_nonProfit)}, {"topic": "% Private operators", "value": len(operator_private)}]
-    #   anvil.server.call("create_pie_chart", values_pie_sum, f"donut_sum_{unique_code}", 'other_donut')
-    #   values_bar_sum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030 Scenario 1", "value": inpatients_fc}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2030", "value": beds_adjusted}, {"topic": "Number of inpatients forecast 2035 Scenario 1", "value": inpatients_fc_35}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2035", "value": beds_adjusted}]
-    #   anvil.server.call("create_bar_chart", values_bar_sum, f"bar_v1_{unique_code}")
-    #   values_bar_sum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030 Scenario 2", "value": inpatients_fc_v2}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2030", "value": beds_adjusted}, {"topic": "Number of inpatients forecast 2035 Scenario 2", "value": inpatients_fc_35_v2}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2035", "value": beds_adjusted}]
-    #   anvil.server.call("create_bar_chart", values_bar_sum, f"bar_v2_{unique_code}")
-    #   anvil.server.call("create_bar_chart", [{"topic": f"{countie[0]}, LK 2022", "value": demand2022}, {"topic": f"{countie[0]}, LK 2030", "value": demand2040}], f"bar_al_{unique_code}")
+    if not Variables.tm_mode:
+      #Create Charts and Static Map for Analysis
+      values_pie_ca = [{"topic": "Median Nursing charge (PG 3) in €", "value": pg3_median}, {"topic": "Median Specific co-payment in €", "value": copayment_median}, {"topic": "Median Invest Cost in €", "value": invest_median}, {"topic": "Median Board and lodging in €", "value": board_median}]
+      anvil.server.call("create_pie_chart", values_pie_ca, f"donut_ca_{unique_code}", 'donut_ca')
+      values_pie_sum = [{"topic": "% Public operators", "value": len(operator_public)}, {"topic": "% Non-profit operators", "value": len(operator_nonProfit)}, {"topic": "% Private operators", "value": len(operator_private)}]
+      anvil.server.call("create_pie_chart", values_pie_sum, f"donut_sum_{unique_code}", 'other_donut')
+      values_bar_sum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030 Scenario 1", "value": inpatients_fc}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2030", "value": beds_adjusted}, {"topic": "Number of inpatients forecast 2035 Scenario 1", "value": inpatients_fc_35}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2035", "value": beds_adjusted}]
+      anvil.server.call("create_bar_chart", values_bar_sum, f"bar_v1_{unique_code}")
+      values_bar_sum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030 Scenario 2", "value": inpatients_fc_v2}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2030", "value": beds_adjusted}, {"topic": "Number of inpatients forecast 2035 Scenario 2", "value": inpatients_fc_35_v2}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2035", "value": beds_adjusted}]
+      anvil.server.call("create_bar_chart", values_bar_sum, f"bar_v2_{unique_code}")
+      anvil.server.call("create_bar_chart", [{"topic": f"{countie[0]}, LK 2022", "value": demand2022}, {"topic": f"{countie[0]}, LK 2030", "value": demand2040}], f"bar_al_{unique_code}")
       
-    #   #Create Data-Objects for Summary
-    #   sendData_Summary = {"zipcode": zipcode,
-    #                       "city": city,
-    #                       "district": district,
-    #                       "federal_state": federal_state,
-    #                       "time": time,
-    #                       "movement": movement,
-    #                       "countie": countie[0],
-    #                       "population": "{:,}".format(countie_data['ex_dem_lk']['all_compl']),
-    #                       "people_u80": "{:,}".format(people_u80),
-    #                       "people_o80": "{:,}".format(people_o80),
-    #                       "pat_rec_full_care": "{:,}".format(inpatients_lk),
-    #                       "inpatients": "{:,}".format(inpatients),
-    #                       "beds_active": "{:,}".format(beds_active),
-    #                       "nursing_homes_active": nursing_homes_active,
-    #                       "nursing_homes_planned": nursing_homes_planned,
-    #                       "nursing_homes_construct": nursing_homes_construct,
-    #                       "beds_planned": "{:,}".format(beds_planned),
-    #                       "beds_construct": "{:,}".format(beds_construct),
-    #                       "beds_adjusted": "{:,}".format(beds_adjusted),
-    #                       "occupancy_percent": occupancy_percent,
-    #                       "invest_median": invest_median,
-    #                       "operator": len(operator),
-    #                       "beds_median": beds_median,
-    #                       "year_median": year_median,
-    #                       "op_public_percent": op_public_percent,
-    #                       "op_nonProfit_percent": op_nonProfit_percent,
-    #                       "op_private_percent": op_private_percent,
-    #                       "people_u80_fc": "{:,}".format(people_u80_fc),
-    #                       "change_u80": "{:,}".format(change_u80),
-    #                       "change_o80": "{:,}".format(change_o80),
-    #                       "people_o80_fc": "{:,}".format(people_o80_fc),
-    #                       "pat_rec_full_care_fc": "{:,}".format(pat_rec_full_care_fc_30_v1),
-    #                       "inpatients_fc": "{:,}".format(inpatients_fc),
-    #                       "beds_surplus": "{:,}".format(beds_surplus),
-    #                       "without_apartment": without_apartment,
-    #                       "change_pat_rec": "{:,}".format(change_pat_rec),
-    #                       "city_population": "{:,}".format(countie_data['dem_city']['bevoelkerung_ges']),
-    #                       "occupancy_lk": "{:,}".format(occupancy_lk),
-    #                       "people_u80_fc_35": "{:,}".format(people_u80_fc_35),
-    #                       "people_o80_fc_35": "{:,}".format(people_o80_fc_35),
-    #                       "pat_rec_full_care_fc_35": "{:,}".format(pat_rec_full_care_fc_35_v1),
-    #                       "nursing_home_rate": nursing_home_rate_perc,
-    #                       "care_rate": new_care_rate_perc,
-    #                       "pat_rec_full_care_fc_s2": "{:,}".format(pat_rec_full_care_fc_30_v2),
-    #                       "care_rate_v2": care_rate_30_v2_perc,
-    #                       "nh_rate_30": care_rate_30_v1_perc,
-    #                       "care_rate_v2_35": care_rate_35_v2_perc,
-    #                       "population_30": "{:,}".format(population_fc),
-    #                       "population_35": "{:,}".format(population_fc_35),
-    #                       "nh_rate_35": care_rate_35_v1_perc,
-    #                       "pat_rec_full_care_fc_35_s2": "{:,}".format(pat_rec_full_care_fc_35_v2),
-    #                       "inpatients_fc_35": "{:,}".format(inpatients_fc_35),
-    #                       "inpatients_fc_v2": "{:,}".format(inpatients_fc_v2),
-    #                       "inpatients_fc_35_v2": "{:,}".format(inpatients_fc_35_v2),
-    #                       "beds_surplus_35": "{:,}".format(beds_surplus_35),
-    #                       "beds_surplus_v2": "{:,}".format(beds_surplus_v2),
-    #                       "beds_surplus_35_v2": "{:,}".format(beds_surplus_35_v2),
-    #                       "care_rate_break_even_perc": care_rate_break_even_perc,
-    #                       "care_rate_break_even_30_perc": care_rate_break_even_30_perc,
-    #                       "care_rate_break_even_35_perc": care_rate_break_even_35_perc,
-    #                       "beds_surplus_v2": beds_surplus_v2,
-    #                       "beds_surplus_35_v2": beds_surplus_35_v2,
-    #                       "beds_lk": "{:,}".format(beds_lk),
-    #                       "free_beds_lk" : "{:,}".format(free_beds_lk),
-    #                       "beds_in_reserve_20": "{:,}".format(beds_in_reserve_20),
-    #                       "beds_in_reserve_fc": "{:,}".format(beds_in_reserve_fc),
-    #                       "free_beds_30_v1": "{:,}".format(free_beds_30_v1),
-    #                       "free_beds_30_v2": "{:,}".format(free_beds_30_v2),
-    #                       "free_beds_35_v1": "{:,}".format(free_beds_35_v1),
-    #                       "free_beds_35_v2": "{:,}".format(free_beds_35_v2),
-    #                       "beds_30_v1": "{:,}".format(beds_30_v1),
-    #                       "beds_30_v2": "{:,}".format(beds_30_v2),
-    #                       "beds_35_v1": "{:,}".format(beds_35_v1),
-    #                       "beds_35_v2": "{:,}".format(beds_35_v2),
-    #                       "inpatents_fc_30_avg": "{:,}".format(inpatents_fc_30_avg),
-    #                       "inpatents_fc_35_avg": "{:,}".format(inpatents_fc_35_avg),
-    #                       "beds_surplus_30_avg": "{:,}".format(beds_surplus_30_avg),
-    #                       "beds_surplus_35_avg": "{:,}".format(beds_surplus_35_avg),
-    #                       "searched_address": searched_address,
-    #                       "nh_checked": nh_checked}
-    #   sendData_ALAnalysis = {"countie": countie[0],
-    #                         "population": "{:,}".format(countie_data['ex_dem_lk']['all_compl']),
-    #                         "people_u80": "{:,}".format(people_u80),
-    #                         "people_o80": "{:,}".format(people_o80),
-    #                         "apartments": "{:,}".format(apartments),
-    #                         "apartments_per_10k": "{:,}".format(apartments_per_10k),
-    #                         "people_u80_fc": "{:,}".format(people_u80_fc),
-    #                         "people_o80_fc": "{:,}".format(people_o80_fc),
-    #                         "change_u80": change_u80,
-    #                         "change_o80": change_o80,
-    #                         "facilities_active": "{:,}".format(facilities_active),
-    #                         "facilities_plan_build": "{:,}".format(facilities_plan_build),
-    #                         "apartments_plan_build": "{:,}".format(apartments_plan_build),
-    #                         "facilities_10km": "{:,}".format(len(al_list)),
-    #                         "apartments_10km": "{:,}".format(apartments_10km),
-    #                         "with_apartment": "{:,}".format(facilities_active - without_apartment),
-    #                         "without_apartment": "{:,}".format(without_apartment),
-    #                         "apartments_adjusted": "{:,}".format(apartments_adjusted),
-    #                         "facilities_building": "{:,}".format(facilities_building),
-    #                         "with_apartment_building": "{:,}".format(facilities_building - without_apartment_building),
-    #                         "without_apartment_building": "{:,}".format(without_apartment_building),
-    #                         "apartments_building": "{:,}".format(apartments_building),
-    #                         "build_apartments_average": "{:,}".format(build_apartments_average),
-    #                         "build_apartments_adjusted": "{:,}".format(build_apartments_adjusted),
-    #                         "apartments_planning": "{:,}".format(apartments_planning),
-    #                         "without_apartment_planning": "{:,}".format(without_apartment_planning),
-    #                         "facilities_planning": "{:,}".format(facilities_planning),
-    #                         "planning_apartments_average": "{:,}".format(planning_apartments_average),
-    #                         "planning_apartments_adjusted": "{:,}".format(planning_apartments_adjusted),
-    #                         "average_with_apartments": "{:,}".format(apartments_average),
-    #                         "planned_with_apartments": "{:,}".format(facilities_planning - without_apartment_planning),
-    #                         "total_facility": "{:,}".format(facilities_active + facilities_building + facilities_planning),
-    #                         "total_apartments": "{:,}".format(apartments + (facilities_building - without_apartment_building) + apartments_planning),
-    #                         "total_apartments_adjusted": "{:,}".format(apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted),
-    #                         "demand_1_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.01) / 1.5)),
-    #                         "demand_1_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.01) / 1.5)),
-    #                         "demand_1_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.01) / 1.5)),
-    #                         "demand_1_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.01) / 1.5)))),
-    #                         "demand_2_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.02) / 1.5)),
-    #                         "demand_2_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.02) / 1.5)),
-    #                         "demand_2_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.02) / 1.5)),
-    #                         "demand_2_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.02) / 1.5)))),
-    #                         "demand_3_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.03) / 1.5)),
-    #                         "demand_3_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.03) / 1.5)),
-    #                         "demand_3_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.03) / 1.5)),
-    #                         "demand_3_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.03) / 1.5)))),
-    #                         "demand_4_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.04) / 1.5)),
-    #                         "demand_4_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.04) / 1.5)),
-    #                         "demand_4_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.04) / 1.5)),
-    #                         "demand_4_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.04) / 1.5)))),
-    #                         "demand_5_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.05) / 1.5)),
-    #                         "demand_5_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.05) / 1.5)),
-    #                         "demand_5_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.05) / 1.5)),
-    #                         "demand_5_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.05) / 1.5)))),
-    #                         "demand_7_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.07) / 1.5)),
-    #                         "demand_7_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.07) / 1.5)),
-    #                         "demand_7_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.07) / 1.5)),
-    #                         "demand_7_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.07) / 1.5)))),
-    #                         "demand_9_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.09) / 1.5)),
-    #                         "demand_9_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.09) / 1.5)),
-    #                         "demand_9_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.09) / 1.5)),
-    #                         "demand_9_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.09) / 1.5)))),
-    #                         "level": level,
-    #                         "surplus_2022": surplus2022,
-    #                         "demand_2022": demand2022,
-    #                         "surplus_2040": surplus2040,
-    #                         "demand_2040": demand2040,
-    #                         "demand_potential": demand_potential,
-    #                         "apartments_plan_build_adjusted": apartments_plan_build_adjusted,
-    #                         "change_pat_rec": change_pat_rec,
-    #                         "city": city,
-    #                         "al_checked": al_checked}
+      #Create Data-Objects for Summary
+      sendData_Summary = {"zipcode": zipcode,
+                          "city": city,
+                          "district": district,
+                          "federal_state": federal_state,
+                          "time": time,
+                          "movement": movement,
+                          "countie": countie[0],
+                          "population": "{:,}".format(countie_data['ex_dem_lk']['all_compl']),
+                          "people_u80": "{:,}".format(people_u80),
+                          "people_o80": "{:,}".format(people_o80),
+                          "pat_rec_full_care": "{:,}".format(inpatients_lk),
+                          "inpatients": "{:,}".format(inpatients),
+                          "beds_active": "{:,}".format(beds_active),
+                          "nursing_homes_active": nursing_homes_active,
+                          "nursing_homes_planned": nursing_homes_planned,
+                          "nursing_homes_construct": nursing_homes_construct,
+                          "beds_planned": "{:,}".format(beds_planned),
+                          "beds_construct": "{:,}".format(beds_construct),
+                          "beds_adjusted": "{:,}".format(beds_adjusted),
+                          "occupancy_percent": occupancy_percent,
+                          "invest_median": invest_median,
+                          "operator": len(operator),
+                          "beds_median": beds_median,
+                          "year_median": year_median,
+                          "op_public_percent": op_public_percent,
+                          "op_nonProfit_percent": op_nonProfit_percent,
+                          "op_private_percent": op_private_percent,
+                          "people_u80_fc": "{:,}".format(people_u80_fc),
+                          "change_u80": "{:,}".format(change_u80),
+                          "change_o80": "{:,}".format(change_o80),
+                          "people_o80_fc": "{:,}".format(people_o80_fc),
+                          "pat_rec_full_care_fc": "{:,}".format(pat_rec_full_care_fc_30_v1),
+                          "inpatients_fc": "{:,}".format(inpatients_fc),
+                          "beds_surplus": "{:,}".format(beds_surplus),
+                          "without_apartment": without_apartment,
+                          "change_pat_rec": "{:,}".format(change_pat_rec),
+                          "city_population": "{:,}".format(countie_data['dem_city']['bevoelkerung_ges']),
+                          "occupancy_lk": "{:,}".format(occupancy_lk),
+                          "people_u80_fc_35": "{:,}".format(people_u80_fc_35),
+                          "people_o80_fc_35": "{:,}".format(people_o80_fc_35),
+                          "pat_rec_full_care_fc_35": "{:,}".format(pat_rec_full_care_fc_35_v1),
+                          "nursing_home_rate": nursing_home_rate_perc,
+                          "care_rate": new_care_rate_perc,
+                          "pat_rec_full_care_fc_s2": "{:,}".format(pat_rec_full_care_fc_30_v2),
+                          "care_rate_v2": care_rate_30_v2_perc,
+                          "nh_rate_30": care_rate_30_v1_perc,
+                          "care_rate_v2_35": care_rate_35_v2_perc,
+                          "population_30": "{:,}".format(population_fc),
+                          "population_35": "{:,}".format(population_fc_35),
+                          "nh_rate_35": care_rate_35_v1_perc,
+                          "pat_rec_full_care_fc_35_s2": "{:,}".format(pat_rec_full_care_fc_35_v2),
+                          "inpatients_fc_35": "{:,}".format(inpatients_fc_35),
+                          "inpatients_fc_v2": "{:,}".format(inpatients_fc_v2),
+                          "inpatients_fc_35_v2": "{:,}".format(inpatients_fc_35_v2),
+                          "beds_surplus_35": "{:,}".format(beds_surplus_35),
+                          "beds_surplus_v2": "{:,}".format(beds_surplus_v2),
+                          "beds_surplus_35_v2": "{:,}".format(beds_surplus_35_v2),
+                          "care_rate_break_even_perc": care_rate_break_even_perc,
+                          "care_rate_break_even_30_perc": care_rate_break_even_30_perc,
+                          "care_rate_break_even_35_perc": care_rate_break_even_35_perc,
+                          "beds_surplus_v2": beds_surplus_v2,
+                          "beds_surplus_35_v2": beds_surplus_35_v2,
+                          "beds_lk": "{:,}".format(beds_lk),
+                          "free_beds_lk" : "{:,}".format(free_beds_lk),
+                          "beds_in_reserve_20": "{:,}".format(beds_in_reserve_20),
+                          "beds_in_reserve_fc": "{:,}".format(beds_in_reserve_fc),
+                          "free_beds_30_v1": "{:,}".format(free_beds_30_v1),
+                          "free_beds_30_v2": "{:,}".format(free_beds_30_v2),
+                          "free_beds_35_v1": "{:,}".format(free_beds_35_v1),
+                          "free_beds_35_v2": "{:,}".format(free_beds_35_v2),
+                          "beds_30_v1": "{:,}".format(beds_30_v1),
+                          "beds_30_v2": "{:,}".format(beds_30_v2),
+                          "beds_35_v1": "{:,}".format(beds_35_v1),
+                          "beds_35_v2": "{:,}".format(beds_35_v2),
+                          "inpatents_fc_30_avg": "{:,}".format(inpatents_fc_30_avg),
+                          "inpatents_fc_35_avg": "{:,}".format(inpatents_fc_35_avg),
+                          "beds_surplus_30_avg": "{:,}".format(beds_surplus_30_avg),
+                          "beds_surplus_35_avg": "{:,}".format(beds_surplus_35_avg),
+                          "searched_address": searched_address,
+                          "nh_checked": nh_checked}
+      sendData_ALAnalysis = {"countie": countie[0],
+                            "population": "{:,}".format(countie_data['ex_dem_lk']['all_compl']),
+                            "people_u80": "{:,}".format(people_u80),
+                            "people_o80": "{:,}".format(people_o80),
+                            "apartments": "{:,}".format(apartments),
+                            "apartments_per_10k": "{:,}".format(apartments_per_10k),
+                            "people_u80_fc": "{:,}".format(people_u80_fc),
+                            "people_o80_fc": "{:,}".format(people_o80_fc),
+                            "change_u80": change_u80,
+                            "change_o80": change_o80,
+                            "facilities_active": "{:,}".format(facilities_active),
+                            "facilities_plan_build": "{:,}".format(facilities_plan_build),
+                            "apartments_plan_build": "{:,}".format(apartments_plan_build),
+                            "facilities_10km": "{:,}".format(len(al_list)),
+                            "apartments_10km": "{:,}".format(apartments_10km),
+                            "with_apartment": "{:,}".format(facilities_active - without_apartment),
+                            "without_apartment": "{:,}".format(without_apartment),
+                            "apartments_adjusted": "{:,}".format(apartments_adjusted),
+                            "facilities_building": "{:,}".format(facilities_building),
+                            "with_apartment_building": "{:,}".format(facilities_building - without_apartment_building),
+                            "without_apartment_building": "{:,}".format(without_apartment_building),
+                            "apartments_building": "{:,}".format(apartments_building),
+                            "build_apartments_average": "{:,}".format(build_apartments_average),
+                            "build_apartments_adjusted": "{:,}".format(build_apartments_adjusted),
+                            "apartments_planning": "{:,}".format(apartments_planning),
+                            "without_apartment_planning": "{:,}".format(without_apartment_planning),
+                            "facilities_planning": "{:,}".format(facilities_planning),
+                            "planning_apartments_average": "{:,}".format(planning_apartments_average),
+                            "planning_apartments_adjusted": "{:,}".format(planning_apartments_adjusted),
+                            "average_with_apartments": "{:,}".format(apartments_average),
+                            "planned_with_apartments": "{:,}".format(facilities_planning - without_apartment_planning),
+                            "total_facility": "{:,}".format(facilities_active + facilities_building + facilities_planning),
+                            "total_apartments": "{:,}".format(apartments + (facilities_building - without_apartment_building) + apartments_planning),
+                            "total_apartments_adjusted": "{:,}".format(apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted),
+                            "demand_1_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.01) / 1.5)),
+                            "demand_1_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.01) / 1.5)),
+                            "demand_1_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.01) / 1.5)),
+                            "demand_1_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.01) / 1.5)))),
+                            "demand_2_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.02) / 1.5)),
+                            "demand_2_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.02) / 1.5)),
+                            "demand_2_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.02) / 1.5)),
+                            "demand_2_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.02) / 1.5)))),
+                            "demand_3_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.03) / 1.5)),
+                            "demand_3_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.03) / 1.5)),
+                            "demand_3_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.03) / 1.5)),
+                            "demand_3_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.03) / 1.5)))),
+                            "demand_4_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.04) / 1.5)),
+                            "demand_4_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.04) / 1.5)),
+                            "demand_4_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.04) / 1.5)),
+                            "demand_4_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.04) / 1.5)))),
+                            "demand_5_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.05) / 1.5)),
+                            "demand_5_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.05) / 1.5)),
+                            "demand_5_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.05) / 1.5)),
+                            "demand_5_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.05) / 1.5)))),
+                            "demand_7_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.07) / 1.5)),
+                            "demand_7_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.07) / 1.5)),
+                            "demand_7_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.07) / 1.5)),
+                            "demand_7_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.07) / 1.5)))),
+                            "demand_9_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.09) / 1.5)),
+                            "demand_9_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.09) / 1.5)),
+                            "demand_9_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.09) / 1.5)),
+                            "demand_9_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.09) / 1.5)))),
+                            "level": level,
+                            "surplus_2022": surplus2022,
+                            "demand_2022": demand2022,
+                            "surplus_2040": surplus2040,
+                            "demand_2040": demand2040,
+                            "demand_potential": demand_potential,
+                            "apartments_plan_build_adjusted": apartments_plan_build_adjusted,
+                            "change_pat_rec": change_pat_rec,
+                            "city": city,
+                            "al_checked": al_checked}
       
-    #   #Create Summary-PDF
-    #   anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], data_comp_analysis_al['data'], data_comp_analysis_al['request'], checkboxes)
+      #Create Summary-PDF
+      anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], data_comp_analysis_al['data'], data_comp_analysis_al['request'], checkboxes)
     
-    # #Get PDF from Table and start Download
-    # table = app_tables.pictures.search()
-    # mapPDF = app_tables.pictures.search()[1]
-    # mapExcel = app_tables.pictures.search()[0]
-    # anvil.media.download(mapPDF['pic'])
-    # anvil.media.download(mapExcel['pic'])
-    # Variables.unique_code = unique_code
+    #Get PDF from Table and start Download
+    table = app_tables.pictures.search()
+    mapPDF = app_tables.pictures.search()[1]
+    mapExcel = app_tables.pictures.search()[0]
+    anvil.media.download(mapPDF['pic'])
+    anvil.media.download(mapExcel['pic'])
+    Variables.unique_code = unique_code
 
   
   def upload_mspdf_change(self, file, **event_args):
@@ -2030,6 +2031,13 @@ class Map2_0(Map2_0Template):
 
   #This method is called when a new file is loaded into the FileLoader
   def file_loader_upload_change(self, file, **event_args):
+    #Initialise Variables
+    excel_markers = {}
+    added_clusters = []
+    colors = ['blue', 'green', 'grey', 'lightblue', 'orange', 'pink', 'red', 'white', 'yellow', 'gold']
+
+    #Create Settings
+    self.icon_grid.row_spacing = 0
     
     #Call Server-Function to safe the File  
     data = anvil.server.call('save_local_excel_file', file)
@@ -2038,53 +2046,39 @@ class Map2_0(Map2_0Template):
       alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
     else:
       for asset in data:
-        print(asset)
-        
+
+        # Create HTML Element for Icon
+        el = document.createElement('div')
+        el.className = f'{asset["address"]}'
+        el.style.width = '40px'
+        el.style.height = '40px'
+        el.style.backgroundSize = '100%'
+        el.style.backgroundrepeat = 'no-repeat'
+        el.style.zIndex = '9001'
+
+        cluster_name = asset['cluster']
+
+        if cluster_name not in added_clusters:
+          color = alert(content=Color_for_Cluster(cluster=cluster_name, colors=colors), large=True, buttons=[], dismissible=False)
+          colors.remove(color[0])
+          checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none')
+          checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+          icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none')
+          self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=0, width_xs=8)
+          self.icon_grid.add_component(icon, row=cluster_name, col_xs=8, width_xs=1)
+          added_clusters.append(cluster_name)
+
         # #Get Coordinates of provided Adress for Marker
-        req_str = self.build_request_string(data[0][markercount])
+        req_str = self.build_request_string(asset)
         req_str += f'.json?access_token={self.token}'
         coords = anvil.http.request(req_str,json=True)
         coordinates = coords['features'][0]['geometry']['coordinates']
 
-
-
-
-
-
-
-        
-      #Initialise Variables
-      # markercount = 0
-      # excel_markers = {}
-      # added_portfolios = []
-
-      # self.icon_grid.row_spacing = 0
-      
-      #Add Marker while Markercount is under Amount of Adresses inside provided File
-      # while markercount < len(data[0]):
-        
-
-        # portfolio_name = data[0][markercount]['Teilportfolio']
-        # color = data[1][portfolio_name]
-
-        # if not portfolio_name in added_portfolios:
-        #   added_portfolios.append(portfolio_name)
-        #   checkbox = CheckBox(checked=True, text=portfolio_name, spacing_above='none', spacing_below='none')
-        #   checkbox.add_event_handler('change', self.check_box_marker_icons_change)
-        #   icon = Label(icon='fa:circle', foreground=color, spacing_above='none', spacing_below='none')
-        #   self.icon_grid.add_component(checkbox, row=portfolio_name, col_xs=0, width_xs=8)
-        #   self.icon_grid.add_component(icon, row=portfolio_name, col_xs=8, width_xs=1)
-        
-        # #Get Coordinates of provided Adress for Marker
-        # req_str = self.build_request_string(data[0][markercount])
-        # req_str += f'.json?access_token={self.token}'
-        # coords = anvil.http.request(req_str,json=True)
-        # coordinates = coords['features'][0]['geometry']['coordinates']
-
-        # if not portfolio_name in excel_markers.keys():
-        #   excel_markers[portfolio_name] = {'color': data[1][portfolio_name], 'static': 'none', 'marker': []}
-        # new_list = self.set_excel_markers(excel_markers[portfolio_name]['static'], coordinates, excel_markers[portfolio_name]['marker'], excel_markers[portfolio_name]['color'])
-        # excel_markers[portfolio_name]['marker'] = new_list
+        if not cluster_name in excel_markers.keys():
+          excel_markers[cluster_name] = {'color': color, 'static': 'none', 'marker': []}
+        el.style.backgroundImage = f'url({excel_markers[cluster_name]["color"][2]})'
+        new_list = self.set_excel_markers(excel_markers[cluster_name]['static'], coordinates, excel_markers[cluster_name]['marker'], el)
+        excel_markers[cluster_name]['marker'] = new_list
         
         # Create Popup for Marker and add it to the Map
         # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
@@ -2093,9 +2087,9 @@ class Map2_0(Map2_0Template):
         # popup_static.addTo(self.mapbox)
         
         #Increase Markercount
-        markercount += 1
+        # markercount += 1
         
-      #Add Marker-Arrays to global Variable Marker
+      # Add Marker-Arrays to global Variable Marker
       Variables.marker.update(excel_markers)
 
       self.hide_marker.enabled = True
@@ -2836,9 +2830,9 @@ class Map2_0(Map2_0Template):
 
       
   #This method is called from the file uploader to set Markers based on Excel-Data
-  def set_excel_markers(self, marker_cat, coords, marker_list, color):
-    
-    marker_cat = mapboxgl.Marker({'color': color, 'draggable': False})
+  def set_excel_markers(self, marker_cat, coords, marker_list, el):
+
+    marker_cat = mapboxgl.Marker({'draggable': False, 'element': el, 'anchor': 'bottom'})
     
     # Add Marker to the Map
     newmarker = marker_cat.setLngLat(coords).addTo(self.mapbox)
@@ -2871,17 +2865,20 @@ class Map2_0(Map2_0Template):
         self.mapbox.setFeatureState({'source': Variables.activeLayer, 'id': Variables.hoveredStateId}, {'hover': True})
   
   #Builds request-String for geocoder
-  def build_request_string(self, marker):
+  def build_request_string(self, asset):
     
     #Create basic request String
     request_string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/"
+
+    split_address = asset['map_address'].split(' ')
+    street = split_address[0]
+    housenumber = split_address[1]
     
     #Create and Send Request String based on given Marker
-    request_string += str(marker['Straße']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
-    request_string += str(marker['Hausnummer']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
-    request_string += str(marker['Bezirk']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
-    request_string += str(marker['Stadt']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
-    request_string += str(marker['Postleitzahl'])
+    request_string += str(street).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+    request_string += str(housenumber).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+    request_string += str(asset['city']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+    request_string += str(asset['zip'])
     
     return (request_string)
   
