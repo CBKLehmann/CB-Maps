@@ -33,6 +33,7 @@ class Map2_0(Map2_0Template):
     self.dom = anvil.js.get_dom_node(self.spacer_1)
     self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
     self.token = anvil.server.call('get_token')
+    self.app_url = anvil.server.call('get_app_url')
 
   
   def form_show(self, **event_args):
@@ -55,7 +56,7 @@ class Map2_0(Map2_0Template):
     el.style.backgroundSize = '100%'
     el.style.backgroundrepeat = 'no-repeat'
     el.style.zIndex = '9001'
-    el.style.backgroundImage = f'url({Variables.icon_home})'
+    el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/CB_MapPin_Location.png)'
     
     self.marker = mapboxgl.Marker({'color': "#2A2A2A", 'draggable': True, 'element': el, 'anchor': 'bottom'})
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
@@ -2068,7 +2069,7 @@ class Map2_0(Map2_0Template):
         new_list = self.set_excel_markers(excel_markers[portfolio_name]['static'], coordinates, excel_markers[portfolio_name]['marker'], excel_markers[portfolio_name]['color'])
         excel_markers[portfolio_name]['marker'] = new_list
         
-        #Create Popup for Marker and add it to the Map
+        # Create Popup for Marker and add it to the Map
         # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
         # popup.setHTML(data[0][markercount]['Informationen'])
         # popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[0][markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
