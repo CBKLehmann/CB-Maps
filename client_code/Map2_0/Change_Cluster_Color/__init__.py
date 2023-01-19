@@ -134,6 +134,7 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
         if component.tag.color == self.oldColor:
           component.source = source
           component.tag.color = colorName
+          component.tag.source = source
       elif component.tag.type == 'select':
         if component.tag.color == self.oldColor:
           component.tag.color = colorName
@@ -143,13 +144,24 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
         component.items = items
         component.selected_value = None
       elif component.tag.type == 'label':
-        component.tag.color = colorName
+        if component.tag.color == self.oldColor:
+          component.tag.color = colorName
     
   def confirm_btn_click(self, **event_args):
     response = {}
+    color_arr = []
     for component in self.grid_panel_1.get_components():
       if component.tag.type == 'label':
-        print(component.text)
-        print(component.tag)
         cluster = component.text
+        color = component.tag.color
+        color_arr.append(color)
+      elif component.tag.type == 'point':
+        color_code = component.foreground
+        color_arr.append(color_code)
+      elif component.tag.type == 'image':
+        pin = component.tag.source
+        color_arr.append(pin)
+      if len(color_arr) == 3:
+        response[cluster] = color_arr
+        color_arr = []
     self.raise_event('x-close-alert', value=response)

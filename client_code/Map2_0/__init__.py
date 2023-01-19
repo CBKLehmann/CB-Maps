@@ -3253,8 +3253,15 @@ class Map2_0(Map2_0Template):
     """This method is called when the button is clicked"""
     from .Change_Cluster_Color import Change_Cluster_Color
     response = alert(content=Change_Cluster_Color(components=self.icon_grid.get_components()), dismissible=False, large=True, buttons=[], role='custom_alert')
-    print(response)
-    print(Variables.marker)
+    for key in Variables.marker:
+      Variables.marker[key]['color'] = response[key]
+      for marker in Variables.marker[key]['marker']:
+        anvil.js.call('changeBackground', marker['_element'], Variables.marker[key]["color"][2])
+    for component in self.icon_grid.get_components():
+      if type(component) == CheckBox:
+        key = component.text
+      elif type(component) == Label:
+        component.foreground = Variables.marker[key]["color"][1]
     pass
 
 
