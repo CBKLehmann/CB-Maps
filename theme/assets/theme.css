@@ -901,3 +901,7 @@ td {
   margin-bottom: 1rem;
   margin-left: 1rem;
 }
+
+.alert-modal {
+  z-index: 15000 !important;
+}
