@@ -612,7 +612,7 @@ class Map2_0(Map2_0Template):
     change_u80_raw = change_u80 / 100
     change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
     change_o80_raw = change_o80 / 100
-
+    
     #Get organized Coords for Nursing Homes
     coords_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', lng_lat_marker)
 
@@ -636,7 +636,7 @@ class Map2_0(Map2_0Template):
 
     population_fc = int(countie_data['dem_fc_lk']['g_u6_2030_abs']) + int(countie_data['dem_fc_lk']['g_6tou10_2030_abs']) + int(countie_data['dem_fc_lk']['g_10tou16_2030_abs']) + int(countie_data['dem_fc_lk']['g_16tou20_2030_abs']) + int(countie_data['dem_fc_lk']['g_20tou30_2030_abs']) + int(countie_data['dem_fc_lk']['g_30tou50_2030_abs']) + int(countie_data['dem_fc_lk']['g_50tou65_2030_abs']) + int(countie_data['dem_fc_lk']['g_65tou70_2030_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2030_abs']) + int(countie_data['dem_fc_lk']['g_80plus_2030_abs'])
     population_fc_35 = int(countie_data['dem_fc_lk']['g_u6_2035_abs']) + int(countie_data['dem_fc_lk']['g_6tou10_2035_abs']) + int(countie_data['dem_fc_lk']['g_10tou16_2035_abs']) + int(countie_data['dem_fc_lk']['g_16tou20_2035_abs']) + int(countie_data['dem_fc_lk']['g_20tou30_2035_abs']) + int(countie_data['dem_fc_lk']['g_30tou50_2035_abs']) + int(countie_data['dem_fc_lk']['g_50tou65_2035_abs']) + int(countie_data['dem_fc_lk']['g_65tou70_2035_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2035_abs']) + int(countie_data['dem_fc_lk']['g_80plus_2035_abs'])
-  
+    
     #Get organized Coords for both Assisted Living
     coords_al = self.organize_ca_data(Variables.assisted_living_entries, 'assisted_living', lng_lat_marker)
         
