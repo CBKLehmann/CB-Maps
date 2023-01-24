@@ -94,17 +94,62 @@ class Map2_0(Map2_0Template):
   def loadHash(self, event):
     hash = get_url_hash()
     if not len(hash) == 0:
-      self.marker.setLngLat([hash['north'], hash['east']])
-      self.mapbox.flyTo({"center": [hash['north'], hash['east']]})
-      self.time_dropdown.selected_value = hash['time']
-      self.profile_dropdown.selected_value = hash['movement']
+      data = anvil.server.call('get_map_settings', hash['name'])
+      for component in self.checkbox_map_style.get_components():
+        if component.text == data['map_style']:
+          component.selected = True
+          break
+      component.raise_event('clicked')
+      time.sleep(.5)
+      self.marker.setLngLat([data['marker_lng'], data['marker_lat']])
+      self.mapbox.flyTo({"center": [data['marker_lng'], data['marker_lat']], "zoom": data['zoom']})
+      self.time_dropdown.selected_value = data['distance_time']
+      self.profile_dropdown.selected_value = data['distance_movement']
       self.profile_dropdown.raise_event('change')
-      self.checkbox_poi_x_hfcig.checked = hash['distanceLayer']
-      self.pdb_data_al.checked = hash['assistedLiving']
-      self.pdb_data_cb.checked = hash['nursingHome']
-      self.pdb_data_al.raise_event('change')
-      self.pdb_data_cb.raise_event('change')
-
+      self.checkbox_poi_x_hfcig.checked = data['iso_layer']
+      self.pdb_data_al.checked = data['assisted_living']
+      self.pdb_data_cb.checked = data['nursing_homes']
+      if data['assisted_living']:
+        self.pdb_data_al.raise_event('change')
+      if data['nursing_homes']:
+        self.pdb_data_cb.raise_event('change')
+      healthcare_components = self.poi_categories_healthcare_container.get_components()
+      if data['poi_healthcare'][0] == '1':
+        healthcare_components[0].checked = True
+        healthcare_components[0].raise_event('change')
+      else:
+        for index, state in enumerate(data['poi_healthcare']):
+          if index > 0 and state == '1':
+            healthcare_components[index].checked = True
+            healthcare_components[index].raise_event('change')
+      miscelaneous_components = self.misc_container.get_components()
+      if data['poi_misc'][0] == '1':
+        miscelaneous_components[0].checked = True
+        miscelaneous_components[0].raise_event('change')
+      else:
+        for index, state in enumerate(data['poi_misc']):
+          if index > 0 and state == '1':
+            miscelaneous_components[index].checked = True
+            miscelaneous_components[index].raise_event('change')
+      opnv_components = self.opnv_container.get_components()
+      if data['poi_opnv'][0] == '1':
+        opnv_components[0].checked = True
+        opnv_components[0].raise_event('change')
+      else:
+        for index, state in enumerate(data['poi_opnv']):
+          if index > 0 and state == '1':
+            opnv_components[index].checked = True
+            opnv_components[index].raise_event('change')
+      for component in self.layer_categories.get_components():
+        if component.text == data['overlay']:
+          component.checked = True
+          component.raise_event('change')
+      self.hide_ms_marker.checked = data['study_pin']
+      if data['study_pin']:
+        self.hide_ms_marker.raise_event('change')
+      if not len(data['cluster']) == 0:
+        self.create_cluster_marker(data['cluster'])
+            
 
   def check_box_marker_icons_change(self, **event_args):
     # Show or Hide Marker-Icon-Types
@@ -247,7 +292,7 @@ class Map2_0(Map2_0Template):
     elif dict(event_args)['sender'].text == "Outdoor-Map":
       self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
     elif dict(event_args)['sender'].text == "IM-Map":
-      self.mapbox.setStyle('mapbox://styles/mapbox/streets-v11')
+      self.mapbox.setStyle('mapbox://styles/mapbox/light-v11')
     self.mapbox.on('load', self.place_layer)
     #shinykampfkeule/clcylq1kd000c14p5w6tgrpyz
     #mapbox://styles/shinykampfkeule/clcqbbo8b00ug14s17s6621rf
@@ -344,10 +389,18 @@ class Map2_0(Map2_0Template):
         break
     study_pin = self.hide_ms_marker.checked
 
+    settings = Variables.marker
+    for setting in settings:
+      settings[setting].pop('marker')
+    cluster = {
+      'data': self.cluster_data,
+      'settings': Variables.marker
+    }
+    
     dataset = {
       'marker_lng': self.marker['_lngLat']['lng'],
       'marker_lat': self.marker['_lngLat']['lat'],
-      'cluster': Variables.marker, #Need to be added
+      'cluster': cluster,
       'distance_movement': self.profile_dropdown.selected_value,
       'distance_time': self.time_dropdown.selected_value,
       'overlay': overlay,
@@ -360,13 +413,13 @@ class Map2_0(Map2_0Template):
       'iso_layer': self.checkbox_poi_x_hfcig.checked,
       'name': 'Test', #Need to be added
       'url': url,
-      'study_pin': study_pin
+      'study_pin': study_pin,
+      'zoom': self.mapbox.getZoom()
     }
 
     anvil.server.call('save_map_settings', dataset)
     
     alert(url)
-    print(dataset)
     print(date)
     
 #     #Call a Server Function
@@ -2111,23 +2164,23 @@ class Map2_0(Map2_0Template):
   #####  Upload Functions   #####
 
   #This method is called when a new file is loaded into the FileLoader
-  def file_loader_upload_change(self, file, **event_args):
-    #Initialise Variables
-    excel_markers = {}
-    added_clusters = []
-    colors = ['blue', 'green', 'grey', 'lightblue', 'orange', 'pink', 'red', 'white', 'yellow', 'gold']
-
-    #Create Settings
-    self.icon_grid.row_spacing = 0
-    
+  def file_loader_upload_change(self, file, **event_args):  
     #Call Server-Function to safe the File  
-    data = anvil.server.call('save_local_excel_file', file)
+    self.cluster_data = anvil.server.call('save_local_excel_file', file)
     
-    if data == None:
+    if self.cluster_data == None:
       alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
     else:
-      for asset in data:
-
+      #Initialise Variables
+      excel_markers = {}
+      added_clusters = []
+      colors = ['blue', 'green', 'grey', 'lightblue', 'orange', 'pink', 'red', 'white', 'yellow', 'gold']
+  
+      #Create Settings
+      self.icon_grid.row_spacing = 0
+      
+      for asset in self.cluster_data:
+  
         # Create HTML Element for Icon
         el = document.createElement('div')
         el.className = f'{asset["address"]}'
@@ -2136,9 +2189,9 @@ class Map2_0(Map2_0Template):
         el.style.backgroundSize = '100%'
         el.style.backgroundrepeat = 'no-repeat'
         el.style.zIndex = '9001'
-
+  
         cluster_name = asset['cluster']
-
+  
         if cluster_name not in added_clusters:
           color = alert(content=Color_for_Cluster(cluster=cluster_name, colors=colors), large=True, buttons=[], dismissible=False)
           colors.remove(color[0])
@@ -2148,13 +2201,13 @@ class Map2_0(Map2_0Template):
           self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=0, width_xs=8)
           self.icon_grid.add_component(icon, row=cluster_name, col_xs=8, width_xs=1)
           added_clusters.append(cluster_name)
-
+  
         # #Get Coordinates of provided Adress for Marker
         req_str = self.build_request_string(asset)
         req_str += f'.json?access_token={self.token}'
         coords = anvil.http.request(req_str,json=True)
         coordinates = coords['features'][0]['geometry']['coordinates']
-
+  
         if not cluster_name in excel_markers.keys():
           excel_markers[cluster_name] = {'color': color, 'static': 'none', 'marker': []}
         el.style.backgroundImage = f'url({excel_markers[cluster_name]["color"][2]})'
@@ -2172,7 +2225,7 @@ class Map2_0(Map2_0Template):
         
       # Add Marker-Arrays to global Variable Marker
       Variables.marker.update(excel_markers)
-
+  
       self.hide_marker.enabled = True
       self.change_cluster_color.enabled = True
     
@@ -3340,5 +3393,64 @@ class Map2_0(Map2_0Template):
         component.foreground = Variables.marker[key]["color"][1]
     pass
 
+  
+  def create_cluster_marker(self, cluster_data):
+    print(cluster_data)
 
+    ##### UMSCHREIBEN #####
+    
+    #Initialise Variables
+    excel_markers = {}
+    added_clusters = []
+    colors = ['blue', 'green', 'grey', 'lightblue', 'orange', 'pink', 'red', 'white', 'yellow', 'gold']
 
+    #Create Settings
+    self.icon_grid.row_spacing = 0
+    
+    for asset in cluster_data['data']:
+
+      # Create HTML Element for Icon
+      el = document.createElement('div')
+      el.className = f'{asset["address"]}'
+      el.style.width = '40px'
+      el.style.height = '40px'
+      el.style.backgroundSize = '100%'
+      el.style.backgroundrepeat = 'no-repeat'
+      el.style.zIndex = '9001'
+
+      cluster_name = asset['cluster']
+
+      color = cluster_data['settings'][cluster_name]['color']
+      if not cluster_name in added_clusters:
+        checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none')
+        checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+        icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none')
+        self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=0, width_xs=8)
+        self.icon_grid.add_component(icon, row=cluster_name, col_xs=8, width_xs=1)
+        added_clusters.append(cluster_name)
+
+      # #Get Coordinates of provided Adress for Marker
+      req_str = self.build_request_string(asset)
+      req_str += f'.json?access_token={self.token}'
+      coords = anvil.http.request(req_str,json=True)
+      coordinates = coords['features'][0]['geometry']['coordinates']
+
+      cluster_data['settings'][cluster_name]['marker'] = []
+      el.style.backgroundImage = f'url({color[2]})'
+      new_list = self.set_excel_markers(cluster_data['settings'][cluster_name]['static'], coordinates, cluster_data['settings'][cluster_name]['marker'], el)
+      cluster_data['settings'][cluster_name]['marker'] = new_list
+      
+      # Create Popup for Marker and add it to the Map
+      # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
+      # popup.setHTML(data[0][markercount]['Informationen'])
+      # popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[0][markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
+      # popup_static.addTo(self.mapbox)
+      
+      #Increase Markercount
+      # markercount += 1
+      
+    # Add Marker-Arrays to global Variable Marker
+    Variables.marker.update(cluster_data['settings'])
+
+    self.hide_marker.enabled = True
+    self.change_cluster_color.enabled = True
