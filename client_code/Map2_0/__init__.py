@@ -312,20 +312,61 @@ class Map2_0(Map2_0Template):
     # anvil.server.call('micmaccircle')
     # anvil.server.call('read_regularien')
     # anvil.server.call('get_db_stations')
-    print(anvil.server.call('get_app_url'))
-    time = self.time_dropdown.selected_value
-    movement = self.profile_dropdown.selected_value
-    assistedLiving = self.pdb_data_al.checked
-    nursingHome = self.pdb_data_cb.checked
-    distanceLayer = self.checkbox_poi_x_hfcig.checked
-    print(dict(self.marker['_lngLat']))
-    north = self.marker['_lngLat']['lng']
-    east = self.marker['_lngLat']['lat']
 
-    url = anvil.server.call('get_app_url') + f'#?movement={movement}&time={time}&assistedLiving={assistedLiving}&nursingHome={nursingHome}&distanceLayer={distanceLayer}&north={north}&east={east}'
-    alert(url)
+    url = anvil.server.call('get_app_url') + f'#?name=Test'
+    poi_healthcare = ""
+    poi_miscelaneous = ""
+    poi_opnv = ""
+    overlay = ""
+    for category in self.poi_categories_healthcare_container.get_components():
+      if category.checked:
+        poi_healthcare += '1'
+      else:
+        poi_healthcare += '0'
+    for category in self.misc_container.get_components():
+      if category.checked:
+        poi_miscelaneous += '1'
+      else:
+        poi_miscelaneous += '0'
+    for category in self.opnv_container.get_components():
+      if category.checked:
+        poi_opnv += '1'
+      else:
+        poi_opnv += '0'
+    for component in self.layer_categories.get_components():
+      if component.checked:
+        overlay = component.text
+        break
+    for component in self.checkbox_map_style.get_components():
+      print(component.selected)
+      if component.selected:
+        map_style = component.text
+        break
+    study_pin = self.hide_ms_marker.checked
+
+    dataset = {
+      'marker_lng': self.marker['_lngLat']['lng'],
+      'marker_lat': self.marker['_lngLat']['lat'],
+      'cluster': Variables.marker, #Need to be added
+      'distance_movement': self.profile_dropdown.selected_value,
+      'distance_time': self.time_dropdown.selected_value,
+      'overlay': overlay,
+      'map_style': map_style,
+      'poi_healthcare': poi_healthcare,
+      'poi_misc': poi_miscelaneous,
+      'poi_opnv': poi_opnv,
+      'nursing_homes': self.pdb_data_cb.checked,
+      'assisted_living': self.pdb_data_al.checked,
+      'iso_layer': self.checkbox_poi_x_hfcig.checked,
+      'name': 'Test', #Need to be added
+      'url': url,
+      'study_pin': study_pin
+    }
+
+    anvil.server.call('save_map_settings', dataset)
     
-    print(get_url_hash())
+    alert(url)
+    print(dataset)
     print(date)
     
 #     #Call a Server Function
