@@ -93,10 +93,9 @@ class Map2_0(Map2_0Template):
 
   def loadHash(self, event):
     hash = get_url_hash()
-    print(dict(self.mapbox))
     if not len(hash) == 0:
       self.marker.setLngLat([hash['north'], hash['east']])
-      self.map.flyTo({"center": [hash['north'], hash['east']]})
+      self.mapbox.flyTo({"center": [hash['north'], hash['east']]})
       self.time_dropdown.selected_value = hash['time']
       self.profile_dropdown.selected_value = hash['movement']
       self.profile_dropdown.raise_event('change')
@@ -316,6 +315,15 @@ class Map2_0(Map2_0Template):
     print(anvil.server.call('get_app_url'))
     time = self.time_dropdown.selected_value
     movement = self.profile_dropdown.selected_value
+    assistedLiving = self.pdb_data_al.checked
+    nursingHome = self.pdb_data_cb.checked
+    distanceLayer = self.checkbox_poi_x_hfcig.checked
+    print(dict(self.marker['_lngLat']))
+    north = self.marker['_lngLat']['lng']
+    east = self.marker['_lngLat']['lat']
+
+    url = anvil.server.call('get_app_url') + f'#?movement={movement}&time={time}&assistedLiving={assistedLiving}&nursingHome={nursingHome}&distanceLayer={distanceLayer}&north={north}&east={east}'
+    alert(url)
     
     print(get_url_hash())
     print(date)
