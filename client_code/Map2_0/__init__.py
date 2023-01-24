@@ -88,28 +88,25 @@ class Map2_0(Map2_0Template):
     self.mapbox.on("click", "municipalities", self.popup)
     self.mapbox.on("click", "districts", self.popup)
     self.mapbox.on("styledata", self.place_layer)
-
-      
-    self.loadHash()
+    self.mapbox.on("load", self.loadHash)
 
 
-  def loadHash(self):
-    print('Test')
-    loaded = self.mapbox.loaded()
-    while not loaded:
-      print(loaded)
-      loaded = self.mapbox.loaded()
+  def loadHash(self, event):
     hash = get_url_hash()
+    print(dict(self.mapbox))
     if not len(hash) == 0:
+      self.marker.setLngLat([hash['north'], hash['east']])
+      self.map.flyTo({"center": [hash['north'], hash['east']]})
       self.time_dropdown.selected_value = hash['time']
       self.profile_dropdown.selected_value = hash['movement']
+      self.profile_dropdown.raise_event('change')
       self.checkbox_poi_x_hfcig.checked = hash['distanceLayer']
       self.pdb_data_al.checked = hash['assistedLiving']
       self.pdb_data_cb.checked = hash['nursingHome']
-      self.profile_dropdown.raise_event('change')
       self.pdb_data_al.raise_event('change')
       self.pdb_data_cb.raise_event('change')
-  
+
+
   def check_box_marker_icons_change(self, **event_args):
     # Show or Hide Marker-Icon-Types
     Functions.show_hide_marker(self, event_args['sender'].checked, event_args['sender'].text)
