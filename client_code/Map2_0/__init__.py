@@ -1665,8 +1665,14 @@ class Map2_0(Map2_0Template):
           ez_rate_asset = 100
         else:
           ez_rate_asset = round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz'])))
-        i_cost_asset = float(entry[0]['invest'])
-        occupancy_asset = int(entry[0]['occupancy'].split(" ")[0])
+        if not entry[0]['invest'] == 'N/A':
+          i_cost_asset = float(entry[0]['invest'])
+        else:
+          i_cost_asset = 0
+        if not entry[0]['occupancy'].split(" ")[0] == 'N/A':
+          occupancy_asset = int(entry[0]['occupancy'].split(" ")[0])
+        else:
+          occupancy_asset = 0
         year_of_construction_asset = entry[0]['baujahr']
       else:
         if entry[0]['dz'] == 'N/A':
