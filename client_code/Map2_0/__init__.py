@@ -88,25 +88,6 @@ class Map2_0(Map2_0Template):
     self.mapbox.on("click", "municipalities", self.popup)
     self.mapbox.on("click", "districts", self.popup)
     self.mapbox.on("styledata", self.place_layer)
-    
-    # self.loadHash()
-
-
-  # def loadHash(self):
-  #   print('Test')
-  #   loaded = self.mapbox.loaded()
-  #   while not loaded:
-  #     loaded = self.mapbox.loaded()
-    # hash = get_url_hash()
-    # if not len(hash) == 0:
-    #   self.time_dropdown.selected_value = hash['time']
-    #   self.profile_dropdown.selected_value = hash['movement']
-    #   self.checkbox_poi_x_hfcig.checked = hash['distanceLayer']
-    #   self.pdb_data_al.checked = hash['assistedLiving']
-    #   self.pdb_data_cb.checked = hash['nursingHome']
-    #   self.profile_dropdown.raise_event('change')
-    #   self.pdb_data_al.raise_event('change')
-    #   self.pdb_data_cb.raise_event('change')
 
 
   def check_box_marker_icons_change(self, **event_args):
