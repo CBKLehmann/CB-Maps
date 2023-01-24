@@ -44,7 +44,6 @@ class Map2_0(Map2_0Template):
   
   def form_show(self, **event_args):
     # Initiate Map and set Listener on Page Load
-
     self.select_all_hc.tag.categorie = 'Healthcare'
     self.select_all_misc.tag.categorie = 'Miscelaneous'
     self.select_all_opnv.tag.categorie = 'ÖPNV'
@@ -68,7 +67,7 @@ class Map2_0(Map2_0Template):
     self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
     self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
     self.mapbox.addControl(self.geocoder)
-      
+    
     self.geocoder.on("result", self.move_marker)
     self.marker.on("dragend", self.marker_dragged) 
     self.mapbox.on("mousemove", "federal_states", self.change_hover_state)
@@ -89,8 +88,27 @@ class Map2_0(Map2_0Template):
     self.mapbox.on("click", "municipalities", self.popup)
     self.mapbox.on("click", "districts", self.popup)
     self.mapbox.on("styledata", self.place_layer)
+    
+    # self.loadHash()
 
-  
+
+  # def loadHash(self):
+  #   print('Test')
+  #   loaded = self.mapbox.loaded()
+  #   while not loaded:
+  #     loaded = self.mapbox.loaded()
+    # hash = get_url_hash()
+    # if not len(hash) == 0:
+    #   self.time_dropdown.selected_value = hash['time']
+    #   self.profile_dropdown.selected_value = hash['movement']
+    #   self.checkbox_poi_x_hfcig.checked = hash['distanceLayer']
+    #   self.pdb_data_al.checked = hash['assistedLiving']
+    #   self.pdb_data_cb.checked = hash['nursingHome']
+    #   self.profile_dropdown.raise_event('change')
+    #   self.pdb_data_al.raise_event('change')
+    #   self.pdb_data_cb.raise_event('change')
+
+
   def check_box_marker_icons_change(self, **event_args):
     # Show or Hide Marker-Icon-Types
     Functions.show_hide_marker(self, event_args['sender'].checked, event_args['sender'].text)
@@ -298,6 +316,10 @@ class Map2_0(Map2_0Template):
     # anvil.server.call('read_regularien')
     # anvil.server.call('get_db_stations')
     print(anvil.server.call('get_app_url'))
+    time = self.time_dropdown.selected_value
+    movement = self.profile_dropdown.selected_value
+    
+    print(get_url_hash())
     print(date)
     
 #     #Call a Server Function
