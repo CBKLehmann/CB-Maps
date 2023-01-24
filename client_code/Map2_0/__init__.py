@@ -296,7 +296,8 @@ class Map2_0(Map2_0Template):
     # anvil.server.call('test_i_love_pdf')
     # anvil.server.call('micmaccircle')
     # anvil.server.call('read_regularien')
-    anvil.server.call('get_db_stations')
+    # anvil.server.call('get_db_stations')
+    print(anvil.server.call('get_app_url'))
     print(date)
     
 #     #Call a Server Function
