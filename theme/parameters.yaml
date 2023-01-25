@@ -35,6 +35,9 @@ roles:
 - {name: gm_info, components: null}
 - {name: newpopup, components: null}
 - {name: custom_alert, components: null}
+- name: sidebar_collapsable
+  components: [Button]
+  display_in_toolbox: false
 color_scheme:
   preset_groups:
   - name: Primary Colour

@@ -905,3 +905,13 @@ td {
 .alert-modal {
   z-index: 15000 !important;
 }
+
+.anvil-role-sidebar_collapsable {
+  border: 1px solid #968132;
+  border-radius: 5px
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.anvil-role-sidebar_collapsable:hover {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
