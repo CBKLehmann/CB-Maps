@@ -25,16 +25,16 @@ components:
   layout_properties: {slot: left-nav}
   components:
   - type: Button
-    properties: {role: sidebar_collapsable, align: left, tooltip: '', border: '',
-      enabled: true, foreground: 'theme:Gray 200', visible: true, text: Import & Cluster,
-      font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small,
+    properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
+      enabled: true, foreground: 'theme:Gray 300', visible: true, text: Import & Cluster,
+      font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: button_icons
     layout_properties: {grid_position: 'CECMZW,EOCCPW'}
     event_bindings: {click: button_toggle_menu_parts}
   - type: LinearPanel
-    properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
-      border: '', visible: false, role: null, tooltip: ''}
+    properties: {spacing_above: small, spacing_below: small, background: 'theme:Secondary
+        700', foreground: '', border: '', visible: false, role: null, tooltip: ''}
     name: icon_categories_all
     layout_properties: {grid_position: 'CMMMVJ,KNWNRI'}
     components:
@@ -96,7 +96,7 @@ components:
         file_types: null
         enabled: true
         files: []
-        foreground: ''
+        foreground: theme:Gray 300
         visible: true
         text: Upload
         font_size: null
@@ -127,9 +127,9 @@ components:
       layout_properties: {grid_position: 'ZGJCTW,HEUZDW'}
       event_bindings: {click: button_infos_click}
   - type: Button
-    properties: {role: sidebar_collapsable, align: left, tooltip: '', border: '',
+    properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
       enabled: true, foreground: 'theme:Gray 200', visible: true, text: Distance-Layer,
-      font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small,
+      font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: dist_layer
     layout_properties: {grid_position: 'UXARRM,SMPAHC'}
@@ -140,8 +140,9 @@ components:
     layout_properties: {grid_position: 'LFGUCI,JMQPRK'}
     components:
     - type: LinearPanel
-      properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
-        border: '', visible: false, role: null, tooltip: ''}
+      properties: {spacing_above: small, spacing_below: small, background: 'theme:Secondary
+          700', foreground: 'theme:Gray 300', border: '', visible: false, role: card,
+        tooltip: ''}
       name: dist_container
       layout_properties: {}
       components:
@@ -153,7 +154,7 @@ components:
           placeholder: Zeitrahmen auswählen
           border: ''
           enabled: true
-          foreground: theme:Secondary 500
+          foreground: theme:Gray 300
           items: [dsfsdfs]
           visible: true
           font_size: null
@@ -180,7 +181,7 @@ components:
           placeholder: ''
           border: ''
           enabled: true
-          foreground: theme:Secondary 500
+          foreground: theme:Gray 300
           items: [Walking, Cycling, Driving]
           visible: true
           font_size: null
@@ -204,22 +205,22 @@ components:
         layout_properties: {}
         event_bindings: {change: iso_layer_active_change}
   - type: Button
-    properties: {role: sidebar_collapsable, align: left, tooltip: '', border: '',
+    properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
       enabled: true, foreground: 'theme:Gray 200', visible: true, text: Overlays,
-      font_size: null, font: '', spacing_above: small, icon_align: right, spacing_below: small,
+      font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: button_overlay
-    layout_properties: {grid_position: 'FCPOMN,NTZMHZ'}
+    layout_properties: {grid_position: 'FCPOMN,NTZMHZ', full_width_row: false, row_background: ''}
     event_bindings: {click: button_toggle_menu_parts}
   - type: LinearPanel
-    properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
-      border: '', visible: false, role: null, tooltip: ''}
+    properties: {spacing_above: none, spacing_below: none, background: 'theme:Secondary
+        700', foreground: '', border: '', visible: false, role: card, tooltip: ''}
     name: layer_categories
-    layout_properties: {grid_position: 'BRIAXR,EQDVBU'}
+    layout_properties: {grid_position: 'BRIAXR,EQDVBU', full_width_row: false, row_background: ''}
     components:
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', allow_indeterminate: false, visible: true, text: federal states,
+        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: federal states,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: false, underline: false}
       name: check_box_fs
@@ -227,7 +228,7 @@ components:
       event_bindings: {change: check_box_overlays_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', allow_indeterminate: false, visible: true, text: administrative districts,
+        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: administrative districts,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: false, underline: false}
       name: check_box_ad
@@ -235,7 +236,7 @@ components:
       event_bindings: {change: check_box_overlays_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', allow_indeterminate: false, visible: true, text: counties,
+        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: counties,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: false, underline: false}
       name: check_box_c
@@ -243,7 +244,7 @@ components:
       event_bindings: {change: check_box_overlays_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', allow_indeterminate: false, visible: true, text: municipalities,
+        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: municipalities,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: false, underline: false}
       name: check_box_m
@@ -251,7 +252,7 @@ components:
       event_bindings: {change: check_box_overlays_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', allow_indeterminate: false, visible: true, text: districts,
+        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: districts,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: false, underline: false}
       name: check_box_d
@@ -259,29 +260,29 @@ components:
       event_bindings: {change: check_box_overlays_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', allow_indeterminate: false, visible: true, text: netherlands,
+        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: netherlands,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, checked: false, underline: false}
       name: check_box_nl
       layout_properties: {}
       event_bindings: {change: check_box_overlays_change}
   - type: Button
-    properties: {role: sidebar_collapsable, align: left, tooltip: '', border: '',
-      enabled: true, foreground: 'theme:Gray 200', visible: true, text: Map-Styles,
-      font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small,
+    properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
+      enabled: true, foreground: 'theme:Gray 300', visible: true, text: Map-Styles,
+      font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: map_styles
     layout_properties: {grid_position: 'MKLHBF,IQYDQP'}
     event_bindings: {click: button_toggle_menu_parts}
   - type: LinearPanel
-    properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
-      border: '', visible: false, role: null, tooltip: ''}
+    properties: {spacing_above: small, spacing_below: small, background: 'theme:Secondary
+        700', foreground: '', border: '', visible: false, role: card, tooltip: ''}
     name: checkbox_map_style
     layout_properties: {grid_position: 'XFQRHZ,PKIQLM'}
     components:
     - type: RadioButton
       properties: {role: null, selected: true, align: left, tooltip: '', border: '',
-        enabled: true, foreground: '', value: '', visible: true, text: Outdoor-Map,
+        enabled: true, foreground: 'theme:Gray 300', value: '', visible: true, text: Street-Map,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, group_name: radioGroup1, underline: false}
       name: radio_button_om
@@ -289,7 +290,7 @@ components:
       event_bindings: {clicked: radio_button_map_change_clicked}
     - type: RadioButton
       properties: {role: null, selected: false, align: left, tooltip: '', border: '',
-        enabled: true, foreground: '', value: '', visible: true, text: Satellite Map,
+        enabled: true, foreground: 'theme:Gray 300', value: '', visible: true, text: Satellite-Map,
         font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
         background: '', bold: false, group_name: radioGroup1, underline: false}
       name: radio_button_sm
@@ -297,9 +298,9 @@ components:
       event_bindings: {clicked: radio_button_map_change_clicked}
     - type: RadioButton
       properties: {role: null, selected: false, align: left, tooltip: '', border: '',
-        enabled: true, foreground: '', value: '', visible: true, text: IM-Map, font_size: null,
-        font: '', spacing_above: small, spacing_below: small, italic: false, background: '',
-        bold: false, group_name: radioGroup1, underline: false}
+        enabled: true, foreground: 'theme:Gray 300', value: '', visible: true, text: Grey Map,
+        font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+        background: '', bold: false, group_name: radioGroup1, underline: false}
       name: im_map
       layout_properties: {}
       event_bindings: {clicked: radio_button_map_change_clicked}
@@ -309,9 +310,9 @@ components:
     layout_properties: {grid_position: 'SIQOWD,XOKHOG'}
     components:
     - type: Button
-      properties: {role: sidebar_collapsable, align: left, tooltip: '', border: '',
-        enabled: true, foreground: 'theme:Gray 200', visible: true, text: Point of Interests,
-        font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small,
+      properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
+        enabled: true, foreground: 'theme:Gray 300', visible: true, text: Point of Interests,
+        font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
         italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
       name: poi_categories
       layout_properties: {grid_position: 'TOBGKI,VFJINZ', row: WWFGJL, width_xs: 12,
@@ -621,21 +622,21 @@ components:
       event_bindings: {click: admin_button_click}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', allow_indeterminate: false, visible: true, text: Hide Study Pin,
-        font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: Study Pin,
+        font_size: null, font: '', spacing_above: none, spacing_below: none, italic: false,
         background: '', bold: false, checked: false, underline: false}
       name: hide_ms_marker
       layout_properties: {grid_position: 'TGHVRQ,HGXLYZ', row: IZURIE, width_xs: 12,
-        col_xs: 0}
+        col_xs: 0, width: 257.333}
       event_bindings: {change: hide_ms_marker_change}
     - type: CheckBox
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', allow_indeterminate: false, visible: true, text: TM-Mode,
-        font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: TM-Mode,
+        font_size: null, font: '', spacing_above: none, spacing_below: none, italic: false,
         background: '', bold: false, checked: false, underline: false}
       name: tm_mode
       layout_properties: {grid_position: 'UHTCTR,LXXRID', row: MEXLRU, width_xs: 12,
-        col_xs: 0}
+        col_xs: 0, width: 257.333}
       event_bindings: {change: tm_mode_change}
 - type: Label
   properties: {}
