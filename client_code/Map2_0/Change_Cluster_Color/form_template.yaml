@@ -9,11 +9,11 @@ components:
   components:
   - type: Label
     properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
-      visible: true, text: Change Colors for Clusters !, font_size: 20, font: '',
-      spacing_above: small, icon_align: left, spacing_below: small, italic: false,
-      background: '', bold: true, underline: false, icon: ''}
+      visible: true, text: Change Colors for Clusters, font_size: 20, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
+      underline: false, icon: ''}
     name: heading
-    layout_properties: {row: JNFUZM, width_xs: 12, col_xs: 0, width: 970}
+    layout_properties: {row: JNFUZM, width_xs: 12, col_xs: 0, width: 750}
   - type: Spacer
     properties: {height: 24}
     name: spacer_1

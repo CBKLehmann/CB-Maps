@@ -13,7 +13,7 @@ roles:
 - name: display-4
   components: [Label]
 - name: card
-  components: [ColumnPanel, LinearPanel, XYPanel, RepeatingPanel]
+  components: [ColumnPanel, LinearPanel, XYPanel, RepeatingPanel, GridPanel]
   displayInToolbox: true
   title: Card
   display_in_toolbox: true

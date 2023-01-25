@@ -796,6 +796,7 @@ textarea.anvil-component[disabled] {
 
 .checkbox, .radio {
   font-size: 16px;
+  font-family: 'Roboto Flex', sans-serif !important;
 }
 
 /* Shadow values taken from 
@@ -906,13 +907,33 @@ td {
   z-index: 15000 !important;
 }
 
-.anvil-role-sidebar_collapsable {
-  border-bottom: 1px solid #968132;
-  border-right: 1px solid #968132;
-  border-radius: 5px
+.anvil-role-sidebar_collapsable > button {
+  background-color: rgba(0, 0, 0, 0);
+  text-align: left !important;
+}
+
+.anvil-role-sidebar_collapsable > button:hover {
   background-color: rgba(0, 0, 0, 0) !important;
 }
 
-.anvil-role-sidebar_collapsable:hover {
+.anvil-role-sidebar_collapsable > button:active {
   background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.anvil-role-sidebar_collapsable > button:focus {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.anvil-role-sidebar_collapsable > button:hover > span {
+  color: #ccb666 !important;
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.anvil-role-sidebar_collapsable > button:hover > i {
+  color: #ccb666 !important;
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+html {
+  font-family: 'Roboto', sans-serif !important;
 }

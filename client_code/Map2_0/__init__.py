@@ -162,12 +162,10 @@ class Map2_0(Map2_0Template):
     
     if dict(event_args)['sender'].text == "Show All": 
       marker_state = True
-      self.show_marker.enabled = False
-      self.hide_marker.enabled = True
+      self.hide_marker.text = "Hide All"
     elif dict(event_args)['sender'].text == "Hide All":
       marker_state = False
-      self.show_marker.enabled = True
-      self.hide_marker.enabled = False
+      self.hide_marker.text = "Show All"
       
     for marker in all_marker:
       if not type(marker) is Label:
@@ -178,7 +176,7 @@ class Map2_0(Map2_0Template):
   def check_box_overlays_change(self, **event_args):
     #Change Overlays based on checked Checkbox
     
-    layer_name = dict(event_args)['sender'].text.replace(" ", "_")
+    layer_name = dict(event_args)['sender'].text.replace(" ", "_").lower()
     outline_name = "outline_" + layer_name
     visibility = self.mapbox.getLayoutProperty(layer_name, "visibility")
     inactive_layers = []
@@ -289,9 +287,9 @@ class Map2_0(Map2_0Template):
   def radio_button_map_change_clicked(self, **event_args):
     if dict(event_args)['sender'].text == "Satellite Map":
       self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
-    elif dict(event_args)['sender'].text == "Outdoor-Map":
+    elif dict(event_args)['sender'].text == "Street Map":
       self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
-    elif dict(event_args)['sender'].text == "IM-Map":
+    elif dict(event_args)['sender'].text == "Light Map":
       self.mapbox.setStyle('mapbox://styles/mapbox/light-v11')
     self.mapbox.on('load', self.place_layer)
     #shinykampfkeule/clcylq1kd000c14p5w6tgrpyz
@@ -302,8 +300,6 @@ class Map2_0(Map2_0Template):
   
   #This method is called when one of the Submenus should be opened or closed
   def button_toggle_menu_parts(self, **event_args):
-
-    print('Test')
 
     toggler = {
       'Distance-Layer': {
@@ -2227,9 +2223,10 @@ class Map2_0(Map2_0Template):
         
       # Add Marker-Arrays to global Variable Marker
       Variables.marker.update(excel_markers)
-  
-      self.hide_marker.enabled = True
-      self.change_cluster_color.enabled = True
+      
+      self.icon_grid.visible = True
+      self.change_cluster_color.visible = True
+      self.hide_marker.visible = True
     
   #####  Upload Functions   #####
   ###############################
