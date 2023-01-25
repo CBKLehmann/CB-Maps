@@ -175,5 +175,19 @@
   function changeBackground(element, image) {
     element.style.backgroundImage = `url("${image}")`
   }
-  
+
+  function addHoverEffect(container, popup, map, context, marker) {
+
+    btn = context['_content'].children[0]
+
+    container.addEventListener('mouseenter', () => popup.addTo(map));
+    container.addEventListener('mouseleave', () => popup.remove());
+    container.addEventListener('contextmenu', () => context.addTo(map))
+    btn.addEventListener('click', () => removeMarker(marker))
+  }
+
+  function removeMarker(marker) {
+    marker.remove()
+  }
+
 </script> 

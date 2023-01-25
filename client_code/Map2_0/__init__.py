@@ -2858,52 +2858,64 @@ class Map2_0(Map2_0Template):
                 
               # Check if Category is not Bus or Tram or PflegeDB
               else:
-    
+                
                 # Create Popup for Element
                 popup = mapboxgl.Popup({'offset': 25}).setHTML(
-                  f'<b>ID:</b> {o_id}'
-                  f'<br>'
-                  f'<b>Name:</b>'
-                  f'<br>'
-                  f'&nbsp;&nbsp;{name}'
-                  f'<br>'
-                  f'<b>Operator:</b>'
-                  f'<br>'
-                  f'&nbsp;&nbsp;{operator}'
-                  f'<br>'
-                  f'<b>Adresse:</b>'
-                  f'<br>'
-                  f'&nbsp;&nbsp;{street} {housenumber}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;{postcode}, {city} {suburb}'
-                  f'<br>'
-                  f'<b>Kontakt</b>'
-                  f'<br>'
-                  f'&nbsp;&nbsp;Telefon: {phone}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;Fax: {fax}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;Email: {email}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;Webseite:'
-                  f'<br>'
-                  f'&nbsp;&nbsp;&nbsp;&nbsp;{website}'
-                  f'<br>'
-                  f'<b>Infos</b>'
-                  f'<br>'
-                  f'&nbsp;&nbsp;Kategorie: {healthcare}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;Speciality: {speciality}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;Öffnungszeiten:'
-                  f'<br>'
-                  f'&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}'
+                  f'{name}'
+                  '<br>'
+                  f'{el_coords[0]}, {el_coords[1]}'
+                  # f'<b>ID:</b> {o_id}'
+                  # f'<br>'
+                  # f'<b>Name:</b>'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;{name}'
+                  # f'<br>'
+                  # f'<b>Operator:</b>'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;{operator}'
+                  # f'<br>'
+                  # f'<b>Adresse:</b>'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;{street} {housenumber}'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;{postcode}, {city} {suburb}'
+                  # f'<br>'
+                  # f'<b>Kontakt</b>'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;Telefon: {phone}'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;Fax: {fax}'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;Email: {email}'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;Webseite:'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;&nbsp;&nbsp;{website}'
+                  # f'<br>'
+                  # f'<b>Infos</b>'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;Kategorie: {healthcare}'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;Speciality: {speciality}'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;Öffnungszeiten:'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}'
+                  # f'<br>'
+                  # f'&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}'
                 )
     
               # Add Icon to the Map
               newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+              newiconElement = newicon.getElement()
+
+              context = mapboxgl.Popup({'anchor': 'top', 'offset': 10}).setHTML(
+                  '<button>Remove Marker</button>'
+                )
+
+              newicon.setPopup(context)
+              
+              anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, context, newicon)
     
               # Add current Element-Icon to Icon-Array
               icons.append(newicon)
