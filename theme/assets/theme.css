@@ -907,7 +907,8 @@ td {
 }
 
 .anvil-role-sidebar_collapsable {
-  border: 1px solid #968132;
+  border-bottom: 1px solid #968132;
+  border-right: 1px solid #968132;
   border-radius: 5px
   background-color: rgba(0, 0, 0, 0) !important;
 }
