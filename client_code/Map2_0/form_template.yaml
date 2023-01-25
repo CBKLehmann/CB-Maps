@@ -303,24 +303,25 @@ components:
       name: im_map
       layout_properties: {}
       event_bindings: {clicked: radio_button_map_change_clicked}
-  - type: Button
-    properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-      foreground: '', visible: true, text: Point of Interests, font_size: null, font: '',
-      spacing_above: small, icon_align: left, spacing_below: small, italic: false,
-      background: '', bold: false, underline: false, icon: 'fa:angle-right'}
-    name: poi_categories
-    layout_properties: {grid_position: 'TOBGKI,VFJINZ'}
-    event_bindings: {click: button_toggle_menu_parts}
-  - type: LinearPanel
-    properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
-      border: '', visible: false, role: null, tooltip: ''}
-    name: poi_category
-    layout_properties: {grid_position: 'SHJPTC,RDSUOX'}
+  - type: GridPanel
+    properties: {}
+    name: sidebar_grid
+    layout_properties: {grid_position: 'SIQOWD,XOKHOG'}
     components:
-    - type: LinearPanel
-      properties: {}
-      name: poi_category_dump
-      layout_properties: {grid_position: 'OXWPKR,UQXBDX'}
+    - type: Button
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+        foreground: '', visible: true, text: Point of Interests, font_size: null,
+        font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+        background: '', bold: false, underline: false, icon: 'fa:angle-right'}
+      name: poi_categories
+      layout_properties: {grid_position: 'TOBGKI,VFJINZ', row: WWFGJL, width_xs: 12,
+        col_xs: 0}
+      event_bindings: {click: button_toggle_menu_parts}
+    - type: GridPanel
+      properties: {spacing_above: none, spacing_below: none, background: '', foreground: '',
+        border: '', visible: false, role: null, tooltip: ''}
+      name: poi_category
+      layout_properties: {row: NVZHVW, width_xs: 12, col_xs: 0, width: 257.333}
       components:
       - type: Button
         properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -328,13 +329,14 @@ components:
           spacing_above: small, icon_align: left, spacing_below: small, italic: false,
           background: '', bold: false, underline: false, icon: 'fa:angle-right'}
         name: button_healthcare
-        layout_properties: {grid_position: 'ZEHIQE,IWWKRO'}
+        layout_properties: {grid_position: 'ZEHIQE,IWWKRO', row: VTOYZQ, width_xs: 11,
+          col_xs: 1}
         event_bindings: {click: button_toggle_menu_parts}
-      - type: LinearPanel
+      - type: GridPanel
         properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
           border: '', visible: false, role: null, tooltip: ''}
         name: poi_categories_healthcare_container
-        layout_properties: {grid_position: 'BBVJTC,LGGBPT'}
+        layout_properties: {row: ITIEHZ, width_xs: 12, col_xs: 0, width: 257.333}
         components:
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -342,7 +344,7 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: select_all_hc
-          layout_properties: {}
+          layout_properties: {row: BTYTSC, width_xs: 9, col_xs: 3}
           event_bindings: {change: select_all_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -350,7 +352,8 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_vet
-          layout_properties: {grid_position: 'JKWUCP,EVQSQL'}
+          layout_properties: {grid_position: 'JKWUCP,EVQSQL', row: SJWFOI, width_xs: 9,
+            col_xs: 3}
           event_bindings: {change: check_box_poi_change}
           data_bindings: []
         - type: CheckBox
@@ -359,7 +362,8 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_soc
-          layout_properties: {grid_position: 'LUJUAK,AZVFFA'}
+          layout_properties: {grid_position: 'LUJUAK,AZVFFA', row: PKKZTH, width_xs: 9,
+            col_xs: 3}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -367,7 +371,8 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_pha
-          layout_properties: {grid_position: 'JJBYJR,ZOJXFK'}
+          layout_properties: {grid_position: 'JJBYJR,ZOJXFK', row: RFGYNM, width_xs: 9,
+            col_xs: 3}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -375,7 +380,8 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_hos
-          layout_properties: {grid_position: 'QZYNDT,PKLPPS'}
+          layout_properties: {grid_position: 'QZYNDT,PKLPPS', row: YSIPWM, width_xs: 9,
+            col_xs: 3}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -383,7 +389,8 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_cli
-          layout_properties: {grid_position: 'XSETJK,XFTLHQ'}
+          layout_properties: {grid_position: 'XSETJK,XFTLHQ', row: RCMSGN, width_xs: 9,
+            col_xs: 3}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -391,7 +398,8 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_den
-          layout_properties: {grid_position: 'WHBPXX,XMGVSC'}
+          layout_properties: {grid_position: 'WHBPXX,XMGVSC', row: JYJJGV, width_xs: 9,
+            col_xs: 3}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -399,7 +407,8 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_doc
-          layout_properties: {grid_position: 'QXNBHZ,PREEKW'}
+          layout_properties: {grid_position: 'QXNBHZ,PREEKW', row: JQHGYQ, width_xs: 9,
+            col_xs: 3}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -407,7 +416,7 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_nsc
-          layout_properties: {}
+          layout_properties: {row: SOORFP, width_xs: 9, col_xs: 3}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -415,7 +424,7 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_pdt
-          layout_properties: {}
+          layout_properties: {row: YFBUQD, width_xs: 9, col_xs: 3}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -423,26 +432,22 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_hd
-          layout_properties: {}
+          layout_properties: {row: WIUASL, width_xs: 9, col_xs: 3}
           event_bindings: {change: check_box_poi_change}
-    - type: LinearPanel
-      properties: {}
-      name: linear_panel_4
-      layout_properties: {grid_position: 'PBTGJD,FZWQLQ'}
-      components:
       - type: Button
         properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
           foreground: '', visible: true, text: Miscelaneous, font_size: null, font: '',
           spacing_above: small, icon_align: left, spacing_below: small, italic: false,
           background: '', bold: false, underline: false, icon: 'fa:angle-right'}
         name: misc_button
-        layout_properties: {grid_position: 'ONQFBJ,TCVIOF'}
+        layout_properties: {grid_position: 'ONQFBJ,TCVIOF', row: VYJBDR, width_xs: 11,
+          col_xs: 1}
         event_bindings: {click: button_toggle_menu_parts}
-      - type: LinearPanel
+      - type: GridPanel
         properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
           border: '', visible: false, role: null, tooltip: ''}
         name: misc_container
-        layout_properties: {grid_position: 'RUIDQY,DLITNR'}
+        layout_properties: {row: SVMYZN, width_xs: 12, col_xs: 0, width: 257.333}
         components:
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -450,7 +455,7 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: select_all_misc
-          layout_properties: {}
+          layout_properties: {row: BGYFKD, width_xs: 9, col_xs: 3}
           event_bindings: {change: select_all_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -458,7 +463,7 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_sma
-          layout_properties: {}
+          layout_properties: {row: SWLQCV, width_xs: 9, col_xs: 3}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -466,7 +471,7 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_res
-          layout_properties: {}
+          layout_properties: {row: TKCWRB, width_xs: 9, col_xs: 3}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -474,7 +479,7 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_cafe
-          layout_properties: {}
+          layout_properties: {row: RGXICB, width_xs: 9, col_xs: 3}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -482,26 +487,22 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: check_box_uni
-          layout_properties: {}
+          layout_properties: {row: FMLKIO, width_xs: 9, col_xs: 3}
           event_bindings: {change: check_box_poi_change}
-    - type: LinearPanel
-      properties: {}
-      name: linear_panel_3
-      layout_properties: {grid_position: 'VYCJNZ,PPMDEG'}
-      components:
       - type: Button
         properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
           foreground: '', visible: true, text: ÖPNV, font_size: null, font: '', spacing_above: small,
           icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
           underline: false, icon: 'fa:angle-right'}
         name: opnv_button
-        layout_properties: {grid_position: 'AZHSKZ,SAKXKE'}
+        layout_properties: {grid_position: 'AZHSKZ,SAKXKE', row: LWNEZE, width_xs: 11,
+          col_xs: 1}
         event_bindings: {click: button_toggle_menu_parts}
-      - type: LinearPanel
+      - type: GridPanel
         properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
           border: '', visible: false, role: null, tooltip: ''}
         name: opnv_container
-        layout_properties: {grid_position: 'IVRQEB,XXWHKW'}
+        layout_properties: {row: IXPOZH, width_xs: 10, col_xs: 2, width: 209.438}
         components:
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -509,7 +510,7 @@ components:
             font_size: null, font: '', spacing_above: small, spacing_below: small,
             italic: false, background: '', bold: false, checked: false, underline: false}
           name: select_all_opnv
-          layout_properties: {}
+          layout_properties: {row: IQQRDW, width_xs: 11, col_xs: 1}
           event_bindings: {change: select_all_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -520,6 +521,9 @@ components:
           layout_properties:
             col_widths: {}
             grid_position: ZDVRVV,DQFEMK
+            row: RMNBCX
+            width_xs: 11
+            col_xs: 1
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -530,100 +534,109 @@ components:
           layout_properties:
             col_widths: {}
             grid_position: XJQLUU,VWETYL
+            row: QHCZVX
+            width_xs: 11
+            col_xs: 1
           event_bindings: {change: check_box_poi_change}
-    - type: CheckBox
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', allow_indeterminate: false, visible: true, text: Nursing Homes DB,
-        font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
-        background: '', bold: false, checked: false, underline: false}
-      name: pdb_data_cb
-      layout_properties: {grid_position: 'PRSIWR,SBEUXJ'}
-      event_bindings: {change: check_box_poi_change}
-      data_bindings: []
-    - type: CheckBox
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', allow_indeterminate: false, visible: true, text: Assisted Living DB,
-        font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
-        background: '', bold: false, checked: false, underline: false}
-      name: pdb_data_al
-      layout_properties: {}
-      event_bindings: {change: check_box_poi_change}
-    - type: CheckBox
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', allow_indeterminate: false, visible: true, text: POI based on HFCIG,
-        font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
-        background: '', bold: false, checked: false, underline: false}
-      name: checkbox_poi_x_hfcig
-      layout_properties: {grid_position: 'QYRFCC,LUBXOK'}
-      event_bindings: {change: checkbox_poi_x_hfcig_change}
+      - type: CheckBox
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', allow_indeterminate: false, visible: true, text: Nursing Homes DB,
+          font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+          background: '', bold: false, checked: false, underline: false}
+        name: pdb_data_cb
+        layout_properties: {grid_position: 'PRSIWR,SBEUXJ', row: NJAAMH, width_xs: 10,
+          col_xs: 2}
+        event_bindings: {change: check_box_poi_change}
+        data_bindings: []
+      - type: CheckBox
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', allow_indeterminate: false, visible: true, text: Assisted Living DB,
+          font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+          background: '', bold: false, checked: false, underline: false}
+        name: pdb_data_al
+        layout_properties: {row: GSWEIG, width_xs: 10, col_xs: 2}
+        event_bindings: {change: check_box_poi_change}
+      - type: CheckBox
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', allow_indeterminate: false, visible: true, text: POI based on HFCIG,
+          font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+          background: '', bold: false, checked: false, underline: false}
+        name: checkbox_poi_x_hfcig
+        layout_properties: {grid_position: 'QYRFCC,LUBXOK', row: OSMPDC, width_xs: 10,
+          col_xs: 2}
+        event_bindings: {change: checkbox_poi_x_hfcig_change}
+      - type: Button
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', visible: true, text: create Summary (PDF & Excel), font_size: null,
+          font: '', spacing_above: small, icon_align: left, spacing_below: small,
+          italic: false, background: '', bold: false, underline: false, icon: ''}
+        name: Summary
+        layout_properties: {grid_position: 'DKUUUF,TBTQVD', row: AADDGY, width_xs: 12,
+          col_xs: 0}
+        event_bindings: {click: Summary_click}
+      - type: Button
+        properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+          foreground: '', visible: false, text: SUMMARY (EXCEL), font_size: null,
+          font: '', spacing_above: small, icon_align: left, spacing_below: small,
+          italic: false, background: '', bold: false, underline: false, icon: ''}
+        name: excel_summary
+        layout_properties: {row: IRJPJW, width_xs: 12, col_xs: 0}
+        event_bindings: {click: Summary_click}
+      - type: FileLoader
+        properties:
+          role: null
+          show_state: true
+          align: center
+          tooltip: ''
+          border: ''
+          file_types: null
+          enabled: true
+          files: []
+          foreground: ''
+          visible: true
+          text: Upload Market Study PDF
+          font_size: null
+          font: ''
+          spacing_above: small
+          icon_align: right
+          spacing_below: small
+          italic: false
+          file: null
+          background: ''
+          bold: false
+          underline: false
+          multiple: false
+          icon: fa:upload
+        name: upload_mspdf
+        layout_properties: {row: OXTVMR, width_xs: 12, col_xs: 0}
+        event_bindings: {change: upload_mspdf_change}
     - type: Button
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', visible: true, text: create Summary (PDF & Excel), font_size: null,
-        font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
-        background: '', bold: false, underline: false, icon: ''}
-      name: Summary
-      layout_properties: {grid_position: 'DKUUUF,TBTQVD'}
-      event_bindings: {click: Summary_click}
-    - type: Button
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '', visible: false, text: SUMMARY (EXCEL), font_size: null, font: '',
+        foreground: '', visible: true, text: Admin-Button, font_size: null, font: '',
         spacing_above: small, icon_align: left, spacing_below: small, italic: false,
         background: '', bold: false, underline: false, icon: ''}
-      name: excel_summary
-      layout_properties: {}
-      event_bindings: {click: Summary_click}
-    - type: FileLoader
-      properties:
-        role: null
-        show_state: true
-        align: center
-        tooltip: ''
-        border: ''
-        file_types: null
-        enabled: true
-        files: []
-        foreground: ''
-        visible: true
-        text: Upload Market Study PDF
-        font_size: null
-        font: ''
-        spacing_above: small
-        icon_align: right
-        spacing_below: small
-        italic: false
-        file: null
-        background: ''
-        bold: false
-        underline: false
-        multiple: false
-        icon: fa:upload
-      name: upload_mspdf
-      layout_properties: {}
-      event_bindings: {change: upload_mspdf_change}
-  - type: Button
-    properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-      foreground: '', visible: true, text: Admin-Button, font_size: null, font: '',
-      spacing_above: small, icon_align: left, spacing_below: small, italic: false,
-      background: '', bold: false, underline: false, icon: ''}
-    name: admin_button
-    layout_properties: {grid_position: 'LLVIZT,GPYSKZ'}
-    event_bindings: {click: admin_button_click}
-  - type: CheckBox
-    properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-      foreground: '', allow_indeterminate: false, visible: true, text: Hide Study Pin,
-      font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
-      background: '', bold: false, checked: false, underline: false}
-    name: hide_ms_marker
-    layout_properties: {grid_position: 'WQAXAG,GLDPFD'}
-    event_bindings: {change: hide_ms_marker_change}
-  - type: CheckBox
-    properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-      foreground: '', allow_indeterminate: false, visible: true, text: TM-Mode, font_size: null,
-      font: '', spacing_above: small, spacing_below: small, italic: false, background: '',
-      bold: false, checked: false, underline: false}
-    name: tm_mode
-    layout_properties: {grid_position: 'UHTCTR,LXXRID'}
-    event_bindings: {change: tm_mode_change}
+      name: admin_button
+      layout_properties: {grid_position: 'LLVIZT,GPYSKZ', row: XDCDRO, width_xs: 12,
+        col_xs: 0}
+      event_bindings: {click: admin_button_click}
+    - type: CheckBox
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+        foreground: '', allow_indeterminate: false, visible: true, text: Hide Study Pin,
+        font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+        background: '', bold: false, checked: false, underline: false}
+      name: hide_ms_marker
+      layout_properties: {grid_position: 'TGHVRQ,HGXLYZ', row: IZURIE, width_xs: 12,
+        col_xs: 0}
+      event_bindings: {change: hide_ms_marker_change}
+    - type: CheckBox
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+        foreground: '', allow_indeterminate: false, visible: true, text: TM-Mode,
+        font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+        background: '', bold: false, checked: false, underline: false}
+      name: tm_mode
+      layout_properties: {grid_position: 'UHTCTR,LXXRID', row: MEXLRU, width_xs: 12,
+        col_xs: 0}
+      event_bindings: {change: tm_mode_change}
 - type: Label
   properties: {}
   name: mun_info
