@@ -3194,7 +3194,7 @@ class Map2_0(Map2_0Template):
     
   def build_req_string(self, res_data, topic):
 
-    url = 'github.com/ShinyKampfkeule/geojson_germany/blob/main/Pin88.png'
+    url = 'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/Pin88.png'
     encoded_url = url.replace("/", "%2F")
     print(encoded_url)
     
