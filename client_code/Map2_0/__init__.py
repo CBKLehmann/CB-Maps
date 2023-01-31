@@ -1813,8 +1813,10 @@ class Map2_0(Map2_0Template):
         #   year_of_construction_comp += entry[0]['baujahr']
         #   year_of_construction_comp_amount += 1
 
-    ez_weight_avg_comp = round(100 + (((ez_total_comp / room_total_comp) - 1) * 100))
-    print(ez_weight_avg_comp)
+    if not ez_total_comp == 0 or not  room_total_comp == 0:
+      ez_weight_avg_comp = round(100 + (((ez_total_comp / room_total_comp) - 1) * 100))
+    else:
+      ez_weight_avg_comp = 0
       
     ###Old###
     # ez_rate_asset = 0
@@ -3193,10 +3195,6 @@ class Map2_0(Map2_0Template):
     return res_data
     
   def build_req_string(self, res_data, topic):
-
-    url = 'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/Pin88x075.png'
-    encoded_url = url.replace("/", "%2F")
-    print(encoded_url)
     
     if topic == 'nursing_homes':
       home_address = Variables.home_address_nh
@@ -3237,17 +3235,20 @@ class Map2_0(Map2_0Template):
     for coordinate in reversed(res_data['sorted_coords']):
       if not last_coord_dist == coordinate[1]:
         counter += 1
+        url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/Pin{index_coords}x075.png'
+        print(url)
+        encoded_url = url.replace("/", "%2F")
         if complete_counter == len(res_data['sorted_coords']) - 1:
           if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
             if not counter == 1:
               request_static_map += f"%2C"
             request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
-            # request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
           counter = 0
           if not request_static_map == request_static_map_raw:
             request_static_map += f"%2C"
+          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
+          encoded_url = url.replace("/", "%2F")
           request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
-          # request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
           request.append(request_static_map)
           request_static_map = request_static_map_raw
           index_coords -= 1
@@ -3255,7 +3256,6 @@ class Map2_0(Map2_0Template):
           if not 'home' in coordinate:
             if not coordinate[0]['coords'] == last_coords:
               request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-              # request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
               counter = 0
               request.append(request_static_map)
               request_static_map = request_static_map_raw
@@ -3267,7 +3267,6 @@ class Map2_0(Map2_0Template):
             if not counter == 1:
               request_static_map += f"%2C"
             request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
-            # request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23000000%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22{index_coords}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
           else:
             dupe_coord = True
           index_coords -= 1
@@ -3283,8 +3282,9 @@ class Map2_0(Map2_0Template):
       last_coords = coordinate[0]['coords']
     
     if request == []:
-      # request_static_map = request_static_map_raw + f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
-      request_static_map = request_static_map_raw + f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker-color%22%3A%22%23FBA237%22%2C%22marker-size%22%3A%22medium%22%2C%22marker-symbol%22%3A%22s%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
+      url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
+      encoded_url = url.replace("/", "%2F")
+      request_static_map = request_static_map_raw + f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
       request.append(request_static_map)
       request_static_map = request_static_map_raw
     
