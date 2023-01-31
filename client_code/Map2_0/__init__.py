@@ -290,7 +290,8 @@ class Map2_0(Map2_0Template):
     elif dict(event_args)['sender'].text == "Street Map":
       self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
     elif dict(event_args)['sender'].text == "Light Map":
-      self.mapbox.setStyle('mapbox://styles/mapbox/light-v11')
+      # self.mapbox.setStyle('mapbox://styles/mapbox/light-v11')
+      self.mapbox.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
     self.mapbox.on('load', self.place_layer)
     #shinykampfkeule/clcylq1kd000c14p5w6tgrpyz
     #mapbox://styles/shinykampfkeule/clcqbbo8b00ug14s17s6621rf
