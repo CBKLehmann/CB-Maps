@@ -472,6 +472,7 @@ a:hover, a:active {
   border-radius: 2px;
   /* 24dp */ box-shadow: 0 9px 46px 8px rgba(0, 0, 0, 0.14), 0 11px 15px -7px rgba(0, 0, 0, 0.12), 0 24px 38px 3px rgba(0, 0, 0, 0.2)
     !important;
+  background-color: %color:Primary 700%;
 }
 
 .modal-header {
@@ -479,17 +480,40 @@ a:hover, a:active {
   font-size: 24px;
   line-height: 32px;
   border: 0;
+  color: %color:Gray 300%;
 }
 
 .modal-body {
   padding: 20px 24px 24px;
   font-size: 16px;
-  color: #747474;
+  color: %color:Gray 300%;
+}
+
+.label-text {
+  padding: 0 0 0 8px;
+}
+
+.alert-title {
+  padding: 0 0 0 8px;
+}
+
+.anvil-text-box {
+  color: %color:Gray 300% !important;
+  padding-left: 8px !important;
+}
+
+.link-text {
+  color: %color:Gray 300% !important;
+}
+
+.link-text:hover {
+  color: %color:Primary 500% !important;
 }
 
 .modal-footer {
   padding: 8px 8px 8px 24px;
   border: 0;
+  color: %color:Gray 300%;
 }
 
 .modal-footer .btn {
@@ -1011,4 +1035,55 @@ html {
 }
 .anvil-role-switch-rounded span::before {
  border-radius: .5em;
+}
+
+.left-nav::-webkit-scrollbar {
+  width: 0.75rem;
+  background-color: %color:Gray 300%;
+}
+
+.left-nav::-webkit-scrollbar-thumb {
+  background-color: %color:Secondary 500%;
+}
+
+.left-nav::-webkit-scrollbar-thumb:hover {
+  background-color: %color:Primary 500%;
+}
+
+#loading-bar_container {
+  width: 84.9%;
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0);
+  position: fixed;
+  bottom: 0;
+  left: 15.1%;
+  z-index: 9999;
+  display: flex;
+}
+
+#loading-bar {
+  width: 0%;
+  height: 20px;
+  background-color: %color:Primary 500%;
+  position: relative;
+  transition: width 0.4s ease-in-out;
+}
+
+#loading-bar_text {
+  visibility: hidden;
+  padding-left: 8px;
+  color: %color:Gray 100%;
+  position: absolute;
+  z-index: 10000;
+}
+
+#lock-modal {
+  width: 15%;
+  height: 95%;
+  background-color: rgba(0, 0, 0, .5);
+  position: absolute;
+  top: 5%;
+  left: 0;
+  z-index: 9990;
+  visibility: hidden;
 }
