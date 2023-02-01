@@ -25,7 +25,7 @@
     </div>
   </div>
   <div class="nav-shield"></div>
-  <div id="lock-modal" class="lock-modal" />
+  <div id="lock-modal" class="lock-modal"></div>
 </div>
 
 <script>
@@ -219,12 +219,16 @@
   function remove_span() {
     let grid = document.getElementsByClassName('anvil-role-cluster_list')[0]
     let span_list = grid.getElementsByTagName('span')
-    console.log(span_list)
-    // while(span_list.length) {
-    //   if (span_list[0].innerHTML == "") {
-    //    span_list[0].remove() 
-    //   }
-    // }
+    for (let i = 0; i < span_list.length; i++) {
+      if (span_list[i].innerText === "") {
+        span_list[i].remove()
+      }
+    }
+    let icon_list = grid.getElementsByTagName('i')
+    for (let i = 0; i < icon_list.length; i++) {
+      icon_list[i].addEventListener('click', () => (console.log('Hello Me')))
+      icon_list[i].style.cursor = 'pointer'
+    }
   }
 
 </script> 

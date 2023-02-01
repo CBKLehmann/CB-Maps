@@ -290,12 +290,18 @@ class Map2_0(Map2_0Template):
 
     
   #This method is called when one of the Buttons for changing the Map-Style got clicked    
-  def radio_button_map_change_clicked(self, **event_args):
+  def map_style_change(self, **event_args):
     if dict(event_args)['sender'].text == "Satellite Map":
+      self.check_street.checked = False
+      self.check_soft.checked = False
       self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
     elif dict(event_args)['sender'].text == "Street Map":
+      self.check_satellite.checked = False
+      self.check_soft.checked = False
       self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
     elif dict(event_args)['sender'].text == "Soft Map":
+      self.check_street.checked = False
+      self.check_satellite.checked = False
       self.mapbox.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
     self.mapbox.on('load', self.place_layer)
     
@@ -2229,10 +2235,22 @@ class Map2_0(Map2_0Template):
       #Initialise Variables
       excel_markers = {}
       added_clusters = []
-      colors = ['blue', 'green', 'grey', 'lightblue', 'orange', 'pink', 'red', 'white', 'yellow', 'gold']
+      colors = [
+        ['white', '#ffffff', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_white.png'],
+        ['blue', '#234ce2', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_blue.png'],
+        ['green', '#438e39', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_green.png'],
+        ['grey', '#b3b3b3', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_grey.png'],
+        ['lightblue', '#2fb2e0', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_lightblue.png'],
+        ['orange', '#fc9500', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_orange.png'],
+        ['pink', '#e254b7', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_pink.png'],
+        ['red', '#d32f2f', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_red.png'],
+        ['yellow', '#f4de42', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_yellow.png'],
+        ['gold', '#ccb666', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_gold.png']
+      ]
   
       #Create Settings
       self.icon_grid.row_spacing = 0
+      counter = 0
       
       for asset in self.cluster_data:
   
@@ -2248,13 +2266,12 @@ class Map2_0(Map2_0Template):
         cluster_name = asset['cluster']
   
         if cluster_name not in added_clusters:
-          color = alert(content=Color_for_Cluster(cluster=cluster_name, colors=colors), large=True, buttons=[], dismissible=False)
-          colors.remove(color[0])
-          checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13)
+          color = colors[counter]
+          checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
           checkbox.add_event_handler('change', self.check_box_marker_icons_change)
           icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none')
-          self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=0, width_xs=8)
-          self.icon_grid.add_component(icon, row=cluster_name, col_xs=8, width_xs=1)
+          self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=1, width_xs=8)
+          self.icon_grid.add_component(icon, row=cluster_name, col_xs=9, width_xs=1)
           added_clusters.append(cluster_name)
   
         # #Get Coordinates of provided Adress for Marker
@@ -2277,10 +2294,13 @@ class Map2_0(Map2_0Template):
         
         #Increase Markercount
         # markercount += 1
+
+        counter += 1
         
       # Add Marker-Arrays to global Variable Marker
       Variables.marker.update(excel_markers)
 
+      self.change_cluster_color_click()
       anvil.js.call('remove_span')
       
       self.icon_grid.visible = True
@@ -2480,27 +2500,27 @@ class Map2_0(Map2_0Template):
     layers = [{'id_fill': 'federal_states',
                'id_outline': 'outline_federal_states', 
                'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json',
-               'line_width': 2}, 
+               'line_width': .25}, 
               {'id_fill': 'administrative_districts',
                'id_outline': 'outline_administrative_districts', 
                'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json',
-               'line_width': 1},
+               'line_width': .25},
              {'id_fill': 'counties',
                'id_outline': 'outline_counties', 
                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/landkreise.geojson',
-               'line_width': 0.5},
+               'line_width': .25},
              {'id_fill': 'municipalities',
                'id_outline': 'outline_municipalities', 
                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson',
-               'line_width': 0.5},
+               'line_width': .25},
              {'id_fill': 'districts',
                'id_outline': 'outline_districts', 
                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson',
-               'line_width': 0.5},
+               'line_width': .25},
              {'id_fill': 'netherlands',
                'id_outline': 'outline_netherlands', 
                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson',
-               'line_width': 0.5}]
+               'line_width': .25}]
     
     for entry in layers:
       
@@ -2516,12 +2536,12 @@ class Map2_0(Map2_0Template):
           'visibility': 'none'
         },
         'paint': {
-          'fill-color': '#0080ff',
+          'fill-color': '#3f6085',
           'fill-opacity': [
             'case',
             ['boolean', ['feature-state', 'hover'], False],
-            0.75,
-            0.5
+            0.3,
+            0
           ]
         }
       }) 
@@ -2538,7 +2558,7 @@ class Map2_0(Map2_0Template):
             'visibility': 'none'
           },
           'paint': {
-            'line-color': '#000',
+            'line-color': '#1b2939',
             'line-width': entry['line_width']
           }
       })
@@ -3395,10 +3415,10 @@ class Map2_0(Map2_0Template):
     elif checkbox == "tram stop" and self.check_box_tra.checked == True:
       Variables.last_bbox_tra = self.create_icons(False, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
       Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
-    elif checkbox == "Nursing Homes DB" and self.pdb_data_cb.checked == True:
+    elif checkbox == "Nursing Homes" and self.pdb_data_cb.checked == True:
       Variables.last_bbox_nh = self.create_icons(False, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
       Variables.last_bbox_nh = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
-    elif checkbox == "Assisted Living DB" and self.pdb_data_al.checked == True:
+    elif checkbox == "Assisted Living" and self.pdb_data_al.checked == True:
       Variables.last_bbox_al = self.create_icons(False, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
       Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
 
@@ -3450,9 +3470,9 @@ class Map2_0(Map2_0Template):
   def hide_ms_marker_change(self, **event_args):
     """This method is called when this checkbox is checked or unchecked"""
     if event_args['sender'].checked:
-      self.marker.remove()
-    else:
       self.marker.addTo(self.mapbox)
+    else:
+      self.marker.remove()
     pass
 
   def change_cluster_color_click(self, **event_args):

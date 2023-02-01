@@ -1111,3 +1111,7 @@ html {
 .grid-panel > div {
   margin-bottom: 0px !important;
 }
+
+.anvil-role-cluster_list {
+  height: 135px
+}

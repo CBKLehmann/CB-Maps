@@ -57,7 +57,8 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
           self.color = 'gold'
           self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_gold.png'
 
-        self.colors.remove(self.color)
+        if self.color in self.colors:
+          self.colors.remove(self.color)
         point = Label(icon='fa:circle', align='center', foreground=component.foreground)
         image = Image(source=self.source, height=40)
         self.grid_panel_1.add_component(point, row=self.last_cluster, col_xs=9, width_xs=1)
@@ -133,9 +134,9 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
           component.tag.color = colorName
       elif component.tag.type == 'image':
         if component.tag.color == self.oldColor:
-          component.source = source
           component.tag.color = colorName
           component.tag.source = source
+          component.source = source
       elif component.tag.type == 'select':
         if component.tag.color == self.oldColor:
           component.tag.color = colorName
