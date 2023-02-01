@@ -58,6 +58,10 @@ services:
       $$hashKey: object:1632
       ownerNames: [Capital BAY GmbH]
   server_config: {enc_delegation_refresh_token: 4X1fdQKAkXWTXMNEEo+FrnAMGPnf3rprVIpzmcb8mhQ8qrLxFsIjuyf//DfIgcCYmYfmRHAJEX1s1o9GG7l/Lc02V7dKahCJPwqT3gFWCcqgdNlU+e5iKFtGTl40WNObkdIFI12vxNZmKaX0RGzbdr08Ss6eWdPR3+EkVcxB4s9DyHkSCgajBAPc2lewfJ4iVuxcqpiOj7nRiAT+kbY0kj2cMmtmW0NmT4pqIvU9Wes2+JDVuW5Z/yPEfgxYVWMEGpcTYIT04BCYtRRwbPO7s8JF6NidesfzaHI/lQ0qMtTZbxmLjm/b8HKODHQocA==}
+- source: /runtime/services/anvil/users.yml
+  client_config: {allow_signup: false, enable_automatically: false, use_email: true,
+    confirm_email: true}
+  server_config: {user_table: users}
 startup: {type: form, module: Map2_0}
 package_name: How_Far_Can_I_Go_
 allow_embedding: false
@@ -93,4 +97,27 @@ db_schema:
     - name: pic
       admin_ui: {width: 200}
       type: media
+  users:
+    client: none
+    server: full
+    columns:
+    - name: email
+      type: string
+      admin_ui: {order: 0, width: 200}
+    - name: enabled
+      type: bool
+      admin_ui: {order: 1, width: 200}
+    - name: last_login
+      type: datetime
+      admin_ui: {order: 2, width: 200}
+    - name: password_hash
+      type: string
+      admin_ui: {order: 3, width: 200}
+    - name: n_password_failures
+      type: number
+      admin_ui: {order: 4, width: 200}
+    - name: confirmed_email
+      type: bool
+      admin_ui: {order: 5, width: 200}
+    title: Users
 renamed: true

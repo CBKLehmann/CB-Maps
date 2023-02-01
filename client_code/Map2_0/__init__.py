@@ -3,6 +3,7 @@
 
 from ._anvil_designer import Map2_0Template
 from anvil import *
+import anvil.users
 import anvil.google.auth, anvil.google.drive
 from anvil.google.drive import app_files
 from anvil.tables import app_tables
@@ -43,6 +44,9 @@ class Map2_0(Map2_0Template):
 
   
   def form_show(self, **event_args):
+
+    anvil.users.login_with_form(remember_by_default=False)
+    
     # Initiate Map and set Listener on Page Load
     self.select_all_hc.tag.categorie = 'Healthcare'
     self.select_all_misc.tag.categorie = 'Miscelaneous'
