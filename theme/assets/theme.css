@@ -1064,9 +1064,29 @@ html {
 #loading-bar {
   width: 0%;
   height: 20px;
-  background-color: %color:Primary 500%;
+  background-color: %color:Secondary 500%;
   position: relative;
-  transition: width 0.4s ease-in-out;
+  transition: width 3s ease-in-out;
+}
+#moving-bar {
+  position: relative;
+  width: 2%;
+  height: 20px;
+  background-color: %color:Primary 500%;
+  animation: loading 6s ease-out infinite;
+  visibility: hidden;
+  z-index: 50;
+  opacity: 25%;
+}
+
+@keyframes loading {
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: 100%
+  }
 }
 
 #loading-bar_text {
@@ -1086,4 +1106,8 @@ html {
   left: 0;
   z-index: 9990;
   visibility: hidden;
+}
+
+.grid-panel > div {
+  margin-bottom: 0px !important;
 }

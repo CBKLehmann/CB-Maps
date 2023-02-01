@@ -42,6 +42,7 @@ roles:
   components: [CheckBox]
 - name: switch-rounded
   components: [CheckBox]
+- {name: cluster_list}
 color_scheme:
   preset_groups:
   - name: Primary Colour
@@ -177,7 +178,7 @@ color_scheme:
       - {name: Secondary 500, color: '#9E9E9E'}
       - {name: Secondary 700, color: '#616161'}
   colors:
-  - {name: Primary 500, color: '#ccb666'}
+  - {name: Primary 500, color: '#CCB666'}
   - {name: Primary 700, color: '#1b2939'}
   - {name: Secondary 500, color: '#968132'}
   - {name: Secondary 700, color: '#203144'}

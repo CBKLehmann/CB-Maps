@@ -17,8 +17,10 @@
       </div>
       <div class="placeholder drop-here" anvil-if-slot-empty="default" anvil-drop-slot="default">Drop a ColumnPanel here.</div>
       <div id="loading-bar_container">
-        <p id="loading-bar_text" class="loading-bar_text">Generating Market Study</p>
-        <div id="loading-bar" class="loading-bar"></div>
+        <p id="loading-bar_text" class="loading-bar_text"></p>
+        <div id="loading-bar" class="loading-bar">
+          <div id="moving-bar" class="moving-bar"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -195,19 +197,34 @@
     marker.remove()
   }
 
-  function update_loading_bar(percent) {
+  function update_loading_bar(percent, message) {
     lb = document.getElementsByClassName('loading-bar')[0]
     lb_text = document.getElementsByClassName('loading-bar_text')[0]
+    lb_moving = document.getElementsByClassName('moving-bar')[0]
     lock = document.getElementsByClassName('lock-modal')[0]
     lb.style.width = `${percent}%`
+    lb_text.innerHTML = message
 
     if (percent === 0) {
       lb_text.style.visibility = 'hidden'
       lock.style.visibility = 'hidden'
+      lb_moving.style.visibility = 'hidden'
     } else {
       lb_text.style.visibility = 'visible'
       lock.style.visibility = 'visible'
+      lb_moving.style.visibility = 'visible'
     }
+  }
+
+  function remove_span() {
+    let grid = document.getElementsByClassName('anvil-role-cluster_list')[0]
+    let span_list = grid.getElementsByTagName('span')
+    console.log(span_list)
+    // while(span_list.length) {
+    //   if (span_list[0].innerHTML == "") {
+    //    span_list[0].remove() 
+    //   }
+    // }
   }
 
 </script> 

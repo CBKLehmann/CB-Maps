@@ -295,14 +295,9 @@ class Map2_0(Map2_0Template):
       self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
     elif dict(event_args)['sender'].text == "Street Map":
       self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
-    elif dict(event_args)['sender'].text == "Light Map":
-      # self.mapbox.setStyle('mapbox://styles/mapbox/light-v11')
+    elif dict(event_args)['sender'].text == "Soft Map":
       self.mapbox.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
     self.mapbox.on('load', self.place_layer)
-    #shinykampfkeule/clcylq1kd000c14p5w6tgrpyz
-    #mapbox://styles/shinykampfkeule/clcqbbo8b00ug14s17s6621rf
-    #mapbox://styles/mapbox/light-v11
-    #mapbox://styles/shinykampfkeule/clcylq1kd000c14p5w6tgrpyz
     
   
   #This method is called when one of the Submenus should be opened or closed
@@ -318,7 +313,7 @@ class Map2_0(Map2_0Template):
         'icon_container': self.button_icons
       },
       'Overlays': {
-        'container': self.layer_categories,
+        'container': self.layer_categories_card,
         'icon_container': self.button_overlay
       },
       'Map-Styles': {
@@ -661,6 +656,10 @@ class Map2_0(Map2_0Template):
   #This methos is called when the User want's to generate a Market Summary
   def Summary_click(self, **event_args):
     with anvil.server.no_loading_indicator:
+
+      # #####Get Informations from Map#####
+      
+      anvil.js.call('update_loading_bar', 0, 'Getting map-based Informations')
     
       nh_checked = self.pdb_data_cb.checked
       al_checked = self.pdb_data_al.checked
@@ -673,8 +672,6 @@ class Map2_0(Map2_0Template):
                         "lng": (dict(self.marker['_lngLat'])['lng']),
                         "lat": (dict(self.marker['_lngLat'])['lat'])
                       }
-
-      anvil.js.call('update_loading_bar', 10)
   
       #Create Bounding Box based on Iso-Layer
       iso = dict(self.mapbox.getSource('iso'))
@@ -724,6 +721,10 @@ class Map2_0(Map2_0Template):
       movement = self.profile_dropdown.selected_value.lower()
   
       marker_coords = dict(self.marker.getLngLat())
+
+      # #####Get Database Informations#####
+      
+      anvil.js.call('update_loading_bar', 10, 'Get Informations from Database')
   
       #Get Information from Database for County of Marker-Position
       countie_data = anvil.server.call("get_demographic_district_data", marker_coords)
@@ -732,7 +733,9 @@ class Map2_0(Map2_0Template):
       #Get Entries from Care-Database based on District
       care_data_district = anvil.server.call("get_care_district_data", countie_data['ex_dem_lk']['key'])
 
-      anvil.js.call('update_loading_bar', 25)
+      # #####Calculate Data for Market Study#####
+      
+      anvil.js.call('update_loading_bar', 25, 'Calculate Data for Market Study')
   
       #Get different Values for Assisted Living Analysis and/or Executive Summary
       people_u80 = int(countie_data['dem_fc_lk']['g_65tou70_2020_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2020_abs'])
@@ -745,13 +748,21 @@ class Map2_0(Map2_0Template):
       change_u80_raw = change_u80 / 100
       change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
       change_o80_raw = change_o80 / 100
+
+      # #####Calculate Data for Market Study#####
+      
+      anvil.js.call('update_loading_bar', 35, 'Waiting for User Input')
       
       #Get organized Coords for Nursing Homes
       coords_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', lng_lat_marker)
-  
+      
       #Get Data for both Nursing Homes
       data_comp_analysis_nh = self.build_req_string(coords_nh, 'nursing_homes')
-  
+
+      # #####Calculate Data for Market Study#####
+      
+      anvil.js.call('update_loading_bar', 40, 'Calculate Nursing Home Data for Market Study')
+      
       inpatients_lk = 0
       beds_lk = 0
       for el in care_data_district:
@@ -769,12 +780,20 @@ class Map2_0(Map2_0Template):
   
       population_fc = int(countie_data['dem_fc_lk']['g_u6_2030_abs']) + int(countie_data['dem_fc_lk']['g_6tou10_2030_abs']) + int(countie_data['dem_fc_lk']['g_10tou16_2030_abs']) + int(countie_data['dem_fc_lk']['g_16tou20_2030_abs']) + int(countie_data['dem_fc_lk']['g_20tou30_2030_abs']) + int(countie_data['dem_fc_lk']['g_30tou50_2030_abs']) + int(countie_data['dem_fc_lk']['g_50tou65_2030_abs']) + int(countie_data['dem_fc_lk']['g_65tou70_2030_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2030_abs']) + int(countie_data['dem_fc_lk']['g_80plus_2030_abs'])
       population_fc_35 = int(countie_data['dem_fc_lk']['g_u6_2035_abs']) + int(countie_data['dem_fc_lk']['g_6tou10_2035_abs']) + int(countie_data['dem_fc_lk']['g_10tou16_2035_abs']) + int(countie_data['dem_fc_lk']['g_16tou20_2035_abs']) + int(countie_data['dem_fc_lk']['g_20tou30_2035_abs']) + int(countie_data['dem_fc_lk']['g_30tou50_2035_abs']) + int(countie_data['dem_fc_lk']['g_50tou65_2035_abs']) + int(countie_data['dem_fc_lk']['g_65tou70_2035_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2035_abs']) + int(countie_data['dem_fc_lk']['g_80plus_2035_abs'])
+
+      # #####Calculate Data for Market Study#####
+      
+      anvil.js.call('update_loading_bar', 45, 'Waiting for User Input')
       
       #Get organized Coords for both Assisted Living
       coords_al = self.organize_ca_data(Variables.assisted_living_entries, 'assisted_living', lng_lat_marker)
           
       #Get Data for both Assisted Living
-      data_comp_analysis_al = self.build_req_string(coords_al, 'assisted_living')   
+      data_comp_analysis_al = self.build_req_string(coords_al, 'assisted_living') 
+
+      # #####Calculate Data for Market Study#####
+      
+      anvil.js.call('update_loading_bar', 50, 'Calculate Assisted Living Data for Market Study')
       
       nursing_home_rate = float(countie_data['pfleg_stat_lk']['heimquote2019'])
       nursing_home_rate_perc = "{:.1f}".format(nursing_home_rate * 100)
@@ -819,8 +838,6 @@ class Map2_0(Map2_0Template):
       pg3_cost = []
       copayment_cost = []
       board_cost = []
-
-      anvil.js.call('update_loading_bar', 50)
       
       #Get Values of Variables for every Entry in Care-Database inside Iso-Layer-Bounding-Box
       for care_entry in care_data_iso:
@@ -1050,11 +1067,13 @@ class Map2_0(Map2_0Template):
         demand_potential = "strong"
       else:
         demand_potential = "very strong"
-
-      anvil.js.call('update_loading_bar', 65)
       
       purchase_power = anvil.server.call('get_purchasing_power', location={'lat': lng_lat_marker['lat'], 'lon': lng_lat_marker['lng']})
-        
+
+      # #####Create Excel for Market Study#####
+      
+      anvil.js.call('update_loading_bar', 60, 'Create Excel for Market Study')
+      
       # Copy and Fill Dataframe for Excel-Cover
       cover_frame = copy.deepcopy(ExcelFrames.cover_data)
       cover_frame['data'][1]['content'] = zipcode
@@ -1770,6 +1789,10 @@ class Map2_0(Map2_0Template):
             }
           })
         start_row += 1
+
+      # #####Waiting for User Input#####
+      
+      anvil.js.call('update_loading_bar', 70, 'Waiting for User Input')
       
       t = ColumnPanel()
       t.add_component(CheckBox(text="Executive Summary", checked=True))
@@ -1780,7 +1803,11 @@ class Map2_0(Map2_0Template):
       checkboxes = {}
       for checkbox in t.get_components():
         checkboxes[f'{checkbox.text.replace(" ", "_")}'] = checkbox.checked
-  
+
+      # #####Finalising Data#####
+      
+      anvil.js.call('update_loading_bar', 75, 'Finalising Data for Market Study')
+        
       ##### Analysis Addition to Market Study #####
   
       home_facilities = []
@@ -1978,7 +2005,9 @@ class Map2_0(Map2_0Template):
         
     ##### Analysis Addition to Market Study #####
 
-      anvil.js.call('update_loading_bar', 90)
+      # #####Create Market Study as Excel and PDF#####
+      
+      anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
       
       anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
       anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, Variables.tm_mode, checkboxes)
@@ -2152,7 +2181,9 @@ class Map2_0(Map2_0Template):
         #Create Summary-PDF
         anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], data_comp_analysis_al['data'], data_comp_analysis_al['request'], checkboxes)
 
-      anvil.js.call('update_loading_bar', 100)
+      # #####Downloading Files#####
+      
+      anvil.js.call('update_loading_bar', 100, 'Download Files')
         
       #Get PDF from Table and start Download
       table = app_tables.pictures.search()
@@ -2162,7 +2193,9 @@ class Map2_0(Map2_0Template):
       anvil.media.download(mapExcel['pic'])
       Variables.unique_code = unique_code
 
-      anvil.js.call('update_loading_bar', 0)
+      # #####Reset Loading Bar#####
+      
+      anvil.js.call('update_loading_bar', 0, '')
 
   
   def upload_mspdf_change(self, file, **event_args):
@@ -2217,7 +2250,7 @@ class Map2_0(Map2_0Template):
         if cluster_name not in added_clusters:
           color = alert(content=Color_for_Cluster(cluster=cluster_name, colors=colors), large=True, buttons=[], dismissible=False)
           colors.remove(color[0])
-          checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none')
+          checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13)
           checkbox.add_event_handler('change', self.check_box_marker_icons_change)
           icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none')
           self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=0, width_xs=8)
@@ -2247,6 +2280,8 @@ class Map2_0(Map2_0Template):
         
       # Add Marker-Arrays to global Variable Marker
       Variables.marker.update(excel_markers)
+
+      anvil.js.call('remove_span')
       
       self.icon_grid.visible = True
       self.change_cluster_color.visible = True
