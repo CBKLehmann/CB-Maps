@@ -2302,7 +2302,7 @@ class Map2_0(Map2_0Template):
         inv_el.style.height = '40px'
         inv_el.style.backgroundSize = '100%'
         inv_el.style.backgroundrepeat = 'no-repeat'
-        inv_el.style.zIndex = '9001'
+        inv_el.style.zIndex = '9002'
   
         cluster_name = asset['cluster']
   
