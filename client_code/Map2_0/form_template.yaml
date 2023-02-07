@@ -45,6 +45,11 @@ components:
       name: icon_grid
       layout_properties: {row: EAXAXU, width_xs: 12, col_xs: 0, width: 233.333}
       components: []
+    - type: GridPanel
+      properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
+        border: '', visible: false, role: null, tooltip: ''}
+      name: invest_grid
+      layout_properties: {row: MPWCPV, width_xs: 12, col_xs: 0, width: 233.333}
     - type: Button
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '', visible: false, text: Colors, font_size: 13, font: Roboto+Flex,
