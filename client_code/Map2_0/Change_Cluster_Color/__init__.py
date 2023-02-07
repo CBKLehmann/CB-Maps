@@ -137,6 +137,7 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
           component.tag.color = colorName
           component.tag.source = source
           component.source = source
+        print(component.tag)
       elif component.tag.type == 'select':
         if component.tag.color == self.oldColor:
           component.tag.color = colorName
@@ -161,6 +162,7 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
         color_code = component.foreground
         color_arr.append(color_code)
       elif component.tag.type == 'image':
+        print(component.tag)
         pin = component.tag.source
         color_arr.append(pin)
       if len(color_arr) == 3:

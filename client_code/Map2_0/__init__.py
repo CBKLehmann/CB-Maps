@@ -47,7 +47,27 @@ class Map2_0(Map2_0Template):
   def form_show(self, **event_args):
 
     with anvil.server.no_loading_indicator:
-      anvil.users.login_with_form(remember_by_default=False, allow_remembered=False, show_signup_option=False)
+      hash = get_url_hash()
+      if len(hash) == 0:
+        anvil.users.login_with_form(remember_by_default=True, allow_remembered=True, show_signup_option=False)
+        user = anvil.users.get_user()
+        self.role = user['role']
+      else:
+        self.role = 'guest'
+
+      if self.role == 'admin' or self.role == 'user' or self.role == 'guest':
+        self.button_icons.visible = True
+      
+      if self.role == 'admin' or self.role == 'user':
+        self.dist_layer.visible = True
+        self.poi_categories.visible = True
+        self.map_styles.visible = True
+        self.button_overlay.visible = True
+        self.hide_ms_marker.visible = True
+        self.tm_mode.visible = True
+
+      if self.role == 'admin':
+        self.admin_button.visible = 'visible'
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'
@@ -100,11 +120,11 @@ class Map2_0(Map2_0Template):
     hash = get_url_hash()
     if not len(hash) == 0:
       data = anvil.server.call('get_map_settings', hash['name'])
-      for component in self.checkbox_map_style.get_components():
+      for component in self.style_grid.get_components():
         if component.text == data['map_style']:
           component.selected = True
           break
-      component.raise_event('clicked')
+      component.raise_event('change')
       time.sleep(.5)
       self.marker.setLngLat([data['marker_lng'], data['marker_lat']])
       self.mapbox.flyTo({"center": [data['marker_lng'], data['marker_lat']], "zoom": data['zoom']})
@@ -385,9 +405,8 @@ class Map2_0(Map2_0Template):
       if component.checked:
         overlay = component.text
         break
-    for component in self.checkbox_map_style.get_components():
-      print(component.selected)
-      if component.selected:
+    for component in self.style_grid.get_components():
+      if component.checked:
         map_style = component.text
         break
     study_pin = self.hide_ms_marker.checked
@@ -3548,3 +3567,4 @@ class Map2_0(Map2_0Template):
 
     self.hide_marker.enabled = True
     self.change_cluster_color.enabled = True
+    self.icon_grid.visible = True

@@ -1115,3 +1115,15 @@ html {
 .anvil-role-cluster_list {
   height: 135px
 }
+
+select:focus {
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0) !important;
+}
+
+select > option {
+  background-color: %color:Secondary 700%;
+}
+
+.file-loader:hover {
+  background-color: rgba(0, 0, 0, 0) !important;
+}

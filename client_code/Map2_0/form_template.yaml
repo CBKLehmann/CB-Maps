@@ -26,7 +26,7 @@ components:
   components:
   - type: Button
     properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
-      enabled: true, foreground: 'theme:Gray 300', visible: true, text: Import & Cluster,
+      enabled: true, foreground: 'theme:Gray 300', visible: false, text: Import & Cluster,
       font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: button_icons
@@ -73,7 +73,7 @@ components:
         files: []
         foreground: theme:Gray 300
         visible: true
-        text: Upload
+        text: Upload Excel
         font_size: 13
         font: Roboto+Flex
         spacing_above: none
@@ -85,7 +85,7 @@ components:
         bold: false
         underline: false
         multiple: false
-        icon: fa:upload
+        icon: ''
       name: file_loader_upload
       layout_properties: {grid_position: 'MJAFCR,CTHQUH', row: LNEEYJ, width_xs: 12,
         col_xs: 0, width: 233.33300000000003}
@@ -101,7 +101,7 @@ components:
       event_bindings: {click: button_infos_click}
   - type: Button
     properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
-      enabled: true, foreground: 'theme:Gray 200', visible: true, text: Distance Layer,
+      enabled: true, foreground: 'theme:Gray 200', visible: false, text: Distance Layer,
       font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: dist_layer
@@ -193,7 +193,7 @@ components:
           event_bindings: {change: checkbox_poi_x_hfcig_change}
   - type: Button
     properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
-      enabled: true, foreground: 'theme:Gray 300', visible: true, text: Point of Interests,
+      enabled: true, foreground: 'theme:Gray 300', visible: false, text: Point of Interests,
       font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: poi_categories
@@ -506,7 +506,7 @@ components:
       event_bindings: {change: upload_mspdf_change}
   - type: Button
     properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
-      enabled: true, foreground: 'theme:Gray 300', visible: true, text: Map Styles,
+      enabled: true, foreground: 'theme:Gray 300', visible: false, text: Map Styles,
       font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: map_styles
@@ -551,7 +551,7 @@ components:
         event_bindings: {change: map_style_change}
   - type: Button
     properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
-      enabled: true, foreground: 'theme:Gray 200', visible: true, text: Overlays,
+      enabled: true, foreground: 'theme:Gray 200', visible: false, text: Overlays,
       font_size: 14, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: button_overlay
@@ -629,31 +629,31 @@ components:
     layout_properties: {grid_position: 'SIQOWD,XOKHOG'}
     components:
     - type: Button
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: 'theme:Gray 300', visible: true, text: Admin-Button, font_size: null,
+      properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+        foreground: 'theme:Gray 300', visible: false, text: Admin-Button, font_size: null,
         font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
         background: '', bold: false, underline: false, icon: ''}
       name: admin_button
-      layout_properties: {grid_position: 'LLVIZT,GPYSKZ', row: XDCDRO, width_xs: 10,
-        col_xs: 1, width: 257}
+      layout_properties: {grid_position: 'LLVIZT,GPYSKZ', row: XDCDRO, width_xs: 8,
+        col_xs: 2, width: 161.552}
       event_bindings: {click: admin_button_click}
     - type: CheckBox
       properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
-        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: Study Pin,
-        font_size: 13, font: '', spacing_above: none, spacing_below: none, italic: false,
-        background: '', bold: false, checked: true, underline: false}
+        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: false,
+        text: Study Pin, font_size: 13, font: '', spacing_above: none, spacing_below: none,
+        italic: false, background: '', bold: false, checked: true, underline: false}
       name: hide_ms_marker
       layout_properties: {grid_position: 'TGHVRQ,HGXLYZ', row: IZURIE, width_xs: 11,
-        col_xs: 1, width: 257.333}
+        col_xs: 1, width: 233.385}
       event_bindings: {change: hide_ms_marker_change}
     - type: CheckBox
       properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
-        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: TM-Mode,
-        font_size: 13, font: '', spacing_above: none, spacing_below: none, italic: false,
-        background: '', bold: false, checked: false, underline: false}
+        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: false,
+        text: TM-Mode, font_size: 13, font: '', spacing_above: none, spacing_below: none,
+        italic: false, background: '', bold: false, checked: false, underline: false}
       name: tm_mode
       layout_properties: {grid_position: 'UHTCTR,LXXRID', row: MEXLRU, width_xs: 11,
-        col_xs: 1, width: 257.333}
+        col_xs: 1, width: 233.385}
       event_bindings: {change: tm_mode_change}
 - type: Label
   properties: {}
