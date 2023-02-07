@@ -65,9 +65,13 @@ class Map2_0(Map2_0Template):
         self.button_overlay.visible = True
         self.hide_ms_marker.visible = True
         self.tm_mode.visible = True
+        self.file_loader_upload.visible = True
 
       if self.role == 'admin':
         self.admin_button.visible = 'visible'
+
+      if self.role == 'guest':
+        self.button_icons.text = 'Cluster'
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'
@@ -335,6 +339,10 @@ class Map2_0(Map2_0Template):
         'container': self.icon_categories_all,
         'icon_container': self.button_icons
       },
+      'Cluster': {
+        'container': self.icon_categories_all,
+        'icon_container': self.button_icons
+      },
       'Overlays': {
         'container': self.layer_categories_card,
         'icon_container': self.button_overlay
@@ -442,7 +450,6 @@ class Map2_0(Map2_0Template):
     anvil.server.call('save_map_settings', dataset)
     
     alert(url)
-    print(date)
     
 #     #Call a Server Function
 #     anvil.server.call('manipulate')
@@ -1355,7 +1362,6 @@ class Map2_0(Map2_0Template):
             }
           })
           if not competitor[0]['invest'] == 'N/A':
-            print(competitor[0]['invest'])
             invest = f"{competitor[0]['invest']}€"
           else:
             invest = competitor[0]['invest']
@@ -2263,6 +2269,15 @@ class Map2_0(Map2_0Template):
         ['yellow', '#f4de42', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_yellow.png'],
         ['gold', '#ccb666', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_gold.png']
       ]
+
+      invests = {
+        'Super Core': 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_Sc.png',
+        'Core/ Core+': 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_CC.png',
+        'Value Add': 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_VA.png',
+        'Opportunistic': 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_Opp.png',
+        'Development': 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_Dev.png',
+        'Workout': 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_Wo.png'
+      }
   
       #Create Settings
       self.icon_grid.row_spacing = 0
@@ -2278,6 +2293,15 @@ class Map2_0(Map2_0Template):
         el.style.backgroundSize = '100%'
         el.style.backgroundrepeat = 'no-repeat'
         el.style.zIndex = '9001'
+
+        # Create HTML Element for Invest Class Icon
+        inv_el = document.createElement('div')
+        inv_el.className = f'{asset["address"]}_investment'
+        inv_el.style.width = '40px'
+        inv_el.style.height = '40px'
+        inv_el.style.backgroundSize = '100%'
+        inv_el.style.backgroundrepeat = 'no-repeat'
+        inv_el.style.zIndex = '9001'
   
         cluster_name = asset['cluster']
   
@@ -2301,6 +2325,11 @@ class Map2_0(Map2_0Template):
         el.style.backgroundImage = f'url({excel_markers[cluster_name]["color"][2]})'
         new_list = self.set_excel_markers(excel_markers[cluster_name]['static'], coordinates, excel_markers[cluster_name]['marker'], el)
         excel_markers[cluster_name]['marker'] = new_list
+        if not asset['invest_class'] in excel_markers.keys():
+          excel_markers[asset['invest_class']] = {'pin': invests[asset['invest_class']], 'static': 'none', 'marker': []}
+        inv_el.style.backgroundImage = f"url({invests[asset['invest_class']]})"
+        new_list = self.set_excel_markers(excel_markers[asset['invest_class']]['static'], coordinates, excel_markers[asset['invest_class']]['marker'], inv_el)
+        excel_markers[asset['invest_class']]['marker'] = new_list
         
         # Create Popup for Marker and add it to the Map
         # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
@@ -2435,8 +2464,6 @@ class Map2_0(Map2_0Template):
       
       key = click.features[0].properties.AGS
       demographic, exact_demographic = anvil.server.call('get_data_from_database', key)
-      print(demographic)
-      print(exact_demographic)
     
       popup_text = f'<button type="button" onClick="hide_mun_info()">&#10006;</button><br><br><h3>Municipality: {gm_name}</h3><b>ID:</b> {key}<br><b>Area:</b> {"{:.2f}".format(float(demographic["flaeche"]))}km&sup2;<br><br><b>Population:</b> {demographic["bevoelkerung_ges"]}<br><b>per km&sup2:</b> {demographic["bevoelkerung_jekm2"]}<br><br><table><tr><th class="firstCol">Gender</th><th>Overall</th><th>Under 3</th><th>3 to <br>Under 6</th><th>6 to <br>Under 10</th><th>10 to Under 15</th><th>15 to Under 18</th><th>18 to Under 20</th><th>20 to Under 25</th><th>25 to Under 30</th><th>30 to Under 35</th><th>35 to Under 40</th><th>40 to Under 45</th><th>45 to Under 50</th><th>50 to Under 55</th><th>55 to Under 60</th><th>60 to Under 65</th><th>65 to Under 75</th><th>75 and older</th></tr><tr><th class="firstCol">Overall</th><td>100%</td><td>{"{:.1f}".format(float(exact_demographic["all_u3"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_3tou6"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_6tou10"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_10tou15"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_15tou18"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_18tou20"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_20tou25"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_25tou30"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_30tou35"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_35tou40"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_40tou45"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_45tou50"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_50tou55"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_55tou60"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_60tou65"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_65tou75"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_75"]))}%</td></tr><tr><th class="firstCol">Male</th><td>{"{:.1f}".format(float(exact_demographic["man_compl"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_u3"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_3tou6"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_6tou10"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_10tou15"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_15tou18"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_18tou20"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_20tou25"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_25tou30"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_30tou35"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_35tou40"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_40tou45"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_45tou50"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_50tou55"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_55tou60"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_60tou65"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_65tou75"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_75"]))}%</td></tr><tr><th class="firstCol">Female</th><td>{"{:.1f}".format(float(exact_demographic["woman_compl"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_u3"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_3tou6"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_6tou10"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_10tou15"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_15tou18"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_18tou20"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_20tou25"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_25tou30"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_30tou35"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_35tou40"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_40tou45"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_45tou50"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_50tou55"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_55tou60"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_60tou65"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_65tou75"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_75"]))}%</td></tr></table><br><br><br><b>Grad der Verstädterung:</b> {demographic["verstaedterung_bez"]}'
       
@@ -3329,7 +3356,6 @@ class Map2_0(Map2_0Template):
       if not last_coord_dist == coordinate[1]:
         counter += 1
         url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/Pin{index_coords}x075.png'
-        print(url)
         encoded_url = url.replace("/", "%2F")
         if complete_counter == len(res_data['sorted_coords']) - 1:
           if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
@@ -3496,9 +3522,10 @@ class Map2_0(Map2_0Template):
     from .Change_Cluster_Color import Change_Cluster_Color
     response = alert(content=Change_Cluster_Color(components=self.icon_grid.get_components()), dismissible=False, large=True, buttons=[], role='custom_alert')
     for key in Variables.marker:
-      Variables.marker[key]['color'] = response[key]
-      for marker in Variables.marker[key]['marker']:
-        anvil.js.call('changeBackground', marker['_element'], Variables.marker[key]["color"][2])
+      if key in response:
+        Variables.marker[key]['color'] = response[key]
+        for marker in Variables.marker[key]['marker']:
+          anvil.js.call('changeBackground', marker['_element'], Variables.marker[key]["color"][2])
     for component in self.icon_grid.get_components():
       if type(component) == CheckBox:
         key = component.text
@@ -3508,17 +3535,28 @@ class Map2_0(Map2_0Template):
 
   
   def create_cluster_marker(self, cluster_data):
-    print(cluster_data)
 
     ##### UMSCHREIBEN #####
     
     #Initialise Variables
     excel_markers = {}
     added_clusters = []
-    colors = ['blue', 'green', 'grey', 'lightblue', 'orange', 'pink', 'red', 'white', 'yellow', 'gold']
+    colors = [
+        ['white', '#ffffff', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_white.png'],
+        ['blue', '#234ce2', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_blue.png'],
+        ['green', '#438e39', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_green.png'],
+        ['grey', '#b3b3b3', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_grey.png'],
+        ['lightblue', '#2fb2e0', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_lightblue.png'],
+        ['orange', '#fc9500', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_orange.png'],
+        ['pink', '#e254b7', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_pink.png'],
+        ['red', '#d32f2f', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_red.png'],
+        ['yellow', '#f4de42', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_yellow.png'],
+        ['gold', '#ccb666', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_gold.png']
+      ]
 
     #Create Settings
     self.icon_grid.row_spacing = 0
+    counter = 0
     
     for asset in cluster_data['data']:
 
@@ -3534,12 +3572,12 @@ class Map2_0(Map2_0Template):
       cluster_name = asset['cluster']
 
       color = cluster_data['settings'][cluster_name]['color']
-      if not cluster_name in added_clusters:
-        checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none')
+      if cluster_name not in added_clusters:
+        checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
         checkbox.add_event_handler('change', self.check_box_marker_icons_change)
         icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none')
-        self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=0, width_xs=8)
-        self.icon_grid.add_component(icon, row=cluster_name, col_xs=8, width_xs=1)
+        self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=1, width_xs=8)
+        self.icon_grid.add_component(icon, row=cluster_name, col_xs=9, width_xs=1)
         added_clusters.append(cluster_name)
 
       # #Get Coordinates of provided Adress for Marker
@@ -3548,7 +3586,8 @@ class Map2_0(Map2_0Template):
       coords = anvil.http.request(req_str,json=True)
       coordinates = coords['features'][0]['geometry']['coordinates']
 
-      cluster_data['settings'][cluster_name]['marker'] = []
+      if 'marker' not in cluster_data['settings'][cluster_name].keys():
+        cluster_data['settings'][cluster_name]['marker'] = []
       el.style.backgroundImage = f'url({color[2]})'
       new_list = self.set_excel_markers(cluster_data['settings'][cluster_name]['static'], coordinates, cluster_data['settings'][cluster_name]['marker'], el)
       cluster_data['settings'][cluster_name]['marker'] = new_list
@@ -3565,6 +3604,9 @@ class Map2_0(Map2_0Template):
     # Add Marker-Arrays to global Variable Marker
     Variables.marker.update(cluster_data['settings'])
 
+    anvil.js.call('remove_span')
+    
     self.hide_marker.enabled = True
     self.change_cluster_color.enabled = True
     self.icon_grid.visible = True
+    self.button_icons.raise_event('click')

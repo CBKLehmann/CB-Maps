@@ -72,7 +72,7 @@ components:
         enabled: true
         files: []
         foreground: theme:Gray 300
-        visible: true
+        visible: false
         text: Upload Excel
         font_size: 13
         font: Roboto+Flex
