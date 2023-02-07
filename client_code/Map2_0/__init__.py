@@ -229,43 +229,41 @@ class Map2_0(Map2_0Template):
 
   def check_box_poi_change(self, **event_args):
     # Check or uncheck various Check Boxes for different POI Categories
-    if dict(event_args)['sender'].text == "veterinary":
+    if dict(event_args)['sender'].text == "Veterinary":
       Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
-    elif dict(event_args)['sender'].text == "social facility":
+    elif dict(event_args)['sender'].text == "Social Facility":
       Variables.last_bbox_soc = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, "social_facility", Variables.icon_social)   
-    elif dict(event_args)['sender'].text == "pharmacy":
+    elif dict(event_args)['sender'].text == "Pharmacy":
       Variables.last_bbox_pha = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
-    elif dict(event_args)['sender'].text == "nursing-home":
-      Variables.last_bbox_nur = self.create_icons(self.check_box_nur.checked, Variables.last_bbox_nur, "nursing_home", Variables.icon_nursing)
-    elif dict(event_args)['sender'].text == "hospital":
+    elif dict(event_args)['sender'].text == "Hospital":
       Variables.last_bbox_hos = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
-    elif dict(event_args)['sender'].text == "clinic":
+    elif dict(event_args)['sender'].text == "Clinic":
       Variables.last_bbox_cli = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
-    elif dict(event_args)['sender'].text == "dentist":
+    elif dict(event_args)['sender'].text == "Dentist":
       Variables.last_bbox_den = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
-    elif dict(event_args)['sender'].text == "doctors":
+    elif dict(event_args)['sender'].text == "Doctor":
       Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)      
-    elif dict(event_args)['sender'].text == "nursing-schools":
+    elif dict(event_args)['sender'].text == "Nursing School":
       Variables.last_bbox_nsc = self.create_icons(self.check_box_nsc.checked, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools) 
-    elif dict(event_args)['sender'].text == "supermarket":
+    elif dict(event_args)['sender'].text == "Supermarket":
       Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
-    elif dict(event_args)['sender'].text == "restaurant":
+    elif dict(event_args)['sender'].text == "Restaurant":
       Variables.last_bbox_res = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant)  
-    elif dict(event_args)['sender'].text == "cafe":
+    elif dict(event_args)['sender'].text == "Cafe":
       Variables.last_bbox_caf = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
-    elif dict(event_args)['sender'].text == "university":
+    elif dict(event_args)['sender'].text == "University":
       Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, "university", Variables.icon_university)  
-    elif dict(event_args)['sender'].text == "bus stop":
+    elif dict(event_args)['sender'].text == "Bus Stop":
       Variables.last_bbox_bus = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)  
-    elif dict(event_args)['sender'].text == "tram stop":
+    elif dict(event_args)['sender'].text == "Tram Stop":
       Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
-    elif dict(event_args)['sender'].text == "Nursing Homes":
+    elif dict(event_args)['sender'].text == "Nursing Home":
       Variables.last_bbox_nh = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
     elif dict(event_args)['sender'].text == "Assisted Living":
       Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
-    elif dict(event_args)['sender'].text == "podiatrist":
+    elif dict(event_args)['sender'].text == "Podiatrist":
       Variables.last_bbox_pdt = self.create_icons(self.check_box_pdt.checked, Variables.last_bbox_pdt, "podiatrist", Variables.icon_podiatrist)
-    elif dict(event_args)['sender'].text == "hairdresser":
+    elif dict(event_args)['sender'].text == "Hairdresser":
       Variables.last_bbox_hd = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
 
 
@@ -309,7 +307,7 @@ class Map2_0(Map2_0Template):
   def button_toggle_menu_parts(self, **event_args):
 
     toggler = {
-      'Distance-Layer': {
+      'Distance Layer': {
         'container': self.dist_container,
         'icon_container': self.dist_layer
       },
@@ -321,7 +319,7 @@ class Map2_0(Map2_0Template):
         'container': self.layer_categories_card,
         'icon_container': self.button_overlay
       },
-      'Map-Styles': {
+      'Map Styles': {
         'container': self.checkbox_map_style,
         'icon_container': self.map_styles
       },
@@ -337,7 +335,7 @@ class Map2_0(Map2_0Template):
         'container': self.misc_container,
         'icon_container': self.misc_button
       },
-      'ÖPNV': {
+      'Public Transport': {
         'container': self.opnv_container,
         'icon_container': self.opnv_button
       }

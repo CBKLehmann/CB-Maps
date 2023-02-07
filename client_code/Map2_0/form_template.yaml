@@ -101,7 +101,7 @@ components:
       event_bindings: {click: button_infos_click}
   - type: Button
     properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
-      enabled: true, foreground: 'theme:Gray 200', visible: true, text: Distance-Layer,
+      enabled: true, foreground: 'theme:Gray 200', visible: true, text: Distance Layer,
       font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: dist_layer
@@ -224,12 +224,12 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: Nursing Homes, font_size: 13, font: Roboto+Flex, spacing_above: small,
+          text: Nursing Home, font_size: 13, font: Roboto+Flex, spacing_above: small,
           spacing_below: none, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: pdb_data_cb
         layout_properties: {grid_position: 'PRSIWR,SBEUXJ', row: BIVWJO, width_xs: 9,
-          col_xs: 2, width: 211.385}
+          col_xs: 2, width: 167.5}
         event_bindings: {change: check_box_poi_change}
         data_bindings: []
       - type: CheckBox
@@ -244,7 +244,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: veterinary, font_size: 13, font: Roboto+Flex, spacing_above: none,
+          text: Veterinary, font_size: 13, font: Roboto+Flex, spacing_above: none,
           spacing_below: none, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: check_box_vet
@@ -255,7 +255,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: social facility, font_size: 13, font: Roboto+Flex, spacing_above: none,
+          text: Social Facility, font_size: 13, font: Roboto+Flex, spacing_above: none,
           spacing_below: none, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: check_box_soc
@@ -265,7 +265,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: pharmacy, font_size: 13, font: '', spacing_above: none, spacing_below: none,
+          text: Pharmacy, font_size: 13, font: '', spacing_above: none, spacing_below: none,
           italic: false, background: '', bold: false, checked: false, underline: false}
         name: check_box_pha
         layout_properties: {grid_position: 'JJBYJR,ZOJXFK', row: RFGYNM, width_xs: 10,
@@ -274,7 +274,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: hospital, font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none,
+          text: Hospital, font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none,
           italic: false, background: '', bold: false, checked: false, underline: false}
         name: check_box_hos
         layout_properties: {grid_position: 'QZYNDT,PKLPPS', row: YSIPWM, width_xs: 10,
@@ -283,7 +283,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: clinic, font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none,
+          text: Clinic, font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none,
           italic: false, background: '', bold: false, checked: false, underline: false}
         name: check_box_cli
         layout_properties: {grid_position: 'XSETJK,XFTLHQ', row: RCMSGN, width_xs: 10,
@@ -292,7 +292,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: dentist, font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none,
+          text: Dentist, font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none,
           italic: false, background: '', bold: false, checked: false, underline: false}
         name: check_box_den
         layout_properties: {grid_position: 'WHBPXX,XMGVSC', row: JYJJGV, width_xs: 10,
@@ -301,7 +301,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: doctors, font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none,
+          text: Doctor, font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none,
           italic: false, background: '', bold: false, checked: false, underline: false}
         name: check_box_doc
         layout_properties: {grid_position: 'QXNBHZ,PREEKW', row: JQHGYQ, width_xs: 10,
@@ -310,7 +310,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: nursing-schools, font_size: 13, font: Roboto+Flex, spacing_above: none,
+          text: Nursing School, font_size: 13, font: Roboto+Flex, spacing_above: none,
           spacing_below: none, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: check_box_nsc
@@ -319,7 +319,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: podiatrist, font_size: 13, font: Roboto+Flex, spacing_above: none,
+          text: Podiatrist, font_size: 13, font: Roboto+Flex, spacing_above: none,
           spacing_below: none, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: check_box_pdt
@@ -328,7 +328,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: hairdresser, font_size: 13, font: Roboto+Flex, spacing_above: none,
+          text: Hairdresser, font_size: 13, font: Roboto+Flex, spacing_above: none,
           spacing_below: small, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: check_box_hd
@@ -337,11 +337,11 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: select all, font_size: 13, font: Roboto+Flex, spacing_above: small,
+          text: Select All, font_size: 13, font: Roboto+Flex, spacing_above: small,
           spacing_below: none, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: select_all_hc
-        layout_properties: {row: RLJUKF, width_xs: 9, col_xs: 2, width: 189.438}
+        layout_properties: {row: RLJUKF, width_xs: 9, col_xs: 2, width: 167.5}
         event_bindings: {change: select_all_change}
     - type: Button
       properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
@@ -361,7 +361,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: supermarket, font_size: 13, font: Roboto+Flex, spacing_above: none,
+          text: Supermarket, font_size: 13, font: Roboto+Flex, spacing_above: none,
           spacing_below: none, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: check_box_sma
@@ -370,7 +370,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: restaurant, font_size: 13, font: Roboto+Flex, spacing_above: none,
+          text: Restaurant, font_size: 13, font: Roboto+Flex, spacing_above: none,
           spacing_below: none, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: check_box_res
@@ -379,7 +379,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: cafe, font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none,
+          text: Cafe, font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none,
           italic: false, background: '', bold: false, checked: false, underline: false}
         name: check_box_cafe
         layout_properties: {row: RGXICB, width_xs: 10, col_xs: 2, width: 189.438}
@@ -387,7 +387,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: university, font_size: 13, font: Roboto+Flex, spacing_above: none,
+          text: University, font_size: 13, font: Roboto+Flex, spacing_above: none,
           spacing_below: small, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: check_box_uni
@@ -396,16 +396,16 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: select all, font_size: 13, font: Roboto+Flex, spacing_above: small,
+          text: Select All, font_size: 13, font: Roboto+Flex, spacing_above: small,
           spacing_below: none, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: select_all_misc
-        layout_properties: {row: AFUWPY, width_xs: 8, col_xs: 2, width: 189.438}
+        layout_properties: {row: AFUWPY, width_xs: 8, col_xs: 2, width: 145.552}
         event_bindings: {change: select_all_change}
     - type: Button
       properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
-        enabled: true, foreground: 'theme:Gray 300', visible: true, text: ÖPNV, font_size: 13,
-        font: '', spacing_above: none, icon_align: right_edge, spacing_below: none,
+        enabled: true, foreground: 'theme:Gray 300', visible: true, text: Public Transport,
+        font_size: 13, font: '', spacing_above: none, icon_align: right_edge, spacing_below: none,
         italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
       name: opnv_button
       layout_properties: {grid_position: 'AZHSKZ,SAKXKE', row: LWNEZE, width_xs: 12,
@@ -420,7 +420,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: bus stop, font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none,
+          text: Bus Stop, font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none,
           italic: false, background: '', bold: false, checked: false, underline: false}
         name: check_box_bus
         layout_properties:
@@ -434,7 +434,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: tram stop, font_size: 13, font: Roboto+Flex, spacing_above: none,
+          text: Tram Stop, font_size: 13, font: Roboto+Flex, spacing_above: none,
           spacing_below: none, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: check_box_tra
@@ -449,7 +449,7 @@ components:
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true,
-          text: select all, font_size: 13, font: Roboto+Flex, spacing_above: small,
+          text: Select All, font_size: 13, font: Roboto+Flex, spacing_above: small,
           spacing_below: none, italic: false, background: '', bold: false, checked: false,
           underline: false}
         name: select_all_opnv
@@ -506,7 +506,7 @@ components:
       event_bindings: {change: upload_mspdf_change}
   - type: Button
     properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
-      enabled: true, foreground: 'theme:Gray 300', visible: true, text: Map-Styles,
+      enabled: true, foreground: 'theme:Gray 300', visible: true, text: Map Styles,
       font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
       italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
     name: map_styles
