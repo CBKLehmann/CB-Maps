@@ -95,7 +95,6 @@ class Map2_0(Map2_0Template):
       self.mapbox.on("click", "districts", self.popup)
       self.mapbox.on("styledata", self.place_layer)
       self.mapbox.on("load", self.loadHash)
-    
 
   def loadHash(self, event):
     hash = get_url_hash()
