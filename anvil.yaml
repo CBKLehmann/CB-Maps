@@ -72,7 +72,8 @@ runtime_options:
   server_version: python3-sandbox
   server_spec: null
   server_spec_disabled: {base: python310-minimal, requirements: ''}
-metadata: {description: An app using Mapbox's Isochrone API which tells you how far you can travel given a certain amount of time.}
+metadata: {description: An app using Mapbox's Isochrone API which tells you how far you can travel given a certain amount of time.,
+  logo_img: 'asset:CapitalBay_32x32.png'}
 startup_form: Map2_0
 native_deps: {head_html: '<script src=''https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js''></script>
 

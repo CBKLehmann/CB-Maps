@@ -47,6 +47,14 @@ class Map2_0(Map2_0Template):
   def form_show(self, **event_args):
 
     with anvil.server.no_loading_indicator:
+      container = document.getElementById('appGoesHere')
+      logo = document.createElement('img')
+      logo.src = f'{self.app_url}/_/theme/Logo.png'
+      logo.style.position = 'absolute'
+      logo.style.top = '50%'
+      logo.style.left = '50%'
+      logo.style.marginLeft = '-950px'
+      container.appendChild(logo)
       hash = get_url_hash()
       if len(hash) == 0:
         anvil.users.login_with_form(remember_by_default=True, allow_remembered=True, show_signup_option=False)
