@@ -48,15 +48,15 @@ class Map2_0(Map2_0Template):
 
     with anvil.server.no_loading_indicator:
       width = anvil.js.call('get_screen_width')
-      if width <= 998:
+      # if width <= 998:
         
-      # container = document.getElementById('appGoesHere')
-      # logo = document.createElement('img')
-      # logo.src = f'{self.app_url}/_/theme/Logo.png'
-      # logo.style.position = 'absolute'
-      # logo.style.top = '55%'
-      # logo.style.left = '50%'
-      # logo.style.marginLeft = '-805px'
+      container = document.getElementById('appGoesHere')
+      logo = document.createElement('img')
+      logo.src = f'{self.app_url}/_/theme/Logo.png'
+      logo.style.position = 'absolute'
+      logo.style.top = '55%'
+      logo.style.left = '50%'
+      logo.style.marginLeft = '-805px'
       # container.appendChild(logo)
       hash = get_url_hash()
       if len(hash) == 0:
@@ -85,12 +85,12 @@ class Map2_0(Map2_0Template):
       if self.role == 'guest':
         self.button_icons.text = 'Cluster'
         # container.removeChild(logo)
-        # logo.style.transform = 'rotate(45deg)'
-        # logo.style.pointerEvents = 'none'
-        # logo.style.top = '38%'
-        # logo.style.transform = 'rotate(15deg)'
-        # logo.style.opacity = '20%'
-        # container.appendChild(logo)
+        logo.style.transform = 'rotate(45deg)'
+        logo.style.pointerEvents = 'none'
+        logo.style.top = '38%'
+        logo.style.transform = 'rotate(15deg)'
+        logo.style.opacity = '20%'
+        container.appendChild(logo)
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'
