@@ -1127,3 +1127,16 @@ select > option {
 .file-loader:hover {
   background-color: rgba(0, 0, 0, 0) !important;
 }
+
+.markerPopup {
+  z-index: 10;
+}
+
+.markerPopup .mapboxgl-popup-content {
+  background-color: %color:Secondary 700%;
+  color: %color:Gray 100% !important;
+}
+
+.markerPopup .mapboxgl-popup-tip {
+  border-top-color: %color:Secondary 700%;
+}

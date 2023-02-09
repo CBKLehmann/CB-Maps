@@ -51,9 +51,9 @@ class Map2_0(Map2_0Template):
       logo = document.createElement('img')
       logo.src = f'{self.app_url}/_/theme/Logo.png'
       logo.style.position = 'absolute'
-      logo.style.top = '50%'
+      logo.style.top = '55%'
       logo.style.left = '50%'
-      logo.style.marginLeft = '-950px'
+      logo.style.marginLeft = '-805px'
       container.appendChild(logo)
       hash = get_url_hash()
       if len(hash) == 0:
@@ -74,12 +74,20 @@ class Map2_0(Map2_0Template):
         self.hide_ms_marker.visible = True
         self.tm_mode.visible = True
         self.file_loader_upload.visible = True
+        container.removeChild(logo)
 
       if self.role == 'admin':
         self.admin_button.visible = 'visible'
 
       if self.role == 'guest':
         self.button_icons.text = 'Cluster'
+        container.removeChild(logo)
+        logo.style.transform = 'rotate(45deg)'
+        logo.style.pointerEvents = 'none'
+        logo.style.top = '38%'
+        logo.style.transform = 'rotate(15deg)'
+        logo.style.opacity = '20%'
+        container.appendChild(logo)
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'
@@ -2724,6 +2732,7 @@ class Map2_0(Map2_0Template):
               el.style.height = '40px'
               el.style.backgroundSize = '100%'
               el.style.backgroundrepeat = 'no-repeat'
+              el.style.zIndex = '5'
     
               # Create Icon
               el.style.backgroundImage = f'url({picture})'
@@ -2789,7 +2798,7 @@ class Map2_0(Map2_0Template):
                 el_coords = [ele['coord_lon'], ele['coord_lat']]
     
                 # Create Popup for Element
-                popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                   f"<b>PM ID: </b> {ele['pm_id']}"
                   "<br>"
                   f"<b>Träger ID: </b> {ele['traeger_id']}"

@@ -11,12 +11,8 @@ global Variables, Layer, Images
 
 def show_hide_marker(self, check_box, marker_id):
   #Show or Hide markers from given Excel Table
-
-  print(marker_id)
-  print(Variables.marker)
   
   for el in Variables.marker[marker_id]['marker']:
-    dict(el)
     if marker_id in Variables.marker.keys():
       if check_box:
         el.addTo(self.mapbox)
