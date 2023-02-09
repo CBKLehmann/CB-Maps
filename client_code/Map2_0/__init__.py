@@ -3508,15 +3508,35 @@ class Map2_0(Map2_0Template):
         self.check_box_pdt.checked = event_args['sender'].checked
         self.check_box_hd.checked = event_args['sender'].checked
         self.check_box_vet.raise_event('change')
+        if event_args['sender'].checked:
+          time.sleep(1)
         self.check_box_soc.raise_event('change')
+        if event_args['sender'].checked:
+          time.sleep(1)
         self.check_box_pha.raise_event('change')
+        if event_args['sender'].checked:
+          time.sleep(1)
         self.check_box_hos.raise_event('change')
+        if event_args['sender'].checked:
+          time.sleep(1)
         self.check_box_cli.raise_event('change')
+        if event_args['sender'].checked:
+          time.sleep(1)
         self.check_box_den.raise_event('change')
+        if event_args['sender'].checked:
+          time.sleep(1)
         self.check_box_doc.raise_event('change')
+        if event_args['sender'].checked:
+          time.sleep(1)
         self.check_box_nsc.raise_event('change')
+        if event_args['sender'].checked:
+          time.sleep(1)
         self.check_box_pdt.raise_event('change')
+        if event_args['sender'].checked:
+          time.sleep(1)
         self.check_box_hd.raise_event('change')
+        if event_args['sender'].checked:
+          time.sleep(1)
     elif event_args['sender'].tag.categorie == 'Miscelaneous':
       self.check_box_sma.checked = event_args['sender'].checked
       self.check_box_res.checked = event_args['sender'].checked
