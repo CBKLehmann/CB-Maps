@@ -54,10 +54,11 @@ class Map2_0(Map2_0Template):
       logo = document.createElement('img')
       logo.src = f'{self.app_url}/_/theme/Logo.png'
       logo.style.position = 'absolute'
-      logo.style.top = '55%'
-      logo.style.left = '50%'
-      logo.style.marginLeft = '-805px'
-      # container.appendChild(logo)
+      logo.style.pointerEvents = 'none'
+      logo.style.bottom = '30px'
+      logo.style.right = '20px'
+      logo.style.width = '15%'
+      container.appendChild(logo)
       hash = get_url_hash()
       if len(hash) == 0:
         anvil.users.login_with_form(remember_by_default=True, allow_remembered=True, show_signup_option=False)
@@ -77,20 +78,13 @@ class Map2_0(Map2_0Template):
         self.hide_ms_marker.visible = True
         self.tm_mode.visible = True
         self.file_loader_upload.visible = True
-        # container.removeChild(logo)
+        container.removeChild(logo)
 
       if self.role == 'admin':
         self.admin_button.visible = 'visible'
 
       if self.role == 'guest':
         self.button_icons.text = 'Cluster'
-        # container.removeChild(logo)
-        logo.style.transform = 'rotate(45deg)'
-        logo.style.pointerEvents = 'none'
-        logo.style.top = '38%'
-        logo.style.transform = 'rotate(15deg)'
-        logo.style.opacity = '20%'
-        container.appendChild(logo)
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'
