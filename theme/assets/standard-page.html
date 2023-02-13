@@ -22,6 +22,9 @@
           <div id="moving-bar" class="moving-bar"></div>
         </div>
       </div>
+      <div class="mobile-menu" id="mobile-menu">
+        <img class="mobile-menu-icon" src="https://raw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/speisekarte.png" />
+      </div>
     </div>
   </div>
   <div class="nav-shield"></div>
@@ -233,7 +236,23 @@
 
   function get_screen_width() {
     let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-    return width
+    let height = (window.innerHeight > 0) ? window.innerHeight : screen.height;
+    return [width, height]
+  }
+
+  function add_event_to_mobile_menu() {
+    let menu = document.getElementById('mobile-menu')
+    menu.addEventListener('click', () => (change_menu_display()))
+  }
+
+  function change_menu_display() {
+    let navBar = document.getElementsByClassName('left-nav')[0]
+    console.log(navBar.style.display)
+    if (navBar.style.display === 'block') {
+      navBar.style.display = 'none'
+    } else {
+      navBar.style.display = 'block'
+    }
   }
 
 </script> 

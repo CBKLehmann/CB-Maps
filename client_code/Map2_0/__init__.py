@@ -47,8 +47,11 @@ class Map2_0(Map2_0Template):
   def form_show(self, **event_args):
 
     with anvil.server.no_loading_indicator:
-      width = anvil.js.call('get_screen_width')
-      # if width <= 998:
+      screen = anvil.js.call('get_screen_width')
+      width = screen[0]
+      height = screen[1]
+      print(screen)
+      self.spacer_1.height = height - 70
         
       container = document.getElementById('appGoesHere')
       logo = document.createElement('img')
@@ -85,6 +88,12 @@ class Map2_0(Map2_0Template):
 
       if self.role == 'guest':
         self.button_icons.text = 'Cluster'
+
+      if width <= 998:
+        mobile_menu = document.getElementById('mobile-menu')
+        mobile_menu.style.display = 'flex'
+        anvil.js.call('add_event_to_mobile_menu')
+        self.mobile_hide.visible = True
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'
@@ -3655,3 +3664,9 @@ class Map2_0(Map2_0Template):
     self.change_cluster_color.enabled = True
     self.icon_grid.visible = True
     self.button_icons.raise_event('click')
+
+  
+  def mobile_hide_click(self, **event_args):
+    mobile_menu = document.getElementsByClassName('left-nav')[0]
+    mobile_menu.style.display = 'none'
+    pass

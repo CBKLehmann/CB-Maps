@@ -215,8 +215,7 @@ a:hover, a:active {
 .nav-holder .left-nav {
   position: relative;
   flex-shrink: 0;
-  min-width: 160px;
-  max-width: 400px;
+  width: 260px;
 }
 
 .nav-shield {
@@ -226,21 +225,15 @@ a:hover, a:active {
 /* Mobile: Nav bar is a modal overlay */
 
 @media(max-width:998px) {
-/*   html:not(.designer) .nav-holder {
-    display: block;
-  } */
-  html:not(.designer) .nav-holder .left-nav { */
+  html:not(.designer) .nav-holder .left-nav {
     position: fixed;
-    top: 0;
     bottom: 0;
-    width: calc(100% - 56px);
-    max-width: 360px;
+    width: 100%;
+    height: 33%;
     z-index: 3;
-    border-right: none;
-  /* 16dp */ box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
-
-    display: 'block'; */
-    transition: right 0.5s;
+    display: none;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
   }
   
    html:not(.designer) .nav-holder .left-nav.shown {
@@ -256,6 +249,19 @@ a:hover, a:active {
     z-index: 2;
     background-color: rgba(0,0,0,0.2);
   }
+
+  .mapboxgl-ctrl-geocoder {
+    min-width: 0px !important;
+    width: 50px !important;
+  }
+
+  .mapboxgl-ctrl-geocoder:focus-within {
+    width: 94% !important;
+  }
+
+  .left-nav::-webkit-scrollbar {
+  display: none;
+}
  }
 
 .nav-holder .left-nav, .left-nav-placeholder {
@@ -268,7 +274,6 @@ a:hover, a:active {
   color: rgba(0,0,0,0.87);
   overflow-x: hidden;
   overflow-y: auto;
-/*   width: 290px; */
 }
 
 .left-nav-placeholder {
@@ -1140,6 +1145,19 @@ select > option {
   border-top-color: %color:Secondary 700%;
 }
 
-/* @media(max-width:998px) {
-  
-} */
+.mobile-menu {
+  position: absolute;
+  top: 60px;
+  left: 10px;
+  background-color: %color:Primary 700%;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-menu-icon {
+  width: 60%
+}

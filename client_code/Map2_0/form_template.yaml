@@ -13,6 +13,14 @@ components:
   layout_properties: {slot: left-nav}
   components:
   - type: Button
+    properties: {role: primary-color, align: right, tooltip: '', border: '', enabled: true,
+      foreground: '', visible: false, text: x, font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: 'theme:Secondary
+        700', bold: false, underline: false, icon: ''}
+    name: mobile_hide
+    layout_properties: {grid_position: 'FXVSYQ,AIUCUO'}
+    event_bindings: {click: mobile_hide_click}
+  - type: Button
     properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
       enabled: true, foreground: 'theme:Gray 300', visible: true, text: Import & Cluster,
       font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
