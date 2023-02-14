@@ -1,8 +1,6 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" rel="preload" as="font" crossorigin="anonymous">
 
 <div class="structure">
-  <div class="floating-menu" anvil-drop-here anvil-slot=" .floating-menu" id="info">
-  </div>
   <div class="nav-holder">
     <div class="left-nav anvil-measure-this" anvil-slot-repeat="left-nav" anvil-drop-container=">.anvil-container">
     </div>
@@ -27,8 +25,8 @@
       </div>
     </div>
   </div>
-  <div class="nav-shield"></div>
-  <div id="lock-modal" class="lock-modal"></div>
+<!--   <div class="nav-shield"></div>
+  <div id="lock-modal" class="lock-modal"></div> -->
 </div>
 
 <script>
@@ -203,17 +201,17 @@
     lb = document.getElementsByClassName('loading-bar')[0]
     lb_text = document.getElementsByClassName('loading-bar_text')[0]
     lb_moving = document.getElementsByClassName('moving-bar')[0]
-    lock = document.getElementsByClassName('lock-modal')[0]
+    // lock = document.getElementsByClassName('lock-modal')[0]
     lb.style.width = `${percent}%`
     lb_text.innerHTML = message
 
     if (percent === 0) {
       lb_text.style.visibility = 'hidden'
-      lock.style.visibility = 'hidden'
+      // lock.style.visibility = 'hidden'
       lb_moving.style.visibility = 'hidden'
     } else {
       lb_text.style.visibility = 'visible'
-      lock.style.visibility = 'visible'
+      // lock.style.visibility = 'visible'
       lb_moving.style.visibility = 'visible'
     }
   }
@@ -248,7 +246,7 @@
     let navBar = document.getElementsByClassName('left-nav')[0]
     let navIcon = document.getElementById('mobile-menu')
     let xBtn = document.getElementsByClassName('anvil-role-mobile-menu-close')[0]
-    navBar.style.height = '33%'
+    navBar.style.height = '50%'
     navIcon.style.display = 'none'
   }
 

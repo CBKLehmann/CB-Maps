@@ -230,7 +230,7 @@ a:hover, a:active {
     bottom: 0;
     width: 100%;
     height: 0;
-    z-index: 15000;
+    z-index: 399;
 /*     visibility: hidden; */
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
@@ -250,7 +250,6 @@ a:hover, a:active {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 2;
     background-color: rgba(0,0,0,0.2);
   }
 
@@ -844,18 +843,6 @@ textarea.anvil-component[disabled] {
 https://stackoverflow.com/questions/30533055/calculating-shadow-values-for-all-material-design-elevations
 */
 
-
-.floating-menu {
-  position: absolute;
-  z-index: 100;
-  min-height: 250px;
-  min-width: 400px;
-  margin: 5px 280px;
-  padding: 30px 40px;
-  background-color: rgba(255, 255, 255, 1);
-  display: none
-}
-
 .static-popup {
    background: rgba(0, 0, 0, 0) !important;
    border: none !important;
@@ -945,7 +932,11 @@ td {
 }
 
 .alert-modal {
-  z-index: 15000 !important;
+  z-index: 499 !important;
+}
+
+.modal-backdrop {
+  z-Index: 499 !important;
 }
 
 .anvil-role-sidebar_collapsable > button {
@@ -1074,7 +1065,7 @@ html {
   position: fixed;
   bottom: 0;
   left: 15.1%;
-  z-index: 9999;
+  z-index: 400;
   display: flex;
 }
 
@@ -1092,7 +1083,7 @@ html {
   background-color: %color:Primary 500%;
   animation: loading 6s ease-out infinite;
   visibility: hidden;
-  z-index: 50;
+  z-index: 401;
   opacity: 25%;
 }
 
@@ -1111,7 +1102,7 @@ html {
   padding-left: 8px;
   color: %color:Gray 100%;
   position: absolute;
-  z-index: 10000;
+  z-index: 402;
 }
 
 #lock-modal {
@@ -1146,7 +1137,7 @@ select > option {
 }
 
 .markerPopup {
-  z-index: 10;
+  z-index: 300;
 }
 
 .markerPopup .mapboxgl-popup-content {
@@ -1169,6 +1160,7 @@ select > option {
   display: none;
   align-items: center;
   justify-content: center;
+  z-index: 399;
 }
 
 .mobile-menu-icon {
@@ -1177,6 +1169,22 @@ select > option {
 
 ::placeholder {
   color: %color:Gray 600% !important;
+}
+
+.mapboxgl-ctrl-top-right {
+  z-index: 398 !important;
+}
+
+.mapboxgl-ctrl-top-left {
+  z-index: 398 !important;
+}
+
+.mapboxgl-ctrl-bottom-right {
+  z-index: 398 !important;
+}
+
+.mapboxgl-ctrl-bottom-left {
+  z-index: 398 !important;
 }
 
 /* .anvil-role-mobile-menu-close {

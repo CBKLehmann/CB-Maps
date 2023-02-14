@@ -109,7 +109,7 @@ class Map2_0(Map2_0Template):
       el.style.height = '40px'
       el.style.backgroundSize = '100%'
       el.style.backgroundrepeat = 'no-repeat'
-      el.style.zIndex = '9001'
+      el.style.zIndex = '299'
       el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/CB_MapPin_Location.png)'
       
       self.marker = mapboxgl.Marker({'draggable': True, 'element': el, 'anchor': 'bottom'})
@@ -770,9 +770,9 @@ class Map2_0(Map2_0Template):
         district = city
   
       #Get Value of choosen Time and Movement
-      time = self.time_dropdown.selected_value
-      if time == "-1":
-        time = "20"
+      iso_time = self.time_dropdown.selected_value
+      if iso_time == "-1":
+        iso_time = "20"
       movement = self.profile_dropdown.selected_value.lower()
   
       marker_coords = dict(self.marker.getLngLat())
@@ -1196,26 +1196,26 @@ class Map2_0(Map2_0Template):
       summary_frame['data'][131]['content'] = 0.95
       summary_frame['data'][132]['content'] = beds_30_v2
       summary_frame['data'][133]['content'] = free_beds_30_v2
-      summary_frame['data'][134]['content'] = f"{time} minutes of {movement}"
+      summary_frame['data'][134]['content'] = f"{iso_time} minutes of {movement}"
       summary_frame['data'][135]['content'] = inpatients_fc
       summary_frame['data'][136]['content'] = inpatients_fc_v2
-      summary_frame['data'][137]['content'] = f"{time} minutes of {movement}"
+      summary_frame['data'][137]['content'] = f"{iso_time} minutes of {movement}"
       summary_frame['data'][138]['content'] = beds_adjusted
       summary_frame['data'][139]['content'] = 0.95
       summary_frame['data'][140]['content'] = beds_in_reserve_fc
-      summary_frame['data'][141]['content'] = f"{time} minutes of {movement}"
+      summary_frame['data'][141]['content'] = f"{iso_time} minutes of {movement}"
       summary_frame['data'][142]['content'] = beds_adjusted
       summary_frame['data'][143]['content'] = inpatients_fc
       summary_frame['data'][144]['content'] = beds_surplus
       summary_frame['data'][145]['content'] = beds_adjusted
       summary_frame['data'][146]['content'] = inpatients_fc_v2
       summary_frame['data'][147]['content'] = beds_surplus_v2
-      summary_frame['data'][148]['content'] = f"{time} minutes of {movement}"
+      summary_frame['data'][148]['content'] = f"{iso_time} minutes of {movement}"
       summary_frame['data'][150]['content'] = zipcode
       summary_frame['data'][151]['content'] = city
       summary_frame['data'][152]['content'] = countie[0]
       summary_frame['data'][153]['content'] = federal_state
-      summary_frame['data'][154]['content'] = f"{time} minutes of {movement}"
+      summary_frame['data'][154]['content'] = f"{iso_time} minutes of {movement}"
       summary_frame['data'][155]['content'] = searched_address
       summary_frame['data'][158]['content'] = population_fc_35
       summary_frame['data'][159]['content'] = people_u80_fc_35
@@ -2083,7 +2083,7 @@ class Map2_0(Map2_0Template):
                             "city": city,
                             "district": district,
                             "federal_state": federal_state,
-                            "time": time,
+                            "time": iso_time,
                             "movement": movement,
                             "countie": countie[0],
                             "population": "{:,}".format(countie_data['ex_dem_lk']['all_compl']),
@@ -2244,6 +2244,7 @@ class Map2_0(Map2_0Template):
       mapPDF = app_tables.pictures.search()[1]
       mapExcel = app_tables.pictures.search()[0]
       anvil.media.download(mapPDF['pic'])
+      time.sleep(1)
       anvil.media.download(mapExcel['pic'])
       Variables.unique_code = unique_code
 
@@ -2321,7 +2322,7 @@ class Map2_0(Map2_0Template):
         el.style.height = '40px'
         el.style.backgroundSize = '100%'
         el.style.backgroundrepeat = 'no-repeat'
-        el.style.zIndex = '9001'
+        el.style.zIndex = '250'
 
         # Create HTML Element for Invest Class Icon
         inv_el = document.createElement('div')
@@ -2330,7 +2331,7 @@ class Map2_0(Map2_0Template):
         inv_el.style.height = '40px'
         inv_el.style.backgroundSize = '100%'
         inv_el.style.backgroundrepeat = 'no-repeat'
-        inv_el.style.zIndex = '9002'
+        inv_el.style.zIndex = '251'
   
         cluster_name = asset['cluster']
   
@@ -2757,7 +2758,7 @@ class Map2_0(Map2_0Template):
               el.style.height = '40px'
               el.style.backgroundSize = '100%'
               el.style.backgroundrepeat = 'no-repeat'
-              el.style.zIndex = '5'
+              el.style.zIndex = '220'
     
               # Create Icon
               el.style.backgroundImage = f'url({picture})'
@@ -3314,57 +3315,28 @@ class Map2_0(Map2_0Template):
 
     # Sort Coordinates by Distance
     sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
+    from .Market_Study_Existing_Home import Market_Study_Existing_Home
     for entry in sorted_coords:
       if entry[1] <= 0.01:
-        anvil.js.call('addHomeAddress', entry, topic)
-        res = 'none'
-        while res == 'none':
-          res = anvil.js.call('getResponse')
-          time.sleep(.5)
-        if res == 'yes':
+        res = alert(content=Market_Study_Existing_Home(entry=entry, topic=topic), dismissible=False, large=True, buttons=[], role='custom_alert')
+        if res == 'Yes':
           if topic == 'nursing_homes':
             Variables.home_address_nh.append(entry)
           else:
             Variables.home_address_al.append(entry)
-      anvil.js.call('resetResponse')
       
     if topic == 'nursing_homes':
-      if Variables.home_address_nh == []:
+      if len(Variables.home_address_nh) == 0:
         from .Market_Study_NH_Home import Market_Study_NH_Home
-        anvil.js.call('addData', 'nursing_homes', marker_coords)
-        alert(content=Market_Study_NH_Home(), dismissible=False, large=True, buttons=[], role='custom_alert')
+        Variables.home_address_nh = alert(content=Market_Study_NH_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
+        if not Variables.home_address_nh == []:
+          sorted_coords.insert(0, Variables.home_address_nh)
     else:
       if Variables.home_address_al == []:
-        anvil.js.call('addData', 'assisted_living', marker_coords)
-        alert('Is this Home Address ?')
-    
-    preventLoop = True
-    if topic == 'nursing_homes':
-      if not Variables.home_address_nh == []:
-        home_address = Variables.home_address_nh
-      else:
-        preventLoop = False
-    elif topic == 'assisted_living':
-      if not Variables.home_address_al == []:
-        home_address = Variables.home_address_al
-      else:
-        preventLoop = False
-    
-    if preventLoop == False:
-      gres = 'none'
-      while gres == 'none':
-        res = anvil.js.call('getResponse')
-        time.sleep(.5)
-        if not res == 'none':
-          gres = 'true'
-      if not res == 'dismiss':
-        home_address = res
-      else:
-        home_address = []
-      anvil.js.call('resetResponse', topic)
-      
-      if not home_address == []:
-        sorted_coords.insert(0, home_address)
+        from .Market_Study_AL_Home import Market_Study_AL_Home
+        Variables.home_address_al = alert(content=Market_Study_AL_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
+        if not Variables.home_address_al == []:
+          sorted_coords.insert(0, Variables.home_address_al)
     
     res_data = {'sorted_coords': sorted_coords, 'marker_coords': marker_coords}
     
@@ -3643,7 +3615,7 @@ class Map2_0(Map2_0Template):
       el.style.height = '40px'
       el.style.backgroundSize = '100%'
       el.style.backgroundrepeat = 'no-repeat'
-      el.style.zIndex = '9001'
+      el.style.zIndex = '251'
 
       cluster_name = asset['cluster']
 

@@ -1,0 +1,46 @@
+container:
+  type: ColumnPanel
+  properties: {col_widths: '{}'}
+components:
+- type: GridPanel
+  properties: {}
+  name: grid_panel_1
+  layout_properties: {grid_position: 'QORKQP,UTZJKL'}
+  components:
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
+        300', visible: true, text: 'Found the following Object for Nursing Home with
+        less than 10 meters distance to set Marker:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: found_label
+    layout_properties: {row: HQCWGC, width_xs: 8, col_xs: 2, width: 636.667}
+  - type: Label
+    properties: {}
+    name: object_label
+    layout_properties: {row: ZFWGVV, width_xs: 8, col_xs: 2}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
+        300', visible: true, text: 'Do you want to mark the Object as your marker
+        address ?', font_size: 13, font: '', spacing_above: small, icon_align: left,
+      spacing_below: small, italic: false, background: '', bold: false, underline: false,
+      icon: ''}
+    name: question_label
+    layout_properties: {row: KAIDRD, width_xs: 8, col_xs: 2, width: 636.667}
+  - type: Button
+    properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+      foreground: 'theme:Gray 300', visible: true, text: 'Yes', font_size: 13, font: '',
+      spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false, icon: ''}
+    name: yes_btn
+    layout_properties: {row: WPVAUI, width_xs: 4, col_xs: 2, width: 303.333}
+    event_bindings: {click: btn_click}
+  - type: Button
+    properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+      foreground: 'theme:Gray 300', visible: true, text: 'No', font_size: 13, font: '',
+      spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false, icon: ''}
+    name: no_btn
+    layout_properties: {row: WPVAUI, width_xs: 4, col_xs: 6, width: 303.333}
+    event_bindings: {click: btn_click}
+is_package: true

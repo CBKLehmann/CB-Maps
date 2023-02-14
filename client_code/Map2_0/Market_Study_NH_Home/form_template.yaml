@@ -178,7 +178,7 @@ components:
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
     name: save_btn
-    layout_properties: {row: LYIZRB, width_xs: 2, col_xs: 5, width: 136.667}
+    layout_properties: {row: LYIZRB, width_xs: 3, col_xs: 4, width: 136.667}
     event_bindings: {click: btn_click}
   - type: Button
     properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
@@ -186,6 +186,6 @@ components:
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
     name: dismiss_btn
-    layout_properties: {row: LYIZRB, width_xs: 2, col_xs: 8, width: 136.667}
+    layout_properties: {row: LYIZRB, width_xs: 3, col_xs: 7, width: 136.667}
     event_bindings: {click: btn_click}
 is_package: true
