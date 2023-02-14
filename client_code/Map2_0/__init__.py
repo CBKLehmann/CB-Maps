@@ -3311,7 +3311,7 @@ class Map2_0(Map2_0Template):
               }
               data_comp_analysis.append(data)
               break
-              
+
     # Sort Coordinates by Distance
     sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
     for entry in sorted_coords:
@@ -3330,10 +3330,13 @@ class Map2_0(Map2_0Template):
       
     if topic == 'nursing_homes':
       if Variables.home_address_nh == []:
+        from .Market_Study_NH_Home import Market_Study_NH_Home
         anvil.js.call('addData', 'nursing_homes', marker_coords)
+        alert(content=Market_Study_NH_Home(), dismissible=False, large=True, buttons=[], role='custom_alert')
     else:
       if Variables.home_address_al == []:
         anvil.js.call('addData', 'assisted_living', marker_coords)
+        alert('Is this Home Address ?')
     
     preventLoop = True
     if topic == 'nursing_homes':
@@ -3679,9 +3682,12 @@ class Map2_0(Map2_0Template):
 
     anvil.js.call('remove_span')
     
-    self.hide_marker.enabled = True
-    self.change_cluster_color.enabled = True
+    self.hide_marker_cluster.visible = True
+    self.hide_marker_invest.visible = True
     self.icon_grid.visible = True
+    self.invest_grid.visible = True
+    self.cluster_label.visible = True
+    self.invest_label.visible = True
     self.button_icons.raise_event('click')
 
   
@@ -3690,5 +3696,4 @@ class Map2_0(Map2_0Template):
     nav_icon = document.getElementById('mobile-menu')
     mobile_menu.style.height = '0'
     nav_icon.style.display = 'flex'
-    self.mobile_hide.style.display = 'none'
     pass

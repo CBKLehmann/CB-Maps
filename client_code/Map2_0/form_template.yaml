@@ -12,12 +12,8 @@ components:
   name: Side_Bar
   layout_properties: {slot: left-nav}
   components:
-  - type: Spacer
-    properties: {height: 32}
-    name: menu_header
-    layout_properties: {grid_position: 'DGGFVY,DIFEGR'}
   - type: Button
-    properties: {role: mobile-menu-close, align: right, tooltip: '', border: '', enabled: true,
+    properties: {role: primary-color, align: right, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: x, font_size: null, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: 'theme:Secondary
         700', bold: false, underline: false, icon: ''}

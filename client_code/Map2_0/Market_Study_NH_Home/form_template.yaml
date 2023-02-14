@@ -1,0 +1,191 @@
+container:
+  type: ColumnPanel
+  properties: {col_widths: '{}'}
+components:
+- type: GridPanel
+  properties: {}
+  name: grid_panel_1
+  layout_properties: {grid_position: 'EKOITL,MBZURN'}
+  components:
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Do you want to add additional Informations for your address
+        related to Nursing Homes ?', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: text_label
+    layout_properties: {row: CBBVGI, width_xs: 8, col_xs: 2, width: 636.667}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Name:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: name_label
+    layout_properties: {row: JVXWDG, width_xs: 3, col_xs: 2, width: 220}
+  - type: TextBox
+    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 13,
+      font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false}
+    name: name_input
+    layout_properties: {row: JVXWDG, width_xs: 5, col_xs: 5, width: 377.333666}
+    event_bindings: {}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Number of Beds:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: beds_no_label
+    layout_properties: {row: WLXTHF, width_xs: 3, col_xs: 2, width: 220}
+  - type: TextBox
+    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 13,
+      font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false}
+    name: beds_no_input
+    layout_properties: {row: WLXTHF, width_xs: 5, col_xs: 5, width: 377.333666}
+    event_bindings: {}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Single Rooms:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: single_room_label
+    layout_properties: {row: MQMVDE, width_xs: 3, col_xs: 2, width: 220}
+  - type: TextBox
+    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 13,
+      font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false}
+    name: single_room_input
+    layout_properties: {row: MQMVDE, width_xs: 5, col_xs: 5, width: 377.333666}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Double Rooms:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: double_room_label
+    layout_properties: {row: LGDFQI, width_xs: 3, col_xs: 2, width: 220}
+  - type: TextBox
+    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 13,
+      font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false}
+    name: double_room_input
+    layout_properties: {row: LGDFQI, width_xs: 5, col_xs: 5, width: 377.333666}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Patients:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: patients_label
+    layout_properties: {row: GSDCUB, width_xs: 3, col_xs: 2, width: 220}
+  - type: TextBox
+    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 13,
+      font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false}
+    name: patients_input
+    layout_properties: {row: GSDCUB, width_xs: 5, col_xs: 5, width: 377.333666}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Occupancy:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: occupancy_label
+    layout_properties: {row: BFYMKT, width_xs: 3, col_xs: 2, width: 220}
+  - type: TextBox
+    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 13,
+      font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false}
+    name: occupancy_input
+    layout_properties: {row: BFYMKT, width_xs: 5, col_xs: 5, width: 377.333666}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Year of Construction:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: construction_year_label
+    layout_properties: {row: YAJQBV, width_xs: 3, col_xs: 2, width: 220}
+  - type: TextBox
+    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 13,
+      font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false}
+    name: construction_year_input
+    layout_properties: {row: YAJQBV, width_xs: 5, col_xs: 5, width: 377.333666}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Status:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: status_label
+    layout_properties: {row: XYYDHK, width_xs: 3, col_xs: 2, width: 220}
+  - type: TextBox
+    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 13,
+      font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false}
+    name: status_input
+    layout_properties: {row: XYYDHK, width_xs: 5, col_xs: 5, width: 377.333666}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Operator:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: operator_label
+    layout_properties: {row: QBEQQX, width_xs: 3, col_xs: 2, width: 220}
+  - type: TextBox
+    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 13,
+      font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false}
+    name: operator_input
+    layout_properties: {row: QBEQQX, width_xs: 5, col_xs: 5, width: 377.333666}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Invest cost per day:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: invest_cost_label
+    layout_properties: {row: DIHFPJ, width_xs: 3, col_xs: 2, width: 220}
+  - type: TextBox
+    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 13,
+      font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false}
+    name: invest_cost_input
+    layout_properties: {row: DIHFPJ, width_xs: 5, col_xs: 5, width: 377.333666}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'MDK Grade:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: mdk_grade_label
+    layout_properties: {row: DWMYFH, width_xs: 3, col_xs: 2, width: 220}
+  - type: TextBox
+    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 13,
+      font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false}
+    name: mdk_grade_input
+    layout_properties: {row: DWMYFH, width_xs: 5, col_xs: 5, width: 377.333666}
+    event_bindings: {}
+  - type: Button
+    properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+      foreground: 'theme:Gray 100', visible: true, text: Save, font_size: 13, font: '',
+      spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false, icon: ''}
+    name: save_btn
+    layout_properties: {row: LYIZRB, width_xs: 2, col_xs: 5, width: 136.667}
+    event_bindings: {click: btn_click}
+  - type: Button
+    properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+      foreground: 'theme:Gray 100', visible: true, text: Dismiss, font_size: 13, font: '',
+      spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false, icon: ''}
+    name: dismiss_btn
+    layout_properties: {row: LYIZRB, width_xs: 2, col_xs: 8, width: 136.667}
+    event_bindings: {click: btn_click}
+is_package: true
