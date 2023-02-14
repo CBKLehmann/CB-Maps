@@ -63,12 +63,14 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
         image = Image(source=self.source, height=40)
         self.grid_panel_1.add_component(point, row=self.last_cluster, col_xs=9, width_xs=1)
         self.grid_panel_1.add_component(image, row=self.last_cluster, col_xs=10, width_xs=2)
+        self.select.foreground = 'theme:Gray 300'
         self.select.tag.color = self.color
         self.select.tag.type = 'select'
         self.label.tag.color = self.color
         self.label.tag.type = 'label'
         image.tag.color = self.color
         image.tag.type = 'image'
+        image.tag.source = self.source
         point.tag.color = self.color
         point.tag.type = 'point'
       else:
@@ -137,7 +139,6 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
           component.tag.color = colorName
           component.tag.source = source
           component.source = source
-        print(component.tag)
       elif component.tag.type == 'select':
         if component.tag.color == self.oldColor:
           component.tag.color = colorName
@@ -162,7 +163,6 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
         color_code = component.foreground
         color_arr.append(color_code)
       elif component.tag.type == 'image':
-        print(component.tag)
         pin = component.tag.source
         color_arr.append(pin)
       if len(color_arr) == 3:

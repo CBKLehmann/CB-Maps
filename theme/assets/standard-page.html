@@ -94,7 +94,6 @@
 
   function copy_to_clipboard() {
     let copyText = document.getElementById('toCopyText')
-    console.log(copyText)
     navigator.clipboard.writeText(copyText.innerHTML)
     alert("Copied the text: " + copyText.innerHTML)
   }
@@ -247,12 +246,11 @@
 
   function change_menu_display() {
     let navBar = document.getElementsByClassName('left-nav')[0]
-    console.log(navBar.style.display)
-    if (navBar.style.display === 'block') {
-      navBar.style.display = 'none'
-    } else {
-      navBar.style.display = 'block'
-    }
+    let navIcon = document.getElementById('mobile-menu')
+    let xBtn = document.getElementsByClassName('anvil-role-mobile-menu-close')[0]
+    navBar.style.height = '33%'
+    navIcon.style.display = 'none'
+    xBtn.style.display = 'block'
   }
 
 </script> 

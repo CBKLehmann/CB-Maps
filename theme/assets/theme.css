@@ -226,14 +226,18 @@ a:hover, a:active {
 
 @media(max-width:998px) {
   html:not(.designer) .nav-holder .left-nav {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     width: 100%;
-    height: 33%;
-    z-index: 3;
-    display: none;
+    height: 0;
+    z-index: 15000;
+/*     visibility: hidden; */
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
+    -webkit-box-shadow: 0px -1px 5px 3px rgba(27,41,57,0.75); 
+    box-shadow: 0px -1px 5px 3px rgba(27,41,57,0.75);
+    border: none;
+    transition: height 1s ease-out;
   }
   
    html:not(.designer) .nav-holder .left-nav.shown {
@@ -260,14 +264,23 @@ a:hover, a:active {
   }
 
   .left-nav::-webkit-scrollbar {
-  display: none;
+    display: none;
+  }
+  
+  .anvil-role-mobile-menu {
+    margin-top: 15px !important;
+    overflow-y: scroll;
+  }
+  
+  .anvil-role-mobile-menu::-webkit-scrollbar {
+    display: none;
+  }
 }
- }
 
 .nav-holder .left-nav, .left-nav-placeholder {
   display: flex;
   flex-direction: column;
-  background: '#1b2939';
+  background: %color:Primary 700%;
   border-right: 1px solid #e0e0e0;
   font-size: 14px;
   font-weight: 500;
@@ -1159,5 +1172,17 @@ select > option {
 }
 
 .mobile-menu-icon {
-  width: 60%
+  width: 60%;
 }
+
+::placeholder {
+  color: %color:Gray 600% !important;
+}
+
+/* .anvil-role-mobile-menu-close {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 5;
+  display: none;
+} */

@@ -9,7 +9,6 @@ from anvil.google.drive import app_files
 from anvil.tables import app_tables
 from anvil.js.window import mapboxgl, MapboxGeocoder, document
 from .. import Variables, Layer, Images, ExcelFrames
-from .Color_for_Cluster import Color_for_Cluster
 import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
@@ -50,7 +49,6 @@ class Map2_0(Map2_0Template):
       screen = anvil.js.call('get_screen_width')
       width = screen[0]
       height = screen[1]
-      print(screen)
       self.spacer_1.height = height - 70
         
       container = document.getElementById('appGoesHere')
@@ -93,7 +91,6 @@ class Map2_0(Map2_0Template):
         mobile_menu = document.getElementById('mobile-menu')
         mobile_menu.style.display = 'flex'
         anvil.js.call('add_event_to_mobile_menu')
-        self.mobile_hide.visible = True
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'
@@ -208,15 +205,18 @@ class Map2_0(Map2_0Template):
 
   def button_marker_icons_change(self, **event_args):
     # Show or Hide all Marker Icons
+
+    if event_args['sender'] == self.hide_marker_cluster:
+      all_marker = self.icon_grid.get_components()
+    else:
+      all_marker = self.invest_grid.get_components()
     
-    all_marker = self.icon_grid.get_components()
-    
-    if dict(event_args)['sender'].text == "Show All": 
+    if event_args['sender'].text == "Show":
       marker_state = True
-      self.hide_marker.text = "Hide All"
-    elif dict(event_args)['sender'].text == "Hide All":
+      event_args['sender'].text = "Hide"
+    elif dict(event_args)['sender'].text == "Hide":
       marker_state = False
-      self.hide_marker.text = "Show All"
+      event_args['sender'].text = "Show"
       
     for marker in all_marker:
       if not type(marker) is Label:
@@ -441,9 +441,10 @@ class Map2_0(Map2_0Template):
         break
     study_pin = self.hide_ms_marker.checked
 
-    settings = Variables.marker
-    for setting in settings:
-      settings[setting].pop('marker')
+    deleted_marker = {}
+    for setting in Variables.marker:
+      popped = Variables.marker[setting].pop('marker')
+      deleted_marker[setting] = popped
     cluster = {
       'data': self.cluster_data,
       'settings': Variables.marker
@@ -470,6 +471,9 @@ class Map2_0(Map2_0Template):
     }
 
     anvil.server.call('save_map_settings', dataset)
+
+    for setting in deleted_marker:
+      Variables.marker[setting]['marker'] = deleted_marker[setting]
     
     alert(url)
     
@@ -2280,6 +2284,8 @@ class Map2_0(Map2_0Template):
       excel_markers = {}
       added_clusters = []
       added_invest_classes = []
+      invest_components = {}
+      cluster_components = {}
       colors = [
         ['white', '#ffffff', '/_/theme/Pins/CB_MapPin_white.png'],
         ['blue', '#234ce2', '/_/theme/Pins/CB_MapPin_blue.png'],
@@ -2333,14 +2339,13 @@ class Map2_0(Map2_0Template):
           checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
           checkbox.add_event_handler('change', self.check_box_marker_icons_change)
           icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none')
-          self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=1, width_xs=8)
-          self.icon_grid.add_component(icon, row=cluster_name, col_xs=9, width_xs=1)
+          cluster_components[cluster_name] = [checkbox, icon]
           added_clusters.append(cluster_name)
 
         if asset['invest_class'] not in added_invest_classes:
-          checkbox = CheckBox(checked=False, text=asset['invest_class'], spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
+          checkbox = CheckBox(checked=True, text=asset['invest_class'], spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
           checkbox.add_event_handler('change', self.check_box_marker_icons_change)
-          self.invest_grid.add_component(checkbox, row=asset['invest_class'], col_xs=1, width_xs=8)
+          invest_components[asset['invest_class']] = checkbox
           added_invest_classes.append(asset['invest_class'])
   
         # #Get Coordinates of provided Adress for Marker
@@ -2370,6 +2375,14 @@ class Map2_0(Map2_0Template):
         # markercount += 1
 
         counter += 1
+
+      for key in sorted(cluster_components):
+        self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=1, width_xs=8)
+        self.icon_grid.add_component(cluster_components[key][1], row=key, col_xs=9, width_xs=1)
+        
+        sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout']    
+      for key in sorted(invest_components.keys(), key=lambda x: sorted_keys.index(x)):
+        self.invest_grid.add_component(invest_components[key], row=key, col_xs=1, width_xs=8)
         
       # Add Marker-Arrays to global Variable Marker
       Variables.marker.update(excel_markers)
@@ -2379,11 +2392,17 @@ class Map2_0(Map2_0Template):
 
       for checkbox in self.invest_grid.get_components():
         checkbox.raise_event('change')
+
+      for checkbox in self.invest_grid.get_components():
+        checkbox.raise_event('change')
       
       self.icon_grid.visible = True
       self.change_cluster_color.visible = True
-      self.hide_marker.visible = True
+      self.hide_marker_cluster.visible = True
+      self.hide_marker_invest.visible = True
       self.invest_grid.visible = True
+      self.invest_label.visible = True
+      self.cluster_label.visible = True
     
   #####  Upload Functions   #####
   ###############################
@@ -3668,5 +3687,8 @@ class Map2_0(Map2_0Template):
   
   def mobile_hide_click(self, **event_args):
     mobile_menu = document.getElementsByClassName('left-nav')[0]
-    mobile_menu.style.display = 'none'
+    nav_icon = document.getElementById('mobile-menu')
+    mobile_menu.style.height = '0'
+    nav_icon.style.display = 'flex'
+    self.mobile_hide.style.display = 'none'
     pass
