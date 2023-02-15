@@ -3332,7 +3332,11 @@ class Map2_0(Map2_0Template):
     if topic == 'nursing_homes':
       if len(Variables.home_address_nh) == 0:
         from .Market_Study_NH_Home import Market_Study_NH_Home
-        Variables.home_address_nh = alert(content=Market_Study_NH_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
+        from .Market_Study_NH_Home_Mobile import Market_Study_NH_Home_Mobile
+        if self.mobile:
+          Variables.home_address_nh = alert(content=Market_Study_NH_Home_Mobile(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
+        else:
+          Variables.home_address_nh = alert(content=Market_Study_NH_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
         if not Variables.home_address_nh == []:
           sorted_coords.insert(0, Variables.home_address_nh)
     else:

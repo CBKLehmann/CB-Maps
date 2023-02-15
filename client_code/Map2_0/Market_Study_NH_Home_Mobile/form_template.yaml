@@ -5,187 +5,185 @@ components:
 - type: GridPanel
   properties: {}
   name: grid_panel_1
-  layout_properties: {grid_position: 'EKOITL,MBZURN'}
+  layout_properties: {grid_position: 'MSSXOW,YDKQIE'}
   components:
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
-        300', visible: true, text: 'Do you want to add additional Informations for
-        your address related to Nursing Homes ?', font_size: 13, font: '', spacing_above: small,
+        300', visible: true, text: "Do you want to add additional Informations \n\
+        for your address related to Nursing Homes ?", font_size: 13, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: text_label
-    layout_properties: {row: CBBVGI, width_xs: 8, col_xs: 0, width: 636.667}
+    layout_properties: {row: CBBVGI, width_xs: 10, col_xs: 1, width: 803.333}
   - type: Label
-    properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Name:', font_size: 13, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: name_label
-    layout_properties: {row: JVXWDG, width_xs: 3, col_xs: 0, width: 220}
+    layout_properties: {row: JVXWDG, width_xs: 10, col_xs: 1, width: 803.333}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
       font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: name_input
-    layout_properties: {row: JVXWDG, width_xs: 3, col_xs: 3, width: 210.666666}
-    event_bindings: {}
+    layout_properties: {row: PNRRBX, width_xs: 10, col_xs: 1, width: 793.9996659999999}
   - type: Label
-    properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
-        300', visible: true, text: 'Status:', font_size: 13, font: '', spacing_above: small,
-      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
-      underline: false, icon: ''}
-    name: status_label
-    layout_properties: {row: NBELHT, width_xs: 3, col_xs: 0, width: 220}
-  - type: TextBox
-    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
-      border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
-      italic: false, background: '', bold: false, underline: false}
-    name: status_input
-    layout_properties: {row: NBELHT, width_xs: 3, col_xs: 3, width: 210.666666}
-  - type: Label
-    properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Operator:', font_size: 13, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: operator_label
-    layout_properties: {row: NBELHT, width_xs: 3, col_xs: 6, width: 220}
+    layout_properties: {row: VQWUPT, width_xs: 10, col_xs: 1, width: 803.333}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
       font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: operator_input
-    layout_properties: {row: NBELHT, width_xs: 3, col_xs: 9, width: 210.666666}
+    layout_properties: {row: PEWCPH, width_xs: 10, col_xs: 1, width: 793.9996659999999}
   - type: Label
-    properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
-        300', visible: true, text: 'Number of Beds:', font_size: 13, font: '', spacing_above: small,
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
+        300', visible: true, text: 'Status:', font_size: 13, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
-    name: beds_no_label
-    layout_properties: {row: VEODPN, width_xs: 3, col_xs: 0, width: 220}
+    name: status_label
+    layout_properties: {row: PVNIZZ, width_xs: 10, col_xs: 1, width: 803.333}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
       font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
-    name: beds_no_input
-    layout_properties: {row: VEODPN, width_xs: 3, col_xs: 3, width: 210.666666}
-    event_bindings: {}
+    name: status_input
+    layout_properties: {row: UFAPIK, width_xs: 10, col_xs: 1, width: 793.9996659999999}
   - type: Label
-    properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Year of Construction:', font_size: 13, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
     name: construction_year_label
-    layout_properties: {row: VEODPN, width_xs: 3, col_xs: 6, width: 220}
+    layout_properties: {row: WAJZDS, width_xs: 10, col_xs: 1, width: 803.333}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: construction_year_input
-    layout_properties: {row: VEODPN, width_xs: 3, col_xs: 9, width: 210.666666}
+    layout_properties: {row: WJCGMV, width_xs: 10, col_xs: 1, width: 793.9996659999999}
   - type: Label
-    properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
+        300', visible: true, text: 'Number of Beds:', font_size: 13, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: beds_no_label
+    layout_properties: {row: VEODPN, width_xs: 10, col_xs: 1, width: 803.333}
+  - type: TextBox
+    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
+      italic: false, background: '', bold: false, underline: false}
+    name: beds_no_input
+    layout_properties: {row: OKPTIH, width_xs: 10, col_xs: 1, width: 793.9996659999999}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Single Rooms:', font_size: 13, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: single_room_label
-    layout_properties: {row: KEHTXR, width_xs: 3, col_xs: 0, width: 220}
+    layout_properties: {row: KEHTXR, width_xs: 10, col_xs: 1, width: 803.333}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: single_room_input
-    layout_properties: {row: KEHTXR, width_xs: 3, col_xs: 3, width: 210.666666}
+    layout_properties: {row: ZSDLXA, width_xs: 10, col_xs: 1, width: 793.9996659999999}
   - type: Label
-    properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Double Rooms:', font_size: 13, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: double_room_label
-    layout_properties: {row: KEHTXR, width_xs: 3, col_xs: 6, width: 220}
+    layout_properties: {row: CJSDBP, width_xs: 10, col_xs: 1, width: 803.333}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: double_room_input
-    layout_properties: {row: KEHTXR, width_xs: 3, col_xs: 9, width: 210.666666}
+    layout_properties: {row: IIPGJZ, width_xs: 10, col_xs: 1, width: 793.9996659999999}
   - type: Label
-    properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Patients:', font_size: 13, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: patients_label
-    layout_properties: {row: SCIKVK, width_xs: 3, col_xs: 0, width: 220}
+    layout_properties: {row: SCIKVK, width_xs: 10, col_xs: 1, width: 803.333}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: patients_input
-    layout_properties: {row: SCIKVK, width_xs: 3, col_xs: 3, width: 210.666666}
+    layout_properties: {row: VBHGMA, width_xs: 10, col_xs: 1, width: 793.9996659999999}
   - type: Label
-    properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Occupancy:', font_size: 13, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: occupancy_label
-    layout_properties: {row: SCIKVK, width_xs: 3, col_xs: 6, width: 220}
+    layout_properties: {row: LLPVZP, width_xs: 10, col_xs: 1, width: 803.333}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: occupancy_input
-    layout_properties: {row: SCIKVK, width_xs: 3, col_xs: 9, width: 210.666666}
+    layout_properties: {row: UYAFLJ, width_xs: 10, col_xs: 1, width: 793.9996659999999}
+    event_bindings: {pressed_enter: occupancy_input_pressed_enter}
   - type: Label
-    properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Invest cost per day:', font_size: 13, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
     name: invest_cost_label
-    layout_properties: {row: SMOASK, width_xs: 3, col_xs: 0, width: 220}
+    layout_properties: {row: SMOASK, width_xs: 10, col_xs: 1, width: 803.333}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: invest_cost_input
-    layout_properties: {row: SMOASK, width_xs: 3, col_xs: 3, width: 210.666666}
+    layout_properties: {row: AQGWYA, width_xs: 10, col_xs: 1, width: 793.9996659999999}
   - type: Label
-    properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'MDK Grade:', font_size: 13, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: mdk_grade_label
-    layout_properties: {row: SMOASK, width_xs: 3, col_xs: 6, width: 220}
+    layout_properties: {row: JEVUJA, width_xs: 10, col_xs: 1, width: 803.333}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: mdk_grade_input
-    layout_properties: {row: SMOASK, width_xs: 3, col_xs: 9, width: 210.666666}
-    event_bindings: {}
+    layout_properties: {row: GHZWGA, width_xs: 10, col_xs: 1, width: 793.9996659999999}
   - type: Button
     properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-      foreground: 'theme:Gray 100', visible: true, text: Save, font_size: 13, font: '',
+      foreground: 'theme:Gray 300', visible: true, text: Save, font_size: 13, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
     name: save_btn
-    layout_properties: {row: LYIZRB, width_xs: 4, col_xs: 2, width: 136.667}
+    layout_properties: {row: NDCDSX, width_xs: 4, col_xs: 2, width: 303.333}
     event_bindings: {click: btn_click}
   - type: Button
     properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-      foreground: 'theme:Gray 100', visible: true, text: Dismiss, font_size: 13, font: '',
+      foreground: 'theme:Gray 300', visible: true, text: Dismiss, font_size: 13, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
     name: dismiss_btn
-    layout_properties: {row: LYIZRB, width_xs: 4, col_xs: 6, width: 136.667}
+    layout_properties: {row: NDCDSX, width_xs: 4, col_xs: 6, width: 303.333}
     event_bindings: {click: btn_click}
 is_package: true

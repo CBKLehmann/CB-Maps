@@ -1,4 +1,4 @@
-from ._anvil_designer import Market_Study_NH_HomeTemplate
+from ._anvil_designer import Market_Study_AL_Home_MobileTemplate
 from anvil import *
 import anvil.server
 import anvil.users
@@ -8,7 +8,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
-class Market_Study_NH_Home(Market_Study_NH_HomeTemplate):
+class Market_Study_AL_Home_Mobile(Market_Study_AL_Home_MobileTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
@@ -20,16 +20,11 @@ class Market_Study_NH_Home(Market_Study_NH_HomeTemplate):
     else:
       response = [{
         'name': self.name_input.text,
-        'platz_voll_pfl': self.beds_no_input.text,
-        'ez': self.single_room_input.text,
-        'dz': self.double_room_input.text,
-        'anz_vers_pat': self.patients_input.text,
-        'occupancy': self.occupancy_input.text,
-        'baujahr': self.construction_year_input.text,
+        'operator': self.operator_input.text,
+        'type': self.type_input.text,
+        'city': self.city_input.text,
         'status': self.status_input.text,
-        'betreiber': self.operator_input.text,
-        'invest': self.invest_cost_input.text,
-        'mdk_note': self. mdk_grade_input.text,
+        'number_apts': self.apartment_count_input.text,
         'coords': self.marker_coords
       }, 0, 'home']
     self.raise_event('x-close-alert', value = response)
