@@ -14,19 +14,19 @@ components:
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: found_label
-    layout_properties: {row: HQCWGC, width_xs: 8, col_xs: 2, width: 636.667}
+    layout_properties: {row: HQCWGC, width_xs: 10, col_xs: 1, width: 636.667}
   - type: Label
     properties: {}
     name: object_label
-    layout_properties: {row: ZFWGVV, width_xs: 8, col_xs: 2}
+    layout_properties: {row: ZFWGVV, width_xs: 10, col_xs: 1}
   - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
+    properties: {role: null, align: center, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Do you want to mark the Object as your marker
         address ?', font_size: 13, font: '', spacing_above: small, icon_align: left,
       spacing_below: small, italic: false, background: '', bold: false, underline: false,
       icon: ''}
     name: question_label
-    layout_properties: {row: KAIDRD, width_xs: 8, col_xs: 2, width: 636.667}
+    layout_properties: {row: KAIDRD, width_xs: 10, col_xs: 1, width: 803.333}
   - type: Button
     properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
       foreground: 'theme:Gray 300', visible: true, text: 'Yes', font_size: 13, font: '',

@@ -85,7 +85,7 @@ class Map2_0(Map2_0Template):
         self.admin_button.visible = 'visible'
 
       if self.role == 'guest':
-        self.button_icons.text = 'Cluster'
+        self.button_icons.text = 'Cluster & Investment'
 
       if width <= 998:
         self.mobile = True
@@ -365,7 +365,7 @@ class Map2_0(Map2_0Template):
         'container': self.icon_categories_all,
         'icon_container': self.button_icons
       },
-      'Cluster': {
+      'Cluster & Investment': {
         'container': self.icon_categories_all,
         'icon_container': self.button_icons
       },
@@ -392,6 +392,14 @@ class Map2_0(Map2_0Template):
       'Public Transport': {
         'container': self.opnv_container,
         'icon_container': self.opnv_button
+      },
+      'Cluster': {
+        'container': self.cluster_panel,
+        'icon_container': self.cluster_btn
+      },
+      'Investment Class': {
+        'container': self.invest_panel,
+        'icon_container': self.invest_class_btn
       }
     }
     
@@ -717,6 +725,9 @@ class Map2_0(Map2_0Template):
     with anvil.server.no_loading_indicator:
 
       # #####Get Informations from Map#####
+
+      if self.mobile:
+        self.mobile_hide_click()
       
       anvil.js.call('update_loading_bar', 0, 'Getting map-based Informations')
     
@@ -2400,14 +2411,11 @@ class Map2_0(Map2_0Template):
 
       for checkbox in self.invest_grid.get_components():
         checkbox.raise_event('change')
-      
-      self.icon_grid.visible = True
-      self.change_cluster_color.visible = True
-      self.hide_marker_cluster.visible = True
-      self.hide_marker_invest.visible = True
-      self.invest_grid.visible = True
-      self.invest_label.visible = True
-      self.cluster_label.visible = True
+
+      self.cluster_btn.visible = True
+      self.invest_class_btn.visible = True
+      self.invest_class_btn.raise_event('click')
+      self.cluster_btn.raise_event('click')
     
   #####  Upload Functions   #####
   ###############################
@@ -3342,7 +3350,11 @@ class Map2_0(Map2_0Template):
     else:
       if Variables.home_address_al == []:
         from .Market_Study_AL_Home import Market_Study_AL_Home
-        Variables.home_address_al = alert(content=Market_Study_AL_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
+        from .Market_Study_AL_Home_Mobile import Market_Study_AL_Home_Mobile
+        if self.mobile:
+          Variables.home_address_al = alert(content=Market_Study_AL_Home_Mobile(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
+        else:
+          Variables.home_address_al = alert(content=Market_Study_AL_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
         if not Variables.home_address_al == []:
           sorted_coords.insert(0, Variables.home_address_al)
     
@@ -3576,7 +3588,7 @@ class Map2_0(Map2_0Template):
   def change_cluster_color_click(self, **event_args):
     """This method is called when the button is clicked"""
     from .Change_Cluster_Color import Change_Cluster_Color
-    response = alert(content=Change_Cluster_Color(components=self.icon_grid.get_components()), dismissible=False, large=True, buttons=[], role='custom_alert')
+    response = alert(content=Change_Cluster_Color(components=self.icon_grid.get_components(), mobile=self.mobile), dismissible=False, large=True, buttons=[], role='custom_alert')
     for key in Variables.marker:
       if key in response:
         Variables.marker[key]['color'] = response[key]
@@ -3662,12 +3674,10 @@ class Map2_0(Map2_0Template):
 
     anvil.js.call('remove_span')
     
-    self.hide_marker_cluster.visible = True
-    self.hide_marker_invest.visible = True
-    self.icon_grid.visible = True
-    self.invest_grid.visible = True
-    self.cluster_label.visible = True
-    self.invest_label.visible = True
+    self.cluster_btn.visible = True
+    self.invest_class_btn.visible = True
+    self.invest_class_btn.raise_event('click')
+    self.cluster_btn.raise_event('click')
     self.button_icons.raise_event('click')
 
   

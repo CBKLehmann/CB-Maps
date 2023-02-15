@@ -61,8 +61,12 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
           self.colors.remove(self.color)
         point = Label(icon='fa:circle', align='center', foreground=component.foreground)
         image = Image(source=self.source, height=40)
-        self.grid_panel_1.add_component(point, row=self.last_cluster, col_xs=9, width_xs=1)
-        self.grid_panel_1.add_component(image, row=self.last_cluster, col_xs=10, width_xs=2)
+        if properties['mobile']:
+          self.grid_panel_1.add_component(point, row=f'{self.last_cluster}_2', col_xs=8, width_xs=1)
+          self.grid_panel_1.add_component(image, row=f'{self.last_cluster}_2', col_xs=9, width_xs=2)
+        else:
+          self.grid_panel_1.add_component(point, row=self.last_cluster, col_xs=9, width_xs=1)
+          self.grid_panel_1.add_component(image, row=self.last_cluster, col_xs=10, width_xs=2)
         self.select.foreground = 'theme:Gray 300'
         self.select.tag.color = self.color
         self.select.tag.type = 'select'
@@ -76,12 +80,18 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
       else:
         self.last_cluster = component.text
         self.label = Label(text=self.last_cluster)
-        self.select = DropDown(items=self.colors, include_placeholder=True, selected_value=None, placeholder='Choose a new color')
+        self.select = DropDown(items=self.colors, include_placeholder=True, selected_value=None, placeholder='Change color')
         self.select.add_event_handler('change', self.change_color)
         self.selects.append(self.select)
-        self.grid_panel_1.add_component(self.label, row=self.last_cluster, col_xs=1, width_xs=5)
-        self.grid_panel_1.add_component(self.select, row=self.last_cluster, col_xs=6, width_xs=3)
-    self.grid_panel_1.add_component(self.confirm, row='confirm', col_xs=5, width_xs=2)
+        self.grid_panel_1.add_component(self.label, row=self.last_cluster, col_xs=1, width_xs=12)
+        if properties['mobile']:
+          self.grid_panel_1.add_component(self.select, row=f'{self.last_cluster}_2', col_xs=1, width_xs=7)
+        else:
+          self.grid_panel_1.add_component(self.select, row=self.last_cluster, col_xs=6, width_xs=3)
+    if properties['mobile']:
+      self.grid_panel_1.add_component(self.confirm, row='confirm', col_xs=1, width_xs=12)
+    else:
+      self.grid_panel_1.add_component(self.confirm, row='confirm', col_xs=5, width_xs=2)
 
     for select in self.selects:
       select.items = self.colors

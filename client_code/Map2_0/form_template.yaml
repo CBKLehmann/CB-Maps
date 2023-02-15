@@ -43,56 +43,70 @@ components:
       layout_properties: {grid_position: 'JZOHAD,MHHVCZ', row: JUYMML, width_xs: 12,
         col_xs: 0}
       components:
-      - type: Label
-        properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
-          visible: false, text: Cluster, font_size: null, font: '', spacing_above: none,
-          icon_align: left, spacing_below: none, italic: false, background: '', bold: false,
-          underline: false, icon: ''}
-        name: cluster_label
-        layout_properties: {row: UUEOJP, width_xs: 10, col_xs: 2, width: 164.438}
-      - type: GridPanel
-        properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
-          border: '', visible: false, role: cluster_list, tooltip: ''}
-        name: icon_grid
-        layout_properties: {row: ZVYFUL, width_xs: 12, col_xs: 0, width: 233.333}
-        components: []
       - type: Button
-        properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-          foreground: '', visible: false, text: Hide, font_size: 13, font: Roboto+Flex,
-          spacing_above: none, icon_align: left, spacing_below: none, italic: false,
-          background: '', bold: false, underline: false, icon: ''}
-        name: hide_marker_cluster
-        layout_properties: {row: XOSANV, width_xs: 12, col_xs: 0, width: 203.333}
-        event_bindings: {click: button_marker_icons_change}
-      - type: Button
-        properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-          foreground: '', visible: false, text: Colors, font_size: 13, font: Roboto+Flex,
-          spacing_above: none, icon_align: left, spacing_below: none, italic: false,
-          background: '', bold: false, underline: false, icon: ''}
-        name: change_cluster_color
-        layout_properties: {row: SFCYZK, width_xs: 12, col_xs: 0, width: 203.333}
-        event_bindings: {click: change_cluster_color_click}
-      - type: Label
-        properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
-          visible: false, text: Investment Class, font_size: null, font: '', spacing_above: small,
-          icon_align: left, spacing_below: none, italic: false, background: '', bold: false,
-          underline: false, icon: ''}
-        name: invest_label
-        layout_properties: {row: AYJUWF, width_xs: 10, col_xs: 2, width: 164.438}
-      - type: GridPanel
+        properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
+          enabled: true, foreground: 'theme:Gray 300', visible: false, text: Cluster,
+          font_size: 13, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
+          italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
+        name: cluster_btn
+        layout_properties: {row: GOATYJ, width_xs: 12, col_xs: 0, width: 183.885}
+        event_bindings: {click: button_toggle_menu_parts}
+      - type: LinearPanel
         properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
           border: '', visible: false, role: null, tooltip: ''}
-        name: invest_grid
-        layout_properties: {row: MPWCPV, width_xs: 12, col_xs: 0, width: 233.333}
-        components: []
+        name: cluster_panel
+        layout_properties: {row: WNGPPV, width_xs: 12, col_xs: 0, width: 203.333}
+        components:
+        - type: GridPanel
+          properties: {spacing_above: small, spacing_below: small, background: '',
+            foreground: '', border: '', visible: true, role: cluster_list, tooltip: ''}
+          name: icon_grid
+          layout_properties: {row: ZVYFUL, width_xs: 12, col_xs: 0, width: 233.333}
+          components: []
+        - type: Button
+          properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+            foreground: '', visible: true, text: Hide, font_size: 13, font: Roboto+Flex,
+            spacing_above: none, icon_align: left, spacing_below: none, italic: false,
+            background: '', bold: false, underline: false, icon: ''}
+          name: hide_marker_cluster
+          layout_properties: {row: TCEEZP, width_xs: 12, col_xs: 0, width: 203.333}
+          event_bindings: {click: button_marker_icons_change}
+        - type: Button
+          properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+            foreground: '', visible: true, text: Colors, font_size: 13, font: Roboto+Flex,
+            spacing_above: none, icon_align: left, spacing_below: none, italic: false,
+            background: '', bold: false, underline: false, icon: ''}
+          name: change_cluster_color
+          layout_properties: {row: SFCYZK, width_xs: 12, col_xs: 0, width: 203.333}
+          event_bindings: {click: change_cluster_color_click}
       - type: Button
-        properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-          foreground: '', visible: false, text: Hide, font_size: 13, font: Roboto+Flex,
-          spacing_above: none, icon_align: left, spacing_below: none, italic: false,
-          background: '', bold: false, underline: false, icon: ''}
-        name: hide_marker_invest
-        layout_properties: {row: ANBVOY, width_xs: 12, col_xs: 0, width: 203.333}
-        event_bindings: {click: button_marker_icons_change}
+        properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
+          enabled: true, foreground: 'theme:Gray 300', visible: false, text: Investment Class,
+          font_size: 13, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
+          italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
+        name: invest_class_btn
+        layout_properties: {row: XNZAOO, width_xs: 12, col_xs: 0, width: 164.438}
+        event_bindings: {click: button_toggle_menu_parts}
+      - type: LinearPanel
+        properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
+          border: '', visible: false, role: null, tooltip: ''}
+        name: invest_panel
+        layout_properties: {row: WWRDQG, width_xs: 12, col_xs: 0, width: 203.333}
+        components:
+        - type: GridPanel
+          properties: {spacing_above: small, spacing_below: small, background: '',
+            foreground: '', border: '', visible: true, role: null, tooltip: ''}
+          name: invest_grid
+          layout_properties: {row: MPWCPV, width_xs: 12, col_xs: 0, width: 233.333}
+          components: []
+        - type: Button
+          properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+            foreground: '', visible: true, text: Hide, font_size: 13, font: Roboto+Flex,
+            spacing_above: none, icon_align: left, spacing_below: none, italic: false,
+            background: '', bold: false, underline: false, icon: ''}
+          name: hide_marker_invest
+          layout_properties: {row: ANBVOY, width_xs: 12, col_xs: 0, width: 203.333}
+          event_bindings: {click: button_marker_icons_change}
       - type: FileLoader
         properties:
           role: null
