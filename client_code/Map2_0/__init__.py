@@ -88,10 +88,12 @@ class Map2_0(Map2_0Template):
         self.button_icons.text = 'Cluster'
 
       if width <= 998:
+        self.mobile = True
         mobile_menu = document.getElementById('mobile-menu')
         mobile_menu.style.display = 'flex'
         anvil.js.call('add_event_to_mobile_menu')
       else:
+        self.mobile = False
         self.mobile_hide.visible = False
       
       # Initiate Map and set Listener on Page Load
