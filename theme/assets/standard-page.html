@@ -183,18 +183,30 @@
     element.style.backgroundImage = `url("${image}")`
   }
 
-  function addHoverEffect(container, popup, map, context, marker) {
+  function addHoverEffect(container, popup, map, context, marker, ele, category) {
 
-    btn = context['_content'].children[0]
+    let detail_btn = context['_content'].children[0]
+    let rmv_btn = context['_content'].children[1]
 
     container.addEventListener('mouseenter', () => popup.addTo(map));
     container.addEventListener('mouseleave', () => popup.remove());
     container.addEventListener('contextmenu', () => context.addTo(map))
-    btn.addEventListener('click', () => removeMarker(marker))
+    rmv_btn.addEventListener('click', () => removeMarker(marker))
+    detail_btn.addEventListener('click', () => showDetails(ele, category))
   }
 
   function removeMarker(marker) {
     marker.remove()
+  }
+
+  function showDetails(ele, category) {
+    console.log(category)
+    console.log(ele)
+    let content = document.getElementsByClassName('content')[0]
+    let details = document.createElement('div')
+    details.innerHTML = ele
+    details.className = 'marker_details'
+    content.appendChild(details)
   }
 
   function update_loading_bar(percent, message) {

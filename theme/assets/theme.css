@@ -1136,17 +1136,73 @@ select > option {
   background-color: rgba(0, 0, 0, 0) !important;
 }
 
-.markerPopup {
+.mapboxgl-popup {
   z-index: 300;
 }
 
 .markerPopup .mapboxgl-popup-content {
-  background-color: %color:Secondary 700%;
-  color: %color:Gray 100% !important;
+  background-color: %color:Primary 700%;
+  color: %color:Gray 300% !important;
+  border-radius: 5px;
+}
+
+.mapboxgl-popup-content {
+  padding: 10px 0 10px 0 !important;
+}
+
+.mapboxgl-popup-content button {
+  border: none;
+  width: 100%;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0);
+  padding: 5px 10px 5px 10px;
+}
+
+.mapboxgl-popup-content button:hover {
+  background-color:%color:Secondary 700%;
+}
+
+.mapboxgl-popup-content .mapboxgl-popup-close-button {
+  display: none;
 }
 
 .markerPopup .mapboxgl-popup-tip {
   border-top-color: %color:Secondary 700%;
+}
+
+.popup_name {
+  margin-top: 15px;
+  margin-bottom: 0px;
+  font-size: 1.3rem;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.popup_type {
+  margin-top: 3px;
+  margin-bottom: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.popup_betreiber_label {
+  margin-top: 5px;
+  margin-bottom: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.popup_betreiber {
+  margin-top: 2px;
+  margin-bottom: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.popup_status {
+  margin-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .mobile-menu {
@@ -1185,6 +1241,13 @@ select > option {
 
 .mapboxgl-ctrl-bottom-left {
   z-index: 398 !important;
+}
+
+.marker_details {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: black;
 }
 
 /* .anvil-role-mobile-menu-close {

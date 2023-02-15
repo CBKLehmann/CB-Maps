@@ -2837,11 +2837,11 @@ class Map2_0(Map2_0Template):
     
                 # Create Popup for Element
                 popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
-                  f"<b>{ele['name']}</b>"
-                  "<br>"
-                  f"Betreiber: {ele['betreiber']}"
-                  "<br>"
-                  f"Status: {ele['status']}"
+                  f"<p class='popup_name'><b>{ele['name']}</b></p>"
+                  f"<p class='popup_type'>{ele['sektor']}</p>"
+                  "<p class='popup_betreiber_label'><b>Betreiber:</b></p>"
+                  f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
+                  f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
                   # f"<b>PM ID: </b> {ele['pm_id']}"
                   # "<br>"
                   # f"<b>Träger ID: </b> {ele['traeger_id']}"
@@ -3101,13 +3101,14 @@ class Map2_0(Map2_0Template):
               newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
               newiconElement = newicon.getElement()
 
-              context = mapboxgl.Popup({'anchor': 'top', 'offset': 10}).setHTML(
-                  '<button>Remove Marker</button>'
-                )
+              context = mapboxgl.Popup({'anchor': 'top', 'offset': 10, 'className': 'markerPopup'}).setHTML(
+                '<button id="details">More Details</button>'
+                '<button id="remove">Remove Marker</button>'
+              )
 
               newicon.setPopup(context)
               
-              anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, context, newicon)
+              anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, context, newicon, ele, category)
     
               # Add current Element-Icon to Icon-Array
               icons.append(newicon)
