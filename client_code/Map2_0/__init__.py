@@ -91,6 +91,8 @@ class Map2_0(Map2_0Template):
         mobile_menu = document.getElementById('mobile-menu')
         mobile_menu.style.display = 'flex'
         anvil.js.call('add_event_to_mobile_menu')
+      else:
+        self.mobile_hide.visible = False
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'

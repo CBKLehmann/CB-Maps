@@ -13,6 +13,7 @@ class Market_Study_NH_Home(Market_Study_NH_HomeTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.marker_coords = properties['marker_coords']
+    self.name_input.
 
   def btn_click(self, **event_args):
     print(event_args['sender'].text)

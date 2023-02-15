@@ -65,7 +65,7 @@ services:
 startup: {type: form, module: Map2_0}
 package_name: How_Far_Can_I_Go_
 allow_embedding: false
-name: Maps2.0
+name: CB-Maps
 runtime_options:
   version: 2
   client_version: '3'
