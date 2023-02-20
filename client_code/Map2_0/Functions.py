@@ -41,14 +41,11 @@ def change_active_Layer(self, layer, inactive_layer, visibility, other_checkbox)
 def refresh_icons(self):
     
   checkbox =  self.poi_category.get_components()
-  for el in checkbox:
-    if isinstance(el, anvil.LinearPanel):
-      for component in el.get_components():
-        if isinstance(component, anvil.LinearPanel):
-          for ele in component.get_components():
-            self.change_icons(ele.text)
-    elif isinstance(el, anvil.CheckBox):
-      self.change_icons(el.text)
+  for panel in checkbox:
+    if isinstance(panel, anvil.GridPanel):
+      for component in panel.get_components():
+        if not component.text == 'Select All':
+          self.change_icons(component.text)
 
 
 def create_bounding_box(self):
