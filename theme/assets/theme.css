@@ -1207,20 +1207,29 @@ select > option {
 
 .mobile-menu {
   position: absolute;
-  top: 60px;
-  left: 10px;
+/*   top: 60px;
+  left: 10px; */
+  bottom: 16px; /*Bottom Menu */
+  left: 50%; /*Bottom Menu */
+  transform: translateX(-40px); /*Bottom Menu */
   background-color: %color:Primary 700%;
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
+/*   width: 40px;
+  height: 40px; */
+  width: 80px; /*Bottom Menu */
+  height: 26px; /*Bottom Menu */
+/*   border-radius: 4px; */
+  border-top-left-radius: 20px; /*Bottom Menu */
+  border-top-right-radius: 20px; /*Bottom Menu */
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 399;
+  transition: bottom 1s ease-out;
 }
 
 .mobile-menu-icon {
-  width: 60%;
+/*   width: 60%; */
+  width: 16px; /*Bottom Menu */
 }
 
 ::placeholder {
@@ -1257,3 +1266,9 @@ select > option {
   z-index: 5;
   display: none;
 } */
+
+.left-nav:before {
+  content: "";
+  background-color: red;
+  height: 1px;
+}

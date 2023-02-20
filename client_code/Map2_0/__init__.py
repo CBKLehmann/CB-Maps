@@ -3465,8 +3465,6 @@ class Map2_0(Map2_0Template):
 
   
   def change_icons(self, checkbox):
-
-    print(checkbox)
     
     if checkbox == "Veterinary" and self.check_box_vet.checked == True:
       Variables.last_bbox_vet = self.create_icons(False, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
@@ -3690,5 +3688,6 @@ class Map2_0(Map2_0Template):
     mobile_menu = document.getElementsByClassName('left-nav')[0]
     nav_icon = document.getElementById('mobile-menu')
     mobile_menu.style.height = '0'
+    time.sleep(.82)
     nav_icon.style.display = 'flex'
     pass
