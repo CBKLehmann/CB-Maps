@@ -1303,3 +1303,37 @@ select > option {
   background-color: %color:Primary 500%;
   color: %color:Primary 700%;
 }
+
+.objectName {
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+}
+
+.tagContainer {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 5px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  border: 1px solid rgb(62, 62, 62);
+  border-radius: 5px;
+  height: 24px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: 1.1rem;
+  padding: 8px;
+  margin-right: 5px;
+}
+
+.partingLine {
+  height: 2px;
+  background-color: %color:Gray 600%;
+  width: 100%;
+  opacity: .25;
+  margin-bottom: 10px;
+}
