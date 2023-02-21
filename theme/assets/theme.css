@@ -100,6 +100,7 @@ body {
   font-size: 14px;
   line-height: 1.4286;
   background-color: #fafafa;
+  overflow: hidden;
 }
 
 @media print {
@@ -194,6 +195,7 @@ a:hover, a:active {
  */
 .content .anvil-measure-this {
   padding-bottom: 1px; /* Prevent margin collapse messing up embedding */
+  height: 100%;
 }
 
 /* Allow overflows to show drop shadows in ColumnPanels
@@ -229,15 +231,16 @@ a:hover, a:active {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 0;
+    height: 30%;
     z-index: 399;
 /*     visibility: hidden; */
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    -webkit-box-shadow: 0px -1px 5px 3px rgba(27,41,57,0.75); 
-    box-shadow: 0px -1px 5px 3px rgba(27,41,57,0.75);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    -webkit-box-shadow: 0px -1px 2px 1px rgba(27,41,57,0.30); 
+    box-shadow: 0px -1px 2px 1px rgba(27,41,57,0.30);
     border: none;
-    transition: height 1s ease-out;
+    transition: height .75s ease-out;
+    opacity: .95;
   }
   
    html:not(.designer) .nav-holder .left-nav.shown {
@@ -308,7 +311,7 @@ a:hover, a:active {
 }
 
 .left-nav > .column-panel {
-  padding: 24px 0;
+  padding: 10px 0;
 }
 .left-nav > .column-panel > .anvil-panel-section > .anvil-panel-section-container:not(.full-width-row) {
   margin: 0 16px;
@@ -903,7 +906,6 @@ th, td {
 
 .content {
   overflow-y: hidden;
-  margin-bottom: 2rem;
 }
 
 table {
@@ -1059,14 +1061,15 @@ html {
 }
 
 #loading-bar_container {
-  width: 84.9%;
+  width: 100%;
   height: 20px;
   background-color: rgba(0, 0, 0, 0);
   position: fixed;
   bottom: 0;
-  left: 15.1%;
   z-index: 400;
   display: flex;
+  background-color: %color:Primary 700%;
+  visibility: hidden;
 }
 
 #loading-bar {
@@ -1082,7 +1085,6 @@ html {
   height: 20px;
   background-color: %color:Primary 500%;
   animation: loading 6s ease-out infinite;
-  visibility: hidden;
   z-index: 401;
   opacity: 25%;
 }
@@ -1098,7 +1100,6 @@ html {
 }
 
 #loading-bar_text {
-  visibility: hidden;
   padding-left: 8px;
   color: %color:Gray 100%;
   position: absolute;
@@ -1257,6 +1258,7 @@ select > option {
   top: 50px;
   right: 0;
   background-color: black;
+  z-index: 400;
 }
 
 /* .anvil-role-mobile-menu-close {
@@ -1267,8 +1269,18 @@ select > option {
   display: none;
 } */
 
-.left-nav:before {
-  content: "";
-  background-color: red;
-  height: 1px;
+.anvil-root-container {
+  overflow: hidden;
+}
+
+.mapboxgl-map {
+  height: 100%
+}
+
+#navigationHeader {
+  padding: 10px;
+  cursor: move;
+  z-index: 400;
+  background-color: %color:Primary 500%;
+  color: %color:Primary 700%;
 }

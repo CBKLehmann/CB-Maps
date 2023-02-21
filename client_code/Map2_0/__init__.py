@@ -1,6 +1,4 @@
 # Import of different Modules
-
-
 from ._anvil_designer import Map2_0Template
 from anvil import *
 import anvil.users
@@ -41,6 +39,7 @@ class Map2_0(Map2_0Template):
         self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
         self.token = anvil.server.call_s('get_token')
         self.app_url = anvil.server.call_s('get_app_url')
+        self.last_menu_height = '30%'
 
   
   def form_show(self, **event_args):
@@ -49,7 +48,6 @@ class Map2_0(Map2_0Template):
       screen = anvil.js.call('get_screen_width')
       width = screen[0]
       height = screen[1]
-      self.spacer_1.height = height - 70
         
       container = document.getElementById('appGoesHere')
       logo = document.createElement('img')
@@ -89,12 +87,9 @@ class Map2_0(Map2_0Template):
 
       if width <= 998:
         self.mobile = True
-        mobile_menu = document.getElementById('mobile-menu')
-        mobile_menu.style.display = 'flex'
-        anvil.js.call('add_event_to_mobile_menu')
       else:
         self.mobile = False
-        self.mobile_hide.visible = False
+        self.mobile_btn_grid.visible = False
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'
@@ -144,188 +139,193 @@ class Map2_0(Map2_0Template):
       self.mapbox.on("load", self.loadHash)
 
   def loadHash(self, event):
-    hash = get_url_hash()
-    if not len(hash) == 0:
-      data = anvil.server.call('get_map_settings', hash['name'])
-      for component in self.style_grid.get_components():
-        if component.text == data['map_style']:
-          component.selected = True
-          break
-      component.raise_event('change')
-      time.sleep(.5)
-      self.marker.setLngLat([data['marker_lng'], data['marker_lat']])
-      self.mapbox.flyTo({"center": [data['marker_lng'], data['marker_lat']], "zoom": data['zoom']})
-      self.time_dropdown.selected_value = data['distance_time']
-      self.profile_dropdown.selected_value = data['distance_movement']
-      self.profile_dropdown.raise_event('change')
-      self.checkbox_poi_x_hfcig.checked = data['iso_layer']
-      self.pdb_data_al.checked = data['assisted_living']
-      self.pdb_data_cb.checked = data['nursing_homes']
-      if data['assisted_living']:
-        self.pdb_data_al.raise_event('change')
-      if data['nursing_homes']:
-        self.pdb_data_cb.raise_event('change')
-      healthcare_components = self.poi_categories_healthcare_container.get_components()
-      if data['poi_healthcare'][0] == '1':
-        healthcare_components[0].checked = True
-        healthcare_components[0].raise_event('change')
-      else:
-        for index, state in enumerate(data['poi_healthcare']):
-          if index > 0 and state == '1':
-            healthcare_components[index].checked = True
-            healthcare_components[index].raise_event('change')
-      miscelaneous_components = self.misc_container.get_components()
-      if data['poi_misc'][0] == '1':
-        miscelaneous_components[0].checked = True
-        miscelaneous_components[0].raise_event('change')
-      else:
-        for index, state in enumerate(data['poi_misc']):
-          if index > 0 and state == '1':
-            miscelaneous_components[index].checked = True
-            miscelaneous_components[index].raise_event('change')
-      opnv_components = self.opnv_container.get_components()
-      if data['poi_opnv'][0] == '1':
-        opnv_components[0].checked = True
-        opnv_components[0].raise_event('change')
-      else:
-        for index, state in enumerate(data['poi_opnv']):
-          if index > 0 and state == '1':
-            opnv_components[index].checked = True
-            opnv_components[index].raise_event('change')
-      for component in self.layer_categories.get_components():
-        if component.text == data['overlay']:
-          component.checked = True
-          component.raise_event('change')
-      self.hide_ms_marker.checked = data['study_pin']
-      if data['study_pin']:
-        self.hide_ms_marker.raise_event('change')
-      if not len(data['cluster']) == 0:
-        self.create_cluster_marker(data['cluster'])
+    with anvil.server.no_loading_indicator:
+      hash = get_url_hash()
+      if not len(hash) == 0:
+        data = anvil.server.call('get_map_settings', hash['name'])
+        for component in self.style_grid.get_components():
+          if component.text == data['map_style']:
+            component.selected = True
+            break
+        component.raise_event('change')
+        time.sleep(.5)
+        self.marker.setLngLat([data['marker_lng'], data['marker_lat']])
+        self.mapbox.flyTo({"center": [data['marker_lng'], data['marker_lat']], "zoom": data['zoom']})
+        self.time_dropdown.selected_value = data['distance_time']
+        self.profile_dropdown.selected_value = data['distance_movement']
+        self.profile_dropdown.raise_event('change')
+        self.checkbox_poi_x_hfcig.checked = data['iso_layer']
+        self.pdb_data_al.checked = data['assisted_living']
+        self.pdb_data_cb.checked = data['nursing_homes']
+        if data['assisted_living']:
+          self.pdb_data_al.raise_event('change')
+        if data['nursing_homes']:
+          self.pdb_data_cb.raise_event('change')
+        healthcare_components = self.poi_categories_healthcare_container.get_components()
+        if data['poi_healthcare'][0] == '1':
+          healthcare_components[0].checked = True
+          healthcare_components[0].raise_event('change')
+        else:
+          for index, state in enumerate(data['poi_healthcare']):
+            if index > 0 and state == '1':
+              healthcare_components[index].checked = True
+              healthcare_components[index].raise_event('change')
+        miscelaneous_components = self.misc_container.get_components()
+        if data['poi_misc'][0] == '1':
+          miscelaneous_components[0].checked = True
+          miscelaneous_components[0].raise_event('change')
+        else:
+          for index, state in enumerate(data['poi_misc']):
+            if index > 0 and state == '1':
+              miscelaneous_components[index].checked = True
+              miscelaneous_components[index].raise_event('change')
+        opnv_components = self.opnv_container.get_components()
+        if data['poi_opnv'][0] == '1':
+          opnv_components[0].checked = True
+          opnv_components[0].raise_event('change')
+        else:
+          for index, state in enumerate(data['poi_opnv']):
+            if index > 0 and state == '1':
+              opnv_components[index].checked = True
+              opnv_components[index].raise_event('change')
+        for component in self.layer_categories.get_components():
+          if component.text == data['overlay']:
+            component.checked = True
+            component.raise_event('change')
+        self.hide_ms_marker.checked = data['study_pin']
+        if data['study_pin']:
+          self.hide_ms_marker.raise_event('change')
+        if not len(data['cluster']) == 0:
+          self.create_cluster_marker(data['cluster'])
             
 
   def check_box_marker_icons_change(self, **event_args):
-    # Show or Hide Marker-Icon-Types
-    Functions.show_hide_marker(self, event_args['sender'].checked, event_args['sender'].text)
+    with anvil.server.no_loading_indicator:
+      # Show or Hide Marker-Icon-Types
+      Functions.show_hide_marker(self, event_args['sender'].checked, event_args['sender'].text)
 
   def button_marker_icons_change(self, **event_args):
-    # Show or Hide all Marker Icons
-
-    if event_args['sender'] == self.hide_marker_cluster:
-      all_marker = self.icon_grid.get_components()
-    else:
-      all_marker = self.invest_grid.get_components()
-    
-    if event_args['sender'].text == "Show":
-      marker_state = True
-      event_args['sender'].text = "Hide"
-    elif dict(event_args)['sender'].text == "Hide":
-      marker_state = False
-      event_args['sender'].text = "Show"
+    with anvil.server.no_loading_indicator:
+      # Show or Hide all Marker Icons
+  
+      if event_args['sender'] == self.hide_marker_cluster:
+        all_marker = self.icon_grid.get_components()
+      else:
+        all_marker = self.invest_grid.get_components()
       
-    for marker in all_marker:
-      if not type(marker) is Label:
-        Functions.show_hide_marker(self, marker_state, marker.text)
-        marker.checked = marker_state
+      if event_args['sender'].text == "Show":
+        marker_state = True
+        event_args['sender'].text = "Hide"
+      elif dict(event_args)['sender'].text == "Hide":
+        marker_state = False
+        event_args['sender'].text = "Show"
+        
+      for marker in all_marker:
+        if not type(marker) is Label:
+          Functions.show_hide_marker(self, marker_state, marker.text)
+          marker.checked = marker_state
    
   
   def check_box_overlays_change(self, **event_args):
-    #Change Overlays based on checked Checkbox
-    
-    layer_name = dict(event_args)['sender'].text.replace(" ", "_").lower()
-    outline_name = "outline_" + layer_name
-    visibility = self.mapbox.getLayoutProperty(layer_name, "visibility")
-    inactive_layers = []
-    inactive_checkboxes = []
-    
-    all_layers = [
-      {
-        'name': "federal_states",
-        'checkbox': self.check_box_fs
-      }, 
-      {
-        'name': "administrative_districts",
-        'checkbox': self.check_box_ad
-      }, 
-      {
-        'name': "counties",
-        'checkbox': self.check_box_c
-      }, 
-      {
-        'name': "municipalities",
-        'checkbox': self.check_box_m
-      }, 
-      {
-        'name': "districts",
-        'checkbox': self.check_box_d
-      }, 
-      {
-        'name': "netherlands",
-        'checkbox': self.check_box_nl
-      }
-    ]
-    
-    if visibility == "none":
-      new_visibility = "visible"
-    else:
-      new_visibility = "none"
-    
-    for layer in all_layers:
-      if not layer['name'] == layer_name:
-        inactive_layers.append([layer['name'], "outline_" + layer['name']])
-        inactive_checkboxes.append(layer['checkbox'])
-    
-    Functions.change_active_Layer(self, [layer_name, outline_name], inactive_layers, new_visibility, inactive_checkboxes)
+    with anvil.server.no_loading_indicator:
+      #Change Overlays based on checked Checkbox
+      
+      layer_name = dict(event_args)['sender'].text.replace(" ", "_").lower()
+      outline_name = "outline_" + layer_name
+      visibility = self.mapbox.getLayoutProperty(layer_name, "visibility")
+      inactive_layers = []
+      inactive_checkboxes = []
+      
+      all_layers = [
+        {
+          'name': "federal_states",
+          'checkbox': self.check_box_fs
+        }, 
+        {
+          'name': "administrative_districts",
+          'checkbox': self.check_box_ad
+        }, 
+        {
+          'name': "counties",
+          'checkbox': self.check_box_c
+        }, 
+        {
+          'name': "municipalities",
+          'checkbox': self.check_box_m
+        }, 
+        {
+          'name': "districts",
+          'checkbox': self.check_box_d
+        }, 
+        {
+          'name': "netherlands",
+          'checkbox': self.check_box_nl
+        }
+      ]
+      
+      if visibility == "none":
+        new_visibility = "visible"
+      else:
+        new_visibility = "none"
+      
+      for layer in all_layers:
+        if not layer['name'] == layer_name:
+          inactive_layers.append([layer['name'], "outline_" + layer['name']])
+          inactive_checkboxes.append(layer['checkbox'])
+      
+      Functions.change_active_Layer(self, [layer_name, outline_name], inactive_layers, new_visibility, inactive_checkboxes)
 
 
   def check_box_poi_change(self, **event_args):
-    # Check or uncheck various Check Boxes for different POI Categories
-    if dict(event_args)['sender'].text == "Veterinary":
-      Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
-    elif dict(event_args)['sender'].text == "Social Facility":
-      Variables.last_bbox_soc = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, "social_facility", Variables.icon_social)   
-    elif dict(event_args)['sender'].text == "Pharmacy":
-      Variables.last_bbox_pha = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
-    elif dict(event_args)['sender'].text == "Hospital":
-      Variables.last_bbox_hos = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
-    elif dict(event_args)['sender'].text == "Clinic":
-      Variables.last_bbox_cli = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
-    elif dict(event_args)['sender'].text == "Dentist":
-      Variables.last_bbox_den = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
-    elif dict(event_args)['sender'].text == "Doctor":
-      Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)      
-    elif dict(event_args)['sender'].text == "Nursing School":
-      Variables.last_bbox_nsc = self.create_icons(self.check_box_nsc.checked, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools) 
-    elif dict(event_args)['sender'].text == "Supermarket":
-      Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
-    elif dict(event_args)['sender'].text == "Restaurant":
-      Variables.last_bbox_res = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant)  
-    elif dict(event_args)['sender'].text == "Cafe":
-      Variables.last_bbox_caf = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
-    elif dict(event_args)['sender'].text == "University":
-      Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, "university", Variables.icon_university)  
-    elif dict(event_args)['sender'].text == "Bus Stop":
-      Variables.last_bbox_bus = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)  
-    elif dict(event_args)['sender'].text == "Tram Stop":
-      Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
-    elif dict(event_args)['sender'].text == "Nursing Home":
-      Variables.last_bbox_nh = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
-    elif dict(event_args)['sender'].text == "Assisted Living":
-      Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
-    elif dict(event_args)['sender'].text == "Podiatrist":
-      Variables.last_bbox_pdt = self.create_icons(self.check_box_pdt.checked, Variables.last_bbox_pdt, "podiatrist", Variables.icon_podiatrist)
-    elif dict(event_args)['sender'].text == "Hairdresser":
-      Variables.last_bbox_hd = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
+    with anvil.server.no_loading_indicator:
+      # Check or uncheck various Check Boxes for different POI Categories
+      if dict(event_args)['sender'].text == "Veterinary":
+        Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
+      elif dict(event_args)['sender'].text == "Social Facility":
+        Variables.last_bbox_soc = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, "social_facility", Variables.icon_social)   
+      elif dict(event_args)['sender'].text == "Pharmacy":
+        Variables.last_bbox_pha = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
+      elif dict(event_args)['sender'].text == "Hospital":
+        Variables.last_bbox_hos = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
+      elif dict(event_args)['sender'].text == "Clinic":
+        Variables.last_bbox_cli = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
+      elif dict(event_args)['sender'].text == "Dentist":
+        Variables.last_bbox_den = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
+      elif dict(event_args)['sender'].text == "Doctor":
+        Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)      
+      elif dict(event_args)['sender'].text == "Nursing School":
+        Variables.last_bbox_nsc = self.create_icons(self.check_box_nsc.checked, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools) 
+      elif dict(event_args)['sender'].text == "Supermarket":
+        Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
+      elif dict(event_args)['sender'].text == "Restaurant":
+        Variables.last_bbox_res = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant)  
+      elif dict(event_args)['sender'].text == "Cafe":
+        Variables.last_bbox_caf = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
+      elif dict(event_args)['sender'].text == "University":
+        Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, "university", Variables.icon_university)  
+      elif dict(event_args)['sender'].text == "Bus Stop":
+        Variables.last_bbox_bus = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)  
+      elif dict(event_args)['sender'].text == "Tram Stop":
+        Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
+      elif dict(event_args)['sender'].text == "Nursing Home":
+        Variables.last_bbox_nh = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
+      elif dict(event_args)['sender'].text == "Assisted Living":
+        Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+      elif dict(event_args)['sender'].text == "Podiatrist":
+        Variables.last_bbox_pdt = self.create_icons(self.check_box_pdt.checked, Variables.last_bbox_pdt, "podiatrist", Variables.icon_podiatrist)
+      elif dict(event_args)['sender'].text == "Hairdresser":
+        Variables.last_bbox_hd = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
 
 
-  #This method is called when the Check Box for POI based on HFCIG is checked or unchecked
   def checkbox_poi_x_hfcig_change(self, **event_args):
+    #This method is called when the Check Box for POI based on HFCIG is checked or unchecked
+    with anvil.server.no_loading_indicator:
+      if self.checkbox_poi_x_hfcig.checked == True:
+        bbox = Functions.create_bounding_box(self)
+      else:  
+        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
       
-    if self.checkbox_poi_x_hfcig.checked == True:
-      bbox = Functions.create_bounding_box(self)
-    else:  
-      bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
-    
-    Functions.refresh_icons(self)
+      Functions.refresh_icons(self)
         
 ##### Check-Box Functions #####
 ###############################
@@ -333,392 +333,395 @@ class Map2_0(Map2_0Template):
 
   #This method is called when the Button for toggling the Marker-Popups got clicked    
   def button_infos_click(self, **event_args):
-    anvil.js.call('hide_show_Popup')   
+    with anvil.server.no_loading_indicator:
+      anvil.js.call('hide_show_Popup')   
 
     
-  #This method is called when one of the Buttons for changing the Map-Style got clicked    
   def map_style_change(self, **event_args):
-    if dict(event_args)['sender'].text == "Satellite Map":
-      self.check_street.checked = False
-      self.check_soft.checked = False
-      self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
-    elif dict(event_args)['sender'].text == "Street Map":
-      self.check_satellite.checked = False
-      self.check_soft.checked = False
-      self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
-    elif dict(event_args)['sender'].text == "Soft Map":
-      self.check_street.checked = False
-      self.check_satellite.checked = False
-      self.mapbox.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
-    self.mapbox.on('load', self.place_layer)
+    with anvil.server.no_loading_indicator:
+      #This method is called when one of the Buttons for changing the Map-Style got clicked
+      if dict(event_args)['sender'].text == "Satellite Map":
+        self.check_street.checked = False
+        self.check_soft.checked = False
+        self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
+      elif dict(event_args)['sender'].text == "Street Map":
+        self.check_satellite.checked = False
+        self.check_soft.checked = False
+        self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
+      elif dict(event_args)['sender'].text == "Soft Map":
+        self.check_street.checked = False
+        self.check_satellite.checked = False
+        self.mapbox.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
+      self.mapbox.on('load', self.place_layer)
     
-  
-  #This method is called when one of the Submenus should be opened or closed
+
   def button_toggle_menu_parts(self, **event_args):
-
-    toggler = {
-      'Distance Layer': {
-        'container': self.dist_container,
-        'icon_container': self.dist_layer
-      },
-      'Import & Cluster': {
-        'container': self.icon_categories_all,
-        'icon_container': self.button_icons
-      },
-      'Cluster & Investment': {
-        'container': self.icon_categories_all,
-        'icon_container': self.button_icons
-      },
-      'Overlays': {
-        'container': self.layer_categories_card,
-        'icon_container': self.button_overlay
-      },
-      'Map Styles': {
-        'container': self.checkbox_map_style,
-        'icon_container': self.map_styles
-      },
-      'Point of Interests': {
-        'container': self.poi_category,
-        'icon_container': self.poi_categories
-      },
-      'Healthcare': {
-        'container': self.poi_categories_healthcare_container,
-        'icon_container': self.button_healthcare
-      },
-      'Miscelaneous': {
-        'container': self.misc_container,
-        'icon_container': self.misc_button
-      },
-      'Public Transport': {
-        'container': self.opnv_container,
-        'icon_container': self.opnv_button
-      },
-      'Cluster': {
-        'container': self.cluster_panel,
-        'icon_container': self.cluster_btn
-      },
-      'Investment Class': {
-        'container': self.invest_panel,
-        'icon_container': self.invest_class_btn
+    with anvil.server.no_loading_indicator:
+      #This method is called when one of the Submenus should be opened or closed
+      toggler = {
+        'Distance Layer': {
+          'container': self.dist_container,
+          'icon_container': self.dist_layer
+        },
+        'Import & Cluster': {
+          'container': self.icon_categories_all,
+          'icon_container': self.button_icons
+        },
+        'Cluster & Investment': {
+          'container': self.icon_categories_all,
+          'icon_container': self.button_icons
+        },
+        'Overlays': {
+          'container': self.layer_categories_card,
+          'icon_container': self.button_overlay
+        },
+        'Map Styles': {
+          'container': self.checkbox_map_style,
+          'icon_container': self.map_styles
+        },
+        'Point of Interests': {
+          'container': self.poi_category,
+          'icon_container': self.poi_categories
+        },
+        'Healthcare': {
+          'container': self.poi_categories_healthcare_container,
+          'icon_container': self.button_healthcare
+        },
+        'Miscelaneous': {
+          'container': self.misc_container,
+          'icon_container': self.misc_button
+        },
+        'Public Transport': {
+          'container': self.opnv_container,
+          'icon_container': self.opnv_button
+        },
+        'Cluster': {
+          'container': self.cluster_panel,
+          'icon_container': self.cluster_btn
+        },
+        'Investment Class': {
+          'container': self.invest_panel,
+          'icon_container': self.invest_class_btn
+        }
       }
-    }
-    
-    sender = dict(event_args)['sender'].text
-    container = toggler[sender]['container']
-    container.visible = not container.visible
-    icon_container = toggler[sender]['icon_container']
-    
-    if container.visible:
-      icon_container.icon = "fa:angle-down"
-    else:
-      icon_container.icon = "fa:angle-right"
+      
+      sender = dict(event_args)['sender'].text
+      container = toggler[sender]['container']
+      container.visible = not container.visible
+      icon_container = toggler[sender]['icon_container']
+      
+      if container.visible:
+        icon_container.icon = "fa:angle-down"
+      else:
+        icon_container.icon = "fa:angle-right"
    
-  #######Noch bearbeiten#######
-  #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
+#######Noch bearbeiten#######
   def admin_button_click(self, **event_args): 
-
-    date = datetime.datetime.now()
-    # anvil.server.call('test_i_love_pdf')
-    # anvil.server.call('micmaccircle')
-    # anvil.server.call('read_regularien')
-    # anvil.server.call('get_db_stations')
-
-    url = anvil.server.call('get_app_url') + f'#?name=Test'
-    poi_healthcare = ""
-    poi_miscelaneous = ""
-    poi_opnv = ""
-    overlay = ""
-    for category in self.poi_categories_healthcare_container.get_components():
-      if category.checked:
-        poi_healthcare += '1'
-      else:
-        poi_healthcare += '0'
-    for category in self.misc_container.get_components():
-      if category.checked:
-        poi_miscelaneous += '1'
-      else:
-        poi_miscelaneous += '0'
-    for category in self.opnv_container.get_components():
-      if category.checked:
-        poi_opnv += '1'
-      else:
-        poi_opnv += '0'
-    for component in self.layer_categories.get_components():
-      if component.checked:
-        overlay = component.text
-        break
-    for component in self.style_grid.get_components():
-      if component.checked:
-        map_style = component.text
-        break
-    study_pin = self.hide_ms_marker.checked
-
-    deleted_marker = {}
-    for setting in Variables.marker:
-      popped = Variables.marker[setting].pop('marker')
-      deleted_marker[setting] = popped
-    cluster = {
-      'data': self.cluster_data,
-      'settings': Variables.marker
-    }
-    
-    dataset = {
-      'marker_lng': self.marker['_lngLat']['lng'],
-      'marker_lat': self.marker['_lngLat']['lat'],
-      'cluster': cluster,
-      'distance_movement': self.profile_dropdown.selected_value,
-      'distance_time': self.time_dropdown.selected_value,
-      'overlay': overlay,
-      'map_style': map_style,
-      'poi_healthcare': poi_healthcare,
-      'poi_misc': poi_miscelaneous,
-      'poi_opnv': poi_opnv,
-      'nursing_homes': self.pdb_data_cb.checked,
-      'assisted_living': self.pdb_data_al.checked,
-      'iso_layer': self.checkbox_poi_x_hfcig.checked,
-      'name': 'Test', #Need to be added
-      'url': url,
-      'study_pin': study_pin,
-      'zoom': self.mapbox.getZoom()
-    }
-
-    anvil.server.call('save_map_settings', dataset)
-
-    for setting in deleted_marker:
-      Variables.marker[setting]['marker'] = deleted_marker[setting]
-    
-    alert(url)
-    
-#     #Call a Server Function
-#     anvil.server.call('manipulate')
-
-#     sendData = anvil.server.call('separate_iso', Variables.activeIso)
-    
-#     lk_Array = []
-#     value_Array = []
-    
-#     for key in sendData['data']:
-      
-#       lk_Array.append(key)
-      
-#     counter = 2
-    
-#     while not counter == len(sendData['data'][key][1]):
-      
-#       value = 0
-      
-#       for lk in lk_Array:
-        
-#         value += sendData['data'][lk][1][counter]
-        
-#       value = (round(value / 2 * 100) / 100)
-      
-#       value_Array.append(value)
-      
-#       counter += 1
+    with anvil.server.no_loading_indicator:
+      #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
+      date = datetime.datetime.now()
+      # anvil.server.call('test_i_love_pdf')
+      # anvil.server.call('micmaccircle')
+      # anvil.server.call('read_regularien')
+      # anvil.server.call('get_db_stations')
   
-#     keyArray = ['Municipality']
-#     areaArray = ['Area']
-#     popArray = ['Population']
-#     km2Array = ['Population per km2']
+      url = anvil.server.call('get_app_url') + f'#?name=Test'
+      poi_healthcare = ""
+      poi_miscelaneous = ""
+      poi_opnv = ""
+      overlay = ""
+      for category in self.poi_categories_healthcare_container.get_components():
+        if category.checked:
+          poi_healthcare += '1'
+        else:
+          poi_healthcare += '0'
+      for category in self.misc_container.get_components():
+        if category.checked:
+          poi_miscelaneous += '1'
+        else:
+          poi_miscelaneous += '0'
+      for category in self.opnv_container.get_components():
+        if category.checked:
+          poi_opnv += '1'
+        else:
+          poi_opnv += '0'
+      for component in self.layer_categories.get_components():
+        if component.checked:
+          overlay = component.text
+          break
+      for component in self.style_grid.get_components():
+        if component.checked:
+          map_style = component.text
+          break
+      study_pin = self.hide_ms_marker.checked
   
-#     tableContentMun: str = f"""
-#         <tr>
-#           <th class='dataCell'>Municipality</th>
-#       """
+      deleted_marker = {}
+      for setting in Variables.marker:
+        popped = Variables.marker[setting].pop('marker')
+        deleted_marker[setting] = popped
+      cluster = {
+        'data': self.cluster_data,
+        'settings': Variables.marker
+      }
+      
+      dataset = {
+        'marker_lng': self.marker['_lngLat']['lng'],
+        'marker_lat': self.marker['_lngLat']['lat'],
+        'cluster': cluster,
+        'distance_movement': self.profile_dropdown.selected_value,
+        'distance_time': self.time_dropdown.selected_value,
+        'overlay': overlay,
+        'map_style': map_style,
+        'poi_healthcare': poi_healthcare,
+        'poi_misc': poi_miscelaneous,
+        'poi_opnv': poi_opnv,
+        'nursing_homes': self.pdb_data_cb.checked,
+        'assisted_living': self.pdb_data_al.checked,
+        'iso_layer': self.checkbox_poi_x_hfcig.checked,
+        'name': 'Test', #Need to be added
+        'url': url,
+        'study_pin': study_pin,
+        'zoom': self.mapbox.getZoom()
+      }
   
-#     for key in sendData['areas']:
-      
-#       if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
-      
-#         tableContentMun += f"""<th class='dataCell width450'>{key}</th>"""
-    
-#     tableContentMun += """<th></th><th></th><th></th><th class='dataCell'>Iso-Layer</th>"""
-    
-#     for key in sendData['areas']:
-      
-#       if 'Iso' in key:
-        
-#         tableContentMun += f"""<th class='dataCell'>{key}</th>"""
-    
-#     tableContentMun += """</tr><tr><td class='dataCell'>Area</td>"""
-    
-#     for key in sendData['areas']:
-      
-#       if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
-        
-#         tableContentMun += f"""<td class='dataCell'>{round(sendData['data'][key][0][9], 2)} km2</td>"""
-    
-#     tableContentMun += """<td></td><td></td><td></td><td class='dataCell'>Area</td>"""
-    
-#     for key in sendData['areas']:
-      
-#       if 'Iso' in key:
-        
-#         tableContentMun += f"""<td class='dataCell'>{round(sendData['areas'][key]['area_complete'], 2)} km2</td>"""
-    
-#     tableContentMun += """</tr><tr><td class='dataCell'>Population</td>"""
-    
-#     for key in sendData['areas']:
-      
-#       if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
-        
-#         tableContentMun += f"""<td class='dataCell'>{sendData['data'][key][0][10]}</td>"""
-    
-#     tableContentMun += """<td></td><td></td><td></td><td class='dataCell'>Population</td>"""
-    
-#     for key in sendData['areas']:
-      
-#       if 'Iso' in key:
-        
-#         tableContentMun += f"""<td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'])}</td>"""
-       
-#     tableContentMun += """</tr><tr><td class='dataCell'>Population per km2</td>"""
-    
-#     for key in sendData['areas']:
-      
-#       if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
-        
-#         tableContentMun += f"""<td class='dataCell'>{sendData['data'][key][0][13]}</td>"""
+      anvil.server.call('save_map_settings', dataset)
   
-#     tableContentMun += """<td></td><td></td><td></td><td class='dataCell'>Population per km2</td>""" 
+      for setting in deleted_marker:
+        Variables.marker[setting]['marker'] = deleted_marker[setting]
+      
+      alert(url)
+      
+  #     #Call a Server Function
+  #     anvil.server.call('manipulate')
   
-#     for key in sendData['areas']:
+  #     sendData = anvil.server.call('separate_iso', Variables.activeIso)
+      
+  #     lk_Array = []
+  #     value_Array = []
+      
+  #     for key in sendData['data']:
         
-#       if 'Iso' in key:
+  #       lk_Array.append(key)
+        
+  #     counter = 2
+      
+  #     while not counter == len(sendData['data'][key][1]):
+        
+  #       value = 0
+        
+  #       for lk in lk_Array:
           
-#         tableContentMun += f"""<td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] / sendData['areas'][key]['area_complete'])}</td>"""
-      
-#     tableContentMun += """</tr><tr class='emptyRow'></tr>"""
+  #         value += sendData['data'][lk][1][counter]
+          
+  #       value = (round(value / 2 * 100) / 100)
+        
+  #       value_Array.append(value)
+        
+  #       counter += 1
     
-#     for key in sendData['areas']:
-      
-#       if 'Iso' in key:
+  #     keyArray = ['Municipality']
+  #     areaArray = ['Area']
+  #     popArray = ['Population']
+  #     km2Array = ['Population per km2']
     
-#         tableContentMun += f"""<tr>
-#                                 <th class='dataCell'>{key}</th>
-#                               </tr>
-#                               <tr>
-#                                 <th class='dataCell'>Gender</th>
-#                                 <th class='dataCell'>Overall</th>
-#                                 <th class='dataCell'>Under 3</th>
-#                                 <th class='dataCell'>3 to Under 6</th>
-#                                 <th class='dataCell'>6 to Under 10</th>
-#                                 <th class='dataCell'>10 to Under 15</th>
-#                                 <th class='dataCell'>15 to Under 18</th>
-#                                 <th class='dataCell'>18 to Under 20</th>
-#                                 <th class='dataCell'>20 to Under 25</th>
-#                                 <th class='dataCell'>25 to Under 30</th>
-#                                 <th class='dataCell'>30 to Under 35</th>
-#                                 <th class='dataCell'>35 to Under 40</th>
-#                                 <th class='dataCell'>40 to Under 45</th>
-#                                 <th class='dataCell'>45 to Under 50</th>
-#                                 <th class='dataCell'>50 to Under 55</th>
-#                                 <th class='dataCell'>55 to Under 60</th>
-#                                 <th class='dataCell'>60 to Under 65</th>
-#                                 <th class='dataCell'>65 to Under 75</th>
-#                                 <th class='dataCell'>75 and Older</th>
-#                               </tr>
-#                               <tr>
-#                                 <td class='dataCell'>Overall</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[35] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[53] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[18] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[36] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[19] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[37] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[20] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[38] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[21] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[39] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[22] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[40] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[23] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[41] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[24] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[42] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[25] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[43] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[26] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[44] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[27] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[45] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[28] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[46] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[29] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[47] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[30] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[48] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[31] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[49] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[32] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[50] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[33] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[51] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[34] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[52] / 100))}</td>
-#                               </tr>
-#                               <tr>
-#                                 <td class='dataCell'>Male</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[35] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[18] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[19] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[20] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[21] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[22] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[23] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[24] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[25] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[26] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[27] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[28] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[29] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[30] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[31] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[32] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[33] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[34] / 100))}</td>
-#                               </tr>
-#                               <tr>
-#                                 <td class='dataCell'>Female</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[53] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[36] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[37] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[38] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[39] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[40] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[41] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[42] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[43] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[44] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[45] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[46] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[47] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[48] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[49] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[50] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[51] / 100))}</td>
-#                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[52] / 100))}</td>
-#                               </tr>
-#                               <tr class='emptyRow'></tr>
-#                             """
-#     html: str = f"""
-#       <html>
-#         <head>
-#           <title>Iso-Layer People Data</title>
-#           <style>
-#             table {{border-collapse: collapse; text-align: center; width: 99vw}}
-#             .dataCell {{border: 1px solid black}}
-#             .emptyRow {{height: 2vh}}
-#           </style>
-#           <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-#         </head>
-#         <body>
-#           <table>
-#             {tableContentMun}
-#           </table>
-#         </body>
-#       </html>
-#     """
+  #     tableContentMun: str = f"""
+  #         <tr>
+  #           <th class='dataCell'>Municipality</th>
+  #       """
+    
+  #     for key in sendData['areas']:
+        
+  #       if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
+        
+  #         tableContentMun += f"""<th class='dataCell width450'>{key}</th>"""
+      
+  #     tableContentMun += """<th></th><th></th><th></th><th class='dataCell'>Iso-Layer</th>"""
+      
+  #     for key in sendData['areas']:
+        
+  #       if 'Iso' in key:
+          
+  #         tableContentMun += f"""<th class='dataCell'>{key}</th>"""
+      
+  #     tableContentMun += """</tr><tr><td class='dataCell'>Area</td>"""
+      
+  #     for key in sendData['areas']:
+        
+  #       if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
+          
+  #         tableContentMun += f"""<td class='dataCell'>{round(sendData['data'][key][0][9], 2)} km2</td>"""
+      
+  #     tableContentMun += """<td></td><td></td><td></td><td class='dataCell'>Area</td>"""
+      
+  #     for key in sendData['areas']:
+        
+  #       if 'Iso' in key:
+          
+  #         tableContentMun += f"""<td class='dataCell'>{round(sendData['areas'][key]['area_complete'], 2)} km2</td>"""
+      
+  #     tableContentMun += """</tr><tr><td class='dataCell'>Population</td>"""
+      
+  #     for key in sendData['areas']:
+        
+  #       if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
+          
+  #         tableContentMun += f"""<td class='dataCell'>{sendData['data'][key][0][10]}</td>"""
+      
+  #     tableContentMun += """<td></td><td></td><td></td><td class='dataCell'>Population</td>"""
+      
+  #     for key in sendData['areas']:
+        
+  #       if 'Iso' in key:
+          
+  #         tableContentMun += f"""<td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'])}</td>"""
+        
+  #     tableContentMun += """</tr><tr><td class='dataCell'>Population per km2</td>"""
+      
+  #     for key in sendData['areas']:
+        
+  #       if not key == 'Iso60' and not key == 'Iso30' and not key == 'Iso20' and not key == 'Iso15' and not key == 'Iso10' and not key == 'Iso5':
+          
+  #         tableContentMun += f"""<td class='dataCell'>{sendData['data'][key][0][13]}</td>"""
+    
+  #     tableContentMun += """<td></td><td></td><td></td><td class='dataCell'>Population per km2</td>""" 
+    
+  #     for key in sendData['areas']:
+          
+  #       if 'Iso' in key:
+            
+  #         tableContentMun += f"""<td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] / sendData['areas'][key]['area_complete'])}</td>"""
+        
+  #     tableContentMun += """</tr><tr class='emptyRow'></tr>"""
+      
+  #     for key in sendData['areas']:
+        
+  #       if 'Iso' in key:
+      
+  #         tableContentMun += f"""<tr>
+  #                                 <th class='dataCell'>{key}</th>
+  #                               </tr>
+  #                               <tr>
+  #                                 <th class='dataCell'>Gender</th>
+  #                                 <th class='dataCell'>Overall</th>
+  #                                 <th class='dataCell'>Under 3</th>
+  #                                 <th class='dataCell'>3 to Under 6</th>
+  #                                 <th class='dataCell'>6 to Under 10</th>
+  #                                 <th class='dataCell'>10 to Under 15</th>
+  #                                 <th class='dataCell'>15 to Under 18</th>
+  #                                 <th class='dataCell'>18 to Under 20</th>
+  #                                 <th class='dataCell'>20 to Under 25</th>
+  #                                 <th class='dataCell'>25 to Under 30</th>
+  #                                 <th class='dataCell'>30 to Under 35</th>
+  #                                 <th class='dataCell'>35 to Under 40</th>
+  #                                 <th class='dataCell'>40 to Under 45</th>
+  #                                 <th class='dataCell'>45 to Under 50</th>
+  #                                 <th class='dataCell'>50 to Under 55</th>
+  #                                 <th class='dataCell'>55 to Under 60</th>
+  #                                 <th class='dataCell'>60 to Under 65</th>
+  #                                 <th class='dataCell'>65 to Under 75</th>
+  #                                 <th class='dataCell'>75 and Older</th>
+  #                               </tr>
+  #                               <tr>
+  #                                 <td class='dataCell'>Overall</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[35] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[53] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[18] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[36] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[19] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[37] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[20] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[38] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[21] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[39] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[22] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[40] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[23] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[41] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[24] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[42] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[25] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[43] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[26] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[44] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[27] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[45] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[28] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[46] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[29] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[47] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[30] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[48] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[31] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[49] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[32] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[50] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[33] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[51] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[34] / 100)) + round(sendData['areas'][key]['pop_for_area'] * (value_Array[52] / 100))}</td>
+  #                               </tr>
+  #                               <tr>
+  #                                 <td class='dataCell'>Male</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[35] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[18] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[19] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[20] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[21] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[22] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[23] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[24] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[25] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[26] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[27] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[28] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[29] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[30] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[31] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[32] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[33] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[34] / 100))}</td>
+  #                               </tr>
+  #                               <tr>
+  #                                 <td class='dataCell'>Female</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[53] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[36] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[37] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[38] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[39] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[40] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[41] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[42] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[43] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[44] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[45] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[46] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[47] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[48] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[49] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[50] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[51] / 100))}</td>
+  #                                 <td class='dataCell'>{round(sendData['areas'][key]['pop_for_area'] * (value_Array[52] / 100))}</td>
+  #                               </tr>
+  #                               <tr class='emptyRow'></tr>
+  #                             """
+  #     html: str = f"""
+  #       <html>
+  #         <head>
+  #           <title>Iso-Layer People Data</title>
+  #           <style>
+  #             table {{border-collapse: collapse; text-align: center; width: 99vw}}
+  #             .dataCell {{border: 1px solid black}}
+  #             .emptyRow {{height: 2vh}}
+  #           </style>
+  #           <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+  #         </head>
+  #         <body>
+  #           <table>
+  #             {tableContentMun}
+  #           </table>
+  #         </body>
+  #       </html>
+  #     """
+    
+  #     anvil.js.call('open_tab', html)
   
-#     anvil.js.call('open_tab', html)
-
-    print('Done')
+      print('Done')
 
   #######Noch bearbeiten#######
   def tm_mode_change(self, **event_args):
-    if event_args['sender'].checked:
-      t = TextBox(placeholder="Password")
-      alert(content=t, title="Pleaser enter an Password")
-      if t.text == Variables.tm_password:
-        Variables.tm_mode = True
+    with anvil.server.no_loading_indicator:
+      if event_args['sender'].checked:
+        t = TextBox(placeholder="Password")
+        alert(content=t, title="Pleaser enter an Password")
+        if t.text == Variables.tm_password:
+          Variables.tm_mode = True
+        else:
+          alert("Password was incorrect ! Please try again")
+          event_args['sender'].checked = False
       else:
-        alert("Password was incorrect ! Please try again")
-        event_args['sender'].checked = False
-    else:
-      Variables.tm_mode = False
+        Variables.tm_mode = False
     
   #This methos is called when the User want's to generate a Market Summary
   def Summary_click(self, **event_args):
@@ -2269,20 +2272,22 @@ class Map2_0(Map2_0Template):
 
   
   def upload_mspdf_change(self, file, **event_args):
-    #This method is called when the Dropdown-Menu has changed
-    folder = app_files.market_studies
-    file = folder.create_file(f"market_study_{Variables.unique_code}", file)
-    anvil.js.call('show_mun_info', f'<h1>Google Drive Share Link for Market Study PDF</h1><br><br><p id="toCopyText">{file._obj["alternateLink"]}</p><br><button type="button" onClick="copy_to_clipboard()">Copy Link</button><br><br><button type="button" onClick="hide_mun_info()">&#10006;</button>')
-    self.upload_mspdf.clear()
+    with anvil.server.no_loading_indicator:
+      #This method is called when the Dropdown-Menu has changed
+      folder = app_files.market_studies
+      file = folder.create_file(f"market_study_{Variables.unique_code}", file)
+      anvil.js.call('show_mun_info', f'<h1>Google Drive Share Link for Market Study PDF</h1><br><br><p id="toCopyText">{file._obj["alternateLink"]}</p><br><button type="button" onClick="copy_to_clipboard()">Copy Link</button><br><br><button type="button" onClick="hide_mun_info()">&#10006;</button>')
+      self.upload_mspdf.clear()
     
 #####  Button Functions   #####
 ###############################
 #####  Dropdown Functions #####
 
   def distance_dropdown_change(self, **event_args):
-    self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-    
-    Functions.refresh_icons(self)
+    with anvil.server.no_loading_indicator:
+      self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
+      
+      Functions.refresh_icons(self)
   
   #####  Dropdown Functions #####
   ###############################
@@ -2290,45 +2295,1353 @@ class Map2_0(Map2_0Template):
 
   #This method is called when a new file is loaded into the FileLoader
   def file_loader_upload_change(self, file, **event_args):  
-    #Call Server-Function to safe the File  
-    self.cluster_data = anvil.server.call('save_local_excel_file', file)
+    with anvil.server.no_loading_indicator:
+      self.mobile_hide_click()
+      
+      #Call Server-Function to safe the File  
+      self.cluster_data = anvil.server.call('save_local_excel_file', file)
+      
+      if self.cluster_data == None:
+        alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
+      else:
+        #Initialise Variables
+        excel_markers = {}
+        added_clusters = []
+        added_invest_classes = []
+        invest_components = {}
+        cluster_components = {}
+        colors = [
+          ['white', '#ffffff', '/_/theme/Pins/CB_MapPin_white.png'],
+          ['blue', '#234ce2', '/_/theme/Pins/CB_MapPin_blue.png'],
+          ['green', '#438e39', '/_/theme/Pins/CB_MapPin_green.png'],
+          ['grey', '#b3b3b3', '/_/theme/Pins/CB_MapPin_grey.png'],
+          ['lightblue', '#2fb2e0', '/_/theme/Pins/CB_MapPin_lightblue.png'],
+          ['orange', '#fc9500', '/_/theme/Pins/CB_MapPin_orange.png'],
+          ['pink', '#e254b7', '/_/theme/Pins/CB_MapPin_pink.png'],
+          ['red', '#d32f2f', '/_/theme/Pins/CB_MapPin_red.png'],
+          ['yellow', '#f4de42', '/_/theme/Pins/CB_MapPin_yellow.png'],
+          ['gold', '#ccb666', '/_/theme/Pins/CB_MapPin_gold.png']
+        ]
+  
+        invests = {
+          'Super Core': '/_/theme/Pins/CB_MapPin_Sc.png',
+          'Core/ Core+': '/_/theme/Pins/CB_MapPin_CC.png',
+          'Value Add': '/_/theme/Pins/CB_MapPin_VA.png',
+          'Opportunistic': '/_/theme/Pins/CB_MapPin_Opp.png',
+          'Development': '/_/theme/Pins/CB_MapPin_Dev.png',
+          'Workout': '/_/theme/Pins/CB_MapPin_Wo.png'
+        }
     
-    if self.cluster_data == None:
-      alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
-    else:
+        #Create Settings
+        self.icon_grid.row_spacing = 0
+        counter = 0
+        
+        for asset in self.cluster_data:
+    
+          # Create HTML Element for Icon
+          el = document.createElement('div')
+          el.className = f'{asset["address"]}'
+          el.style.width = '40px'
+          el.style.height = '40px'
+          el.style.backgroundSize = '100%'
+          el.style.backgroundrepeat = 'no-repeat'
+          el.style.zIndex = '250'
+  
+          # Create HTML Element for Invest Class Icon
+          inv_el = document.createElement('div')
+          inv_el.className = f'{asset["address"]}_investment'
+          inv_el.style.width = '40px'
+          inv_el.style.height = '40px'
+          inv_el.style.backgroundSize = '100%'
+          inv_el.style.backgroundrepeat = 'no-repeat'
+          inv_el.style.zIndex = '251'
+    
+          cluster_name = asset['cluster']
+    
+          if cluster_name not in added_clusters:
+            color = colors[counter]
+            checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
+            checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+            icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none')
+            cluster_components[cluster_name] = [checkbox, icon]
+            added_clusters.append(cluster_name)
+  
+          if asset['invest_class'] not in added_invest_classes:
+            checkbox = CheckBox(checked=True, text=asset['invest_class'], spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
+            checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+            invest_components[asset['invest_class']] = checkbox
+            added_invest_classes.append(asset['invest_class'])
+    
+          # #Get Coordinates of provided Adress for Marker
+          req_str = self.build_request_string(asset)
+          req_str += f'.json?access_token={self.token}'
+          coords = anvil.http.request(req_str,json=True)
+          coordinates = coords['features'][0]['geometry']['coordinates']
+    
+          if not cluster_name in excel_markers.keys():
+            excel_markers[cluster_name] = {'color': color, 'static': 'none', 'marker': []}
+          el.style.backgroundImage = f'url({self.app_url}{excel_markers[cluster_name]["color"][2]})'
+          new_list = self.set_excel_markers(excel_markers[cluster_name]['static'], coordinates, excel_markers[cluster_name]['marker'], el)
+          excel_markers[cluster_name]['marker'] = new_list
+          if not asset['invest_class'] in excel_markers.keys():
+            excel_markers[asset['invest_class']] = {'pin': invests[asset['invest_class']], 'static': 'none', 'marker': []}
+          inv_el.style.backgroundImage = f"url({self.app_url}{invests[asset['invest_class']]})"
+          new_list = self.set_excel_markers(excel_markers[asset['invest_class']]['static'], coordinates, excel_markers[asset['invest_class']]['marker'], inv_el)
+          excel_markers[asset['invest_class']]['marker'] = new_list
+          
+          # Create Popup for Marker and add it to the Map
+          # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
+          # popup.setHTML(data[0][markercount]['Informationen'])
+          # popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[0][markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
+          # popup_static.addTo(self.mapbox)
+          
+          #Increase Markercount
+          # markercount += 1
+  
+          counter += 1
+  
+        for key in sorted(cluster_components):
+          self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=1, width_xs=8)
+          self.icon_grid.add_component(cluster_components[key][1], row=key, col_xs=9, width_xs=1)
+          
+          sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout']    
+        for key in sorted(invest_components.keys(), key=lambda x: sorted_keys.index(x)):
+          self.invest_grid.add_component(invest_components[key], row=key, col_xs=1, width_xs=8)
+          
+        # Add Marker-Arrays to global Variable Marker
+        Variables.marker.update(excel_markers)
+  
+        self.change_cluster_color_click()
+        anvil.js.call('remove_span')
+  
+        for checkbox in self.invest_grid.get_components():
+          checkbox.raise_event('change')
+  
+        for checkbox in self.invest_grid.get_components():
+          checkbox.raise_event('change')
+  
+        self.cluster_btn.visible = True
+        self.invest_class_btn.visible = True
+        self.invest_class_btn.raise_event('click')
+        self.cluster_btn.raise_event('click')
+    
+  #####  Upload Functions   #####
+  ###############################
+  #####   Extra Functions   #####
+  
+  #This method is called when the Geocoder was used 
+  def move_marker(self, result):
+    with anvil.server.no_loading_indicator:
+      #Set iso-Layer for new coordinates
+      lnglat = result['result']['geometry']['coordinates']
+      self.marker.setLngLat(lnglat)
+      self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
+      
+      Functions.refresh_icons(self)
+  
+  #This method is called when the draggable Marker was moved
+  def marker_dragged(self, drag):
+    with anvil.server.no_loading_indicator:
+      #Set iso-Layer for new Markerposition
+      self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
+      
+      Functions.refresh_icons(self)
+    
+  #This method is called when the draggable Marker was moved or when the Geocoder was used
+  def get_iso(self, profile, contours_minutes):
+    with anvil.server.no_loading_indicator:
+      #Check if isoLayer is already constructed
+      if not self.mapbox.getSource('iso'):
+        
+        #Construct Mapsource for isoLayer
+        self.mapbox.addSource('iso', {'type': 'geojson',
+                                      'data': {'type': 'FeatureCollection',
+                                              'features': []}
+                                    })
+        
+        #Construct and add isoLayer
+        self.mapbox.addLayer({'id': 'isoLayer',
+                              'type': 'fill',
+                              'source': 'iso',
+                              'layout': {'visibility': 'visible'},
+                              'paint': {
+                              'fill-color': '#A6A18A',
+                              'fill-opacity': 0.3,
+                              'fill-outline-color': '#4D4A3F'
+                              },
+                            })
+      
+      #Get iso-coordinates based of the marker-coordinates
+      lnglat = self.marker.getLngLat()
+      request_string = f"https://api.mapbox.com/isochrone/v1/mapbox/{profile}/{lnglat.lng},{lnglat.lat}?"
+      
+      #Check which iso-mode is currently active
+      if contours_minutes == "-1":
+        
+        #Build request_string
+        request_string = request_string + f"contours_minutes=5,10,15,20"
+        
+      else:
+        
+        #Build request_string
+        request_string = request_string + f"contours_minutes={contours_minutes}"
+      
+      #Build request_string
+      request_string += f"&polygons=true&access_token={self.token}"
+      
+      #Get Data from request
+      Variables.activeIso = anvil.http.request(request_string,json=True)
+      
+      #Attach Data to iso-source
+      self.mapbox.getSource('iso').setData(Variables.activeIso)
+      
+  #This method is called when the User clicked a Part of a Map-Layer
+  def popup(self, click):
+    with anvil.server.no_loading_indicator:
+      #Check which Layer is active
+      if click.features[0].layer.source == 'federal_states':
+        
+        #Create Popup and add it to the Map
+        bl_name = click.features[0].properties.name
+        bl_id = click.features[0].id
+        clicked_lngLat = dict(click.lngLat)
+        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}').addTo(self.mapbox)
+      
+      #Check which Layer is active
+      elif click.features[0].layer.source == 'administrative_districts':
+        
+        #Create Popup and add it to the Map
+        bl_name = click.features[0].properties.NAME_1
+        rb_name = click.features[0].properties.NAME_2
+        clicked_lngLat = dict(click.lngLat)
+        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Regierungsbezirk:</b> {rb_name}').addTo(self.mapbox)
+      
+      #Check which Layer is active
+      elif click.features[0].layer.source == 'counties':
+        
+        #Create Popup and add it to the Map
+        bl_name = click.features[0].properties.lan_name
+        lk_name = click.features[0].properties.krs_name
+        clicked_lngLat = dict(click.lngLat)
+        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Landkreis:</b> {lk_name}').addTo(self.mapbox)
+    
+      elif click.features[0].layer.source == 'municipalities':
+        
+        if hasattr(click.features[0].properties, 'GEN'):
+          
+          gm_name = click.features[0].properties.GEN
+          
+        else:
+          
+          gm_name = click.features[0].properties.name
+        
+        key = click.features[0].properties.AGS
+        demographic, exact_demographic = anvil.server.call('get_data_from_database', key)
+      
+        popup_text = f'<button type="button" onClick="hide_mun_info()">&#10006;</button><br><br><h3>Municipality: {gm_name}</h3><b>ID:</b> {key}<br><b>Area:</b> {"{:.2f}".format(float(demographic["flaeche"]))}km&sup2;<br><br><b>Population:</b> {demographic["bevoelkerung_ges"]}<br><b>per km&sup2:</b> {demographic["bevoelkerung_jekm2"]}<br><br><table><tr><th class="firstCol">Gender</th><th>Overall</th><th>Under 3</th><th>3 to <br>Under 6</th><th>6 to <br>Under 10</th><th>10 to Under 15</th><th>15 to Under 18</th><th>18 to Under 20</th><th>20 to Under 25</th><th>25 to Under 30</th><th>30 to Under 35</th><th>35 to Under 40</th><th>40 to Under 45</th><th>45 to Under 50</th><th>50 to Under 55</th><th>55 to Under 60</th><th>60 to Under 65</th><th>65 to Under 75</th><th>75 and older</th></tr><tr><th class="firstCol">Overall</th><td>100%</td><td>{"{:.1f}".format(float(exact_demographic["all_u3"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_3tou6"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_6tou10"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_10tou15"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_15tou18"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_18tou20"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_20tou25"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_25tou30"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_30tou35"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_35tou40"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_40tou45"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_45tou50"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_50tou55"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_55tou60"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_60tou65"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_65tou75"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_75"]))}%</td></tr><tr><th class="firstCol">Male</th><td>{"{:.1f}".format(float(exact_demographic["man_compl"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_u3"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_3tou6"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_6tou10"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_10tou15"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_15tou18"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_18tou20"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_20tou25"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_25tou30"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_30tou35"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_35tou40"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_40tou45"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_45tou50"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_50tou55"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_55tou60"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_60tou65"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_65tou75"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_75"]))}%</td></tr><tr><th class="firstCol">Female</th><td>{"{:.1f}".format(float(exact_demographic["woman_compl"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_u3"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_3tou6"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_6tou10"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_10tou15"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_15tou18"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_18tou20"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_20tou25"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_25tou30"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_30tou35"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_35tou40"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_40tou45"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_45tou50"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_50tou55"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_55tou60"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_60tou65"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_65tou75"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_75"]))}%</td></tr></table><br><br><br><b>Grad der Verstädterung:</b> {demographic["verstaedterung_bez"]}'
+        
+        anvil.js.call('show_mun_info', popup_text)
+        
+      #Check which Layer is active
+      elif click.features[0].layer.source == 'bezirke':
+        
+        #Create Popup and add it to the Map
+        dt_name = click.features[0].properties.name
+        dt_id = click.features[0].id
+        clicked_lngLat = dict(click.lngLat)
+        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bezirk:</b> {dt_name}').addTo(self.mapbox)
+
+  #This method is called when the User clicked on a Point of Interest on the Map   #Eventuell nicht mehr benötigt
+  def poi(self, click):
+    with anvil.server.no_loading_indicator:
+      #Get and Set Variables
+      info = dict(self.mapbox.style)
+      
+      #Check current Map-Style
+      if (info['stylesheet']['metadata']['mapbox:origin'] == 'outdoors-v11'):
+      
+        #Get all Layers on the Map
+        layers = self.mapbox.getStyle().layers
+    
+        #Get all Features (Point of Interest) of selected Layers on clicked Point
+        features = self.mapbox.queryRenderedFeatures(click.point, {'layers': ['poi-label', 'transit-label', 'landuse', 'national-park']})
+        
+        #Check if no POI was clicked and no Layer is active
+        if not features == [] and Variables.activeLayer == None and hasattr(features[0].properties, 'name') == True:
+        
+          #Create Popup on clicked Point with Information about the Point of Interest
+          popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('Name: ' + features[0].properties.name).addTo(self.mapbox)
+      
+      #Check current Map-Style
+      elif Variables.activeLayer == None:
+        
+        #Send Notification to User
+        Notification('Point of Interests are only available on the Outdoor-Map !', style='info').show()
+  
+  #This method is called when the Map is loading or changing his Style
+  def place_layer(self, event):
+    with anvil.server.no_loading_indicator:
+      #Add 3D-Layer to the Map
+      self.mapbox.addLayer({
+        'id': 'add-3d-buildings',
+        'source': 'composite',
+        'source-layer': 'building',
+        'filter': ['==', 'extrude', 'true'],
+        'type': 'fill-extrusion',
+        'minzoom': 15,
+        'paint': {
+          'fill-extrusion-color': '#aaa',
+          'fill-extrusion-height': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            15,
+            0,
+            15.05,
+            ['get', 'height']
+          ],
+          'fill-extrusion-base': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            15,
+            0,
+            15.05,
+            ['get', 'min_height']
+          ],
+          'fill-extrusion-opacity': 0.6
+        }
+      })
+      
+      layers = [{'id_fill': 'federal_states',
+                'id_outline': 'outline_federal_states', 
+                'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json',
+                'line_width': .25}, 
+                {'id_fill': 'administrative_districts',
+                'id_outline': 'outline_administrative_districts', 
+                'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json',
+                'line_width': .25},
+              {'id_fill': 'counties',
+                'id_outline': 'outline_counties', 
+                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/landkreise.geojson',
+                'line_width': .25},
+              {'id_fill': 'municipalities',
+                'id_outline': 'outline_municipalities', 
+                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson',
+                'line_width': .25},
+              {'id_fill': 'districts',
+                'id_outline': 'outline_districts', 
+                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson',
+                'line_width': .25},
+              {'id_fill': 'netherlands',
+                'id_outline': 'outline_netherlands', 
+                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson',
+                'line_width': .25}]
+      
+      for entry in layers:
+        
+        #Add filled Layer for Federal states
+        self.mapbox.addLayer({
+          'id': entry['id_fill'],
+          'type': 'fill',
+          'source': {
+            'type': 'geojson',
+            'data': entry['data']
+          },
+          'layout': {
+            'visibility': 'none'
+          },
+          'paint': {
+            'fill-color': '#3f6085',
+            'fill-opacity': [
+              'case',
+              ['boolean', ['feature-state', 'hover'], False],
+              0.3,
+              0
+            ]
+          }
+        }) 
+        
+        #Add outlined Layer for Federal states
+        self.mapbox.addLayer({
+            'id': entry['id_outline'],
+            'type': 'line',
+            'source': {
+              'type': 'geojson',
+              'data': entry['data']
+            },
+            'layout': {
+              'visibility': 'none'
+            },
+            'paint': {
+              'line-color': '#1b2939',
+              'line-width': entry['line_width']
+            }
+        })
+    
+      self.mapbox.setLayoutProperty(Variables.activeLayer, 'visibility', 'visible')
+      self.mapbox.setLayoutProperty(f'outline_{Variables.activeLayer}', 'visibility', 'visible')
+  
+  #This method is called from the check_box_change-Functions to place Icons on Map  
+  def create_icons(self, check_box, last_bbox, category, picture):
+    with anvil.server.no_loading_indicator:
+      # Check if Checkbox is checked
+      if check_box == True:
+  
+        # Check if Checkbox for Iso-Layer' is checked
+        if self.checkbox_poi_x_hfcig.checked == True:
+    
+          # Get Data of Iso-Layer
+          iso = dict(self.mapbox.getSource('iso'))
+    
+          # Create empty Bounding Box
+          bbox = [0, 0, 0, 0]
+    
+          # Check every element in Iso-Data
+          for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+    
+            # Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+            if el[0] < bbox[1] or bbox[1] == 0:
+      
+              # Set BBox-Coordinate to new Element-Coordinate
+              bbox[1] = el[0]
+    
+            # Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
+            if el[0] > bbox[3] or bbox[3] == 0:
+      
+              # Set BBox-Coordinate to new Element-Coordinate
+              bbox[3] = el[0]
+    
+            # Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+            if el[1] < bbox[0] or bbox[0] == 0:
+      
+              # Set BBox-Coordinate to new Element-Coordinate
+              bbox[0] = el[1]
+    
+            # Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
+            if el[1] > bbox[2] or bbox[2] == 0:
+      
+              # Set BBox-Coordinate to new Element-Coordinate
+              bbox[2] = el[1]
+    
+        # Do if Checkbox for Iso-Layer' is unchecked
+        else:
+    
+          # Get visible Bounding Box of Map
+          bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'],
+                  (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+    
+        # Check if Bounding Box is not the same as least Request
+        if not bbox == last_bbox:
+    
+          # Check if new Bounding Box is overlapping old Bounding Box
+          if bbox[0] < last_bbox[0] or bbox[1] < last_bbox[1] or bbox[2] > last_bbox[2] or bbox[3] > last_bbox[3]:
+      
+            # Check if Category is PflegeDB
+            if category == 'nursing_homes':
+              geojson = anvil.server.call('get_care_db_data', bbox, 'Pflegeheime')
+              Variables.nursing_homes_entries = geojson
+          
+            elif category == 'assisted_living':
+      
+              geojson = anvil.server.call('get_care_db_data', bbox, 'BetreutesWohnen')
+              Variables.assisted_living_entries = geojson
+  
+            elif category == 'nursing-schools':
+  
+              geojson = anvil.server.call('get_einrichtungen', bbox)
+      
+            else:
+      
+              # Get geojson of POIs inside Bounding Box
+              geojson = anvil.server.call('poi_data', category, bbox)
+      
+            # Check if Elements are over 3000 for performance Reasons
+            if len(geojson) > 3000:
+      
+              # Tell the User about to many Elements
+              alert('Zu große Ergebnismenge ! Näher ranzoomen !')
+      
+            # Do if Elements are under 3000
+            else:
+      
+              #Create empty Icons Array to save Elements
+              icons = []
+      
+              # Loop through every Element in geojson
+              for ele in geojson:
+      
+                # Create HTML Element for Icon
+                el = document.createElement('div')
+                el.className = 'marker'
+                el.style.width = '40px'
+                el.style.height = '40px'
+                el.style.backgroundSize = '100%'
+                el.style.backgroundrepeat = 'no-repeat'
+                el.style.zIndex = '220'
+      
+                # Create Icon
+                el.style.backgroundImage = f'url({picture})'
+      
+                # Check if Category is not PflegeDB
+                if not category == 'nursing_homes':
+            
+                  if not category == 'assisted_living':
+  
+                    if not category == 'nursing-schools':
+                    
+                      # Get coordinates of current Icon
+                      el_coords = ele['geometry']['coordinates']
+          
+                      # Get different Informations from geojson
+                      city = ele['properties']['city']
+                      suburb = ele['properties']['suburb']
+                      street = ele['properties']['street']
+                      housenumber = ele['properties']['housenumber']
+                      postcode = ele['properties']['postcode']
+                      phone = ele['properties']['phone']
+                      website = ele['properties']['website']
+                      healthcare = ele['properties']['healthcare']
+                      name = ele['properties']['name']
+                      opening_hours = ele['properties']['opening_hours']
+                      wheelchair = ele['properties']['wheelchair']
+                      o_id = ele['properties']['id']
+                      fax = ele['properties']['fax']
+                      email = ele['properties']['email']
+                      speciality = ele['properties']['healthcare:speciality']
+                      operator = ele['properties']['operator']
+  
+                    else:
+  
+                      name = ele['name']
+                      street = ele['street']
+                      postcode = ele['postcode']
+                      city = ele['city']
+                      telefon = ele['telefon']
+                      email = ele['email']
+                      web = ele['web']
+                      degree = ele['degree']
+                      parttime_education = ele['parttime-education']
+                      certificate = ele['certificate']
+                      district_code = ele['district-code']
+                      inserted = ele['inserted']
+                      updated = ele['updated']
+                      el_coords = [ ele['longitude'], ele['lattitude'] ]
+      
+                # Check if Category is Bus or Tram
+                if category == 'bus_stop' or category == 'tram_stop':
+      
+                  # Create Popup for Element
+                  popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                    f'<b>Name:</b>'
+                    f'<br>'
+                    f'&nbsp;&nbsp;{name}'
+                  )
+                  
+                # Check if Category is PflegeDB
+                elif category == 'nursing_homes':
+      
+                  el_coords = [ele['coord_lon'], ele['coord_lat']]
+      
+                  # Create Popup for Element
+                  popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+                    f"<p class='popup_name'><b>{ele['name']}</b></p>"
+                    f"<p class='popup_type'>{ele['sektor']}</p>"
+                    "<p class='popup_betreiber_label'><b>Betreiber:</b></p>"
+                    f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
+                    f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
+                    # f"<b>PM ID: </b> {ele['pm_id']}"
+                    # "<br>"
+                    # f"<b>Träger ID: </b> {ele['traeger_id']}"
+                    # "<br>"
+                    # f"<b>IK_Nummer: </b> {ele['ik_nummer']}"
+                    # "<br>"
+                    # "<br>"
+                    # f"<b>Sektor: </b> {ele['sektor']}"
+                    # "<br>"
+                    # f"<b>Art: </b> {ele['art']}"
+                    # "<br>"
+                    # f"<b>Spezialisierung: </b> {ele['spezialisierung']}"
+                    # "<br>"
+                    # f"<b>Status: </b> {ele['status']}"
+                    # "<br>"
+                    # f"<b>Baujahr: </b> {ele['baujahr']}"
+                    # "<br>"
+                    # f"<b>Modernisierungsjahr: </b> {ele['modernisierung']}"
+                    # "<br>"
+                    # "<br>"
+                    # f"<b>Name: </b> {ele['name']}"
+                    # "<br>"
+                    # "<br>"
+                    # f"<b>Betreiber: </b> {ele['betreiber']}"
+                    # "<br>"
+                    # f"<b>Tochterfirma 1: </b> {ele['tochterfirma1']}"
+                    # "<br>"
+                    # f"<b>Tochterfirma 2: </b> {ele['tochterfirma2']}"
+                    # "<br>"
+                    # "<br>"
+                    # f"<b>Straße: </b> {ele['strasse']}"
+                    # "<br>"
+                    # f"<b>Postleitzahl: </b> {ele['plz']}"
+                    # "<br>"
+                    # f"<b>Ort: </b> {ele['ort']}"
+                    # "<br>"
+                    # f"<b>Bundesland: </b> {ele['bundesland']}"
+                    # "<br>"
+                    # f"<b>Gemeindeschlüssel: </b> {ele['gemeindeschluessel']}"
+                    # "<br>"
+                    # "<br>"
+                    # f"<b>Telefon: </b> {ele['telefon']}"
+                    # "<br>"
+                    # f"<b>Fax: </b> {ele['fax']}"
+                    # "<br>"
+                    # f"<b>E-Mail: </b> {ele['email']}"
+                    # "<br>"
+                    # f"<b>Webseite: </b> {ele['webseite']}"
+                    # "<br>"
+                    # f"<b>Domain: </b> {ele['domain']}"
+                    # "<br>"
+                    # "<br>"
+                    # f"<b>MDK Datum: </b> {ele['mdk_datum']}"
+                    # "<br>"
+                    # f"<b>Pflege und medizinische Versorgung: </b> {ele['pfl_u_med_vers']}"
+                    # "<br>"
+                    # f"<b>Umgang mit demenzkranken Bewohnern: </b> {ele['umg_mit_dem_bew']}"
+                    # "<br>"
+                    # f"<b>Soziale Betreuung und Alltagsgestaltung: </b> {ele['soz_betrualltag']}"
+                    # "<br>"
+                    # f"<b>Wohnen, Verpflegung, Hauswirtschaft und Hygiene: </b> {ele['wohn_verpfl_hausw_hyg']}"
+                    # "<br>"
+                    # f"<b>Befragung der Bewohner: </b> {ele['befr_bew']}"
+                    # "<br>"
+                    # f"<b>MDK Note: </b> {ele['mdk_note']}"
+                    # "<br>"
+                    # "<br>"
+                    # f"<b>Anzahl versorgte Patienten: </b> {ele['anz_vers_pat']}"
+                    # "<br>"
+                    # f"<b>Platzzahl vollständige Pflege: </b> {ele['platz_voll_pfl']}"
+                    # "<br>"
+                    # f"<b>Platzzahl Kurzzeitpflege: </b> {ele['platz_kurzpfl']}"
+                    # "<br>"
+                    # f"<b>Platzzahl Nachtpflege: </b> {ele['platz_nachtpfl']}"
+                    # "<br>"
+                    # f"<b>Einzelzimmer: </b> {ele['ez']}"
+                    # "<br>"
+                    # f"<b>Doppelzimmer: </b> {ele['dz']}"
+                    # "<br>"
+                    # "<br>"
+                    # f"<b>Ausbildungsumlage: </b> {ele['ausbildungsumlage']}"
+                    # "<br>"
+                    # f"<b>EEE: </b> {ele['eee']}"
+                    # "<br>"
+                    # f"<b>UuV: </b> {ele['uuv']}"
+                    # "<br>"
+                    # f"<b>Invest: </b> {ele['invest']}"
+                    # "<br>"
+                    # f"<b>PG 1: </b> {ele['pg_1']}"
+                    # "<br>"
+                    # f"<b>PG 2: </b> {ele['pg_2']}"
+                    # "<br>"
+                    # f"<b>PG 3: </b> {ele['pg_3']}"
+                    # "<br>"
+                    # f"<b>PG 4: </b> {ele['pg_4']}"
+                    # "<br>"
+                    # f"<b>PG 5: </b> {ele['pg_5']}"
+                  )
+      
+                elif category == 'assisted_living':
+  
+                  el_coords = [ele['coord_lon'], ele['coord_lat']]
+                  wohnungen = "N.A." if ele['anz_wohnungen'] == "-" else ele['anz_wohnungen']
+                  ez = "N.A." if ele['ez'] == "-" else ele['ez']
+                  dz = "N.A." if ele['dz'] == "-" else ele['dz']
+                  miete_ab = "N.A." if ele['miete_ab'] == "-" else f"{ele['miete_ab']} €"
+                  miete_bis = "N.A." if ele['miete_bis'] == "-" else f"{ele['miete_bis']} €"
+      
+                  # Create Popup for Element
+                  popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                    f"<b>PM ID: </b> {ele['pm_id']}"
+                    "<br>"
+                    f"<b>Träger ID: </b> {ele['traeger_id']}"
+                    "<br>"
+                    "<br>"
+                    f"<b>Sektor: </b> {ele['sektor']}"
+                    "<br>"
+                    f"<b>Art: </b> {ele['art']}"
+                    "<br>"
+                    f"<b>Spezialisierung: </b> {ele['spezialisierung']}"
+                    "<br>"
+                    f"<b>Status: </b> {ele['status']}"
+                    "<br>"
+                    f"<b>Baujahr: </b> {ele['baujahr']}"
+                    "<br>"
+                    "<br>"
+                    f"<b>Name: </b> {ele['name']}"
+                    "<br>"
+                    "<br>"
+                    f"<b>Betreiber: </b> {ele['betreiber']}"
+                    "<br>"
+                    f"<b>Tochterfirma 1: </b> {ele['tochterfirma1']}"
+                    "<br>"
+                    f"<b>Tochterfirma 2: </b> {ele['tochterfirma2']}"
+                    "<br>"
+                    "<br>"
+                    f"<b>Straße: </b> {ele['strasse']}"
+                    "<br>"
+                    f"<b>Postleitzahl: </b> {ele['plz']}"
+                    "<br>"
+                    f"<b>Ort: </b> {ele['ort']}"
+                    "<br>"
+                    f"<b>Bundesland: </b> {ele['bundesland']}"
+                    "<br>"
+                    f"<b>Gemeindeschlüssel: </b> {ele['gemeindeschluessel']}"
+                    "<br>"
+                    "<br>"
+                    f"<b>Telefon: </b> {ele['telefon']}"
+                    "<br>"
+                    f"<b>Fax: </b> {ele['fax']}"
+                    "<br>"
+                    f"<b>E-Mail: </b> {ele['email']}"
+                    "<br>"
+                    f"<b>Webseite: </b> {ele['webseite']}"
+                    "<br>"
+                    f"<b>Domain: </b> {ele['domain']}"
+                    "<br>"
+                    "<br>"
+                    f"<b>Anzahl Wohnungen: </b> {wohnungen}"
+                    "<br>"
+                    f"<b>Einzelzimmer: </b> {ez}"
+                    "<br>"
+                    f"<b>Doppelzimmer: </b> {dz}"
+                    "<br>"
+                    f"<b>Miete ab: </b> {miete_ab}"
+                    "<br>"
+                    f"<b>Miete bis: </b> {miete_bis}"
+                  )
+  
+                elif category == 'nursing-schools':
+  
+                  popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                    f'<b>Name:</b>'
+                    f'<br>'
+                    f'&nbsp;&nbsp;{name}'
+                    f'<b>Adresse:</b>'
+                    f'<br>'
+                    f'&nbsp;&nbsp;{street}'
+                    f'<br>'
+                    f'&nbsp;&nbsp;{postcode}, {city}'
+                    f'<br>'
+                    f'&nbsp;&nbsp;district code: {district_code}'
+                    f'<br>'
+                    f'<b>Kontakt</b>'
+                    f'<br>'
+                    f'&nbsp;&nbsp;Telefon: {telefon}'
+                    f'<br>'
+                    f'&nbsp;&nbsp;Email: {email}'
+                    f'<br>'
+                    f'&nbsp;&nbsp;Webseite:'
+                    f'<br>'
+                    f'&nbsp;&nbsp;&nbsp;&nbsp;{web}'
+                    f'<br>'
+                    f'<b>Infos</b>'
+                    f'<br>'
+                    f'&nbsp;&nbsp;Degree: {degree}'
+                    f'<br>'
+                    f'&nbsp;&nbsp;parttime education: {parttime_education}'
+                    f'br'
+                    f'&nbsp;&nbsp;certificate: {certificate}'
+                    f'<br>'
+                    f'&nbsp;&nbsp;inserted: {inserted}'
+                    f'<br>'
+                    f'&nbsp;&nbsp;updated: {updated}'
+                  )
+                  
+                # Check if Category is not Bus or Tram or PflegeDB
+                else:
+                  
+                  # Create Popup for Element
+                  popup = mapboxgl.Popup({'offset': 25}).setHTML(
+                    f'{name}'
+                    '<br>'
+                    f'{el_coords[0]}, {el_coords[1]}'
+                    # f'<b>ID:</b> {o_id}'
+                    # f'<br>'
+                    # f'<b>Name:</b>'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;{name}'
+                    # f'<br>'
+                    # f'<b>Operator:</b>'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;{operator}'
+                    # f'<br>'
+                    # f'<b>Adresse:</b>'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;{street} {housenumber}'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;{postcode}, {city} {suburb}'
+                    # f'<br>'
+                    # f'<b>Kontakt</b>'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;Telefon: {phone}'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;Fax: {fax}'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;Email: {email}'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;Webseite:'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;&nbsp;&nbsp;{website}'
+                    # f'<br>'
+                    # f'<b>Infos</b>'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;Kategorie: {healthcare}'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;Speciality: {speciality}'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;Öffnungszeiten:'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}'
+                    # f'<br>'
+                    # f'&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}'
+                  )
+      
+                # Add Icon to the Map
+                newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+                newiconElement = newicon.getElement()
+  
+                context = mapboxgl.Popup({'anchor': 'top', 'offset': 10, 'className': 'markerPopup'}).setHTML(
+                  '<button id="details">More Details</button>'
+                  '<button id="remove">Remove Marker</button>'
+                )
+  
+                newicon.setPopup(context)
+                
+                anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, context, newicon, ele, category)
+      
+                # Add current Element-Icon to Icon-Array
+                icons.append(newicon)
+      
+              # Refresh global Variables
+              Variables.activeIcons.pop(f'{category}', None)
+              Variables.icons.update({f'{category}': icons})
+              Variables.activeIcons.update({f'{category}': icons})
+              last_bbox = bbox
+              Variables.last_cat = f'{category}'
+      
+          # Do if new Bounding Box is smaller or same than old Bounding Box
+          else:
+            
+            #Create empty Icons Array to save Elements
+            icons = []
+      
+            # Loop through every Element in global Icon-Elements
+            for el in Variables.icons[f'{category}']:
+    
+              # Get coordinates of current Icon
+              el_coords = dict(el['_lngLat'])
+    
+              # Check if Icon is inside visible Bounding Box
+              if bbox[0] < el_coords['lat'] < bbox[2] and bbox[1] < el_coords['lng'] < bbox[3]:
+          
+                # Add Element to Map and add to Icon-Array
+                el.addTo(self.mapbox)
+                icons.append(el)
+    
+            # Change last Category and add Icons to active Icon-Array
+            Variables.activeIcons.pop(f'{category}', None)
+            Variables.last_cat = f'{category}'
+            Variables.activeIcons.update({f'{category}': icons})
+    
+        # Do if Bounding Box is the same as last Request
+        else:
+    
+          # Loop through every Element in global Icon-Elements
+          for el in Variables.icons[f'{category}']:
+          
+            # Add Element to Map
+            el.addTo(self.mapbox)
+    
+          # Change last Category
+          Variables.last_cat = f'{category}'
+      
+      # Do if Checkbox is unchecked
+      else:
+      
+        # Loop through every Element in global Icon-Elements
+        for el in Variables.icons[f'{category}']:
+          
+          # Remove Element from Map
+          el.remove()
+      
+      # Send Value back to origin Function
+      return (last_bbox)
+
+      
+  #This method is called from the file uploader to set Markers based on Excel-Data
+  def set_excel_markers(self, marker_cat, coords, marker_list, el):
+    with anvil.server.no_loading_indicator:
+      marker_cat = mapboxgl.Marker({'draggable': False, 'element': el, 'anchor': 'bottom'})
+      
+      # Add Marker to the Map
+      newmarker = marker_cat.setLngLat(coords).addTo(self.mapbox)
+  
+      # Add Marker Marker-Array
+      marker_list.append(newmarker)
+      return(marker_list)
+    
+  #This method is called when the Mouse is moved inside or out of an active Layer
+  def change_hover_state(self, mouse):
+    with anvil.server.no_loading_indicator:
+      # Check if Layer is already hovered
+      if Variables.hoveredStateId != None:
+    
+        # Change hover-State to False and set global-variable 'hoveredStateId' to None
+        self.mapbox.setFeatureState({'source': Variables.activeLayer, 'id': Variables.hoveredStateId}, {'hover': False})
+        
+        Variables.hoveredStateId = None
+      
+      #Check if Mouse is moved inside Layer or out of Layer
+      if hasattr(mouse, 'features'):
+        
+        # Check if Mouse was moved inside active Map-Layer
+        if len(mouse.features) > 0:
+        
+          # Change global hoveredStateID to new active Layer-id
+          Variables.hoveredStateId = mouse.features[0].id
+      
+          # Change hover-State to True
+          self.mapbox.setFeatureState({'source': Variables.activeLayer, 'id': Variables.hoveredStateId}, {'hover': True})
+  
+  #Builds request-String for geocoder
+  def build_request_string(self, asset):
+    with anvil.server.no_loading_indicator:
+      #Create basic request String
+      request_string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/"
+  
+      split_address = asset['map_address'].split(' ')
+      street = split_address[0]
+      housenumber = split_address[1]
+      
+      #Create and Send Request String based on given Marker
+      request_string += str(street).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+      request_string += str(housenumber).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+      request_string += str(asset['city']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
+      request_string += str(asset['zip'])
+      
+      return (request_string)
+  
+  #Organize Data for Compettior Analysis
+  def organize_ca_data(self, entries, topic, marker_coords):
+    with anvil.server.no_loading_indicator:
+      # Create Variables
+      counter = 0
+      data_comp_analysis = []
+      coords = []
+  
+      if topic == 'nursing_homes':
+        Variables.home_address_nh = []
+      else:
+        Variables.home_address_al = []
+      
+      for entry in entries:
+        if topic == "nursing_homes":
+          lat_entry = "%.6f" % float(entry['coord_lat'])
+          lng_entry = "%.6f" % float(entry['coord_lon'])
+        else:
+          lat_entry = "%.6f" % float(entry['coord_lat'])
+          lng_entry = "%.6f" % float(entry['coord_lon'])
+        for icon in Variables.activeIcons[topic]:
+            lng_icon = "%.6f" % icon['_lngLat']['lng']
+            lat_icon = "%.6f" % icon['_lngLat']['lat']
+            if lng_entry == lng_icon and lat_entry == lat_icon:
+              coords.append([lng_icon, lat_icon])
+              counter += 1
+              if topic == "nursing_homes":
+                if entry['anz_vers_pat'] == "-":
+                  anz_vers_pat = "N/A"
+                else:
+                  anz_vers_pat = int(entry['anz_vers_pat'])
+                if entry['platz_voll_pfl'] == "-":
+                  platz_voll_pfl = "N/A"
+                else:
+                  platz_voll_pfl = int(entry['platz_voll_pfl'])
+                if not anz_vers_pat == "N/A" and not platz_voll_pfl == "N/A":
+                  occupancy_raw = round((anz_vers_pat * 100) / platz_voll_pfl)
+                  if occupancy_raw > 100:
+                    occupancy_raw = 100
+                  occupancy = f"{occupancy_raw} %"
+                else:
+                  occupancy = "N/A"
+                if not entry['invest'] == "-":
+                  if len(entry['invest']) == 4:
+                    if entry['invest'].index(".") == 2:
+                      invest = entry['invest'] + "0"
+                    else:
+                      invest = entry['invest']
+                  else:
+                    invest = entry['invest']
+                else:
+                  invest = "N/A"
+                if entry['ez'] == "-":
+                  ez = "N/A"
+                else:
+                  ez = int(entry['ez'])
+                if entry['dz'] == "-":
+                  dz = "N/A"
+                else:
+                  dz = int(entry['dz'])
+                if entry['baujahr'] == "-":
+                  year = "N/A"
+                else:
+                  year = int(entry['baujahr'])
+                if entry['betreiber'] == "-":
+                  operator = "N/A"
+                else:
+                  operator = entry['betreiber']
+                if entry['mdk_note'] == "-":
+                  mdk = "N/A"
+                else:
+                  mdk = entry['mdk_note']
+                data = {
+                  "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "platz_voll_pfl": platz_voll_pfl,
+                  "ez": ez,
+                  "dz": dz,
+                  "anz_vers_pat": anz_vers_pat,
+                  "occupancy": occupancy,
+                  "baujahr": year,
+                  "status": entry['status'],
+                  "betreiber": operator.replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "invest": invest,
+                  "mdk_note": mdk,
+                  "coords": [lng_icon, lat_icon]
+                }
+                data_comp_analysis.append(data)
+                break
+              elif topic == "assisted_living":
+                if entry['anz_wohnungen'] == '-':
+                  number_apts = 'N/A'
+                else:
+                  number_apts = int(float(entry['anz_wohnungen']))
+                if entry['betreiber'] == '-':
+                  operator = 'N/A'
+                else:
+                  operator = entry['betreiber']
+                data = {
+                  "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "operator": operator.replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "type": entry['art'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "city": entry['ort'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "status": entry['status'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "number_apts": number_apts,
+                  "coords": [lng_icon, lat_icon]
+                }
+                data_comp_analysis.append(data)
+                break
+  
+      # Sort Coordinates by Distance
+      sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
+      from .Market_Study_Existing_Home import Market_Study_Existing_Home
+      for entry in sorted_coords:
+        if entry[1] <= 0.01:
+          res = alert(content=Market_Study_Existing_Home(entry=entry, topic=topic), dismissible=False, large=True, buttons=[], role='custom_alert')
+          if res == 'Yes':
+            if topic == 'nursing_homes':
+              Variables.home_address_nh.append(entry)
+            else:
+              Variables.home_address_al.append(entry)
+        
+      if topic == 'nursing_homes':
+        if len(Variables.home_address_nh) == 0:
+          from .Market_Study_NH_Home import Market_Study_NH_Home
+          from .Market_Study_NH_Home_Mobile import Market_Study_NH_Home_Mobile
+          if self.mobile:
+            Variables.home_address_nh = alert(content=Market_Study_NH_Home_Mobile(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
+          else:
+            Variables.home_address_nh = alert(content=Market_Study_NH_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
+          if not Variables.home_address_nh == []:
+            sorted_coords.insert(0, Variables.home_address_nh)
+      else:
+        if Variables.home_address_al == []:
+          from .Market_Study_AL_Home import Market_Study_AL_Home
+          from .Market_Study_AL_Home_Mobile import Market_Study_AL_Home_Mobile
+          if self.mobile:
+            Variables.home_address_al = alert(content=Market_Study_AL_Home_Mobile(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
+          else:
+            Variables.home_address_al = alert(content=Market_Study_AL_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
+          if not Variables.home_address_al == []:
+            sorted_coords.insert(0, Variables.home_address_al)
+      
+      res_data = {'sorted_coords': sorted_coords, 'marker_coords': marker_coords}
+      
+      return res_data
+    
+  def build_req_string(self, res_data, topic):
+    with anvil.server.no_loading_indicator:
+      if topic == 'nursing_homes':
+        home_address = Variables.home_address_nh
+      else:
+        home_address = Variables.home_address_al
+        
+      for entry in home_address:
+        if entry in res_data['sorted_coords']:
+          ha_index = res_data['sorted_coords'].index(entry)
+          res_data['sorted_coords'][ha_index].append('home')
+      
+      #Build Request-String for Mapbox Static-Map-API
+      counter = 0
+      request = []
+      request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
+      request_static_map = request_static_map_raw
+      
+      index_coords = len(res_data['sorted_coords'])
+      for entry in res_data['sorted_coords']:
+        if 'home' in entry:
+          index_coords -= 1
+      last_coords = []
+      complete_counter = 0
+  
+      test_counter = 0
+      last_coord_dist = 0 
+      for coordinate in res_data['sorted_coords']:
+        if not last_coord_dist == coordinate[1]:
+          if not 'home' in coordinate:
+            for second_coordinate in res_data['sorted_coords']:
+              if not coordinate == second_coordinate and coordinate[1] == second_coordinate[1]:
+                test_counter += 1
+        last_coord_dist = coordinate[1]
+      index_coords -= test_counter
+  
+      last_coord_dist = 0
+      
+      for coordinate in reversed(res_data['sorted_coords']):
+        if not last_coord_dist == coordinate[1]:
+          counter += 1
+          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/Pin{index_coords}x075.png'
+          encoded_url = url.replace("/", "%2F")
+          if complete_counter == len(res_data['sorted_coords']) - 1:
+            if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
+              if not counter == 1:
+                request_static_map += f"%2C"
+              request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+            counter = 0
+            if not request_static_map == request_static_map_raw:
+              request_static_map += f"%2C"
+            url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
+            encoded_url = url.replace("/", "%2F")
+            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
+            request.append(request_static_map)
+            request_static_map = request_static_map_raw
+            index_coords -= 1
+          elif counter == 10:
+            if not 'home' in coordinate:
+              if not coordinate[0]['coords'] == last_coords:
+                request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+                counter = 0
+                request.append(request_static_map)
+                request_static_map = request_static_map_raw
+              else:
+                dupe_coord = True
+            index_coords -= 1
+          elif not 'home' in coordinate:
+            if not coordinate[0]['coords'] == last_coords:
+              if not counter == 1:
+                request_static_map += f"%2C"
+              request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+            else:
+              dupe_coord = True
+            index_coords -= 1
+          else:
+            request_static_map += f"%5D%7D"
+            counter = 0
+            request.append(request_static_map)
+            request_static_map = request_static_map_raw
+            break
+        last_coord_dist = coordinate[1]
+          
+        complete_counter += 1
+        last_coords = coordinate[0]['coords']
+      
+      if request == []:
+        url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
+        encoded_url = url.replace("/", "%2F")
+        request_static_map = request_static_map_raw + f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
+        request.append(request_static_map)
+        request_static_map = request_static_map_raw
+      
+      return({"data": res_data['sorted_coords'], "request": request, "request2": Variables.activeIso})
+
+  
+  def change_icons(self, checkbox):
+    with anvil.server.no_loading_indicator:
+      if checkbox == "Veterinary" and self.check_box_vet.checked == True:
+        Variables.last_bbox_vet = self.create_icons(False, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
+        Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
+      elif checkbox == "Social facility" and self.check_box_soc.checked == True:
+        Variables.last_bbox_soc = self.create_icons(False, Variables.last_bbox_soc, "social_facility", Variables.icon_social)  
+        Variables.last_bbox_soc = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, "social_facility", Variables.icon_social)   
+      elif checkbox == "Pharmacy" and self.check_box_pha.checked == True:
+        Variables.last_bbox_pha = self.create_icons(False, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
+        Variables.last_bbox_pha = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
+      elif checkbox == "Hospital" and self.check_box_hos.checked == True:
+        Variables.last_bbox_hos = self.create_icons(False, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
+        Variables.last_bbox_hos = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
+      elif checkbox == "Clinic" and self.check_box_cli.checked == True:
+        Variables.last_bbox_cli = self.create_icons(False, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
+        Variables.last_bbox_cli = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
+      elif checkbox == "Dentist" and self.check_box_den.checked == True:
+        Variables.last_bbox_den = self.create_icons(False, Variables.last_bbox_den, "dentist", Variables.icon_dentist) 
+        Variables.last_bbox_den = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
+      elif checkbox == "Doctors" and self.check_box_doc.checked == True:
+        Variables.last_bbox_doc = self.create_icons(False, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)
+        Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)
+      elif checkbox == "Nursing School" and self.check_box_nsc.checked == True:
+        Variables.last_bbox_nsc = self.create_icons(False, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools)
+        Variables.last_bbox_nsc = self.create_icons(self.check_box_nsc.checked, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools)    
+      elif checkbox == "Supermarket" and self.check_box_sma.checked == True:
+        Variables.last_bbox_sma = self.create_icons(False, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
+        Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
+      elif checkbox == "Restaurant" and self.check_box_res.checked == True:
+        Variables.last_bbox_res = self.create_icons(False, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant) 
+        Variables.last_bbox_res = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant)  
+      elif checkbox == "Cafe" and self.check_box_cafe.checked == True:
+        Variables.last_bbox_caf = self.create_icons(False, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
+        Variables.last_bbox_caf = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
+      elif checkbox == "University" and self.check_box_uni.checked == True:
+        Variables.last_bbox_uni = self.create_icons(False, Variables.last_bbox_uni, "university", Variables.icon_university) 
+        Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, "university", Variables.icon_university)  
+      elif checkbox == "Bus Stop" and self.check_box_bus.checked == True:
+        Variables.last_bbox_bus = self.create_icons(False, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)
+        Variables.last_bbox_bus = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)  
+      elif checkbox == "Tram Stop" and self.check_box_tra.checked == True:
+        Variables.last_bbox_tra = self.create_icons(False, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
+        Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
+      elif checkbox == "Nursing Home" and self.pdb_data_cb.checked == True:
+        Variables.last_bbox_nh = self.create_icons(False, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
+        Variables.last_bbox_nh = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
+      elif checkbox == "Assisted Living" and self.pdb_data_al.checked == True:
+        Variables.last_bbox_al = self.create_icons(False, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+        Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+
+  def select_all_change(self, **event_args):
+    with anvil.server.no_loading_indicator:
+      if event_args['sender'].tag.categorie == 'Healthcare':
+          self.check_box_vet.checked = event_args['sender'].checked
+          self.check_box_soc.checked = event_args['sender'].checked
+          self.check_box_pha.checked = event_args['sender'].checked
+          self.check_box_hos.checked = event_args['sender'].checked
+          self.check_box_cli.checked = event_args['sender'].checked
+          self.check_box_den.checked = event_args['sender'].checked
+          self.check_box_doc.checked = event_args['sender'].checked
+          self.check_box_nsc.checked = event_args['sender'].checked
+          self.check_box_pdt.checked = event_args['sender'].checked
+          self.check_box_hd.checked = event_args['sender'].checked
+          self.check_box_vet.raise_event('change')
+          if event_args['sender'].checked:
+            time.sleep(1)
+          self.check_box_soc.raise_event('change')
+          if event_args['sender'].checked:
+            time.sleep(1)
+          self.check_box_pha.raise_event('change')
+          if event_args['sender'].checked:
+            time.sleep(1)
+          self.check_box_hos.raise_event('change')
+          if event_args['sender'].checked:
+            time.sleep(1)
+          self.check_box_cli.raise_event('change')
+          if event_args['sender'].checked:
+            time.sleep(1)
+          self.check_box_den.raise_event('change')
+          if event_args['sender'].checked:
+            time.sleep(1)
+          self.check_box_doc.raise_event('change')
+          if event_args['sender'].checked:
+            time.sleep(1)
+          self.check_box_nsc.raise_event('change')
+          if event_args['sender'].checked:
+            time.sleep(1)
+          self.check_box_pdt.raise_event('change')
+          if event_args['sender'].checked:
+            time.sleep(1)
+          self.check_box_hd.raise_event('change')
+          if event_args['sender'].checked:
+            time.sleep(1)
+      elif event_args['sender'].tag.categorie == 'Miscelaneous':
+        self.check_box_sma.checked = event_args['sender'].checked
+        self.check_box_res.checked = event_args['sender'].checked
+        self.check_box_cafe.checked = event_args['sender'].checked
+        self.check_box_uni.checked = event_args['sender'].checked
+        self.check_box_sma.raise_event('change')
+        self.check_box_res.raise_event('change')
+        self.check_box_cafe.raise_event('change')
+        self.check_box_uni.raise_event('change')
+      elif event_args['sender'].tag.categorie == 'ÖPNV':
+        self.check_box_bus.checked = event_args['sender'].checked
+        self.check_box_tra.checked = event_args['sender'].checked
+        self.check_box_bus.raise_event('change')
+        self.check_box_tra.raise_event('change')
+      pass
+
+  def iso_layer_active_change(self, **event_args):
+    with anvil.server.no_loading_indicator:
+      if event_args['sender'].checked:
+        self.mapbox.setLayoutProperty('isoLayer', 'visibility', 'visible')
+      else:
+        self.mapbox.setLayoutProperty('isoLayer', 'visibility', 'none')
+      pass
+
+  def hide_ms_marker_change(self, **event_args):
+    with anvil.server.no_loading_indicator:
+      """This method is called when this checkbox is checked or unchecked"""
+      if event_args['sender'].checked:
+        self.marker.addTo(self.mapbox)
+      else:
+        self.marker.remove()
+      pass
+
+  def change_cluster_color_click(self, **event_args):
+    with anvil.server.no_loading_indicator:
+      """This method is called when the button is clicked"""
+      from .Change_Cluster_Color import Change_Cluster_Color
+      response = alert(content=Change_Cluster_Color(components=self.icon_grid.get_components(), mobile=self.mobile), dismissible=False, large=True, buttons=[], role='custom_alert')
+      for key in Variables.marker:
+        if key in response:
+          Variables.marker[key]['color'] = response[key]
+          for marker in Variables.marker[key]['marker']:
+            anvil.js.call('changeBackground', marker['_element'], Variables.marker[key]["color"][2])
+      for component in self.icon_grid.get_components():
+        if type(component) == CheckBox:
+          key = component.text
+        elif type(component) == Label:
+          component.foreground = Variables.marker[key]["color"][1]
+      pass
+
+  
+  def create_cluster_marker(self, cluster_data):
+    with anvil.server.no_loading_indicator:
+      ##### UMSCHREIBEN #####
+      
       #Initialise Variables
       excel_markers = {}
       added_clusters = []
-      added_invest_classes = []
-      invest_components = {}
-      cluster_components = {}
       colors = [
-        ['white', '#ffffff', '/_/theme/Pins/CB_MapPin_white.png'],
-        ['blue', '#234ce2', '/_/theme/Pins/CB_MapPin_blue.png'],
-        ['green', '#438e39', '/_/theme/Pins/CB_MapPin_green.png'],
-        ['grey', '#b3b3b3', '/_/theme/Pins/CB_MapPin_grey.png'],
-        ['lightblue', '#2fb2e0', '/_/theme/Pins/CB_MapPin_lightblue.png'],
-        ['orange', '#fc9500', '/_/theme/Pins/CB_MapPin_orange.png'],
-        ['pink', '#e254b7', '/_/theme/Pins/CB_MapPin_pink.png'],
-        ['red', '#d32f2f', '/_/theme/Pins/CB_MapPin_red.png'],
-        ['yellow', '#f4de42', '/_/theme/Pins/CB_MapPin_yellow.png'],
-        ['gold', '#ccb666', '/_/theme/Pins/CB_MapPin_gold.png']
-      ]
-
-      invests = {
-        'Super Core': '/_/theme/Pins/CB_MapPin_Sc.png',
-        'Core/ Core+': '/_/theme/Pins/CB_MapPin_CC.png',
-        'Value Add': '/_/theme/Pins/CB_MapPin_VA.png',
-        'Opportunistic': '/_/theme/Pins/CB_MapPin_Opp.png',
-        'Development': '/_/theme/Pins/CB_MapPin_Dev.png',
-        'Workout': '/_/theme/Pins/CB_MapPin_Wo.png'
-      }
+          ['white', '#ffffff', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_white.png'],
+          ['blue', '#234ce2', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_blue.png'],
+          ['green', '#438e39', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_green.png'],
+          ['grey', '#b3b3b3', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_grey.png'],
+          ['lightblue', '#2fb2e0', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_lightblue.png'],
+          ['orange', '#fc9500', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_orange.png'],
+          ['pink', '#e254b7', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_pink.png'],
+          ['red', '#d32f2f', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_red.png'],
+          ['yellow', '#f4de42', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_yellow.png'],
+          ['gold', '#ccb666', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_gold.png']
+        ]
   
       #Create Settings
       self.icon_grid.row_spacing = 0
       counter = 0
       
-      for asset in self.cluster_data:
+      for asset in cluster_data['data']:
   
         # Create HTML Element for Icon
         el = document.createElement('div')
@@ -2337,32 +3650,18 @@ class Map2_0(Map2_0Template):
         el.style.height = '40px'
         el.style.backgroundSize = '100%'
         el.style.backgroundrepeat = 'no-repeat'
-        el.style.zIndex = '250'
-
-        # Create HTML Element for Invest Class Icon
-        inv_el = document.createElement('div')
-        inv_el.className = f'{asset["address"]}_investment'
-        inv_el.style.width = '40px'
-        inv_el.style.height = '40px'
-        inv_el.style.backgroundSize = '100%'
-        inv_el.style.backgroundrepeat = 'no-repeat'
-        inv_el.style.zIndex = '251'
+        el.style.zIndex = '251'
   
         cluster_name = asset['cluster']
   
+        color = cluster_data['settings'][cluster_name]['color']
         if cluster_name not in added_clusters:
-          color = colors[counter]
           checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
           checkbox.add_event_handler('change', self.check_box_marker_icons_change)
           icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none')
-          cluster_components[cluster_name] = [checkbox, icon]
+          self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=1, width_xs=8)
+          self.icon_grid.add_component(icon, row=cluster_name, col_xs=9, width_xs=1)
           added_clusters.append(cluster_name)
-
-        if asset['invest_class'] not in added_invest_classes:
-          checkbox = CheckBox(checked=True, text=asset['invest_class'], spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
-          checkbox.add_event_handler('change', self.check_box_marker_icons_change)
-          invest_components[asset['invest_class']] = checkbox
-          added_invest_classes.append(asset['invest_class'])
   
         # #Get Coordinates of provided Adress for Marker
         req_str = self.build_request_string(asset)
@@ -2370,16 +3669,11 @@ class Map2_0(Map2_0Template):
         coords = anvil.http.request(req_str,json=True)
         coordinates = coords['features'][0]['geometry']['coordinates']
   
-        if not cluster_name in excel_markers.keys():
-          excel_markers[cluster_name] = {'color': color, 'static': 'none', 'marker': []}
-        el.style.backgroundImage = f'url({self.app_url}{excel_markers[cluster_name]["color"][2]})'
-        new_list = self.set_excel_markers(excel_markers[cluster_name]['static'], coordinates, excel_markers[cluster_name]['marker'], el)
-        excel_markers[cluster_name]['marker'] = new_list
-        if not asset['invest_class'] in excel_markers.keys():
-          excel_markers[asset['invest_class']] = {'pin': invests[asset['invest_class']], 'static': 'none', 'marker': []}
-        inv_el.style.backgroundImage = f"url({self.app_url}{invests[asset['invest_class']]})"
-        new_list = self.set_excel_markers(excel_markers[asset['invest_class']]['static'], coordinates, excel_markers[asset['invest_class']]['marker'], inv_el)
-        excel_markers[asset['invest_class']]['marker'] = new_list
+        if 'marker' not in cluster_data['settings'][cluster_name].keys():
+          cluster_data['settings'][cluster_name]['marker'] = []
+        el.style.backgroundImage = f'url({color[2]})'
+        new_list = self.set_excel_markers(cluster_data['settings'][cluster_name]['static'], coordinates, cluster_data['settings'][cluster_name]['marker'], el)
+        cluster_data['settings'][cluster_name]['marker'] = new_list
         
         # Create Popup for Marker and add it to the Map
         # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
@@ -2389,1305 +3683,59 @@ class Map2_0(Map2_0Template):
         
         #Increase Markercount
         # markercount += 1
-
-        counter += 1
-
-      for key in sorted(cluster_components):
-        self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=1, width_xs=8)
-        self.icon_grid.add_component(cluster_components[key][1], row=key, col_xs=9, width_xs=1)
-        
-        sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout']    
-      for key in sorted(invest_components.keys(), key=lambda x: sorted_keys.index(x)):
-        self.invest_grid.add_component(invest_components[key], row=key, col_xs=1, width_xs=8)
         
       # Add Marker-Arrays to global Variable Marker
-      Variables.marker.update(excel_markers)
-
-      self.change_cluster_color_click()
+      Variables.marker.update(cluster_data['settings'])
+  
       anvil.js.call('remove_span')
-
-      for checkbox in self.invest_grid.get_components():
-        checkbox.raise_event('change')
-
-      for checkbox in self.invest_grid.get_components():
-        checkbox.raise_event('change')
-
+      
       self.cluster_btn.visible = True
       self.invest_class_btn.visible = True
       self.invest_class_btn.raise_event('click')
       self.cluster_btn.raise_event('click')
-    
-  #####  Upload Functions   #####
-  ###############################
-  #####   Extra Functions   #####
-  
-  #This method is called when the Geocoder was used 
-  def move_marker(self, result):
-  
-    #Set iso-Layer for new coordinates
-    lnglat = result['result']['geometry']['coordinates']
-    self.marker.setLngLat(lnglat)
-    self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-    
-    Functions.refresh_icons(self)
-  
-  #This method is called when the draggable Marker was moved
-  def marker_dragged(self, drag):
-  
-    #Set iso-Layer for new Markerposition
-    self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-    
-    Functions.refresh_icons(self)
-    
-  #This method is called when the draggable Marker was moved or when the Geocoder was used
-  def get_iso(self, profile, contours_minutes):
-  
-    #Check if isoLayer is already constructed
-    if not self.mapbox.getSource('iso'):
-      
-      #Construct Mapsource for isoLayer
-      self.mapbox.addSource('iso', {'type': 'geojson',
-                                    'data': {'type': 'FeatureCollection',
-                                            'features': []}
-                                   })
-      
-      #Construct and add isoLayer
-      self.mapbox.addLayer({'id': 'isoLayer',
-                            'type': 'fill',
-                            'source': 'iso',
-                            'layout': {'visibility': 'visible'},
-                            'paint': {
-                            'fill-color': '#A6A18A',
-                            'fill-opacity': 0.3,
-                            'fill-outline-color': '#4D4A3F'
-                            },
-                          })
-    
-    #Get iso-coordinates based of the marker-coordinates
-    lnglat = self.marker.getLngLat()
-    request_string = f"https://api.mapbox.com/isochrone/v1/mapbox/{profile}/{lnglat.lng},{lnglat.lat}?"
-    
-    #Check which iso-mode is currently active
-    if contours_minutes == "-1":
-      
-      #Build request_string
-      request_string = request_string + f"contours_minutes=5,10,15,20"
-      
-    else:
-      
-      #Build request_string
-      request_string = request_string + f"contours_minutes={contours_minutes}"
-    
-    #Build request_string
-    request_string += f"&polygons=true&access_token={self.token}"
-    
-    #Get Data from request
-    Variables.activeIso = anvil.http.request(request_string,json=True)
-    
-    #Attach Data to iso-source
-    self.mapbox.getSource('iso').setData(Variables.activeIso)
-      
-  #This method is called when the User clicked a Part of a Map-Layer
-  def popup(self, click):
-  
-    #Check which Layer is active
-    if click.features[0].layer.source == 'federal_states':
-      
-      #Create Popup and add it to the Map
-      bl_name = click.features[0].properties.name
-      bl_id = click.features[0].id
-      clicked_lngLat = dict(click.lngLat)
-      popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}').addTo(self.mapbox)
-    
-    #Check which Layer is active
-    elif click.features[0].layer.source == 'administrative_districts':
-      
-      #Create Popup and add it to the Map
-      bl_name = click.features[0].properties.NAME_1
-      rb_name = click.features[0].properties.NAME_2
-      clicked_lngLat = dict(click.lngLat)
-      popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Regierungsbezirk:</b> {rb_name}').addTo(self.mapbox)
-    
-    #Check which Layer is active
-    elif click.features[0].layer.source == 'counties':
-      
-      #Create Popup and add it to the Map
-      bl_name = click.features[0].properties.lan_name
-      lk_name = click.features[0].properties.krs_name
-      clicked_lngLat = dict(click.lngLat)
-      popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Landkreis:</b> {lk_name}').addTo(self.mapbox)
-  
-    elif click.features[0].layer.source == 'municipalities':
-      
-      if hasattr(click.features[0].properties, 'GEN'):
-        
-        gm_name = click.features[0].properties.GEN
-        
-      else:
-        
-        gm_name = click.features[0].properties.name
-      
-      key = click.features[0].properties.AGS
-      demographic, exact_demographic = anvil.server.call('get_data_from_database', key)
-    
-      popup_text = f'<button type="button" onClick="hide_mun_info()">&#10006;</button><br><br><h3>Municipality: {gm_name}</h3><b>ID:</b> {key}<br><b>Area:</b> {"{:.2f}".format(float(demographic["flaeche"]))}km&sup2;<br><br><b>Population:</b> {demographic["bevoelkerung_ges"]}<br><b>per km&sup2:</b> {demographic["bevoelkerung_jekm2"]}<br><br><table><tr><th class="firstCol">Gender</th><th>Overall</th><th>Under 3</th><th>3 to <br>Under 6</th><th>6 to <br>Under 10</th><th>10 to Under 15</th><th>15 to Under 18</th><th>18 to Under 20</th><th>20 to Under 25</th><th>25 to Under 30</th><th>30 to Under 35</th><th>35 to Under 40</th><th>40 to Under 45</th><th>45 to Under 50</th><th>50 to Under 55</th><th>55 to Under 60</th><th>60 to Under 65</th><th>65 to Under 75</th><th>75 and older</th></tr><tr><th class="firstCol">Overall</th><td>100%</td><td>{"{:.1f}".format(float(exact_demographic["all_u3"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_3tou6"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_6tou10"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_10tou15"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_15tou18"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_18tou20"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_20tou25"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_25tou30"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_30tou35"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_35tou40"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_40tou45"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_45tou50"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_50tou55"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_55tou60"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_60tou65"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_65tou75"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_75"]))}%</td></tr><tr><th class="firstCol">Male</th><td>{"{:.1f}".format(float(exact_demographic["man_compl"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_u3"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_3tou6"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_6tou10"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_10tou15"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_15tou18"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_18tou20"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_20tou25"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_25tou30"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_30tou35"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_35tou40"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_40tou45"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_45tou50"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_50tou55"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_55tou60"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_60tou65"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_65tou75"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_75"]))}%</td></tr><tr><th class="firstCol">Female</th><td>{"{:.1f}".format(float(exact_demographic["woman_compl"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_u3"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_3tou6"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_6tou10"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_10tou15"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_15tou18"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_18tou20"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_20tou25"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_25tou30"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_30tou35"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_35tou40"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_40tou45"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_45tou50"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_50tou55"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_55tou60"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_60tou65"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_65tou75"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_75"]))}%</td></tr></table><br><br><br><b>Grad der Verstädterung:</b> {demographic["verstaedterung_bez"]}'
-      
-      anvil.js.call('show_mun_info', popup_text)
-      
-    #Check which Layer is active
-    elif click.features[0].layer.source == 'bezirke':
-      
-      #Create Popup and add it to the Map
-      dt_name = click.features[0].properties.name
-      dt_id = click.features[0].id
-      clicked_lngLat = dict(click.lngLat)
-      popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bezirk:</b> {dt_name}').addTo(self.mapbox)
-
-  #This method is called when the User clicked on a Point of Interest on the Map   #Eventuell nicht mehr benötigt
-  def poi(self, click):
-  
-    #Get and Set Variables
-    info = dict(self.mapbox.style)
-    
-    #Check current Map-Style
-    if (info['stylesheet']['metadata']['mapbox:origin'] == 'outdoors-v11'):
-    
-      #Get all Layers on the Map
-      layers = self.mapbox.getStyle().layers
-  
-      #Get all Features (Point of Interest) of selected Layers on clicked Point
-      features = self.mapbox.queryRenderedFeatures(click.point, {'layers': ['poi-label', 'transit-label', 'landuse', 'national-park']})
-      
-      #Check if no POI was clicked and no Layer is active
-      if not features == [] and Variables.activeLayer == None and hasattr(features[0].properties, 'name') == True:
-      
-        #Create Popup on clicked Point with Information about the Point of Interest
-        popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('Name: ' + features[0].properties.name).addTo(self.mapbox)
-    
-    #Check current Map-Style
-    elif Variables.activeLayer == None:
-      
-      #Send Notification to User
-      Notification('Point of Interests are only available on the Outdoor-Map !', style='info').show()
-  
-  #This method is called when the Map is loading or changing his Style
-  def place_layer(self, event):
-    
-    #Add 3D-Layer to the Map
-    self.mapbox.addLayer({
-      'id': 'add-3d-buildings',
-      'source': 'composite',
-      'source-layer': 'building',
-      'filter': ['==', 'extrude', 'true'],
-      'type': 'fill-extrusion',
-      'minzoom': 15,
-      'paint': {
-        'fill-extrusion-color': '#aaa',
-        'fill-extrusion-height': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          15,
-          0,
-          15.05,
-          ['get', 'height']
-        ],
-        'fill-extrusion-base': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          15,
-          0,
-          15.05,
-          ['get', 'min_height']
-        ],
-        'fill-extrusion-opacity': 0.6
-      }
-    })
-    
-    layers = [{'id_fill': 'federal_states',
-               'id_outline': 'outline_federal_states', 
-               'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json',
-               'line_width': .25}, 
-              {'id_fill': 'administrative_districts',
-               'id_outline': 'outline_administrative_districts', 
-               'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json',
-               'line_width': .25},
-             {'id_fill': 'counties',
-               'id_outline': 'outline_counties', 
-               'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/landkreise.geojson',
-               'line_width': .25},
-             {'id_fill': 'municipalities',
-               'id_outline': 'outline_municipalities', 
-               'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson',
-               'line_width': .25},
-             {'id_fill': 'districts',
-               'id_outline': 'outline_districts', 
-               'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson',
-               'line_width': .25},
-             {'id_fill': 'netherlands',
-               'id_outline': 'outline_netherlands', 
-               'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson',
-               'line_width': .25}]
-    
-    for entry in layers:
-      
-      #Add filled Layer for Federal states
-      self.mapbox.addLayer({
-        'id': entry['id_fill'],
-        'type': 'fill',
-        'source': {
-          'type': 'geojson',
-          'data': entry['data']
-        },
-        'layout': {
-          'visibility': 'none'
-        },
-        'paint': {
-          'fill-color': '#3f6085',
-          'fill-opacity': [
-            'case',
-            ['boolean', ['feature-state', 'hover'], False],
-            0.3,
-            0
-          ]
-        }
-      }) 
-      
-      #Add outlined Layer for Federal states
-      self.mapbox.addLayer({
-          'id': entry['id_outline'],
-          'type': 'line',
-          'source': {
-            'type': 'geojson',
-            'data': entry['data']
-          },
-          'layout': {
-            'visibility': 'none'
-          },
-          'paint': {
-            'line-color': '#1b2939',
-            'line-width': entry['line_width']
-          }
-      })
-  
-    self.mapbox.setLayoutProperty(Variables.activeLayer, 'visibility', 'visible')
-    self.mapbox.setLayoutProperty(f'outline_{Variables.activeLayer}', 'visibility', 'visible')
-  
-  #This method is called from the check_box_change-Functions to place Icons on Map  
-  def create_icons(self, check_box, last_bbox, category, picture):
-    
-    # Check if Checkbox is checked
-    if check_box == True:
-
-      # Check if Checkbox for Iso-Layer' is checked
-      if self.checkbox_poi_x_hfcig.checked == True:
-  
-        # Get Data of Iso-Layer
-        iso = dict(self.mapbox.getSource('iso'))
-  
-        # Create empty Bounding Box
-        bbox = [0, 0, 0, 0]
-  
-        # Check every element in Iso-Data
-        for el in iso['_data']['features'][0]['geometry']['coordinates'][0]:
-  
-          # Check if South-Coordinate of Element is lower then the lowest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
-          if el[0] < bbox[1] or bbox[1] == 0:
-    
-            # Set BBox-Coordinate to new Element-Coordinate
-            bbox[1] = el[0]
-  
-          # Check if South-Coordinate of Element is higher then the highest South-Coordinate of Bounding Box and BBox-Coordinate is not 0
-          if el[0] > bbox[3] or bbox[3] == 0:
-    
-            # Set BBox-Coordinate to new Element-Coordinate
-            bbox[3] = el[0]
-  
-          # Check if North-Coordinate of Element is lower then the lowest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
-          if el[1] < bbox[0] or bbox[0] == 0:
-    
-            # Set BBox-Coordinate to new Element-Coordinate
-            bbox[0] = el[1]
-  
-          # Check if North-Coordinate of Element is higher then the highest North-Coordinate of Bounding Box and BBox-Coordinate is not 0
-          if el[1] > bbox[2] or bbox[2] == 0:
-    
-            # Set BBox-Coordinate to new Element-Coordinate
-            bbox[2] = el[1]
-  
-      # Do if Checkbox for Iso-Layer' is unchecked
-      else:
-  
-        # Get visible Bounding Box of Map
-        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'],
-                (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
-  
-      # Check if Bounding Box is not the same as least Request
-      if not bbox == last_bbox:
-  
-        # Check if new Bounding Box is overlapping old Bounding Box
-        if bbox[0] < last_bbox[0] or bbox[1] < last_bbox[1] or bbox[2] > last_bbox[2] or bbox[3] > last_bbox[3]:
-    
-          # Check if Category is PflegeDB
-          if category == 'nursing_homes':
-            geojson = anvil.server.call('get_care_db_data', bbox, 'Pflegeheime')
-            Variables.nursing_homes_entries = geojson
-        
-          elif category == 'assisted_living':
-    
-            geojson = anvil.server.call('get_care_db_data', bbox, 'BetreutesWohnen')
-            Variables.assisted_living_entries = geojson
-
-          elif category == 'nursing-schools':
-
-            geojson = anvil.server.call('get_einrichtungen', bbox)
-    
-          else:
-    
-            # Get geojson of POIs inside Bounding Box
-            geojson = anvil.server.call('poi_data', category, bbox)
-    
-          # Check if Elements are over 3000 for performance Reasons
-          if len(geojson) > 3000:
-    
-            # Tell the User about to many Elements
-            alert('Zu große Ergebnismenge ! Näher ranzoomen !')
-    
-          # Do if Elements are under 3000
-          else:
-    
-            #Create empty Icons Array to save Elements
-            icons = []
-    
-            # Loop through every Element in geojson
-            for ele in geojson:
-    
-              # Create HTML Element for Icon
-              el = document.createElement('div')
-              el.className = 'marker'
-              el.style.width = '40px'
-              el.style.height = '40px'
-              el.style.backgroundSize = '100%'
-              el.style.backgroundrepeat = 'no-repeat'
-              el.style.zIndex = '220'
-    
-              # Create Icon
-              el.style.backgroundImage = f'url({picture})'
-    
-              # Check if Category is not PflegeDB
-              if not category == 'nursing_homes':
-          
-                if not category == 'assisted_living':
-
-                  if not category == 'nursing-schools':
-                  
-                    # Get coordinates of current Icon
-                    el_coords = ele['geometry']['coordinates']
-        
-                    # Get different Informations from geojson
-                    city = ele['properties']['city']
-                    suburb = ele['properties']['suburb']
-                    street = ele['properties']['street']
-                    housenumber = ele['properties']['housenumber']
-                    postcode = ele['properties']['postcode']
-                    phone = ele['properties']['phone']
-                    website = ele['properties']['website']
-                    healthcare = ele['properties']['healthcare']
-                    name = ele['properties']['name']
-                    opening_hours = ele['properties']['opening_hours']
-                    wheelchair = ele['properties']['wheelchair']
-                    o_id = ele['properties']['id']
-                    fax = ele['properties']['fax']
-                    email = ele['properties']['email']
-                    speciality = ele['properties']['healthcare:speciality']
-                    operator = ele['properties']['operator']
-
-                  else:
-
-                    name = ele['name']
-                    street = ele['street']
-                    postcode = ele['postcode']
-                    city = ele['city']
-                    telefon = ele['telefon']
-                    email = ele['email']
-                    web = ele['web']
-                    degree = ele['degree']
-                    parttime_education = ele['parttime-education']
-                    certificate = ele['certificate']
-                    district_code = ele['district-code']
-                    inserted = ele['inserted']
-                    updated = ele['updated']
-                    el_coords = [ ele['longitude'], ele['lattitude'] ]
-    
-              # Check if Category is Bus or Tram
-              if category == 'bus_stop' or category == 'tram_stop':
-    
-                # Create Popup for Element
-                popup = mapboxgl.Popup({'offset': 25}).setHTML(
-                  f'<b>Name:</b>'
-                  f'<br>'
-                  f'&nbsp;&nbsp;{name}'
-                )
-                
-              # Check if Category is PflegeDB
-              elif category == 'nursing_homes':
-    
-                el_coords = [ele['coord_lon'], ele['coord_lat']]
-    
-                # Create Popup for Element
-                popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
-                  f"<p class='popup_name'><b>{ele['name']}</b></p>"
-                  f"<p class='popup_type'>{ele['sektor']}</p>"
-                  "<p class='popup_betreiber_label'><b>Betreiber:</b></p>"
-                  f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
-                  f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
-                  # f"<b>PM ID: </b> {ele['pm_id']}"
-                  # "<br>"
-                  # f"<b>Träger ID: </b> {ele['traeger_id']}"
-                  # "<br>"
-                  # f"<b>IK_Nummer: </b> {ele['ik_nummer']}"
-                  # "<br>"
-                  # "<br>"
-                  # f"<b>Sektor: </b> {ele['sektor']}"
-                  # "<br>"
-                  # f"<b>Art: </b> {ele['art']}"
-                  # "<br>"
-                  # f"<b>Spezialisierung: </b> {ele['spezialisierung']}"
-                  # "<br>"
-                  # f"<b>Status: </b> {ele['status']}"
-                  # "<br>"
-                  # f"<b>Baujahr: </b> {ele['baujahr']}"
-                  # "<br>"
-                  # f"<b>Modernisierungsjahr: </b> {ele['modernisierung']}"
-                  # "<br>"
-                  # "<br>"
-                  # f"<b>Name: </b> {ele['name']}"
-                  # "<br>"
-                  # "<br>"
-                  # f"<b>Betreiber: </b> {ele['betreiber']}"
-                  # "<br>"
-                  # f"<b>Tochterfirma 1: </b> {ele['tochterfirma1']}"
-                  # "<br>"
-                  # f"<b>Tochterfirma 2: </b> {ele['tochterfirma2']}"
-                  # "<br>"
-                  # "<br>"
-                  # f"<b>Straße: </b> {ele['strasse']}"
-                  # "<br>"
-                  # f"<b>Postleitzahl: </b> {ele['plz']}"
-                  # "<br>"
-                  # f"<b>Ort: </b> {ele['ort']}"
-                  # "<br>"
-                  # f"<b>Bundesland: </b> {ele['bundesland']}"
-                  # "<br>"
-                  # f"<b>Gemeindeschlüssel: </b> {ele['gemeindeschluessel']}"
-                  # "<br>"
-                  # "<br>"
-                  # f"<b>Telefon: </b> {ele['telefon']}"
-                  # "<br>"
-                  # f"<b>Fax: </b> {ele['fax']}"
-                  # "<br>"
-                  # f"<b>E-Mail: </b> {ele['email']}"
-                  # "<br>"
-                  # f"<b>Webseite: </b> {ele['webseite']}"
-                  # "<br>"
-                  # f"<b>Domain: </b> {ele['domain']}"
-                  # "<br>"
-                  # "<br>"
-                  # f"<b>MDK Datum: </b> {ele['mdk_datum']}"
-                  # "<br>"
-                  # f"<b>Pflege und medizinische Versorgung: </b> {ele['pfl_u_med_vers']}"
-                  # "<br>"
-                  # f"<b>Umgang mit demenzkranken Bewohnern: </b> {ele['umg_mit_dem_bew']}"
-                  # "<br>"
-                  # f"<b>Soziale Betreuung und Alltagsgestaltung: </b> {ele['soz_betrualltag']}"
-                  # "<br>"
-                  # f"<b>Wohnen, Verpflegung, Hauswirtschaft und Hygiene: </b> {ele['wohn_verpfl_hausw_hyg']}"
-                  # "<br>"
-                  # f"<b>Befragung der Bewohner: </b> {ele['befr_bew']}"
-                  # "<br>"
-                  # f"<b>MDK Note: </b> {ele['mdk_note']}"
-                  # "<br>"
-                  # "<br>"
-                  # f"<b>Anzahl versorgte Patienten: </b> {ele['anz_vers_pat']}"
-                  # "<br>"
-                  # f"<b>Platzzahl vollständige Pflege: </b> {ele['platz_voll_pfl']}"
-                  # "<br>"
-                  # f"<b>Platzzahl Kurzzeitpflege: </b> {ele['platz_kurzpfl']}"
-                  # "<br>"
-                  # f"<b>Platzzahl Nachtpflege: </b> {ele['platz_nachtpfl']}"
-                  # "<br>"
-                  # f"<b>Einzelzimmer: </b> {ele['ez']}"
-                  # "<br>"
-                  # f"<b>Doppelzimmer: </b> {ele['dz']}"
-                  # "<br>"
-                  # "<br>"
-                  # f"<b>Ausbildungsumlage: </b> {ele['ausbildungsumlage']}"
-                  # "<br>"
-                  # f"<b>EEE: </b> {ele['eee']}"
-                  # "<br>"
-                  # f"<b>UuV: </b> {ele['uuv']}"
-                  # "<br>"
-                  # f"<b>Invest: </b> {ele['invest']}"
-                  # "<br>"
-                  # f"<b>PG 1: </b> {ele['pg_1']}"
-                  # "<br>"
-                  # f"<b>PG 2: </b> {ele['pg_2']}"
-                  # "<br>"
-                  # f"<b>PG 3: </b> {ele['pg_3']}"
-                  # "<br>"
-                  # f"<b>PG 4: </b> {ele['pg_4']}"
-                  # "<br>"
-                  # f"<b>PG 5: </b> {ele['pg_5']}"
-                )
-    
-              elif category == 'assisted_living':
-
-                el_coords = [ele['coord_lon'], ele['coord_lat']]
-                wohnungen = "N.A." if ele['anz_wohnungen'] == "-" else ele['anz_wohnungen']
-                ez = "N.A." if ele['ez'] == "-" else ele['ez']
-                dz = "N.A." if ele['dz'] == "-" else ele['dz']
-                miete_ab = "N.A." if ele['miete_ab'] == "-" else f"{ele['miete_ab']} €"
-                miete_bis = "N.A." if ele['miete_bis'] == "-" else f"{ele['miete_bis']} €"
-    
-                # Create Popup for Element
-                popup = mapboxgl.Popup({'offset': 25}).setHTML(
-                  f"<b>PM ID: </b> {ele['pm_id']}"
-                  "<br>"
-                  f"<b>Träger ID: </b> {ele['traeger_id']}"
-                  "<br>"
-                  "<br>"
-                  f"<b>Sektor: </b> {ele['sektor']}"
-                  "<br>"
-                  f"<b>Art: </b> {ele['art']}"
-                  "<br>"
-                  f"<b>Spezialisierung: </b> {ele['spezialisierung']}"
-                  "<br>"
-                  f"<b>Status: </b> {ele['status']}"
-                  "<br>"
-                  f"<b>Baujahr: </b> {ele['baujahr']}"
-                  "<br>"
-                  "<br>"
-                  f"<b>Name: </b> {ele['name']}"
-                  "<br>"
-                  "<br>"
-                  f"<b>Betreiber: </b> {ele['betreiber']}"
-                  "<br>"
-                  f"<b>Tochterfirma 1: </b> {ele['tochterfirma1']}"
-                  "<br>"
-                  f"<b>Tochterfirma 2: </b> {ele['tochterfirma2']}"
-                  "<br>"
-                  "<br>"
-                  f"<b>Straße: </b> {ele['strasse']}"
-                  "<br>"
-                  f"<b>Postleitzahl: </b> {ele['plz']}"
-                  "<br>"
-                  f"<b>Ort: </b> {ele['ort']}"
-                  "<br>"
-                  f"<b>Bundesland: </b> {ele['bundesland']}"
-                  "<br>"
-                  f"<b>Gemeindeschlüssel: </b> {ele['gemeindeschluessel']}"
-                  "<br>"
-                  "<br>"
-                  f"<b>Telefon: </b> {ele['telefon']}"
-                  "<br>"
-                  f"<b>Fax: </b> {ele['fax']}"
-                  "<br>"
-                  f"<b>E-Mail: </b> {ele['email']}"
-                  "<br>"
-                  f"<b>Webseite: </b> {ele['webseite']}"
-                  "<br>"
-                  f"<b>Domain: </b> {ele['domain']}"
-                  "<br>"
-                  "<br>"
-                  f"<b>Anzahl Wohnungen: </b> {wohnungen}"
-                  "<br>"
-                  f"<b>Einzelzimmer: </b> {ez}"
-                  "<br>"
-                  f"<b>Doppelzimmer: </b> {dz}"
-                  "<br>"
-                  f"<b>Miete ab: </b> {miete_ab}"
-                  "<br>"
-                  f"<b>Miete bis: </b> {miete_bis}"
-                )
-
-              elif category == 'nursing-schools':
-
-                popup = mapboxgl.Popup({'offset': 25}).setHTML(
-                  f'<b>Name:</b>'
-                  f'<br>'
-                  f'&nbsp;&nbsp;{name}'
-                  f'<b>Adresse:</b>'
-                  f'<br>'
-                  f'&nbsp;&nbsp;{street}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;{postcode}, {city}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;district code: {district_code}'
-                  f'<br>'
-                  f'<b>Kontakt</b>'
-                  f'<br>'
-                  f'&nbsp;&nbsp;Telefon: {telefon}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;Email: {email}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;Webseite:'
-                  f'<br>'
-                  f'&nbsp;&nbsp;&nbsp;&nbsp;{web}'
-                  f'<br>'
-                  f'<b>Infos</b>'
-                  f'<br>'
-                  f'&nbsp;&nbsp;Degree: {degree}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;parttime education: {parttime_education}'
-                  f'br'
-                  f'&nbsp;&nbsp;certificate: {certificate}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;inserted: {inserted}'
-                  f'<br>'
-                  f'&nbsp;&nbsp;updated: {updated}'
-                )
-                
-              # Check if Category is not Bus or Tram or PflegeDB
-              else:
-                
-                # Create Popup for Element
-                popup = mapboxgl.Popup({'offset': 25}).setHTML(
-                  f'{name}'
-                  '<br>'
-                  f'{el_coords[0]}, {el_coords[1]}'
-                  # f'<b>ID:</b> {o_id}'
-                  # f'<br>'
-                  # f'<b>Name:</b>'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;{name}'
-                  # f'<br>'
-                  # f'<b>Operator:</b>'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;{operator}'
-                  # f'<br>'
-                  # f'<b>Adresse:</b>'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;{street} {housenumber}'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;{postcode}, {city} {suburb}'
-                  # f'<br>'
-                  # f'<b>Kontakt</b>'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;Telefon: {phone}'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;Fax: {fax}'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;Email: {email}'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;Webseite:'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;&nbsp;&nbsp;{website}'
-                  # f'<br>'
-                  # f'<b>Infos</b>'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;Kategorie: {healthcare}'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;Speciality: {speciality}'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;Öffnungszeiten:'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}'
-                  # f'<br>'
-                  # f'&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}'
-                )
-    
-              # Add Icon to the Map
-              newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
-              newiconElement = newicon.getElement()
-
-              context = mapboxgl.Popup({'anchor': 'top', 'offset': 10, 'className': 'markerPopup'}).setHTML(
-                '<button id="details">More Details</button>'
-                '<button id="remove">Remove Marker</button>'
-              )
-
-              newicon.setPopup(context)
-              
-              anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, context, newicon, ele, category)
-    
-              # Add current Element-Icon to Icon-Array
-              icons.append(newicon)
-    
-            # Refresh global Variables
-            Variables.activeIcons.pop(f'{category}', None)
-            Variables.icons.update({f'{category}': icons})
-            Variables.activeIcons.update({f'{category}': icons})
-            last_bbox = bbox
-            Variables.last_cat = f'{category}'
-    
-        # Do if new Bounding Box is smaller or same than old Bounding Box
-        else:
-          
-          #Create empty Icons Array to save Elements
-          icons = []
-    
-          # Loop through every Element in global Icon-Elements
-          for el in Variables.icons[f'{category}']:
-  
-            # Get coordinates of current Icon
-            el_coords = dict(el['_lngLat'])
-  
-            # Check if Icon is inside visible Bounding Box
-            if bbox[0] < el_coords['lat'] < bbox[2] and bbox[1] < el_coords['lng'] < bbox[3]:
-        
-              # Add Element to Map and add to Icon-Array
-              el.addTo(self.mapbox)
-              icons.append(el)
-  
-          # Change last Category and add Icons to active Icon-Array
-          Variables.activeIcons.pop(f'{category}', None)
-          Variables.last_cat = f'{category}'
-          Variables.activeIcons.update({f'{category}': icons})
-  
-      # Do if Bounding Box is the same as last Request
-      else:
-  
-        # Loop through every Element in global Icon-Elements
-        for el in Variables.icons[f'{category}']:
-        
-          # Add Element to Map
-          el.addTo(self.mapbox)
-  
-        # Change last Category
-        Variables.last_cat = f'{category}'
-    
-    # Do if Checkbox is unchecked
-    else:
-    
-      # Loop through every Element in global Icon-Elements
-      for el in Variables.icons[f'{category}']:
-        
-        # Remove Element from Map
-        el.remove()
-    
-    # Send Value back to origin Function
-    return (last_bbox)
-
-      
-  #This method is called from the file uploader to set Markers based on Excel-Data
-  def set_excel_markers(self, marker_cat, coords, marker_list, el):
-
-    marker_cat = mapboxgl.Marker({'draggable': False, 'element': el, 'anchor': 'bottom'})
-    
-    # Add Marker to the Map
-    newmarker = marker_cat.setLngLat(coords).addTo(self.mapbox)
-
-    # Add Marker Marker-Array
-    marker_list.append(newmarker)
-    return(marker_list)
-    
-  #This method is called when the Mouse is moved inside or out of an active Layer
-  def change_hover_state(self, mouse):
-    
-    # Check if Layer is already hovered
-    if Variables.hoveredStateId != None:
-  
-      # Change hover-State to False and set global-variable 'hoveredStateId' to None
-      self.mapbox.setFeatureState({'source': Variables.activeLayer, 'id': Variables.hoveredStateId}, {'hover': False})
-      
-      Variables.hoveredStateId = None
-    
-    #Check if Mouse is moved inside Layer or out of Layer
-    if hasattr(mouse, 'features'):
-      
-      # Check if Mouse was moved inside active Map-Layer
-      if len(mouse.features) > 0:
-      
-        # Change global hoveredStateID to new active Layer-id
-        Variables.hoveredStateId = mouse.features[0].id
-    
-        # Change hover-State to True
-        self.mapbox.setFeatureState({'source': Variables.activeLayer, 'id': Variables.hoveredStateId}, {'hover': True})
-  
-  #Builds request-String for geocoder
-  def build_request_string(self, asset):
-    
-    #Create basic request String
-    request_string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/"
-
-    split_address = asset['map_address'].split(' ')
-    street = split_address[0]
-    housenumber = split_address[1]
-    
-    #Create and Send Request String based on given Marker
-    request_string += str(street).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
-    request_string += str(housenumber).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
-    request_string += str(asset['city']).replace(" ", "%20").replace("ß", "%C3%9F").replace("/", "-").replace("nan", "").replace('ä', '%C3%A4').replace('ö', '%C3%B6').replace('ü', '%C3%BC').replace('Ä', '%C3%A4').replace('Ö', '%C3%B6').replace('Ü', '%C3%BC') + "%20"
-    request_string += str(asset['zip'])
-    
-    return (request_string)
-  
-  #Organize Data for Compettior Analysis
-  def organize_ca_data(self, entries, topic, marker_coords):
-    
-    # Create Variables
-    counter = 0
-    data_comp_analysis = []
-    coords = []
-
-    if topic == 'nursing_homes':
-      Variables.home_address_nh = []
-    else:
-      Variables.home_address_al = []
-    
-    for entry in entries:
-      if topic == "nursing_homes":
-        lat_entry = "%.6f" % float(entry['coord_lat'])
-        lng_entry = "%.6f" % float(entry['coord_lon'])
-      else:
-        lat_entry = "%.6f" % float(entry['coord_lat'])
-        lng_entry = "%.6f" % float(entry['coord_lon'])
-      for icon in Variables.activeIcons[topic]:
-          lng_icon = "%.6f" % icon['_lngLat']['lng']
-          lat_icon = "%.6f" % icon['_lngLat']['lat']
-          if lng_entry == lng_icon and lat_entry == lat_icon:
-            coords.append([lng_icon, lat_icon])
-            counter += 1
-            if topic == "nursing_homes":
-              if entry['anz_vers_pat'] == "-":
-                anz_vers_pat = "N/A"
-              else:
-                anz_vers_pat = int(entry['anz_vers_pat'])
-              if entry['platz_voll_pfl'] == "-":
-                platz_voll_pfl = "N/A"
-              else:
-                platz_voll_pfl = int(entry['platz_voll_pfl'])
-              if not anz_vers_pat == "N/A" and not platz_voll_pfl == "N/A":
-                occupancy_raw = round((anz_vers_pat * 100) / platz_voll_pfl)
-                if occupancy_raw > 100:
-                  occupancy_raw = 100
-                occupancy = f"{occupancy_raw} %"
-              else:
-                occupancy = "N/A"
-              if not entry['invest'] == "-":
-                if len(entry['invest']) == 4:
-                  if entry['invest'].index(".") == 2:
-                    invest = entry['invest'] + "0"
-                  else:
-                    invest = entry['invest']
-                else:
-                  invest = entry['invest']
-              else:
-                invest = "N/A"
-              if entry['ez'] == "-":
-                ez = "N/A"
-              else:
-                ez = int(entry['ez'])
-              if entry['dz'] == "-":
-                dz = "N/A"
-              else:
-                dz = int(entry['dz'])
-              if entry['baujahr'] == "-":
-                year = "N/A"
-              else:
-                year = int(entry['baujahr'])
-              if entry['betreiber'] == "-":
-                operator = "N/A"
-              else:
-                operator = entry['betreiber']
-              if entry['mdk_note'] == "-":
-                mdk = "N/A"
-              else:
-                mdk = entry['mdk_note']
-              data = {
-                "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                "platz_voll_pfl": platz_voll_pfl,
-                "ez": ez,
-                "dz": dz,
-                "anz_vers_pat": anz_vers_pat,
-                "occupancy": occupancy,
-                "baujahr": year,
-                "status": entry['status'],
-                "betreiber": operator.replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                "invest": invest,
-                "mdk_note": mdk,
-                "coords": [lng_icon, lat_icon]
-              }
-              data_comp_analysis.append(data)
-              break
-            elif topic == "assisted_living":
-              if entry['anz_wohnungen'] == '-':
-                number_apts = 'N/A'
-              else:
-                number_apts = int(float(entry['anz_wohnungen']))
-              if entry['betreiber'] == '-':
-                operator = 'N/A'
-              else:
-                operator = entry['betreiber']
-              data = {
-                "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                "operator": operator.replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                "type": entry['art'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                "city": entry['ort'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                "status": entry['status'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                "number_apts": number_apts,
-                "coords": [lng_icon, lat_icon]
-              }
-              data_comp_analysis.append(data)
-              break
-
-    # Sort Coordinates by Distance
-    sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
-    from .Market_Study_Existing_Home import Market_Study_Existing_Home
-    for entry in sorted_coords:
-      if entry[1] <= 0.01:
-        res = alert(content=Market_Study_Existing_Home(entry=entry, topic=topic), dismissible=False, large=True, buttons=[], role='custom_alert')
-        if res == 'Yes':
-          if topic == 'nursing_homes':
-            Variables.home_address_nh.append(entry)
-          else:
-            Variables.home_address_al.append(entry)
-      
-    if topic == 'nursing_homes':
-      if len(Variables.home_address_nh) == 0:
-        from .Market_Study_NH_Home import Market_Study_NH_Home
-        from .Market_Study_NH_Home_Mobile import Market_Study_NH_Home_Mobile
-        if self.mobile:
-          Variables.home_address_nh = alert(content=Market_Study_NH_Home_Mobile(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
-        else:
-          Variables.home_address_nh = alert(content=Market_Study_NH_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
-        if not Variables.home_address_nh == []:
-          sorted_coords.insert(0, Variables.home_address_nh)
-    else:
-      if Variables.home_address_al == []:
-        from .Market_Study_AL_Home import Market_Study_AL_Home
-        from .Market_Study_AL_Home_Mobile import Market_Study_AL_Home_Mobile
-        if self.mobile:
-          Variables.home_address_al = alert(content=Market_Study_AL_Home_Mobile(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
-        else:
-          Variables.home_address_al = alert(content=Market_Study_AL_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
-        if not Variables.home_address_al == []:
-          sorted_coords.insert(0, Variables.home_address_al)
-    
-    res_data = {'sorted_coords': sorted_coords, 'marker_coords': marker_coords}
-    
-    return res_data
-    
-  def build_req_string(self, res_data, topic):
-    
-    if topic == 'nursing_homes':
-      home_address = Variables.home_address_nh
-    else:
-      home_address = Variables.home_address_al
-      
-    for entry in home_address:
-      if entry in res_data['sorted_coords']:
-        ha_index = res_data['sorted_coords'].index(entry)
-        res_data['sorted_coords'][ha_index].append('home')
-    
-    #Build Request-String for Mapbox Static-Map-API
-    counter = 0
-    request = []
-    request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
-    request_static_map = request_static_map_raw
-    
-    index_coords = len(res_data['sorted_coords'])
-    for entry in res_data['sorted_coords']:
-      if 'home' in entry:
-        index_coords -= 1
-    last_coords = []
-    complete_counter = 0
-
-    test_counter = 0
-    last_coord_dist = 0 
-    for coordinate in res_data['sorted_coords']:
-      if not last_coord_dist == coordinate[1]:
-        if not 'home' in coordinate:
-          for second_coordinate in res_data['sorted_coords']:
-            if not coordinate == second_coordinate and coordinate[1] == second_coordinate[1]:
-              test_counter += 1
-      last_coord_dist = coordinate[1]
-    index_coords -= test_counter
-
-    last_coord_dist = 0
-    
-    for coordinate in reversed(res_data['sorted_coords']):
-      if not last_coord_dist == coordinate[1]:
-        counter += 1
-        url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/Pin{index_coords}x075.png'
-        encoded_url = url.replace("/", "%2F")
-        if complete_counter == len(res_data['sorted_coords']) - 1:
-          if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
-            if not counter == 1:
-              request_static_map += f"%2C"
-            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
-          counter = 0
-          if not request_static_map == request_static_map_raw:
-            request_static_map += f"%2C"
-          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
-          encoded_url = url.replace("/", "%2F")
-          request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
-          request.append(request_static_map)
-          request_static_map = request_static_map_raw
-          index_coords -= 1
-        elif counter == 10:
-          if not 'home' in coordinate:
-            if not coordinate[0]['coords'] == last_coords:
-              request_static_map += f"%2C%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-              counter = 0
-              request.append(request_static_map)
-              request_static_map = request_static_map_raw
-            else:
-              dupe_coord = True
-          index_coords -= 1
-        elif not 'home' in coordinate:
-          if not coordinate[0]['coords'] == last_coords:
-            if not counter == 1:
-              request_static_map += f"%2C"
-            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
-          else:
-            dupe_coord = True
-          index_coords -= 1
-        else:
-          request_static_map += f"%5D%7D"
-          counter = 0
-          request.append(request_static_map)
-          request_static_map = request_static_map_raw
-          break
-      last_coord_dist = coordinate[1]
-        
-      complete_counter += 1
-      last_coords = coordinate[0]['coords']
-    
-    if request == []:
-      url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
-      encoded_url = url.replace("/", "%2F")
-      request_static_map = request_static_map_raw + f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
-      request.append(request_static_map)
-      request_static_map = request_static_map_raw
-    
-    return({"data": res_data['sorted_coords'], "request": request, "request2": Variables.activeIso})
-
-  
-  def change_icons(self, checkbox):
-    
-    if checkbox == "Veterinary" and self.check_box_vet.checked == True:
-      Variables.last_bbox_vet = self.create_icons(False, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
-      Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
-    elif checkbox == "Social facility" and self.check_box_soc.checked == True:
-      Variables.last_bbox_soc = self.create_icons(False, Variables.last_bbox_soc, "social_facility", Variables.icon_social)  
-      Variables.last_bbox_soc = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, "social_facility", Variables.icon_social)   
-    elif checkbox == "Pharmacy" and self.check_box_pha.checked == True:
-      Variables.last_bbox_pha = self.create_icons(False, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
-      Variables.last_bbox_pha = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
-    elif checkbox == "Hospital" and self.check_box_hos.checked == True:
-      Variables.last_bbox_hos = self.create_icons(False, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
-      Variables.last_bbox_hos = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
-    elif checkbox == "Clinic" and self.check_box_cli.checked == True:
-      Variables.last_bbox_cli = self.create_icons(False, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
-      Variables.last_bbox_cli = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
-    elif checkbox == "Dentist" and self.check_box_den.checked == True:
-      Variables.last_bbox_den = self.create_icons(False, Variables.last_bbox_den, "dentist", Variables.icon_dentist) 
-      Variables.last_bbox_den = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
-    elif checkbox == "Doctors" and self.check_box_doc.checked == True:
-      Variables.last_bbox_doc = self.create_icons(False, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)
-      Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)
-    elif checkbox == "Nursing School" and self.check_box_nsc.checked == True:
-      Variables.last_bbox_nsc = self.create_icons(False, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools)
-      Variables.last_bbox_nsc = self.create_icons(self.check_box_nsc.checked, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools)    
-    elif checkbox == "Supermarket" and self.check_box_sma.checked == True:
-      Variables.last_bbox_sma = self.create_icons(False, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
-      Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
-    elif checkbox == "Restaurant" and self.check_box_res.checked == True:
-      Variables.last_bbox_res = self.create_icons(False, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant) 
-      Variables.last_bbox_res = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant)  
-    elif checkbox == "Cafe" and self.check_box_cafe.checked == True:
-      Variables.last_bbox_caf = self.create_icons(False, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
-      Variables.last_bbox_caf = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
-    elif checkbox == "University" and self.check_box_uni.checked == True:
-      Variables.last_bbox_uni = self.create_icons(False, Variables.last_bbox_uni, "university", Variables.icon_university) 
-      Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, "university", Variables.icon_university)  
-    elif checkbox == "Bus Stop" and self.check_box_bus.checked == True:
-      Variables.last_bbox_bus = self.create_icons(False, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)
-      Variables.last_bbox_bus = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)  
-    elif checkbox == "Tram Stop" and self.check_box_tra.checked == True:
-      Variables.last_bbox_tra = self.create_icons(False, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
-      Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
-    elif checkbox == "Nursing Home" and self.pdb_data_cb.checked == True:
-      Variables.last_bbox_nh = self.create_icons(False, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
-      Variables.last_bbox_nh = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
-    elif checkbox == "Assisted Living" and self.pdb_data_al.checked == True:
-      Variables.last_bbox_al = self.create_icons(False, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
-      Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
-
-  def select_all_change(self, **event_args):
-    if event_args['sender'].tag.categorie == 'Healthcare':
-        self.check_box_vet.checked = event_args['sender'].checked
-        self.check_box_soc.checked = event_args['sender'].checked
-        self.check_box_pha.checked = event_args['sender'].checked
-        self.check_box_hos.checked = event_args['sender'].checked
-        self.check_box_cli.checked = event_args['sender'].checked
-        self.check_box_den.checked = event_args['sender'].checked
-        self.check_box_doc.checked = event_args['sender'].checked
-        self.check_box_nsc.checked = event_args['sender'].checked
-        self.check_box_pdt.checked = event_args['sender'].checked
-        self.check_box_hd.checked = event_args['sender'].checked
-        self.check_box_vet.raise_event('change')
-        if event_args['sender'].checked:
-          time.sleep(1)
-        self.check_box_soc.raise_event('change')
-        if event_args['sender'].checked:
-          time.sleep(1)
-        self.check_box_pha.raise_event('change')
-        if event_args['sender'].checked:
-          time.sleep(1)
-        self.check_box_hos.raise_event('change')
-        if event_args['sender'].checked:
-          time.sleep(1)
-        self.check_box_cli.raise_event('change')
-        if event_args['sender'].checked:
-          time.sleep(1)
-        self.check_box_den.raise_event('change')
-        if event_args['sender'].checked:
-          time.sleep(1)
-        self.check_box_doc.raise_event('change')
-        if event_args['sender'].checked:
-          time.sleep(1)
-        self.check_box_nsc.raise_event('change')
-        if event_args['sender'].checked:
-          time.sleep(1)
-        self.check_box_pdt.raise_event('change')
-        if event_args['sender'].checked:
-          time.sleep(1)
-        self.check_box_hd.raise_event('change')
-        if event_args['sender'].checked:
-          time.sleep(1)
-    elif event_args['sender'].tag.categorie == 'Miscelaneous':
-      self.check_box_sma.checked = event_args['sender'].checked
-      self.check_box_res.checked = event_args['sender'].checked
-      self.check_box_cafe.checked = event_args['sender'].checked
-      self.check_box_uni.checked = event_args['sender'].checked
-      self.check_box_sma.raise_event('change')
-      self.check_box_res.raise_event('change')
-      self.check_box_cafe.raise_event('change')
-      self.check_box_uni.raise_event('change')
-    elif event_args['sender'].tag.categorie == 'ÖPNV':
-      self.check_box_bus.checked = event_args['sender'].checked
-      self.check_box_tra.checked = event_args['sender'].checked
-      self.check_box_bus.raise_event('change')
-      self.check_box_tra.raise_event('change')
-    pass
-
-  def iso_layer_active_change(self, **event_args):
-    if event_args['sender'].checked:
-      self.mapbox.setLayoutProperty('isoLayer', 'visibility', 'visible')
-    else:
-      self.mapbox.setLayoutProperty('isoLayer', 'visibility', 'none')
-    pass
-
-  def hide_ms_marker_change(self, **event_args):
-    """This method is called when this checkbox is checked or unchecked"""
-    if event_args['sender'].checked:
-      self.marker.addTo(self.mapbox)
-    else:
-      self.marker.remove()
-    pass
-
-  def change_cluster_color_click(self, **event_args):
-    """This method is called when the button is clicked"""
-    from .Change_Cluster_Color import Change_Cluster_Color
-    response = alert(content=Change_Cluster_Color(components=self.icon_grid.get_components(), mobile=self.mobile), dismissible=False, large=True, buttons=[], role='custom_alert')
-    for key in Variables.marker:
-      if key in response:
-        Variables.marker[key]['color'] = response[key]
-        for marker in Variables.marker[key]['marker']:
-          anvil.js.call('changeBackground', marker['_element'], Variables.marker[key]["color"][2])
-    for component in self.icon_grid.get_components():
-      if type(component) == CheckBox:
-        key = component.text
-      elif type(component) == Label:
-        component.foreground = Variables.marker[key]["color"][1]
-    pass
-
-  
-  def create_cluster_marker(self, cluster_data):
-
-    ##### UMSCHREIBEN #####
-    
-    #Initialise Variables
-    excel_markers = {}
-    added_clusters = []
-    colors = [
-        ['white', '#ffffff', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_white.png'],
-        ['blue', '#234ce2', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_blue.png'],
-        ['green', '#438e39', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_green.png'],
-        ['grey', '#b3b3b3', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_grey.png'],
-        ['lightblue', '#2fb2e0', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_lightblue.png'],
-        ['orange', '#fc9500', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_orange.png'],
-        ['pink', '#e254b7', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_pink.png'],
-        ['red', '#d32f2f', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_red.png'],
-        ['yellow', '#f4de42', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_yellow.png'],
-        ['gold', '#ccb666', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_gold.png']
-      ]
-
-    #Create Settings
-    self.icon_grid.row_spacing = 0
-    counter = 0
-    
-    for asset in cluster_data['data']:
-
-      # Create HTML Element for Icon
-      el = document.createElement('div')
-      el.className = f'{asset["address"]}'
-      el.style.width = '40px'
-      el.style.height = '40px'
-      el.style.backgroundSize = '100%'
-      el.style.backgroundrepeat = 'no-repeat'
-      el.style.zIndex = '251'
-
-      cluster_name = asset['cluster']
-
-      color = cluster_data['settings'][cluster_name]['color']
-      if cluster_name not in added_clusters:
-        checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
-        checkbox.add_event_handler('change', self.check_box_marker_icons_change)
-        icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none')
-        self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=1, width_xs=8)
-        self.icon_grid.add_component(icon, row=cluster_name, col_xs=9, width_xs=1)
-        added_clusters.append(cluster_name)
-
-      # #Get Coordinates of provided Adress for Marker
-      req_str = self.build_request_string(asset)
-      req_str += f'.json?access_token={self.token}'
-      coords = anvil.http.request(req_str,json=True)
-      coordinates = coords['features'][0]['geometry']['coordinates']
-
-      if 'marker' not in cluster_data['settings'][cluster_name].keys():
-        cluster_data['settings'][cluster_name]['marker'] = []
-      el.style.backgroundImage = f'url({color[2]})'
-      new_list = self.set_excel_markers(cluster_data['settings'][cluster_name]['static'], coordinates, cluster_data['settings'][cluster_name]['marker'], el)
-      cluster_data['settings'][cluster_name]['marker'] = new_list
-      
-      # Create Popup for Marker and add it to the Map
-      # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
-      # popup.setHTML(data[0][markercount]['Informationen'])
-      # popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[0][markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
-      # popup_static.addTo(self.mapbox)
-      
-      #Increase Markercount
-      # markercount += 1
-      
-    # Add Marker-Arrays to global Variable Marker
-    Variables.marker.update(cluster_data['settings'])
-
-    anvil.js.call('remove_span')
-    
-    self.cluster_btn.visible = True
-    self.invest_class_btn.visible = True
-    self.invest_class_btn.raise_event('click')
-    self.cluster_btn.raise_event('click')
-    self.button_icons.raise_event('click')
+      self.button_icons.raise_event('click')
 
   
   def mobile_hide_click(self, **event_args):
-    mobile_menu = document.getElementsByClassName('left-nav')[0]
-    nav_icon = document.getElementById('mobile-menu')
-    mobile_menu.style.height = '0'
-    time.sleep(.82)
-    nav_icon.style.display = 'flex'
-    pass
+    with anvil.server.no_loading_indicator:
+      mobile_menu = document.getElementsByClassName('left-nav')[0]
+      if self.mobile_hide.icon == 'fa:angle-down':
+        mobile_menu.style.height = '7%'
+        self.mobile_hide.icon = 'fa:angle-up'
+        mobile_menu.style.overflowY = 'hidden'
+        mobile_menu.scrollTop = 0
+        if self.last_menu_height == '100%':
+          mobile_menu.style.borderTopLeftRadius = '10px'
+          mobile_menu.style.borderTopRightRadius = '10px'
+      else:
+        mobile_menu.style.overflowY = 'auto'
+        mobile_menu.style.height = self.last_menu_height
+        self.mobile_hide.icon = 'fa:angle-down'
+        if self.last_menu_height == '100%':
+          mobile_menu.style.borderTopLeftRadius = '0'
+          mobile_menu.style.borderTopRightRadius = '0'
+      pass
+
+
+  def mobile_expend_click(self, **event_args):
+    with anvil.server.no_loading_indicator:
+      mobile_menu = document.getElementsByClassName('left-nav')[0]
+      if self.menu_expand.icon == 'fa:expand':
+        mobile_menu.style.height = '100%'
+        self.menu_expand.icon = 'fa:compress'
+        self.last_menu_height = '100%'
+        mobile_menu.style.borderTopLeftRadius = '0'
+        mobile_menu.style.borderTopRightRadius = '0'
+        if self.mobile_hide.icon == 'fa:angle-up':
+          self.mobile_hide.icon = 'fa:angle-down'
+          mobile_menu.style.overflowY = 'auto'
+      else:
+        mobile_menu.style.height = '30%'
+        self.menu_expand.icon = 'fa:expand'
+        self.last_menu_height = '30%'
+        mobile_menu.style.borderTopLeftRadius = '10px'
+        mobile_menu.style.borderTopRightRadius = '10px'
+        if self.mobile_hide.icon == 'fa:angle-up':
+          self.mobile_hide.icon = 'fa:angle-down'
+          mobile_menu.style.overflowY = 'auto'
+      pass

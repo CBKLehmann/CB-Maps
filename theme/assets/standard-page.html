@@ -20,9 +20,9 @@
           <div id="moving-bar" class="moving-bar"></div>
         </div>
       </div>
-      <div class="mobile-menu" id="mobile-menu">
+<!--       <div class="mobile-menu" id="mobile-menu">
         <img class="mobile-menu-icon" src="https://raw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/speisekarte.png" />
-      </div>
+      </div> -->
     </div>
   </div>
 <!--   <div class="nav-shield"></div>
@@ -77,12 +77,12 @@
     }
   }
   
-  function show_mun_info(html) {
+  // function show_mun_info(html) {
   
-    document.getElementById('info').innerHTML = html
-    document.getElementById('info').style.display = 'block'
+  //   document.getElementById('info').innerHTML = html
+  //   document.getElementById('info').style.display = 'block'
     
-  }
+  // }
   
   function hide_mun_info() {
     
@@ -204,27 +204,22 @@
     console.log(ele)
     let content = document.getElementsByClassName('content')[0]
     let details = document.createElement('div')
-    details.innerHTML = ele
+    details.innerHTML = ele.webseite
     details.className = 'marker_details'
     content.appendChild(details)
   }
 
   function update_loading_bar(percent, message) {
     lb = document.getElementsByClassName('loading-bar')[0]
+    lb_container = document.getElementById('loading-bar_container')
     lb_text = document.getElementsByClassName('loading-bar_text')[0]
-    lb_moving = document.getElementsByClassName('moving-bar')[0]
-    // lock = document.getElementsByClassName('lock-modal')[0]
     lb.style.width = `${percent}%`
     lb_text.innerHTML = message
 
     if (percent === 0) {
-      lb_text.style.visibility = 'hidden'
-      // lock.style.visibility = 'hidden'
-      lb_moving.style.visibility = 'hidden'
+      lb_container.style.visibility = 'hidden'
     } else {
-      lb_text.style.visibility = 'visible'
-      // lock.style.visibility = 'visible'
-      lb_moving.style.visibility = 'visible'
+      lb_container.style.visibility = 'visible'
     }
   }
 
