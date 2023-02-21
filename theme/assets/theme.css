@@ -101,6 +101,7 @@ body {
   line-height: 1.4286;
   background-color: #fafafa;
   overflow: hidden;
+  cursor: default;
 }
 
 @media print {
@@ -1318,7 +1319,7 @@ select > option {
 }
 
 .tag {
-  border: 1px solid rgb(62, 62, 62);
+  border: 1px solid rgb(204, 182, 102);
   border-radius: 5px;
   height: 24px;
   display: flex;
@@ -1336,4 +1337,8 @@ select > option {
   width: 100%;
   opacity: .25;
   margin-bottom: 10px;
+}
+
+.mapboxgl-canvas {
+  cursor: default;
 }

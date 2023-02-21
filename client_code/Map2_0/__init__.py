@@ -2779,6 +2779,7 @@ class Map2_0(Map2_0Template):
                 el.style.backgroundSize = '100%'
                 el.style.backgroundrepeat = 'no-repeat'
                 el.style.zIndex = '220'
+                el.style.cursor = 'pointer'
       
                 # Create Icon
                 el.style.backgroundImage = f'url({picture})'
