@@ -1342,10 +1342,16 @@ select > option {
   cursor: default;
 }
 
+.rmv_container {
+  display: flex;
+  justify-content: end;
+}
+
 #remove {
   margin-bottom: 5px;
-  position: absolute;
+  position: relative;
   right: 0;
+  bottom: 0;
   color: %color:Gray 300%;
 }
 

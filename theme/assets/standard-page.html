@@ -34,6 +34,7 @@
   let response = 'none';
   let lastTarget = null;
   let activeContainer = null;
+  let lastPopup = null;
   
   function hideSidebar() {
     var ln = $('.structure > .nav-holder > .left-nav');
@@ -187,16 +188,31 @@
   function addHoverEffect(container, popup, map, marker, ele, category, marker_details) {
 
     container.addEventListener('mouseenter', () => addPopup(popup, map, ele, category, marker_details, container, marker));
-    container.addEventListener('mouseleave', () => popup.remove());
+    container.addEventListener('mouseleave', () => removePopup(popup));
     container.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e))
   }
 
   function addPopup(popup, map, ele, category, marker_details, container, marker, e) {
-    popup.addTo(map)
-    pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
-    pop.addEventListener('mouseenter', () => popup.addTo(map));
-    pop.addEventListener('mouseleave', () => popup.remove());
-    pop.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e))
+    if (popup !== lastPopup) {
+      lastPopup = popup
+      popup.addTo(map)
+      pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
+      pop.addEventListener('mouseenter', () => readdPopup(popup, map));
+      pop.addEventListener('mouseleave', () => removePopup(popup));
+      pop.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e)) 
+    }
+  }
+
+  function removePopup(popup) {
+    popup.remove()
+    lastPopup = null
+  }
+
+  function readdPopup(popup, map) {
+    if (popup !== lastPopup) {
+      popup.remove()
+      popup.addTo(map) 
+    }
   }
 
   function removeMarker(marker, content, details) {
@@ -209,26 +225,28 @@
     removeDetails(e)
     lastTarget = e.target
     activeContainer = container
-    console.log(category)
-    console.log(ele)
     let content = document.getElementsByClassName('content')[0]
-    let details = document.createElement('div')
-    container.style.width = "50px"
-    container.style.height = "50px"
-    details.innerHTML = marker_details
-    details.className = 'marker_details'
-    details.id = 'marker_details'
-    content.appendChild(details)
-    btn = document.getElementById('remove')
-    btn.addEventListener('click', () => removeMarker(marker, content, details))
+    let markerDetails = content.getElementsByClassName('marker_details')
+    console.log(markerDetails.length)
+    if (markerDetails.length < 1) {
+      let details = document.createElement('div')
+      container.style.width = "50px"
+      container.style.height = "50px"
+      container.style.zIndex = "221"
+      details.innerHTML = marker_details
+      details.className = 'marker_details'
+      details.id = 'marker_details'
+      content.appendChild(details)
+      btn = document.getElementById('remove')
+      btn.addEventListener('click', () => removeMarker(marker, content, details)) 
+    }
   }
 
   function removeDetails(e) {
-    console.log(e.target)
-    console.log(lastTarget)
     if (e.target !== lastTarget && lastTarget !== null) {
       activeContainer.style.width = "40px"
       activeContainer.style.height = "40px"
+      activeContainer.style.zIndex = "220"
       details = document.getElementById('marker_details')
       content = document.getElementsByClassName('content')[0]
       content.removeChild(details)
