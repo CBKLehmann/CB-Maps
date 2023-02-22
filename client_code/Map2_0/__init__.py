@@ -2767,6 +2767,7 @@ class Map2_0(Map2_0Template):
       
               #Create empty Icons Array to save Elements
               icons = []
+              id_counter = 0
       
               # Loop through every Element in geojson
               for ele in geojson:
@@ -2774,6 +2775,7 @@ class Map2_0(Map2_0Template):
                 # Create HTML Element for Icon
                 el = document.createElement('div')
                 el.className = 'marker'
+                el.id = f'{category}_{id_counter}'
                 el.style.width = '40px'
                 el.style.height = '40px'
                 el.style.backgroundSize = '100%'
@@ -2918,7 +2920,7 @@ class Map2_0(Map2_0Template):
                   marker_details += "<div class='line'></div>"
                   marker_details += f"<p><b>Träger ID: </b> {ele['traeger_id']}</p>"
                   marker_details += f"<p><b>IK_Nummer: </b> {ele['ik_nummer']}</p>"
-                  marker_details += "<button id='remove'>Remove Marker</button>"
+                  marker_details += "<button id='remove' class='btn btn-default'>Remove Marker</button>"
       
                 elif category == 'assisted_living':
   

@@ -1341,3 +1341,14 @@ select > option {
 .mapboxgl-canvas {
   cursor: default;
 }
+
+#remove {
+  margin-bottom: 5px;
+  position: absolute;
+  right: 0;
+  color: %color:Gray 300%;
+}
+
+.mapboxgl-popup-content {
+  cursor: pointer;
+}

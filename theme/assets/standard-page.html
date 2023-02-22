@@ -186,17 +186,27 @@
 
   function addHoverEffect(container, popup, map, marker, ele, category, marker_details) {
 
-    container.addEventListener('mouseenter', () => popup.addTo(map));
+    container.addEventListener('mouseenter', () => addPopup(popup, map, ele, category, marker_details, container, marker));
     container.addEventListener('mouseleave', () => popup.remove());
     container.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e))
+  }
+
+  function addPopup(popup, map, ele, category, marker_details, container, marker, e) {
+    popup.addTo(map)
+    pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
+    pop.addEventListener('mouseenter', () => popup.addTo(map));
+    pop.addEventListener('mouseleave', () => popup.remove());
+    pop.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e))
   }
 
   function removeMarker(marker, content, details) {
     marker.remove()
     content.removeChild(details)
+    lastTarget = null;
   }
 
   function showDetails(ele, category, marker_details, container, marker, e) {
+    removeDetails(e)
     lastTarget = e.target
     activeContainer = container
     console.log(category)
@@ -217,7 +227,6 @@
     console.log(e.target)
     console.log(lastTarget)
     if (e.target !== lastTarget && lastTarget !== null) {
-      console.log('Here')
       activeContainer.style.width = "40px"
       activeContainer.style.height = "40px"
       details = document.getElementById('marker_details')
