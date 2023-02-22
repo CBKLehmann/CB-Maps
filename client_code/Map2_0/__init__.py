@@ -3033,6 +3033,7 @@ class Map2_0(Map2_0Template):
                 else:
                   
                   # Create Popup for Element
+                  marker_details = f
                   popup = mapboxgl.Popup({'offset': 25}).setHTML(
                     f'{name}'
                     '<br>'
