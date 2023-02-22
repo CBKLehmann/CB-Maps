@@ -2918,6 +2918,7 @@ class Map2_0(Map2_0Template):
                   marker_details += "<div class='line'></div>"
                   marker_details += f"<p><b>Träger ID: </b> {ele['traeger_id']}</p>"
                   marker_details += f"<p><b>IK_Nummer: </b> {ele['ik_nummer']}</p>"
+                  marker_details += "<button id='remove'>Remove Marker</button>"
       
                 elif category == 'assisted_living':
   
@@ -3078,17 +3079,10 @@ class Map2_0(Map2_0Template):
                 # Add Icon to the Map
                 newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
                 newiconElement = newicon.getElement()
-  
-                context = mapboxgl.Popup({'anchor': 'top', 'offset': 10, 'className': 'markerPopup'}).setHTML(
-                  '<button id="details">More Details</button>'
-                  '<button id="remove">Remove Marker</button>'
-                )
-  
-                newicon.setPopup(context)
 
                 from .Marker_Details_NH import Marker_Details_NH
                 
-                anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, context, newicon, ele, category, marker_details)
+                anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details)
       
                 # Add current Element-Icon to Icon-Array
                 icons.append(newicon)
