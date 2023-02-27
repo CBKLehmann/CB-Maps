@@ -2308,7 +2308,8 @@ class Map2_0(Map2_0Template):
   #This method is called when a new file is loaded into the FileLoader
   def file_loader_upload_change(self, file, **event_args):  
     with anvil.server.no_loading_indicator:
-      self.mobile_hide_click()
+      if self.mobile:
+        self.mobile_hide_click()
       
       #Call Server-Function to safe the File  
       self.cluster_data = anvil.server.call('save_local_excel_file', file)
@@ -2973,9 +2974,12 @@ class Map2_0(Map2_0Template):
                   # Parting Line
                   marker_details += "<div class='partingLine'></div>"
                   # Operator
-                  marker_details += f"<p>Betreiber: {ele['betreiber']}</p>"
-                  marker_details += f"<p>Tochterfirma 1: {ele['tochterfirma1']}</p>"
-                  marker_details += f"<p>Tochterfirma 2: {ele['tochterfirma2']}</p>"
+                  if not ele['betreiber'] == "-":
+                    marker_details += f"<p>Betreiber: {ele['betreiber']}</p>"
+                  if not ele['tochterfirma1'] == "-":
+                    marker_details += f"<p>Tochterfirma 1: {ele['tochterfirma1']}</p>"
+                  if not ele['tochterfirma2'] == "-":
+                    marker_details += f"<p>Tochterfirma 2: {ele['tochterfirma2']}</p>"
                   # Parting Line
                   marker_details += "<div class='partingLine'></div>"
                   #Flats
@@ -2986,7 +2990,6 @@ class Map2_0(Map2_0Template):
                   marker_details += f"<p><b>Miete bis:</b> {miete_bis}</p>"
                   marker_details += "<div class='line'></div>"
                   marker_details += f"<p><b>Träger ID:</b> {ele['traeger_id']}</p>"
-                  marker_details += f"<p><b>IK_Nummer:</b> {ele['ik_nummer']}</p>"
                   marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
       
                   # Create Popup for Element
