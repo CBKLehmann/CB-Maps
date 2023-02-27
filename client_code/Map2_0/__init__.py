@@ -3604,6 +3604,7 @@ class Map2_0(Map2_0Template):
       #Initialise Variables
       excel_markers = {}
       added_clusters = []
+      added_invest_classes = []
       colors = [
           ['white', '#ffffff', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_white.png'],
           ['blue', '#234ce2', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_blue.png'],
@@ -3616,14 +3617,21 @@ class Map2_0(Map2_0Template):
           ['yellow', '#f4de42', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_yellow.png'],
           ['gold', '#ccb666', 'https://zetghzb6w4un4lyk.anvil.app/debug/T5E7J2EZIGF6AR3RZYZ7UHVIF5XNZWTG%3DZ3JSVNM5PITXRDNWBYDJB25T/_/theme/Pins/CB_MapPin_gold.png']
         ]
+
+      invests = {
+          'Super Core': '/_/theme/Pins/CB_MapPin_Sc.png',
+          'Core/ Core+': '/_/theme/Pins/CB_MapPin_CC.png',
+          'Value Add': '/_/theme/Pins/CB_MapPin_VA.png',
+          'Opportunistic': '/_/theme/Pins/CB_MapPin_Opp.png',
+          'Development': '/_/theme/Pins/CB_MapPin_Dev.png',
+          'Workout': '/_/theme/Pins/CB_MapPin_Wo.png'
+        }
   
       #Create Settings
       self.icon_grid.row_spacing = 0
       counter = 0
       
       for asset in cluster_data['data']:
-
-        print(asset)
   
         # Create HTML Element for Icon
         el = document.createElement('div')
@@ -3633,7 +3641,16 @@ class Map2_0(Map2_0Template):
         el.style.backgroundSize = '100%'
         el.style.backgroundrepeat = 'no-repeat'
         el.style.zIndex = '251'
-  
+
+        # Create HTML Element for Invest Class Icon
+        inv_el = document.createElement('div')
+        inv_el.className = f'{asset["address"]}_investment'
+        inv_el.style.width = '40px'
+        inv_el.style.height = '40px'
+        inv_el.style.backgroundSize = '100%'
+        inv_el.style.backgroundrepeat = 'no-repeat'
+        inv_el.style.zIndex = '252'
+        
         cluster_name = asset['cluster']
   
         color = cluster_data['settings'][cluster_name]['color']
@@ -3644,6 +3661,12 @@ class Map2_0(Map2_0Template):
           self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=1, width_xs=8)
           self.icon_grid.add_component(icon, row=cluster_name, col_xs=9, width_xs=1)
           added_clusters.append(cluster_name)
+
+        if asset['invest_class'] not in added_invest_classes:
+          checkbox = CheckBox(checked=True, text=asset['invest_class'], spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
+          checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+          self.invest_grid.add_component(checkbox, row=asset['invest_class'], col_xs=1, width_xs=12)
+          added_invest_classes.append(asset['invest_class'])
   
         # #Get Coordinates of provided Adress for Marker
         req_str = self.build_request_string(asset)
@@ -3655,7 +3678,12 @@ class Map2_0(Map2_0Template):
           cluster_data['settings'][cluster_name]['marker'] = []
         el.style.backgroundImage = f'url({color[2]})'
         new_list = self.set_excel_markers(cluster_data['settings'][cluster_name]['static'], coordinates, cluster_data['settings'][cluster_name]['marker'], el)
-        cluster_data['settings'][cluster_name]['marker'] = new_list
+        cluster_data['settings'][asset['invest_class']]['marker'] = new_list
+        if 'marker' not in cluster_data['settings'][asset['invest_class']].keys():
+          cluster_data['settings'][asset['invest_class']]['marker'] = []
+        inv_el.style.backgroundImage = f"url({self.app_url}{invests[asset['invest_class']]})"
+        new_list = self.set_excel_markers(cluster_data['settings'][asset['invest_class']]['static'], coordinates, cluster_data['settings'][asset['invest_class']]['marker'], inv_el)
+        cluster_data['settings'][asset['invest_class']]['marker'] = new_list
         
         # Create Popup for Marker and add it to the Map
         # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
