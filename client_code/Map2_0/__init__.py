@@ -2904,8 +2904,11 @@ class Map2_0(Map2_0Template):
                   # Parting Line
                   marker_details += "<div class='partingLine'></div>"
                   # MDK Grade
-                  date = ele['mdk_datum'].split('-')
-                  marker_details += f"<p>MDK Bewertung vom {date[2]}.{date[1]}.{date[0]}</p>"
+                  if not ele['mdk_datum'] == "-":
+                    date = ele['mdk_datum'].split('-')
+                    marker_details += f"<p>MDK Bewertung vom {date[2]}.{date[1]}.{date[0]}</p>"
+                  else:
+                    marker_details += f"<p>MDK Bewertung vom {ele['mdk_datum']}</p>"
                   marker_details += f"<p><b>Pflege und medizinische Versorgung: </b> {ele['pfl_u_med_vers']}</p>"
                   marker_details += f"<p><b>Umgang mit demenzkranken Bewohnern: </b> {ele['umg_mit_dem_bew']}</p>"
                   marker_details += f"<p><b>Soziale Betreuung und Alltagsgestaltung: </b> {ele['soz_betrualltag']}</p>"
@@ -3619,6 +3622,8 @@ class Map2_0(Map2_0Template):
       counter = 0
       
       for asset in cluster_data['data']:
+
+        print(asset)
   
         # Create HTML Element for Icon
         el = document.createElement('div')
