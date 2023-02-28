@@ -40,6 +40,7 @@ class Map2_0(Map2_0Template):
         self.token = anvil.server.call_s('get_token')
         self.app_url = anvil.server.call_s('get_app_url')
         self.last_menu_height = '30%'
+        self.cluster_data = {}
 
   
   def form_show(self, **event_args):
@@ -155,12 +156,6 @@ class Map2_0(Map2_0Template):
         self.profile_dropdown.selected_value = data['distance_movement']
         self.profile_dropdown.raise_event('change')
         self.checkbox_poi_x_hfcig.checked = data['iso_layer']
-        self.pdb_data_al.checked = data['assisted_living']
-        self.pdb_data_cb.checked = data['nursing_homes']
-        if data['assisted_living']:
-          self.pdb_data_al.raise_event('change')
-        if data['nursing_homes']:
-          self.pdb_data_cb.raise_event('change')
         healthcare_components = self.poi_categories_healthcare_container.get_components()
         if data['poi_healthcare'][0] == '1':
           healthcare_components[0].checked = True
@@ -437,7 +432,6 @@ class Map2_0(Map2_0Template):
       # anvil.server.call('read_regularien')
       # anvil.server.call('get_db_stations')
   
-      url = anvil.server.call('get_app_url') + f'#?name=Test'
       poi_healthcare = ""
       poi_miscelaneous = ""
       poi_opnv = ""
@@ -475,6 +469,10 @@ class Map2_0(Map2_0Template):
         'data': self.cluster_data,
         'settings': Variables.marker
       }
+
+      from .Name_Share_Link import Name_Share_Link
+      name = alert(content=Name_Share_Link(), buttons=[], dismissible=False, large=True, role='custom_alert')
+      url = anvil.server.call('get_app_url') + f'#?name={name}'
       
       dataset = {
         'marker_lng': self.marker['_lngLat']['lng'],
@@ -487,10 +485,8 @@ class Map2_0(Map2_0Template):
         'poi_healthcare': poi_healthcare,
         'poi_misc': poi_miscelaneous,
         'poi_opnv': poi_opnv,
-        'nursing_homes': self.pdb_data_cb.checked,
-        'assisted_living': self.pdb_data_al.checked,
         'iso_layer': self.checkbox_poi_x_hfcig.checked,
-        'name': 'Test', #Need to be added
+        'name': name,
         'url': url,
         'study_pin': study_pin,
         'zoom': self.mapbox.getZoom()
