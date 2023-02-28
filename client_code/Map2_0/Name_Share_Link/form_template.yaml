@@ -10,10 +10,10 @@ components:
   - type: Label
     properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
       visible: true, text: Rename your Share Link, font_size: 13, font: '', spacing_above: small,
-      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
-      underline: false, icon: ''}
+      icon_align: right_edge, spacing_below: small, italic: false, background: '',
+      bold: false, underline: false, icon: 'fa:minus'}
     name: heading
-    layout_properties: {row: NLBOIU, width_xs: 10, col_xs: 1, width: 803.333}
+    layout_properties: {row: NLBOIU, width_xs: 10, col_xs: 1, width: 556.104}
   - type: TextBox
     properties: {}
     name: input
