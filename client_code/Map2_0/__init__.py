@@ -2712,11 +2712,34 @@ class Map2_0(Map2_0Template):
 
               if category == 'subway':
 
+                #Create empty Icons Array to save Elements
+                icons = []
+                id_counter = 0
+                
                 for route in geojson:
                   coordinates = []
                   for point in route['members']:
-                    print(point)
                     if point['role'] == 'stop':
+
+                      # Create HTML Element for Icon
+                      el = document.createElement('div')
+                      el.className = 'marker'
+                      el.id = f'{category}_{id_counter}'
+                      el.style.width = '40px'
+                      el.style.height = '40px'
+                      el.style.backgroundSize = '100%'
+                      el.style.backgroundrepeat = 'no-repeat'
+                      el.style.zIndex = '220'
+                      el.style.cursor = 'pointer'
+            
+                      # Create Icon
+                      el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/U_Bahn_Pin.png)'
+
+                      # Add Icon to the Map
+                      newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat([point['lon'], point['lat']]).setOffset([0, 0]).addTo(self.mapbox)
+
+                      id_counter += 1
+                      
                       coordinates.append([point['lon'], point['lat']])
                   geometry = {
                     'type': 'LineString',
