@@ -2709,336 +2709,368 @@ class Map2_0(Map2_0Template):
       
             # Do if Elements are under 3000
             else:
-      
-              #Create empty Icons Array to save Elements
-              icons = []
-              id_counter = 0
-      
-              # Loop through every Element in geojson
-              for ele in geojson:
-      
-                # Create HTML Element for Icon
-                el = document.createElement('div')
-                el.className = 'marker'
-                el.id = f'{category}_{id_counter}'
-                el.style.width = '40px'
-                el.style.height = '40px'
-                el.style.backgroundSize = '100%'
-                el.style.backgroundrepeat = 'no-repeat'
-                el.style.zIndex = '220'
-                el.style.cursor = 'pointer'
-      
-                # Create Icon
-                el.style.backgroundImage = f'url({picture})'
-      
-                # Check if Category is not PflegeDB
-                if not category == 'nursing_homes':
-            
-                  if not category == 'assisted_living':
-  
-                    if not category == 'nursing-schools':
-                    
-                      # Get coordinates of current Icon
-                      el_coords = ele['geometry']['coordinates']
-          
-                      # Get different Informations from geojson
-                      city = ele['properties']['city']
-                      suburb = ele['properties']['suburb']
-                      street = ele['properties']['street']
-                      housenumber = ele['properties']['housenumber']
-                      postcode = ele['properties']['postcode']
-                      phone = ele['properties']['phone']
-                      website = ele['properties']['website']
-                      healthcare = ele['properties']['healthcare']
-                      name = ele['properties']['name']
-                      opening_hours = ele['properties']['opening_hours']
-                      wheelchair = ele['properties']['wheelchair']
-                      o_id = ele['properties']['id']
-                      fax = ele['properties']['fax']
-                      email = ele['properties']['email']
-                      speciality = ele['properties']['healthcare:speciality']
-                      operator = ele['properties']['operator']
-  
-                    else:
-  
-                      name = ele['name']
-                      street = ele['street']
-                      postcode = ele['postcode']
-                      city = ele['city']
-                      telefon = ele['telefon']
-                      email = ele['email']
-                      web = ele['web']
-                      degree = ele['degree']
-                      parttime_education = ele['parttime-education']
-                      certificate = ele['certificate']
-                      district_code = ele['district-code']
-                      inserted = ele['inserted']
-                      updated = ele['updated']
-                      el_coords = [ ele['longitude'], ele['lattitude'] ]
-      
-                # Check if Category is Bus or Tram
-                if category == 'bus_stop' or category == 'tram_stop':
 
-                  marker_details = f"<div class='objectName'>{name}</div>"
-                  marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
-                  
-                  # Create Popup for Element
-                  popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
-                    f"<p class='popup_name'><b>{name}</b></p>"
-                  )
-                  
-                # Check if Category is PflegeDB
-                elif category == 'nursing_homes':
-      
-                  el_coords = [ele['coord_lon'], ele['coord_lat']]
-      
-                  # Create Popup for Element
-                  popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
-                    f"<p class='popup_name'><b>{ele['name']}</b></p>"
-                    f"<p class='popup_type'>{ele['sektor']}</p>"
-                    "<p class='popup_betreiber_label'><b>Betreiber:</b></p>"
-                    f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
-                    f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
-                  )
-                  # Name of Object
-                  marker_details = f"<div class='objectName'>{ele['name']}</div>"
-                  # Tags
-                  marker_details += "<div class='tagContainer'>"
-                  marker_details += f"<p class='tag'>{ele['sektor']}</p>"
-                  marker_details += f"<p class='tag'>{ele['art']}</p>"
-                  spez = ele['spezialisierung'].split('|')
-                  for entry in spez:
-                    marker_details += f"<p class='tag'>{entry}</p>"
-                  marker_details += f"<p class='tag'>{ele['status']}</p>"
-                  marker_details += "</div>"
-                  # Year of Construction/Modernisation
-                  marker_details += f"<p>Baujahr: {ele['baujahr']}</p>"
-                  marker_details += f"<p>Modernisierungsjahr: {ele['modernisierung']}</p>"
-                  # Parting Line
-                  marker_details += "<div class='partingLine'></div>"
-                  # Contact Details
-                  marker_details += f"<p>{ele['strasse']}, {ele['plz']} {ele['ort']}"
-                  states = ['Berlin', 'Bremen', 'Hamburg']
-                  if not ele['bundesland'] in states:
-                    marker_details += f", {ele['bundesland']}</p>"
-                  else:
-                    marker_details += "</p>"
-                  marker_details += f"<p>{ele['telefon']}</p>"
-                  marker_details += f"<p>{ele['fax']}</p>"
-                  marker_details += f"<p>{ele['email']}</p>"
-                  marker_details += f"<p>{ele['webseite']}</p>"
-                  # Parting Line
-                  marker_details += "<div class='partingLine'></div>"
-                  # Operator
-                  marker_details += f"<p>Betreiber: {ele['betreiber']}</p>"
-                  marker_details += f"<p>Tochterfirma 1: {ele['tochterfirma1']}</p>"
-                  marker_details += f"<p>Tochterfirma 2: {ele['tochterfirma2']}</p>"
-                  # Parting Line
-                  marker_details += "<div class='partingLine'></div>"
-                  # MDK Grade
-                  if not ele['mdk_datum'] == "-":
-                    date = ele['mdk_datum'].split('-')
-                    marker_details += f"<p>MDK Bewertung vom {date[2]}.{date[1]}.{date[0]}</p>"
-                  else:
-                    marker_details += f"<p>MDK Bewertung vom {ele['mdk_datum']}</p>"
-                  marker_details += f"<p><b>Pflege und medizinische Versorgung: </b> {ele['pfl_u_med_vers']}</p>"
-                  marker_details += f"<p><b>Umgang mit demenzkranken Bewohnern: </b> {ele['umg_mit_dem_bew']}</p>"
-                  marker_details += f"<p><b>Soziale Betreuung und Alltagsgestaltung: </b> {ele['soz_betrualltag']}</p>"
-                  marker_details += f"<p><b>Wohnen, Verpflegung, Hauswirtschaft und Hygiene: </b> {ele['wohn_verpfl_hausw_hyg']}</p>"
-                  marker_details += f"<p><b>Befragung der Bewohner: </b> {ele['befr_bew']}</p>"
-                  marker_details += f"<p><b>MDK Note: </b> {ele['mdk_note']}</p>"
-                  marker_details += "<div class='partingLine'></div>"
-                  marker_details += f"<p><b>Anzahl versorgte Patienten: </b> {ele['anz_vers_pat']}</p>"
-                  
-                  marker_details += f"<p><b>Platzzahl vollständige Pflege: </b> {ele['platz_voll_pfl']}</p>"
-                  marker_details += f"<p><b>Platzzahl Kurzzeitpflege: </b> {ele['platz_kurzpfl']}</p>"
-                  marker_details += f"<p><b>Platzzahl Nachtpflege: </b> {ele['platz_nachtpfl']}</p>"
-                  
-                  marker_details += f"<p><b>Einzelzimmer: </b> {ele['ez']}</p>"
-                  marker_details += f"<p><b>Doppelzimmer: </b> {ele['dz']}</p>"
-                  marker_details += "<div class='line'></div>"
-                  marker_details += f"<p><b>Ausbildungsumlage: </b> {ele['ausbildungsumlage']}</p>"
-                  marker_details += f"<p><b>EEE: </b> {ele['eee']}</p>"
-                  marker_details += f"<p><b>UuV: </b> {ele['uuv']}</p>"
-                  marker_details += f"<p><b>Invest: </b> {ele['invest']}</p>"
-                  marker_details += f"<p><b>PG 1: </b> {ele['pg_1']}</p>"
-                  marker_details += f"<p><b>PG 2: </b> {ele['pg_2']}</p>"
-                  marker_details += f"<p><b>PG 3: </b> {ele['pg_3']}</p>"
-                  marker_details += f"<p><b>PG 4: </b> {ele['pg_4']}</p>"
-                  marker_details += f"<p><b>PG 5: </b> {ele['pg_5']}</p>"
-                  marker_details += "<div class='line'></div>"
-                  marker_details += f"<p><b>Träger ID: </b> {ele['traeger_id']}</p>"
-                  marker_details += f"<p><b>IK_Nummer: </b> {ele['ik_nummer']}</p>"
-                  marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
-      
-                elif category == 'assisted_living':
-  
-                  el_coords = [ele['coord_lon'], ele['coord_lat']]
-                  wohnungen = "N.A." if ele['anz_wohnungen'] == "-" else ele['anz_wohnungen']
-                  ez = "N.A." if ele['ez'] == "-" else ele['ez']
-                  dz = "N.A." if ele['dz'] == "-" else ele['dz']
-                  miete_ab = "N.A." if ele['miete_ab'] == "-" else f"{ele['miete_ab']} €"
-                  miete_bis = "N.A." if ele['miete_bis'] == "-" else f"{ele['miete_bis']} €"
-                  
-                  # Name of Object
-                  marker_details = f"<div class='objectName'>{ele['name']}</div>"
-                  # Tags
-                  marker_details += "<div class='tagContainer'>"
-                  marker_details += f"<p class='tag'>{ele['sektor']}</p>"
-                  marker_details += f"<p class='tag'>{ele['art']}</p>"
-                  spez = ele['spezialisierung'].split('|')
-                  for entry in spez:
-                    marker_details += f"<p class='tag'>{entry}</p>"
-                  marker_details += f"<p class='tag'>{ele['status']}</p>"
-                  marker_details += "</div>"
-                  # Year of Construction/Modernisation
-                  marker_details += f"<p>Baujahr: {ele['baujahr']}</p>"
-                  # Parting Line
-                  marker_details += "<div class='partingLine'></div>"
-                  # Contact Details
-                  marker_details += f"<p>{ele['strasse']}, {ele['plz']} {ele['ort']}"
-                  states = ['Berlin', 'Bremen', 'Hamburg']
-                  if not ele['bundesland'] in states:
-                    marker_details += f", {ele['bundesland']}</p>"
-                  else:
-                    marker_details += "</p>"
-                  marker_details += f"<p>{ele['telefon']}</p>"
-                  marker_details += f"<p>{ele['fax']}</p>"
-                  marker_details += f"<p>{ele['email']}</p>"
-                  marker_details += f"<p>{ele['webseite']}</p>"
-                  # Parting Line
-                  marker_details += "<div class='partingLine'></div>"
-                  # Operator
-                  if not ele['betreiber'] == "-":
-                    marker_details += f"<p>Betreiber: {ele['betreiber']}</p>"
-                  if not ele['tochterfirma1'] == "-":
-                    marker_details += f"<p>Tochterfirma 1: {ele['tochterfirma1']}</p>"
-                  if not ele['tochterfirma2'] == "-":
-                    marker_details += f"<p>Tochterfirma 2: {ele['tochterfirma2']}</p>"
-                  # Parting Line
-                  marker_details += "<div class='partingLine'></div>"
-                  #Flats
-                  marker_details += f"<p><b>Anzahl Wohnungen:</b> {wohnungen}</p>"
-                  marker_details += f"<p><b>Einzelzimmer:</b> {ez}</p>"
-                  marker_details += f"<p><b>Doppelzimmer:</b> {dz}</p>"
-                  marker_details += f"<p><b>Miete ab:</b> {miete_ab}</p>"
-                  marker_details += f"<p><b>Miete bis:</b> {miete_bis}</p>"
-                  marker_details += "<div class='line'></div>"
-                  marker_details += f"<p><b>Träger ID:</b> {ele['traeger_id']}</p>"
-                  marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
-      
-                  # Create Popup for Element
-                  popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
-                    f"<p class='popup_name'><b>{ele['name']}</b></p>"
-                    f"<p class='popup_type'>{ele['sektor']}</p>"
-                    "<p class='popup_betreiber_label'><b>Betreiber:</b></p>"
-                    f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
-                    f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
-                  )
-  
-                elif category == 'nursing-schools':
-  
-                  popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
-                    f'<b>Name:</b>'
-                    f'<br>'
-                    f'&nbsp;&nbsp;{name}'
-                    f'<b>Adresse:</b>'
-                    f'<br>'
-                    f'&nbsp;&nbsp;{street}'
-                    f'<br>'
-                    f'&nbsp;&nbsp;{postcode}, {city}'
-                    f'<br>'
-                    f'&nbsp;&nbsp;district code: {district_code}'
-                    f'<br>'
-                    f'<b>Kontakt</b>'
-                    f'<br>'
-                    f'&nbsp;&nbsp;Telefon: {telefon}'
-                    f'<br>'
-                    f'&nbsp;&nbsp;Email: {email}'
-                    f'<br>'
-                    f'&nbsp;&nbsp;Webseite:'
-                    f'<br>'
-                    f'&nbsp;&nbsp;&nbsp;&nbsp;{web}'
-                    f'<br>'
-                    f'<b>Infos</b>'
-                    f'<br>'
-                    f'&nbsp;&nbsp;Degree: {degree}'
-                    f'<br>'
-                    f'&nbsp;&nbsp;parttime education: {parttime_education}'
-                    f'br'
-                    f'&nbsp;&nbsp;certificate: {certificate}'
-                    f'<br>'
-                    f'&nbsp;&nbsp;inserted: {inserted}'
-                    f'<br>'
-                    f'&nbsp;&nbsp;updated: {updated}'
-                  )
-                  
-                # Check if Category is not Bus or Tram or PflegeDB
-                else:
-                  
-                  # Create Popup for Element
-                  marker_details = f'<b>ID:</b> {o_id}'
-                  marker_details += f'<br>'
-                  marker_details += f'<b>Name:</b>'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;{name}'
-                  marker_details += f'<br>'
-                  marker_details += f'<b>Operator:</b>'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;{operator}'
-                  marker_details += f'<br>'
-                  marker_details += f'<b>Adresse:</b>'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;{street} {housenumber}'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;{postcode}, {city} {suburb}'
-                  marker_details += f'<br>'
-                  marker_details += f'<b>Kontakt</b>'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;Telefon: {phone}'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;Fax: {fax}'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;Email: {email}'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;Webseite:'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;&nbsp;&nbsp;{website}'
-                  marker_details += f'<br>'
-                  marker_details += f'<b>Infos</b>'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;Kategorie: {healthcare}'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;Speciality: {speciality}'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;Öffnungszeiten:'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}'
-                  marker_details += f'<br>'
-                  marker_details += f'&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}'
-                  marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
-                  
-                  popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
-                    f"<p class='popup_name'><b>{name}</b></p>"
-                  )
-      
-                # Add Icon to the Map
-                newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
-                newiconElement = newicon.getElement()
+              if category == 'subway':
 
-                from .Marker_Details_NH import Marker_Details_NH
+                for route in geojson:
+                  coordinates = []
+                  for point in route['members']:
+                    print(point)
+                    if point['role'] == 'stop':
+                      coordinates.append([point['lon'], point['lat']])
+                  geometry = {
+                    'type': 'LineString',
+                    'coordinates': coordinates
+                  }  
+                  self.mapbox.addLayer({
+                    'id': route['tags']['name'],
+                    'type': 'line',
+                    'source': {
+                      'type': 'geojson',
+                      'data': {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': geometry
+                      }
+                    },
+                    'layout': {'line-cap': 'round'},
+                    'paint': {
+                      'line-color': route['tags']['colour'],
+                      'line-width': 4
+                    }
+                  })
                 
-                anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details)
+              else:
       
-                # Add current Element-Icon to Icon-Array
-                icons.append(newicon)
+                #Create empty Icons Array to save Elements
+                icons = []
+                id_counter = 0
+        
+                # Loop through every Element in geojson
+                for ele in geojson:
+        
+                  # Create HTML Element for Icon
+                  el = document.createElement('div')
+                  el.className = 'marker'
+                  el.id = f'{category}_{id_counter}'
+                  el.style.width = '40px'
+                  el.style.height = '40px'
+                  el.style.backgroundSize = '100%'
+                  el.style.backgroundrepeat = 'no-repeat'
+                  el.style.zIndex = '220'
+                  el.style.cursor = 'pointer'
+        
+                  # Create Icon
+                  el.style.backgroundImage = f'url({picture})'
+        
+                  # Check if Category is not PflegeDB
+                  if not category == 'nursing_homes':
+              
+                    if not category == 'assisted_living':
+    
+                      if not category == 'nursing-schools':
+                      
+                        # Get coordinates of current Icon
+                        el_coords = ele['geometry']['coordinates']
+            
+                        # Get different Informations from geojson
+                        city = ele['properties']['city']
+                        suburb = ele['properties']['suburb']
+                        street = ele['properties']['street']
+                        housenumber = ele['properties']['housenumber']
+                        postcode = ele['properties']['postcode']
+                        phone = ele['properties']['phone']
+                        website = ele['properties']['website']
+                        healthcare = ele['properties']['healthcare']
+                        name = ele['properties']['name']
+                        opening_hours = ele['properties']['opening_hours']
+                        wheelchair = ele['properties']['wheelchair']
+                        o_id = ele['properties']['id']
+                        fax = ele['properties']['fax']
+                        email = ele['properties']['email']
+                        speciality = ele['properties']['healthcare:speciality']
+                        operator = ele['properties']['operator']
+    
+                      else:
+    
+                        name = ele['name']
+                        street = ele['street']
+                        postcode = ele['postcode']
+                        city = ele['city']
+                        telefon = ele['telefon']
+                        email = ele['email']
+                        web = ele['web']
+                        degree = ele['degree']
+                        parttime_education = ele['parttime-education']
+                        certificate = ele['certificate']
+                        district_code = ele['district-code']
+                        inserted = ele['inserted']
+                        updated = ele['updated']
+                        el_coords = [ ele['longitude'], ele['lattitude'] ]
+        
+                  # Check if Category is Bus or Tram
+                  if category == 'bus_stop' or category == 'tram_stop':
+  
+                    marker_details = f"<div class='objectName'>{name}</div>"
+                    marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
+                    
+                    # Create Popup for Element
+                    popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+                      f"<p class='popup_name'><b>{name}</b></p>"
+                    )
+                    
+                  # Check if Category is PflegeDB
+                  elif category == 'nursing_homes':
+        
+                    el_coords = [ele['coord_lon'], ele['coord_lat']]
+        
+                    # Create Popup for Element
+                    popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+                      f"<p class='popup_name'><b>{ele['name']}</b></p>"
+                      f"<p class='popup_type'>{ele['sektor']}</p>"
+                      "<p class='popup_betreiber_label'><b>Betreiber:</b></p>"
+                      f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
+                      f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
+                    )
+                    # Name of Object
+                    marker_details = f"<div class='objectName'>{ele['name']}</div>"
+                    # Tags
+                    marker_details += "<div class='tagContainer'>"
+                    marker_details += f"<p class='tag'>{ele['sektor']}</p>"
+                    marker_details += f"<p class='tag'>{ele['art']}</p>"
+                    spez = ele['spezialisierung'].split('|')
+                    for entry in spez:
+                      marker_details += f"<p class='tag'>{entry}</p>"
+                    marker_details += f"<p class='tag'>{ele['status']}</p>"
+                    marker_details += "</div>"
+                    # Year of Construction/Modernisation
+                    marker_details += f"<p>Baujahr: {ele['baujahr']}</p>"
+                    marker_details += f"<p>Modernisierungsjahr: {ele['modernisierung']}</p>"
+                    # Parting Line
+                    marker_details += "<div class='partingLine'></div>"
+                    # Contact Details
+                    marker_details += f"<p>{ele['strasse']}, {ele['plz']} {ele['ort']}"
+                    states = ['Berlin', 'Bremen', 'Hamburg']
+                    if not ele['bundesland'] in states:
+                      marker_details += f", {ele['bundesland']}</p>"
+                    else:
+                      marker_details += "</p>"
+                    marker_details += f"<p>{ele['telefon']}</p>"
+                    marker_details += f"<p>{ele['fax']}</p>"
+                    marker_details += f"<p>{ele['email']}</p>"
+                    marker_details += f"<p>{ele['webseite']}</p>"
+                    # Parting Line
+                    marker_details += "<div class='partingLine'></div>"
+                    # Operator
+                    marker_details += f"<p>Betreiber: {ele['betreiber']}</p>"
+                    marker_details += f"<p>Tochterfirma 1: {ele['tochterfirma1']}</p>"
+                    marker_details += f"<p>Tochterfirma 2: {ele['tochterfirma2']}</p>"
+                    # Parting Line
+                    marker_details += "<div class='partingLine'></div>"
+                    # MDK Grade
+                    if not ele['mdk_datum'] == "-":
+                      date = ele['mdk_datum'].split('-')
+                      marker_details += f"<p>MDK Bewertung vom {date[2]}.{date[1]}.{date[0]}</p>"
+                    else:
+                      marker_details += f"<p>MDK Bewertung vom {ele['mdk_datum']}</p>"
+                    marker_details += f"<p><b>Pflege und medizinische Versorgung: </b> {ele['pfl_u_med_vers']}</p>"
+                    marker_details += f"<p><b>Umgang mit demenzkranken Bewohnern: </b> {ele['umg_mit_dem_bew']}</p>"
+                    marker_details += f"<p><b>Soziale Betreuung und Alltagsgestaltung: </b> {ele['soz_betrualltag']}</p>"
+                    marker_details += f"<p><b>Wohnen, Verpflegung, Hauswirtschaft und Hygiene: </b> {ele['wohn_verpfl_hausw_hyg']}</p>"
+                    marker_details += f"<p><b>Befragung der Bewohner: </b> {ele['befr_bew']}</p>"
+                    marker_details += f"<p><b>MDK Note: </b> {ele['mdk_note']}</p>"
+                    marker_details += "<div class='partingLine'></div>"
+                    marker_details += f"<p><b>Anzahl versorgte Patienten: </b> {ele['anz_vers_pat']}</p>"
+                    
+                    marker_details += f"<p><b>Platzzahl vollständige Pflege: </b> {ele['platz_voll_pfl']}</p>"
+                    marker_details += f"<p><b>Platzzahl Kurzzeitpflege: </b> {ele['platz_kurzpfl']}</p>"
+                    marker_details += f"<p><b>Platzzahl Nachtpflege: </b> {ele['platz_nachtpfl']}</p>"
+                    
+                    marker_details += f"<p><b>Einzelzimmer: </b> {ele['ez']}</p>"
+                    marker_details += f"<p><b>Doppelzimmer: </b> {ele['dz']}</p>"
+                    marker_details += "<div class='line'></div>"
+                    marker_details += f"<p><b>Ausbildungsumlage: </b> {ele['ausbildungsumlage']}</p>"
+                    marker_details += f"<p><b>EEE: </b> {ele['eee']}</p>"
+                    marker_details += f"<p><b>UuV: </b> {ele['uuv']}</p>"
+                    marker_details += f"<p><b>Invest: </b> {ele['invest']}</p>"
+                    marker_details += f"<p><b>PG 1: </b> {ele['pg_1']}</p>"
+                    marker_details += f"<p><b>PG 2: </b> {ele['pg_2']}</p>"
+                    marker_details += f"<p><b>PG 3: </b> {ele['pg_3']}</p>"
+                    marker_details += f"<p><b>PG 4: </b> {ele['pg_4']}</p>"
+                    marker_details += f"<p><b>PG 5: </b> {ele['pg_5']}</p>"
+                    marker_details += "<div class='line'></div>"
+                    marker_details += f"<p><b>Träger ID: </b> {ele['traeger_id']}</p>"
+                    marker_details += f"<p><b>IK_Nummer: </b> {ele['ik_nummer']}</p>"
+                    marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
+        
+                  elif category == 'assisted_living':
+    
+                    el_coords = [ele['coord_lon'], ele['coord_lat']]
+                    wohnungen = "N.A." if ele['anz_wohnungen'] == "-" else ele['anz_wohnungen']
+                    ez = "N.A." if ele['ez'] == "-" else ele['ez']
+                    dz = "N.A." if ele['dz'] == "-" else ele['dz']
+                    miete_ab = "N.A." if ele['miete_ab'] == "-" else f"{ele['miete_ab']} €"
+                    miete_bis = "N.A." if ele['miete_bis'] == "-" else f"{ele['miete_bis']} €"
+                    
+                    # Name of Object
+                    marker_details = f"<div class='objectName'>{ele['name']}</div>"
+                    # Tags
+                    marker_details += "<div class='tagContainer'>"
+                    marker_details += f"<p class='tag'>{ele['sektor']}</p>"
+                    marker_details += f"<p class='tag'>{ele['art']}</p>"
+                    spez = ele['spezialisierung'].split('|')
+                    for entry in spez:
+                      marker_details += f"<p class='tag'>{entry}</p>"
+                    marker_details += f"<p class='tag'>{ele['status']}</p>"
+                    marker_details += "</div>"
+                    # Year of Construction/Modernisation
+                    marker_details += f"<p>Baujahr: {ele['baujahr']}</p>"
+                    # Parting Line
+                    marker_details += "<div class='partingLine'></div>"
+                    # Contact Details
+                    marker_details += f"<p>{ele['strasse']}, {ele['plz']} {ele['ort']}"
+                    states = ['Berlin', 'Bremen', 'Hamburg']
+                    if not ele['bundesland'] in states:
+                      marker_details += f", {ele['bundesland']}</p>"
+                    else:
+                      marker_details += "</p>"
+                    marker_details += f"<p>{ele['telefon']}</p>"
+                    marker_details += f"<p>{ele['fax']}</p>"
+                    marker_details += f"<p>{ele['email']}</p>"
+                    marker_details += f"<p>{ele['webseite']}</p>"
+                    # Parting Line
+                    marker_details += "<div class='partingLine'></div>"
+                    # Operator
+                    if not ele['betreiber'] == "-":
+                      marker_details += f"<p>Betreiber: {ele['betreiber']}</p>"
+                    if not ele['tochterfirma1'] == "-":
+                      marker_details += f"<p>Tochterfirma 1: {ele['tochterfirma1']}</p>"
+                    if not ele['tochterfirma2'] == "-":
+                      marker_details += f"<p>Tochterfirma 2: {ele['tochterfirma2']}</p>"
+                    # Parting Line
+                    marker_details += "<div class='partingLine'></div>"
+                    #Flats
+                    marker_details += f"<p><b>Anzahl Wohnungen:</b> {wohnungen}</p>"
+                    marker_details += f"<p><b>Einzelzimmer:</b> {ez}</p>"
+                    marker_details += f"<p><b>Doppelzimmer:</b> {dz}</p>"
+                    marker_details += f"<p><b>Miete ab:</b> {miete_ab}</p>"
+                    marker_details += f"<p><b>Miete bis:</b> {miete_bis}</p>"
+                    marker_details += "<div class='line'></div>"
+                    marker_details += f"<p><b>Träger ID:</b> {ele['traeger_id']}</p>"
+                    marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
+        
+                    # Create Popup for Element
+                    popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+                      f"<p class='popup_name'><b>{ele['name']}</b></p>"
+                      f"<p class='popup_type'>{ele['sektor']}</p>"
+                      "<p class='popup_betreiber_label'><b>Betreiber:</b></p>"
+                      f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
+                      f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
+                    )
+    
+                  elif category == 'nursing-schools':
+    
+                    popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+                      f'<b>Name:</b>'
+                      f'<br>'
+                      f'&nbsp;&nbsp;{name}'
+                      f'<b>Adresse:</b>'
+                      f'<br>'
+                      f'&nbsp;&nbsp;{street}'
+                      f'<br>'
+                      f'&nbsp;&nbsp;{postcode}, {city}'
+                      f'<br>'
+                      f'&nbsp;&nbsp;district code: {district_code}'
+                      f'<br>'
+                      f'<b>Kontakt</b>'
+                      f'<br>'
+                      f'&nbsp;&nbsp;Telefon: {telefon}'
+                      f'<br>'
+                      f'&nbsp;&nbsp;Email: {email}'
+                      f'<br>'
+                      f'&nbsp;&nbsp;Webseite:'
+                      f'<br>'
+                      f'&nbsp;&nbsp;&nbsp;&nbsp;{web}'
+                      f'<br>'
+                      f'<b>Infos</b>'
+                      f'<br>'
+                      f'&nbsp;&nbsp;Degree: {degree}'
+                      f'<br>'
+                      f'&nbsp;&nbsp;parttime education: {parttime_education}'
+                      f'br'
+                      f'&nbsp;&nbsp;certificate: {certificate}'
+                      f'<br>'
+                      f'&nbsp;&nbsp;inserted: {inserted}'
+                      f'<br>'
+                      f'&nbsp;&nbsp;updated: {updated}'
+                    )
+                    
+                  # Check if Category is not Bus or Tram or PflegeDB
+                  else:
+                    
+                    # Create Popup for Element
+                    marker_details = f'<b>ID:</b> {o_id}'
+                    marker_details += f'<br>'
+                    marker_details += f'<b>Name:</b>'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;{name}'
+                    marker_details += f'<br>'
+                    marker_details += f'<b>Operator:</b>'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;{operator}'
+                    marker_details += f'<br>'
+                    marker_details += f'<b>Adresse:</b>'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;{street} {housenumber}'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;{postcode}, {city} {suburb}'
+                    marker_details += f'<br>'
+                    marker_details += f'<b>Kontakt</b>'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;Telefon: {phone}'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;Fax: {fax}'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;Email: {email}'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;Webseite:'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;&nbsp;&nbsp;{website}'
+                    marker_details += f'<br>'
+                    marker_details += f'<b>Infos</b>'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;Kategorie: {healthcare}'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;Speciality: {speciality}'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;Öffnungszeiten:'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}'
+                    marker_details += f'<br>'
+                    marker_details += f'&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}'
+                    marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
+                    
+                    popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+                      f"<p class='popup_name'><b>{name}</b></p>"
+                    )
+        
+                  # Add Icon to the Map
+                  newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+                  newiconElement = newicon.getElement()
+  
+                  from .Marker_Details_NH import Marker_Details_NH
+                  
+                  anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details)
+        
+                  # Add current Element-Icon to Icon-Array
+                  icons.append(newicon)
       
-              # Refresh global Variables
-              Variables.activeIcons.pop(f'{category}', None)
-              Variables.icons.update({f'{category}': icons})
-              Variables.activeIcons.update({f'{category}': icons})
-              last_bbox = bbox
-              Variables.last_cat = f'{category}'
+                # Refresh global Variables
+                Variables.activeIcons.pop(f'{category}', None)
+                Variables.icons.update({f'{category}': icons})
+                Variables.activeIcons.update({f'{category}': icons})
+                last_bbox = bbox
+                Variables.last_cat = f'{category}'
       
           # Do if new Bounding Box is smaller or same than old Bounding Box
           else:
