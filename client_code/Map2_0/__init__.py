@@ -78,6 +78,7 @@ class Map2_0(Map2_0Template):
         self.hide_ms_marker.visible = True
         self.tm_mode.visible = True
         self.file_loader_upload.visible = True
+        self.share.visible = True
         container.removeChild(logo)
 
       if self.role == 'admin':
@@ -105,8 +106,8 @@ class Map2_0(Map2_0Template):
       # Create HTML Element for Icon
       el = document.createElement('div')
       el.className = 'marker'
-      el.style.width = '40px'
-      el.style.height = '40px'
+      el.style.width = '50px'
+      el.style.height = '50px'
       el.style.backgroundSize = '100%'
       el.style.backgroundrepeat = 'no-repeat'
       el.style.zIndex = '299'
@@ -321,6 +322,8 @@ class Map2_0(Map2_0Template):
         Variables.last_bbox_pdt = self.create_icons(self.check_box_pdt.checked, Variables.last_bbox_pdt, "podiatrist", Variables.icon_podiatrist)
       elif dict(event_args)['sender'].text == "Hairdresser":
         Variables.last_bbox_hd = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
+      elif event_args['sender'].text == "S-Bahn/U-Bahn":
+        Variables.last_bbox_al = self.create_icons(self.check_box_su.checked, Variables.last_bbox_su, "subway", f'{self.app_url}/_/theme/Pins/U_Bahn_Pin.png')
       html.removeChild(loading)
 
 
@@ -431,73 +434,6 @@ class Map2_0(Map2_0Template):
       # anvil.server.call('micmaccircle')
       # anvil.server.call('read_regularien')
       # anvil.server.call('get_db_stations')
-  
-      poi_healthcare = ""
-      poi_miscelaneous = ""
-      poi_opnv = ""
-      overlay = ""
-      for category in self.poi_categories_healthcare_container.get_components():
-        if category.checked:
-          poi_healthcare += '1'
-        else:
-          poi_healthcare += '0'
-      for category in self.misc_container.get_components():
-        if category.checked:
-          poi_miscelaneous += '1'
-        else:
-          poi_miscelaneous += '0'
-      for category in self.opnv_container.get_components():
-        if category.checked:
-          poi_opnv += '1'
-        else:
-          poi_opnv += '0'
-      for component in self.layer_categories.get_components():
-        if component.checked:
-          overlay = component.text
-          break
-      for component in self.style_grid.get_components():
-        if component.checked:
-          map_style = component.text
-          break
-      study_pin = self.hide_ms_marker.checked
-  
-      deleted_marker = {}
-      for setting in Variables.marker:
-        popped = Variables.marker[setting].pop('marker')
-        deleted_marker[setting] = popped
-      cluster = {
-        'data': self.cluster_data,
-        'settings': Variables.marker
-      }
-
-      from .Name_Share_Link import Name_Share_Link
-      name = alert(content=Name_Share_Link(), buttons=[], dismissible=False, large=True, role='custom_alert')
-      url = anvil.server.call('get_app_url') + f'#?name={name}'
-      
-      dataset = {
-        'marker_lng': self.marker['_lngLat']['lng'],
-        'marker_lat': self.marker['_lngLat']['lat'],
-        'cluster': cluster,
-        'distance_movement': self.profile_dropdown.selected_value,
-        'distance_time': self.time_dropdown.selected_value,
-        'overlay': overlay,
-        'map_style': map_style,
-        'poi_healthcare': poi_healthcare,
-        'poi_misc': poi_miscelaneous,
-        'poi_opnv': poi_opnv,
-        'iso_layer': self.checkbox_poi_x_hfcig.checked,
-        'name': name,
-        'url': url,
-        'study_pin': study_pin,
-        'zoom': self.mapbox.getZoom()
-      }
-  
-      anvil.server.call('save_map_settings', dataset)
-  
-      for setting in deleted_marker:
-        Variables.marker[setting]['marker'] = deleted_marker[setting]
-      
-      alert(url)
       
   #     #Call a Server Function
   #     anvil.server.call('manipulate')
@@ -3745,4 +3681,75 @@ class Map2_0(Map2_0Template):
           self.mobile_hide.icon = 'fa:angle-down'
           mobile_menu.style.overflowY = 'auto'
       pass
+
+  def share_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    poi_healthcare = ""
+    poi_miscelaneous = ""
+    poi_opnv = ""
+    overlay = ""
+    for category in self.poi_categories_healthcare_container.get_components():
+      if category.checked:
+        poi_healthcare += '1'
+      else:
+        poi_healthcare += '0'
+    for category in self.misc_container.get_components():
+      if category.checked:
+        poi_miscelaneous += '1'
+      else:
+        poi_miscelaneous += '0'
+    for category in self.opnv_container.get_components():
+      if category.checked:
+        poi_opnv += '1'
+      else:
+        poi_opnv += '0'
+    for component in self.layer_categories.get_components():
+      if component.checked:
+        overlay = component.text
+        break
+    for component in self.style_grid.get_components():
+      if component.checked:
+        map_style = component.text
+        break
+    study_pin = self.hide_ms_marker.checked
+
+    deleted_marker = {}
+    for setting in Variables.marker:
+      popped = Variables.marker[setting].pop('marker')
+      deleted_marker[setting] = popped
+    cluster = {
+      'data': self.cluster_data,
+      'settings': Variables.marker
+    }
+
+    from .Name_Share_Link import Name_Share_Link
+    name = alert(content=Name_Share_Link(), buttons=[], dismissible=False, large=True, role='custom_alert')
+    url = anvil.server.call('get_app_url') + f'#?name={name}'
+    
+    dataset = {
+      'marker_lng': self.marker['_lngLat']['lng'],
+      'marker_lat': self.marker['_lngLat']['lat'],
+      'cluster': cluster,
+      'distance_movement': self.profile_dropdown.selected_value,
+      'distance_time': self.time_dropdown.selected_value,
+      'overlay': overlay,
+      'map_style': map_style,
+      'poi_healthcare': poi_healthcare,
+      'poi_misc': poi_miscelaneous,
+      'poi_opnv': poi_opnv,
+      'iso_layer': self.checkbox_poi_x_hfcig.checked,
+      'name': name,
+      'url': url,
+      'study_pin': study_pin,
+      'zoom': self.mapbox.getZoom()
+    }
+
+    anvil.server.call('save_map_settings', dataset)
+
+    for setting in deleted_marker:
+      Variables.marker[setting]['marker'] = deleted_marker[setting]
+    
+    alert(url)
+    pass
+
 
