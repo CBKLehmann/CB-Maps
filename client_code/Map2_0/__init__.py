@@ -66,9 +66,6 @@ class Map2_0(Map2_0Template):
         self.role = user['role']
       else:
         self.role = 'guest'
-
-      if self.role == 'admin' or self.role == 'user' or self.role == 'guest':
-        self.button_icons.visible = True
       
       if self.role == 'admin' or self.role == 'user':
         self.dist_layer.visible = True
@@ -79,19 +76,18 @@ class Map2_0(Map2_0Template):
         self.tm_mode.visible = True
         self.file_loader_upload.visible = True
         self.share.visible = True
+        self.button_icons.visible = True
         container.removeChild(logo)
 
       if self.role == 'admin':
         self.admin_button.visible = 'visible'
 
-      if self.role == 'guest':
-        self.button_icons.text = 'Cluster & Investment'
+      # if self.role == 'guest':
+      #   self.button_icons.text = 'Cluster & Investment'
 
       if width <= 998:
         self.mobile = True
-      else:
-        self.mobile = False
-        self.mobile_btn_grid.visible = False
+        self.mobile_btn_grid.visible = True
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'
