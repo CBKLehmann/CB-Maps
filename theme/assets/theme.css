@@ -278,6 +278,17 @@ a:hover, a:active {
   .anvil-role-mobile-menu::-webkit-scrollbar {
     display: none;
   }
+
+  .marker_details {
+    left: 0 !important;
+    width: 100% !important;
+    opacity: 95%;
+  }
+
+  .x-btn-container {
+    display: flex;
+    flex-direction: row-reverse;
+  }
 }
 
 .nav-holder .left-nav, .left-nav-placeholder {
@@ -1355,6 +1366,28 @@ select > option {
   color: %color:Gray 300%;
 }
 
+#close {
+  margin-bottom: 5px;
+  position: relative;
+  right: 0;
+  bottom: 0;
+  color: %color:Gray 300%;  
+}
+
 .mapboxgl-popup-content {
   cursor: pointer;
+}
+
+.iconAddress {
+  width: 17px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.containerAddress {
+  display: flex;
+}
+
+.checkbox > label {
+  padding: 4px 7px 4px 20px !important;
 }

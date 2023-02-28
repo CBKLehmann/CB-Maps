@@ -232,21 +232,21 @@ components:
         - type: CheckBox
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
             enabled: true, foreground: '', allow_indeterminate: false, visible: true,
-            text: Distance Layer, font_size: 13, font: Roboto+Flex, spacing_above: medium,
-            spacing_below: small, italic: false, background: '', bold: false, checked: true,
+            text: Distance Layer, font_size: 13, font: Roboto+Flex, spacing_above: none,
+            spacing_below: none, italic: false, background: '', bold: false, checked: true,
             underline: false}
           name: iso_layer_active
-          layout_properties: {row: GGOMGF, width_xs: 11, col_xs: 1, width: 211.385}
+          layout_properties: {row: GGOMGF, width_xs: 11, col_xs: 1, width: 183.885}
           event_bindings: {change: iso_layer_active_change}
         - type: CheckBox
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
             enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
-            visible: true, text: Distance Based, font_size: 13, font: '', spacing_above: small,
-            spacing_below: small, italic: false, background: '', bold: false, checked: false,
+            visible: true, text: Distance Based, font_size: 13, font: '', spacing_above: none,
+            spacing_below: none, italic: false, background: '', bold: false, checked: false,
             underline: false}
           name: checkbox_poi_x_hfcig
           layout_properties: {grid_position: 'QYRFCC,LUBXOK', row: UHKQQU, width_xs: 11,
-            col_xs: 1, width: 211.385}
+            col_xs: 1, width: 183.885}
           event_bindings: {change: checkbox_poi_x_hfcig_change}
     - type: Button
       properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
@@ -281,22 +281,22 @@ components:
         - type: CheckBox
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
             enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
-            visible: true, text: Nursing Home, font_size: 13, font: Roboto+Flex, spacing_above: small,
+            visible: true, text: Nursing Home, font_size: 13, font: Roboto+Flex, spacing_above: none,
             spacing_below: none, italic: false, background: '', bold: false, checked: false,
             underline: false}
           name: pdb_data_cb
           layout_properties: {grid_position: 'PRSIWR,SBEUXJ', row: BIVWJO, width_xs: 9,
-            col_xs: 2, width: 167.5}
+            col_xs: 2, width: 145}
           event_bindings: {change: check_box_poi_change}
           data_bindings: []
         - type: CheckBox
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
             enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
             visible: true, text: Assisted Living, font_size: 13, font: Roboto+Flex,
-            spacing_above: small, spacing_below: small, italic: false, background: '',
+            spacing_above: none, spacing_below: none, italic: false, background: '',
             bold: false, checked: false, underline: false}
           name: pdb_data_al
-          layout_properties: {row: KQVYFO, width_xs: 10, col_xs: 2, width: 233.333}
+          layout_properties: {row: KQVYFO, width_xs: 10, col_xs: 2, width: 164.438}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
@@ -601,11 +601,11 @@ components:
         - type: CheckBox
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
             enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
-            visible: true, text: Street Map, font_size: 13, font: Roboto+Flex, spacing_above: small,
+            visible: true, text: Street Map, font_size: 13, font: Roboto+Flex, spacing_above: none,
             spacing_below: none, italic: false, background: '', bold: false, checked: true,
             underline: false}
           name: check_street
-          layout_properties: {row: GOOONS, width_xs: 11, col_xs: 1, width: 211.385}
+          layout_properties: {row: GOOONS, width_xs: 11, col_xs: 1, width: 183.885}
           event_bindings: {change: map_style_change}
         - type: CheckBox
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
@@ -620,10 +620,10 @@ components:
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
             enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
             visible: true, text: Soft Map, font_size: 13, font: Roboto+Flex, spacing_above: none,
-            spacing_below: small, italic: false, background: '', bold: false, checked: false,
+            spacing_below: none, italic: false, background: '', bold: false, checked: false,
             underline: false}
           name: check_soft
-          layout_properties: {row: QENJIO, width_xs: 11, col_xs: 1, width: 211.385}
+          layout_properties: {row: QENJIO, width_xs: 11, col_xs: 1, width: 183.885}
           event_bindings: {change: map_style_change}
     - type: Button
       properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
@@ -651,11 +651,11 @@ components:
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
             enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
             visible: true, text: Federal States, font_size: 13, font: Roboto+Flex,
-            spacing_above: small, spacing_below: none, italic: false, background: '',
+            spacing_above: none, spacing_below: none, italic: false, background: '',
             bold: false, checked: false, underline: false}
           name: check_box_fs
           layout_properties: {grid_position: 'SZBLCG,MBBZCQ', row: GWMPYI, width_xs: 11,
-            col_xs: 1, width: 211.385}
+            col_xs: 1, width: 183.885}
           event_bindings: {change: check_box_overlays_change}
         - type: CheckBox
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',

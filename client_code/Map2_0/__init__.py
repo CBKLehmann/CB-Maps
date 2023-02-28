@@ -2712,6 +2712,8 @@ class Map2_0(Map2_0Template):
 
               if category == 'subway':
 
+                self.opnv_layer = []
+
                 #Create empty Icons Array to save Elements
                 icons = []
                 id_counter = 0
@@ -2741,12 +2743,23 @@ class Map2_0(Map2_0Template):
                       id_counter += 1
                       
                       coordinates.append([point['lon'], point['lat']])
+                      # Add current Element-Icon to Icon-Array
+                      icons.append(newicon)
+                      
                   geometry = {
                     'type': 'LineString',
                     'coordinates': coordinates
-                  }  
+                  }
+                  if 'name' in route['tags']:
+                    id = route['tags']['name']
+                  else:
+                    id = route['tags']['ref']
+                  if 'colour' in route['tags']:
+                    colour = route['tags']['colour']
+                  else:
+                    colour = '#000000'
                   self.mapbox.addLayer({
-                    'id': route['tags']['name'],
+                    'id': id,
                     'type': 'line',
                     'source': {
                       'type': 'geojson',
@@ -2758,10 +2771,12 @@ class Map2_0(Map2_0Template):
                     },
                     'layout': {'line-cap': 'round'},
                     'paint': {
-                      'line-color': route['tags']['colour'],
+                      'line-color': colour,
                       'line-width': 4
                     }
                   })
+
+                  self.opnv_layer.append(id)
                 
               else:
       
@@ -2855,8 +2870,9 @@ class Map2_0(Map2_0Template):
                       f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
                       f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
                     )
+                    marker_details = f"<div class='x-btn-container'><button id='close' class='btn btn-default'>X</button></div>"
                     # Name of Object
-                    marker_details = f"<div class='objectName'>{ele['name']}</div>"
+                    marker_details += f"<div class='objectName'>{ele['name']}</div>"
                     # Tags
                     marker_details += "<div class='tagContainer'>"
                     marker_details += f"<p class='tag'>{ele['sektor']}</p>"
@@ -2872,7 +2888,7 @@ class Map2_0(Map2_0Template):
                     # Parting Line
                     marker_details += "<div class='partingLine'></div>"
                     # Contact Details
-                    marker_details += f"<p>{ele['strasse']}, {ele['plz']} {ele['ort']}"
+                    marker_details += f"<div class='containerAddress'><img src='{self.app_url}/_/theme/Pins/Address.png' class='iconAddress' /><p>{ele['strasse']}, {ele['plz']} {ele['ort']}</div>"
                     states = ['Berlin', 'Bremen', 'Hamburg']
                     if not ele['bundesland'] in states:
                       marker_details += f", {ele['bundesland']}</p>"
@@ -2992,40 +3008,28 @@ class Map2_0(Map2_0Template):
                     )
     
                   elif category == 'nursing-schools':
+
+                    # Name of Object
+                    marker_details = f"<div class='objectName'>{name}</div>"
+                    # Parting Line
+                    marker_details += "<div class='partingLine'></div>"
+                    # Contact Details
+                    marker_details += f"<p>{street}, {postcode} {city}</p>"
+                    marker_details += f"<p>{telefon}</p>"
+                    marker_details += f"<p>{email}</p>"
+                    marker_details += f"<p>{web}</p>"
+                    # Parting Line
+                    marker_details += "<div class='partingLine'></div>"
+                    # Informations
+                    marker_details += f"<p>Degree: {degree}</p>"
+                    marker_details += f"<p>Parttime Education: {parttime_education}</p>"
+                    marker_details += f"<p>Certificate: {certificate}</p>"
+                    marker_details += f"<p>Inserted: {inserted}</p>"
+                    marker_details += f"<p>Updated: {updated}</p>"
+                    marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
     
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
-                      f'<b>Name:</b>'
-                      f'<br>'
-                      f'&nbsp;&nbsp;{name}'
-                      f'<b>Adresse:</b>'
-                      f'<br>'
-                      f'&nbsp;&nbsp;{street}'
-                      f'<br>'
-                      f'&nbsp;&nbsp;{postcode}, {city}'
-                      f'<br>'
-                      f'&nbsp;&nbsp;district code: {district_code}'
-                      f'<br>'
-                      f'<b>Kontakt</b>'
-                      f'<br>'
-                      f'&nbsp;&nbsp;Telefon: {telefon}'
-                      f'<br>'
-                      f'&nbsp;&nbsp;Email: {email}'
-                      f'<br>'
-                      f'&nbsp;&nbsp;Webseite:'
-                      f'<br>'
-                      f'&nbsp;&nbsp;&nbsp;&nbsp;{web}'
-                      f'<br>'
-                      f'<b>Infos</b>'
-                      f'<br>'
-                      f'&nbsp;&nbsp;Degree: {degree}'
-                      f'<br>'
-                      f'&nbsp;&nbsp;parttime education: {parttime_education}'
-                      f'br'
-                      f'&nbsp;&nbsp;certificate: {certificate}'
-                      f'<br>'
-                      f'&nbsp;&nbsp;inserted: {inserted}'
-                      f'<br>'
-                      f'&nbsp;&nbsp;updated: {updated}'
+                      f"<p class='popup_name'><b>{name}</b></p>"
                     )
                     
                   # Check if Category is not Bus or Tram or PflegeDB
@@ -3088,12 +3092,12 @@ class Map2_0(Map2_0Template):
                   # Add current Element-Icon to Icon-Array
                   icons.append(newicon)
       
-                # Refresh global Variables
-                Variables.activeIcons.pop(f'{category}', None)
-                Variables.icons.update({f'{category}': icons})
-                Variables.activeIcons.update({f'{category}': icons})
-                last_bbox = bbox
-                Variables.last_cat = f'{category}'
+              # Refresh global Variables
+              Variables.activeIcons.pop(f'{category}', None)
+              Variables.icons.update({f'{category}': icons})
+              Variables.activeIcons.update({f'{category}': icons})
+              last_bbox = bbox
+              Variables.last_cat = f'{category}'
       
           # Do if new Bounding Box is smaller or same than old Bounding Box
           else:
@@ -3133,6 +3137,10 @@ class Map2_0(Map2_0Template):
       
       # Do if Checkbox is unchecked
       else:
+
+        if category == "subway":
+          for id in self.opnv_layer:
+            self.mapbox.setLayoutProperty(id, 'visibility', 'none')
       
         # Loop through every Element in global Icon-Elements
         for el in Variables.icons[f'{category}']:
