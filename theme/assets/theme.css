@@ -764,7 +764,7 @@ textarea.anvil-component {
 }
 /* Select arrow styling */
 .anvil-dropdown form:before {
-    content: "\25BC";
+/*     content: "\25BC"; */
     position: absolute;
     right: 0;
     font-size: 80%;

@@ -76,22 +76,26 @@ class Map2_0(Map2_0Template):
         self.file_loader_upload.visible = True
         self.share.visible = True
         self.button_icons.visible = True
+        draggable = True
         container.removeChild(logo)
 
       if self.role == 'admin':
         self.admin_button.visible = 'visible'
 
-      # if self.role == 'guest':
+      if self.role == 'guest':
+        draggable = False
       #   self.button_icons.text = 'Cluster & Investment'
 
       if width <= 998:
         self.mobile = True
         self.mobile_btn_grid.visible = True
+      else:
+        self.mobile = False
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'
       self.select_all_opnv.tag.categorie = 'ÖPNV'
-      self.select_all_edu.tag.categorie = 'Education'
+      self.select_all_edu.tag.categorie = 'Student Living'
       self.select_all_food.tag.categorie = 'Food & Drinks'
       
       mapboxgl.accessToken = self.token
@@ -109,7 +113,7 @@ class Map2_0(Map2_0Template):
       el.style.zIndex = '299'
       el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/CB_MapPin_Location.png)'
       
-      self.marker = mapboxgl.Marker({'draggable': True, 'element': el, 'anchor': 'bottom'})
+      self.marker = mapboxgl.Marker({'draggable': draggable, 'element': el, 'anchor': 'bottom'})
       self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
       self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
       self.mapbox.addControl(self.geocoder)
@@ -143,16 +147,24 @@ class Map2_0(Map2_0Template):
         data = anvil.server.call('get_map_settings', hash['name'])
         for component in self.style_grid.get_components():
           if component.text == data['map_style']:
-            component.selected = True
+            component.checked = True
             component.raise_event('change')
             break
+        self.map_styles.raise_event('click')
         time.sleep(.5)
         self.marker.setLngLat([data['marker_lng'], data['marker_lat']])
         self.mapbox.flyTo({"center": [data['marker_lng'], data['marker_lat']], "zoom": data['zoom']})
         self.time_dropdown.selected_value = data['distance_time']
         self.profile_dropdown.selected_value = data['distance_movement']
         self.profile_dropdown.raise_event('change')
+        self.dist_layer.visible = True
+        self.dist_layer.icon = 'fa:angle-down'
+        self.dist_layer.raise_event('click')
+        self.time_dropdown.enabled = False
+        self.profile_dropdown.enabled = False
         self.checkbox_poi_x_hfcig.checked = data['iso_layer']
+        self.iso_layer_active.visible = False
+        self.checkbox_poi_x_hfcig.visible = False
         healthcare_components = self.poi_categories_healthcare_container.get_components()
         if data['poi_healthcare'][0] == '1':
           healthcare_components[0].checked = True
@@ -162,15 +174,24 @@ class Map2_0(Map2_0Template):
             if index > 0 and state == '1':
               healthcare_components[index].checked = True
               healthcare_components[index].raise_event('change')
-        miscelaneous_components = self.misc_container.get_components()
-        if data['poi_misc'][0] == '1':
-          miscelaneous_components[0].checked = True
-          miscelaneous_components[0].raise_event('change')
+        education_components = self.education_grid.get_components()
+        if data['poi_education'][0] == '1':
+          education_components[0].checked = True
+          education_components[0].raise_event('change')
         else:
-          for index, state in enumerate(data['poi_misc']):
+          for index, state in enumerate(data['poi_education']):
             if index > 0 and state == '1':
-              miscelaneous_components[index].checked = True
-              miscelaneous_components[index].raise_event('change')
+              education_components[index].checked = True
+              education_components[index].raise_event('change')
+        food_drinks_components = self.food_drinks_grid.get_components()
+        if data['poi_food_drinks'][0] == '1':
+          food_drinks_components[0].checked = True
+          food_drinks_components[0].raise_event('change')
+        else:
+          for index, state in enumerate(data['poi_food_drinks']):
+            if index > 0 and state == '1':
+              food_drinks_components[index].checked = True
+              food_drinks_components[index].raise_event('change')
         opnv_components = self.opnv_container.get_components()
         if data['poi_opnv'][0] == '1':
           opnv_components[0].checked = True
@@ -392,7 +413,7 @@ class Map2_0(Map2_0Template):
           'container': self.poi_categories_healthcare_container,
           'icon_container': self.button_healthcare
         },
-        'Education': {
+        'Student Living': {
           'container': self.education_grid,
           'icon_container': self.education_btn
         },
@@ -3031,6 +3052,7 @@ class Map2_0(Map2_0Template):
     
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{name}</b></p>"
+                      f"<p class='popup_type'>Nursing School</p>"
                     )
                     
                   # Check if Category is not Bus or Tram or PflegeDB
@@ -3080,6 +3102,7 @@ class Map2_0(Map2_0Template):
                     
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{name}</b></p>"
+                      f"<p class='popup_type'>{category.capitalize()}</p>"
                     )
         
                   # Add Icon to the Map
@@ -3506,7 +3529,7 @@ class Map2_0(Map2_0Template):
           if not component == event_args['sender']:
             component.checked = event_args['sender'].checked
             component.raise_event('change')
-      elif event_args['sender'].tag.categorie == 'Education':
+      elif event_args['sender'].tag.categorie == 'Student Living':
         for component in self.education_grid.get_components():
           if not component == event_args['sender']:
             component.checked = event_args['sender'].checked
@@ -3714,7 +3737,8 @@ class Map2_0(Map2_0Template):
   def share_click(self, **event_args):
     """This method is called when the button is clicked"""
     poi_healthcare = ""
-    poi_miscelaneous = ""
+    poi_education = ""
+    poi_food_drinks = ""
     poi_opnv = ""
     overlay = ""
     for category in self.poi_categories_healthcare_container.get_components():
@@ -3722,11 +3746,16 @@ class Map2_0(Map2_0Template):
         poi_healthcare += '1'
       else:
         poi_healthcare += '0'
-    for category in self.misc_container.get_components():
+    for category in self.education_grid.get_components():
       if category.checked:
-        poi_miscelaneous += '1'
+        poi_education += '1'
       else:
-        poi_miscelaneous += '0'
+        poi_education += '0'
+    for category in self.food_drinks_grid.get_components():
+      if category.checked:
+        poi_food_drinks += '1'
+      else:
+        poi_food_drinks += '0'
     for category in self.opnv_container.get_components():
       if category.checked:
         poi_opnv += '1'
@@ -3764,7 +3793,8 @@ class Map2_0(Map2_0Template):
       'overlay': overlay,
       'map_style': map_style,
       'poi_healthcare': poi_healthcare,
-      'poi_misc': poi_miscelaneous,
+      'poi_education': poi_education,
+      'poi_food_drinks': poi_food_drinks,
       'poi_opnv': poi_opnv,
       'iso_layer': self.checkbox_poi_x_hfcig.checked,
       'name': name,
@@ -3778,7 +3808,7 @@ class Map2_0(Map2_0Template):
     for setting in deleted_marker:
       Variables.marker[setting]['marker'] = deleted_marker[setting]
     
-    alert(url)
+    alert(url, large=True, dismissible=False)
     pass
 
 

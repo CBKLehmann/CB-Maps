@@ -204,7 +204,7 @@ components:
             include_placeholder: false
           name: time_dropdown
           layout_properties: {grid_position: 'HLOXGP,GRIYLK', slot: .floating-menu,
-            row: QRYXYX, width_xs: 12, col_xs: 0, width: 233.333}
+            row: QRYXYX, width_xs: 12, col_xs: 0, width: 203.333}
           event_bindings: {change: distance_dropdown_change}
         - type: DropDown
           properties:
@@ -408,7 +408,7 @@ components:
           event_bindings: {change: check_box_poi_change}
       - type: Button
         properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
-          enabled: true, foreground: 'theme:Gray 300', visible: true, text: Education,
+          enabled: true, foreground: 'theme:Gray 300', visible: true, text: Student Living,
           font_size: 13, font: '', spacing_above: none, icon_align: right_edge, spacing_below: none,
           italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
         name: education_btn
@@ -436,8 +436,16 @@ components:
             spacing_below: small, italic: false, background: '', bold: false, checked: false,
             underline: false}
           name: check_box_uni
-          layout_properties: {row: DZIYOO, width_xs: 9, col_xs: 2, width: 189.438}
+          layout_properties: {row: PIMRHU, width_xs: 8, col_xs: 2, width: 189.438}
           event_bindings: {change: check_box_poi_change}
+        - type: CheckBox
+          properties: {text: check_box_2}
+          name: check_box_2
+          layout_properties: {row: RMXFYD, width_xs: 10, col_xs: 2}
+        - type: CheckBox
+          properties: {text: check_box_1}
+          name: check_box_1
+          layout_properties: {row: YSEYID, width_xs: 10, col_xs: 2}
       - type: Button
         properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
           enabled: true, foreground: 'theme:Gray 300', visible: true, text: Food & Drinks,
@@ -731,23 +739,6 @@ components:
       layout_properties: {grid_position: 'SIQOWD,XOKHOG', row: WFRIMH, width_xs: 12,
         col_xs: 0}
       components:
-      - type: Button
-        properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-          foreground: 'theme:Gray 300', visible: false, text: Admin-Button, font_size: null,
-          font: '', spacing_above: small, icon_align: left, spacing_below: small,
-          italic: false, background: '', bold: false, underline: false, icon: ''}
-        name: admin_button
-        layout_properties: {grid_position: 'LLVIZT,GPYSKZ', row: XDCDRO, width_xs: 8,
-          col_xs: 2, width: 161.552}
-        event_bindings: {click: admin_button_click}
-      - type: Button
-        properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-          foreground: 'theme:Gray 300', visible: false, text: Share Link, font_size: null,
-          font: '', spacing_above: small, icon_align: left, spacing_below: small,
-          italic: false, background: '', bold: false, underline: false, icon: ''}
-        name: share
-        layout_properties: {row: BGKHDH, width_xs: 8, col_xs: 2, width: 141.552}
-        event_bindings: {click: share_click}
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', allow_indeterminate: false, visible: false,
@@ -766,6 +757,23 @@ components:
         layout_properties: {grid_position: 'UHTCTR,LXXRID', row: MEXLRU, width_xs: 11,
           col_xs: 1, width: 233.385}
         event_bindings: {change: tm_mode_change}
+    - type: Button
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+        foreground: '#4AC9FF', visible: false, text: Share, font_size: 13, font: '',
+        spacing_above: none, icon_align: right, spacing_below: none, italic: false,
+        background: '', bold: false, underline: false, icon: 'fa:share-square-o'}
+      name: share
+      layout_properties: {row: TJNYUM, width_xs: 10, col_xs: 2, width: 184.438}
+      event_bindings: {click: share_click}
+    - type: Button
+      properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+        foreground: 'theme:Gray 300', visible: false, text: Admin-Button, font_size: 13,
+        font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+        background: '', bold: false, underline: false, icon: ''}
+      name: admin_button
+      layout_properties: {grid_position: 'LLVIZT,GPYSKZ', row: CULMTX, width_xs: 12,
+        col_xs: 0, width: 141.552}
+      event_bindings: {click: admin_button_click}
 - type: Spacer
   properties: {visible: true, spacing_above: none, spacing_below: none, height: '',
     tooltip: ''}
