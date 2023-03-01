@@ -189,7 +189,9 @@
 
     container.addEventListener('mouseenter', () => addPopup(popup, map, ele, category, marker_details, container, marker));
     container.addEventListener('mouseleave', () => removePopup(popup));
-    container.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e))
+    if ((category === 'nursing_homes') || (category === 'assisted_living')) {
+      container.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e)) 
+    }
   }
 
   function addPopup(popup, map, ele, category, marker_details, container, marker, e) {
@@ -199,7 +201,9 @@
       pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
       pop.addEventListener('mouseenter', () => readdPopup(popup, map));
       pop.addEventListener('mouseleave', () => removePopup(popup));
-      pop.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e)) 
+      if ((category === 'nursing_homes') || (category === 'assisted_living')) {
+        pop.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e)) 
+      }
     }
   }
 

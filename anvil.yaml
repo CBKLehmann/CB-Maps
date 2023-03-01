@@ -73,7 +73,7 @@ runtime_options:
   server_spec: null
   server_spec_disabled: {base: python310-minimal, requirements: ''}
 metadata: {description: This Tool is a market-analysation Tool., logo_img: 'asset:MicrosoftTeams-image
-    (1).png'}
+    (2).png'}
 startup_form: Map2_0
 native_deps: {head_html: '<script src=''https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js''></script>
 

@@ -291,7 +291,7 @@ class Map2_0(Map2_0Template):
 
   def check_box_poi_change(self, **event_args):
     with anvil.server.no_loading_indicator:
-      html = document.getElementsByClassName('anvil-show-banner')[0]
+      html = document.getElementsByClassName('anvil-root-container')[0]
       loading = document.createElement('div')
       loading.style.width = '100vw'
       loading.style.height = '100vh'
@@ -3111,7 +3111,7 @@ class Map2_0(Map2_0Template):
   
                   from .Marker_Details_NH import Marker_Details_NH
                   
-                  anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details)
+                  anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.mobile)
         
                   # Add current Element-Icon to Icon-Array
                   icons.append(newicon)
@@ -3740,7 +3740,7 @@ class Map2_0(Map2_0Template):
     date = datetime.datetime.now()
     str_date = str(date).split('.')
     searched_address = searched_address + str_date[0]
-    changed_address = searched_address.replace(' ', '_').replace(',', '').replace('Deutschland', '')
+    changed_address = searched_address.replace(' ', '_').replace(',', '').replace('Deutschland', '').replace(':', '-')
     poi_healthcare = ""
     poi_education = ""
     poi_food_drinks = ""
