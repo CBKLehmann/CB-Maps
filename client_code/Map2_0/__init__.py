@@ -3501,46 +3501,6 @@ class Map2_0(Map2_0Template):
           if not component == event_args['sender']:
             component.checked = event_args['sender'].checked
             component.raise_event('change')
-      #     self.check_box_vet.checked = event_args['sender'].checked
-      #     self.check_box_soc.checked = event_args['sender'].checked
-      #     self.check_box_pha.checked = event_args['sender'].checked
-      #     self.check_box_hos.checked = event_args['sender'].checked
-      #     self.check_box_cli.checked = event_args['sender'].checked
-      #     self.check_box_den.checked = event_args['sender'].checked
-      #     self.check_box_doc.checked = event_args['sender'].checked
-      #     self.check_box_nsc.checked = event_args['sender'].checked
-      #     self.check_box_pdt.checked = event_args['sender'].checked
-      #     self.check_box_hd.checked = event_args['sender'].checked
-      #     self.check_box_vet.raise_event('change')
-      #     if event_args['sender'].checked:
-      #       time.sleep(1)
-      #     self.check_box_soc.raise_event('change')
-      #     if event_args['sender'].checked:
-      #       time.sleep(1)
-      #     self.check_box_pha.raise_event('change')
-      #     if event_args['sender'].checked:
-      #       time.sleep(1)
-      #     self.check_box_hos.raise_event('change')
-      #     if event_args['sender'].checked:
-      #       time.sleep(1)
-      #     self.check_box_cli.raise_event('change')
-      #     if event_args['sender'].checked:
-      #       time.sleep(1)
-      #     self.check_box_den.raise_event('change')
-      #     if event_args['sender'].checked:
-      #       time.sleep(1)
-      #     self.check_box_doc.raise_event('change')
-      #     if event_args['sender'].checked:
-      #       time.sleep(1)
-      #     self.check_box_nsc.raise_event('change')
-      #     if event_args['sender'].checked:
-      #       time.sleep(1)
-      #     self.check_box_pdt.raise_event('change')
-      #     if event_args['sender'].checked:
-      #       time.sleep(1)
-      #     self.check_box_hd.raise_event('change')
-      #     if event_args['sender'].checked:
-      #       time.sleep(1)
       elif event_args['sender'].tag.categorie == 'Miscelaneous':
         self.check_box_sma.checked = event_args['sender'].checked
         self.check_box_res.checked = event_args['sender'].checked
