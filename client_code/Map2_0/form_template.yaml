@@ -408,19 +408,59 @@ components:
           event_bindings: {change: check_box_poi_change}
       - type: Button
         properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
-          enabled: true, foreground: 'theme:Gray 300', visible: true, text: Miscellaneous,
+          enabled: true, foreground: 'theme:Gray 300', visible: true, text: Education,
           font_size: 13, font: '', spacing_above: none, icon_align: right_edge, spacing_below: none,
           italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
-        name: misc_button
-        layout_properties: {grid_position: 'ONQFBJ,TCVIOF', row: VYJBDR, width_xs: 12,
-          col_xs: 0, width: 203.333}
+        name: education_btn
+        layout_properties: {row: SFYHHR, width_xs: 12, col_xs: 0, width: 203.333}
         event_bindings: {click: button_toggle_menu_parts}
       - type: GridPanel
         properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
           border: '', visible: false, role: null, tooltip: ''}
-        name: misc_container
-        layout_properties: {row: SVMYZN, width_xs: 12, col_xs: 0, width: 257.333}
+        name: education_grid
+        layout_properties: {row: OCLBSN, width_xs: 12, col_xs: 0, width: 203.333}
         components:
+        - type: CheckBox
+          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
+            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
+            visible: true, text: Select All, font_size: 13, font: Roboto+Flex, spacing_above: small,
+            spacing_below: none, italic: false, background: '', bold: false, checked: false,
+            underline: false}
+          name: select_all_edu
+          layout_properties: {row: RKPJLZ, width_xs: 8, col_xs: 1, width: 145.552}
+          event_bindings: {change: select_all_change}
+        - type: CheckBox
+          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
+            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
+            visible: true, text: University, font_size: 13, font: Roboto+Flex, spacing_above: none,
+            spacing_below: small, italic: false, background: '', bold: false, checked: false,
+            underline: false}
+          name: check_box_uni
+          layout_properties: {row: DZIYOO, width_xs: 9, col_xs: 2, width: 189.438}
+          event_bindings: {change: check_box_poi_change}
+      - type: Button
+        properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
+          enabled: true, foreground: 'theme:Gray 300', visible: true, text: Food & Drinks,
+          font_size: 13, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
+          italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
+        name: food_drinks_btn
+        layout_properties: {row: PKHDSJ, width_xs: 12, col_xs: 0, width: 203.333}
+        event_bindings: {click: button_toggle_menu_parts}
+      - type: GridPanel
+        properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
+          border: '', visible: false, role: null, tooltip: ''}
+        name: food_drinks_grid
+        layout_properties: {row: XGMCJU, width_xs: 12, col_xs: 0, width: 203.333}
+        components:
+        - type: CheckBox
+          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
+            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
+            visible: true, text: Select All, font_size: 13, font: Roboto+Flex, spacing_above: small,
+            spacing_below: none, italic: false, background: '', bold: false, checked: false,
+            underline: false}
+          name: select_all_food
+          layout_properties: {row: VIZPRV, width_xs: 11, col_xs: 1, width: 145.552}
+          event_bindings: {change: select_all_change}
         - type: CheckBox
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
             enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
@@ -428,7 +468,7 @@ components:
             spacing_below: none, italic: false, background: '', bold: false, checked: false,
             underline: false}
           name: check_box_sma
-          layout_properties: {row: SWLQCV, width_xs: 10, col_xs: 2, width: 189.438}
+          layout_properties: {row: LILKTR, width_xs: 9, col_xs: 2, width: 189.438}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
@@ -437,7 +477,7 @@ components:
             spacing_below: none, italic: false, background: '', bold: false, checked: false,
             underline: false}
           name: check_box_res
-          layout_properties: {row: TKCWRB, width_xs: 10, col_xs: 2, width: 189.438}
+          layout_properties: {row: GCEYKR, width_xs: 8, col_xs: 2, width: 189.438}
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
@@ -446,26 +486,8 @@ components:
             spacing_below: none, italic: false, background: '', bold: false, checked: false,
             underline: false}
           name: check_box_cafe
-          layout_properties: {row: RGXICB, width_xs: 10, col_xs: 2, width: 189.438}
+          layout_properties: {row: NTEWKE, width_xs: 9, col_xs: 2, width: 189.438}
           event_bindings: {change: check_box_poi_change}
-        - type: CheckBox
-          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
-            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
-            visible: true, text: University, font_size: 13, font: Roboto+Flex, spacing_above: none,
-            spacing_below: small, italic: false, background: '', bold: false, checked: false,
-            underline: false}
-          name: check_box_uni
-          layout_properties: {row: FMLKIO, width_xs: 10, col_xs: 2, width: 189.438}
-          event_bindings: {change: check_box_poi_change}
-        - type: CheckBox
-          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
-            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
-            visible: true, text: Select All, font_size: 13, font: Roboto+Flex, spacing_above: small,
-            spacing_below: none, italic: false, background: '', bold: false, checked: false,
-            underline: false}
-          name: select_all_misc
-          layout_properties: {row: AFUWPY, width_xs: 8, col_xs: 2, width: 145.552}
-          event_bindings: {change: select_all_change}
       - type: Button
         properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
           enabled: true, foreground: 'theme:Gray 300', visible: true, text: Public Transport,
@@ -479,8 +501,17 @@ components:
         properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
           border: '', visible: false, role: null, tooltip: ''}
         name: opnv_container
-        layout_properties: {row: IXPOZH, width_xs: 10, col_xs: 2, width: 209.438}
+        layout_properties: {row: IXPOZH, width_xs: 12, col_xs: 0, width: 209.438}
         components:
+        - type: CheckBox
+          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
+            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
+            visible: true, text: Select All, font_size: 13, font: Roboto+Flex, spacing_above: small,
+            spacing_below: none, italic: false, background: '', bold: false, checked: false,
+            underline: false}
+          name: select_all_opnv
+          layout_properties: {row: GAHDED, width_xs: 11, col_xs: 1, width: 189.438}
+          event_bindings: {change: select_all_change}
         - type: CheckBox
           properties: {role: switch-rounded, align: left, tooltip: '', border: '',
             enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
@@ -492,8 +523,8 @@ components:
             col_widths: {}
             grid_position: ZDVRVV,DQFEMK
             row: RMNBCX
-            width_xs: 12
-            col_xs: 0
+            width_xs: 9
+            col_xs: 2
             width: 189.438
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
@@ -507,8 +538,8 @@ components:
             col_widths: {}
             grid_position: XJQLUU,VWETYL
             row: QHCZVX
-            width_xs: 12
-            col_xs: 0
+            width_xs: 9
+            col_xs: 2
             width: 189.438
           event_bindings: {change: check_box_poi_change}
         - type: CheckBox
@@ -518,17 +549,8 @@ components:
             spacing_above: small, spacing_below: small, italic: false, background: '',
             bold: false, checked: false, underline: false}
           name: check_box_su
-          layout_properties: {row: WMRMJP, width_xs: 12, col_xs: 0, width: 164.438}
+          layout_properties: {row: WMRMJP, width_xs: 10, col_xs: 2, width: 164.438}
           event_bindings: {change: check_box_poi_change}
-        - type: CheckBox
-          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
-            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
-            visible: true, text: Select All, font_size: 13, font: Roboto+Flex, spacing_above: small,
-            spacing_below: none, italic: false, background: '', bold: false, checked: false,
-            underline: false}
-          name: select_all_opnv
-          layout_properties: {row: BSAKAU, width_xs: 12, col_xs: 0, width: 189.438}
-          event_bindings: {change: select_all_change}
       - type: Spacer
         properties: {height: 6}
         name: spacer_2

@@ -90,8 +90,9 @@ class Map2_0(Map2_0Template):
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'
-      self.select_all_misc.tag.categorie = 'Miscelaneous'
       self.select_all_opnv.tag.categorie = 'ÖPNV'
+      self.select_all_edu.tag.categorie = 'Education'
+      self.select_all_food.tag.categorie = 'Food & Drinks'
       
       mapboxgl.accessToken = self.token
       self.mapbox = mapboxgl.Map({'container': self.dom,
@@ -391,9 +392,13 @@ class Map2_0(Map2_0Template):
           'container': self.poi_categories_healthcare_container,
           'icon_container': self.button_healthcare
         },
-        'Miscelaneous': {
-          'container': self.misc_container,
-          'icon_container': self.misc_button
+        'Education': {
+          'container': self.education_grid,
+          'icon_container': self.education_btn
+        },
+        'Food & Drinks': {
+          'container': self.food_drinks_grid,
+          'icon_container': self.food_drinks_btn
         },
         'Public Transport': {
           'container': self.opnv_container,
@@ -3501,20 +3506,21 @@ class Map2_0(Map2_0Template):
           if not component == event_args['sender']:
             component.checked = event_args['sender'].checked
             component.raise_event('change')
-      elif event_args['sender'].tag.categorie == 'Miscelaneous':
-        self.check_box_sma.checked = event_args['sender'].checked
-        self.check_box_res.checked = event_args['sender'].checked
-        self.check_box_cafe.checked = event_args['sender'].checked
-        self.check_box_uni.checked = event_args['sender'].checked
-        self.check_box_sma.raise_event('change')
-        self.check_box_res.raise_event('change')
-        self.check_box_cafe.raise_event('change')
-        self.check_box_uni.raise_event('change')
+      elif event_args['sender'].tag.categorie == 'Education':
+        for component in self.education_grid.get_components():
+          if not component == event_args['sender']:
+            component.checked = event_args['sender'].checked
+            component.raise_event('change')
+      elif event_args['sender'].tag.categorie == 'Food & Drinks':
+        for component in self.food_drinks_grid.get_components():
+          if not component == event_args['sender']:
+            component.checked = event_args['sender'].checked
+            component.raise_event('change')
       elif event_args['sender'].tag.categorie == 'ÖPNV':
-        self.check_box_bus.checked = event_args['sender'].checked
-        self.check_box_tra.checked = event_args['sender'].checked
-        self.check_box_bus.raise_event('change')
-        self.check_box_tra.raise_event('change')
+        for component in self.opnv_container.get_components():
+          if not component == event_args['sender']:
+            component.checked = event_args['sender'].checked
+            component.raise_event('change')
       pass
 
   def iso_layer_active_change(self, **event_args):
