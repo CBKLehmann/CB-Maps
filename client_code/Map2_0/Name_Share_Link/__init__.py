@@ -12,6 +12,7 @@ class Name_Share_Link(Name_Share_LinkTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
+    self.input.text = properties['searched_address']
 
     # Any code you write here will run before the form opens.
 

@@ -3736,6 +3736,11 @@ class Map2_0(Map2_0Template):
 
   def share_click(self, **event_args):
     """This method is called when the button is clicked"""
+    searched_address = anvil.js.call('getSearchedAddress')
+    date = datetime.datetime.now()
+    str_date = str(date).split('.')
+    searched_address = searched_address + str_date[0]
+    changed_address = searched_address.replace(' ', '_').replace(',', '').replace('Deutschland', '')
     poi_healthcare = ""
     poi_education = ""
     poi_food_drinks = ""
@@ -3781,7 +3786,7 @@ class Map2_0(Map2_0Template):
     }
 
     from .Name_Share_Link import Name_Share_Link
-    name = alert(content=Name_Share_Link(), buttons=[], dismissible=False, large=True, role='custom_alert')
+    name = alert(content=Name_Share_Link(searched_address=changed_address), buttons=[], dismissible=False, large=True, role='custom_alert')
     url = anvil.server.call('get_app_url') + f'#?name={name}'
     
     dataset = {

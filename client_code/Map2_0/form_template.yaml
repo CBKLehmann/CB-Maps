@@ -759,7 +759,7 @@ components:
         event_bindings: {change: tm_mode_change}
     - type: Button
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '#4AC9FF', visible: false, text: Share, font_size: 13, font: '',
+        foreground: '#4AC9FF', visible: false, text: Map Link, font_size: 13, font: '',
         spacing_above: none, icon_align: right, spacing_below: none, italic: false,
         background: '', bold: false, underline: false, icon: 'fa:share-square-o'}
       name: share

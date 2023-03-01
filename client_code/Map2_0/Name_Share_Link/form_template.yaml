@@ -9,15 +9,15 @@ components:
   components:
   - type: Label
     properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
-      visible: true, text: Rename your Share Link, font_size: 13, font: '', spacing_above: small,
-      icon_align: right_edge, spacing_below: small, italic: false, background: '',
-      bold: false, underline: false, icon: 'fa:minus'}
+      visible: true, text: Rename your Share Link if necessary !, font_size: 13, font: '',
+      spacing_above: small, icon_align: right_edge, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false, icon: ''}
     name: heading
-    layout_properties: {row: NLBOIU, width_xs: 10, col_xs: 1, width: 556.104}
+    layout_properties: {row: NLBOIU, width_xs: 10, col_xs: 1, width: 559.438}
   - type: TextBox
     properties: {}
     name: input
-    layout_properties: {row: HESKIK, width_xs: 4, col_xs: 4}
+    layout_properties: {row: HESKIK, width_xs: 7, col_xs: 3}
   - type: Button
     properties: {role: primary-color, align: center, tooltip: '', border: '', enabled: true,
       foreground: '', visible: true, text: Confirm, font_size: 13, font: '', spacing_above: small,

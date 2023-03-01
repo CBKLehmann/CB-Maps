@@ -65,15 +65,15 @@ services:
 startup: {type: form, module: Map2_0}
 package_name: How_Far_Can_I_Go_
 allow_embedding: false
-name: CB-Maps
+name: MAP
 runtime_options:
   version: 2
   client_version: '3'
   server_version: python3-sandbox
   server_spec: null
   server_spec_disabled: {base: python310-minimal, requirements: ''}
-metadata: {description: An app using Mapbox's Isochrone API which tells you how far you can travel given a certain amount of time.,
-  logo_img: 'asset:CapitalBay_32x32.png'}
+metadata: {description: This Tool is a market-analysation Tool., logo_img: 'asset:MicrosoftTeams-image
+    (1).png'}
 startup_form: Map2_0
 native_deps: {head_html: '<script src=''https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js''></script>
 
