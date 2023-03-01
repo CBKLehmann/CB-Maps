@@ -41,6 +41,7 @@ class Map2_0(Map2_0Template):
         self.app_url = anvil.server.call_s('get_app_url')
         self.last_menu_height = '30%'
         self.cluster_data = {}
+        self.layers = {}
 
   
   def form_show(self, **event_args):
@@ -70,7 +71,6 @@ class Map2_0(Map2_0Template):
       if self.role == 'admin' or self.role == 'user':
         self.dist_layer.visible = True
         self.poi_categories.visible = True
-        self.map_styles.visible = True
         self.button_overlay.visible = True
         self.hide_ms_marker.visible = True
         self.tm_mode.visible = True
@@ -144,8 +144,8 @@ class Map2_0(Map2_0Template):
         for component in self.style_grid.get_components():
           if component.text == data['map_style']:
             component.selected = True
+            component.raise_event('change')
             break
-        component.raise_event('change')
         time.sleep(.5)
         self.marker.setLngLat([data['marker_lng'], data['marker_lat']])
         self.mapbox.flyTo({"center": [data['marker_lng'], data['marker_lat']], "zoom": data['zoom']})
@@ -187,7 +187,7 @@ class Map2_0(Map2_0Template):
         self.hide_ms_marker.checked = data['study_pin']
         if data['study_pin']:
           self.hide_ms_marker.raise_event('change')
-        if not len(data['cluster']) == 0:
+        if not len(data['cluster']['data']) == 0:
           self.create_cluster_marker(data['cluster'])
             
 
@@ -345,20 +345,29 @@ class Map2_0(Map2_0Template):
     
   def map_style_change(self, **event_args):
     with anvil.server.no_loading_indicator:
-      #This method is called when one of the Buttons for changing the Map-Style got clicked
-      if dict(event_args)['sender'].text == "Satellite Map":
-        self.check_street.checked = False
-        self.check_soft.checked = False
-        self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
-      elif dict(event_args)['sender'].text == "Street Map":
-        self.check_satellite.checked = False
-        self.check_soft.checked = False
-        self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
-      elif dict(event_args)['sender'].text == "Soft Map":
-        self.check_street.checked = False
-        self.check_satellite.checked = False
-        self.mapbox.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
-      self.mapbox.on('load', self.place_layer)
+      try:
+        #This method is called when one of the Buttons for changing the Map-Style got clicked
+        if dict(event_args)['sender'].text == "Satellite Map":
+          self.check_street.checked = False
+          self.check_soft.checked = False
+          self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
+        elif dict(event_args)['sender'].text == "Street Map":
+          self.check_satellite.checked = False
+          self.check_soft.checked = False
+          self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
+        elif dict(event_args)['sender'].text == "Soft Map":
+          self.check_street.checked = False
+          self.check_satellite.checked = False
+          self.mapbox.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
+        self.mapbox.on('load', self.place_layer)
+        self.mapbox.on('')
+      except Exception as err:
+        print(err)
+      finally:
+        self.time_dropdown.raise_event('change')
+        # for key in self.layers:
+        #   self.mapbox.addSource(self.layers[key]['source'])
+        #   self.mapbox.addLayer(self.layers[key]['layer'])
     
 
   def button_toggle_menu_parts(self, **event_args):
@@ -2395,13 +2404,13 @@ class Map2_0(Map2_0Template):
       if not self.mapbox.getSource('iso'):
         
         #Construct Mapsource for isoLayer
-        self.mapbox.addSource('iso', {'type': 'geojson',
+        iso_source = self.mapbox.addSource('iso', {'type': 'geojson',
                                       'data': {'type': 'FeatureCollection',
                                               'features': []}
                                     })
         
         #Construct and add isoLayer
-        self.mapbox.addLayer({'id': 'isoLayer',
+        iso_layer = self.mapbox.addLayer({'id': 'isoLayer',
                               'type': 'fill',
                               'source': 'iso',
                               'layout': {'visibility': 'visible'},
@@ -2411,6 +2420,10 @@ class Map2_0(Map2_0Template):
                               'fill-outline-color': '#4D4A3F'
                               },
                             })
+
+        self.layers['iso_layer'] = {}
+        self.layers['iso_layer']['source'] = iso_source
+        self.layers['iso_layer']['layer'] = iso_layer
       
       #Get iso-coordinates based of the marker-coordinates
       lnglat = self.marker.getLngLat()
