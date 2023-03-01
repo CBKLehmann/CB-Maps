@@ -41,7 +41,6 @@ class Map2_0(Map2_0Template):
         self.app_url = anvil.server.call_s('get_app_url')
         self.last_menu_height = '30%'
         self.cluster_data = {}
-        self.layers = {}
 
   
   def form_show(self, **event_args):
@@ -133,7 +132,7 @@ class Map2_0(Map2_0Template):
       self.mapbox.on("click", "counties", self.popup)
       self.mapbox.on("click", "municipalities", self.popup)
       self.mapbox.on("click", "districts", self.popup)
-      self.mapbox.on("styledata", self.place_layer)
+      self.mapbox.on("style.load", self.handle_style_change)
       self.mapbox.on("load", self.loadHash)
 
   def loadHash(self, event):
@@ -345,30 +344,20 @@ class Map2_0(Map2_0Template):
     
   def map_style_change(self, **event_args):
     with anvil.server.no_loading_indicator:
-      try:
-        #This method is called when one of the Buttons for changing the Map-Style got clicked
-        if dict(event_args)['sender'].text == "Satellite Map":
-          self.check_street.checked = False
-          self.check_soft.checked = False
-          self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
-        elif dict(event_args)['sender'].text == "Street Map":
-          self.check_satellite.checked = False
-          self.check_soft.checked = False
-          self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
-        elif dict(event_args)['sender'].text == "Soft Map":
-          self.check_street.checked = False
-          self.check_satellite.checked = False
-          self.mapbox.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
-        self.mapbox.on('load', self.place_layer)
-        self.mapbox.on('')
-      except Exception as err:
-        print(err)
-      finally:
-        self.time_dropdown.raise_event('change')
-        # for key in self.layers:
-        #   self.mapbox.addSource(self.layers[key]['source'])
-        #   self.mapbox.addLayer(self.layers[key]['layer'])
-    
+      #This method is called when one of the Buttons for changing the Map-Style got clicked
+      if dict(event_args)['sender'].text == "Satellite Map":
+        self.check_street.checked = False
+        self.check_soft.checked = False
+        self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
+      elif dict(event_args)['sender'].text == "Street Map":
+        self.check_satellite.checked = False
+        self.check_soft.checked = False
+        self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
+      elif dict(event_args)['sender'].text == "Soft Map":
+        self.check_street.checked = False
+        self.check_satellite.checked = False
+        self.mapbox.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
+
 
   def button_toggle_menu_parts(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -2237,7 +2226,8 @@ class Map2_0(Map2_0Template):
       self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
       
       Functions.refresh_icons(self)
-  
+
+
   #####  Dropdown Functions #####
   ###############################
   #####  Upload Functions   #####
@@ -2404,13 +2394,13 @@ class Map2_0(Map2_0Template):
       if not self.mapbox.getSource('iso'):
         
         #Construct Mapsource for isoLayer
-        iso_source = self.mapbox.addSource('iso', {'type': 'geojson',
+        self.mapbox.addSource('iso', {'type': 'geojson',
                                       'data': {'type': 'FeatureCollection',
                                               'features': []}
                                     })
         
         #Construct and add isoLayer
-        iso_layer = self.mapbox.addLayer({'id': 'isoLayer',
+        self.mapbox.addLayer({'id': 'isoLayer',
                               'type': 'fill',
                               'source': 'iso',
                               'layout': {'visibility': 'visible'},
@@ -2420,10 +2410,6 @@ class Map2_0(Map2_0Template):
                               'fill-outline-color': '#4D4A3F'
                               },
                             })
-
-        self.layers['iso_layer'] = {}
-        self.layers['iso_layer']['source'] = iso_source
-        self.layers['iso_layer']['layer'] = iso_layer
       
       #Get iso-coordinates based of the marker-coordinates
       lnglat = self.marker.getLngLat()
@@ -2533,7 +2519,7 @@ class Map2_0(Map2_0Template):
         Notification('Point of Interests are only available on the Outdoor-Map !', style='info').show()
   
   #This method is called when the Map is loading or changing his Style
-  def place_layer(self, event):
+  def place_layer(self):
     with anvil.server.no_loading_indicator:
       #Add 3D-Layer to the Map
       self.mapbox.addLayer({
@@ -2632,9 +2618,10 @@ class Map2_0(Map2_0Template):
               'line-width': entry['line_width']
             }
         })
-    
-      self.mapbox.setLayoutProperty(Variables.activeLayer, 'visibility', 'visible')
-      self.mapbox.setLayoutProperty(f'outline_{Variables.activeLayer}', 'visibility', 'visible')
+
+      if not Variables.activeLayer == None:
+        self.mapbox.setLayoutProperty(Variables.activeLayer, 'visibility', 'visible')
+        self.mapbox.setLayoutProperty(f'outline_{Variables.activeLayer}', 'visibility', 'visible')
   
   #This method is called from the check_box_change-Functions to place Icons on Map  
   def create_icons(self, check_box, last_bbox, category, picture):
@@ -3510,46 +3497,50 @@ class Map2_0(Map2_0Template):
   def select_all_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       if event_args['sender'].tag.categorie == 'Healthcare':
-          self.check_box_vet.checked = event_args['sender'].checked
-          self.check_box_soc.checked = event_args['sender'].checked
-          self.check_box_pha.checked = event_args['sender'].checked
-          self.check_box_hos.checked = event_args['sender'].checked
-          self.check_box_cli.checked = event_args['sender'].checked
-          self.check_box_den.checked = event_args['sender'].checked
-          self.check_box_doc.checked = event_args['sender'].checked
-          self.check_box_nsc.checked = event_args['sender'].checked
-          self.check_box_pdt.checked = event_args['sender'].checked
-          self.check_box_hd.checked = event_args['sender'].checked
-          self.check_box_vet.raise_event('change')
-          if event_args['sender'].checked:
-            time.sleep(1)
-          self.check_box_soc.raise_event('change')
-          if event_args['sender'].checked:
-            time.sleep(1)
-          self.check_box_pha.raise_event('change')
-          if event_args['sender'].checked:
-            time.sleep(1)
-          self.check_box_hos.raise_event('change')
-          if event_args['sender'].checked:
-            time.sleep(1)
-          self.check_box_cli.raise_event('change')
-          if event_args['sender'].checked:
-            time.sleep(1)
-          self.check_box_den.raise_event('change')
-          if event_args['sender'].checked:
-            time.sleep(1)
-          self.check_box_doc.raise_event('change')
-          if event_args['sender'].checked:
-            time.sleep(1)
-          self.check_box_nsc.raise_event('change')
-          if event_args['sender'].checked:
-            time.sleep(1)
-          self.check_box_pdt.raise_event('change')
-          if event_args['sender'].checked:
-            time.sleep(1)
-          self.check_box_hd.raise_event('change')
-          if event_args['sender'].checked:
-            time.sleep(1)
+        for component in self.poi_categories_healthcare_container.get_components():
+          if not component == event_args['sender']:
+            component.checked = event_args['sender'].checked
+            component.raise_event('change')
+      #     self.check_box_vet.checked = event_args['sender'].checked
+      #     self.check_box_soc.checked = event_args['sender'].checked
+      #     self.check_box_pha.checked = event_args['sender'].checked
+      #     self.check_box_hos.checked = event_args['sender'].checked
+      #     self.check_box_cli.checked = event_args['sender'].checked
+      #     self.check_box_den.checked = event_args['sender'].checked
+      #     self.check_box_doc.checked = event_args['sender'].checked
+      #     self.check_box_nsc.checked = event_args['sender'].checked
+      #     self.check_box_pdt.checked = event_args['sender'].checked
+      #     self.check_box_hd.checked = event_args['sender'].checked
+      #     self.check_box_vet.raise_event('change')
+      #     if event_args['sender'].checked:
+      #       time.sleep(1)
+      #     self.check_box_soc.raise_event('change')
+      #     if event_args['sender'].checked:
+      #       time.sleep(1)
+      #     self.check_box_pha.raise_event('change')
+      #     if event_args['sender'].checked:
+      #       time.sleep(1)
+      #     self.check_box_hos.raise_event('change')
+      #     if event_args['sender'].checked:
+      #       time.sleep(1)
+      #     self.check_box_cli.raise_event('change')
+      #     if event_args['sender'].checked:
+      #       time.sleep(1)
+      #     self.check_box_den.raise_event('change')
+      #     if event_args['sender'].checked:
+      #       time.sleep(1)
+      #     self.check_box_doc.raise_event('change')
+      #     if event_args['sender'].checked:
+      #       time.sleep(1)
+      #     self.check_box_nsc.raise_event('change')
+      #     if event_args['sender'].checked:
+      #       time.sleep(1)
+      #     self.check_box_pdt.raise_event('change')
+      #     if event_args['sender'].checked:
+      #       time.sleep(1)
+      #     self.check_box_hd.raise_event('change')
+      #     if event_args['sender'].checked:
+      #       time.sleep(1)
       elif event_args['sender'].tag.categorie == 'Miscelaneous':
         self.check_box_sma.checked = event_args['sender'].checked
         self.check_box_res.checked = event_args['sender'].checked
@@ -3825,3 +3816,6 @@ class Map2_0(Map2_0Template):
     pass
 
 
+  def handle_style_change(self, event):
+    self.place_layer()
+    self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
