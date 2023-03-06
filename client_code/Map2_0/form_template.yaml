@@ -168,7 +168,7 @@ components:
         italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
       name: dist_layer
       layout_properties: {grid_position: 'ZWJKRW,ZPHXKI', row: VTWUVD, width_xs: 12,
-        col_xs: 0}
+        col_xs: 0, width: 227}
       event_bindings: {click: button_toggle_menu_parts}
     - type: LinearPanel
       properties: {spacing_above: none, spacing_below: none, background: 'theme:Secondary
@@ -774,13 +774,13 @@ components:
       layout_properties: {row: TJNYUM, width_xs: 10, col_xs: 2, width: 184.438}
       event_bindings: {click: share_click}
     - type: Button
-      properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+      properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
         foreground: 'theme:Gray 300', visible: false, text: Admin-Button, font_size: 13,
         font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
         background: '', bold: false, underline: false, icon: ''}
       name: admin_button
       layout_properties: {grid_position: 'LLVIZT,GPYSKZ', row: CULMTX, width_xs: 12,
-        col_xs: 0, width: 141.552}
+        col_xs: 0, width: 227}
       event_bindings: {click: admin_button_click}
 - type: Spacer
   properties: {visible: true, spacing_above: none, spacing_below: none, height: '',

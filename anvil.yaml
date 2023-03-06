@@ -62,7 +62,7 @@ services:
   client_config: {allow_signup: false, enable_automatically: false, use_email: true,
     confirm_email: true}
   server_config: {user_table: users}
-startup: {type: form, module: Map2_0}
+startup: {type: form, module: Map2_0.Login}
 package_name: How_Far_Can_I_Go_
 allow_embedding: false
 name: MAP
@@ -74,7 +74,7 @@ runtime_options:
   server_spec_disabled: {base: python310-minimal, requirements: ''}
 metadata: {description: This Tool is a market-analysation Tool., logo_img: 'asset:MicrosoftTeams-image
     (3).png'}
-startup_form: Map2_0
+startup_form: null
 native_deps: {head_html: '<script src=''https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js''></script>
 
     <link href=''https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css'' rel=''stylesheet''
