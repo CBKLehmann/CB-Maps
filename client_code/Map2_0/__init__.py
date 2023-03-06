@@ -41,6 +41,7 @@ class Map2_0(Map2_0Template):
         self.app_url = anvil.server.call_s('get_app_url')
         self.last_menu_height = '30%'
         self.cluster_data = {}
+        self.role = properties['role']
 
   
   def form_show(self, **event_args):
@@ -59,13 +60,6 @@ class Map2_0(Map2_0Template):
       logo.style.right = '20px'
       logo.style.width = '15%'
       container.appendChild(logo)
-      hash = get_url_hash()
-      if len(hash) == 0:
-        anvil.users.login_with_form(remember_by_default=True, allow_remembered=True, show_signup_option=False)
-        user = anvil.users.get_user()
-        self.role = user['role']
-      else:
-        self.role = 'guest'
       
       if self.role == 'admin' or self.role == 'user':
         self.dist_layer.visible = True

@@ -709,14 +709,18 @@ body>div[data-notify="container"].alert-warning>span[data-notify="title"]{
   margin-bottom: -8px;
 }
 
-
+.anvil-role-login_input {
+  background-color: rgba(224, 224, 224, .1) !important;
+  border: none !important;
+  border-radius: 2px !important;
+}
 
 /* Component: TextBox + TextArea */
 
 input.anvil-component, textarea.anvil-component, .anvil-component select, .anvil-datepicker input {
   font-size: 16px;
   line-height: 1.5;
-  border: 1px solid %color:Gray 300% !important;
+/*   border: 1px solid %color:Gray 300% !important; */
   border-radius: 10px;
   background-color: transparent;
   color: rgba(0,0,0,0.87);
@@ -1390,4 +1394,19 @@ select > option {
 
 .checkbox > label {
   padding: 3px 7px 3px 20px !important;
+}
+
+.anvil-role-login_form {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.anvil-role-login_panel {
+  width: 970px;
+}
+
+.anvil-role-login_grid > div {
+  padding: 0 !important;
 }
