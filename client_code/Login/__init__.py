@@ -10,26 +10,28 @@ from anvil.tables import app_tables
 
 class Login(LoginTemplate):
   def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
-    self.init_components(**properties)
-    hash = get_url_hash()
-    print(hash)
-    if not len(hash) == 0:
-      open_form('Map2_0', role='guest')
-    # Any code you write here will run before the form opens.
+    with anvil.server.no_loading_indicator:
+      # Set Form properties and Data Bindings.
+      self.init_components(**properties)
+      hash = get_url_hash()
+      print(hash)
+      if not len(hash) == 0:
+        open_form('Map2_0', role='guest')
 
   def login_click(self, **event_args):
-    try:
-      user = anvil.users.login_with_email(self.email_input.text, self.passwort_input.text, remember=self.remember_me.checked)
-      if user:
-        open_form('Map2_0', role=dict(user)['role'])
-    except anvil.users.AuthenticationFailed:
-      self.error.visible = True
+    with anvil.server.no_loading_indicator:
+      try:
+        user = anvil.users.login_with_email(self.email_input.text, self.passwort_input.text, remember=self.remember_me.checked)
+        if user:
+          open_form('Map2_0', role=dict(user)['role'])
+      except anvil.users.AuthenticationFailed:
+        self.error.visible = True
     pass
 
   def forgot_password_click(self, **event_args):
-    reset = anvil.users.send_password_reset_email(self.email_input.text)
-    self.error.text = "Reset Link has been send to given Email if Email exists"
-    self.error.visible = True
+    with anvil.server.no_loading_indicator:
+      reset = anvil.users.send_password_reset_email(self.email_input.text)
+      self.error.text = "Reset Link has been send to given Email if Email exists"
+      self.error.visible = True
     pass
 

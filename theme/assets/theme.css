@@ -710,8 +710,6 @@ body>div[data-notify="container"].alert-warning>span[data-notify="title"]{
 }
 
 .anvil-role-login_input {
-  background-color: rgba(224, 224, 224, .1) !important;
-  border: none !important;
   border-radius: 2px !important;
 }
 
@@ -720,7 +718,7 @@ body>div[data-notify="container"].alert-warning>span[data-notify="title"]{
 input.anvil-component, textarea.anvil-component, .anvil-component select, .anvil-datepicker input {
   font-size: 16px;
   line-height: 1.5;
-/*   border: 1px solid %color:Gray 300% !important; */
+  border: 1px solid %color:Gray 300% !important;
   border-radius: 10px;
   background-color: transparent;
   color: rgba(0,0,0,0.87);
