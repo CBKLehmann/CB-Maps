@@ -3800,7 +3800,7 @@ class Map2_0(Map2_0Template):
 
     from .Name_Share_Link import Name_Share_Link
     name = alert(content=Name_Share_Link(searched_address=changed_address), buttons=[], dismissible=False, large=True, role='custom_alert')
-    url = anvil.server.call('get_app_url') + f'#?name={name}'
+    self.url = anvil.server.call('get_app_url') + f'#?name={name}'
     
     dataset = {
       'marker_lng': self.marker['_lngLat']['lng'],
@@ -3816,7 +3816,7 @@ class Map2_0(Map2_0Template):
       'poi_opnv': poi_opnv,
       'iso_layer': self.checkbox_poi_x_hfcig.checked,
       'name': name,
-      'url': url,
+      'url': self.url,
       'study_pin': study_pin,
       'zoom': self.mapbox.getZoom()
     }
@@ -3825,8 +3825,15 @@ class Map2_0(Map2_0Template):
 
     for setting in deleted_marker:
       Variables.marker[setting]['marker'] = deleted_marker[setting]
+
+    grid = GridPanel()
+    label = TextBox(text=self.url, enabled=False)
+    button = Button(text="Copy to Clipboard")
+    button.add_event_handler('click', self.copy_to_clipboard)
+    grid.add_component(label, row="label", col_xs=1, width_xs=10)
+    grid.add_component(button, row="button", col_xs=1, width_xs=10)
     
-    alert(url, large=True, dismissible=False)
+    alert(grid, large=True, dismissible=False, role='custom_alert')
     pass
 
 
@@ -3898,3 +3905,7 @@ class Map2_0(Map2_0Template):
     popup = document.getElementById('mapPopup')
     if popup:
       popup.remove()
+
+
+  def copy_to_clipboard(self, **event_args):
+    anvil.js.window.navigator.clipboard.writeText(self.url)
