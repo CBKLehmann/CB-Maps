@@ -18,7 +18,6 @@ class Custom_Marker(Custom_MarkerTemplate):
 
   def icon_drop_down_change(self, **event_args):
     """This method is called when an item is selected"""
-    print(event_args['sender'].selected_value)
     topic = event_args['sender'].selected_value
     if topic == 'Nursing Home':
       image = 'Pflegeheim@4x'

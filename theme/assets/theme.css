@@ -752,9 +752,10 @@ textarea.anvil-component {
 
 .anvil-dropdown select.form-control {
   
-  -webkit-appearance: none;
-  -moz-appearance: none;
+/*   -webkit-appearance: none;
+  -moz-appearance: none; */
   padding: 6px 2em 4px 12px;
+  cursor: pointer; 
   
   /* ew ew ew - select elements are weird and don't obey line-height, so we just
      set the height explicitly. Ugh. */
@@ -1299,14 +1300,6 @@ select > option {
   background-color: %color:Primary 500%;
 }
 
-/* .anvil-role-mobile-menu-close {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 5;
-  display: none;
-} */
-
 .anvil-root-container {
   overflow: hidden;
 }
@@ -1401,13 +1394,11 @@ select > option {
 
 .anvil-role-login_form {
   height: 100vh;
-  display: flex;
-  justify-content: center;
+  display: grid;
   align-items: center;
 }
 
 .anvil-role-login_panel {
-  width: 970px;
 }
 
 .anvil-role-login_grid > div {

@@ -14,9 +14,14 @@ class Login(LoginTemplate):
       # Set Form properties and Data Bindings.
       self.init_components(**properties)
       hash = get_url_hash()
-      print(hash)
       if not len(hash) == 0:
         open_form('Map2_0', role='guest')
+      else:
+        width = anvil.js.window.innerWidth if anvil.js.window.innerWidth > 0 else anvil.js.screen.width;
+        height = anvil.js.window.innerHeight if anvil.js.window.innerHeight > 0 else anvil.js.screen.height;
+        if width <= 998:
+          self.email_icon.visible = False
+          self.password_icon.visible = False
 
   def login_click(self, **event_args):
     with anvil.server.no_loading_indicator:
