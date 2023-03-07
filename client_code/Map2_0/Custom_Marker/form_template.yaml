@@ -1,0 +1,94 @@
+container:
+  type: ColumnPanel
+  properties: {col_widths: '{}'}
+components:
+- type: GridPanel
+  properties: {}
+  name: main_grid
+  layout_properties: {grid_position: 'ONDBAR,GTSVSJ'}
+  components:
+  - type: Label
+    properties: {role: null, align: center, tooltip: '', border: '', foreground: 'theme:Gray
+        300', visible: true, text: Create Custom Marker, font_size: 20, font: '',
+      spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false, icon: ''}
+    name: heading
+    layout_properties: {row: MWZZPA, width_xs: 10, col_xs: 1, width: 620}
+  - type: Spacer
+    properties: {height: 18}
+    name: spacer_1
+    layout_properties: {row: XDUPLV, width_xs: 12, col_xs: 0}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
+        300', visible: true, text: 'Marker Icon:', font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: icon_label
+    layout_properties: {row: GXPLCP, width_xs: 2, col_xs: 1, width: 136.667}
+  - type: DropDown
+    properties:
+      role: null
+      align: full
+      tooltip: ''
+      placeholder: Choose Icon
+      border: ''
+      enabled: true
+      foreground: theme:Gray 300
+      items: [Nursing Home, Assisted Living, Nursing School, University, Cafe]
+      visible: true
+      font_size: null
+      font: ''
+      spacing_above: small
+      spacing_below: small
+      italic: false
+      background: ''
+      bold: false
+      underline: false
+      include_placeholder: true
+    name: icon_drop_down
+    layout_properties: {row: GXPLCP, width_xs: 3, col_xs: 3, width: 220}
+    event_bindings: {change: icon_drop_down_change}
+  - type: Image
+    properties: {height: 38}
+    name: icon_image
+    layout_properties: {row: GXPLCP, width_xs: 1, col_xs: 6}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
+        300', visible: true, text: 'Object Name:', font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: object
+    layout_properties: {row: GOKEWU, width_xs: 2, col_xs: 1, width: 100}
+  - type: TextBox
+    properties: {}
+    name: object_name
+    layout_properties: {row: GOKEWU, width_xs: 3, col_xs: 3}
+    event_bindings: {}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
+        300', visible: true, text: 'Popup Text:', font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+      underline: false, icon: ''}
+    name: text_label
+    layout_properties: {row: QPIAPT, width_xs: 2, col_xs: 1, width: 136.667}
+  - type: TextArea
+    properties: {role: null, align: left, height: 41.3333, tooltip: '', placeholder: '',
+      border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
+      font_size: null, auto_expand: false, font: '', spacing_above: small, spacing_below: small,
+      italic: false, background: '', bold: false, underline: false}
+    name: text_area
+    layout_properties: {row: QPIAPT, width_xs: 3, col_xs: 3, width: 202.666666}
+    event_bindings: {}
+  - type: Spacer
+    properties: {height: 19}
+    name: spacer_2
+    layout_properties: {row: IXWXER, width_xs: 12, col_xs: 0}
+  - type: Button
+    properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+      foreground: 'theme:Gray 300', visible: true, text: Confirm, font_size: null,
+      font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: 'theme:Secondary 700', bold: false, underline: false, icon: ''}
+    name: confirm
+    layout_properties: {row: ZNVAQS, width_xs: 4, col_xs: 4, width: 230}
+    event_bindings: {click: confirm_click}
+is_package: true

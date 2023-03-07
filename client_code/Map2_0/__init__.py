@@ -113,7 +113,7 @@ class Map2_0(Map2_0Template):
       self.mapbox.addControl(self.geocoder)
       
       self.geocoder.on("result", self.move_marker)
-      self.marker.on("dragend", self.marker_dragged) 
+      self.marker.on("dragend", self.marker_dragged)
       self.mapbox.on("mousemove", "federal_states", self.change_hover_state)
       self.mapbox.on("mouseleave", "federal_states", self.change_hover_state)
       self.mapbox.on("mousemove", "administrative_districts", self.change_hover_state)
@@ -133,6 +133,8 @@ class Map2_0(Map2_0Template):
       self.mapbox.on("click", "districts", self.popup)
       self.mapbox.on("style.load", self.handle_style_change)
       self.mapbox.on("load", self.loadHash)
+      self.mapbox.on("contextmenu", self.map_right_click)
+      self.mapbox.on("click", self.map_right_click)
 
   def loadHash(self, event):
     with anvil.server.no_loading_indicator:
@@ -2648,7 +2650,9 @@ class Map2_0(Map2_0Template):
     with anvil.server.no_loading_indicator:
       # Check if Checkbox is checked
       if check_box == True:
-  
+
+        marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
+        
         # Check if Checkbox for Iso-Layer' is checked
         if self.checkbox_poi_x_hfcig.checked == True:
     
@@ -2864,6 +2868,8 @@ class Map2_0(Map2_0Template):
         
                   # Check if Category is Bus or Tram
                   if category == 'bus_stop' or category == 'tram_stop':
+
+                    distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
   
                     marker_details = f"<div class='objectName'>{name}</div>"
                     marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
@@ -2871,17 +2877,21 @@ class Map2_0(Map2_0Template):
                     # Create Popup for Element
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{name}</b></p>"
+                      f"<p class='popup_distance'>{distance} km zum Standort</p>"
                     )
                     
                   # Check if Category is PflegeDB
                   elif category == 'nursing_homes':
         
                     el_coords = [ele['coord_lon'], ele['coord_lat']]
+
+                    distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
         
                     # Create Popup for Element
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{ele['name']}</b></p>"
                       f"<p class='popup_type'>{ele['sektor']}</p>"
+                      f"<p class='popup_distance'>{distance} km zum Standort</p>"
                       "<p class='popup_betreiber_label'><b>Betreiber:</b></p>"
                       f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
                       f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
@@ -2966,6 +2976,8 @@ class Map2_0(Map2_0Template):
                     dz = "N.A." if ele['dz'] == "-" else ele['dz']
                     miete_ab = "N.A." if ele['miete_ab'] == "-" else f"{ele['miete_ab']} €"
                     miete_bis = "N.A." if ele['miete_bis'] == "-" else f"{ele['miete_bis']} €"
+                    distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
+                    
                     
                     # Name of Object
                     marker_details = f"<div class='objectName'>{ele['name']}</div>"
@@ -3018,12 +3030,15 @@ class Map2_0(Map2_0Template):
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{ele['name']}</b></p>"
                       f"<p class='popup_type'>{ele['sektor']}</p>"
+                      f"<p class='popup_distance'>{distance} km zum Standort</p>"
                       "<p class='popup_betreiber_label'><b>Betreiber:</b></p>"
                       f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
                       f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
                     )
     
                   elif category == 'nursing-schools':
+
+                    distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
 
                     # Name of Object
                     marker_details = f"<div class='objectName'>{name}</div>"
@@ -3047,10 +3062,13 @@ class Map2_0(Map2_0Template):
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{name}</b></p>"
                       f"<p class='popup_type'>Nursing School</p>"
+                      f"<p class='popup_distance'>{distance} km zum Standort</p>"
                     )
                     
                   # Check if Category is not Bus or Tram or PflegeDB
                   else:
+
+                    distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
                     
                     # Create Popup for Element
                     marker_details = f'<b>ID:</b> {o_id}'
@@ -3097,6 +3115,7 @@ class Map2_0(Map2_0Template):
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{name}</b></p>"
                       f"<p class='popup_type'>{category.capitalize()}</p>"
+                      f"<p class='popup_distance'>{distance} km zum Standort</p>"
                     )
         
                   # Add Icon to the Map
@@ -3814,3 +3833,68 @@ class Map2_0(Map2_0Template):
   def handle_style_change(self, event):
     self.place_layer()
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
+
+  def map_right_click(self, event):
+
+    if event['type'] == 'contextmenu':
+
+      self.clicked_coords = [event['lngLat']['lng'], event['lngLat']['lat']]
+
+      popup = document.getElementById('mapPopup')
+      if popup:
+        popup.remove()
+    
+      screen = anvil.js.call('get_screen_width')
+      width = screen[0]
+      height = screen[1]
+  
+      popup = document.createElement('div')
+      popup.id = 'mapPopup'
+      popup.style.top = f"{event['point']['y']}px"
+      popup.style.left = f"{event['point']['x'] + 259}px"
+
+      btn = document.createElement('button')
+      btn.id = 'addMarker'
+      btn.innerText = 'Create Marker'
+
+      btn.addEventListener('click', self.create_marker)
+
+      popup.appendChild(btn)
+  
+      body = document.getElementsByTagName('body')
+      body[0].appendChild(popup)
+
+    elif event['type'] == 'click':
+
+      popup = document.getElementById('mapPopup')
+      if popup:
+        popup.remove()
+
+  
+  def create_marker(self, event):
+    # Create HTML Element for Icon
+    el = document.createElement('div')
+    el.className = 'marker'
+    el.id = f'custom_marker'
+    el.style.width = '40px'
+    el.style.height = '40px'
+    el.style.backgroundSize = '100%'
+    el.style.backgroundrepeat = 'no-repeat'
+    el.style.zIndex = '220'
+    el.style.cursor = 'pointer'
+
+    from .Custom_Marker import Custom_Marker
+    marker_data = alert(Custom_Marker(url=self.app_url), buttons=[], dismissible=False, large=True, role='custom_alert')
+
+    el.style.backgroundImage = f"url({marker_data['icon']})"
+    
+    popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+      f"<p class='popup_name'><b>{marker_data['name']}</b></p>"
+      f"<p class='popup_type'>{marker_data['text']}</p>"
+    )
+
+    newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(self.clicked_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+
+    popup = document.getElementById('mapPopup')
+    if popup:
+      popup.remove()

@@ -1220,6 +1220,11 @@ select > option {
   padding-right: 10px;
 }
 
+.popup_distance {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .mobile-menu {
   position: absolute;
 /*   top: 60px;
@@ -1407,4 +1412,24 @@ select > option {
 
 .anvil-role-login_grid > div {
   padding: 0 !important;
+}
+
+#mapPopup {
+  position: absolute;
+  z-index: 300;
+  color: %color:Gray 300%;
+  background-color: %color:Primary 700%;
+  min-width: 100px;
+  min-height: 35px;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+#addMarker {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+}
+
+#addMarker:hover {
+  color: %color:Primary 500%
 }
