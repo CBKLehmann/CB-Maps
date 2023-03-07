@@ -3043,6 +3043,7 @@ class Map2_0(Map2_0Template):
       Variables.home_address_al = []
     
     for entry in entries:
+      print(entry)
       if topic == "nursing_homes":
         lat_entry = "%.6f" % float(entry['coord_lat'])
         lng_entry = "%.6f" % float(entry['coord_lon'])
