@@ -41,109 +41,99 @@ class Map2_0(Map2_0Template):
         self.app_url = anvil.server.call_s('get_app_url')
         self.last_menu_height = '30%'
         self.cluster_data = {}
-        hash = get_url_hash()
-        print(hash)
-        nav_bar = document.getElementById('nav-bar')
-        print(nav_bar)
-        if len(hash) > 0:
-          nav_bar.style.visiblity = 'shown'
-        else:
-          self.spacer_1
-        # self.role = properties['role']
-
+        self.role = properties['role']
   
   def form_show(self, **event_args):
 
     with anvil.server.no_loading_indicator:
-      print('hello')
-      # screen = anvil.js.call('get_screen_width')
-      # width = screen[0]
-      # height = screen[1]
+      screen = anvil.js.call('get_screen_width')
+      width = screen[0]
+      height = screen[1]
         
-      # container = document.getElementById('appGoesHere')
-      # logo = document.createElement('img')
-      # logo.src = f'{self.app_url}/_/theme/Logo.png'
-      # logo.style.position = 'absolute'
-      # logo.style.pointerEvents = 'none'
-      # logo.style.bottom = '30px'
-      # logo.style.right = '20px'
-      # logo.style.width = '15%'
-      # container.appendChild(logo)
+      container = document.getElementById('appGoesHere')
+      logo = document.createElement('img')
+      logo.src = f'{self.app_url}/_/theme/Logo.png'
+      logo.style.position = 'absolute'
+      logo.style.pointerEvents = 'none'
+      logo.style.bottom = '30px'
+      logo.style.right = '20px'
+      logo.style.width = '15%'
+      container.appendChild(logo)
       
-      # if self.role == 'admin' or self.role == 'user':
-      #   self.dist_layer.visible = True
-      #   self.poi_categories.visible = True
-      #   self.button_overlay.visible = True
-      #   self.hide_ms_marker.visible = True
-      #   self.tm_mode.visible = True
-      #   self.file_loader_upload.visible = True
-      #   self.share.visible = True
-      #   self.button_icons.visible = True
-      #   draggable = True
-      #   container.removeChild(logo)
+      if self.role == 'admin' or self.role == 'user':
+        self.dist_layer.visible = True
+        self.poi_categories.visible = True
+        self.button_overlay.visible = True
+        self.hide_ms_marker.visible = True
+        self.tm_mode.visible = True
+        self.file_loader_upload.visible = True
+        self.share.visible = True
+        self.button_icons.visible = True
+        draggable = True
+        container.removeChild(logo)
 
-      # if self.role == 'admin':
-      #   self.admin_button.visible = 'visible'
+      if self.role == 'admin':
+        self.admin_button.visible = 'visible'
 
-      # if self.role == 'guest':
-      #   draggable = False
-      # #   self.button_icons.text = 'Cluster & Investment'
+      if self.role == 'guest':
+        draggable = False
+      #   self.button_icons.text = 'Cluster & Investment'
 
-      # if width <= 998:
-      #   self.mobile = True
-      #   self.mobile_btn_grid.visible = True
-      # else:
-      #   self.mobile = False
+      if width <= 998:
+        self.mobile = True
+        self.mobile_btn_grid.visible = True
+      else:
+        self.mobile = False
       
-      # # Initiate Map and set Listener on Page Load
-      # self.select_all_hc.tag.categorie = 'Healthcare'
-      # self.select_all_opnv.tag.categorie = 'ÖPNV'
-      # self.select_all_edu.tag.categorie = 'Student Living'
-      # self.select_all_food.tag.categorie = 'Food & Drinks'
+      # Initiate Map and set Listener on Page Load
+      self.select_all_hc.tag.categorie = 'Healthcare'
+      self.select_all_opnv.tag.categorie = 'ÖPNV'
+      self.select_all_edu.tag.categorie = 'Student Living'
+      self.select_all_food.tag.categorie = 'Food & Drinks'
       
-      # mapboxgl.accessToken = self.token
-      # self.mapbox = mapboxgl.Map({'container': self.dom,
-      #                             'style': "mapbox://styles/mapbox/outdoors-v11",
-      #                             'center': [13.4092, 52.5167],
-      #                             'zoom': 8})
-      # # Create HTML Element for Icon
-      # el = document.createElement('div')
-      # el.className = 'marker'
-      # el.style.width = '50px'
-      # el.style.height = '50px'
-      # el.style.backgroundSize = '100%'
-      # el.style.backgroundrepeat = 'no-repeat'
-      # el.style.zIndex = '299'
-      # el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/CB_MapPin_Location.png)'
+      mapboxgl.accessToken = self.token
+      self.mapbox = mapboxgl.Map({'container': self.dom,
+                                  'style': "mapbox://styles/mapbox/outdoors-v11",
+                                  'center': [13.4092, 52.5167],
+                                  'zoom': 8})
+      # Create HTML Element for Icon
+      el = document.createElement('div')
+      el.className = 'marker'
+      el.style.width = '50px'
+      el.style.height = '50px'
+      el.style.backgroundSize = '100%'
+      el.style.backgroundrepeat = 'no-repeat'
+      el.style.zIndex = '299'
+      el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/CB_MapPin_Location.png)'
       
-      # self.marker = mapboxgl.Marker({'draggable': draggable, 'element': el, 'anchor': 'bottom'})
-      # self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
-      # self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
-      # self.mapbox.addControl(self.geocoder)
+      self.marker = mapboxgl.Marker({'draggable': draggable, 'element': el, 'anchor': 'bottom'})
+      self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
+      self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
+      self.mapbox.addControl(self.geocoder)
       
-      # self.geocoder.on("result", self.move_marker)
-      # self.marker.on("dragend", self.marker_dragged)
-      # self.mapbox.on("mousemove", "federal_states", self.change_hover_state)
-      # self.mapbox.on("mouseleave", "federal_states", self.change_hover_state)
-      # self.mapbox.on("mousemove", "administrative_districts", self.change_hover_state)
-      # self.mapbox.on("mouseleave", "administrative_districts", self.change_hover_state)
-      # self.mapbox.on("mousemove", "counties", self.change_hover_state)
-      # self.mapbox.on("mouseleave", "counties", self.change_hover_state)
-      # self.mapbox.on("mousemove", "municipalities", self.change_hover_state)
-      # self.mapbox.on("mouseleave", "municipalities", self.change_hover_state)
-      # self.mapbox.on("mousemove", "districts", self.change_hover_state)
-      # self.mapbox.on("mouseleave", "districts", self.change_hover_state)
-      # self.mapbox.on("mousemove", 'netherlands', self.change_hover_state)
-      # self.mapbox.on("mouseleave", 'netherlands', self.change_hover_state)
-      # self.mapbox.on("click", "federal_states", self.popup)
-      # self.mapbox.on("click", "administrative_districts", self.popup)
-      # self.mapbox.on("click", "counties", self.popup)
-      # self.mapbox.on("click", "municipalities", self.popup)
-      # self.mapbox.on("click", "districts", self.popup)
-      # self.mapbox.on("style.load", self.handle_style_change)
-      # self.mapbox.on("load", self.loadHash)
-      # self.mapbox.on("contextmenu", self.map_right_click)
-      # self.mapbox.on("click", self.map_right_click)
+      self.geocoder.on("result", self.move_marker)
+      self.marker.on("dragend", self.marker_dragged)
+      self.mapbox.on("mousemove", "federal_states", self.change_hover_state)
+      self.mapbox.on("mouseleave", "federal_states", self.change_hover_state)
+      self.mapbox.on("mousemove", "administrative_districts", self.change_hover_state)
+      self.mapbox.on("mouseleave", "administrative_districts", self.change_hover_state)
+      self.mapbox.on("mousemove", "counties", self.change_hover_state)
+      self.mapbox.on("mouseleave", "counties", self.change_hover_state)
+      self.mapbox.on("mousemove", "municipalities", self.change_hover_state)
+      self.mapbox.on("mouseleave", "municipalities", self.change_hover_state)
+      self.mapbox.on("mousemove", "districts", self.change_hover_state)
+      self.mapbox.on("mouseleave", "districts", self.change_hover_state)
+      self.mapbox.on("mousemove", 'netherlands', self.change_hover_state)
+      self.mapbox.on("mouseleave", 'netherlands', self.change_hover_state)
+      self.mapbox.on("click", "federal_states", self.popup)
+      self.mapbox.on("click", "administrative_districts", self.popup)
+      self.mapbox.on("click", "counties", self.popup)
+      self.mapbox.on("click", "municipalities", self.popup)
+      self.mapbox.on("click", "districts", self.popup)
+      self.mapbox.on("style.load", self.handle_style_change)
+      self.mapbox.on("load", self.loadHash)
+      self.mapbox.on("contextmenu", self.map_right_click)
+      self.mapbox.on("click", self.map_right_click)
 
   def loadHash(self, event):
     with anvil.server.no_loading_indicator:

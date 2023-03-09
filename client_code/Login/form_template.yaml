@@ -3,6 +3,7 @@ container:
   properties: {role: login_form, tooltip: '', border: '', foreground: '', visible: true,
     wrap_on: never, col_spacing: none, spacing_above: none, col_widths: '{}', spacing_below: none,
     background: 'theme:Primary 700'}
+  event_bindings: {show: form_show}
 components:
 - type: GridPanel
   properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
