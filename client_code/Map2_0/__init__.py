@@ -34,6 +34,10 @@ class Map2_0(Map2_0Template):
         from .Maintenance import Maintenance
         alert(content=Maintenance(), dismissible=False, buttons=[], large=True)
       else:
+        hash = get_url_hash()
+        print(hash)
+        if len(hash) == 0:
+          open_form('Login')
         self.init_components(**properties)
         self.dom = anvil.js.get_dom_node(self.spacer_1)
         self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
@@ -42,6 +46,7 @@ class Map2_0(Map2_0Template):
         self.last_menu_height = '30%'
         self.cluster_data = {}
         self.role = properties['role']
+        print(self.role)
 
   
   def form_show(self, **event_args):

@@ -18,6 +18,7 @@ class Login(LoginTemplate):
       if width <= 998:
         self.email_icon.visible = False
         self.password_icon.visible = False
+      self.form_show()
 
   
   def form_show(self, **event_args):
