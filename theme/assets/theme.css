@@ -1424,3 +1424,7 @@ select > option {
 #addMarker:hover {
   color: %color:Primary 500%
 }
+
+.left-nav {
+  visibility: hidden;
+}
