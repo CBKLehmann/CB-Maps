@@ -49,16 +49,6 @@ class Map2_0(Map2_0Template):
       screen = anvil.js.call('get_screen_width')
       width = screen[0]
       height = screen[1]
-        
-      container = document.getElementById('appGoesHere')
-      logo = document.createElement('img')
-      logo.src = f'{self.app_url}/_/theme/Logo.png'
-      logo.style.position = 'absolute'
-      logo.style.pointerEvents = 'none'
-      logo.style.bottom = '30px'
-      logo.style.right = '20px'
-      logo.style.width = '15%'
-      container.appendChild(logo)
       
       if self.role == 'admin' or self.role == 'user':
         self.dist_layer.visible = True
@@ -70,7 +60,6 @@ class Map2_0(Map2_0Template):
         self.share.visible = True
         self.button_icons.visible = True
         draggable = True
-        container.removeChild(logo)
 
       if self.role == 'admin':
         self.admin_button.visible = 'visible'
@@ -84,6 +73,16 @@ class Map2_0(Map2_0Template):
         self.mobile_btn_grid.visible = True
       else:
         self.mobile = False
+        if self.role == 'guest':
+          container = document.getElementById('appGoesHere')
+          logo = document.createElement('img')
+          logo.src = f'{self.app_url}/_/theme/Logo.png'
+          logo.style.position = 'absolute'
+          logo.style.pointerEvents = 'none'
+          logo.style.bottom = '30px'
+          logo.style.right = '20px'
+          logo.style.width = '15%'
+          container.appendChild(logo)
       
       # Initiate Map and set Listener on Page Load
       self.select_all_hc.tag.categorie = 'Healthcare'

@@ -1428,3 +1428,7 @@ select > option {
 /* .left-nav {
   visibility: hidden;
 } */
+
+body {
+  width: 100vw;
+}
