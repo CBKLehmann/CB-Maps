@@ -51,6 +51,8 @@ roles:
 - {name: login_input}
 - {name: login_icon}
 - {name: login_grid}
+- {name: copyright}
+- {name: custom_sidebar}
 color_scheme:
   preset_groups:
   - name: Primary Colour

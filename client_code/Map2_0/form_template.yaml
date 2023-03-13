@@ -6,9 +6,9 @@ container:
   event_bindings: {show: form_show}
 components:
 - type: ColumnPanel
-  properties: {role: null, tooltip: '', border: '', foreground: 'theme:Primary 500',
-    visible: true, wrap_on: mobile, col_spacing: medium, spacing_above: none, col_widths: '{}',
-    spacing_below: none, background: 'theme:Primary 700'}
+  properties: {role: custom_sidebar, tooltip: '', border: '', foreground: 'theme:Gray
+      300', visible: true, wrap_on: mobile, col_spacing: medium, spacing_above: none,
+    col_widths: '{}', spacing_below: none, background: 'theme:Primary 700'}
   name: Side_Bar
   layout_properties: {slot: left-nav}
   components:
@@ -756,12 +756,12 @@ components:
         event_bindings: {change: hide_ms_marker_change}
       - type: CheckBox
         properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
-          foreground: 'theme:Gray 300', allow_indeterminate: false, visible: false,
-          text: TM-Mode, font_size: 13, font: '', spacing_above: none, spacing_below: none,
-          italic: false, background: '', bold: false, checked: false, underline: false}
+          foreground: '', allow_indeterminate: false, visible: false, text: TM-Mode,
+          font_size: 13, font: '', spacing_above: none, spacing_below: none, italic: false,
+          background: '', bold: false, checked: false, underline: false}
         name: tm_mode
         layout_properties: {grid_position: 'UHTCTR,LXXRID', row: MEXLRU, width_xs: 11,
-          col_xs: 1, width: 233.385}
+          col_xs: 1, width: 205.885}
         event_bindings: {change: tm_mode_change}
     - type: Button
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
@@ -781,32 +781,33 @@ components:
         col_xs: 0, width: 227}
       event_bindings: {click: admin_button_click}
   - type: LinearPanel
-    properties: {}
-    name: linear_panel_1
+    properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
+      border: '', visible: true, role: copyright, tooltip: ''}
+    name: copyright
     layout_properties: {grid_position: 'QXBXJF,HNZRNX'}
     components:
     - type: Label
       properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
-          300', visible: true, text: Capital Bay Group, font_size: null, font: '',
-        spacing_above: small, icon_align: left, spacing_below: small, italic: false,
-        background: '', bold: false, underline: false, icon: ''}
-      name: label_1
-      layout_properties: {grid_position: 'AWISTS,HPNLBS'}
-    - type: Label
-      properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
-          300', visible: true, text: 2023 All Rights Reserved, font_size: null, font: '',
+          300', visible: true, text: 2023 All Rights Reserved, font_size: 12, font: '',
         spacing_above: small, icon_align: left, spacing_below: small, italic: false,
         background: '', bold: false, underline: false, icon: ''}
       name: label_2
       layout_properties: {}
+    - type: Label
+      properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
+          300', visible: true, text: Capital Bay Group, font_size: 12, font: '', spacing_above: small,
+        icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+        underline: false, icon: ''}
+      name: label_1
+      layout_properties: {grid_position: 'JMRSGD,OLMNZD'}
     - type: Link
       properties: {role: null, url: 'https://capitalbay.de/', align: left, tooltip: '',
         border: '', foreground: 'theme:Secondary 700', visible: true, text: capitalbay.de,
-        font_size: null, wrap_on: never, font: '', col_spacing: none, spacing_above: small,
+        font_size: 12, wrap_on: never, font: '', col_spacing: none, spacing_above: small,
         icon_align: left, col_widths: '', spacing_below: small, italic: false, background: '',
         bold: false, underline: false, icon: ''}
       name: link_1
-      layout_properties: {}
+      layout_properties: {grid_position: 'GXVVJR,FZLJBI'}
 - type: Spacer
   properties: {visible: true, spacing_above: none, spacing_below: none, height: '',
     tooltip: ''}

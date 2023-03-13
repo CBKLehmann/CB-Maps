@@ -532,11 +532,11 @@ a:hover, a:active {
 }
 
 .link-text {
-  color: %color:Gray 300% !important;
+  color: #4AC9FF !important;
 }
 
 .link-text:hover {
-  color: %color:Primary 500% !important;
+  color: #12B8FF !important;
 }
 
 .modal-footer {
@@ -1430,3 +1430,31 @@ select > option {
 body {
   width: 100vw;
 }
+
+/* .anvil-role-copyright {
+  position: fixed;
+  bottom: 0;
+} */
+
+.anvil-role-copyright > ul > li > div > span {
+  padding: 0 !important;
+}
+
+.anvil-role-copyright > ul > li > a > div {
+  padding: 0 !important;
+}
+
+.anvil-role-copyright > ul > li > div {
+  margin: 0;
+}
+
+a:hover {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.anvil-role-custom_sidebar {
+  height: 100%;
+  padding: 0 !important;
+}
+
+.anvil-panel-section {}
