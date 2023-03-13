@@ -71,6 +71,7 @@ class Map2_0(Map2_0Template):
       if width <= 998:
         self.mobile = True
         self.mobile_btn_grid.visible = True
+        self.mobile_menu_open = False
       else:
         self.mobile = False
         if self.role == 'guest':
@@ -3704,45 +3705,15 @@ class Map2_0(Map2_0Template):
   def mobile_hide_click(self, **event_args):
     with anvil.server.no_loading_indicator:
       mobile_menu = document.getElementsByClassName('left-nav')[0]
-      if self.mobile_hide.icon == 'fa:angle-down':
-        mobile_menu.style.height = '7%'
-        self.mobile_hide.icon = 'fa:angle-up'
+      if self.mobile_menu_open:
         mobile_menu.style.overflowY = 'hidden'
+        mobile_menu.style.height = '7%'
         mobile_menu.scrollTop = 0
-        if self.last_menu_height == '100%':
-          mobile_menu.style.borderTopLeftRadius = '10px'
-          mobile_menu.style.borderTopRightRadius = '10px'
+        self.mobile_menu_open = False
       else:
-        mobile_menu.style.overflowY = 'auto'
-        mobile_menu.style.height = self.last_menu_height
-        self.mobile_hide.icon = 'fa:angle-down'
-        if self.last_menu_height == '100%':
-          mobile_menu.style.borderTopLeftRadius = '0'
-          mobile_menu.style.borderTopRightRadius = '0'
-      pass
-
-
-  def mobile_expend_click(self, **event_args):
-    with anvil.server.no_loading_indicator:
-      mobile_menu = document.getElementsByClassName('left-nav')[0]
-      if self.menu_expand.icon == 'fa:expand':
         mobile_menu.style.height = '100%'
-        self.menu_expand.icon = 'fa:compress'
-        self.last_menu_height = '100%'
-        mobile_menu.style.borderTopLeftRadius = '0'
-        mobile_menu.style.borderTopRightRadius = '0'
-        if self.mobile_hide.icon == 'fa:angle-up':
-          self.mobile_hide.icon = 'fa:angle-down'
-          mobile_menu.style.overflowY = 'auto'
-      else:
-        mobile_menu.style.height = '30%'
-        self.menu_expand.icon = 'fa:expand'
-        self.last_menu_height = '30%'
-        mobile_menu.style.borderTopLeftRadius = '10px'
-        mobile_menu.style.borderTopRightRadius = '10px'
-        if self.mobile_hide.icon == 'fa:angle-up':
-          self.mobile_hide.icon = 'fa:angle-down'
-          mobile_menu.style.overflowY = 'auto'
+        mobile_menu.style.overflowY = 'auto'
+        self.mobile_menu_open = True
       pass
 
   def share_click(self, **event_args):
