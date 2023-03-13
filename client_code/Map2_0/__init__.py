@@ -3878,3 +3878,10 @@ class Map2_0(Map2_0Template):
 
   def copy_to_clipboard(self, **event_args):
     anvil.js.window.navigator.clipboard.writeText(self.url)
+
+  def comp_loader_change(self, file, **event_args):
+    """This method is called when a new file is loaded into this FileLoader"""
+    with anvil.server.no_loading_indicator:
+      #Call Server-Function to safe the File  
+      self.cluster_data = anvil.server.call('read_comp_file', file)
+    pass

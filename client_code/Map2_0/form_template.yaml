@@ -38,7 +38,7 @@ components:
     properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
       border: '', visible: true, role: mobile-menu, tooltip: ''}
     name: menu_grid
-    layout_properties: {grid_position: 'EEJTQY,JCBBMR'}
+    layout_properties: {grid_position: 'EEJTQY,JCBBMR', full_width_row: false}
     components:
     - type: Button
       properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
@@ -780,6 +780,38 @@ components:
       layout_properties: {grid_position: 'LLVIZT,GPYSKZ', row: CULMTX, width_xs: 12,
         col_xs: 0, width: 227}
       event_bindings: {click: admin_button_click}
+    - type: FileLoader
+      properties:
+        role: null
+        show_state: true
+        align: center
+        tooltip: ''
+        border: ''
+        file_types: null
+        enabled: true
+        files: []
+        foreground: ''
+        visible: true
+        text: Upload Comps
+        font_size: null
+        font: ''
+        spacing_above: small
+        icon_align: left
+        spacing_below: small
+        italic: false
+        file: null
+        background: ''
+        bold: false
+        underline: false
+        multiple: false
+        icon: fa:upload
+      name: comp_loader
+      layout_properties: {row: LRZOLU, width_xs: 11, col_xs: 0, width: 205.885}
+      event_bindings: {change: comp_loader_change}
+  - type: Spacer
+    properties: {height: 14}
+    name: spacer_3
+    layout_properties: {grid_position: 'SYGFIL,JCTOQM'}
   - type: LinearPanel
     properties: {spacing_above: small, spacing_below: small, background: '', foreground: '',
       border: '', visible: true, role: copyright, tooltip: ''}
