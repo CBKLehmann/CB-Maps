@@ -3883,5 +3883,7 @@ class Map2_0(Map2_0Template):
     """This method is called when a new file is loaded into this FileLoader"""
     with anvil.server.no_loading_indicator:
       #Call Server-Function to safe the File  
-      self.cluster_data = anvil.server.call('read_comp_file', file)
+      comps = self.cluster_data = anvil.server.call('read_comp_file', file)
+      from .Comp_Sort import Comp_Sort
+      results = alert(Comp_Sort(data=comps))
     pass
