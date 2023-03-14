@@ -63,7 +63,8 @@ components:
       underline: false
       include_placeholder: true
     name: city_dropdown
-    layout_properties: {row: LDBDAA, width_xs: 3, col_xs: 0, width: 220}
+    layout_properties: {row: LDBDAA, width_xs: 3, col_xs: 0, width: 165}
+    event_bindings: {change: refresh_amount}
   - type: DropDown
     properties:
       role: null
@@ -87,6 +88,7 @@ components:
       include_placeholder: true
     name: category_dropdown
     layout_properties: {row: LDBDAA, width_xs: 3, col_xs: 4, width: 220}
+    event_bindings: {change: refresh_amount}
   - type: RadioButton
     properties: {role: null, selected: false, align: left, tooltip: '', border: '',
       enabled: true, foreground: 'theme:Gray 300', value: '', visible: true, text: All Entries,
@@ -94,6 +96,7 @@ components:
       background: '', bold: false, group_name: Competitor_Count, underline: false}
     name: all_switch
     layout_properties: {row: LDBDAA, width_xs: 2, col_xs: 8, width: 220}
+    event_bindings: {clicked: refresh_amount}
   - type: RadioButton
     properties: {role: null, selected: true, align: left, tooltip: '', border: '',
       enabled: true, foreground: 'theme:Gray 300', value: '', visible: true, text: Maximum,
@@ -101,6 +104,7 @@ components:
       background: '', bold: false, group_name: Competitor_Count, underline: false}
     name: custom_switch
     layout_properties: {row: XORQYC, width_xs: 2, col_xs: 8, width: 136.667}
+    event_bindings: {clicked: refresh_amount}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '10',
@@ -108,15 +112,20 @@ components:
       italic: false, background: '', bold: false, underline: false}
     name: custom_input
     layout_properties: {row: XORQYC, width_xs: 2, col_xs: 10, width: 127.333666}
+    event_bindings: {change: refresh_amount}
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
-      visible: true, text: 'Found Competitor Amound:', font_size: null, font: '',
+      visible: true, text: 'Found Competitor Amount: 0', font_size: null, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
-    name: entry_count
-    layout_properties: {row: STYPGM, width_xs: 3, col_xs: 0, width: 136.667}
-  - type: Label
-    properties: {}
-    name: competitor_amount
-    layout_properties: {row: STYPGM, width_xs: 1, col_xs: 3}
+    name: competitor_count
+    layout_properties: {row: STYPGM, width_xs: 4, col_xs: 0, width: 230}
+  - type: Button
+    properties: {role: primary-color, align: center, tooltip: '', border: '', enabled: true,
+      foreground: 'theme:Gray 300', visible: true, text: Confirm, font_size: null,
+      font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: 'theme:Secondary 700', bold: false, underline: false, icon: ''}
+    name: confirm_btn
+    layout_properties: {row: NQWNVU, width_xs: 3, col_xs: 4, width: 220}
+    event_bindings: {click: confirm_btn_click}
 is_package: true
