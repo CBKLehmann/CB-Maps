@@ -15,7 +15,7 @@ components:
         300', visible: true, text: 'Which Settings do you want to use ?', font_size: null,
       font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
-    name: label_1
+    name: heading
     layout_properties: {row: MGFWGN, width_xs: 12, col_xs: 0, width: 970}
   - type: Spacer
     properties: {height: 36}
@@ -26,21 +26,21 @@ components:
         300', visible: true, text: City, font_size: null, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
-    name: label_2
+    name: city_label
     layout_properties: {row: YSVIXT, width_xs: 2, col_xs: 0, width: 136.667}
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: Category, font_size: null, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
-    name: label_3
+    name: category_label
     layout_properties: {row: YSVIXT, width_xs: 2, col_xs: 4, width: 136.667}
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: Maximum Competitor Count, font_size: null, font: '',
       spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
-    name: label_4
+    name: count_label
     layout_properties: {row: YSVIXT, width_xs: 4, col_xs: 8, width: 303.333}
   - type: DropDown
     properties:
@@ -62,7 +62,7 @@ components:
       bold: false
       underline: false
       include_placeholder: true
-    name: drop_down_1
+    name: city_dropdown
     layout_properties: {row: LDBDAA, width_xs: 3, col_xs: 0, width: 220}
   - type: DropDown
     properties:
@@ -85,27 +85,38 @@ components:
       bold: false
       underline: false
       include_placeholder: true
-    name: drop_down_2
+    name: category_dropdown
     layout_properties: {row: LDBDAA, width_xs: 3, col_xs: 4, width: 220}
   - type: RadioButton
     properties: {role: null, selected: false, align: left, tooltip: '', border: '',
-      enabled: true, foreground: 'theme:Gray 300', value: '', visible: true, text: radio_button_1,
+      enabled: true, foreground: 'theme:Gray 300', value: '', visible: true, text: All Entries,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
-      background: '', bold: false, group_name: radioGroup1, underline: false}
-    name: radio_button_1
-    layout_properties: {row: LDBDAA, width_xs: 2, col_xs: 8, width: 136.667}
+      background: '', bold: false, group_name: Competitor_Count, underline: false}
+    name: all_switch
+    layout_properties: {row: LDBDAA, width_xs: 2, col_xs: 8, width: 220}
   - type: RadioButton
-    properties: {role: null, selected: false, align: left, tooltip: '', border: '',
-      enabled: true, foreground: 'theme:Gray 300', value: '', visible: true, text: radio_button_2,
+    properties: {role: null, selected: true, align: left, tooltip: '', border: '',
+      enabled: true, foreground: 'theme:Gray 300', value: '', visible: true, text: Maximum,
       font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
-      background: '', bold: false, group_name: radioGroup1, underline: false}
-    name: radio_button_2
+      background: '', bold: false, group_name: Competitor_Count, underline: false}
+    name: custom_switch
     layout_properties: {row: XORQYC, width_xs: 2, col_xs: 8, width: 136.667}
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
-      border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: null, font: '', spacing_above: small, type: text, spacing_below: small,
+      border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '10',
+      font_size: null, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
-    name: text_box_1
+    name: custom_input
     layout_properties: {row: XORQYC, width_xs: 2, col_xs: 10, width: 127.333666}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Found Competitor Amound:', font_size: null, font: '',
+      spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false, icon: ''}
+    name: entry_count
+    layout_properties: {row: STYPGM, width_xs: 3, col_xs: 0, width: 136.667}
+  - type: Label
+    properties: {}
+    name: competitor_amount
+    layout_properties: {row: STYPGM, width_xs: 1, col_xs: 3}
 is_package: true

@@ -12,5 +12,8 @@ class Comp_Sort(Comp_SortTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
+    entries = properties['data']
+    print(entries.keys())
+    self.city_dropdown.items = entries.keys()
 
     # Any code you write here will run before the form opens.

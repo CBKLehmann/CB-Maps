@@ -3885,5 +3885,5 @@ class Map2_0(Map2_0Template):
       #Call Server-Function to safe the File  
       comps = self.cluster_data = anvil.server.call('read_comp_file', file)
       from .Comp_Sort import Comp_Sort
-      results = alert(Comp_Sort(data=comps))
+      results = alert(Comp_Sort(data=comps), buttons=[], dismissible=False, large=True, role='custom_alert')
     pass
