@@ -30,7 +30,7 @@ components:
     layout_properties: {row: YSVIXT, width_xs: 2, col_xs: 0, width: 136.667}
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
-        300', visible: true, text: Category, font_size: null, font: '', spacing_above: small,
+        300', visible: true, text: Living Concept, font_size: null, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: category_label
@@ -70,7 +70,7 @@ components:
       role: null
       align: full
       tooltip: ''
-      placeholder: Choose a Category
+      placeholder: Choose a Living Concept
       border: ''
       enabled: true
       foreground: theme:Gray 300
@@ -120,6 +120,40 @@ components:
       background: '', bold: false, underline: false, icon: ''}
     name: competitor_count
     layout_properties: {row: STYPGM, width_xs: 4, col_xs: 0, width: 230}
+  - type: DataGrid
+    properties:
+      role: null
+      columns:
+      - {id: URBKPU, title: Address, data_key: address, $$hashKey: 'object:90847',
+        width: 249, expand: false}
+      - {id: NTMULL, title: Zip, data_key: zip, $$hashKey: 'object:90848', width: 84,
+        expand: false}
+      - {id: ZOBEQG, title: Operator, data_key: operator, $$hashKey: 'object:90849',
+        width: 184, expand: false}
+      - {id: WTXLXS, title: 360 Operator, data_key: 360_operator, $$hashKey: 'object:90973',
+        width: 95, expand: false}
+      - {id: MJHVTH, title: No. of Apartments, data_key: apartments, $$hashKey: 'object:90969',
+        width: 114, expand: false}
+      - {id: OPVOAW, title: Distance, data_key: distance, $$hashKey: 'object:90971'}
+      auto_header: true
+      tooltip: ''
+      border: ''
+      foreground: ''
+      rows_per_page: 10
+      visible: true
+      wrap_on: never
+      show_page_controls: true
+      spacing_above: small
+      spacing_below: small
+      background: ''
+    name: competitor_data
+    layout_properties: {row: LOQRYI, width_xs: 12, col_xs: 0, width: 750}
+    components:
+    - type: LinearPanel
+      properties: {}
+      name: competitor_list
+      layout_properties: {}
+      components: []
   - type: Button
     properties: {role: primary-color, align: center, tooltip: '', border: '', enabled: true,
       foreground: 'theme:Gray 300', visible: true, text: Confirm, font_size: null,

@@ -3886,5 +3886,5 @@ class Map2_0(Map2_0Template):
       marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
       comps = self.cluster_data = anvil.server.call('read_comp_file', file, marker_coords)
       from .Comp_Sort import Comp_Sort
-      results = alert(Comp_Sort(data=comps), buttons=[], dismissible=False, large=True, role='custom_alert')
+      results = alert(Comp_Sort(data=comps, marker_coords=marker_coords), buttons=[], dismissible=False, large=True, role='custom_alert')
     pass
