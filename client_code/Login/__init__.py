@@ -43,4 +43,3 @@ class Login(LoginTemplate):
       self.error.text = "Reset Link has been send to given Email if Email exists"
       self.error.visible = True
     pass
-

@@ -45,6 +45,7 @@ components:
       name: email_input
       layout_properties: {row: CCEMUB, width_xs: 8, col_xs: 2, width: 580, expand: false,
         grid_position: 'GVSGEI,KSLEEB'}
+      event_bindings: {pressed_enter: login_click}
     - type: Label
       properties: {role: login_icon, align: right, tooltip: '', border: '', foreground: 'theme:Gray
           300', visible: true, text: '', font_size: 25, font: '', spacing_above: small,
@@ -59,6 +60,7 @@ components:
         background: '', bold: false, underline: false}
       name: passwort_input
       layout_properties: {row: CXFZMT, width_xs: 8, col_xs: 2, width: 580, expand: false}
+      event_bindings: {pressed_enter: login_click}
     - type: Label
       properties: {role: null, align: left, tooltip: '', border: '', foreground: red,
         visible: false, text: Incorrect Email or Password, font_size: null, font: '',
@@ -68,11 +70,11 @@ components:
       layout_properties: {row: TYLETP, width_xs: 3, col_xs: 2, width: 636.656}
     - type: CheckBox
       properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
-        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: Remember Me,
-        font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
-        background: '', bold: false, checked: false, underline: false}
+        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: false,
+        text: Remember Me, font_size: null, font: '', spacing_above: small, spacing_below: small,
+        italic: false, background: '', bold: false, checked: false, underline: false}
       name: remember_me
-      layout_properties: {row: EWVUQI, width_xs: 8, col_xs: 2, width: 636.667, grid_position: 'KCRKQA,VGFNAQ'}
+      layout_properties: {row: EWVUQI, width_xs: 8, col_xs: 2, width: 489.984, grid_position: 'KCRKQA,VGFNAQ'}
       event_bindings: {}
     - type: Spacer
       properties: {height: 23}
