@@ -427,6 +427,10 @@ class Map2_0(Map2_0Template):
         'Investment Class': {
           'container': self.invest_panel,
           'icon_container': self.invest_class_btn
+        },
+        'Competitors': {
+          'container': self.competitor_grid,
+          'icon_container': self.competitor_btn
         }
       }
       
