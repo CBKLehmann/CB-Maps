@@ -2325,7 +2325,7 @@ class Map2_0(Map2_0Template):
             color = colors[counter]
             checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
             checkbox.add_event_handler('change', self.check_box_marker_icons_change)
-            icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none', align='left')
+            icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none', icon_align='left')
             cluster_components[cluster_name] = [checkbox, icon]
             added_clusters.append(cluster_name)
   
@@ -2364,8 +2364,8 @@ class Map2_0(Map2_0Template):
           counter += 1
   
         for key in sorted(cluster_components):
-          self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=2, width_xs=8)
-          self.icon_grid.add_component(cluster_components[key][1], row=key, col_xs=10, width_xs=1)
+          self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=1, width_xs=8)
+          self.icon_grid.add_component(cluster_components[key][1], row=key, col_xs=9, width_xs=1)
           
           sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout']    
         for key in sorted(invest_components.keys(), key=lambda x: sorted_keys.index(x)):
