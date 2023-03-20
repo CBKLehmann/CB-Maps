@@ -2294,7 +2294,8 @@ class Map2_0(Map2_0Template):
           'Value Add': '/_/theme/Pins/CB_MapPin_VA.png',
           'Opportunistic': '/_/theme/Pins/CB_MapPin_Opp.png',
           'Development': '/_/theme/Pins/CB_MapPin_Dev.png',
-          'Workout': '/_/theme/Pins/CB_MapPin_Wo.png'
+          'Workout': '/_/theme/Pins/CB_MapPin_Wo.png',
+          'Unnamed': '/_/theme/Icons/pin.png'
         }
     
         #Create Settings
@@ -2320,8 +2321,12 @@ class Map2_0(Map2_0Template):
           inv_el.style.backgroundSize = '100%'
           inv_el.style.backgroundrepeat = 'no-repeat'
           inv_el.style.zIndex = '251'
-    
+
           cluster_name = asset['cluster']
+          if asset['invest_class'] == "Select please":
+            invest_name = "Unnamed"
+          else:
+            invest_name = asset['invest_class']
     
           if cluster_name not in added_clusters:
             color = colors[counter]
@@ -2331,11 +2336,11 @@ class Map2_0(Map2_0Template):
             cluster_components[cluster_name] = [checkbox, icon]
             added_clusters.append(cluster_name)
   
-          if asset['invest_class'] not in added_invest_classes:
-            checkbox = CheckBox(checked=True, text=asset['invest_class'], spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
+          if invest_name not in added_invest_classes:
+            checkbox = CheckBox(checked=True, text=invest_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
             checkbox.add_event_handler('change', self.check_box_marker_icons_change)
-            invest_components[asset['invest_class']] = checkbox
-            added_invest_classes.append(asset['invest_class'])
+            invest_components[invest_name] = checkbox
+            added_invest_classes.append(invest_name)
     
           # #Get Coordinates of provided Adress for Marker
           req_str = self.build_request_string(asset)
@@ -2348,11 +2353,11 @@ class Map2_0(Map2_0Template):
           el.style.backgroundImage = f'url({self.app_url}{excel_markers[cluster_name]["color"][2]})'
           new_list = self.set_excel_markers(excel_markers[cluster_name]['static'], coordinates, excel_markers[cluster_name]['marker'], el)
           excel_markers[cluster_name]['marker'] = new_list
-          if not asset['invest_class'] in excel_markers.keys():
-            excel_markers[asset['invest_class']] = {'pin': invests[asset['invest_class']], 'static': 'none', 'marker': []}
-          inv_el.style.backgroundImage = f"url({self.app_url}{invests[asset['invest_class']]})"
-          new_list = self.set_excel_markers(excel_markers[asset['invest_class']]['static'], coordinates, excel_markers[asset['invest_class']]['marker'], inv_el)
-          excel_markers[asset['invest_class']]['marker'] = new_list
+          if not invest_name in excel_markers.keys():
+            excel_markers[invest_name] = {'pin': invests[invest_name], 'static': 'none', 'marker': []}
+          inv_el.style.backgroundImage = f"url({self.app_url}{invests[invest_name]})"
+          new_list = self.set_excel_markers(excel_markers[invest_name]['static'], coordinates, excel_markers[invest_name]['marker'], inv_el)
+          excel_markers[invest_name]['marker'] = new_list
           
           # Create Popup for Marker and add it to the Map
           # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
@@ -2369,7 +2374,7 @@ class Map2_0(Map2_0Template):
           self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=1, width_xs=8)
           self.icon_grid.add_component(cluster_components[key][1], row=key, col_xs=9, width_xs=1)
           
-          sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout']    
+          sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout', 'Unnamed']
         for key in sorted(invest_components.keys(), key=lambda x: sorted_keys.index(x)):
           self.invest_grid.add_component(invest_components[key], row=key, col_xs=1, width_xs=8)
           
@@ -3655,7 +3660,14 @@ class Map2_0(Map2_0Template):
         inv_el.style.backgroundrepeat = 'no-repeat'
         inv_el.style.zIndex = '252'
         
-        cluster_name = asset['cluster']
+        if asset['cluster'] == "Select please":
+            cluster_name = "Unclassified"
+        else:
+          cluster_name = asset['cluster']
+        if asset['invest_class'] == "Select please":
+            invest_name = "Unclassified"
+        else:
+          invest_name = asset['invest_class']
   
         color = cluster_data['settings'][cluster_name]['color']
         if cluster_name not in added_clusters:
@@ -3666,11 +3678,11 @@ class Map2_0(Map2_0Template):
           self.icon_grid.add_component(icon, row=cluster_name, col_xs=9, width_xs=1)
           added_clusters.append(cluster_name)
 
-        if asset['invest_class'] not in added_invest_classes:
-          checkbox = CheckBox(checked=True, text=asset['invest_class'], spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
+        if invest_name not in added_invest_classes:
+          checkbox = CheckBox(checked=True, text=invest_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
           checkbox.add_event_handler('change', self.check_box_marker_icons_change)
-          self.invest_grid.add_component(checkbox, row=asset['invest_class'], col_xs=1, width_xs=12)
-          added_invest_classes.append(asset['invest_class'])
+          self.invest_grid.add_component(checkbox, row=invest_name, col_xs=1, width_xs=12)
+          added_invest_classes.append(invest_name)
   
         # #Get Coordinates of provided Adress for Marker
         req_str = self.build_request_string(asset)
@@ -3682,12 +3694,13 @@ class Map2_0(Map2_0Template):
           cluster_data['settings'][cluster_name]['marker'] = []
         el.style.backgroundImage = f'url({color[2]})'
         new_list = self.set_excel_markers(cluster_data['settings'][cluster_name]['static'], coordinates, cluster_data['settings'][cluster_name]['marker'], el)
-        cluster_data['settings'][asset['invest_class']]['marker'] = new_list
-        if 'marker' not in cluster_data['settings'][asset['invest_class']].keys():
-          cluster_data['settings'][asset['invest_class']]['marker'] = []
-        inv_el.style.backgroundImage = f"url({self.app_url}{invests[asset['invest_class']]})"
-        new_list = self.set_excel_markers(cluster_data['settings'][asset['invest_class']]['static'], coordinates, cluster_data['settings'][asset['invest_class']]['marker'], inv_el)
-        cluster_data['settings'][asset['invest_class']]['marker'] = new_list
+        cluster_data['settings'][invest_name]['marker'] = new_list
+        if 'marker' not in cluster_data['settings'][invest_name].keys():
+          cluster_data['settings'][invest_name]['marker'] = []
+        inv_el.style.backgroundImage = f"url({self.app_url}{invests[invest_name]})"
+        new_list = self.set_excel_markers(cluster_data['settings'][invest_name]['static'], coordinates, cluster_data['settings'][invest_name]['marker'], inv_el)
+        print(cluster_data['settings'])
+        cluster_data['settings'][invest_name]['marker'] = new_list
         
         # Create Popup for Marker and add it to the Map
         # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
