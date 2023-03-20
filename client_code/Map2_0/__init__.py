@@ -218,17 +218,15 @@ class Map2_0(Map2_0Template):
       print(event_args['sender'].text)
       print(event_args['sender'].checked)
   
-      if event_args['sender'] == self.hide_marker_cluster:
+      if event_args['sender'] == self.cluster_all:
         all_marker = self.icon_grid.get_components()
       else:
         all_marker = self.invest_grid.get_components()
       
-      if event_args['sender'].text == "Show":
+      if event_args['sender'].checked == True:
         marker_state = True
-        event_args['sender'].text = "Hide"
-      elif dict(event_args)['sender'].text == "Hide":
+      else:
         marker_state = False
-        event_args['sender'].text = "Show"
         
       for marker in all_marker:
         if not type(marker) is Label:
@@ -2385,8 +2383,12 @@ class Map2_0(Map2_0Template):
   
         self.cluster_btn.visible = True
         self.invest_class_btn.visible = True
+        self.cluster_all.visible = True
+        self.i_class_all.visible = True
         self.invest_class_btn.raise_event('click')
         self.cluster_btn.raise_event('click')
+
+        self.file_loader_upload.clear()
     
   #####  Upload Functions   #####
   ###############################
