@@ -141,7 +141,6 @@ class Map2_0(Map2_0Template):
       hash = get_url_hash()
       if not len(hash) == 0:
         data = anvil.server.call('get_map_settings', hash['name'])
-        self.mapbox.setCenter([data['center']['lng'], data['center']['lat']])
         for component in self.style_grid.get_components():
           if component.text == data['map_style']:
             component.checked = True
@@ -151,9 +150,10 @@ class Map2_0(Map2_0Template):
         time.sleep(.5)
         if data['study_pin']:
           self.marker.setLngLat([data['marker_lng'], data['marker_lat']])
+          self.mapbox.flyTo({"center": [data['marker_lng'], data['marker_lat']], "zoom": data['zoom']})
         else:
+          self.mapbox.flyTo({"center": [data['center']['lng'], data['center']['lat']], "zoom": data['zoom']})
           self.marker.remove()
-        self.mapbox.flyTo({"center": [data['marker_lng'], data['marker_lat']], "zoom": data['zoom']})
         if data['iso_layer']:
           self.time_dropdown.selected_value = data['distance_time']
           self.profile_dropdown.selected_value = data['distance_movement']
