@@ -29,6 +29,8 @@ class Custom_Marker(Custom_MarkerTemplate):
       image = 'Universität@4x'
     elif topic == 'Cafe':
       image = 'Cafe@4x'
+    elif topic == 'Cluster':
+      image = 'CB_MapPin_orange'
     self.icon_url = f'{self.app_url}/_/theme/Pins/{image}.png'
     self.icon_image.source = self.icon_url
     pass
