@@ -1135,7 +1135,7 @@ html {
 }
 
 .anvil-role-cluster_list {
-  height: 135px
+  overflow: unset;
 }
 
 select:focus {

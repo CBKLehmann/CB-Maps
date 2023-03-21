@@ -55,6 +55,7 @@ class Map2_0(Map2_0Template):
         self.poi_categories.visible = True
         self.button_overlay.visible = True
         self.hide_ms_marker.visible = True
+        self.competitor_btn.visible = True
         self.tm_mode.visible = True
         self.file_loader_upload.visible = True
         self.share.visible = True
@@ -140,6 +141,7 @@ class Map2_0(Map2_0Template):
       hash = get_url_hash()
       if not len(hash) == 0:
         data = anvil.server.call('get_map_settings', hash['name'])
+        self.mapbox.setCenter([data['center']['lng'], data['center']['lat']])
         for component in self.style_grid.get_components():
           if component.text == data['map_style']:
             component.checked = True
@@ -147,19 +149,23 @@ class Map2_0(Map2_0Template):
             break
         self.map_styles.raise_event('click')
         time.sleep(.5)
-        self.marker.setLngLat([data['marker_lng'], data['marker_lat']])
+        if data['study_pin']:
+          self.marker.setLngLat([data['marker_lng'], data['marker_lat']])
+        else:
+          self.marker.remove()
         self.mapbox.flyTo({"center": [data['marker_lng'], data['marker_lat']], "zoom": data['zoom']})
-        self.time_dropdown.selected_value = data['distance_time']
-        self.profile_dropdown.selected_value = data['distance_movement']
-        self.profile_dropdown.raise_event('change')
-        self.dist_layer.visible = True
-        self.dist_layer.icon = 'fa:angle-down'
-        self.dist_layer.raise_event('click')
-        self.time_dropdown.enabled = False
-        self.profile_dropdown.enabled = False
-        self.checkbox_poi_x_hfcig.checked = data['iso_layer']
-        self.iso_layer_active.visible = False
-        self.checkbox_poi_x_hfcig.visible = False
+        if data['iso_layer']:
+          self.time_dropdown.selected_value = data['distance_time']
+          self.profile_dropdown.selected_value = data['distance_movement']
+          self.profile_dropdown.raise_event('change')
+          self.dist_layer.visible = True
+          self.dist_layer.icon = 'fa:angle-down'
+          self.dist_layer.raise_event('click')
+          self.time_dropdown.enabled = False
+          self.profile_dropdown.enabled = False
+          self.checkbox_poi_x_hfcig.checked = data['iso_layer']
+          self.iso_layer_active.visible = False
+          self.checkbox_poi_x_hfcig.visible = False
         healthcare_components = self.poi_categories_healthcare_container.get_components()
         if data['poi_healthcare'][0] == '1':
           healthcare_components[0].checked = True
@@ -3661,14 +3667,8 @@ class Map2_0(Map2_0Template):
         inv_el.style.backgroundrepeat = 'no-repeat'
         inv_el.style.zIndex = '252'
         
-        if asset['cluster'] == "Select please":
-            cluster_name = "Unclassified"
-        else:
-          cluster_name = asset['cluster']
-        if asset['invest_class'] == "Select please":
-            invest_name = "Unclassified"
-        else:
-          invest_name = asset['invest_class']
+        cluster_name = asset['cluster']
+        invest_name = asset['invest_class']
   
         color = cluster_data['settings'][cluster_name]['color']
         if cluster_name not in added_clusters:
@@ -3690,17 +3690,16 @@ class Map2_0(Map2_0Template):
         req_str += f'.json?access_token={self.token}'
         coords = anvil.http.request(req_str,json=True)
         coordinates = coords['features'][0]['geometry']['coordinates']
-  
+
         if 'marker' not in cluster_data['settings'][cluster_name].keys():
           cluster_data['settings'][cluster_name]['marker'] = []
         el.style.backgroundImage = f'url({color[2]})'
         new_list = self.set_excel_markers(cluster_data['settings'][cluster_name]['static'], coordinates, cluster_data['settings'][cluster_name]['marker'], el)
-        cluster_data['settings'][invest_name]['marker'] = new_list
+        cluster_data['settings'][cluster_name]['marker'] = new_list
         if 'marker' not in cluster_data['settings'][invest_name].keys():
           cluster_data['settings'][invest_name]['marker'] = []
         inv_el.style.backgroundImage = f"url({self.app_url}{invests[invest_name]})"
         new_list = self.set_excel_markers(cluster_data['settings'][invest_name]['static'], coordinates, cluster_data['settings'][invest_name]['marker'], inv_el)
-        print(cluster_data['settings'])
         cluster_data['settings'][invest_name]['marker'] = new_list
         
         # Create Popup for Marker and add it to the Map
@@ -3719,6 +3718,8 @@ class Map2_0(Map2_0Template):
       
       self.cluster_btn.visible = True
       self.invest_class_btn.visible = True
+      self.cluster_all.visible = True
+      self.i_class_all.visible = True
       self.invest_class_btn.raise_event('click')
       self.cluster_btn.raise_event('click')
       self.button_icons.raise_event('click')
@@ -3792,6 +3793,7 @@ class Map2_0(Map2_0Template):
     from .Name_Share_Link import Name_Share_Link
     name = alert(content=Name_Share_Link(searched_address=changed_address), buttons=[], dismissible=False, large=True, role='custom_alert')
     self.url = anvil.server.call('get_app_url') + f'#?name={name}'
+    center = self.mapbox.getCenter()
     
     dataset = {
       'marker_lng': self.marker['_lngLat']['lng'],
@@ -3809,7 +3811,8 @@ class Map2_0(Map2_0Template):
       'name': name,
       'url': self.url,
       'study_pin': study_pin,
-      'zoom': self.mapbox.getZoom()
+      'zoom': self.mapbox.getZoom(),
+      'center': {'lng': center.lng, 'lat': center.lat}
     }
 
     anvil.server.call('save_map_settings', dataset)

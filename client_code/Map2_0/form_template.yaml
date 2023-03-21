@@ -161,11 +161,11 @@ components:
         event_bindings: {click: button_infos_click}
     - type: Button
       properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
-        enabled: true, foreground: 'theme:Gray 300', visible: true, text: Competitors,
+        enabled: true, foreground: 'theme:Gray 300', visible: false, text: Competitors,
         font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
         italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
       name: competitor_btn
-      layout_properties: {row: KORCVK, width_xs: 12, col_xs: 0, width: 227}
+      layout_properties: {row: KORCVK, width_xs: 12, col_xs: 0, width: 220}
       event_bindings: {click: button_toggle_menu_parts}
     - type: GridPanel
       properties: {spacing_above: small, spacing_below: small, background: 'theme:Secondary
