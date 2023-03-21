@@ -16,7 +16,6 @@ class Login(LoginTemplate):
 
   def form_show(self, **event_args):
     hash = get_url_hash()
-    print(len(hash))
     if len(hash) > 0:
       open_form('Map2_0', role='guest')
     else:
@@ -25,6 +24,10 @@ class Login(LoginTemplate):
       if width <= 998:
         self.email_icon.visible = False
         self.password_icon.visible = False
+    # if not anvil.users.get_user() == None:
+    #     user = anvil.users.get_user()
+    #     print(user['role'])
+    #     open_form('Map2_0', role=dict(user)['role'])
     
   
   def login_click(self, **event_args):

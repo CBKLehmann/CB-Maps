@@ -211,6 +211,7 @@ class Map2_0(Map2_0Template):
           self.hide_ms_marker.raise_event('change')
         if not len(data['cluster']['data']) == 0:
           self.create_cluster_marker(data['cluster'])
+          self.change_cluster_color.visible = False
             
 
   def check_box_marker_icons_change(self, **event_args):
@@ -221,8 +222,6 @@ class Map2_0(Map2_0Template):
   def button_marker_icons_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       # Show or Hide all Marker Icons
-      print(event_args['sender'].text)
-      print(event_args['sender'].checked)
   
       if event_args['sender'] == self.cluster_all:
         all_marker = self.icon_grid.get_components()
@@ -2357,12 +2356,12 @@ class Map2_0(Map2_0Template):
           if not cluster_name in excel_markers.keys():
             excel_markers[cluster_name] = {'color': color, 'static': 'none', 'marker': []}
           el.style.backgroundImage = f'url({self.app_url}{excel_markers[cluster_name]["color"][2]})'
-          new_list = self.set_excel_markers(excel_markers[cluster_name]['static'], coordinates, excel_markers[cluster_name]['marker'], el)
+          new_list = self.set_excel_markers(excel_markers[cluster_name]['static'], coordinates, excel_markers[cluster_name]['marker'], el, asset)
           excel_markers[cluster_name]['marker'] = new_list
           if not invest_name in excel_markers.keys():
             excel_markers[invest_name] = {'pin': invests[invest_name], 'static': 'none', 'marker': []}
           inv_el.style.backgroundImage = f"url({self.app_url}{invests[invest_name]})"
-          new_list = self.set_excel_markers(excel_markers[invest_name]['static'], coordinates, excel_markers[invest_name]['marker'], inv_el)
+          new_list = self.set_excel_markers(excel_markers[invest_name]['static'], coordinates, excel_markers[invest_name]['marker'], inv_el, asset)
           excel_markers[invest_name]['marker'] = new_list
           
           # Create Popup for Marker and add it to the Map
@@ -3205,9 +3204,23 @@ class Map2_0(Map2_0Template):
 
       
   #This method is called from the file uploader to set Markers based on Excel-Data
-  def set_excel_markers(self, marker_cat, coords, marker_list, el):
+  def set_excel_markers(self, marker_cat, coords, marker_list, el, asset):
     with anvil.server.no_loading_indicator:
-      marker_cat = mapboxgl.Marker({'draggable': False, 'element': el, 'anchor': 'bottom'})
+      if asset['acqisition_date'] == 'Unclassified':
+        date = 'N/A'
+      else:
+        date = asset['acqisition_date']
+      popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+        f"<p class='popup_type'><b>{asset['address']}</b></p>"
+        f"<p class='popup_type'>{asset['zip']} {asset['federal_state']}<p>"
+        f"<p class='popup_type'>Cluster: {asset['cluster']}<p>"
+        f"<p class='popup_type'>Invest Class: {asset['invest_class']}<p>"
+        f"<p class='popup_type'>Acqisition Date: {date}<p>"
+      )
+      marker_cat = mapboxgl.Marker({'draggable': False, 'element': el, 'anchor': 'bottom'}).setPopup(popup)
+      marker_el = marker_cat.getElement()
+
+      anvil.js.call('addHoverEffect', marker_el, popup, self.mapbox, marker_cat, asset, asset['cluster'], "Hahahahahahahahahahahahahahahaha", self.mobile)
       
       # Add Marker to the Map
       newmarker = marker_cat.setLngLat(coords).addTo(self.mapbox)
@@ -3691,12 +3704,12 @@ class Map2_0(Map2_0Template):
         if 'marker' not in cluster_data['settings'][cluster_name].keys():
           cluster_data['settings'][cluster_name]['marker'] = []
         el.style.backgroundImage = f'url({color[2]})'
-        new_list = self.set_excel_markers(cluster_data['settings'][cluster_name]['static'], coordinates, cluster_data['settings'][cluster_name]['marker'], el)
+        new_list = self.set_excel_markers(cluster_data['settings'][cluster_name]['static'], coordinates, cluster_data['settings'][cluster_name]['marker'], el, asset)
         cluster_data['settings'][cluster_name]['marker'] = new_list
         if 'marker' not in cluster_data['settings'][invest_name].keys():
           cluster_data['settings'][invest_name]['marker'] = []
         inv_el.style.backgroundImage = f"url({self.app_url}{invests[invest_name]})"
-        new_list = self.set_excel_markers(cluster_data['settings'][invest_name]['static'], coordinates, cluster_data['settings'][invest_name]['marker'], inv_el)
+        new_list = self.set_excel_markers(cluster_data['settings'][invest_name]['static'], coordinates, cluster_data['settings'][invest_name]['marker'], inv_el, asset)
         cluster_data['settings'][invest_name]['marker'] = new_list
         
         # Create Popup for Marker and add it to the Map

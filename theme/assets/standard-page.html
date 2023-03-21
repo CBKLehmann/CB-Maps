@@ -186,7 +186,6 @@
   }
 
   function addHoverEffect(container, popup, map, marker, ele, category, marker_details) {
-
     container.addEventListener('mouseenter', () => addPopup(popup, map, ele, category, marker_details, container, marker));
     container.addEventListener('mouseleave', () => removePopup(popup));
     if ((category === 'nursing_homes') || (category === 'assisted_living')) {
