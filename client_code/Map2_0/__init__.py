@@ -2370,9 +2370,6 @@ class Map2_0(Map2_0Template):
           # popup.setHTML(data[0][markercount]['Informationen'])
           # popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[0][markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
           # popup_static.addTo(self.mapbox)
-          
-          #Increase Markercount
-          # markercount += 1
   
           counter += 1
   
