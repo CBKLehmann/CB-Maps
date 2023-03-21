@@ -2295,7 +2295,7 @@ class Map2_0(Map2_0Template):
           'Opportunistic': '/_/theme/Pins/CB_MapPin_Opp.png',
           'Development': '/_/theme/Pins/CB_MapPin_Dev.png',
           'Workout': '/_/theme/Pins/CB_MapPin_Wo.png',
-          'Unnamed': '/_/theme/Icons/pin.png'
+          'Unclassified': '/_/theme/Pins/CB_MapPin_gold.png'
         }
     
         #Create Settings
@@ -2374,7 +2374,7 @@ class Map2_0(Map2_0Template):
           self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=1, width_xs=8)
           self.icon_grid.add_component(cluster_components[key][1], row=key, col_xs=9, width_xs=1)
           
-          sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout', 'Unnamed']
+          sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout', 'Unclassified']
         for key in sorted(invest_components.keys(), key=lambda x: sorted_keys.index(x)):
           self.invest_grid.add_component(invest_components[key], row=key, col_xs=1, width_xs=8)
           
@@ -3633,7 +3633,8 @@ class Map2_0(Map2_0Template):
           'Value Add': '/_/theme/Pins/CB_MapPin_VA.png',
           'Opportunistic': '/_/theme/Pins/CB_MapPin_Opp.png',
           'Development': '/_/theme/Pins/CB_MapPin_Dev.png',
-          'Workout': '/_/theme/Pins/CB_MapPin_Wo.png'
+          'Workout': '/_/theme/Pins/CB_MapPin_Wo.png',
+          'Unclassified': '/_/theme/Pins/CB_MapPin_gold.png'
         }
   
       #Create Settings
