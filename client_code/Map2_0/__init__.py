@@ -2351,8 +2351,10 @@ class Map2_0(Map2_0Template):
           req_str = self.build_request_string(asset)
           req_str += f'.json?access_token={self.token}'
           coords = anvil.http.request(req_str,json=True)
-          coordinates = coords['features'][0]['geometry']['coordinates']
-    
+          for entry in coords['features']:
+            if asset['zip'] in entry['place_name']:
+              coordinates = entry['geometry']['coordinates']
+              break
           if not cluster_name in excel_markers.keys():
             excel_markers[cluster_name] = {'color': color, 'static': 'none', 'marker': []}
           el.style.backgroundImage = f'url({self.app_url}{excel_markers[cluster_name]["color"][2]})'
@@ -2363,12 +2365,6 @@ class Map2_0(Map2_0Template):
           inv_el.style.backgroundImage = f"url({self.app_url}{invests[invest_name]})"
           new_list = self.set_excel_markers(excel_markers[invest_name]['static'], coordinates, excel_markers[invest_name]['marker'], inv_el, asset)
           excel_markers[invest_name]['marker'] = new_list
-          
-          # Create Popup for Marker and add it to the Map
-          # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
-          # popup.setHTML(data[0][markercount]['Informationen'])
-          # popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[0][markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
-          # popup_static.addTo(self.mapbox)
   
           counter += 1
   
@@ -3206,13 +3202,15 @@ class Map2_0(Map2_0Template):
   #This method is called from the file uploader to set Markers based on Excel-Data
   def set_excel_markers(self, marker_cat, coords, marker_list, el, asset):
     with anvil.server.no_loading_indicator:
+      print(asset)
       if asset['acqisition_date'] == 'Unclassified':
         date = 'N/A'
       else:
         date = asset['acqisition_date']
       popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
         f"<p class='popup_type'><b>{asset['address']}</b></p>"
-        f"<p class='popup_type'>{asset['zip']} {asset['federal_state']}<p>"
+        f"<p class='popup_type'>{asset['zip']} {asset['city']}<p>"
+        f"<p class='popup_type'>{asset['federal_state']}</p>"
         f"<p class='popup_type'>Cluster: {asset['cluster']}<p>"
         f"<p class='popup_type'>Invest Class: {asset['invest_class']}<p>"
         f"<p class='popup_type'>Acqisition Date: {date}<p>"
@@ -3699,7 +3697,10 @@ class Map2_0(Map2_0Template):
         req_str = self.build_request_string(asset)
         req_str += f'.json?access_token={self.token}'
         coords = anvil.http.request(req_str,json=True)
-        coordinates = coords['features'][0]['geometry']['coordinates']
+        for entry in coords['features']:
+          if asset['zip'] in entry['place_name']:
+            coordinates = entry['geometry']['coordinates']
+            break
 
         if 'marker' not in cluster_data['settings'][cluster_name].keys():
           cluster_data['settings'][cluster_name]['marker'] = []
