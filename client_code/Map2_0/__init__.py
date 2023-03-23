@@ -42,6 +42,7 @@ class Map2_0(Map2_0Template):
         self.last_menu_height = '30%'
         self.cluster_data = {}
         self.competitors = []
+        self.custom_marker = []
         self.role = properties['role']
   
   def form_show(self, **event_args):
@@ -215,6 +216,8 @@ class Map2_0(Map2_0Template):
           self.change_cluster_color.visible = False
         if not len(data['competitors']['competitors']) == 0:
           self.create_comp_marker(data['competitors']['competitors'])
+        for marker in data['custom_marker']:
+          self.create_custom_marker(marker)
             
 
   def check_box_marker_icons_change(self, **event_args):
@@ -3817,7 +3820,8 @@ class Map2_0(Map2_0Template):
       'study_pin': study_pin,
       'zoom': self.mapbox.getZoom(),
       'center': {'lng': center.lng, 'lat': center.lat},
-      'competitors': {'competitors': self.competitors}
+      'competitors': {'competitors': self.competitors},
+      'custom_marker': self.custom_marker
     }
 
     anvil.server.call('save_map_settings', dataset)
@@ -3878,6 +3882,15 @@ class Map2_0(Map2_0Template):
 
   
   def create_marker(self, event):
+
+    from .Custom_Marker import Custom_Marker
+    marker_data = alert(Custom_Marker(url=self.app_url), buttons=[], dismissible=False, large=True, role='custom_alert')
+    marker_data['coords'] = self.clicked_coords
+    self.create_custom_marker(marker_data)
+    self.custom_marker.append(marker_data)
+
+
+  def create_custom_marker(self, marker_data):
     # Create HTML Element for Icon
     el = document.createElement('div')
     el.className = 'marker'
@@ -3888,10 +3901,6 @@ class Map2_0(Map2_0Template):
     el.style.backgroundrepeat = 'no-repeat'
     el.style.zIndex = '220'
     el.style.cursor = 'pointer'
-
-    from .Custom_Marker import Custom_Marker
-    marker_data = alert(Custom_Marker(url=self.app_url), buttons=[], dismissible=False, large=True, role='custom_alert')
-
     el.style.backgroundImage = f"url({marker_data['icon']})"
     
     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
@@ -3899,12 +3908,12 @@ class Map2_0(Map2_0Template):
       f"<p class='popup_type'>{marker_data['text']}</p>"
     )
 
-    newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(self.clicked_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+    newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(marker_data['coords']).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
 
     popup = document.getElementById('mapPopup')
     if popup:
       popup.remove()
-
+  
 
   def copy_to_clipboard(self, **event_args):
     anvil.js.window.navigator.clipboard.writeText(self.url)
