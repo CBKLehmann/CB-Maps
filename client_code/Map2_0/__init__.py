@@ -3912,8 +3912,8 @@ class Map2_0(Map2_0Template):
       #Call Server-Function to safe the File  
       marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
       comps = self.cluster_data = anvil.server.call('read_comp_file', file, marker_coords)
-      from .Comp_Sort import Comp_Sort
       self.manipulate_loading_overlay(False)
+      from .Comp_Sort import Comp_Sort
       results = alert(Comp_Sort(data=comps, marker_coords=marker_coords), buttons=[], dismissible=False, large=True, role='custom_alert')
       self.manipulate_loading_overlay(True)
       for result in results:
