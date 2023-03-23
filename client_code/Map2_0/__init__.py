@@ -3946,15 +3946,15 @@ class Map2_0(Map2_0Template):
   def manipulate_loading_overlay(self, state):
     html = document.getElementsByClassName('anvil-root-container')[0]
     if state:
-      loading = document.createElement('div')
-      loading.style.width = '100vw'
-      loading.style.height = '100vh'
-      loading.style.backgroundColor = 'rgba(62, 62, 62, .3)'
-      loading.style.zIndex = '10000'
-      loading.style.cursor = 'wait'
-      loading.style.position = 'fixed'
-      loading.style.top = '0'
-      loading.style.left = '0'
-      html.appendChild(loading)
+      self.loading = document.createElement('div')
+      self.loading.style.width = '100vw'
+      self.loading.style.height = '100vh'
+      self.loading.style.backgroundColor = 'rgba(62, 62, 62, .3)'
+      self.loading.style.zIndex = '10000'
+      self.loading.style.cursor = 'wait'
+      self.loading.style.position = 'fixed'
+      self.loading.style.top = '0'
+      self.loading.style.left = '0'
+      html.appendChild(self.loading)
     else:
-      html.removeChild(loading)
+      html.removeChild(self.loading)
