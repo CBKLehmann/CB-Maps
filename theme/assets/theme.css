@@ -1448,6 +1448,10 @@ body {
   margin: 0;
 }
 
+a {
+  color: %color:Gray 300%
+}
+
 a:hover {
   background-color: rgba(0, 0, 0, 0);
 }

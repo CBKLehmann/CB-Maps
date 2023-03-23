@@ -34,7 +34,7 @@ components:
       border: ''
       enabled: true
       foreground: theme:Gray 300
-      items: [Nursing Home, Assisted Living, Nursing School, University, Cafe, Cluster]
+      items: [Healthcare, Shopping, Food, Public Transport, Neutral, Special, Information]
       visible: true
       font_size: null
       font: ''
@@ -46,7 +46,7 @@ components:
       underline: false
       include_placeholder: true
     name: icon_drop_down
-    layout_properties: {row: GXPLCP, width_xs: 3, col_xs: 3, width: 146.5}
+    layout_properties: {row: GXPLCP, width_xs: 3, col_xs: 3, width: 165}
     event_bindings: {change: icon_drop_down_change}
   - type: Image
     properties: {height: 38}

@@ -41,6 +41,7 @@ class Map2_0(Map2_0Template):
         self.app_url = anvil.server.call_s('get_app_url')
         self.last_menu_height = '30%'
         self.cluster_data = {}
+        self.competitors = []
         self.role = properties['role']
   
   def form_show(self, **event_args):
@@ -212,6 +213,8 @@ class Map2_0(Map2_0Template):
         if not len(data['cluster']['data']) == 0:
           self.create_cluster_marker(data['cluster'])
           self.change_cluster_color.visible = False
+        if not len(data['competitors']['competitors']) == 0:
+          self.create_comp_marker(data['competitors']['competitors'])
             
 
   def check_box_marker_icons_change(self, **event_args):
@@ -331,7 +334,7 @@ class Map2_0(Map2_0Template):
         Variables.last_bbox_hd = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
       elif event_args['sender'].text == "S-Bahn/U-Bahn":
         Variables.last_bbox_al = self.create_icons(self.check_box_su.checked, Variables.last_bbox_su, "subway", f'{self.app_url}/_/theme/Pins/U_Bahn_Pin.png')
-      self.manipulate_loading_overlay(True)
+      self.manipulate_loading_overlay(False)
 
 
   def checkbox_poi_x_hfcig_change(self, **event_args):
@@ -3813,7 +3816,8 @@ class Map2_0(Map2_0Template):
       'url': self.url,
       'study_pin': study_pin,
       'zoom': self.mapbox.getZoom(),
-      'center': {'lng': center.lng, 'lat': center.lat}
+      'center': {'lng': center.lng, 'lat': center.lat},
+      'competitors': {'competitors': self.competitors}
     }
 
     anvil.server.call('save_map_settings', dataset)
@@ -3911,12 +3915,20 @@ class Map2_0(Map2_0Template):
       self.manipulate_loading_overlay(True)
       #Call Server-Function to safe the File  
       marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
-      comps = self.cluster_data = anvil.server.call('read_comp_file', file, marker_coords)
+      comps = anvil.server.call('read_comp_file', file, marker_coords)
       self.manipulate_loading_overlay(False)
       from .Comp_Sort import Comp_Sort
       results = alert(Comp_Sort(data=comps, marker_coords=marker_coords), buttons=[], dismissible=False, large=True, role='custom_alert')
       self.manipulate_loading_overlay(True)
-      for index, result in enumerate(results):
+      self.create_comp_marker(results)
+      self.competitors = results
+      self.comp_loader.clear()
+      self.manipulate_loading_overlay(False)
+    pass
+
+
+  def create_comp_marker(self, results):
+    for index, result in enumerate(results):
         # Create HTML Element for Icon
         el = document.createElement('div')
         el.className = 'marker'
@@ -3929,19 +3941,42 @@ class Map2_0(Map2_0Template):
         el.style.cursor = 'pointer'
     
         el.style.backgroundImage = f"url({self.app_url}/_/theme/Pins/Comp{index+1}.png)"
-    
-        newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(result['coords']).setOffset([0, 0]).addTo(self.mapbox)
 
         popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
-          f"<p class='popup_name'><b>Test</b></p>"
-          f"<p class='popup_type'>Test</p>"
+          f"<p class='popup_name'><b>{result['address']}</b></p>"
+          f"<p class='popup_type'>{result['zip']} {result['city']}, {result['federal_state']}</p>"
+          f"<p class='popup_type'>{result['distance']} km</p>"
         )
+    
+        newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(result['coords']).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+        newiconElement = newicon.getElement()
 
-        details = f"<div>Test</div>"
+        details = f"<h1>{result['address']}</h1>"
+        details += f"<p>{result['zip']} {result['city']}, {result['federal_state']}</p>"
+        details += f"<p>{result['distance']} km"
+        details += "<div class='partingLine'></div>"
+        details += f"<p>Operator: {result['operator']}"
+        details += f"<p>360 Operator: {result['360_operator']}</p>"
+        details += f"<p>Living Concept: {result['living_concept']}</p>"
+        details += f"<a href='https://www.stayurban.de/apartments/'>{result['web']}</a>"
+        details += "<div class='partingLine'></div>"
+        details += f"<p>Equipment: {result['equiment']}</p>"
+        details += f"<p>Note: {result['note']}</p>"
+        details += f"<p>Community Spaces: {result['community_spaces']}</p>"
+        details += f"<p>Furnishing: {result['furnishing']}</p>"
+        details += f"<p>Services: {result['services']}</p>"
+        details += "<div class='partingLine'></div>"
+        details += f"<p>Apartments: {result['apartments']}</p>"
+        details += f"<p>Size Range(m²): {result['size_range_sqm']}</p>"
+        details += f"<p>Rent per m² Range(€): {result['rent_range_sqm']}</p>"
+        details += f"<p>Rent per month Range(€): {result['rent_range_month']}</p>"
+        details += "<div class='partingLine'></div>"
+        details += f"<p>Created: {result['created']}</p>"
+        details += f"<p>Updated: {result['updated']}</p>"
+        details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
 
-        
-      self.manipulate_loading_overlay(False)
-    pass
+        anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, result, 'Competitor', details, self.mobile)
+    
 
   def manipulate_loading_overlay(self, state):
     html = document.getElementsByClassName('anvil-root-container')[0]

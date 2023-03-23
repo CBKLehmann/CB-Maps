@@ -200,7 +200,7 @@
       pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
       pop.addEventListener('mouseenter', () => readdPopup(popup, map));
       pop.addEventListener('mouseleave', () => removePopup(popup));
-      if ((category === 'nursing_homes') || (category === 'assisted_living')) {
+      if ((category === 'nursing_homes') || (category === 'assisted_living') || (category === 'Competitor')) {
         pop.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e)) 
       }
     }
