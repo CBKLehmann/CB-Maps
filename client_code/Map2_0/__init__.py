@@ -291,17 +291,7 @@ class Map2_0(Map2_0Template):
 
   def check_box_poi_change(self, **event_args):
     with anvil.server.no_loading_indicator:
-      html = document.getElementsByClassName('anvil-root-container')[0]
-      loading = document.createElement('div')
-      loading.style.width = '100vw'
-      loading.style.height = '100vh'
-      loading.style.backgroundColor = 'rgba(62, 62, 62, .3)'
-      loading.style.zIndex = '10000'
-      loading.style.cursor = 'wait'
-      loading.style.position = 'fixed'
-      loading.style.top = '0'
-      loading.style.left = '0'
-      html.appendChild(loading)
+      self.manipulate_loading_overlay(True)
       # Check or uncheck various Check Boxes for different POI Categories
       if dict(event_args)['sender'].text == "Veterinary":
         Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
@@ -341,7 +331,7 @@ class Map2_0(Map2_0Template):
         Variables.last_bbox_hd = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
       elif event_args['sender'].text == "S-Bahn/U-Bahn":
         Variables.last_bbox_al = self.create_icons(self.check_box_su.checked, Variables.last_bbox_su, "subway", f'{self.app_url}/_/theme/Pins/U_Bahn_Pin.png')
-      html.removeChild(loading)
+      self.manipulate_loading_overlay(True)
 
 
   def checkbox_poi_x_hfcig_change(self, **event_args):
@@ -3918,6 +3908,7 @@ class Map2_0(Map2_0Template):
   def comp_loader_change(self, file, **event_args):
     """This method is called when a new file is loaded into this FileLoader"""
     with anvil.server.no_loading_indicator:
+      self.manipulate_loading_overlay(True)
       #Call Server-Function to safe the File  
       marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
       comps = self.cluster_data = anvil.server.call('read_comp_file', file, marker_coords)
@@ -3947,4 +3938,21 @@ class Map2_0(Map2_0Template):
         popup = document.getElementById('markerPopup')
         if popup:
           popup.remove()
+      self.manipulate_loading_overlay(False)
     pass
+
+  def manipulate_loading_overlay(self, state):
+    html = document.getElementsByClassName('anvil-root-container')[0]
+    if state:
+      loading = document.createElement('div')
+      loading.style.width = '100vw'
+      loading.style.height = '100vh'
+      loading.style.backgroundColor = 'rgba(62, 62, 62, .3)'
+      loading.style.zIndex = '10000'
+      loading.style.cursor = 'wait'
+      loading.style.position = 'fixed'
+      loading.style.top = '0'
+      loading.style.left = '0'
+      html.appendChild(loading)
+    else:
+      html.removeChild(loading)
