@@ -3916,7 +3916,7 @@ class Map2_0(Map2_0Template):
       from .Comp_Sort import Comp_Sort
       results = alert(Comp_Sort(data=comps, marker_coords=marker_coords), buttons=[], dismissible=False, large=True, role='custom_alert')
       self.manipulate_loading_overlay(True)
-      for result in results:
+      for index, result in enumerate(results):
         # Create HTML Element for Icon
         el = document.createElement('div')
         el.className = 'marker'
@@ -3928,7 +3928,7 @@ class Map2_0(Map2_0Template):
         el.style.zIndex = '220'
         el.style.cursor = 'pointer'
     
-        el.style.backgroundImage = f"url({self.app_url}/_/theme/Pins/CB_MapPin_white.png)"
+        el.style.backgroundImage = f"url({self.app_url}/_/theme/Pins/Comp{index+1}.png)"
         
         popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
           f"<p class='popup_name'><b>Test</b></p>"
