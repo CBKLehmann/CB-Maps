@@ -3923,4 +3923,28 @@ class Map2_0(Map2_0Template):
       comps = self.cluster_data = anvil.server.call('read_comp_file', file, marker_coords)
       from .Comp_Sort import Comp_Sort
       results = alert(Comp_Sort(data=comps, marker_coords=marker_coords), buttons=[], dismissible=False, large=True, role='custom_alert')
+      for result in results:
+        # Create HTML Element for Icon
+        el = document.createElement('div')
+        el.className = 'marker'
+        el.id = f'competitor_marker'
+        el.style.width = '40px'
+        el.style.height = '40px'
+        el.style.backgroundSize = '100%'
+        el.style.backgroundrepeat = 'no-repeat'
+        el.style.zIndex = '220'
+        el.style.cursor = 'pointer'
+    
+        el.style.backgroundImage = f"url({self.app_url}/_/theme/Pins/CB_MapPin_white.png)"
+        
+        popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+          f"<p class='popup_name'><b>Test</b></p>"
+          f"<p class='popup_type'>Test</p>"
+        )
+    
+        newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(result['coords']).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+    
+        popup = document.getElementById('markerPopup')
+        if popup:
+          popup.remove()
     pass
