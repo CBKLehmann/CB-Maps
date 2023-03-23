@@ -35,6 +35,7 @@
   let lastTarget = null;
   let activeContainer = null;
   let lastPopup = null;
+  let deleted_marker = [];
   
   function hideSidebar() {
     var ln = $('.structure > .nav-holder > .left-nav');
@@ -219,6 +220,7 @@
   }
 
   function removeMarker(marker, content, details) {
+    deleted_marker.push(marker)
     marker.remove()
     content.removeChild(details)
     lastTarget = null;

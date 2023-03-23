@@ -3127,8 +3127,6 @@ class Map2_0(Map2_0Template):
                   # Add Icon to the Map
                   newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
                   newiconElement = newicon.getElement()
-  
-                  from .Marker_Details_NH import Marker_Details_NH
                   
                   anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.mobile)
         
@@ -4002,3 +4000,9 @@ class Map2_0(Map2_0Template):
       html.appendChild(self.loading)
     else:
       html.removeChild(self.loading)
+
+  
+  def download_comps_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    
+    pass
