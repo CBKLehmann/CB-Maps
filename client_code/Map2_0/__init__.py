@@ -3929,17 +3929,17 @@ class Map2_0(Map2_0Template):
         el.style.cursor = 'pointer'
     
         el.style.backgroundImage = f"url({self.app_url}/_/theme/Pins/Comp{index+1}.png)"
-        
+    
+        newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(result['coords']).setOffset([0, 0]).addTo(self.mapbox)
+
         popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
           f"<p class='popup_name'><b>Test</b></p>"
           f"<p class='popup_type'>Test</p>"
         )
-    
-        newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(result['coords']).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
-    
-        popup = document.getElementById('markerPopup')
-        if popup:
-          popup.remove()
+
+        details = f"<div>Test</div>"
+
+        
       self.manipulate_loading_overlay(False)
     pass
 
