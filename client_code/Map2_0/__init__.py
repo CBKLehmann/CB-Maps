@@ -2330,6 +2330,8 @@ class Map2_0(Map2_0Template):
             invest_name = asset['invest_class']
     
           if cluster_name not in added_clusters:
+            counter += 1
+            print(counter)
             color = colors[counter]
             checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
             checkbox.add_event_handler('change', self.check_box_marker_icons_change)
@@ -2361,8 +2363,6 @@ class Map2_0(Map2_0Template):
           inv_el.style.backgroundImage = f"url({self.app_url}{invests[invest_name]})"
           new_list = self.set_excel_markers(excel_markers[invest_name]['static'], coordinates, excel_markers[invest_name]['marker'], inv_el, asset)
           excel_markers[invest_name]['marker'] = new_list
-  
-          counter += 1
   
         for key in sorted(cluster_components):
           self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=1, width_xs=8)
