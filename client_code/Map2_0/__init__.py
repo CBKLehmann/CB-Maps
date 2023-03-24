@@ -96,7 +96,7 @@ class Map2_0(Map2_0Template):
       
       mapboxgl.accessToken = self.token
       self.mapbox = mapboxgl.Map({'container': self.dom,
-                                  'style': "mapbox://styles/mapbox/outdoors-v11",
+                                  'style': "mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn",
                                   'center': [13.4092, 52.5167],
                                   'zoom': 8})
       # Create HTML Element for Icon
@@ -2340,7 +2340,7 @@ class Map2_0(Map2_0Template):
             added_clusters.append(cluster_name)
   
           if invest_name not in added_invest_classes:
-            checkbox = CheckBox(checked=True, text=invest_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
+            checkbox = CheckBox(checked=False, text=invest_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
             checkbox.add_event_handler('change', self.check_box_marker_icons_change)
             invest_components[invest_name] = checkbox
             added_invest_classes.append(invest_name)
@@ -2381,8 +2381,8 @@ class Map2_0(Map2_0Template):
         for checkbox in self.invest_grid.get_components():
           checkbox.raise_event('change')
   
-        for checkbox in self.invest_grid.get_components():
-          checkbox.raise_event('change')
+        # for checkbox in self.invest_grid.get_components():
+        #   checkbox.raise_event('change')
   
         self.cluster_btn.visible = True
         self.invest_class_btn.visible = True
@@ -2884,6 +2884,7 @@ class Map2_0(Map2_0Template):
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{name}</b></p>"
                       f"<p class='popup_distance'>{distance} km zum Standort</p>"
+                      f"<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
                     )
                     
                   # Check if Category is PflegeDB
