@@ -337,6 +337,8 @@ class Map2_0(Map2_0Template):
         Variables.last_bbox_hd = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
       elif event_args['sender'].text == "S-Bahn/U-Bahn":
         Variables.last_bbox_al = self.create_icons(self.check_box_su.checked, Variables.last_bbox_su, "subway", f'{self.app_url}/_/theme/Pins/U_Bahn_Pin.png')
+      elif event_args['sender'].text == "Airport":
+        Variables.last_bbox_ap = self.create_icons(self.check_box_ap.checked, Variables.last_bbox_ap, "aerodrome", f'{self.app_url}/_/theme/Pins/Flughafen_Pin.png')
       self.manipulate_loading_overlay(False)
 
 
@@ -3956,7 +3958,7 @@ class Map2_0(Map2_0Template):
 
         popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
           f"<p class='popup_name'><b>{result['operator']}</b></p>"
-          f"<p class='popup_type'>{result['address']} km</p>"
+          f"<p class='popup_type'>{result['address']}</p>"
           f"<p class='popup_type'>{result['zip']} {result['city']}, {result['federal_state']}</p>"
           f"<p class='popup_type'>{result['distance']} km</p>"
         )
@@ -3964,7 +3966,7 @@ class Map2_0(Map2_0Template):
         newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(result['coords']).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
         newiconElement = newicon.getElement()
 
-        details = f"<h1>Operator: {result['operator']}</h1>"
+        details = f"<h1>{result['operator']}</h1>"
         details += f"<p>{result['address']}</p>"
         details += f"<p>{result['zip']} {result['city']}, {result['federal_state']}</p>"
         details += f"<p>{result['distance']} km"
