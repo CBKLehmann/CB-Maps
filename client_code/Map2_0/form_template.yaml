@@ -615,10 +615,24 @@ components:
           name: check_box_su
           layout_properties: {row: WMRMJP, width_xs: 10, col_xs: 2, width: 164.438}
           event_bindings: {change: check_box_poi_change}
+      - type: Label
+        properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+          visible: true, text: Maximum Amount of Markers per Category, font_size: 13,
+          font: '', spacing_above: small, icon_align: left, spacing_below: none, italic: false,
+          background: '', bold: false, underline: false, icon: ''}
+        name: amount_label
+        layout_properties: {row: DFKXYT, width_xs: 12, col_xs: 0, width: 203.333}
       - type: Spacer
         properties: {height: 6}
         name: spacer_2
         layout_properties: {row: DFKXYT, width_xs: 10, col_xs: 1}
+      - type: TextBox
+        properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: Max. Amount of Markers per Category,
+          border: '', enabled: true, foreground: '', visible: true, text: '20', font_size: null,
+          font: '', spacing_above: none, type: number, spacing_below: small, italic: false,
+          background: '', bold: false, underline: false}
+        name: max_marker
+        layout_properties: {row: KTWRHY, width_xs: 12, col_xs: 0, width: 193.999666}
       - type: Button
         properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', visible: true, text: create Summary, font_size: null,

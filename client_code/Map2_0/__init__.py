@@ -2725,7 +2725,7 @@ class Map2_0(Map2_0Template):
             else:
       
               # Get geojson of POIs inside Bounding Box
-              geojson = anvil.server.call('poi_data', category, bbox)
+              geojson = anvil.server.call('poi_data', category, bbox, marker_coords, int(self.max_marker.text))
       
             # Check if Elements are over 3000 for performance Reasons
             if len(geojson) > 3000:
@@ -2884,7 +2884,6 @@ class Map2_0(Map2_0Template):
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{name}</b></p>"
                       f"<p class='popup_distance'>{distance} km zum Standort</p>"
-                      f"<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
                     )
                     
                   # Check if Category is PflegeDB
@@ -3890,12 +3889,17 @@ class Map2_0(Map2_0Template):
 
 
   def create_custom_marker(self, marker_data):
+    print(marker_data)
     # Create HTML Element for Icon
     el = document.createElement('div')
     el.className = 'marker'
     el.id = f'custom_marker'
-    el.style.width = '40px'
-    el.style.height = '40px'
+    if 'Information' in marker_data['icon']:
+      el.style.width = '50px'
+      el.style.height = '50px'
+    else:
+      el.style.width = '40px'
+      el.style.height = '40px'
     el.style.backgroundSize = '100%'
     el.style.backgroundrepeat = 'no-repeat'
     el.style.zIndex = '220'
@@ -3951,7 +3955,8 @@ class Map2_0(Map2_0Template):
         el.style.backgroundImage = f"url({self.app_url}/_/theme/Pins/Comp{index+1}.png)"
 
         popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
-          f"<p class='popup_name'><b>{result['address']}</b></p>"
+          f"<p class='popup_name'><b>{result['operator']}</b></p>"
+          f"<p class='popup_type'>{result['address']} km</p>"
           f"<p class='popup_type'>{result['zip']} {result['city']}, {result['federal_state']}</p>"
           f"<p class='popup_type'>{result['distance']} km</p>"
         )
@@ -3959,11 +3964,11 @@ class Map2_0(Map2_0Template):
         newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(result['coords']).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
         newiconElement = newicon.getElement()
 
-        details = f"<h1>{result['address']}</h1>"
+        details = f"<h1>Operator: {result['operator']}</h1>"
+        details += f"<p>{result['address']}</p>"
         details += f"<p>{result['zip']} {result['city']}, {result['federal_state']}</p>"
         details += f"<p>{result['distance']} km"
         details += "<div class='partingLine'></div>"
-        details += f"<p>Operator: {result['operator']}"
         details += f"<p>360 Operator: {result['360_operator']}</p>"
         details += f"<p>Living Concept: {result['living_concept']}</p>"
         details += f"<a href='https://www.stayurban.de/apartments/'>{result['web']}</a>"
