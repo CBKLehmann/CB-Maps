@@ -2748,6 +2748,10 @@ class Map2_0(Map2_0Template):
                 
                 for route in geojson:
                   coordinates = []
+                  if 'colour' in route['tags']:
+                    colour = route['tags']['colour']
+                  else:
+                    colour = '#000000'
                   for point in route['members']:
                     if point['role'] == 'stop':
 
@@ -2755,18 +2759,17 @@ class Map2_0(Map2_0Template):
                       el = document.createElement('div')
                       el.className = 'marker'
                       el.id = f'{category}_{id_counter}'
-                      el.style.width = '40px'
-                      el.style.height = '40px'
+                      el.style.width = '15px'
+                      el.style.height = '15px'
                       el.style.backgroundSize = '100%'
                       el.style.backgroundrepeat = 'no-repeat'
                       el.style.zIndex = '220'
                       el.style.cursor = 'pointer'
-            
-                      # Create Icon
-                      el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/U_Bahn_Pin.png)'
+                      el.style.backgroundColor = colour
+                      el.style.borderRadius = '50%'
 
                       # Add Icon to the Map
-                      newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat([point['lon'], point['lat']]).setOffset([0, 0]).addTo(self.mapbox)
+                      newicon = mapboxgl.Marker(el, {'anchor': 'center'}).setLngLat([point['lon'], point['lat']]).setOffset([0, 0]).addTo(self.mapbox)
 
                       id_counter += 1
                       
@@ -2782,10 +2785,6 @@ class Map2_0(Map2_0Template):
                     id = route['tags']['name']
                   else:
                     id = route['tags']['ref']
-                  if 'colour' in route['tags']:
-                    colour = route['tags']['colour']
-                  else:
-                    colour = '#000000'
                   self.mapbox.addLayer({
                     'id': id,
                     'type': 'line',
@@ -3889,7 +3888,6 @@ class Map2_0(Map2_0Template):
 
     from .Custom_Marker import Custom_Marker
     marker_data = alert(Custom_Marker(url=self.app_url), buttons=[], dismissible=False, large=True, role='custom_alert')
-    marker_data['coords'] = self.clicked_coords
     self.create_custom_marker(marker_data)
     self.custom_marker.append(marker_data)
 
@@ -3916,6 +3914,8 @@ class Map2_0(Map2_0Template):
       f"<p class='popup_name'><b>{marker_data['name']}</b></p>"
       f"<p class='popup_type'>{marker_data['text']}</p>"
     )
+
+    ### Work here to get Coords if or if not Address is inserted ###
 
     newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(marker_data['coords']).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
 

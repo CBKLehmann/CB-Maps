@@ -223,9 +223,25 @@
   }
 
   function showDetails(ele, category, marker_details, container, marker, e, role) {
-    console.log(category)
-    console.log(role)
-    if ((category === 'nursing_homes') || (category === 'assisted_living') || (category === 'nursing_school') || (category === 'Competitor')) {
+    if (role === 'guest') {
+      if ((category === 'nursing_homes') || (category === 'assisted_living') || (category === 'nursing_school') || (category === 'Competitor')) {
+        removeDetails(e)
+        lastTarget = e.target
+        activeContainer = container
+        let content = document.getElementsByClassName('content')[0]
+        let markerDetails = content.getElementsByClassName('marker_details')
+        if (markerDetails.length < 1) {
+          let details = document.createElement('div')
+          container.style.width = "50px"
+          container.style.height = "50px"
+          container.style.zIndex = "221"
+          details.innerHTML = marker_details
+          details.className = 'marker_details'
+          details.id = 'marker_details'
+          content.appendChild(details)
+        } 
+      } 
+    } else {
       removeDetails(e)
       lastTarget = e.target
       activeContainer = container
@@ -243,8 +259,8 @@
         if (role !== 'guest') {
           let btn = document.getElementById('remove')
           btn.addEventListener('click', () => removeMarker(marker, content, details))  
-        }
-      } 
+        } 
+      }
     }
   }
 

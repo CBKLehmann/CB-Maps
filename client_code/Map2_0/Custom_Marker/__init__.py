@@ -43,8 +43,23 @@ class Custom_Marker(Custom_MarkerTemplate):
     response = {
       'icon': self.icon_url,
       'name': self.object_name.text,
-      'text': self.text_area.text
+      'text': self.text_area.text,
+      'address': self.address_results.selected_value
     }
     self.raise_event('x-close-alert', value = response)
     pass
+
+  def address_input_lost_focus(self, **event_args):
+    """This method is called when the TextBox loses focus"""
+    print(event_args['sender'].text)
+    address = event_args['sender'].text
+    if not address == '':
+      results = anvil.server.call('coords_from_address', address)
+      items = []
+      for result in results['features']:
+        items.append((result['properties']['display_name'], result))
+      self.address_results.items = items
+    pass
+
+
 
