@@ -3130,7 +3130,7 @@ class Map2_0(Map2_0Template):
                   newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
                   newiconElement = newicon.getElement()
                   
-                  anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.mobile)
+                  anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.mobile, self.role)
         
                   # Add current Element-Icon to Icon-Array
                   icons.append(newicon)
