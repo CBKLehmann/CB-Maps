@@ -19,15 +19,12 @@ class Login(LoginTemplate):
     if len(hash) > 0:
       open_form('Map2_0', role='guest')
     else:
+      self.login_grid.visible = True
       width = anvil.js.window.innerWidth if anvil.js.window.innerWidth > 0 else anvil.js.screen.width;
       height = anvil.js.window.innerHeight if anvil.js.window.innerHeight > 0 else anvil.js.screen.height;
       if width <= 998:
         self.email_icon.visible = False
         self.password_icon.visible = False
-    # if not anvil.users.get_user() == None:
-    #     user = anvil.users.get_user()
-    #     print(user['role'])
-    #     open_form('Map2_0', role=dict(user)['role'])
     
   
   def login_click(self, **event_args):

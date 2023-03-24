@@ -189,21 +189,17 @@
   function addHoverEffect(container, popup, map, marker, ele, category, marker_details, role) {
     container.addEventListener('mouseenter', () => addPopup(popup, map, ele, category, marker_details, container, marker, role));
     container.addEventListener('mouseleave', () => removePopup(popup));
-    if (self.role === 'guest') {
-     container.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e))  
-    }
+    container.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e, role))
   }
 
-  function addPopup(popup, map, ele, category, marker_details, container, marker, e, role) {
+  function addPopup(popup, map, ele, category, marker_details, container, marker, role) {
     if (popup !== lastPopup) {
       lastPopup = popup
       popup.addTo(map)
       let pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
       pop.addEventListener('mouseenter', () => readdPopup(popup, map));
       pop.addEventListener('mouseleave', () => removePopup(popup));
-      if (self.role === 'guest') {
-        container.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e))  
-      }
+      pop.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e, role)) 
     }
   }
 
@@ -226,23 +222,29 @@
     lastTarget = null;
   }
 
-  function showDetails(ele, category, marker_details, container, marker, e) {
-    removeDetails(e)
-    lastTarget = e.target
-    activeContainer = container
-    let content = document.getElementsByClassName('content')[0]
-    let markerDetails = content.getElementsByClassName('marker_details')
-    if (markerDetails.length < 1) {
-      let details = document.createElement('div')
-      container.style.width = "50px"
-      container.style.height = "50px"
-      container.style.zIndex = "221"
-      details.innerHTML = marker_details
-      details.className = 'marker_details'
-      details.id = 'marker_details'
-      content.appendChild(details)
-      let btn = document.getElementById('remove')
-      btn.addEventListener('click', () => removeMarker(marker, content, details)) 
+  function showDetails(ele, category, marker_details, container, marker, e, role) {
+    console.log(category)
+    console.log(role)
+    if ((category === 'nursing_homes') || (category === 'assisted_living') || (category === 'nursing_school') || (category === 'Competitor')) {
+      removeDetails(e)
+      lastTarget = e.target
+      activeContainer = container
+      let content = document.getElementsByClassName('content')[0]
+      let markerDetails = content.getElementsByClassName('marker_details')
+      if (markerDetails.length < 1) {
+        let details = document.createElement('div')
+        container.style.width = "50px"
+        container.style.height = "50px"
+        container.style.zIndex = "221"
+        details.innerHTML = marker_details
+        details.className = 'marker_details'
+        details.id = 'marker_details'
+        content.appendChild(details)
+        if (role !== 'guest') {
+          let btn = document.getElementById('remove')
+          btn.addEventListener('click', () => removeMarker(marker, content, details))  
+        }
+      } 
     }
   }
 

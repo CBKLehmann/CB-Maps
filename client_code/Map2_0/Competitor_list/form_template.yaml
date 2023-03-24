@@ -1,0 +1,48 @@
+container:
+  type: ColumnPanel
+  properties: {col_widths: '{}'}
+components:
+- type: DataGrid
+  properties:
+    role: null
+    columns:
+    - {id: TKUHOE, title: Operator, data_key: operator, $$hashKey: 'object:21587'}
+    - {id: FNJKDW, title: Address, data_key: address, $$hashKey: 'object:21588'}
+    - {id: PGHIHZ, title: Distance, data_key: distance, $$hashKey: 'object:21589',
+      width: 80, expand: false}
+    - {id: INDVZK, title: 360 Operator, data_key: 360_operator, $$hashKey: 'object:21642'}
+    - {id: AHWVPR, title: Living Concept, data_key: living_concept, $$hashKey: 'object:21644'}
+    - {id: LIJVGR, title: Equipment, data_key: equipment, $$hashKey: 'object:21648',
+      width: 100, expand: false}
+    - {id: QQMZEN, title: Note, data_key: note, $$hashKey: 'object:21650', width: 70,
+      expand: false}
+    - {id: ICSUCA, title: Community Spaces, data_key: community_spaces, $$hashKey: 'object:21652',
+      expand: false}
+    - {id: WBGYGD, title: Furnishing, data_key: furnishing, $$hashKey: 'object:21654'}
+    - {id: WCWRUS, title: Services, data_key: services, $$hashKey: 'object:21656'}
+    - {id: THXMHF, title: Apartments, data_key: apartments, $$hashKey: 'object:21658'}
+    - {id: VAKLRT, title: Size Range (m²), data_key: size_range_m2, $$hashKey: 'object:21660'}
+    - {id: BDMBNW, title: Rent per m² Range (€), data_key: rent_per_m2_range, $$hashKey: 'object:21662'}
+    - {id: ZILAYO, title: Rent per month Range (€), data_key: rent_per_month_range,
+      $$hashKey: 'object:21664'}
+    - {id: CXSJJJ, title: Created, data_key: created, $$hashKey: 'object:21666'}
+    - {id: MNSXDF, title: Updated, data_key: updated, $$hashKey: 'object:21668'}
+    auto_header: true
+    tooltip: ''
+    border: ''
+    foreground: ''
+    rows_per_page: 20
+    visible: true
+    wrap_on: never
+    show_page_controls: true
+    spacing_above: small
+    spacing_below: small
+    background: ''
+  name: competitor_grid
+  layout_properties: {grid_position: 'LIFVYF,GDTKQD', full_width_row: true}
+  components:
+  - type: LinearPanel
+    properties: {}
+    name: competitor_panel
+    layout_properties: {}
+is_package: true

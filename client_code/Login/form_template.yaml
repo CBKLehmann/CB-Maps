@@ -25,7 +25,7 @@ components:
     layout_properties: {row: SNSLOD, width_xs: 12, col_xs: 0}
   - type: GridPanel
     properties: {spacing_above: none, spacing_below: none, background: '', foreground: '',
-      border: '', visible: true, role: login_grid, tooltip: ''}
+      border: '', visible: false, role: login_grid, tooltip: ''}
     name: login_grid
     layout_properties: {grid_position: 'UCLEKV,EUSTOT', row: RKYCJT, width_xs: 12,
       col_xs: 0, width: 970}

@@ -2880,7 +2880,8 @@ class Map2_0(Map2_0Template):
                     distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
   
                     marker_details = f"<div class='objectName'>{name}</div>"
-                    marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
+                    if not self.role == 'guest':
+                      marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
                     
                     # Create Popup for Element
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
@@ -2974,7 +2975,8 @@ class Map2_0(Map2_0Template):
                     marker_details += "<div class='line'></div>"
                     marker_details += f"<p><b>Träger ID: </b> {ele['traeger_id']}</p>"
                     marker_details += f"<p><b>IK_Nummer: </b> {ele['ik_nummer']}</p>"
-                    marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
+                    if not self.role == 'guest':
+                      marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
         
                   elif category == 'assisted_living':
     
@@ -3032,7 +3034,8 @@ class Map2_0(Map2_0Template):
                     marker_details += f"<p><b>Miete bis:</b> {miete_bis}</p>"
                     marker_details += "<div class='line'></div>"
                     marker_details += f"<p><b>Träger ID:</b> {ele['traeger_id']}</p>"
-                    marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
+                    if not self.role == 'guest':
+                      marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
         
                     # Create Popup for Element
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
@@ -3065,7 +3068,8 @@ class Map2_0(Map2_0Template):
                     marker_details += f"<p>Certificate: {certificate}</p>"
                     marker_details += f"<p>Inserted: {inserted}</p>"
                     marker_details += f"<p>Updated: {updated}</p>"
-                    marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
+                    if not self.role == 'guest':
+                      marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
     
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{name}</b></p>"
@@ -3118,7 +3122,8 @@ class Map2_0(Map2_0Template):
                     marker_details += f'&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}'
                     marker_details += f'<br>'
                     marker_details += f'&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}'
-                    marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
+                    if not self.role == 'guest':
+                      marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
                     
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{name}</b></p>"
@@ -3129,8 +3134,7 @@ class Map2_0(Map2_0Template):
                   # Add Icon to the Map
                   newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
                   newiconElement = newicon.getElement()
-                  
-                  anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.mobile, self.role)
+                  anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.role)
         
                   # Add current Element-Icon to Icon-Array
                   icons.append(newicon)
@@ -3938,6 +3942,7 @@ class Map2_0(Map2_0Template):
       self.competitors = results
       self.comp_loader.clear()
       self.manipulate_loading_overlay(False)
+      self.download_comps.visible = True
     pass
 
 
@@ -3988,9 +3993,10 @@ class Map2_0(Map2_0Template):
         details += "<div class='partingLine'></div>"
         details += f"<p>Created: {result['created']}</p>"
         details += f"<p>Updated: {result['updated']}</p>"
-        details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
+        if not self.role == 'guest':
+          details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
 
-        anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, result, 'Competitor', details, self.mobile)
+        anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, result, 'Competitor', details, self.role)
     
 
   def manipulate_loading_overlay(self, state):
@@ -4012,5 +4018,7 @@ class Map2_0(Map2_0Template):
   
   def download_comps_click(self, **event_args):
     """This method is called when the button is clicked"""
-    
+    print(self.competitors)
+    from .Competitor_list import Competitor_list
+    alert(Competitor_list(competitors=self.competitors), large=True, role='custom_alert_big')
     pass
