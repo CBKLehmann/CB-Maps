@@ -185,7 +185,7 @@ components:
           files: []
           foreground: theme:Gray 300
           visible: true
-          text: Upload Comps
+          text: Upload Comparables
           font_size: null
           font: ''
           spacing_above: small
@@ -199,11 +199,11 @@ components:
           multiple: false
           icon: ''
         name: comp_loader
-        layout_properties: {row: KFRWXA, width_xs: 12, col_xs: 0, width: 205.578}
+        layout_properties: {row: KFRWXA, width_xs: 12, col_xs: 0, width: 203.333}
         event_bindings: {change: comp_loader_change}
       - type: Button
         properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-          foreground: 'theme:Gray 300', visible: false, text: View Comp Selection,
+          foreground: 'theme:Gray 300', visible: false, text: Download Selection,
           font_size: 13, font: Roboto+Flex, spacing_above: small, icon_align: left,
           spacing_below: small, italic: false, background: '', bold: false, underline: false,
           icon: ''}

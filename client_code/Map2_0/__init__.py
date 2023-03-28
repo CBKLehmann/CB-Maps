@@ -2906,7 +2906,7 @@ class Map2_0(Map2_0Template):
                     # Create Popup for Element
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{name}</b></p>"
-                      f"<p class='popup_distance'>{distance} km zum Standort</p>"
+                      f"<p class='popup_distance'>{distance} km  to the location</p>"
                     )
                     
                   # Check if Category is PflegeDB
@@ -2920,8 +2920,8 @@ class Map2_0(Map2_0Template):
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{ele['name']}</b></p>"
                       f"<p class='popup_type'>{ele['sektor']}</p>"
-                      f"<p class='popup_distance'>{distance} km zum Standort</p>"
-                      "<p class='popup_betreiber_label'><b>Betreiber:</b></p>"
+                      f"<p class='popup_distance'>{distance} km  to the location</p>"
+                      "<p class='popup_betreiber_label'><b>Operator:</b></p>"
                       f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
                       f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
                     )
@@ -2938,8 +2938,8 @@ class Map2_0(Map2_0Template):
                     marker_details += f"<p class='tag'>{ele['status']}</p>"
                     marker_details += "</div>"
                     # Year of Construction/Modernisation
-                    marker_details += f"<p>Baujahr: {ele['baujahr']}</p>"
-                    marker_details += f"<p>Modernisierungsjahr: {ele['modernisierung']}</p>"
+                    marker_details += f"<p>Year of construction: {ele['baujahr']}</p>"
+                    marker_details += f"<p>Year od modernization: {ele['modernisierung']}</p>"
                     # Parting Line
                     marker_details += "<div class='partingLine'></div>"
                     # Contact Details
@@ -2956,34 +2956,34 @@ class Map2_0(Map2_0Template):
                     # Parting Line
                     marker_details += "<div class='partingLine'></div>"
                     # Operator
-                    marker_details += f"<p>Betreiber: {ele['betreiber']}</p>"
-                    marker_details += f"<p>Tochterfirma 1: {ele['tochterfirma1']}</p>"
-                    marker_details += f"<p>Tochterfirma 2: {ele['tochterfirma2']}</p>"
+                    marker_details += f"<p>Operator: {ele['betreiber']}</p>"
+                    marker_details += f"<p>Subsidiary 1: {ele['tochterfirma1']}</p>"
+                    marker_details += f"<p>Subsidiary 2: {ele['tochterfirma2']}</p>"
                     # Parting Line
                     marker_details += "<div class='partingLine'></div>"
                     # MDK Grade
                     if not ele['mdk_datum'] == "-":
                       date = ele['mdk_datum'].split('-')
-                      marker_details += f"<p>MDK Bewertung vom {date[2]}.{date[1]}.{date[0]}</p>"
+                      marker_details += f"<p>MDK Evaluation from the {date[2]}.{date[1]}.{date[0]}</p>"
                     else:
-                      marker_details += f"<p>MDK Bewertung vom {ele['mdk_datum']}</p>"
-                    marker_details += f"<p><b>Pflege und medizinische Versorgung: </b> {ele['pfl_u_med_vers']}</p>"
-                    marker_details += f"<p><b>Umgang mit demenzkranken Bewohnern: </b> {ele['umg_mit_dem_bew']}</p>"
-                    marker_details += f"<p><b>Soziale Betreuung und Alltagsgestaltung: </b> {ele['soz_betrualltag']}</p>"
-                    marker_details += f"<p><b>Wohnen, Verpflegung, Hauswirtschaft und Hygiene: </b> {ele['wohn_verpfl_hausw_hyg']}</p>"
-                    marker_details += f"<p><b>Befragung der Bewohner: </b> {ele['befr_bew']}</p>"
-                    marker_details += f"<p><b>MDK Note: </b> {ele['mdk_note']}</p>"
+                      marker_details += f"<p>MDK Evaluation from the {ele['mdk_datum']}</p>"
+                    marker_details += f"<p><b>Nursing and medical care: </b> {ele['pfl_u_med_vers']}</p>"
+                    marker_details += f"<p><b>Dealing with residents with dementia: </b> {ele['umg_mit_dem_bew']}</p>"
+                    marker_details += f"<p><b>Social care and daily routine: </b> {ele['soz_betrualltag']}</p>"
+                    marker_details += f"<p><b>Housing, food, housekeeping and hygiene: </b> {ele['wohn_verpfl_hausw_hyg']}</p>"
+                    marker_details += f"<p><b>Survey of residents: </b> {ele['befr_bew']}</p>"
+                    marker_details += f"<p><b>MDK Grade: </b> {ele['mdk_note']}</p>"
                     marker_details += "<div class='partingLine'></div>"
-                    marker_details += f"<p><b>Anzahl versorgte Patienten: </b> {ele['anz_vers_pat']}</p>"
+                    marker_details += f"<p><b>Number of patients treated: </b> {ele['anz_vers_pat']}</p>"
                     
-                    marker_details += f"<p><b>Platzzahl vollständige Pflege: </b> {ele['platz_voll_pfl']}</p>"
-                    marker_details += f"<p><b>Platzzahl Kurzzeitpflege: </b> {ele['platz_kurzpfl']}</p>"
-                    marker_details += f"<p><b>Platzzahl Nachtpflege: </b> {ele['platz_nachtpfl']}</p>"
+                    marker_details += f"<p><b>Number of places full care: </b> {ele['platz_voll_pfl']}</p>"
+                    marker_details += f"<p><b>Number of places for short-term care: </b> {ele['platz_kurzpfl']}</p>"
+                    marker_details += f"<p><b>Number of places night care: </b> {ele['platz_nachtpfl']}</p>"
                     
-                    marker_details += f"<p><b>Einzelzimmer: </b> {ele['ez']}</p>"
-                    marker_details += f"<p><b>Doppelzimmer: </b> {ele['dz']}</p>"
+                    marker_details += f"<p><b>Single rooms: </b> {ele['ez']}</p>"
+                    marker_details += f"<p><b>Double roooms: </b> {ele['dz']}</p>"
                     marker_details += "<div class='line'></div>"
-                    marker_details += f"<p><b>Ausbildungsumlage: </b> {ele['ausbildungsumlage']}</p>"
+                    marker_details += f"<p><b>Education fee: </b> {ele['ausbildungsumlage']}</p>"
                     marker_details += f"<p><b>EEE: </b> {ele['eee']}</p>"
                     marker_details += f"<p><b>UuV: </b> {ele['uuv']}</p>"
                     marker_details += f"<p><b>Invest: </b> {ele['invest']}</p>"
@@ -2993,8 +2993,8 @@ class Map2_0(Map2_0Template):
                     marker_details += f"<p><b>PG 4: </b> {ele['pg_4']}</p>"
                     marker_details += f"<p><b>PG 5: </b> {ele['pg_5']}</p>"
                     marker_details += "<div class='line'></div>"
-                    marker_details += f"<p><b>Träger ID: </b> {ele['traeger_id']}</p>"
-                    marker_details += f"<p><b>IK_Nummer: </b> {ele['ik_nummer']}</p>"
+                    marker_details += f"<p><b>Holder ID: </b> {ele['traeger_id']}</p>"
+                    marker_details += f"<p><b>IK_Number: </b> {ele['ik_nummer']}</p>"
                     if not self.role == 'guest':
                       marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
         
@@ -3021,7 +3021,7 @@ class Map2_0(Map2_0Template):
                     marker_details += f"<p class='tag'>{ele['status']}</p>"
                     marker_details += "</div>"
                     # Year of Construction/Modernisation
-                    marker_details += f"<p>Baujahr: {ele['baujahr']}</p>"
+                    marker_details += f"<p>Year of construction: {ele['baujahr']}</p>"
                     # Parting Line
                     marker_details += "<div class='partingLine'></div>"
                     # Contact Details
@@ -3039,21 +3039,21 @@ class Map2_0(Map2_0Template):
                     marker_details += "<div class='partingLine'></div>"
                     # Operator
                     if not ele['betreiber'] == "-":
-                      marker_details += f"<p>Betreiber: {ele['betreiber']}</p>"
+                      marker_details += f"<p>Operator: {ele['betreiber']}</p>"
                     if not ele['tochterfirma1'] == "-":
-                      marker_details += f"<p>Tochterfirma 1: {ele['tochterfirma1']}</p>"
+                      marker_details += f"<p>Subsidiary 1: {ele['tochterfirma1']}</p>"
                     if not ele['tochterfirma2'] == "-":
-                      marker_details += f"<p>Tochterfirma 2: {ele['tochterfirma2']}</p>"
+                      marker_details += f"<p>Subsidiary 2: {ele['tochterfirma2']}</p>"
                     # Parting Line
                     marker_details += "<div class='partingLine'></div>"
                     #Flats
-                    marker_details += f"<p><b>Anzahl Wohnungen:</b> {wohnungen}</p>"
-                    marker_details += f"<p><b>Einzelzimmer:</b> {ez}</p>"
-                    marker_details += f"<p><b>Doppelzimmer:</b> {dz}</p>"
-                    marker_details += f"<p><b>Miete ab:</b> {miete_ab}</p>"
-                    marker_details += f"<p><b>Miete bis:</b> {miete_bis}</p>"
+                    marker_details += f"<p><b>Number of apartments:</b> {wohnungen}</p>"
+                    marker_details += f"<p><b>Single rooms:</b> {ez}</p>"
+                    marker_details += f"<p><b>Double rooms:</b> {dz}</p>"
+                    marker_details += f"<p><b>Rent starting from:</b> {miete_ab}</p>"
+                    marker_details += f"<p><b>Rent ending at:</b> {miete_bis}</p>"
                     marker_details += "<div class='line'></div>"
-                    marker_details += f"<p><b>Träger ID:</b> {ele['traeger_id']}</p>"
+                    marker_details += f"<p><b>Holder ID:</b> {ele['traeger_id']}</p>"
                     if not self.role == 'guest':
                       marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
         
@@ -3061,8 +3061,8 @@ class Map2_0(Map2_0Template):
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{ele['name']}</b></p>"
                       f"<p class='popup_type'>{ele['sektor']}</p>"
-                      f"<p class='popup_distance'>{distance} km zum Standort</p>"
-                      "<p class='popup_betreiber_label'><b>Betreiber:</b></p>"
+                      f"<p class='popup_distance'>{distance} km to the location</p>"
+                      "<p class='popup_betreiber_label'><b>Operator:</b></p>"
                       f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
                       f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
                     )
@@ -3094,7 +3094,7 @@ class Map2_0(Map2_0Template):
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{name}</b></p>"
                       f"<p class='popup_type'>Nursing School</p>"
-                      f"<p class='popup_distance'>{distance} km zum Standort</p>"
+                      f"<p class='popup_distance'>{distance} km  to the location</p>"
                     )
                     
                   # Check if Category is not Bus or Tram or PflegeDB
@@ -3119,36 +3119,34 @@ class Map2_0(Map2_0Template):
                     marker_details += f'<br>'
                     marker_details += f'&nbsp;&nbsp;{postcode}, {city} {suburb}'
                     marker_details += f'<br>'
-                    marker_details += f'<b>Kontakt</b>'
+                    marker_details += f'<b>Contact</b>'
                     marker_details += f'<br>'
-                    marker_details += f'&nbsp;&nbsp;Telefon: {phone}'
-                    marker_details += f'<br>'
-                    marker_details += f'&nbsp;&nbsp;Fax: {fax}'
+                    marker_details += f'&nbsp;&nbsp;Phone: {phone}'
                     marker_details += f'<br>'
                     marker_details += f'&nbsp;&nbsp;Email: {email}'
                     marker_details += f'<br>'
-                    marker_details += f'&nbsp;&nbsp;Webseite:'
+                    marker_details += f'&nbsp;&nbsp;Webpage:'
                     marker_details += f'<br>'
                     marker_details += f'&nbsp;&nbsp;&nbsp;&nbsp;{website}'
                     marker_details += f'<br>'
-                    marker_details += f'<b>Infos</b>'
+                    marker_details += f'<b>Informations</b>'
                     marker_details += f'<br>'
-                    marker_details += f'&nbsp;&nbsp;Kategorie: {healthcare}'
+                    marker_details += f'&nbsp;&nbsp;Category: {healthcare}'
                     marker_details += f'<br>'
                     marker_details += f'&nbsp;&nbsp;Speciality: {speciality}'
                     marker_details += f'<br>'
-                    marker_details += f'&nbsp;&nbsp;Öffnungszeiten:'
+                    marker_details += f'&nbsp;&nbsp;Opening hours:'
                     marker_details += f'<br>'
                     marker_details += f'&nbsp;&nbsp;&nbsp;&nbsp;{opening_hours}'
                     marker_details += f'<br>'
-                    marker_details += f'&nbsp;&nbsp;Rollstuhlgerecht: {wheelchair}'
+                    marker_details += f'&nbsp;&nbsp;Wheelchair accessible: {wheelchair}'
                     if not self.role == 'guest':
                       marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
                     
                     popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
                       f"<p class='popup_name'><b>{name}</b></p>"
                       f"<p class='popup_type'>{category.capitalize()}</p>"
-                      f"<p class='popup_distance'>{distance} km zum Standort</p>"
+                      f"<p class='popup_distance'>{distance} km  to the location</p>"
                     )
         
                   # Add Icon to the Map
@@ -4044,11 +4042,24 @@ class Map2_0(Map2_0Template):
     unique_code = anvil.server.call("get_unique_code")
     for index, competitor in enumerate(self.competitors):
       for col_index, key in enumerate(keys):
+        if key == 'distance':
+          content = f"{competitor[key]} km²"
+        elif key == 'size_range_sqm':
+          content_data = competitor[key].split('-')
+          content = f"{content_data[0]}m² - {content_data[1]}m²"
+        elif key == 'rent_range_sqm':
+          content_data = competitor[key].split('-')
+          content = f"{content_data[0]}€ - {content_data[1]}€"
+        elif key == 'rent_range_month':
+          content_data = competitor[key].split('-')
+          content = f"{content_data[0]}€ - {content_data[1]}€"
+        else:
+          content = f"{competitor[key]}"
         data['data'].append({
           'type': "text",
           'insert': "write",
           'cell': f"{letters[col_index]}{row + index}",
-          'content': f"{competitor[key]}",
+          'content': content,
           'format': {
             'font': "Segoe UI",
             'bg_color': "#BFB273"

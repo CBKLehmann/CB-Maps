@@ -4290,9 +4290,9 @@ alca_data = {
 }
 comp_data = {
         'title': 'Comparable List',
-        'print_area': 'A1:G1048576',
+        'print_area': 'A1:P1048576',
         'fit_to_pages': (1, 0),
-        'columns_width': [20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64],
+        'columns_width': [20, 21, 12, 12, 18, 16, 19, 12, 12, 11, 13, 15, 15, 17, 13, 13],
         'data': [
             {
                 'type': 'text',
@@ -4379,7 +4379,7 @@ comp_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'H3',
-                'content': 'Communiy Spaces',
+                'content': 'Community Spaces',
                 'format': {
                     'font': 'Segoe UI Black',
                     'bg_color': '#BFB273'
@@ -4419,7 +4419,7 @@ comp_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'L3',
-                'content': 'Size Range (m²)',
+                'content': 'Size Range',
                 'format': {
                     'font': 'Segoe UI Black',
                     'bg_color': '#BFB273'
@@ -4429,7 +4429,7 @@ comp_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'M3',
-                'content': 'Rent per m² Range',
+                'content': 'Rent Range per m²',
                 'format': {
                     'font': 'Segoe UI Black',
                     'bg_color': '#BFB273'
@@ -4439,7 +4439,7 @@ comp_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'N3',
-                'content': 'Rent per month Range',
+                'content': 'Rent Range per month',
                 'format': {
                     'font': 'Segoe UI Black',
                     'bg_color': '#BFB273'
