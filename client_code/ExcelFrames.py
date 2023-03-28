@@ -4288,3 +4288,182 @@ alca_data = {
             }
         ]
 }
+comp_data = {
+        'title': 'Comparable List',
+        'print_area': 'A1:G1048576',
+        'fit_to_pages': (1, 0),
+        'columns_width': [20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64, 20.64],
+        'data': [
+            {
+                'type': 'text',
+                'insert': 'merge',
+                'cell': 'A1:E1',
+                'content': 'Comparable List',
+                'format': {
+                    'font_size': 24,
+                    'font': 'Segoe UI Black',
+                    'color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A3',
+                'content': 'Operator',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B3',
+                'content': 'Address',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C3',
+                'content': 'Distance',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D3',
+                'content': '360 Operator',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'E3',
+                'content': 'Living Concept',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'F3',
+                'content': 'Equipment',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'G3',
+                'content': 'Note',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'H3',
+                'content': 'Communiy Spaces',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'I3',
+                'content': 'Furnishing',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'J3',
+                'content': 'Services',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'K3',
+                'content': 'Apartments',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'L3',
+                'content': 'Size Range (m²)',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'M3',
+                'content': 'Rent per m² Range',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'N3',
+                'content': 'Rent per month Range',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'O3',
+                'content': 'Created',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'P3',
+                'content': 'Updated',
+                'format': {
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            }
+        ]
+}

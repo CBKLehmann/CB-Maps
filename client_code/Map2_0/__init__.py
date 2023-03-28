@@ -4034,5 +4034,29 @@ class Map2_0(Map2_0Template):
   def download_comps_click(self, **event_args):
     """This method is called when the button is clicked"""
     from .Competitor_list import Competitor_list
-    alert(Competitor_list(competitors=self.competitors), large=True, role='custom_alert_big')
+    data = ExcelFrames.comp_data
+    keys = ['operator', 'address', 'distance', '360_operator', 'living_concept', 
+            'equiment', 'note', 'community_spaces', 'furnishing', 'services', 
+            'apartments', 'size_range_sqm', 'rent_range_sqm', 'rent_range_month',
+           'created', 'updated']
+    letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P']
+    row = 4
+    unique_code = anvil.server.call("get_unique_code")
+    for index, competitor in enumerate(self.competitors):
+      for col_index, key in enumerate(keys):
+        data['data'].append({
+          'type': "text",
+          'insert': "write",
+          'cell': f"{letters[col_index]}{row + index}",
+          'content': f"{competitor[key]}",
+          'format': {
+            'font': "Segoe UI",
+            'bg_color': "#BFB273"
+          }
+        })
+    anvil.server.call('create_comp_excel', data, unique_code)
+    table = app_tables.pictures.search()
+    comp_list = app_tables.pictures.search()[0]
+    anvil.media.download(comp_list['pic'])
+    # alert(Competitor_list(competitors=self.competitors), large=True, role='custom_alert_big')
     pass
