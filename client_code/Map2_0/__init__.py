@@ -4058,5 +4058,4 @@ class Map2_0(Map2_0Template):
     table = app_tables.pictures.search()
     comp_list = app_tables.pictures.search()[0]
     anvil.media.download(comp_list['pic'])
-    # alert(Competitor_list(competitors=self.competitors), large=True, role='custom_alert_big')
     pass
