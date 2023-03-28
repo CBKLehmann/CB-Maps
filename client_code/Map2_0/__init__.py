@@ -13,12 +13,12 @@ import anvil.tables.query as q
 import anvil.js
 import anvil.http
 import json
-import Functions
 import anvil.media
 import math
 import datetime
 import time
 import copy
+import Functions
 
 global Variables, Layer, Images, ExcelFrames
 
@@ -44,6 +44,8 @@ class Map2_0(Map2_0Template):
         self.competitors = []
         self.custom_marker = []
         self.role = properties['role']
+        html = document.getElementsByClassName('anvil-root-container')[0]
+        html.style.cursor = 'default'
   
   def form_show(self, **event_args):
 
@@ -223,7 +225,7 @@ class Map2_0(Map2_0Template):
   def check_box_marker_icons_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       # Show or Hide Marker-Icon-Types
-      Functions.show_hide_marker(self, event_args['sender'].checked, event_args['sender'].text)
+      Functions.show_hide_marker(self, event_args['sender'].checked, event_args['sender'].tooltip)
 
   def button_marker_icons_change(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -241,7 +243,7 @@ class Map2_0(Map2_0Template):
         
       for marker in all_marker:
         if not type(marker) is Label:
-          Functions.show_hide_marker(self, marker_state, marker.text)
+          Functions.show_hide_marker(self, marker_state, marker.tooltip)
           marker.checked = marker_state
    
   
@@ -297,7 +299,7 @@ class Map2_0(Map2_0Template):
 
   def check_box_poi_change(self, **event_args):
     with anvil.server.no_loading_indicator:
-      self.manipulate_loading_overlay(True)
+      Functions.manipulate_loading_overlay(self, True)
       # Check or uncheck various Check Boxes for different POI Categories
       if dict(event_args)['sender'].text == "Veterinary":
         Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
@@ -339,7 +341,7 @@ class Map2_0(Map2_0Template):
         Variables.last_bbox_al = self.create_icons(self.check_box_su.checked, Variables.last_bbox_su, "subway", f'{self.app_url}/_/theme/Pins/U_Bahn_Pin.png')
       elif event_args['sender'].text == "Airport":
         Variables.last_bbox_ap = self.create_icons(self.check_box_ap.checked, Variables.last_bbox_ap, "aerodrome", f'{self.app_url}/_/theme/Pins/Flughafen_Pin.png')
-      self.manipulate_loading_overlay(False)
+      Functions.manipulate_loading_overlay(self, False)
 
 
   def checkbox_poi_x_hfcig_change(self, **event_args):
@@ -694,10 +696,10 @@ class Map2_0(Map2_0Template):
     with anvil.server.no_loading_indicator:
 
       # #####Get Informations from Map#####
-
+      Functions.manipulate_loading_overlay(self, True)
       if self.mobile:
         self.mobile_hide_click()
-      
+
       anvil.js.call('update_loading_bar', 0, 'Getting map-based Informations')
     
       nh_checked = self.pdb_data_cb.checked
@@ -789,7 +791,8 @@ class Map2_0(Map2_0Template):
       change_o80_raw = change_o80 / 100
 
       # #####Calculate Data for Market Study#####
-      
+
+      Functions.manipulate_loading_overlay(self, False)
       anvil.js.call('update_loading_bar', 35, 'Waiting for User Input')
       
       #Get organized Coords for Nursing Homes
@@ -799,7 +802,8 @@ class Map2_0(Map2_0Template):
       data_comp_analysis_nh = self.build_req_string(coords_nh, 'nursing_homes')
 
       # #####Calculate Data for Market Study#####
-      
+
+      Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 40, 'Calculate Nursing Home Data for Market Study')
       
       inpatients_lk = 0
@@ -821,7 +825,8 @@ class Map2_0(Map2_0Template):
       population_fc_35 = int(countie_data['dem_fc_lk']['g_u6_2035_abs']) + int(countie_data['dem_fc_lk']['g_6tou10_2035_abs']) + int(countie_data['dem_fc_lk']['g_10tou16_2035_abs']) + int(countie_data['dem_fc_lk']['g_16tou20_2035_abs']) + int(countie_data['dem_fc_lk']['g_20tou30_2035_abs']) + int(countie_data['dem_fc_lk']['g_30tou50_2035_abs']) + int(countie_data['dem_fc_lk']['g_50tou65_2035_abs']) + int(countie_data['dem_fc_lk']['g_65tou70_2035_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2035_abs']) + int(countie_data['dem_fc_lk']['g_80plus_2035_abs'])
 
       # #####Calculate Data for Market Study#####
-      
+
+      Functions.manipulate_loading_overlay(self, False)
       anvil.js.call('update_loading_bar', 45, 'Waiting for User Input')
       
       #Get organized Coords for both Assisted Living
@@ -831,7 +836,8 @@ class Map2_0(Map2_0Template):
       data_comp_analysis_al = self.build_req_string(coords_al, 'assisted_living') 
 
       # #####Calculate Data for Market Study#####
-      
+
+      Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 50, 'Calculate Assisted Living Data for Market Study')
       
       nursing_home_rate = float(countie_data['pfleg_stat_lk']['heimquote2019'])
@@ -1829,7 +1835,8 @@ class Map2_0(Map2_0Template):
         start_row += 1
 
       # #####Waiting for User Input#####
-      
+
+      Functions.manipulate_loading_overlay(self, False)
       anvil.js.call('update_loading_bar', 70, 'Waiting for User Input')
       
       t = ColumnPanel()
@@ -1843,7 +1850,8 @@ class Map2_0(Map2_0Template):
         checkboxes[f'{checkbox.text.replace(" ", "_")}'] = checkbox.checked
 
       # #####Finalising Data#####
-      
+
+      Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 75, 'Finalising Data for Market Study')
         
       ##### Analysis Addition to Market Study #####
@@ -2235,6 +2243,7 @@ class Map2_0(Map2_0Template):
       # #####Reset Loading Bar#####
       
       anvil.js.call('update_loading_bar', 0, '')
+      Functions.manipulate_loading_overlay(self, False)
 
   
   def upload_mspdf_change(self, file, **event_args):
@@ -2263,15 +2272,20 @@ class Map2_0(Map2_0Template):
   #This method is called when a new file is loaded into the FileLoader
   def file_loader_upload_change(self, file, **event_args):  
     with anvil.server.no_loading_indicator:
+      Functions.manipulate_loading_overlay(self, True)
+      anvil.js.call('update_loading_bar', 0, 'Reading Excel File')
       if self.mobile:
         self.mobile_hide_click()
       
       #Call Server-Function to safe the File  
       self.cluster_data = anvil.server.call('save_local_excel_file', file)
-      
+
       if self.cluster_data == None:
+        Functions.manipulate_loading_overlay(self, False)
+        anvil.js.call('update_loading_bar', 100, 'Error while processing Excel File')
         alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
       else:
+        anvil.js.call('update_loading_bar', 15, 'Creating Markers and Clusters')
         #Initialise Variables
         excel_markers = {}
         added_clusters = []
@@ -2333,16 +2347,17 @@ class Map2_0(Map2_0Template):
     
           if cluster_name not in added_clusters:
             counter += 1
-            print(counter)
             color = colors[counter]
-            checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
+            text = f"{cluster_name[:11]}..." if len(cluster_name) > 11 else cluster_name
+            checkbox = CheckBox(checked=True, text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=cluster_name)
             checkbox.add_event_handler('change', self.check_box_marker_icons_change)
-            icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none', icon_align='left')
+            icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none', icon_align='top')
             cluster_components[cluster_name] = [checkbox, icon]
             added_clusters.append(cluster_name)
   
           if invest_name not in added_invest_classes:
-            checkbox = CheckBox(checked=False, text=invest_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
+            text = f"{invest_name[:11]}..." if len(invest_name) > 11 else invest_name
+            checkbox = CheckBox(checked=False, text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=invest_name)
             checkbox.add_event_handler('change', self.check_box_marker_icons_change)
             invest_components[invest_name] = checkbox
             added_invest_classes.append(invest_name)
@@ -2365,7 +2380,9 @@ class Map2_0(Map2_0Template):
           inv_el.style.backgroundImage = f"url({self.app_url}{invests[invest_name]})"
           new_list = self.set_excel_markers(excel_markers[invest_name]['static'], coordinates, excel_markers[invest_name]['marker'], inv_el, asset)
           excel_markers[invest_name]['marker'] = new_list
-  
+
+        anvil.js.call('update_loading_bar', 60, 'Adding Menu Items')
+        
         for key in sorted(cluster_components):
           self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=1, width_xs=8)
           self.icon_grid.add_component(cluster_components[key][1], row=key, col_xs=9, width_xs=1)
@@ -2376,15 +2393,15 @@ class Map2_0(Map2_0Template):
           
         # Add Marker-Arrays to global Variable Marker
         Variables.marker.update(excel_markers)
-  
+
+        Functions.manipulate_loading_overlay(self, False)
+        anvil.js.call('update_loading_bar', 80, 'Waiting for individual Cluster Colors')
         self.change_cluster_color_click()
         anvil.js.call('remove_span')
-  
+
+        anvil.js.call('update_loading_bar', 95, 'Loading created Markers')
         for checkbox in self.invest_grid.get_components():
           checkbox.raise_event('change')
-  
-        # for checkbox in self.invest_grid.get_components():
-        #   checkbox.raise_event('change')
   
         self.cluster_btn.visible = True
         self.invest_class_btn.visible = True
@@ -2393,7 +2410,10 @@ class Map2_0(Map2_0Template):
         self.invest_class_btn.raise_event('click')
         self.cluster_btn.raise_event('click')
 
+        anvil.js.call('update_loading_bar', 100, 'Finishing Process')
         self.file_loader_upload.clear()
+        Functions.manipulate_loading_overlay(self, False)
+        anvil.js.call('update_loading_bar', 0, '')
     
   #####  Upload Functions   #####
   ###############################
@@ -2475,7 +2495,7 @@ class Map2_0(Map2_0Template):
         bl_name = click.features[0].properties.name
         bl_id = click.features[0].id
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}').addTo(self.mapbox)
+        popup = mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p>").addTo(self.mapbox)
       
       #Check which Layer is active
       elif click.features[0].layer.source == 'administrative_districts':
@@ -2484,7 +2504,7 @@ class Map2_0(Map2_0Template):
         bl_name = click.features[0].properties.NAME_1
         rb_name = click.features[0].properties.NAME_2
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Regierungsbezirk:</b> {rb_name}').addTo(self.mapbox)
+        popup = mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p><p class='popup_distance'><b>Regierungsbezirk:</b> {rb_name}</p>").addTo(self.mapbox)
       
       #Check which Layer is active
       elif click.features[0].layer.source == 'counties':
@@ -2493,7 +2513,7 @@ class Map2_0(Map2_0Template):
         bl_name = click.features[0].properties.lan_name
         lk_name = click.features[0].properties.krs_name
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bundesland:</b> {bl_name}<br><b>Landkreis:</b> {lk_name}').addTo(self.mapbox)
+        popup = mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p><p class='popup_distance'><b>Landkreis:</b> {lk_name}</p>").addTo(self.mapbox)
     
       elif click.features[0].layer.source == 'municipalities':
         
@@ -2509,8 +2529,9 @@ class Map2_0(Map2_0Template):
         demographic, exact_demographic = anvil.server.call('get_data_from_database', key)
       
         popup_text = f'<button type="button" onClick="hide_mun_info()">&#10006;</button><br><br><h3>Municipality: {gm_name}</h3><b>ID:</b> {key}<br><b>Area:</b> {"{:.2f}".format(float(demographic["flaeche"]))}km&sup2;<br><br><b>Population:</b> {demographic["bevoelkerung_ges"]}<br><b>per km&sup2:</b> {demographic["bevoelkerung_jekm2"]}<br><br><table><tr><th class="firstCol">Gender</th><th>Overall</th><th>Under 3</th><th>3 to <br>Under 6</th><th>6 to <br>Under 10</th><th>10 to Under 15</th><th>15 to Under 18</th><th>18 to Under 20</th><th>20 to Under 25</th><th>25 to Under 30</th><th>30 to Under 35</th><th>35 to Under 40</th><th>40 to Under 45</th><th>45 to Under 50</th><th>50 to Under 55</th><th>55 to Under 60</th><th>60 to Under 65</th><th>65 to Under 75</th><th>75 and older</th></tr><tr><th class="firstCol">Overall</th><td>100%</td><td>{"{:.1f}".format(float(exact_demographic["all_u3"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_3tou6"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_6tou10"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_10tou15"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_15tou18"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_18tou20"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_20tou25"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_25tou30"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_30tou35"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_35tou40"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_40tou45"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_45tou50"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_50tou55"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_55tou60"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_60tou65"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_65tou75"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["all_75"]))}%</td></tr><tr><th class="firstCol">Male</th><td>{"{:.1f}".format(float(exact_demographic["man_compl"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_u3"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_3tou6"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_6tou10"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_10tou15"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_15tou18"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_18tou20"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_20tou25"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_25tou30"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_30tou35"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_35tou40"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_40tou45"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_45tou50"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_50tou55"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_55tou60"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_60tou65"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_65tou75"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["man_75"]))}%</td></tr><tr><th class="firstCol">Female</th><td>{"{:.1f}".format(float(exact_demographic["woman_compl"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_u3"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_3tou6"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_6tou10"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_10tou15"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_15tou18"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_18tou20"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_20tou25"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_25tou30"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_30tou35"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_35tou40"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_40tou45"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_45tou50"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_50tou55"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_55tou60"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_60tou65"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_65tou75"]))}%</td><td>{"{:.1f}".format(float(exact_demographic["woman_75"]))}%</td></tr></table><br><br><br><b>Grad der Verstädterung:</b> {demographic["verstaedterung_bez"]}'
-        
-        anvil.js.call('show_mun_info', popup_text)
+
+        from .Municipality_Info import Municipality_Info
+        alert(Municipality_Info(data={'demographic': demographic, 'exact_demographic': exact_demographic, 'gm_name': gm_name, 'key': key, }), large=True, role='custom_alert_big')
         
       #Check which Layer is active
       elif click.features[0].layer.source == 'bezirke':
@@ -3201,7 +3222,6 @@ class Map2_0(Map2_0Template):
   #This method is called from the file uploader to set Markers based on Excel-Data
   def set_excel_markers(self, marker_cat, coords, marker_list, el, asset):
     with anvil.server.no_loading_indicator:
-      print(asset)
       if asset['acqisition_date'] == 'Unclassified':
         date = 'N/A'
       else:
@@ -3603,9 +3623,12 @@ class Map2_0(Map2_0Template):
 
   def change_cluster_color_click(self, **event_args):
     with anvil.server.no_loading_indicator:
+      Functions.manipulate_loading_overlay(self, True)
       """This method is called when the button is clicked"""
       from .Change_Cluster_Color import Change_Cluster_Color
+      Functions.manipulate_loading_overlay(self, False)
       response = alert(content=Change_Cluster_Color(components=self.icon_grid.get_components(), mobile=self.mobile), dismissible=False, large=True, buttons=[], role='custom_alert')
+      Functions.manipulate_loading_overlay(self, True)
       for key in Variables.marker:
         if key in response:
           Variables.marker[key]['color'] = response[key]
@@ -3613,7 +3636,7 @@ class Map2_0(Map2_0Template):
             anvil.js.call('changeBackground', marker['_element'], Variables.marker[key]["color"][2])
       for component in self.icon_grid.get_components():
         if type(component) == CheckBox:
-          key = component.text
+          key = component.tooltip
         elif type(component) == Label:
           component.foreground = Variables.marker[key]["color"][1]
       pass
@@ -3751,95 +3774,100 @@ class Map2_0(Map2_0Template):
 
   def share_click(self, **event_args):
     """This method is called when the button is clicked"""
-    searched_address = anvil.js.call('getSearchedAddress')
-    date = datetime.datetime.now()
-    str_date = str(date).split('.')
-    searched_address = searched_address + str_date[0]
-    changed_address = searched_address.replace(' ', '_').replace(',', '').replace('Deutschland', '').replace(':', '-')
-    poi_healthcare = ""
-    poi_education = ""
-    poi_food_drinks = ""
-    poi_opnv = ""
-    overlay = ""
-    for category in self.poi_categories_healthcare_container.get_components():
-      if category.checked:
-        poi_healthcare += '1'
-      else:
-        poi_healthcare += '0'
-    for category in self.education_grid.get_components():
-      if category.checked:
-        poi_education += '1'
-      else:
-        poi_education += '0'
-    for category in self.food_drinks_grid.get_components():
-      if category.checked:
-        poi_food_drinks += '1'
-      else:
-        poi_food_drinks += '0'
-    for category in self.opnv_container.get_components():
-      if category.checked:
-        poi_opnv += '1'
-      else:
-        poi_opnv += '0'
-    for component in self.layer_categories.get_components():
-      if component.checked:
-        overlay = component.text
-        break
-    for component in self.style_grid.get_components():
-      if component.checked:
-        map_style = component.text
-        break
-    study_pin = self.hide_ms_marker.checked
-
-    deleted_marker = {}
-    for setting in Variables.marker:
-      popped = Variables.marker[setting].pop('marker')
-      deleted_marker[setting] = popped
-    cluster = {
-      'data': self.cluster_data,
-      'settings': Variables.marker
-    }
-
-    from .Name_Share_Link import Name_Share_Link
-    name = alert(content=Name_Share_Link(searched_address=changed_address), buttons=[], dismissible=False, large=True, role='custom_alert')
-    self.url = anvil.server.call('get_app_url') + f'#?name={name}'
-    center = self.mapbox.getCenter()
-    
-    dataset = {
-      'marker_lng': self.marker['_lngLat']['lng'],
-      'marker_lat': self.marker['_lngLat']['lat'],
-      'cluster': cluster,
-      'distance_movement': self.profile_dropdown.selected_value,
-      'distance_time': self.time_dropdown.selected_value,
-      'overlay': overlay,
-      'map_style': map_style,
-      'poi_healthcare': poi_healthcare,
-      'poi_education': poi_education,
-      'poi_food_drinks': poi_food_drinks,
-      'poi_opnv': poi_opnv,
-      'iso_layer': self.checkbox_poi_x_hfcig.checked,
-      'name': name,
-      'url': self.url,
-      'study_pin': study_pin,
-      'zoom': self.mapbox.getZoom(),
-      'center': {'lng': center.lng, 'lat': center.lat},
-      'competitors': {'competitors': self.competitors},
-      'custom_marker': self.custom_marker
-    }
-
-    anvil.server.call('save_map_settings', dataset)
-
-    for setting in deleted_marker:
-      Variables.marker[setting]['marker'] = deleted_marker[setting]
-
-    grid = GridPanel()
-    label = TextBox(text=self.url, enabled=False)
-    button = Button(text="Copy to Clipboard")
-    button.add_event_handler('click', self.copy_to_clipboard)
-    grid.add_component(label, row="label", col_xs=1, width_xs=10)
-    grid.add_component(button, row="button", col_xs=1, width_xs=10)
-    
-    alert(grid, large=True, dismissible=False, role='custom_alert')
+    with anvil.server.no_loading_indicator:
+      Functions.manipulate_loading_overlay(self, True)
+      searched_address = anvil.js.call('getSearchedAddress')
+      date = datetime.datetime.now()
+      str_date = str(date).split('.')
+      searched_address = searched_address + str_date[0]
+      changed_address = searched_address.replace(' ', '_').replace(',', '').replace('Deutschland', '').replace(':', '-')
+      poi_healthcare = ""
+      poi_education = ""
+      poi_food_drinks = ""
+      poi_opnv = ""
+      overlay = ""
+      for category in self.poi_categories_healthcare_container.get_components():
+        if category.checked:
+          poi_healthcare += '1'
+        else:
+          poi_healthcare += '0'
+      for category in self.education_grid.get_components():
+        if category.checked:
+          poi_education += '1'
+        else:
+          poi_education += '0'
+      for category in self.food_drinks_grid.get_components():
+        if category.checked:
+          poi_food_drinks += '1'
+        else:
+          poi_food_drinks += '0'
+      for category in self.opnv_container.get_components():
+        if category.checked:
+          poi_opnv += '1'
+        else:
+          poi_opnv += '0'
+      for component in self.layer_categories.get_components():
+        if component.checked:
+          overlay = component.text
+          break
+      for component in self.style_grid.get_components():
+        if component.checked:
+          map_style = component.text
+          break
+      study_pin = self.hide_ms_marker.checked
+  
+      deleted_marker = {}
+      for setting in Variables.marker:
+        popped = Variables.marker[setting].pop('marker')
+        deleted_marker[setting] = popped
+      cluster = {
+        'data': self.cluster_data,
+        'settings': Variables.marker
+      }
+  
+      Functions.manipulate_loading_overlay(self, False)
+      from .Name_Share_Link import Name_Share_Link
+      name = alert(content=Name_Share_Link(searched_address=changed_address), buttons=[], dismissible=False, large=True, role='custom_alert')
+      Functions.manipulate_loading_overlay(self, True)
+      self.url = anvil.server.call('get_app_url') + f'#?name={name}'
+      center = self.mapbox.getCenter()
+      
+      dataset = {
+        'marker_lng': self.marker['_lngLat']['lng'],
+        'marker_lat': self.marker['_lngLat']['lat'],
+        'cluster': cluster,
+        'distance_movement': self.profile_dropdown.selected_value,
+        'distance_time': self.time_dropdown.selected_value,
+        'overlay': overlay,
+        'map_style': map_style,
+        'poi_healthcare': poi_healthcare,
+        'poi_education': poi_education,
+        'poi_food_drinks': poi_food_drinks,
+        'poi_opnv': poi_opnv,
+        'iso_layer': self.checkbox_poi_x_hfcig.checked,
+        'name': name,
+        'url': self.url,
+        'study_pin': study_pin,
+        'zoom': self.mapbox.getZoom(),
+        'center': {'lng': center.lng, 'lat': center.lat},
+        'competitors': {'competitors': self.competitors},
+        'custom_marker': self.custom_marker
+      }
+  
+      anvil.server.call('save_map_settings', dataset)
+  
+      for setting in deleted_marker:
+        Variables.marker[setting]['marker'] = deleted_marker[setting]
+  
+      grid = GridPanel()
+      label = TextBox(text=self.url, enabled=False)
+      button = Button(text="Copy to Clipboard")
+      button.add_event_handler('click', self.copy_to_clipboard)
+      grid.add_component(label, row="label", col_xs=1, width_xs=10)
+      grid.add_component(button, row="button", col_xs=1, width_xs=10)
+  
+      Functions.manipulate_loading_overlay(self, False)
+      alert(grid, large=True, dismissible=False, role='custom_alert')
     pass
 
 
@@ -3929,19 +3957,24 @@ class Map2_0(Map2_0Template):
   def comp_loader_change(self, file, **event_args):
     """This method is called when a new file is loaded into this FileLoader"""
     with anvil.server.no_loading_indicator:
-      self.manipulate_loading_overlay(True)
+      Functions.manipulate_loading_overlay(self, True)
+      anvil.js.call('update_loading_bar', 0, 'Reading Excel File')
       #Call Server-Function to safe the File  
       marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
       comps = anvil.server.call('read_comp_file', file, marker_coords)
-      self.manipulate_loading_overlay(False)
+      Functions.manipulate_loading_overlay(self, False)
+      anvil.js.call('update_loading_bar', 50, 'Waiting for Competitor Selection')
       from .Comp_Sort import Comp_Sort
       results = alert(Comp_Sort(data=comps, marker_coords=marker_coords), buttons=[], dismissible=False, large=True, role='custom_alert')
-      self.manipulate_loading_overlay(True)
+      Functions.manipulate_loading_overlay(self, True)
+      anvil.js.call('update_loading_bar', 80, 'Creating Marker')
       self.create_comp_marker(results)
       self.competitors = results
       self.comp_loader.clear()
-      self.manipulate_loading_overlay(False)
+      anvil.js.call('update_loading_bar', 100, 'Finishing Process')
+      Functions.manipulate_loading_overlay(self, False)
       self.download_comps.visible = True
+      anvil.js.call('update_loading_bar', 0, '')
     pass
 
 
@@ -3997,23 +4030,6 @@ class Map2_0(Map2_0Template):
 
         anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, result, 'Competitor', details, self.role)
     
-
-  def manipulate_loading_overlay(self, state):
-    html = document.getElementsByClassName('anvil-root-container')[0]
-    if state:
-      self.loading = document.createElement('div')
-      self.loading.style.width = '100vw'
-      self.loading.style.height = '100vh'
-      self.loading.style.backgroundColor = 'rgba(62, 62, 62, .3)'
-      self.loading.style.zIndex = '10000'
-      self.loading.style.cursor = 'wait'
-      self.loading.style.position = 'fixed'
-      self.loading.style.top = '0'
-      self.loading.style.left = '0'
-      html.appendChild(self.loading)
-    else:
-      html.removeChild(self.loading)
-
   
   def download_comps_click(self, **event_args):
     """This method is called when the button is clicked"""

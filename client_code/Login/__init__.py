@@ -7,6 +7,7 @@ from anvil.google.drive import app_files
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+from ..Map2_0 import Functions
 
 class Login(LoginTemplate):
   def __init__(self, **properties):
@@ -29,10 +30,12 @@ class Login(LoginTemplate):
   
   def login_click(self, **event_args):
     with anvil.server.no_loading_indicator:
+      Functions.manipulate_loading_overlay(self, True)
       try:
         user = anvil.users.login_with_email(self.email_input.text, self.passwort_input.text, remember=self.remember_me.checked)
         if user:
           open_form('Map2_0', role=dict(user)['role'])
+          Functions.manipulate_loading_overlay(self, False)
       except anvil.users.AuthenticationFailed:
         self.error.visible = True
     pass

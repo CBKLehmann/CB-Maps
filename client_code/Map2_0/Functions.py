@@ -6,6 +6,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from .. import Variables, Layer, Images
+from anvil.js.window import document
 
 global Variables, Layer, Images
 
@@ -84,3 +85,20 @@ def create_bounding_box(self):
       bbox[2] = el[1]
       
   return bbox
+
+
+def manipulate_loading_overlay(self, state):
+    html = document.getElementsByClassName('anvil-root-container')[0]
+    if state:
+      self.loading = document.createElement('div')
+      self.loading.style.width = '100vw'
+      self.loading.style.height = '100vh'
+      self.loading.style.backgroundColor = 'rgba(62, 62, 62, .3)'
+      self.loading.style.zIndex = '10000'
+      self.loading.style.cursor = 'wait'
+      self.loading.style.position = 'fixed'
+      self.loading.style.top = '0'
+      self.loading.style.left = '0'
+      html.appendChild(self.loading)
+    else:
+      html.removeChild(self.loading)

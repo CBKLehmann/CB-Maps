@@ -1,0 +1,139 @@
+container:
+  type: ColumnPanel
+  properties: {col_widths: '{}'}
+components:
+- type: GridPanel
+  properties: {spacing_above: none, spacing_below: none, background: '', foreground: '',
+    border: '', visible: true, role: null, tooltip: ''}
+  name: grid_panel_1
+  layout_properties: {grid_position: 'AURFQG,LCYAXV', full_width_row: true}
+  components:
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'ID:', font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
+      underline: false, icon: ''}
+    name: id_label
+    layout_properties: {row: JUMDPB, width_xs: 2, col_xs: 1, width: 205.885}
+  - type: Label
+    properties: {}
+    name: id_text
+    layout_properties: {row: JUMDPB, width_xs: 2, col_xs: 3}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Name:', font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
+      underline: false, icon: ''}
+    name: name_label
+    layout_properties: {row: NSORMZ, width_xs: 2, col_xs: 1, width: 205.885}
+  - type: Label
+    properties: {}
+    name: name_text
+    layout_properties: {row: NSORMZ, width_xs: 2, col_xs: 3}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Area:', font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
+      underline: false, icon: ''}
+    name: area_label
+    layout_properties: {row: NSORMZ, width_xs: 2, col_xs: 5, width: 205.885}
+  - type: Label
+    properties: {}
+    name: area_text
+    layout_properties: {row: NSORMZ, width_xs: 2, col_xs: 7}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Population:', font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
+      underline: false, icon: ''}
+    name: population_label
+    layout_properties: {row: PLGLYK, width_xs: 2, col_xs: 1, width: 205.885}
+  - type: Label
+    properties: {}
+    name: population_text
+    layout_properties: {row: PLGLYK, width_xs: 2, col_xs: 3}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Population per km²:', font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
+      underline: false, icon: ''}
+    name: population_per_km_label
+    layout_properties: {row: PLGLYK, width_xs: 2, col_xs: 5, width: 205.885}
+  - type: Label
+    properties: {}
+    name: population_per_km_text
+    layout_properties: {row: PLGLYK, width_xs: 2, col_xs: 7}
+  - type: Spacer
+    properties: {height: 17}
+    name: spacer_1
+    layout_properties: {row: CFMMHP, width_xs: 12, col_xs: 0}
+  - type: DataGrid
+    properties:
+      role: null
+      columns:
+      - {id: KPTSKS, title: Gender, data_key: gender, $$hashKey: 'object:60958'}
+      - {id: AJVKNW, title: Overall, data_key: overall, $$hashKey: 'object:21028'}
+      - {id: BRHSDW, title: Under 3, data_key: u_3, $$hashKey: 'object:21029'}
+      - {id: BVKCOW, title: 3 to under 6, data_key: 3_u6, $$hashKey: 'object:21030'}
+      - {id: OUHASD, title: 6 to under 10, data_key: 6_u10, $$hashKey: 'object:21083'}
+      - {id: PIBKUD, title: 10 to under 15, data_key: 10_u15, $$hashKey: 'object:21085'}
+      - {id: WEFUYV, title: 15 to under 18, data_key: 15_u18, $$hashKey: 'object:21087'}
+      - {id: MDRBBH, title: 18 to under 20, data_key: 18_u20, $$hashKey: 'object:21089'}
+      - {id: SDOJRU, title: 20 to under 25, data_key: 20_u25, $$hashKey: 'object:21091'}
+      - {id: IDRYXA, title: 25 to under 30, data_key: 25_u30, $$hashKey: 'object:21093'}
+      - {id: GRPESA, title: 30 to under 35, data_key: 30_u35, $$hashKey: 'object:21095'}
+      - {id: RJHJTD, title: 35 to under 40, data_key: 35_u40, $$hashKey: 'object:21097'}
+      - {id: NWEPHR, title: 40 to under 45, data_key: 40_u45, $$hashKey: 'object:21099'}
+      - {id: IDKSMY, title: 45 to under 50, data_key: 45_u50, $$hashKey: 'object:21101'}
+      - {id: GGPVSC, title: 50 to under 55, data_key: 50_u55, $$hashKey: 'object:21103'}
+      - {id: QIKPEK, title: 55 to under 60, data_key: 55_u60, $$hashKey: 'object:21105'}
+      - {id: HBOAZP, title: 60 to under 65, data_key: 60_u65, $$hashKey: 'object:21107'}
+      - {id: TQNXAY, title: 65 to under 75, data_key: 65_u75, $$hashKey: 'object:21109'}
+      - {id: NFXHAO, title: 75 and older, data_key: 75plus, $$hashKey: 'object:21111'}
+      auto_header: true
+      tooltip: ''
+      border: ''
+      foreground: ''
+      rows_per_page: 3
+      visible: true
+      wrap_on: never
+      show_page_controls: false
+      spacing_above: small
+      spacing_below: small
+      background: ''
+    name: data_grid_1
+    layout_properties: {row: ZBGGYF, width_xs: 10, col_xs: 1, width: 596.667}
+    components:
+    - type: DataRowPanel
+      properties: {}
+      name: data_row_all
+      layout_properties: {}
+    - type: DataRowPanel
+      properties: {}
+      name: data_row_men
+      layout_properties: {}
+    - type: DataRowPanel
+      properties: {}
+      name: data_row_women
+      layout_properties: {}
+  - type: Spacer
+    properties: {height: 17}
+    name: spacer_1_copy
+    layout_properties:
+      col_widths: {}
+      grid_position: SBZRKH,BBTVKI
+      row: FGDVZI
+      width_xs: 12
+      col_xs: 0
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: 'Grad der Verstädterung:', font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
+      underline: false, icon: ''}
+    name: verstaedterung_label
+    layout_properties: {row: ZUQLKL, width_xs: 2, col_xs: 1, width: 205.885}
+  - type: Label
+    properties: {}
+    name: verstaedterung_text
+    layout_properties: {row: ZUQLKL, width_xs: 2, col_xs: 1}
+is_package: true

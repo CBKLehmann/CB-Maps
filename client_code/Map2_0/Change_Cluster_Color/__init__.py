@@ -56,7 +56,6 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
         elif component.foreground == '#ccb666':
           self.color = 'gold'
           self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_gold.png'
-        print(properties['mobile'])
         if self.color in self.colors:
           self.colors.remove(self.color)
         point = Label(icon='fa:circle', align='center', foreground=component.foreground)
@@ -78,7 +77,7 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
         point.tag.color = self.color
         point.tag.type = 'point'
       else:
-        self.last_cluster = component.text
+        self.last_cluster = component.tooltip
         self.label = Label(text=self.last_cluster)
         self.select = DropDown(items=self.colors, include_placeholder=True, selected_value=None, placeholder='Change color')
         self.select.add_event_handler('change', self.change_color)
