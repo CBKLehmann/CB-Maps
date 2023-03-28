@@ -216,6 +216,20 @@ class Map2_0(Map2_0Template):
         if not len(data['cluster']['data']) == 0:
           self.create_cluster_marker(data['cluster'])
           self.change_cluster_color.visible = False
+          cluster_components = self.icon_grid.get_components()
+          self.cluster_all.checked = data['cluster_selects'][0]
+          self.i_class_all.checked = data['iclass_selects'][0]
+          for index, state in enumerate(data['cluster_selects']):
+            if index > 0 and state == '1':
+              search_index = index + index - 2
+              print(search_index)
+              cluster_components[search_index].checked = True
+              cluster_components[search_index].raise_event('change')
+          iclass_components = self.invest_grid.get_components()
+          for index, state in enumerate(data['iclass_selects']):
+            if index > 0 and state == '1':
+              iclass_components[index].checked = True
+              iclass_components[index].raise_event('change')
         if not len(data['competitors']['competitors']) == 0:
           self.create_comp_marker(data['competitors']['competitors'])
         for marker in data['custom_marker']:
@@ -3700,7 +3714,8 @@ class Map2_0(Map2_0Template):
   
         color = cluster_data['settings'][cluster_name]['color']
         if cluster_name not in added_clusters:
-          checkbox = CheckBox(checked=True, text=cluster_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
+          text = f"{cluster_name[:11]}..." if len(cluster_name) > 11 else cluster_name
+          checkbox = CheckBox(checked=True, text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=cluster_name)
           checkbox.add_event_handler('change', self.check_box_marker_icons_change)
           icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none')
           self.icon_grid.add_component(checkbox, row=cluster_name, col_xs=1, width_xs=8)
@@ -3708,7 +3723,8 @@ class Map2_0(Map2_0Template):
           added_clusters.append(cluster_name)
 
         if invest_name not in added_invest_classes:
-          checkbox = CheckBox(checked=True, text=invest_name, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded')
+          text = f"{invest_name[:11]}..." if len(invest_name) > 11 else invest_name
+          checkbox = CheckBox(checked=False, text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=invest_name)
           checkbox.add_event_handler('change', self.check_box_marker_icons_change)
           self.invest_grid.add_component(checkbox, row=invest_name, col_xs=1, width_xs=12)
           added_invest_classes.append(invest_name)
@@ -3812,6 +3828,26 @@ class Map2_0(Map2_0Template):
         if component.checked:
           map_style = component.text
           break
+      if self.cluster_all.checked:
+        cluster_selects = '1'
+      else :
+        cluster_selects = '0'
+      for component in self.icon_grid.get_components():
+        if type(component) is not Label:
+          if component.checked:
+            cluster_selects += '1'
+          else:
+            cluster_selects += '0'
+      if self.i_class_all.checked:
+        iclass_selects = '1'
+      else:
+        iclass_selects = '0'
+      for component in self.invest_grid.get_components():
+        if type(component) is not Label:
+          if component.checked:
+            iclass_selects += '1'
+          else:
+            iclass_selects += '0'
       study_pin = self.hide_ms_marker.checked
   
       deleted_marker = {}
@@ -3849,7 +3885,9 @@ class Map2_0(Map2_0Template):
         'zoom': self.mapbox.getZoom(),
         'center': {'lng': center.lng, 'lat': center.lat},
         'competitors': {'competitors': self.competitors},
-        'custom_marker': self.custom_marker
+        'custom_marker': self.custom_marker,
+        'cluster_selects': cluster_selects,
+        'iclass_selects': iclass_selects
       }
   
       anvil.server.call('save_map_settings', dataset)
