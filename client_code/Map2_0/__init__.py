@@ -3893,7 +3893,6 @@ class Map2_0(Map2_0Template):
 
 
   def create_custom_marker(self, marker_data):
-    print(marker_data)
     # Create HTML Element for Icon
     el = document.createElement('div')
     el.className = 'marker'
@@ -4018,7 +4017,6 @@ class Map2_0(Map2_0Template):
   
   def download_comps_click(self, **event_args):
     """This method is called when the button is clicked"""
-    print(self.competitors)
     from .Competitor_list import Competitor_list
     alert(Competitor_list(competitors=self.competitors), large=True, role='custom_alert_big')
     pass

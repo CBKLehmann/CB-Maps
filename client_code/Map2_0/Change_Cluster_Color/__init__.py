@@ -56,7 +56,7 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
         elif component.foreground == '#ccb666':
           self.color = 'gold'
           self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_gold.png'
-
+        print(properties['mobile'])
         if self.color in self.colors:
           self.colors.remove(self.color)
         point = Label(icon='fa:circle', align='center', foreground=component.foreground)
@@ -83,10 +83,11 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
         self.select = DropDown(items=self.colors, include_placeholder=True, selected_value=None, placeholder='Change color')
         self.select.add_event_handler('change', self.change_color)
         self.selects.append(self.select)
-        self.grid_panel_1.add_component(self.label, row=self.last_cluster, col_xs=1, width_xs=12)
         if properties['mobile']:
+          self.grid_panel_1.add_component(self.label, row=self.last_cluster, col_xs=1, width_xs=12)
           self.grid_panel_1.add_component(self.select, row=f'{self.last_cluster}_2', col_xs=1, width_xs=7)
         else:
+          self.grid_panel_1.add_component(self.label, row=self.last_cluster, col_xs=1, width_xs=5)
           self.grid_panel_1.add_component(self.select, row=self.last_cluster, col_xs=6, width_xs=3)
     if properties['mobile']:
       self.grid_panel_1.add_component(self.confirm, row='confirm', col_xs=1, width_xs=12)
