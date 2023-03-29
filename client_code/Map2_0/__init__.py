@@ -216,20 +216,6 @@ class Map2_0(Map2_0Template):
         if not len(data['cluster']['data']) == 0:
           self.create_cluster_marker(data['cluster'])
           self.change_cluster_color.visible = False
-          cluster_components = self.icon_grid.get_components()
-          self.cluster_all.checked = data['cluster_selects'][0]
-          self.i_class_all.checked = data['iclass_selects'][0]
-          for index, state in enumerate(data['cluster_selects']):
-            if index > 0 and state == '1':
-              search_index = index + index - 2
-              print(search_index)
-              cluster_components[search_index].checked = True
-              cluster_components[search_index].raise_event('change')
-          iclass_components = self.invest_grid.get_components()
-          for index, state in enumerate(data['iclass_selects']):
-            if index > 0 and state == '1':
-              iclass_components[index].checked = True
-              iclass_components[index].raise_event('change')
         if not len(data['competitors']['competitors']) == 0:
           self.create_comp_marker(data['competitors']['competitors'])
         for marker in data['custom_marker']:
@@ -3851,7 +3837,9 @@ class Map2_0(Map2_0Template):
       study_pin = self.hide_ms_marker.checked
   
       deleted_marker = {}
+      print(Variables.marker)
       for setting in Variables.marker:
+        print(setting)
         popped = Variables.marker[setting].pop('marker')
         deleted_marker[setting] = popped
       cluster = {
