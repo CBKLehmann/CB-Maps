@@ -3013,7 +3013,7 @@ class Map2_0(Map2_0Template):
                     marker_details += f"<p><b>Holder ID: </b> {ele['traeger_id']}</p>"
                     marker_details += f"<p><b>IK_Number: </b> {ele['ik_nummer']}</p>"
                     if not self.role == 'guest':
-                      marker_details += f"<div class='rmv_container'><button id='remove' class='btn btn-default'><img src='{self.app_url}/_/theme/Icons/remove_marker.png' class='iconAddress' /></button></div>"
+                      marker_details += f"<div class='rmv_container'><button id='remove' class='btn btn-default'><img src='{self.app_url}/_/theme/Icons/remove_marker.png' class='iconRemove' />Remove Marker</button></div>"
         
                   elif category == 'assisted_living':
     

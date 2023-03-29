@@ -1356,12 +1356,18 @@ select > option {
   justify-content: end;
 }
 
+.iconRemove {
+  width: 18px;
+  margin-right: 5px;
+  color: %color:Red%;
+}
+
 #remove {
   margin-bottom: 5px;
   position: relative;
   right: 0;
   bottom: 0;
-  color: %color:Gray 300%;
+  color: %color:Red%;
 }
 
 #close {

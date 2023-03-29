@@ -20,11 +20,11 @@ components:
     layout_properties: {row: XDUPLV, width_xs: 12, col_xs: 0}
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
-        300', visible: true, text: 'Marker Icon:', font_size: null, font: '', spacing_above: small,
-      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
+        300', visible: true, text: 'Marker Icon*:', font_size: null, font: '', spacing_above: small,
+      icon_align: left, spacing_below: none, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: icon_label
-    layout_properties: {row: GXPLCP, width_xs: 2, col_xs: 1, width: 136.667}
+    layout_properties: {row: GXPLCP, width_xs: 2, col_xs: 1, width: 100}
   - type: DropDown
     properties:
       role: null
@@ -40,7 +40,7 @@ components:
       font_size: null
       font: ''
       spacing_above: small
-      spacing_below: small
+      spacing_below: none
       italic: false
       background: ''
       bold: false
@@ -51,17 +51,23 @@ components:
     event_bindings: {change: icon_drop_down_change}
   - type: FlowPanel
     properties: {role: null, spacing: medium, align: center, tooltip: '', border: '',
-      foreground: '', visible: true, spacing_above: small, spacing_below: small, background: 'theme:Gray
-        300'}
+      foreground: '', visible: true, spacing_above: small, spacing_below: none, background: '#99c8ff'}
     name: flow_panel_1
     layout_properties: {row: GXPLCP, width_xs: 1, col_xs: 6, width: 50}
     components:
     - type: Image
-      properties: {role: null, vertical_align: center, height: 36, tooltip: '', border: '',
+      properties: {role: null, vertical_align: center, height: 35, tooltip: '', border: '',
         foreground: '', visible: true, display_mode: shrink_to_fit, spacing_above: small,
         source: '', spacing_below: small, background: '', horizontal_align: center}
       name: icon_image
       layout_properties: {row: GXPLCP, width_xs: 1, col_xs: 7, width: 49}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Red',
+      visible: false, text: A Marker-Icon has to be selected., font_size: 12, font: '',
+      spacing_above: none, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: false, underline: false, icon: ''}
+    name: error_icon
+    layout_properties: {row: KNREEJ, width_xs: 9, col_xs: 1, width: 558}
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Object Address:', font_size: null, font: '', spacing_above: small,
@@ -102,7 +108,7 @@ components:
     event_bindings: {}
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
-        300', visible: true, text: 'Object Name:', font_size: null, font: '', spacing_above: small,
+        300', visible: true, text: 'Object Name*:', font_size: null, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: object
@@ -111,22 +117,29 @@ components:
     properties: {}
     name: object_name
     layout_properties: {row: GOKEWU, width_xs: 3, col_xs: 3}
-    event_bindings: {}
+    event_bindings: {change: text_change, lost_focus: text_change, pressed_enter: text_change}
   - type: Label
     properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray
-        300', visible: true, text: 'Popup Text:', font_size: null, font: '', spacing_above: small,
+        300', visible: true, text: 'Popup Text*:', font_size: null, font: '', spacing_above: small,
       icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: text_label
-    layout_properties: {row: QPIAPT, width_xs: 2, col_xs: 1, width: 136.667}
+    layout_properties: {row: QPIAPT, width_xs: 2, col_xs: 1, width: 100}
   - type: TextArea
     properties: {role: null, align: left, height: 41.3333, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: null, auto_expand: false, font: '', spacing_above: small, spacing_below: small,
+      font_size: null, auto_expand: false, font: '', spacing_above: small, spacing_below: none,
       italic: false, background: '', bold: false, underline: false}
     name: text_area
-    layout_properties: {row: QPIAPT, width_xs: 3, col_xs: 3, width: 202.666666}
-    event_bindings: {}
+    layout_properties: {row: QPIAPT, width_xs: 3, col_xs: 3, width: 147.666666}
+    event_bindings: {change: text_change, lost_focus: text_change}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Red',
+      visible: false, text: At least one of Object Name or Popup Text has to be filled out.,
+      font_size: 12, font: '', spacing_above: none, icon_align: left, spacing_below: small,
+      italic: false, background: '', bold: false, underline: false, icon: ''}
+    name: error_text
+    layout_properties: {row: XCECJM, width_xs: 10, col_xs: 1, width: 623.333}
   - type: Spacer
     properties: {height: 19}
     name: spacer_2
