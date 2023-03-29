@@ -3885,7 +3885,7 @@ class Map2_0(Map2_0Template):
   
       grid = GridPanel()
       label = TextBox(text=self.url, enabled=False)
-      button = Button(text="Copy to Clipboard")
+      button = Button(text="Copy Link")
       button.add_event_handler('click', self.copy_to_clipboard)
       grid.add_component(label, row="label", col_xs=1, width_xs=10)
       grid.add_component(button, row="button", col_xs=1, width_xs=10)
