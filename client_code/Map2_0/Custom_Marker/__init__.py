@@ -19,18 +19,19 @@ class Custom_Marker(Custom_MarkerTemplate):
   def icon_drop_down_change(self, **event_args):
     """This method is called when an item is selected"""
     topic = event_args['sender'].selected_value
-
-    if topic == 'Healthcare':
+    print(topic)
+    
+    if topic == 'Health':
       image = 'Pin_Healthcare'
-    elif topic == 'Shopping':
+    elif topic == 'Shopping & Grocery':
       image = 'Pin_Shopping'
-    elif topic == 'Food':
+    elif topic == 'Food & Drink':
       image = 'Pin_Food'
-    elif topic == 'Public Transport':
+    elif topic == 'Transport':
       image = 'Pin_PublicTrans'
-    elif topic == 'Neutral':
+    elif topic == 'Services':
       image = 'Pin_Neutral'
-    elif topic == 'Special':
+    elif topic == 'Outdoor':
       image = 'Pin_Special'
     elif topic == 'Information':
       image = 'Pin_Information'

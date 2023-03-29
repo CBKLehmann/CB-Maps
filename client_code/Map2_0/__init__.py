@@ -43,6 +43,7 @@ class Map2_0(Map2_0Template):
         self.cluster_data = {}
         self.competitors = []
         self.custom_marker = []
+        self.comp_marker = []
         self.role = properties['role']
         html = document.getElementsByClassName('anvil-root-container')[0]
         html.style.cursor = 'default'
@@ -2272,6 +2273,21 @@ class Map2_0(Map2_0Template):
   #This method is called when a new file is loaded into the FileLoader
   def file_loader_upload_change(self, file, **event_args):  
     with anvil.server.no_loading_indicator:
+      self.cluster_btn.visible = False
+      self.invest_class_btn.visible = False
+      self.cluster_all.visible = False
+      self.i_class_all.visible = False
+      self.icon_grid.visible = False
+      self.invest_grid.visible = False
+      self.change_cluster_color.visible = False
+      self.invest_class_btn.raise_event('click')
+      self.cluster_btn.raise_event('click')
+      for key in Variables.marker.keys():
+        for marker in Variables.marker[key]['marker']:
+          marker.remove()
+      Variables.marker = {}
+      self.icon_grid.clear()
+      self.invest_grid.clear()
       Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 0, 'Reading Excel File')
       if self.mobile:
@@ -2394,7 +2410,6 @@ class Map2_0(Map2_0Template):
         # Add Marker-Arrays to global Variable Marker
         Variables.marker.update(excel_markers)
 
-        Functions.manipulate_loading_overlay(self, False)
         anvil.js.call('update_loading_bar', 80, 'Waiting for individual Cluster Colors')
         self.change_cluster_color_click()
         anvil.js.call('remove_span')
@@ -2407,6 +2422,9 @@ class Map2_0(Map2_0Template):
         self.invest_class_btn.visible = True
         self.cluster_all.visible = True
         self.i_class_all.visible = True
+        self.icon_grid.visible = True
+        self.invest_grid.visible = True
+        self.change_cluster_color.visible = True
         self.invest_class_btn.raise_event('click')
         self.cluster_btn.raise_event('click')
 
@@ -2943,14 +2961,13 @@ class Map2_0(Map2_0Template):
                     # Parting Line
                     marker_details += "<div class='partingLine'></div>"
                     # Contact Details
-                    marker_details += f"<div class='containerAddress'><img src='{self.app_url}/_/theme/Pins/Address.png' class='iconAddress' /><p>{ele['strasse']}, {ele['plz']} {ele['ort']}</div>"
+                    marker_details += f"<div class='containerAddress'><img src='{self.app_url}/_/theme/Pins/Address.png' class='iconAddress' /><p>{ele['strasse']}, {ele['plz']} {ele['ort']}"
                     states = ['Berlin', 'Bremen', 'Hamburg']
                     if not ele['bundesland'] in states:
-                      marker_details += f", {ele['bundesland']}</p>"
+                      marker_details += f", {ele['bundesland']}</p></div>"
                     else:
-                      marker_details += "</p>"
-                    marker_details += f"<p>{ele['telefon']}</p>"
-                    marker_details += f"<p>{ele['fax']}</p>"
+                      marker_details += "</p></div>"
+                    marker_details += f"<div class='containerAddress'><img src='{self.app_url}/_/theme/Icons/telefon.png' class='iconAddress' /><p>{ele['telefon']}</p></div>"
                     marker_details += f"<p>{ele['email']}</p>"
                     marker_details += f"<p>{ele['webseite']}</p>"
                     # Parting Line
@@ -2996,7 +3013,7 @@ class Map2_0(Map2_0Template):
                     marker_details += f"<p><b>Holder ID: </b> {ele['traeger_id']}</p>"
                     marker_details += f"<p><b>IK_Number: </b> {ele['ik_nummer']}</p>"
                     if not self.role == 'guest':
-                      marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
+                      marker_details += f"<div class='rmv_container'><button id='remove' class='btn btn-default'><img src='{self.app_url}/_/theme/Icons/telefon.png' /></button></div>"
         
                   elif category == 'assisted_living':
     
@@ -3032,7 +3049,6 @@ class Map2_0(Map2_0Template):
                     else:
                       marker_details += "</p>"
                     marker_details += f"<p>{ele['telefon']}</p>"
-                    marker_details += f"<p>{ele['fax']}</p>"
                     marker_details += f"<p>{ele['email']}</p>"
                     marker_details += f"<p>{ele['webseite']}</p>"
                     # Parting Line
@@ -3620,9 +3636,9 @@ class Map2_0(Map2_0Template):
       pass
 
   def change_cluster_color_click(self, **event_args):
+    """This method is called when the button is clicked"""
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(self, True)
-      """This method is called when the button is clicked"""
       from .Change_Cluster_Color import Change_Cluster_Color
       Functions.manipulate_loading_overlay(self, False)
       response = alert(content=Change_Cluster_Color(components=self.icon_grid.get_components(), mobile=self.mobile), dismissible=False, large=True, buttons=[], role='custom_alert')
@@ -3839,7 +3855,6 @@ class Map2_0(Map2_0Template):
       deleted_marker = {}
       print(Variables.marker)
       for setting in Variables.marker:
-        print(setting)
         popped = Variables.marker[setting].pop('marker')
         deleted_marker[setting] = popped
       cluster = {
@@ -3966,9 +3981,11 @@ class Map2_0(Map2_0Template):
       f"<p class='popup_type'>{marker_data['text']}</p>"
     )
 
-    ### Work here to get Coords if or if not Address is inserted ###
-
-    newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(marker_data['coords']).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+    if 'address' is None:
+      coords = self.clicked_coords
+    else:
+      coords = marker_data['address']['geometry']['coordinates']
+    newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
 
     popup = document.getElementById('mapPopup')
     if popup:
@@ -3981,6 +3998,9 @@ class Map2_0(Map2_0Template):
   def comp_loader_change(self, file, **event_args):
     """This method is called when a new file is loaded into this FileLoader"""
     with anvil.server.no_loading_indicator:
+      for marker in self.comp_marker:
+        marker.remove()
+      self.comp_marker = []
       Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 0, 'Reading Excel File')
       #Call Server-Function to safe the File  
@@ -4053,6 +4073,7 @@ class Map2_0(Map2_0Template):
           details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
 
         anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, result, 'Competitor', details, self.role)
+        self.comp_marker.append(newicon)
     
   
   def download_comps_click(self, **event_args):
