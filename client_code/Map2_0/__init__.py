@@ -697,6 +697,8 @@ class Map2_0(Map2_0Template):
   def Summary_click(self, **event_args):
     with anvil.server.no_loading_indicator:
 
+      print(len(Variables.nursing_homes_entries))
+
       # #####Get Informations from Map#####
       Functions.manipulate_loading_overlay(self, True)
       if self.mobile:
