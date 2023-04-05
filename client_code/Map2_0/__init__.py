@@ -244,8 +244,9 @@ class Map2_0(Map2_0Template):
         
       for marker in all_marker:
         if not type(marker) is Label:
-          Functions.show_hide_marker(self, marker_state, marker.tooltip)
-          marker.checked = marker_state
+          if not marker.checked == marker_state:
+            Functions.show_hide_marker(self, marker_state, marker.tooltip)
+            marker.checked = marker_state
    
   
   def check_box_overlays_change(self, **event_args):
@@ -2273,34 +2274,34 @@ class Map2_0(Map2_0Template):
   #This method is called when a new file is loaded into the FileLoader
   def file_loader_upload_change(self, file, **event_args):  
     with anvil.server.no_loading_indicator:
-      self.cluster_btn.visible = False
-      self.invest_class_btn.visible = False
-      self.cluster_all.visible = False
-      self.i_class_all.visible = False
-      self.icon_grid.visible = False
-      self.invest_grid.visible = False
-      self.change_cluster_color.visible = False
-      self.invest_class_btn.raise_event('click')
-      self.cluster_btn.raise_event('click')
-      for key in Variables.marker.keys():
-        for marker in Variables.marker[key]['marker']:
-          marker.remove()
-      Variables.marker = {}
-      self.icon_grid.clear()
-      self.invest_grid.clear()
       Functions.manipulate_loading_overlay(self, True)
-      anvil.js.call('update_loading_bar', 0, 'Reading Excel File')
-      if self.mobile:
-        self.mobile_hide_click()
-      
+      anvil.js.call('update_loading_bar', 5, 'Reading Excel File')
       #Call Server-Function to safe the File  
       self.cluster_data = anvil.server.call('save_local_excel_file', file)
-
       if self.cluster_data == None:
         Functions.manipulate_loading_overlay(self, False)
         anvil.js.call('update_loading_bar', 100, 'Error while processing Excel File')
         alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
+        anvil.js.call('update_loading_bar', 0, '')
+        self.file_loader_upload.clear()
       else:
+        self.cluster_btn.visible = False
+        self.invest_class_btn.visible = False
+        self.cluster_all.visible = False
+        self.i_class_all.visible = False
+        self.icon_grid.visible = False
+        self.invest_grid.visible = False
+        self.change_cluster_color.visible = False
+        self.invest_class_btn.raise_event('click')
+        self.cluster_btn.raise_event('click')
+        for key in Variables.marker.keys():
+          for marker in Variables.marker[key]['marker']:
+            marker.remove()
+        Variables.marker = {}
+        self.icon_grid.clear()
+        self.invest_grid.clear()
+        if self.mobile:
+          self.mobile_hide_click()
         anvil.js.call('update_loading_bar', 15, 'Creating Markers and Clusters')
         #Initialise Variables
         excel_markers = {}
@@ -3653,6 +3654,8 @@ class Map2_0(Map2_0Template):
           key = component.tooltip
         elif type(component) == Label:
           component.foreground = Variables.marker[key]["color"][1]
+      if len(event_args.keys()) > 0:
+        Functions.manipulate_loading_overlay(self, False)
       pass
 
   
@@ -3998,27 +4001,35 @@ class Map2_0(Map2_0Template):
   def comp_loader_change(self, file, **event_args):
     """This method is called when a new file is loaded into this FileLoader"""
     with anvil.server.no_loading_indicator:
-      for marker in self.comp_marker:
-        marker.remove()
-      self.comp_marker = []
       Functions.manipulate_loading_overlay(self, True)
-      anvil.js.call('update_loading_bar', 0, 'Reading Excel File')
+      anvil.js.call('update_loading_bar', 5, 'Reading Excel File')
       #Call Server-Function to safe the File  
       marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
       comps = anvil.server.call('read_comp_file', file, marker_coords)
-      Functions.manipulate_loading_overlay(self, False)
-      anvil.js.call('update_loading_bar', 50, 'Waiting for Competitor Selection')
-      from .Comp_Sort import Comp_Sort
-      results = alert(Comp_Sort(data=comps, marker_coords=marker_coords), buttons=[], dismissible=False, large=True, role='custom_alert')
-      Functions.manipulate_loading_overlay(self, True)
-      anvil.js.call('update_loading_bar', 80, 'Creating Marker')
-      self.create_comp_marker(results)
-      self.competitors = results
-      self.comp_loader.clear()
-      anvil.js.call('update_loading_bar', 100, 'Finishing Process')
-      Functions.manipulate_loading_overlay(self, False)
-      self.download_comps.visible = True
-      anvil.js.call('update_loading_bar', 0, '')
+      print(comps)
+      if comps == None:
+        Functions.manipulate_loading_overlay(self, False)
+        anvil.js.call('update_loading_bar', 100, 'Error while processing Excel File')
+        alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
+        anvil.js.call('update_loading_bar', 0, '')
+        self.file_loader_upload.clear()
+      else:
+        for marker in self.comp_marker:
+          marker.remove()
+        self.comp_marker = []
+        Functions.manipulate_loading_overlay(self, False)
+        anvil.js.call('update_loading_bar', 50, 'Waiting for Competitor Selection')
+        from .Comp_Sort import Comp_Sort
+        results = alert(Comp_Sort(data=comps, marker_coords=marker_coords), buttons=[], dismissible=False, large=True, role='custom_alert')
+        Functions.manipulate_loading_overlay(self, True)
+        anvil.js.call('update_loading_bar', 80, 'Creating Marker')
+        self.create_comp_marker(results)
+        self.competitors = results
+        self.comp_loader.clear()
+        anvil.js.call('update_loading_bar', 100, 'Finishing Process')
+        Functions.manipulate_loading_overlay(self, False)
+        self.download_comps.visible = True
+        anvil.js.call('update_loading_bar', 0, '')
     pass
 
 
