@@ -2744,7 +2744,7 @@ class Map2_0(Map2_0Template):
           # Check if new Bounding Box is overlapping old Bounding Box
           if bbox[0] < last_bbox[0] or bbox[1] < last_bbox[1] or bbox[2] > last_bbox[2] or bbox[3] > last_bbox[3]:
       
-            Variables.create_marker(self, check_box, last_bbox, category, picture)
+            Functions.create_marker(self, check_box, last_bbox, category, picture, bbox, marker_coords, mapboxgl)
       
           # Do if new Bounding Box is smaller or same than old Bounding Box
           else:
@@ -2773,14 +2773,11 @@ class Map2_0(Map2_0Template):
         # Do if Bounding Box is the same as last Request
         else:
 
-          print(len(Variables.icons[f'{category}']))
-          print(self.max_marker.text)
-          print(Variables.icons[f'{category}'])
-
-          if self.max_marker.text < len(Variables.icons[f'{category}']):
-            icons = Variables.icons[f'{category}'][:self.max_marker.text]
-          else:
-            icons = Variables.icons[f'{category}']
+          forbidden_categories = ["nursing_homes", "assisted_living"]
+          icons = Variables.icons[f'{category}']
+          if not category in forbidden_categories:
+            if self.max_marker.text < len(Variables.icons[f'{category}']):
+              icons = Variables.icons[f'{category}'][:self.max_marker.text]
           
           # Loop through every Element in global Icon-Elements
           for el in icons:

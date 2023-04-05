@@ -106,7 +106,7 @@ def manipulate_loading_overlay(self, state):
       html.removeChild(self.loading)
       Variables.loading = False
 
-def create_marker(self, check_box, last_bbox, category, picture):
+def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_coords, mapboxgl):
   # Check if Category is PflegeDB
   if category == 'nursing_homes':
     geojson = anvil.server.call('get_care_db_data', bbox, 'Pflegeheime')
