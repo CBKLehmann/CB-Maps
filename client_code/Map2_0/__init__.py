@@ -4006,7 +4006,6 @@ class Map2_0(Map2_0Template):
       #Call Server-Function to safe the File  
       marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
       comps = anvil.server.call('read_comp_file', file, marker_coords)
-      print(comps)
       if comps == None:
         Functions.manipulate_loading_overlay(self, False)
         anvil.js.call('update_loading_bar', 100, 'Error while processing Excel File')
@@ -4025,11 +4024,11 @@ class Map2_0(Map2_0Template):
         anvil.js.call('update_loading_bar', 80, 'Creating Marker')
         self.create_comp_marker(results)
         self.competitors = results
-        self.comp_loader.clear()
         anvil.js.call('update_loading_bar', 100, 'Finishing Process')
         Functions.manipulate_loading_overlay(self, False)
         self.download_comps.visible = True
         anvil.js.call('update_loading_bar', 0, '')
+      self.comp_loader.clear()
     pass
 
 
