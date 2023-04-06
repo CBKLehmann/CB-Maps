@@ -3659,25 +3659,28 @@ class Map2_0(Map2_0Template):
     from .Competitor_list import Competitor_list
     data = ExcelFrames.comp_data
     keys = ['operator', 'address', 'distance', '360_operator', 'living_concept', 
-            'equiment', 'note', 'community_spaces', 'furnishing', 'services', 
-            'apartments', 'size_range_sqm', 'rent_range_sqm', 'rent_range_month',
-           'created', 'updated']
+            'apartments', 'size_range_sqm', 'rent_range_sqm', 'rent_range_month', 'equiment', 'community_spaces', 'furnishing', 'services', 
+           'note', 'web', 'created']
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P']
     row = 4
     unique_code = anvil.server.call("get_unique_code")
     for index, competitor in enumerate(self.competitors):
       for col_index, key in enumerate(keys):
+        color = '#000000'
         if key == 'distance':
-          content = f"{competitor[key]} km²"
+          content = f"{competitor[key]} km"
         elif key == 'size_range_sqm':
           content_data = competitor[key].split('-')
-          content = f"{content_data[0]}m² - {content_data[1]}m²"
+          content = f"{content_data[0]} sqm - {content_data[1]} sqm"
         elif key == 'rent_range_sqm':
           content_data = competitor[key].split('-')
-          content = f"{content_data[0]}€ - {content_data[1]}€"
+          content = f"{content_data[0]} € - {content_data[1]} €"
         elif key == 'rent_range_month':
           content_data = competitor[key].split('-')
-          content = f"{content_data[0]}€ - {content_data[1]}€"
+          content = f"{content_data[0]} € - {content_data[1]} €"
+        elif key == 'web':
+          content = f"{competitor[key]}"
+          color = '#0000ff'
         else:
           content = f"{competitor[key]}"
         data['data'].append({
@@ -3687,7 +3690,9 @@ class Map2_0(Map2_0Template):
           'content': content,
           'format': {
             'font': "Segoe UI",
-            'bg_color': "#BFB273"
+            'font_size': 10,
+            'border': 1,
+            'color': color
           }
         })
     anvil.server.call('create_comp_excel', data, unique_code)
@@ -3695,3 +3700,7 @@ class Map2_0(Map2_0Template):
     comp_list = app_tables.pictures.search()[0]
     anvil.media.download(comp_list['pic'])
     pass
+
+
+  def btn_click(self, event):
+    print('Hello')
