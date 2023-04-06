@@ -3670,6 +3670,7 @@ class Map2_0(Map2_0Template):
         left = 0
         right = 0
         content = f"{competitor[key]}"
+        text_wrap = True
         if key == 'distance':
           content = f"{competitor[key]} km"
         elif key == 'size_range_sqm':
@@ -3683,6 +3684,7 @@ class Map2_0(Map2_0Template):
           content = f"{content_data[0]} € - {content_data[1]} €"
         elif key == 'web':
           color = '#0000ff'
+          text_wrap = False
         elif key == 'operator':
           left = 1
         elif key == 'created':
@@ -3699,7 +3701,8 @@ class Map2_0(Map2_0Template):
             'bottom': 1,
             'top': 0,
             'left': left,
-            'right': right
+            'right': right,
+            'text_wrap': text_wrap
           }
         })
     anvil.server.call('create_comp_excel', data, unique_code)

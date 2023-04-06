@@ -13,6 +13,7 @@ cover_data = {
   'columns_width': [
     10.88, 6.88, 14.88, 13.13, 9.38, 9.00, 6.25, 5.00, 4.13, 7.00, 10.00, 9.00, 10.38, 7.63, 6.25, 9.00
   ],
+  'landscape': False,
   'data': [
     {
       'type': 'text',
@@ -64,6 +65,7 @@ summary_data = {
         'columns_width': [
             43.27, 26.75, 19, 19, 1.55, 9.00, 6.25, 5, 4.08, 7, 13.08, 2, 9.55
         ],
+        'landscape': False,
         'data': [
             {
                 'type': 'text',
@@ -2161,6 +2163,7 @@ nca_data = {
         'row_height': 50,
         'row_start': 31,
         'row_count': 6,
+        'landscape': False,
         'data': [
             {
                 'type': 'text',
@@ -2524,6 +2527,7 @@ ala_data = {
         'print_area': 'A1:F57',
         'fit_to_pages': (1, 1),
         'columns_width': [39, 15.91, 16.33, 16.08, 16.73, 17.36],
+        'landscape': False,
         'data': [
             {
                 'type': 'text',
@@ -4177,6 +4181,7 @@ alca_data = {
         'row_height': 40,
         'row_start': 28,
         'row_count': 7,
+        'landscape': False,
         'data': [
             {
                 'type': 'text',
@@ -4293,6 +4298,7 @@ comp_data = {
         'print_area': 'A1:P1048576',
         'fit_to_pages': (1, 0),
         'columns_width': [16, 23, 11, 13, 18, 11, 15, 15, 18, 16, 13, 13, 12, 20, 20, 13],
+        'landscape': True,
         'data': [
             {
                 'type': 'text',
@@ -4511,6 +4517,16 @@ comp_data = {
                     'bold': True,
                     'bg_color': '#CCB666'
                 }
+            },
+            {
+              'type': 'image',
+              'cell': 'O1',
+              'file': 'img/cb_logo.png',
+              'style': {
+                    'x_scale': .29,
+                    'y_scale': .21,
+                    'x_offset': 60
+              }
             }
         ]
 }
