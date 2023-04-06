@@ -301,6 +301,9 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
             f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
             f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
           )
+          # popup_element = popup.getElement()
+          # print(popup_element)
+          # popup.getElement().addEventListener('mouseenter', print('Hello'))
           marker_details = f"<div class='x-btn-container'><button id='close' class='btn btn-default'>X</button></div>"
           # Name of Object
           marker_details += f"<div class='objectName'>{ele['name']}</div>"
@@ -526,6 +529,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
         # Add Icon to the Map
         newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
         newiconElement = newicon.getElement()
+        newiconElement.addEventListener('mouseenter', print('Hello'))
         anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.role)
 
         # Add current Element-Icon to Icon-Array
