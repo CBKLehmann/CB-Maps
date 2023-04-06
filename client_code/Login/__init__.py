@@ -37,7 +37,8 @@ class Login(LoginTemplate):
           open_form('Map2_0', role=dict(user)['role'])
           Functions.manipulate_loading_overlay(self, False)
       except anvil.users.AuthenticationFailed:
-        self.error.visible = True
+          self.error.visible = True
+          Functions.manipulate_loading_overlay(self, False)
     pass
 
   def forgot_password_click(self, **event_args):
