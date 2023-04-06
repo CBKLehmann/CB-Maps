@@ -4494,6 +4494,7 @@ comp_data = {
                 'format': {
                     'font_size': 10,
                     'font': 'Segoe UI',
+                    'color': '#FFFFFF',
                     'bold': True,
                     'bg_color': '#CCB666'
                 }

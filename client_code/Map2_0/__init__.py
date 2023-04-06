@@ -3667,6 +3667,9 @@ class Map2_0(Map2_0Template):
     for index, competitor in enumerate(self.competitors):
       for col_index, key in enumerate(keys):
         color = '#000000'
+        left = 0
+        right = 0
+        content = f"{competitor[key]}"
         if key == 'distance':
           content = f"{competitor[key]} km"
         elif key == 'size_range_sqm':
@@ -3679,10 +3682,11 @@ class Map2_0(Map2_0Template):
           content_data = competitor[key].split('-')
           content = f"{content_data[0]} € - {content_data[1]} €"
         elif key == 'web':
-          content = f"{competitor[key]}"
           color = '#0000ff'
-        else:
-          content = f"{competitor[key]}"
+        elif key == 'operator':
+          left = 1
+        elif key == 'created':
+          right = 1
         data['data'].append({
           'type': "text",
           'insert': "write",
@@ -3691,8 +3695,11 @@ class Map2_0(Map2_0Template):
           'format': {
             'font': "Segoe UI",
             'font_size': 10,
-            'border': 1,
-            'color': color
+            'color': color,
+            'bottom': 1,
+            'top': 0,
+            'left': left,
+            'right': right
           }
         })
     anvil.server.call('create_comp_excel', data, unique_code)
