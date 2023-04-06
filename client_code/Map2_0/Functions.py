@@ -537,3 +537,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
     Variables.activeIcons.update({f'{category}': icons})
     last_bbox = bbox
     Variables.last_cat = f'{category}'
+
+
+def delete_marker(marker):
+  print(marker)
