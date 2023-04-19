@@ -47,6 +47,8 @@ class Map2_0(Map2_0Template):
         self.comp_marker = []
         self.role = properties['role']
         self.last_popup = None
+        self.last_target = None
+        self.active_container = None
         html = document.getElementsByClassName('anvil-root-container')[0]
         html.style.cursor = 'default'
   
@@ -3722,9 +3724,12 @@ class Map2_0(Map2_0Template):
 
   def remove_popup(self, popup, event):
     popup.remove()
-    self.lastPopup = None
+    self.last_popup = None
 
-  def show_details(self, category):
+  def show_details(self, category, event):
     if self.role == 'guest':
       if category == 'nursing_homes' or category == 'assisted_living' or category == 'nursing_school' or category == 'Competitor':
         print('Hello')
+
+  def remove_details(self, event):
+    print(deleted)

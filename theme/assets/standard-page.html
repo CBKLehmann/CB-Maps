@@ -181,13 +181,13 @@
 
   // function addPopup(popup, map, ele, category, marker_details, container, marker, role) {
   function addPopup(popup, map) {
-    if (popup !== lastPopup) {
-      lastPopup = popup
-      popup.addTo(map)
-      let pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
-      pop.addEventListener('mouseenter', () => readdPopup(popup, map));
-      pop.addEventListener('mouseleave', () => removePopup(popup));
-      pop.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e, role)) 
+    // if (popup !== lastPopup) {
+      // lastPopup = popup
+      // popup.addTo(map)
+      // let pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
+      // pop.addEventListener('mouseenter', () => readdPopup(popup, map));
+      // pop.addEventListener('mouseleave', () => removePopup(popup));
+      // pop.addEventListener('click', (e) => showDetails(ele, category, marker_details, container, marker, e, role)) 
     }
   }
 
