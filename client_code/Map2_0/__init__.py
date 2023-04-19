@@ -221,7 +221,6 @@ class Map2_0(Map2_0Template):
         for marker in data['custom_marker']:
           self.create_custom_marker(marker)
             
-
   def check_box_marker_icons_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       # Show or Hide Marker-Icon-Types
@@ -246,8 +245,7 @@ class Map2_0(Map2_0Template):
           if not marker.checked == marker_state:
             Functions.show_hide_marker(self, marker_state, marker.tooltip)
             marker.checked = marker_state
-   
-  
+     
   def check_box_overlays_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       #Change Overlays based on checked Checkbox
@@ -297,7 +295,6 @@ class Map2_0(Map2_0Template):
       
       Functions.change_active_Layer(self, [layer_name, outline_name], inactive_layers, new_visibility, inactive_checkboxes)
 
-
   def check_box_poi_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(self, True)
@@ -344,7 +341,6 @@ class Map2_0(Map2_0Template):
         Variables.last_bbox_ap = self.create_icons(self.check_box_ap.checked, Variables.last_bbox_ap, "aerodrome", f'{self.app_url}/_/theme/Pins/Flughafen_Pin.png')
       Functions.manipulate_loading_overlay(self, False)
 
-
   def checkbox_poi_x_hfcig_change(self, **event_args):
     #This method is called when the Check Box for POI based on HFCIG is checked or unchecked
     with anvil.server.no_loading_indicator:
@@ -363,8 +359,7 @@ class Map2_0(Map2_0Template):
   def button_infos_click(self, **event_args):
     with anvil.server.no_loading_indicator:
       anvil.js.call('hide_show_Popup')   
-
-    
+   
   def map_style_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       #This method is called when one of the Buttons for changing the Map-Style got clicked
@@ -380,7 +375,6 @@ class Map2_0(Map2_0Template):
         self.check_street.checked = False
         self.check_satellite.checked = False
         self.mapbox.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
-
 
   def button_toggle_menu_parts(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -680,7 +674,6 @@ class Map2_0(Map2_0Template):
 
   #######Noch bearbeiten#######
 
-      
   #This methos is called when the User want's to generate a Market Summary
   def Summary_click(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -2233,7 +2226,6 @@ class Map2_0(Map2_0Template):
       
       anvil.js.call('update_loading_bar', 0, '')
       Functions.manipulate_loading_overlay(self, False)
-
   
   def upload_mspdf_change(self, file, **event_args):
     with anvil.server.no_loading_indicator:
@@ -2252,7 +2244,6 @@ class Map2_0(Map2_0Template):
       self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
       
       Functions.refresh_icons(self)
-
 
   #####  Dropdown Functions #####
   ###############################
@@ -2796,7 +2787,6 @@ class Map2_0(Map2_0Template):
       
       # Send Value back to origin Function
       return (last_bbox)
-
       
   #This method is called from the file uploader to set Markers based on Excel-Data
   def set_excel_markers(self, marker_cat, coords, marker_list, el, asset):
@@ -3110,7 +3100,6 @@ class Map2_0(Map2_0Template):
         request_static_map = request_static_map_raw
       
       return({"data": res_data['sorted_coords'], "request": request, "request2": Variables.activeIso})
-
   
   def change_icons(self, checkbox):
     with anvil.server.no_loading_indicator:
@@ -3225,7 +3214,6 @@ class Map2_0(Map2_0Template):
       if len(event_args.keys()) > 0:
         Functions.manipulate_loading_overlay(self, False)
       pass
-
   
   def create_cluster_marker(self, cluster_data):
     with anvil.server.no_loading_indicator:
@@ -3343,7 +3331,6 @@ class Map2_0(Map2_0Template):
       self.invest_class_btn.raise_event('click')
       self.cluster_btn.raise_event('click')
       self.button_icons.raise_event('click')
-
   
   def mobile_hide_click(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -3480,7 +3467,6 @@ class Map2_0(Map2_0Template):
       alert(grid, large=True, dismissible=False, role='custom_alert')
     pass
 
-
   def handle_style_change(self, event):
     self.place_layer()
     self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
@@ -3520,7 +3506,6 @@ class Map2_0(Map2_0Template):
       popup = document.getElementById('mapPopup')
       if popup:
         popup.remove()
-
   
   def create_marker(self, event):
 
@@ -3528,7 +3513,6 @@ class Map2_0(Map2_0Template):
     marker_data = alert(Custom_Marker(url=self.app_url), buttons=[], dismissible=False, large=True, role='custom_alert')
     self.create_custom_marker(marker_data)
     self.custom_marker.append(marker_data)
-
 
   def create_custom_marker(self, marker_data):
     # Create HTML Element for Icon
@@ -3561,7 +3545,6 @@ class Map2_0(Map2_0Template):
     popup = document.getElementById('mapPopup')
     if popup:
       popup.remove()
-  
 
   def copy_to_clipboard(self, **event_args):
     anvil.js.window.navigator.clipboard.writeText(self.url)
@@ -3598,7 +3581,6 @@ class Map2_0(Map2_0Template):
         anvil.js.call('update_loading_bar', 0, '')
       self.comp_loader.clear()
     pass
-
 
   def create_comp_marker(self, results):
     for index, result in enumerate(results):
@@ -3651,8 +3633,7 @@ class Map2_0(Map2_0Template):
           details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
 
         anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, result, 'Competitor', details, self.role)
-        self.comp_marker.append(newicon)
-    
+        self.comp_marker.append(newicon)  
   
   def download_comps_click(self, **event_args):
     """This method is called when the button is clicked"""
@@ -3710,7 +3691,3 @@ class Map2_0(Map2_0Template):
     comp_list = app_tables.pictures.search()[0]
     anvil.media.download(comp_list['pic'])
     pass
-
-
-  def btn_click(self, event):
-    print('Hello')

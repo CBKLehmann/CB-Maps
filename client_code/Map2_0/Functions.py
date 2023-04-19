@@ -20,7 +20,6 @@ def show_hide_marker(self, check_box, marker_id):
       else:
         el.remove()
 
-
 def change_active_Layer(self, layer, inactive_layer, visibility, other_checkbox):
   #This method is called when the active Layer is changed
 
@@ -37,8 +36,7 @@ def change_active_Layer(self, layer, inactive_layer, visibility, other_checkbox)
     Variables.activeLayer = layer[0]
   else:
     Variables.activeLayer = None
-
-    
+  
 def refresh_icons(self):
     
   checkbox =  self.poi_category.get_components()
@@ -47,7 +45,6 @@ def refresh_icons(self):
       for component in panel.get_components():
         if not component.text == 'Select All':
           self.change_icons(component.text)
-
 
 def create_bounding_box(self):
   
@@ -85,7 +82,6 @@ def create_bounding_box(self):
       bbox[2] = el[1]
       
   return bbox
-
 
 def manipulate_loading_overlay(self, state):
     html = document.getElementsByClassName('anvil-root-container')[0]
@@ -529,7 +525,6 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
         # Add Icon to the Map
         newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
         newiconElement = newicon.getElement()
-        newiconElement.addEventListener('mouseenter', self.btn_click)
         anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.role)
 
         # Add current Element-Icon to Icon-Array
@@ -541,7 +536,6 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
     Variables.activeIcons.update({f'{category}': icons})
     last_bbox = bbox
     Variables.last_cat = f'{category}'
-
 
 def delete_marker(marker):
   print(marker)
