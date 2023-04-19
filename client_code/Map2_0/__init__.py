@@ -3694,37 +3694,37 @@ class Map2_0(Map2_0Template):
     anvil.media.download(comp_list['pic'])
     pass
 
-  def addHoverEffect(self, icon_element, popup, map, marker, ele, category, marker_details, role):
+  def addHoverEffect(self, icon_element, popup, marker, ele, category, marker_details):
     self.icon_element = icon_element
     self.iconPopup = popup
-    self.map = map
     self.iconMarker = marker
     self.ele = ele
-    self.category = category
     self.marker_details = marker_details
-    self.role = role
     # self.icon_element.addEventListener('click', self.really_clicked)
-    self.icon_element.addEventListener('mouseenter', functools.partial(self.add_popup, popup))
+    self.icon_element.addEventListener('mouseenter', functools.partial(self.add_popup, popup, category))
     self.icon_element.addEventListener('mouseleave', functools.partial(self.remove_popup, popup))
     self.icon_element.addEventListener('click', functools.partial(self.show_details))
 
-  def add_popup(self, popup, event):
+  def add_popup(self, popup, category, event):
     if not popup == self.last_popup:
       self.last_popup = popup
       popup.addTo(self.mapbox)
       pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
       pop.addEventListener('mouseenter', functools.partial(self.readd_popup, popup))
       pop.addEventListener('mouseleave', functools.partial(self.remove_popup, popup))
-      pop.addEventListener('click', functools.partial(self.show_details))
+      pop.addEventListener('click', functools.partial(self.show_details, category))
 
   def readd_popup(self, popup, event):
     if not popup == self.last_popup:
       popup.remove()
-      popup.addTo(map)
+      popup.addTo(self.mapbox)
+      self.last_popup = popup
 
   def remove_popup(self, popup, event):
     popup.remove()
     self.lastPopup = None
 
-  def really_clicked(self, event):
-    print(dict(event))
+  def show_details(self, category):
+    if self.role == 'guest':
+      if category == 'nursing_homes' or category == 'assisted_living' or category == 'nursing_school' or category == 'Competitor':
+        print('Hello')
