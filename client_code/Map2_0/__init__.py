@@ -3691,3 +3691,6 @@ class Map2_0(Map2_0Template):
     comp_list = app_tables.pictures.search()[0]
     anvil.media.download(comp_list['pic'])
     pass
+
+  def test(self):
+    print('Here')
