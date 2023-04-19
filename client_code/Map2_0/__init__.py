@@ -3692,5 +3692,8 @@ class Map2_0(Map2_0Template):
     anvil.media.download(comp_list['pic'])
     pass
 
-  def test(self):
-    print('Here')
+  def clicked(self, iconElement):
+    iconElement.on('click', self.really_clicked)
+
+  def really_clicked(self):
+    print('Clicked')
