@@ -203,11 +203,10 @@
   }
 
   function removeMarker(marker, content, details) {
-    anvil.call(this, 'test')
-    // content.removeChild(details)
-    // deleted_marker.push(marker)
-    // marker.remove()
-    // lastTarget = null;
+    content.removeChild(details)
+    deleted_marker.push(marker)
+    marker.remove()
+    lastTarget = null;
   }
 
   function showDetails(ele, category, marker_details, container, marker, e, role) {

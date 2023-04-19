@@ -2,7 +2,179 @@ is_package: true
 container:
   type: HtmlTemplate
   properties: {tooltip: '', background: 'theme:Primary 700', foreground: 'theme:Primary
-      500', border: '', visible: true, role: null, html: '@theme:standard-page.html'}
+      500', border: '', visible: true, role: null, html: "<link href=\"https://fonts.googleapis.com/css?family=Roboto:300,400,500\"\
+      \ rel=\"stylesheet\" rel=\"preload\" as=\"font\" crossorigin=\"anonymous\">\n\
+      \n<div class=\"structure\">\n  <div class=\"nav-holder\">\n    <div id=\"nav-bar\"\
+      \ class=\"left-nav anvil-measure-this\" anvil-slot-repeat=\"left-nav\" anvil-drop-container=\"\
+      >.anvil-container\">\n    </div>\n<!--     <div class=\"left-nav-placeholder\
+      \ anvil-designer-only\" anvil-if-slot-empty=\"left-nav\" anvil-drop-slot=\"\
+      left-nav\">\n      <div class=\"prompt\">To add a sidebar, drop a ColumnPanel\
+      \ here.</div>\n    </div> -->\n    <div class=\"content\">\n      <div anvil-slot-repeat=\"\
+      default\" class=\"anvil-measure-this\"></div>\n      <div id=\"darkBackground\"\
+      \ class=\"darkBackground\">\n      \t<div id=\"setHomeAddress\" class=\"setHomeAddress\"\
+      >\n      \t</div>\n      </div>\n      <div class=\"placeholder drop-here\"\
+      \ anvil-if-slot-empty=\"default\" anvil-drop-slot=\"default\">Drop a ColumnPanel\
+      \ here.</div>\n      <div id=\"loading-bar_container\">\n        <p id=\"loading-bar_text\"\
+      \ class=\"loading-bar_text\"></p>\n        <div id=\"loading-bar\" class=\"\
+      loading-bar\">\n          <div id=\"moving-bar\" class=\"moving-bar\"></div>\n\
+      \        </div>\n      </div>\n<!--       <div class=\"mobile-menu\" id=\"mobile-menu\"\
+      >\n        <img class=\"mobile-menu-icon\" src=\"https://raw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/speisekarte.png\"\
+      \ />\n      </div> -->\n    </div>\n  </div>\n<!--   <div class=\"nav-shield\"\
+      ></div>\n  <div id=\"lock-modal\" class=\"lock-modal\"></div> -->\n</div>\n\n\
+      <script>\n  \n  let response = 'none';\n  let lastTarget = null;\n  let activeContainer\
+      \ = null;\n  let lastPopup = null;\n  let deleted_marker = [];\n  \n  function\
+      \ hideSidebar() {\n    var ln = $('.structure > .nav-holder > .left-nav');\n\
+      \    ln.animate({left: -ln.outerWidth()}, function() {\n      ln.removeClass(\"\
+      in-transition shown\").addClass(\"hidden\");\n      $('.nav-shield').removeClass(\"\
+      shown\");\n      $(window).trigger('resize');\n    });\n  }\n  function showSidebar()\
+      \ {\n    var ln = $('.structure > .nav-holder > .left-nav');\n    $('.nav-shield').addClass(\"\
+      shown\");\n    ln.addClass(\"shown\").removeClass(\"hidden\").css({left: \"\
+      -100%\"}).css({left: -ln.outerWidth()}).animate({left: 0}, function() {\n  \
+      \    ln.removeClass(\"in-transition\");\n    });\n    $(window).trigger('resize');\n\
+      \  }\n  // $('.sidebar-toggle, .nav-shield').off('click').on('click', function()\
+      \ {\n  //   var ln = $('.structure > .nav-holder > .left-nav');\n  //   if (ln.is(\"\
+      :visible\") || $('.nav-shield').is(\".shown\")) {\n  //     hideSidebar();\n\
+      \  //   } else if(!ln.is(\":empty\")) {\n  //     showSidebar();\n  //   }\n\
+      \  // });\n  // $('.left-nav').off('click').on('click', 'a, button', function()\
+      \ {\n  //   if ($('.nav-shield').is(\":visible\")) {\n  //     $('.nav-shield').trigger('click');\n\
+      \  //   }\n  // });\n  \n  function hide_show_Popup() {\n    \n    let popup\
+      \ = document.getElementsByClassName('static-popup')\n    if (popup[0].style.display\
+      \ === 'none') {\n   \t\tfor(const e of popup) {\n    \t\te.style.display = 'flex';\n\
+      \        }\n    }else {\n    \tfor(const e of popup) {\n    \t\te.style.display\
+      \ = 'none';\n    \t}\n    }\n  }\n\n  function copy_to_clipboard() {\n    let\
+      \ copyText = document.getElementById('toCopyText')\n    navigator.clipboard.writeText(copyText.innerHTML)\n\
+      \    alert(\"Copied the text: \" + copyText.innerHTML)\n  }\n  \n  function\
+      \ open_tab(html) {\n    \n    var tab = window.open('about:blank', '_blank');\n\
+      \    tab.document.write(html);\n    tab.document.close();\n    \n  }\n  \n \
+      \ function addHomeAddress(data, topic) {\n    document.getElementById('darkBackground').style.display\
+      \ = 'block'\n    document.getElementById('setHomeAddress').innerHTML = `<form\
+      \ class='setHomeAddressForm' id='inputForm'><p id='text'>Found the following\
+      \ Object for ${topic} with less than 10 meters distance to set Marker:<br><b>${data[0].name}</b><br>Do\
+      \ you want to mark the Object as your marker address ?</p><button class='setHomeAddressButton'\
+      \ type='button' value='yes'>Yes</button><button class='setHomeAddressButton'\
+      \ type='button' value='no'>No</button></form>`\n    document.querySelectorAll('.setHomeAddressButton').forEach(item\
+      \ => {\n      item.addEventListener('click', event => {\n        response =\
+      \ event.target.value\n        document.getElementById('darkBackground').style.display\
+      \ = 'none'\n      })\n    })\n  }\n  \n  function getResponse() {\n    return(response)\n\
+      \  }\n  \n  function resetResponse(topic) {\n    response = 'none'\n  }\n  \n\
+      \  function addData(topic, marker_coords) {\n    complete = document.getElementById('setHomeAddress')\n\
+      \    \n    if (topic === 'nursing_homes') {\n      complete.innerHTML = `<p\
+      \ id=\"text\" class=\"text\">Do you want to add additional Informations for\
+      \ your address in ${topic} ?</p><br><form id=\"inputForm\" class=\"inputForm\"\
+      ><table><tr><td>name</td><td><input type=\"text\" id=\"name\" name=\"name\"\
+      ></td></tr><tr><td>no. of beds</td><td><input type=\"text\" id=\"nob\" name=\"\
+      nob\"></td></tr><tr><td>single rooms</td><td><input type=\"text\" id=\"sr\"\
+      \ name=\"sr\"></td></tr><tr><td>double rooms</td><td><input type=\"text\" id=\"\
+      dr\" name=\"dr\"></td></tr><tr><td>patients</td><td><input type=\"text\" id=\"\
+      patients\" name=\"patients\"></td></tr><tr><td>occupancy</td><td><input type=\"\
+      text\" id=\"occupancy\" name=\"occupancy\"></td></tr><tr><td>year of construction</td><td><input\
+      \ type=\"text\" id=\"yoc\" name=\"yoc\"></td></tr><tr><td>status</td><td><input\
+      \ type=\"text\" id=\"status\" name=\"status\"></td></tr><tr><td>operator</td><td><input\
+      \ type=\"text\" id=\"operator\" name=\"operator\"></td></tr><tr><td>invest cost\
+      \ per day</td><td><input type=\"text\" id=\"icpd\" name=\"icpd\"></td></tr><tr><td>mdk\
+      \ grade</td><td><input type=\"text\" id=\"mdkg\" name=\"mdkg\"></td></tr></table></form><button\
+      \ class='setHomeDataButton' type='button' value='save'>Save</button><button\
+      \ class='setHomeDataButton' type='button' value='dismiss'>Dismiss</button>`\n\
+      \    } else if (topic === 'assisted_living') {\n      complete.innerHTML = `<p\
+      \ id=\"text\" class=\"text\">Do you want to add additional Informations for\
+      \ your address in ${topic} ?</p><br><form id=\"inputForm\" class=\"inputForm\"\
+      ><table><tr><td>name</td><td><input type=\"text\" id=\"name\" name=\"name\"\
+      ></td></tr><tr><td>operator</td><td><input type=\"text\" id=\"operator\" name=\"\
+      operator\"></td></tr><tr><td>type</td><td><input type=\"text\" id=\"type\" name=\"\
+      type\"></td></tr><tr><td>city</td><td><input type=\"text\" id=\"city\" name=\"\
+      city\"></td></tr><tr><td>status</td><td><input type=\"text\" id=\"status\" name=\"\
+      status\"></td></tr><tr><td>no. of apts.</td><td><input type=\"text\" id=\"noa\"\
+      \ name=\"noa\"></td></tr></table></form><button class='setHomeDataButton' type='button'\
+      \ value='save'>Save</button><button class='setHomeDataButton' type='button'\
+      \ value='dismiss'>Dismiss</button>`\n    }\n    form = document.getElementById('inputForm')\n\
+      \    document.getElementById('darkBackground').style.display = 'block'\n   \
+      \ document.querySelectorAll('.setHomeDataButton').forEach(item => {\n      item.addEventListener('click',\
+      \ event => {\n        if (event.target.value !== 'dismiss') {\n          let\
+      \ data\n          if (topic === 'nursing_homes') {\n           data = [{\n \
+      \         \t'name': event.path[1].childNodes[2][0].value,\n          \t'platz_voll_pfl':\
+      \ event.path[1].childNodes[2][1].value,\n          \t'ez': event.path[1].childNodes[2][2].value,\n\
+      \          \t'dz': event.path[1].childNodes[2][3].value,\n          \t'anz_vers_pat':\
+      \ event.path[1].childNodes[2][4].value,\n          \t'occupancy': event.path[1].childNodes[2][5].value,\n\
+      \          \t'baujahr': event.path[1].childNodes[2][6].value,\n          \t\
+      'status': event.path[1].childNodes[2][7].value,\n          \t'betreiber': event.path[1].childNodes[2][8].value,\n\
+      \          \t'invest': event.path[1].childNodes[2][9].value,\n          \t'mdk_note':\
+      \ event.path[1].childNodes[2][10].value,\n            'coords': marker_coords\n\
+      \           }, 0, 'home']\n          } else {\n            data = [{\n     \
+      \         'name': event.path[1].childNodes[2][0].value,\n              'operator':\
+      \ event.path[1].childNodes[2][1].value,\n              'type': event.path[1].childNodes[2][2].value,\n\
+      \              'city': event.path[1].childNodes[2][3].value,\n             \
+      \ 'status': event.path[1].childNodes[2][4].value,\n              'number_apts':\
+      \ event.path[1].childNodes[2][5].value,\n              'coords': marker_coords\n\
+      \          \t}, 0, 'home']\n          } \n          response = data \n     \
+      \ \t} else {\n          response = 'dismiss'\n        }\n        document.getElementById('darkBackground').style.display\
+      \ = 'none'\n      })\n    })\n  }\n\n  function getSearchedAddress() {\n   \
+      \ let element = document.getElementsByClassName('mapboxgl-ctrl-geocoder--input')\n\
+      \    let input = element[0].value\n    return input\n  }\n\n  function changeBackground(element,\
+      \ image) {\n    element.style.backgroundImage = `url(\"${image}\")`\n  }\n\n\
+      \  function addHoverEffect(container, popup, map, marker, ele, category, marker_details,\
+      \ role) {\n    container.addEventListener('mouseenter', () => addPopup(popup,\
+      \ map, ele, category, marker_details, container, marker, role));\n    container.addEventListener('mouseleave',\
+      \ () => removePopup(popup));\n    container.addEventListener('click', (e) =>\
+      \ showDetails(ele, category, marker_details, container, marker, e, role))\n\
+      \  }\n\n  function addPopup(popup, map, ele, category, marker_details, container,\
+      \ marker, role) {\n    if (popup !== lastPopup) {\n      lastPopup = popup\n\
+      \      popup.addTo(map)\n      let pop = document.getElementsByClassName('mapboxgl-popup-content')[0]\n\
+      \      pop.addEventListener('mouseenter', () => readdPopup(popup, map));\n \
+      \     pop.addEventListener('mouseleave', () => removePopup(popup));\n      pop.addEventListener('click',\
+      \ (e) => showDetails(ele, category, marker_details, container, marker, e, role))\
+      \ \n    }\n  }\n\n  function removePopup(popup) {\n    popup.remove()\n    lastPopup\
+      \ = null\n  }\n\n  function readdPopup(popup, map) {\n    if (popup !== lastPopup)\
+      \ {\n      popup.remove()\n      popup.addTo(map) \n    }\n  }\n\n  function\
+      \ removeMarker(marker, content, details) {\n    console.log(this)\n    // anvil.call(this,\
+      \ 'test')\n    \n    // content.removeChild(details)\n    // deleted_marker.push(marker)\n\
+      \    // marker.remove()\n    // lastTarget = null;\n  }\n\n  function showDetails(ele,\
+      \ category, marker_details, container, marker, e, role) {\n    if (role ===\
+      \ 'guest') {\n      if ((category === 'nursing_homes') || (category === 'assisted_living')\
+      \ || (category === 'nursing_school') || (category === 'Competitor')) {\n   \
+      \     removeDetails(e)\n        lastTarget = e.target\n        activeContainer\
+      \ = container\n        let content = document.getElementsByClassName('content')[0]\n\
+      \        let markerDetails = content.getElementsByClassName('marker_details')\n\
+      \        if (markerDetails.length < 1) {\n          let details = document.createElement('div')\n\
+      \          container.style.width = \"50px\"\n          container.style.height\
+      \ = \"50px\"\n          container.style.zIndex = \"221\"\n          details.innerHTML\
+      \ = marker_details\n          details.className = 'marker_details'\n       \
+      \   details.id = 'marker_details'\n          content.appendChild(details)\n\
+      \        } \n      } \n    } else {\n      removeDetails(e)\n      lastTarget\
+      \ = e.target\n      activeContainer = container\n      let content = document.getElementsByClassName('content')[0]\n\
+      \      let markerDetails = content.getElementsByClassName('marker_details')\n\
+      \      if (markerDetails.length < 1) {\n        let details = document.createElement('div')\n\
+      \        container.style.width = \"50px\"\n        container.style.height =\
+      \ \"50px\"\n        container.style.zIndex = \"221\"\n        details.innerHTML\
+      \ = marker_details\n        details.className = 'marker_details'\n        details.id\
+      \ = 'marker_details'\n        content.appendChild(details)\n        if (role\
+      \ !== 'guest') {\n          let btn = document.getElementById('remove')\n  \
+      \        btn.addEventListener('click', () => removeMarker(marker, content, details))\
+      \  \n        } \n      }\n    }\n  }\n\n  function removeDetails(e) {\n    if\
+      \ (e.target !== lastTarget && lastTarget !== null) {\n      activeContainer.style.width\
+      \ = \"40px\"\n      activeContainer.style.height = \"40px\"\n      activeContainer.style.zIndex\
+      \ = \"220\"\n      details = document.getElementById('marker_details')\n   \
+      \   content = document.getElementsByClassName('content')[0]\n      content.removeChild(details)\n\
+      \      lastTarget = null\n    }\n  }\n\n  function update_loading_bar(percent,\
+      \ message) {\n    lb = document.getElementsByClassName('loading-bar')[0]\n \
+      \   lb_container = document.getElementById('loading-bar_container')\n    lb_text\
+      \ = document.getElementsByClassName('loading-bar_text')[0]\n    lb.style.width\
+      \ = `${percent}%`\n    lb_text.innerHTML = message\n\n    if (percent === 0)\
+      \ {\n      lb_container.style.visibility = 'hidden'\n    } else {\n      lb_container.style.visibility\
+      \ = 'visible'\n    }\n  }\n\n  function remove_span() {\n    let grid = document.getElementsByClassName('anvil-role-cluster_list')[0]\n\
+      \    let span_list = grid.getElementsByTagName('span')\n    for (let i = 0;\
+      \ i < span_list.length; i++) {\n      if (span_list[i].innerText === \"\") {\n\
+      \        span_list[i].remove()\n      }\n    }\n    let icon_list = grid.getElementsByTagName('i')\n\
+      \    for (let i = 0; i < icon_list.length; i++) {\n      icon_list[i].addEventListener('click',\
+      \ () => (console.log('Hello Me')))\n      icon_list[i].style.cursor = 'pointer'\n\
+      \    }\n  }\n\n  function get_screen_width() {\n    let width = (window.innerWidth\
+      \ > 0) ? window.innerWidth : screen.width;\n    let height = (window.innerHeight\
+      \ > 0) ? window.innerHeight : screen.height;\n    return [width, height]\n \
+      \ }\n\n  function add_event_to_mobile_menu() {\n    let menu = document.getElementById('mobile-menu')\n\
+      \    menu.addEventListener('click', () => (change_menu_display()))\n  }\n\n\
+      \  function change_menu_display() {\n    let navBar = document.getElementsByClassName('left-nav')[0]\n\
+      \    let navIcon = document.getElementById('mobile-menu')\n    let xBtn = document.getElementsByClassName('anvil-role-mobile-menu-close')[0]\n\
+      \    navBar.style.height = '50%'\n    navIcon.style.bottom = '422px'\n  }\n\n\
+      \  document.addEventListener('click', (e) => removeDetails(e))\n\n</script> "}
   event_bindings: {show: form_show}
 components:
 - type: ColumnPanel
