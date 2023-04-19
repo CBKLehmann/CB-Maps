@@ -46,7 +46,7 @@ class Map2_0(Map2_0Template):
         self.custom_marker = []
         self.comp_marker = []
         self.role = properties['role']
-        self.lastPopup = None
+        self.last_popup = None
         html = document.getElementsByClassName('anvil-root-container')[0]
         html.style.cursor = 'default'
   
@@ -3704,14 +3704,27 @@ class Map2_0(Map2_0Template):
     self.marker_details = marker_details
     self.role = role
     # self.icon_element.addEventListener('click', self.really_clicked)
-    self.icon_element.addEventListener('mouseenter', functools.partial(self.addPopup, popup))
+    self.icon_element.addEventListener('mouseenter', functools.partial(self.add_popup, popup))
+    self.icon_element.addEventListener('mouseleave', functools.partial(self.remove_popup, popup))
+    self.icon_element.addEventListener('click', functools.partial(self.show_details))
 
-  def addPopup(self, popup, event):
-    print(popup)
-    if not popup == self.lastPopup:
-      self.lastPopup = popup
+  def add_popup(self, popup, event):
+    if not popup == self.last_popup:
+      self.last_popup = popup
       popup.addTo(self.mapbox)
       pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
+      pop.addEventListener('mouseenter', functools.partial(self.readd_popup, popup))
+      pop.addEventListener('mouseleave', functools.partial(self.remove_popup, popup))
+      pop.addEventListener('click', functools.partial(self.show_details))
+
+  def readd_popup(self, popup, event):
+    if not popup == self.last_popup:
+      popup.remove()
+      popup.addTo(map)
+
+  def remove_popup(self, popup, event):
+    popup.remove()
+    self.lastPopup = None
 
   def really_clicked(self, event):
     print(dict(event))
