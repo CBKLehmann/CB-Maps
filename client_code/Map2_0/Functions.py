@@ -525,7 +525,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
         # Add Icon to the Map
         newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
         newiconElement = newicon.getElement()
-        self.clicked(newicon)
+        self.addHoverEffect(newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.role)
         # anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.role)
 
         # Add current Element-Icon to Icon-Array

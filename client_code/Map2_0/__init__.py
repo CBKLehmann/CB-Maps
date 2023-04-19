@@ -19,6 +19,7 @@ import datetime
 import time
 import copy
 import Functions
+import functools
 
 global Variables, Layer, Images, ExcelFrames
 
@@ -45,6 +46,7 @@ class Map2_0(Map2_0Template):
         self.custom_marker = []
         self.comp_marker = []
         self.role = properties['role']
+        self.lastPopup = None
         html = document.getElementsByClassName('anvil-root-container')[0]
         html.style.cursor = 'default'
   
@@ -3692,8 +3694,24 @@ class Map2_0(Map2_0Template):
     anvil.media.download(comp_list['pic'])
     pass
 
-  def clicked(self, iconElement):
-    iconElement.on('click', self.really_clicked)
+  def addHoverEffect(self, icon_element, popup, map, marker, ele, category, marker_details, role):
+    self.icon_element = icon_element
+    self.iconPopup = popup
+    self.map = map
+    self.iconMarker = marker
+    self.ele = ele
+    self.category = category
+    self.marker_details = marker_details
+    self.role = role
+    # self.icon_element.addEventListener('click', self.really_clicked)
+    self.icon_element.addEventListener('mouseenter', functools.partial(self.addPopup, popup))
 
-  def really_clicked(self):
-    print('Clicked')
+  def addPopup(self, popup, event):
+    print(popup)
+    if not popup == self.lastPopup:
+      self.lastPopup = popup
+      popup.addTo(self.mapbox)
+      pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
+
+  def really_clicked(self, event):
+    print(dict(event))
