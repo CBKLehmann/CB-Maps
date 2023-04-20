@@ -3702,7 +3702,7 @@ class Map2_0(Map2_0Template):
     self.iconMarker = marker
     self.ele = ele
     self.marker_details = marker_details
-    # self.icon_element.addEventListener('click', self.really_clicked)
+    
     self.icon_element.addEventListener('mouseenter', functools.partial(self.add_popup, popup, category))
     self.icon_element.addEventListener('mouseleave', functools.partial(self.remove_popup, popup))
     self.icon_element.addEventListener('click', functools.partial(self.show_details))
