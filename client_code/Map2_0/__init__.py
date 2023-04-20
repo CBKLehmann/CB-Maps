@@ -144,6 +144,8 @@ class Map2_0(Map2_0Template):
       self.mapbox.on("contextmenu", self.map_right_click)
       self.mapbox.on("click", self.map_right_click)
 
+      document.addEventListener('click', functools.partial(self.show_details, category, marker_details, icon_element))
+
   def loadHash(self, event):
     with anvil.server.no_loading_indicator:
       hash = get_url_hash()
@@ -3701,20 +3703,19 @@ class Map2_0(Map2_0Template):
     self.iconPopup = popup
     self.iconMarker = marker
     self.ele = ele
-    self.marker_details = marker_details
     
-    self.icon_element.addEventListener('mouseenter', functools.partial(self.add_popup, popup, category))
+    self.icon_element.addEventListener('mouseenter', functools.partial(self.add_popup, popup, category, marker_details, icon_element))
     self.icon_element.addEventListener('mouseleave', functools.partial(self.remove_popup, popup))
-    self.icon_element.addEventListener('click', functools.partial(self.show_details))
+    self.icon_element.addEventListener('click', functools.partial(self.show_details, category, marker_details, icon_element))
 
-  def add_popup(self, popup, category, event):
+  def add_popup(self, popup, category, marker_details, icon_element, event):
     if not popup == self.last_popup:
       self.last_popup = popup
       popup.addTo(self.mapbox)
       pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
       pop.addEventListener('mouseenter', functools.partial(self.readd_popup, popup))
       pop.addEventListener('mouseleave', functools.partial(self.remove_popup, popup))
-      pop.addEventListener('click', functools.partial(self.show_details, category))
+      pop.addEventListener('click', functools.partial(self.show_details, category, marker_details, icon_element))
 
   def readd_popup(self, popup, event):
     if not popup == self.last_popup:
@@ -3726,10 +3727,50 @@ class Map2_0(Map2_0Template):
     popup.remove()
     self.last_popup = None
 
-  def show_details(self, category, event):
+  def show_details(self, category, marker_details, icon_element, event):
     if self.role == 'guest':
       if category == 'nursing_homes' or category == 'assisted_living' or category == 'nursing_school' or category == 'Competitor':
-        print('Hello')
+        self.remove_details(marker_details)
+        self.last_target = marker_details
+        self.active_container = icon_element
+        content = document.getElementsByClassName('content')[0]
+        marker_details_dom = content.getElementsByClassName('marker_details')
+        if len(marker_details_dom) < 1:
+          details = document.createElement('div')
+          icon_element.style.width = "50px"
+          icon_element.style.height = "50px"
+          icon_element.style.zIndex = "221"
+          details.innerHTML = marker_details
+          details.className = 'marker_details'
+          details.id = 'marker_details'
+          content.appendChild(details)
+    else:
+      self.remove_details(marker_details)
+      self.last_target = marker_details
+      self.active_container = icon_element
+      content = document.getElementsByClassName('content')[0]
+      marker_details_dom = content.getElementsByClassName('marker_details')
+      if len(marker_details_dom) < 1:
+        details = document.createElement('div')
+        icon_element.style.width = "50px"
+        icon_element.style.height = "50px"
+        icon_element.style.zIndex = "221"
+        details.innerHTML = marker_details
+        details.className = 'marker_details'
+        details.id = 'marker_details'
+        content.appendChild(details)
+        btn = document.getElementById('remove')
+        btn.addEventListener('click', functools.partial(self.remove_marker))
+        
+  def remove_details(self, marker_details):
+    if not marker_details == self.last_target and not self.last_target == None:
+      self.active_container.style.width = "40px"
+      self.active_container.style.height = "40px"
+      self.active_container.style.zIndex = "220"
+      details = document.getElementById('marker_details')
+      content = document.getElementsByClassName('content')[0]
+      content.removeChild(details)
+      self.last_target = None
 
-  def remove_details(self, event):
-    print(deleted)
+  def remove_marker(self, event):
+    print('Removed')
