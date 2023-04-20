@@ -144,7 +144,7 @@ class Map2_0(Map2_0Template):
       self.mapbox.on("contextmenu", self.map_right_click)
       self.mapbox.on("click", self.map_right_click)
 
-      document.addEventListener('click', functools.partial(self.show_details, category, marker_details, icon_element))
+      document.addEventListener('click', functools.partial(self.remove_details, None))
 
   def loadHash(self, event):
     with anvil.server.no_loading_indicator:
@@ -3730,7 +3730,7 @@ class Map2_0(Map2_0Template):
   def show_details(self, category, marker_details, icon_element, event):
     if self.role == 'guest':
       if category == 'nursing_homes' or category == 'assisted_living' or category == 'nursing_school' or category == 'Competitor':
-        self.remove_details(marker_details)
+        self.remove_details(marker_details, None)
         self.last_target = marker_details
         self.active_container = icon_element
         content = document.getElementsByClassName('content')[0]
@@ -3745,7 +3745,7 @@ class Map2_0(Map2_0Template):
           details.id = 'marker_details'
           content.appendChild(details)
     else:
-      self.remove_details(marker_details)
+      self.remove_details(marker_details, None)
       self.last_target = marker_details
       self.active_container = icon_element
       content = document.getElementsByClassName('content')[0]
@@ -3762,7 +3762,11 @@ class Map2_0(Map2_0Template):
         btn = document.getElementById('remove')
         btn.addEventListener('click', functools.partial(self.remove_marker))
         
-  def remove_details(self, marker_details):
+  def remove_details(self, marker_details, event, **event_args):
+    print(marker_details)
+    print(dict(event))
+    print(dict(event_args))
+    print('#################################')
     if not marker_details == self.last_target and not self.last_target == None:
       self.active_container.style.width = "40px"
       self.active_container.style.height = "40px"
