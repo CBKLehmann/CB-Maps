@@ -49,6 +49,7 @@ class Map2_0(Map2_0Template):
         self.last_popup = None
         self.last_target = None
         self.active_container = None
+        self.prev_called = None
         html = document.getElementsByClassName('anvil-root-container')[0]
         html.style.cursor = 'default'
   
@@ -3748,6 +3749,7 @@ class Map2_0(Map2_0Template):
       self.remove_details(marker_details, None)
       self.last_target = marker_details
       self.active_container = icon_element
+      self.prev_called = marker_details
       content = document.getElementsByClassName('content')[0]
       marker_details_dom = content.getElementsByClassName('marker_details')
       if len(marker_details_dom) < 1:
@@ -3760,14 +3762,10 @@ class Map2_0(Map2_0Template):
         details.id = 'marker_details'
         content.appendChild(details)
         btn = document.getElementById('remove')
-        btn.addEventListener('click', functools.partial(self.remove_marker))
+        btn.addEventListener('click', functools.partial(self.remove_marker, category))
         
   def remove_details(self, marker_details, event, **event_args):
-    print(marker_details)
-    print(dict(event))
-    print(dict(event_args))
-    print('#################################')
-    if not marker_details == self.last_target and not self.last_target == None:
+    if not marker_details == self.last_target and not self.last_target == None and self.prev_called == None:
       self.active_container.style.width = "40px"
       self.active_container.style.height = "40px"
       self.active_container.style.zIndex = "220"
@@ -3775,6 +3773,15 @@ class Map2_0(Map2_0Template):
       content = document.getElementsByClassName('content')[0]
       content.removeChild(details)
       self.last_target = None
+    self.prev_called = None
 
-  def remove_marker(self, event):
+  def remove_marker(self, cateogry, event):
+    print(Variables.icons)
+    print(Variables.activeIcons)
+    print(Variables.nursing_homes_entries)
+    print(Variables.assisted_living_entries)
+    for marker in Variables.activeIcons[category]:
+      print(dict(marker['_lngLat']))
     print('Removed')
+
+''' Remove and save removed Markers as List ! '''
