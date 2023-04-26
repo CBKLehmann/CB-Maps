@@ -3700,14 +3700,9 @@ class Map2_0(Map2_0Template):
     pass
 
   def addHoverEffect(self, icon_element, popup, marker, ele, category, marker_details):
-    self.icon_element = icon_element
-    self.iconPopup = popup
-    self.iconMarker = marker
-    self.ele = ele
-    
-    self.icon_element.addEventListener('mouseenter', functools.partial(self.add_popup, popup, category, marker_details, icon_element))
-    self.icon_element.addEventListener('mouseleave', functools.partial(self.remove_popup, popup))
-    self.icon_element.addEventListener('click', functools.partial(self.show_details, category, marker_details, icon_element))
+    icon_element.addEventListener('mouseenter', functools.partial(self.add_popup, popup, category, marker_details, icon_element))
+    icon_element.addEventListener('mouseleave', functools.partial(self.remove_popup, popup))
+    icon_element.addEventListener('click', functools.partial(self.show_details, category, marker_details, icon_element, dict(popup['_lngLat'])))
 
   def add_popup(self, popup, category, marker_details, icon_element, event):
     if not popup == self.last_popup:
@@ -3716,7 +3711,7 @@ class Map2_0(Map2_0Template):
       pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
       pop.addEventListener('mouseenter', functools.partial(self.readd_popup, popup))
       pop.addEventListener('mouseleave', functools.partial(self.remove_popup, popup))
-      pop.addEventListener('click', functools.partial(self.show_details, category, marker_details, icon_element))
+      pop.addEventListener('click', functools.partial(self.show_details, category, marker_details, icon_element, dict(popup['_lngLat'])))
 
   def readd_popup(self, popup, event):
     if not popup == self.last_popup:
@@ -3728,7 +3723,7 @@ class Map2_0(Map2_0Template):
     popup.remove()
     self.last_popup = None
 
-  def show_details(self, category, marker_details, icon_element, event):
+  def show_details(self, category, marker_details, icon_element, marker_coords, event):
     if self.role == 'guest':
       if category == 'nursing_homes' or category == 'assisted_living' or category == 'nursing_school' or category == 'Competitor':
         self.remove_details(marker_details, None)
@@ -3762,7 +3757,7 @@ class Map2_0(Map2_0Template):
         details.id = 'marker_details'
         content.appendChild(details)
         btn = document.getElementById('remove')
-        btn.addEventListener('click', functools.partial(self.remove_marker, category))
+        btn.addEventListener('click', functools.partial(self.remove_marker, category, marker_coords))
         
   def remove_details(self, marker_details, event, **event_args):
     if not marker_details == self.last_target and not self.last_target == None and self.prev_called == None:
@@ -3775,13 +3770,17 @@ class Map2_0(Map2_0Template):
       self.last_target = None
     self.prev_called = None
 
-  def remove_marker(self, cateogry, event):
+  def remove_marker(self, category, marker_coords, event):
     print(Variables.icons)
     print(Variables.activeIcons)
     print(Variables.nursing_homes_entries)
     print(Variables.assisted_living_entries)
-    for marker in Variables.activeIcons[category]:
+    print(marker_coords)
+    for index, marker in enumerate(Variables.activeIcons[category]):
       print(dict(marker['_lngLat']))
+      if marker['_lngLat']['lng'] == marker_coords['lng'] and marker['_lngLat']['lat'] == marker_coords['lat']:
+        deleted_icon = Variables.activeIcons[category].pop(index)
+        marker.remove()
     print('Removed')
 
 ''' Remove and save removed Markers as List ! '''
