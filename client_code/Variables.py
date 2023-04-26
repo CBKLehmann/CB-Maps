@@ -69,3 +69,4 @@ home_address_nh = []
 home_address_al = []
 unique_code = None
 loading = False
+removed_markers = {}

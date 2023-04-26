@@ -152,6 +152,7 @@ class Map2_0(Map2_0Template):
       hash = get_url_hash()
       if not len(hash) == 0:
         data = anvil.server.call('get_map_settings', hash['name'])
+        Variables.removed_markers = data['removed_markers']
         for component in self.style_grid.get_components():
           if component.text == data['map_style']:
             component.checked = True
@@ -3418,7 +3419,6 @@ class Map2_0(Map2_0Template):
       study_pin = self.hide_ms_marker.checked
   
       deleted_marker = {}
-      print(Variables.marker)
       for setting in Variables.marker:
         popped = Variables.marker[setting].pop('marker')
         deleted_marker[setting] = popped
@@ -3455,7 +3455,8 @@ class Map2_0(Map2_0Template):
         'competitors': {'competitors': self.competitors},
         'custom_marker': self.custom_marker,
         'cluster_selects': cluster_selects,
-        'iclass_selects': iclass_selects
+        'iclass_selects': iclass_selects,
+        'removed_markers': Variables.removed_markers
       }
   
       anvil.server.call('save_map_settings', dataset)
@@ -3771,16 +3772,11 @@ class Map2_0(Map2_0Template):
     self.prev_called = None
 
   def remove_marker(self, category, marker_coords, event):
-    print(Variables.icons)
-    print(Variables.activeIcons)
-    print(Variables.nursing_homes_entries)
-    print(Variables.assisted_living_entries)
-    print(marker_coords)
     for index, marker in enumerate(Variables.activeIcons[category]):
-      print(dict(marker['_lngLat']))
       if marker['_lngLat']['lng'] == marker_coords['lng'] and marker['_lngLat']['lat'] == marker_coords['lat']:
         deleted_icon = Variables.activeIcons[category].pop(index)
+        if not category in Variables.removed_markers.keys():
+          Variables.removed_markers[category] = [dict(marker['_lngLat'])]
+        else:
+          Variables.removed_markers[category].append(dict(marker['_lngLat']))
         marker.remove()
-    print('Removed')
-
-''' Remove and save removed Markers as List ! '''
