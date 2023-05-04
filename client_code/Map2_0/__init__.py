@@ -2877,9 +2877,9 @@ class Map2_0(Map2_0Template):
       else:
         Variables.home_address_al = []
 
-      res = anvil.js.call('getDeletedMarker')
-      print(res)
-      print(len(entries))
+      # res = anvil.js.call('getDeletedMarker')
+      # print(res)
+      # print(len(entries))
       for entry in entries:
         if topic == "nursing_homes":
           lat_entry = "%.6f" % float(entry['coord_lat'])
