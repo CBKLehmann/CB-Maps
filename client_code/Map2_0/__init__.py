@@ -1102,7 +1102,7 @@ class Map2_0(Map2_0Template):
         demand_potential = "strong"
       else:
         demand_potential = "very strong"
-      
+
       purchase_power = anvil.server.call('get_purchasing_power', location={'lat': lng_lat_marker['lat'], 'lon': lng_lat_marker['lng']})
 
       # #####Create Excel for Market Study#####
@@ -1113,7 +1113,19 @@ class Map2_0(Map2_0Template):
       cover_frame = copy.deepcopy(ExcelFrames.cover_data)
       cover_frame['data'][1]['content'] = zipcode
       cover_frame['data'][2]['content'] = city.upper()
-  
+
+      single_rooms = 0
+      double_rooms = 0
+      for competitor in data_comp_analysis_nh['data']:
+        if not competitor[0]['ez'] == 'N/A':
+          single_rooms += int(competitor[0]['ez'])
+        if not competitor[0]['dz'] == 'N/A':
+          double_rooms += int(competitor[0]['dz'])
+      rooms = single_rooms + double_rooms
+      comp_beds = single_rooms + (double_rooms * 2)
+      sr_quote = round(rooms / comp_beds, 2)
+      anvil.server.call('read_regulations', federal_state)
+      
       # Copy and Fill Dataframe for Excel-Summary
       summary_frame = copy.deepcopy(ExcelFrames.summary_data)
       summary_frame['data'][9]['content'] = f"Population {city}"

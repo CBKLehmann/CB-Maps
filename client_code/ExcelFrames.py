@@ -414,7 +414,7 @@ summary_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A56',
-                'content': 'Loss of beds due to regulations of federal state',
+                'content': 'Loss of beds due to \nregulations of federal state',
             },
             {
                 'type': 'text',
