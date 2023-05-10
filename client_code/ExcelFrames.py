@@ -414,30 +414,36 @@ summary_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A56',
-                'content': 'Adjusted number of beds \n(incl. beds in planning and under construction)',
+                'content': 'Loss of beds due to regulations of federal state',
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A57',
-                'content': 'Occupancy rate',
+                'content': 'Adjusted number of beds \n(incl. beds in planning and under construction)',
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A58',
-                'content': 'Beds in reserve',
+                'content': 'Occupancy rate',
             },
             {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A59',
+                'content': 'Beds in reserve',
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'A60',
                 'content': 'Median Invest Cost',
             },
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A61',
+                'cell': 'A62',
                 'content': 'Surplus or deficit of beds IC',
                 'format': {
                     'bold': True,
@@ -447,7 +453,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A62',
+                'cell': 'A63',
                 'content': 'Scenario 1',
                 'format': {
                     'italic': True
@@ -456,25 +462,25 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A63',
+                'cell': 'A64',
                 'content': 'Supply',
             },
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A64',
+                'cell': 'A65',
                 'content': 'Demand',
             },
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A65',
+                'cell': 'A66',
                 'content': 'surplus/deficit',
             },
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A67',
+                'cell': 'A68',
                 'content': 'Scenario 2',
                 'format': {
                     'italic': True
@@ -483,25 +489,25 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A68',
+                'cell': 'A69',
                 'content': 'Supply',
             },
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A69',
+                'cell': 'A70',
                 'content': 'Demand',
             },
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A70',
+                'cell': 'A71',
                 'content': 'surplus/deficit',
             },
             {
                 'type': 'text',
                 'insert': 'merge',
-                'cell': 'A71:E71',
+                'cell': 'A72:E72',
                 'content': 'In 2030 the surplus/deficit on beds based on our scenarios is between 8 and 3 (in average 6).',
                 'format': {
                     'italic': True
@@ -510,7 +516,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'merge',
-                'cell': 'A72:E72',
+                'cell': 'A73:E73',
                 'content': 'In 2035 the surplus/deficit on beds based on our scenarios is between 5 and 0 (in average 2).',
                 'format': {
                     'italic': True
@@ -519,7 +525,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A74',
+                'cell': 'A75',
                 'content': 'Market shares',
                 'format': {
                     'bold': True,
@@ -529,37 +535,37 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A75',
+                'cell': 'A76',
                 'content': 'Number of operators',
             },
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A76',
+                'cell': 'A77',
                 'content': 'Median Number of beds',
             },
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A77',
+                'cell': 'A78',
                 'content': 'Median Year of construction',
             },
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A78',
+                'cell': 'A79',
                 'content': '% Public operators',
             },
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A79',
+                'cell': 'A80',
                 'content': '% Non-profit operators',
             },
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'A80',
+                'cell': 'A81',
                 'content': '% Private operators',
             },
             {
@@ -850,7 +856,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B56',
+                'cell': 'B57',
                 'content': 72,
                 'format': {
                     'align': 'right'
@@ -859,7 +865,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B57',
+                'cell': 'B58',
                 'content': .97,
                 'format': {
                     'align': 'right',
@@ -869,7 +875,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B58',
+                'cell': 'B59',
                 'content': 2,
                 'format': {
                     'align': 'right'
@@ -878,7 +884,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B59',
+                'cell': 'B60',
                 'content': 15.18,
                 'format': {
                     'align': 'right',
@@ -888,7 +894,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B61',
+                'cell': 'B62',
                 'content': 'Radius:',
                 'format': {
                     'align': 'right',
@@ -899,17 +905,8 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B63',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
                 'cell': 'B64',
-                'content': 70,
+                'content': 72,
                 'format': {
                     'align': 'right'
                 }
@@ -917,8 +914,8 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B68',
-                'content': 72,
+                'cell': 'B65',
+                'content': 70,
                 'format': {
                     'align': 'right'
                 }
@@ -927,6 +924,15 @@ summary_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'B69',
+                'content': 72,
+                'format': {
+                    'align': 'right'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'B70',
                 'content': 70,
                 'format': {
                     'align': 'right'
@@ -935,7 +941,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B74',
+                'cell': 'B75',
                 'content': 'Radius:',
                 'format': {
                     'align': 'right',
@@ -946,7 +952,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B75',
+                'cell': 'B76',
                 'content': 1,
                 'format': {
                     'align': 'right'
@@ -955,7 +961,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B76',
+                'cell': 'B77',
                 'content': 36,
                 'format': {
                     'align': 'right'
@@ -964,7 +970,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B77',
+                'cell': 'B78',
                 'content': 1996,
                 'format': {
                     'align': 'right',
@@ -974,7 +980,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B78',
+                'cell': 'B79',
                 'content': .7,
                 'format': {
                     'align': 'right',
@@ -984,7 +990,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B79',
+                'cell': 'B80',
                 'content': .2,
                 'format': {
                     'align': 'right',
@@ -994,7 +1000,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'B80',
+                'cell': 'B81',
                 'content': .1,
                 'format': {
                     'align': 'right',
@@ -1236,7 +1242,7 @@ summary_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'C56',
-                'content': 72,
+                'content': -144,
                 'format': {
                     'align': 'right'
                 }
@@ -1245,6 +1251,15 @@ summary_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'C57',
+                'content': 72,
+                'format': {
+                    'align': 'right'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C58',
                 'content': .95,
                 'format': {
                     'align': 'right',
@@ -1254,7 +1269,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'C58',
+                'cell': 'C59',
                 'content': 4,
                 'format': {
                     'align': 'right'
@@ -1263,7 +1278,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'merge',
-                'cell': 'C61:D61',
+                'cell': 'C62:D62',
                 'content': '15 minutes of walking',
                 'format': {
                     'bold': True,
@@ -1273,17 +1288,8 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'C63',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
                 'cell': 'C64',
-                'content': 64,
+                'content': 72,
                 'format': {
                     'align': 'right'
                 }
@@ -1292,6 +1298,15 @@ summary_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'C65',
+                'content': 64,
+                'format': {
+                    'align': 'right'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'C66',
                 'content': 8,
                 'format': {
                     'align': 'right'
@@ -1300,7 +1315,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'C68',
+                'cell': 'C69',
                 'content': 72,
                 'format': {
                     'align': 'right'
@@ -1309,7 +1324,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'C69',
+                'cell': 'C70',
                 'content': 69,
                 'format': {
                     'align': 'right'
@@ -1318,7 +1333,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'C70',
+                'cell': 'C71',
                 'content': 3,
                 'format': {
                     'align': 'right'
@@ -1327,7 +1342,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'merge',
-                'cell': 'C74:D74',
+                'cell': 'C75:D75',
                 'content': '15 minutes of walking',
                 'format': {
                     'bold': True,
@@ -1628,7 +1643,7 @@ summary_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'D56',
-                'content': 72,
+                'content': -114,
                 'format': {
                     'align': 'right'
                 }
@@ -1637,6 +1652,15 @@ summary_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'D57',
+                'content': 72,
+                'format': {
+                    'align': 'right'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D58',
                 'content': .95,
                 'format': {
                     'align': 'right',
@@ -1646,7 +1670,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'D58',
+                'cell': 'D59',
                 'content': 4,
                 'format': {
                     'align': 'right'
@@ -1655,7 +1679,7 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'D61',
+                'cell': 'D62',
                 'content': '',
                 'format': {
                     'bold': True,
@@ -1665,17 +1689,8 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'D63',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
                 'cell': 'D64',
-                'content': 67,
+                'content': 72,
                 'format': {
                     'align': 'right'
                 }
@@ -1684,7 +1699,7 @@ summary_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'D65',
-                'content': 5,
+                'content': 67,
                 'format': {
                     'align': 'right'
                 }
@@ -1692,8 +1707,8 @@ summary_data = {
             {
                 'type': 'text',
                 'insert': 'write',
-                'cell': 'D68',
-                'content': 72,
+                'cell': 'D66',
+                'content': 5,
                 'format': {
                     'align': 'right'
                 }
@@ -1711,6 +1726,15 @@ summary_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'D70',
+                'content': 72,
+                'format': {
+                    'align': 'right'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'D71',
                 'content': 0,
                 'format': {
                     'align': 'right'
@@ -1763,7 +1787,7 @@ summary_data = {
                 'file': 'img/cb_logo.png',
                 'style': {
                     'x_scale': .21,
-                    'y_scale': .09,
+                    'y_scale': .085,
                     'x_offset': 50,
                     'y_offset': 10
                 }
