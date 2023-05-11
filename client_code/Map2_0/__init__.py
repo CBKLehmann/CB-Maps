@@ -1115,6 +1115,11 @@ class Map2_0(Map2_0Template):
       cover_frame['data'][2]['content'] = city.upper()
 
       # Calculate updated Beds based on Regulations
+  
+
+
+
+      
       single_rooms_current = 0
       double_rooms_current = 0
       rooms_fulfillment = 0
@@ -1124,6 +1129,7 @@ class Map2_0(Map2_0Template):
       current_rooms = 0
       regulations = anvil.server.call('read_regulations', federal_state)
       for competitor in data_comp_analysis_nh['data']:
+        print(competitor)
         single_rooms = 0
         double_rooms = 0
         if not competitor[0]['ez'] == 'N/A':
@@ -1134,31 +1140,39 @@ class Map2_0(Map2_0Template):
           double_rooms_current += int(competitor[0]['dz']) # Add number of double rooms inside facility to overall number of double rooms
         beds = single_rooms + double_rooms * 2 # Get number of current beds inside facility
         if competitor[0]['status'] == 'aktiv':
-            if not regulations['Existing ']['max_beds'] == '/':
-              if beds > int(regulations['Existing ']['max_beds']):
-                beds_future = int(regulations['Existing ']['max_beds']) # Get number of future number of beds inside facility based on regulations
+            if not regulations['Existing']['max_beds'] == '/':
+              if beds > int(regulations['Existing']['max_beds']):
+                beds_future = int(regulations['Existing']['max_beds']) # Get number of future number of beds inside facility based on regulations
               else:
                 beds_future = beds  # Set number of future number of beds inside facility to current number of beds because regulation is higher than current number
             else:
               beds_future = beds  # Set number of future number of beds inside facility to current number of beds because regulation is higher than current number
-            if not regulations['Existing ']['sr_quote'] == '/':
-              single_rooms_future = beds_future * regulations['Existing ']['sr_quote'] # Calculate future number of single rooms inside facility based on regulations
+            if not regulations['Existing']['sr_quote'] == '/':
+              single_rooms_future = beds_future * regulations['Existing']['sr_quote'] # Calculate future number of single rooms inside facility based on regulations
+              if single_rooms_future <= single_rooms:
+                single_rooms_future = single_rooms
               rest_beds = beds_future - single_rooms_future # Calculate rest beds to fill number of future beds with double rooms
               if not rest_beds == 0:
                 double_rooms_future = rest_beds / 2 # Calculate future number of double rooms inside facility
               else:
                 double_rooms_future = 0 # Set future number of ddouble rooms to 0 if single rooms are 100%
               rooms_future += (single_rooms_future + double_rooms_future) # Calculate future number of rooms inside facility
-      rooms_future_fulfillment = round((rooms_future * 100) / 0.992, 0) # Calculate future number of rooms inside facility with fulfillment factor
       rooms_current = single_rooms_current + double_rooms_current # Calculate overall current number of rooms
       comp_beds_current = single_rooms_current + (double_rooms_current * 2) # Calculate overall current number of beds
-      if comp_beds_current > 0:
-        sr_quote_current = round(rooms_current / comp_beds_current, 2) # Calculate overall current single room quote
+      if rooms_current > 0:
+        sr_quote_current = round(single_rooms_current / rooms_current, 2) # Calculate overall current single room quote
       else:
         sr_quote_current = 0
-      sr_quote_future = regulations['Existing ']['sr_quote'] * fulfillment # Calculate overall future single room quote based on regulations and fulfillment factor
-      single_rooms_future_overall = rooms_future_fulfillment * sr_quote_future
-      double_rooms_future_overall = rooms_future_fulfillment - single_rooms_future_overall
+      print(sr_quote_current)
+      print(regulations['Existing']['sr_quote'])
+      if not regulations['Existing']['sr_quote'] == '/':
+        sr_quote_future = regulations['Existing']['sr_quote'] * fulfillment # Calculate overall future single room quote based on regulations and fulfillment factor
+      else:
+        sr_quote_future = sr_quote_current
+      single_rooms_future_overall = rooms_current * sr_quote_future
+      if single_rooms_future_overall <= single_rooms_current:
+        single_rooms_future_overall = single_rooms_current
+      double_rooms_future_overall = rooms_current - single_rooms_future_overall
       beds_future_overall = single_rooms_future_overall + double_rooms_future_overall * 2
       beds_loss = beds_future_overall - comp_beds_current
 
@@ -1173,7 +1187,7 @@ class Map2_0(Map2_0Template):
       print(f'single_rooms: {single_rooms_future_overall}')
       print(f'double_rooms: {double_rooms_future_overall}')
       print(f'beds: {beds_future_overall}')
-      print(f'rooms: {rooms_future_fulfillment}')
+      print(f'rooms: {rooms_current}')
       print(f'single_rooms_quote: {sr_quote_future}')
         
       print(regulations)
