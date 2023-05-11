@@ -1124,7 +1124,8 @@ class Map2_0(Map2_0Template):
       rooms = single_rooms + double_rooms
       comp_beds = single_rooms + (double_rooms * 2)
       sr_quote = round(rooms / comp_beds, 2)
-      anvil.server.call('read_regulations', federal_state)
+      regulations = anvil.server.call('read_regulations', federal_state)
+      print(regulations)
       
       # Copy and Fill Dataframe for Excel-Summary
       summary_frame = copy.deepcopy(ExcelFrames.summary_data)
