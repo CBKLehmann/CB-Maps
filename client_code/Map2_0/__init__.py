@@ -1114,17 +1114,23 @@ class Map2_0(Map2_0Template):
       cover_frame['data'][1]['content'] = zipcode
       cover_frame['data'][2]['content'] = city.upper()
 
-      single_rooms = 0
-      double_rooms = 0
-      for competitor in data_comp_analysis_nh['data']:
-        if not competitor[0]['ez'] == 'N/A':
-          single_rooms += int(competitor[0]['ez'])
-        if not competitor[0]['dz'] == 'N/A':
-          double_rooms += int(competitor[0]['dz'])
-      rooms = single_rooms + double_rooms
-      comp_beds = single_rooms + (double_rooms * 2)
-      sr_quote = round(rooms / comp_beds, 2)
+      # Calculate updated Beds based on Regulations
+      single_rooms_current = 0
+      double_rooms_current = 0
+      rooms_fulfillment = 0
+      fulfillment = 0.8
       regulations = anvil.server.call('read_regulations', federal_state)
+      for competitor in data_comp_analysis_nh['data']:
+        print(competitor)
+        if not competitor[0]['ez'] == 'N/A':
+          single_rooms_current += int(competitor[0]['ez'])
+        if not competitor[0]['dz'] == 'N/A':
+          double_rooms_current += int(competitor[0]['dz'])
+      rooms_current = single_rooms_current + double_rooms_current
+      comp_beds_current = single_rooms_current + (double_rooms_current * 2)
+      sr_quote_current = round(rooms_current / comp_beds_current, 2)
+      # if not regulations['Existing ']['sr_quote'] == '/':
+        
       print(regulations)
       
       # Copy and Fill Dataframe for Excel-Summary
