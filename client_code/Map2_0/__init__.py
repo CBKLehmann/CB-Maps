@@ -980,9 +980,6 @@ class Map2_0(Map2_0Template):
       beds_surplus_v2 = beds_adjusted - inpatients_fc_v2
       beds_surplus_35_v2 = beds_adjusted - inpatients_fc_35_v2
       beds_in_reserve_20 = round(beds_active * (1 - occupancy_raw))
-      beds_in_reserve_fc = round(beds_adjusted * 0.05)
-      beds_surplus_30_avg = round((beds_surplus + beds_surplus_v2) / 2)
-      beds_surplus_35_avg = round((beds_surplus_35 + beds_surplus_35_v2) / 2)
       
   ################################################Neue Berechnungen################################################
   
@@ -1115,81 +1112,105 @@ class Map2_0(Map2_0Template):
       cover_frame['data'][2]['content'] = city.upper()
 
       # Calculate updated Beds based on Regulations
-  
-
-
-
-      
-      single_rooms_current = 0
-      double_rooms_current = 0
-      rooms_fulfillment = 0
-      fulfillment = 0.8
-      beds_loss = 0
-      rooms_future = 0
-      current_rooms = 0
+      # single_rooms_current = 0
+      # double_rooms_current = 0
+      # rooms_fulfillment = 0
+      # fulfillment = 0.8
+      # beds_loss = 0
+      # rooms_future = 0
+      # current_rooms = 0
       regulations = anvil.server.call('read_regulations', federal_state)
+      facilities_amount = 0
+      facilities_single_rooms = 0
+      facilities_double_rooms = 0
+      facilities_bed_amount = 0
+      facilities_rooms = 0
+      facilities_single_room_quote = 0
+      facilities_single_rooms_future = 0
+      facilities_double_rooms_future = 0
+      facilities_bed_amount_future = 0
+      facilities_single_room_quote_future = 0
       for competitor in data_comp_analysis_nh['data']:
-        print(competitor)
-        single_rooms = 0
-        double_rooms = 0
-        if not competitor[0]['ez'] == 'N/A':
-          single_rooms = int(competitor[0]['ez']) # Get number of single rooms inside facility
-          single_rooms_current += int(competitor[0]['ez']) # Add number of single rooms inside facility to overall number of single rooms
-        if not competitor[0]['dz'] == 'N/A':
-          double_rooms = int(competitor[0]['dz']) # Get number of double rooms inside facility
-          double_rooms_current += int(competitor[0]['dz']) # Add number of double rooms inside facility to overall number of double rooms
-        beds = single_rooms + double_rooms * 2 # Get number of current beds inside facility
-        if competitor[0]['status'] == 'aktiv':
-            if not regulations['Existing']['max_beds'] == '/':
-              if beds > int(regulations['Existing']['max_beds']):
-                beds_future = int(regulations['Existing']['max_beds']) # Get number of future number of beds inside facility based on regulations
-              else:
-                beds_future = beds  # Set number of future number of beds inside facility to current number of beds because regulation is higher than current number
-            else:
-              beds_future = beds  # Set number of future number of beds inside facility to current number of beds because regulation is higher than current number
-            if not regulations['Existing']['sr_quote'] == '/':
-              single_rooms_future = beds_future * regulations['Existing']['sr_quote'] # Calculate future number of single rooms inside facility based on regulations
-              if single_rooms_future <= single_rooms:
-                single_rooms_future = single_rooms
-              rest_beds = beds_future - single_rooms_future # Calculate rest beds to fill number of future beds with double rooms
-              if not rest_beds == 0:
-                double_rooms_future = rest_beds / 2 # Calculate future number of double rooms inside facility
-              else:
-                double_rooms_future = 0 # Set future number of ddouble rooms to 0 if single rooms are 100%
-              rooms_future += (single_rooms_future + double_rooms_future) # Calculate future number of rooms inside facility
-      rooms_current = single_rooms_current + double_rooms_current # Calculate overall current number of rooms
-      comp_beds_current = single_rooms_current + (double_rooms_current * 2) # Calculate overall current number of beds
-      if rooms_current > 0:
-        sr_quote_current = round(single_rooms_current / rooms_current, 2) # Calculate overall current single room quote
-      else:
-        sr_quote_current = 0
-      print(sr_quote_current)
-      print(regulations['Existing']['sr_quote'])
-      if not regulations['Existing']['sr_quote'] == '/':
-        sr_quote_future = regulations['Existing']['sr_quote'] * fulfillment # Calculate overall future single room quote based on regulations and fulfillment factor
-      else:
-        sr_quote_future = sr_quote_current
-      single_rooms_future_overall = rooms_current * sr_quote_future
-      if single_rooms_future_overall <= single_rooms_current:
-        single_rooms_future_overall = single_rooms_current
-      double_rooms_future_overall = rooms_current - single_rooms_future_overall
-      beds_future_overall = single_rooms_future_overall + double_rooms_future_overall * 2
-      beds_loss = beds_future_overall - comp_beds_current
+        if not competitor[0]['ez'] == 'N/A' and not competitor[0]['dz'] == 'N/A':
+          print(competitor)
+          facilities_amount += 1
+          ''' Get amount of single Rooms inside Facility '''
+          if not competitor[0]['ez'] == 'N/A':
+            facility_single_rooms = competitor[0]['ez']
+          else:
+            facility_single_rooms = 0
+          ''' Get amount of double Rooms inside Facility '''
+          if not competitor[0]['dz'] == 'N/A':
+            facility_double_rooms = competitor[0]['dz']
+          else:
+            facility_double_rooms = 0
+          ''' Get overall amount of Rooms inside Facility '''
+          facility_rooms = facility_single_rooms + facility_double_rooms
+          ''' Get single room quote of facility '''
+          facility_single_room_quote = facility_single_rooms / facility_rooms
+          ''' Get bed amount of facility '''
+          facility_bed_amount = facility_single_rooms + facility_double_rooms * 2
+          ''' Get single room quota from regulations '''
+          if not regulations['Existing']['sr_quote'] == '/':
+            facility_single_room_quote_future = float(regulations['Existing']['sr_quote'])
+          else:
+            facility_single_room_quote_future = 0
+          ''' Check if single room quota is below quota from regulations '''
+          if facility_single_room_quote < facility_single_room_quote_future:
+            ''' Calculate future amount of single rooms based on quota from regulations '''
+            facility_single_rooms_future = int(round(facility_rooms * facility_single_room_quote_future, 0))
+            ''' Calculate future amount of double rooms based on quota from regulations '''
+            facility_double_rooms_future = int(round(facility_rooms - facility_single_rooms_future, 0))
+            ''' Calculate future amount of beds based on quota from regulations '''
+            facility_bed_amount_future = int(round(facility_single_rooms_future + facility_double_rooms_future * 2, 0))
+          else:
+            facility_single_room_quote_future = facility_single_room_quote
+            facility_single_rooms_future = facility_single_rooms
+            facility_double_rooms_future = facility_double_rooms
+            facility_bed_amount_future = facility_bed_amount
+          ''' Add current facility values to overall values '''
+          facilities_single_rooms += facility_single_rooms
+          facilities_double_rooms += facility_double_rooms
+          facilities_bed_amount += facility_bed_amount
+          facilities_rooms += facility_rooms
+          facilities_single_room_quote += facility_single_room_quote
+          facilities_single_rooms_future += facility_single_rooms_future
+          facilities_double_rooms_future += facility_double_rooms_future
+          facilities_bed_amount_future += facility_bed_amount_future
+          facilities_single_room_quote_future += facility_single_room_quote_future
+        else:
+          # What to do if single rooms and double rooms are unknown - Use max home size and single room quota from regulations and if they not exist use average from known values ???
+          pass
 
+      loss_of_beds = facilities_bed_amount_future - facilities_bed_amount
+      beds_adjusted += loss_of_beds
+      beds_surplus_35 = beds_adjusted - inpatients_fc_35
+      beds_surplus_35_v2 = beds_adjusted - inpatients_fc_35_v2
+      beds_surplus = beds_adjusted - inpatients_fc
+      beds_surplus_v2 = beds_adjusted - inpatients_fc_v2
+      beds_surplus_30_avg = round((beds_surplus + beds_surplus_v2) / 2)
+      beds_surplus_35_avg = round((beds_surplus_35 + beds_surplus_35_v2) / 2)
+      beds_in_reserve_fc = round(beds_adjusted * 0.05)
+      
+
+      print(facilities_amount)
+      print(facilities_single_room_quote_future)
+      print(facilities_single_room_quote_future / facilities_amount * 100)
       print('Current')
-      print(f'single_rooms: {single_rooms_current}')
-      print(f'double_rooms: {double_rooms_current}')
-      print(f'beds: {comp_beds_current}')
-      print(f'rooms: {rooms_current}')
-      print(f'single_rooms_quote: {sr_quote_current}')
+      print(f'single_rooms: {facilities_single_rooms}')
+      print(f'double_rooms: {facilities_double_rooms}')
+      print(f'beds: {facilities_bed_amount}')
+      print(f'rooms: {facilities_rooms}')
+      print(f'single_rooms_quote: {round(facilities_single_room_quote / facilities_amount * 100, 0)}')
       print('#######################################')
       print('Future')
-      print(f'single_rooms: {single_rooms_future_overall}')
-      print(f'double_rooms: {double_rooms_future_overall}')
-      print(f'beds: {beds_future_overall}')
-      print(f'rooms: {rooms_current}')
-      print(f'single_rooms_quote: {sr_quote_future}')
-        
+      print(f'single_rooms: {facilities_single_rooms_future}')
+      print(f'double_rooms: {facilities_double_rooms_future}')
+      print(f'beds: {facilities_bed_amount_future}')
+      print(f'rooms: {facilities_rooms}')
+      print(f'single_rooms_quote: {round(facilities_single_room_quote_future / facilities_amount * 100, 0)}')
+      print('#######################################')
+      print(f'loss of beds due to regulations: {loss_of_beds}')
       print(regulations)
       
       # Copy and Fill Dataframe for Excel-Summary
@@ -1258,7 +1279,7 @@ class Map2_0(Map2_0Template):
       summary_frame['data'][136]['content'] = inpatients_fc
       summary_frame['data'][137]['content'] = inpatients_fc_v2
       summary_frame['data'][138]['content'] = f"{iso_time} minutes of {movement}"
-      summary_frame['data'][139]['content'] = -144 # Insert Variable here !
+      summary_frame['data'][139]['content'] = loss_of_beds
       summary_frame['data'][140]['content'] = beds_adjusted
       summary_frame['data'][141]['content'] = 0.95
       summary_frame['data'][142]['content'] = beds_in_reserve_fc
@@ -1294,7 +1315,7 @@ class Map2_0(Map2_0Template):
       summary_frame['data'][176]['content'] = free_beds_35_v2
       summary_frame['data'][178]['content'] = inpatients_fc_35
       summary_frame['data'][179]['content'] = inpatients_fc_35_v2
-      summary_frame['data'][181]['content'] = -144 # Insert Variable here !
+      summary_frame['data'][181]['content'] = loss_of_beds
       summary_frame['data'][182]['content'] = beds_adjusted
       summary_frame['data'][183]['content'] = 0.95
       summary_frame['data'][184]['content'] = beds_in_reserve_fc

@@ -60,7 +60,7 @@ cover_data = {
 }
 summary_data = {
         'title': 'SUMMARY',
-        'print_area': 'A1:M80',
+        'print_area': 'A1:M81',
         'fit_to_pages': (1, 1),
         'columns_width': [
             43.27, 26.75, 19, 19, 1.55, 9.00, 6.25, 5, 4.08, 7, 13.08, 2, 9.55
@@ -1839,7 +1839,7 @@ summary_data = {
                         }
                     },
                     {
-                        'values': '=SUMMARY!$C$56',
+                        'values': '=SUMMARY!$C$57',
                         'name': 'Adjusted number of beds (incl. beds in planning and under construction) 2030',
                         'data_labels': {
                             'value': True
@@ -1863,7 +1863,7 @@ summary_data = {
                         }
                     },
                     {
-                        'values': '=SUMMARY!$D$56',
+                        'values': '=SUMMARY!$D$57',
                         'name': 'Adjusted number of beds (incl. beds in planning and under construction) 2035',
                         'data_labels': {
                             'value': True
@@ -1965,7 +1965,7 @@ summary_data = {
                         }
                     },
                     {
-                        'values': '=SUMMARY!$C$56',
+                        'values': '=SUMMARY!$C$57',
                         'name': 'Adjusted number of beds (incl. beds in planning and under construction) 2030',
                         'data_labels': {
                             'value': True
@@ -1989,7 +1989,7 @@ summary_data = {
                         }
                     },
                     {
-                        'values': '=SUMMARY!$D$56',
+                        'values': '=SUMMARY!$D$57',
                         'name': 'Adjusted number of beds (incl. beds in planning and under construction) 2035',
                         'data_labels': {
                             'value': True
