@@ -1193,25 +1193,25 @@ class Map2_0(Map2_0Template):
       beds_in_reserve_fc = round(beds_adjusted * 0.05)
       
 
-      print(facilities_amount)
-      print(facilities_single_room_quote_future)
-      print(facilities_single_room_quote_future / facilities_amount * 100)
-      print('Current')
-      print(f'single_rooms: {facilities_single_rooms}')
-      print(f'double_rooms: {facilities_double_rooms}')
-      print(f'beds: {facilities_bed_amount}')
-      print(f'rooms: {facilities_rooms}')
-      print(f'single_rooms_quote: {round(facilities_single_room_quote / facilities_amount * 100, 0)}')
-      print('#######################################')
-      print('Future')
-      print(f'single_rooms: {facilities_single_rooms_future}')
-      print(f'double_rooms: {facilities_double_rooms_future}')
-      print(f'beds: {facilities_bed_amount_future}')
-      print(f'rooms: {facilities_rooms}')
-      print(f'single_rooms_quote: {round(facilities_single_room_quote_future / facilities_amount * 100, 0)}')
-      print('#######################################')
-      print(f'loss of beds due to regulations: {loss_of_beds}')
-      print(regulations)
+      # print(facilities_amount)
+      # print(facilities_single_room_quote_future)
+      # print(facilities_single_room_quote_future / facilities_amount * 100)
+      # print('Current')
+      # print(f'single_rooms: {facilities_single_rooms}')
+      # print(f'double_rooms: {facilities_double_rooms}')
+      # print(f'beds: {facilities_bed_amount}')
+      # print(f'rooms: {facilities_rooms}')
+      # print(f'single_rooms_quote: {round(facilities_single_room_quote / facilities_amount * 100, 0)}')
+      # print('#######################################')
+      # print('Future')
+      # print(f'single_rooms: {facilities_single_rooms_future}')
+      # print(f'double_rooms: {facilities_double_rooms_future}')
+      # print(f'beds: {facilities_bed_amount_future}')
+      # print(f'rooms: {facilities_rooms}')
+      # print(f'single_rooms_quote: {round(facilities_single_room_quote_future / facilities_amount * 100, 0)}')
+      # print('#######################################')
+      # print(f'loss of beds due to regulations: {loss_of_beds}')
+      # print(regulations)
       
       # Copy and Fill Dataframe for Excel-Summary
       summary_frame = copy.deepcopy(ExcelFrames.summary_data)
@@ -1422,11 +1422,23 @@ class Map2_0(Map2_0Template):
               'bg_color': '#FEA036'
             }
           })
+          if competitor[0]['ez'] == 'N/A' and competitor[0]['dz'] == 'N/A':
+            rooms = 'N/A'
+            sr_quota = 'N/A'
+          elif competitor[0]['ez'] == 'N/A':
+            rooms = competitor[0]['dz']
+            sr_quota = 0
+          elif competitor[0]['dz'] == 'N/A':
+            rooms = competitor[0]['ez']
+            sr_quota = 100
+          else:
+            rooms = int(competitor[0]['ez']) + int(competitor[0]['dz'])
+            sr_quota = int(competitor[0]['ez']) * 100 / rooms
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
             'cell': f'G{start_row}',
-            'content': competitor[0]['occupancy'],
+            'content': rooms,
             'format': {
               'align': 'center',
               'bottom': True,
@@ -1437,6 +1449,28 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'H{start_row}',
+            'content': f'{sr_quota} %',
+            'format': {
+              'align': 'center',
+              'bottom': True,
+              'bg_color': '#FEA036'
+            }
+          })
+          nurscomp_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'I{start_row}',
+            'content': competitor[0]['occupancy'],
+            'format': {
+              'align': 'center',
+              'bottom': True,
+              'bg_color': '#FEA036'
+            }
+          })
+          nurscomp_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'J{start_row}',
             'content': competitor[0]['baujahr'],
             'format': {
               'align': 'center',
@@ -1448,7 +1482,7 @@ class Map2_0(Map2_0Template):
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
-            'cell': f'I{start_row}',
+            'cell': f'K{start_row}',
             'content': competitor[0]['status'],
             'format': {
               'align': 'center',
@@ -1459,7 +1493,7 @@ class Map2_0(Map2_0Template):
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
-            'cell': f'J{start_row}',
+            'cell': f'L{start_row}',
             'content': competitor[0]['betreiber'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'align': 'center',
@@ -1475,7 +1509,7 @@ class Map2_0(Map2_0Template):
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
-            'cell': f'K{start_row}',
+            'cell': f'M{start_row}',
             'content': invest,
             'format': {
               'align': 'center',
@@ -1487,7 +1521,7 @@ class Map2_0(Map2_0Template):
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
-            'cell': f'L{start_row}',
+            'cell': f'N{start_row}',
             'content': competitor[0]['mdk_note'],
             'format': {
               'align': 'center',
@@ -1579,11 +1613,24 @@ class Map2_0(Map2_0Template):
               'bottom': True
             }
           })
+          if competitor[0]['ez'] == 'N/A' and competitor[0]['dz'] == 'N/A':
+            rooms = 'N/A'
+            sr_quota = 'N/A'
+          elif competitor[0]['ez'] == 'N/A':
+            rooms = competitor[0]['dz']
+            sr_quota = f'0 %'
+          elif competitor[0]['dz'] == 'N/A':
+            rooms = competitor[0]['ez']
+            sr_quota = f'100 %'
+          else:
+            rooms = int(competitor[0]['ez']) + int(competitor[0]['dz'])       
+            sr_quota_raw = int(competitor[0]['ez']) * 100 / rooms
+            sr_quota = f'{sr_quota_raw} %'
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
             'cell': f'G{start_row}',
-            'content': competitor[0]['occupancy'],
+            'content': rooms,
             'format': {
               'align': 'center',
               'bottom': True
@@ -1593,6 +1640,27 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'H{start_row}',
+            'content': sr_quota,
+            'format': {
+              'align': 'center',
+              'bottom': True
+            }
+          })
+          print(competitor[0]['occupancy'])
+          nurscomp_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'I{start_row}',
+            'content': competitor[0]['occupancy'],
+            'format': {
+              'align': 'center',
+              'bottom': True
+            }
+          })
+          nurscomp_frame['data'].append({
+            'type': 'text', 
+            'insert': 'write', 
+            'cell': f'J{start_row}',
             'content': competitor[0]['baujahr'],
             'format': {
               'align': 'center',
@@ -1603,7 +1671,7 @@ class Map2_0(Map2_0Template):
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
-            'cell': f'I{start_row}',
+            'cell': f'K{start_row}',
             'content': competitor[0]['status'],
             'format': {
               'align': 'center',
@@ -1613,7 +1681,7 @@ class Map2_0(Map2_0Template):
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
-            'cell': f'J{start_row}',
+            'cell': f'L{start_row}',
             'content': competitor[0]['betreiber'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
             'format': {
               'align': 'center',
@@ -1628,7 +1696,7 @@ class Map2_0(Map2_0Template):
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
-            'cell': f'K{start_row}',
+            'cell': f'M{start_row}',
             'content': invest,
             'format': {
               'align': 'center',
@@ -1639,7 +1707,7 @@ class Map2_0(Map2_0Template):
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
-            'cell': f'L{start_row}',
+            'cell': f'N{start_row}',
             'content': competitor[0]['mdk_note'],
             'format': {
               'align': 'center',

@@ -2308,7 +2308,7 @@ nca_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'A32',
-                'content': 'No.',
+                'content': 'no.',
                 'format': {
                     'align': 'center',
                     'font': 'Segoe UI Black',
@@ -2319,7 +2319,7 @@ nca_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'B32',
-                'content': 'Name',
+                'content': 'name',
                 'format': {
                     'align': 'center',
                     'font': 'Segoe UI Black',
@@ -2330,7 +2330,7 @@ nca_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'C32',
-                'content': 'No. of beds',
+                'content': 'no. of beds',
                 'format': {
                     'align': 'center',
                     'font': 'Segoe UI Black',
@@ -2363,7 +2363,7 @@ nca_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'F32',
-                'content': 'Patients',
+                'content': 'patients',
                 'format': {
                     'align': 'center',
                     'font': 'Segoe UI Black',
@@ -2374,7 +2374,7 @@ nca_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'G32',
-                'content': 'occupancy',
+                'content': 'rooms',
                 'format': {
                     'align': 'center',
                     'font': 'Segoe UI Black',
@@ -2385,7 +2385,7 @@ nca_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'H32',
-                'content': 'year of construction',
+                'content': 'sr-quota',
                 'format': {
                     'align': 'center',
                     'font': 'Segoe UI Black',
@@ -2396,7 +2396,7 @@ nca_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'I32',
-                'content': 'Status',
+                'content': 'occupancy',
                 'format': {
                     'align': 'center',
                     'font': 'Segoe UI Black',
@@ -2407,7 +2407,7 @@ nca_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'J32',
-                'content': 'Operator',
+                'content': 'year of construction',
                 'format': {
                     'align': 'center',
                     'font': 'Segoe UI Black',
@@ -2418,7 +2418,7 @@ nca_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'K32',
-                'content': 'Invest costs per day',
+                'content': 'status',
                 'format': {
                     'align': 'center',
                     'font': 'Segoe UI Black',
@@ -2429,6 +2429,28 @@ nca_data = {
                 'type': 'text',
                 'insert': 'write',
                 'cell': 'L32',
+                'content': 'operator',
+                'format': {
+                    'align': 'center',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'M32',
+                'content': 'invest costs per day',
+                'format': {
+                    'align': 'center',
+                    'font': 'Segoe UI Black',
+                    'bg_color': '#BFB273'
+                }
+            },
+            {
+                'type': 'text',
+                'insert': 'write',
+                'cell': 'N32',
                 'content': 'MDK grade',
                 'format': {
                     'align': 'center',
