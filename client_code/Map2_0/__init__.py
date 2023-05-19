@@ -695,31 +695,28 @@ class Map2_0(Map2_0Template):
 
       basic_app_informations = create_market_study_functions.Basic_App_Informations(self)
       
-      # #####Get Informations from Map#####
-      nh_checked = self.pdb_data_cb.checked
-      al_checked = self.pdb_data_al.checked
+      # nh_checked = self.pdb_data_cb.checked
+      # al_checked = self.pdb_data_al.checked
   
-      unique_code = anvil.server.call("get_unique_code")
-      searched_address = anvil.js.call('getSearchedAddress')
+      # unique_code = anvil.server.call("get_unique_code")
+      # searched_address = anvil.js.call('getSearchedAddress')
   
-      #Create Variables for multiple Uses in Function
-      lng_lat_marker = {
-                        "lng": (dict(self.marker['_lngLat'])['lng']),
-                        "lat": (dict(self.marker['_lngLat'])['lat'])
-                      }
+      # lng_lat_marker = {
+      #                   "lng": (dict(self.marker['_lngLat'])['lng']),
+      #                   "lat": (dict(self.marker['_lngLat'])['lat'])
+      #                 }
   
-      #Create Bounding Box based on Iso-Layer
-      iso = dict(self.mapbox.getSource('iso'))
-      bbox = [0, 0, 0, 0]
-      for point in iso['_data']['features'][0]['geometry']['coordinates'][0]:
-        if point[0] < bbox[1] or bbox[1] == 0:
-          bbox[1] = point[0]
-        if point[0] > bbox[3] or bbox[3] == 0:
-          bbox[3] = point[0]
-        if point[1] < bbox[0] or bbox[0] == 0:
-          bbox[0] = point[1]
-        if point[1] > bbox[2] or bbox[2] == 0:
-          bbox[2] = point[1]
+      # iso = dict(self.mapbox.getSource('iso'))
+      # bbox = [0, 0, 0, 0]
+      # for point in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      #   if point[0] < bbox[1] or bbox[1] == 0:
+      #     bbox[1] = point[0]
+      #   if point[0] > bbox[3] or bbox[3] == 0:
+      #     bbox[3] = point[0]
+      #   if point[1] < bbox[0] or bbox[0] == 0:
+      #     bbox[0] = point[1]
+      #   if point[1] > bbox[2] or bbox[2] == 0:
+      #     bbox[2] = point[1]
   
       #Get Place from Geocoder-API for Map-Marker
       string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{lng_lat_marker['lng']},{lng_lat_marker['lat']}.json?access_token={self.token}"

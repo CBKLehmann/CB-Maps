@@ -1,19 +1,39 @@
 from anvil import *
 
 class Basic_App_Informations:
-  def __init__(self, map_self):
-    self.nursing_homes_checked = map_self.pdb_data_cb.checked
-    self.assisted_living_checked = map_self.pdb_data_al.checked
+  def __init__(self, map):
+    self.nursing_homes_checked = map.pdb_data_cb.checked
+    self.assisted_living_checked = map.pdb_data_al.checked
     self.unique_code = server.call('get_unique_code')
     self.searched_address = js.call('getSearchedAddress')
-    self.marker_coords_lng = dict(map_self.marker['_lngLat'])['lng']
-    self.marker_coords.lat = dict(map_self.marker['_lngLat'])['lat']
+    self.iso_layer = map.mapbox.getSource('iso')['_data']['features'][0]['geometry']['coordinates'][0]
+    self.bounding_box = [0, 0, 0, 0]
+    
+    self.get_bounding_box_from_iso_layer()
+    self.get_marker_context(map)
+
+  def get_bounding_box_from_iso_layer(self):
+    for point in self.iso_layer:
+      if point[0] < self.bounding_box[1] or self.bounding_box[1] == 0:
+        self.bounding_box[1] = point[0]
+      if point[0] > self.bounding_box[3] or self.bounding_box[3] == 0:
+        self.bounding_box[3] = point[0]
+      if point[1] < self.bounding_box[0] or self.bounding_box[0] == 0:
+        self.bounding_box[0] = point[1]
+      if point[1] > self.bounding_box[2] or self.bounding_box[2] == 0:
+        self.bounding_box[2] = point[1]
+
+  def get_marker_context(self, map):
+    request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{self.marker_coords_lng},{self.marker_coords_lat}.json?access_token={map.token}"
+    response = http.request(request, json=True)
+    self.marker_context = response['features'][0]['context']
+
+
+class Marker:
+  def __init__(self, map):
+    self.marker_coords_lng = dict(map.marker['_lngLat'])['lng']
+    self.marker_coords_lat = dict(map.marker['_lngLat'])['lat']
     self.marker_coords = {
-      "lng": (dict(map_self.marker['_lngLat'])['lng']),
-      "lat": (dict(map_self.marker['_lngLat'])['lat'])
+      "lng": (dict(map.marker['_lngLat'])['lng']),
+      "lat": (dict(map.marker['_lngLat'])['lat'])
     }
-
-
-
-def get_basic_app_informations(self):
-  Basic_App_Informations(self)
