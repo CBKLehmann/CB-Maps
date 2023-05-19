@@ -1,17 +1,6 @@
 import anvil.server
-import anvil.users
-import anvil.google.auth, anvil.google.drive
-from anvil.google.drive import app_files
-import anvil.tables as tables
-import anvil.tables.query as q
-from anvil.tables import app_tables
-# This is a module.
-# You can define variables and functions here, and use them from any form. For example, in a top-level form:
-#
-#    from .Map2_0 import Module1
-#
-#    Module1.say_hello()
-#
 
-def say_hello():
-  print("Hello, world")
+def get_basic_app_informations(self):
+  nursing_homes_checked = self.pdb_data_cb.checked
+  assisted_living_checked = self.pdb.data_al.checked
+  
