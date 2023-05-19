@@ -1694,6 +1694,7 @@ class Map2_0(Map2_0Template):
 
       # Copy and Fill Dataframe for Regulations Overview
       reg_frame = copy.deepcopy(ExcelFrames.reg_data)
+      print(regulations)
       
   
       # Copy and Fill Dataframe for Assisted Living Analysis
