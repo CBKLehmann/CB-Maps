@@ -685,13 +685,15 @@ class Map2_0(Map2_0Template):
   def create_market_study(self, **event_args):
     
     '''Import Functions for creating Market Study'''
-    from .Map2_0 import create_market_study_functions
+    import create_market_study_functions
 
     '''Execute Code without the standard Anvil Loading Animation'''
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(self, True)
       self.mobile_hide_click()
       anvil.js.call('update_loading_bar', 0, 'Getting map-based Informations')
+
+      basic_app_informations = create_market_study_functions.Basic_App_Informations(self)
       
       # #####Get Informations from Map#####
       nh_checked = self.pdb_data_cb.checked

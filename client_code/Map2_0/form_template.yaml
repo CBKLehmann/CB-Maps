@@ -841,7 +841,7 @@ components:
           italic: false, background: '', bold: false, underline: false, icon: ''}
         name: excel_summary
         layout_properties: {row: IRJPJW, width_xs: 12, col_xs: 0, width: 233.333}
-        event_bindings: {click: Summary_click}
+        event_bindings: {click: create_market_study}
       - type: FileLoader
         properties:
           role: null
