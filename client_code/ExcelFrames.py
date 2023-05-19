@@ -2574,6 +2574,8 @@ reg_data = {
         'fit_to_pages': (1, 0),
         'columns_width': [10.71, 10.14, 32.71, 24.86, 24.86, 10.71, 10.14],
         'row_height': 36,
+        'row_start': 1,
+        'row_count': 12,
         'landscape': False,
         'data': [
           {
@@ -2593,8 +2595,10 @@ reg_data = {
             'cell': 'B2:F2',
             'content': 'Regulations of Federal State',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'valign': 'vcenter',
+              'font_size': 26,
+              'color': '#000000'
             }
           },
           {
@@ -2603,8 +2607,24 @@ reg_data = {
             'cell': 'C4',
             'content': 'Federal State',
             'format': {
+              'align': 'center',
+              'color': '#000000',
+              'bg_color': '#948a54',
+              'font_size': 14,
+              'border': 1,
+              'bold': True
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'C5',
+            'content': '',
+            'format': {
                 'align': 'center',
-                'color': '#000000'
+                'color': '#000000',
+                'border': 1,
+                'bg_color': '#c4bd97'
             }
           },
           {
@@ -2614,7 +2634,9 @@ reg_data = {
             'content': 'single room quota (min.)',
             'format': {
                 'align': 'center',
-                'color': '#000000'
+                'color': '#000000',
+                'border': 1,
+                'bg_color': '#c4bd97'
             }
           },
           {
@@ -2624,7 +2646,9 @@ reg_data = {
             'content': 'maximum home size',
             'format': {
                 'align': 'center',
-                'color': '#000000'
+                'color': '#000000',
+                'border': 1,
+                'bg_color': '#c4bd97'
             }
           },
           {
@@ -2634,7 +2658,9 @@ reg_data = {
             'content': 'minimum room size (sr/dr)',
             'format': {
                 'align': 'center',
-                'color': '#000000'
+                'color': '#000000',
+                'border': 1,
+                'bg_color': '#c4bd97'
             }
           },
           {
@@ -2644,7 +2670,9 @@ reg_data = {
             'content': 'minimum common area/resident',
             'format': {
                 'align': 'center',
-                'color': '#000000'
+                'color': '#000000',
+                'border': 1,
+                'bg_color': '#c4bd97'
             }
           },
           {
@@ -2653,8 +2681,10 @@ reg_data = {
             'cell': 'C10',
             'content': 'comment',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'border': 1,
+              'bg_color': '#c4bd97'
             }
           },
           {
@@ -2663,8 +2693,10 @@ reg_data = {
             'cell': 'C11',
             'content': 'legal basis',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'border': 1,
+              'bg_color': '#c4bd97'
             }
           },
           {
@@ -2673,8 +2705,12 @@ reg_data = {
             'cell': 'D4:E4',
             'content': 'Baden-Wurttemberg',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'bg_color': '#948a54',
+              'font_size': 14,
+              'border': 1,
+              'bold': True
             }
           },
           {
@@ -2683,8 +2719,10 @@ reg_data = {
             'cell': 'D5',
             'content': 'New',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'border': 1,
+              'bg_color': '#c4bd97'
             }
           },
           {
@@ -2693,8 +2731,10 @@ reg_data = {
             'cell': 'D6',
             'content': '100 %',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'font_size': 10,
+              'border': 1
             }
           },
           {
@@ -2703,8 +2743,10 @@ reg_data = {
             'cell': 'D7',
             'content': '100 beds',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'font_size': 10,
+              'border': 1
             }
           },
           {
@@ -2713,8 +2755,10 @@ reg_data = {
             'cell': 'D8',
             'content': '14m²/16m²*',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'font_size': 10,
+              'border': 1
             }
           },
           {
@@ -2723,8 +2767,10 @@ reg_data = {
             'cell': 'D9',
             'content': '5m², min. 2/3 for living spaces',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'font_size': 10,
+              'border': 1
             }
           },
           {
@@ -2733,8 +2779,10 @@ reg_data = {
             'cell': 'D10',
             'content': '/',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'font_size': 10,
+              'border': 1
             }
           },
           {
@@ -2743,8 +2791,10 @@ reg_data = {
             'cell': 'D11:E11',
             'content': 'WTPG, LHeimBauVO',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'font_size': 10,
+              'border': 1
             }
           },
           {
@@ -2753,8 +2803,10 @@ reg_data = {
             'cell': 'E5',
             'content': 'Existing',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'border': 1,
+              'bg_color': '#c4bd97'
             }
           },
           {
@@ -2763,8 +2815,10 @@ reg_data = {
             'cell': 'E6',
             'content': '100 % (as of 2019)',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'font_size': 10,
+              'border': 1
             }
           },
           {
@@ -2773,8 +2827,10 @@ reg_data = {
             'cell': 'E7',
             'content': '100 beds',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'font_size': 10,
+              'border': 1
             }
           },
           {
@@ -2783,8 +2839,10 @@ reg_data = {
             'cell': 'E8',
             'content': '14m²/16m²*',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'font_size': 10,
+              'border': 1
             }
           },
           {
@@ -2793,8 +2851,10 @@ reg_data = {
             'cell': 'E9',
             'content': '5m², min 2/3 for living spaces',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'font_size': 10,
+              'border': 1
             }
           },
           {
@@ -2803,8 +2863,10 @@ reg_data = {
             'cell': 'E10',
             'content': '*Transition period 10 years can be extended to 25 years',
             'format': {
-                'align': 'center',
-                'color': '#000000'
+              'align': 'center',
+              'color': '#000000',
+              'font_size': 10,
+              'border': 1
             }
           }
         ]
