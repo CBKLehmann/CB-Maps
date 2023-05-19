@@ -1815,7 +1815,10 @@ class Map2_0(Map2_0Template):
         #   year_of_construction_comp += entry[0]['baujahr']
         #   year_of_construction_comp_amount += 1
 
-    ez_weight_avg_comp = round(100 + (((ez_total_comp / room_total_comp) - 1) * 100))
+    if room_total_comp > 0:
+      ez_weight_avg_comp = round(100 + (((ez_total_comp / room_total_comp) - 1) * 100))
+    else:
+      ez_weight_avg_comp = 0
     print(ez_weight_avg_comp)
       
     ###Old###
