@@ -1695,7 +1695,29 @@ class Map2_0(Map2_0Template):
       # Copy and Fill Dataframe for Regulations Overview
       reg_frame = copy.deepcopy(ExcelFrames.reg_data)
       print(regulations)
-      
+      reg_frame['data'][10]['content'] = regulations['federal_state']
+      print(type(regulations['New']['sr_quote_raw']))
+      print(type(regulations['New']['sr_quote_raw']) == int)
+      print(type(regulations['New']['sr_quote']) == float)
+      if type(regulations['New']['sr_quote_raw']) == int or type(regulations['New']['sr_quote']) == float:
+        sr_quote_new_raw = f"{int(regulations['New']['sr_quote_raw'] * 100)} %"
+      else:
+        sr_quote_new_raw = regulations['New']['sr_quote_raw']
+      if type(regulations['Existing']['sr_quote_raw']) == 'int' or type(regulations['Existing']['sr_quote']) == 'float':
+        sr_quote_existing_raw = f"{int(regulations['Existing']['sr_quote_raw'] * 100)} %"
+      else:
+        sr_quote_existing_raw = regulations['Existing']['sr_quote_raw']
+      reg_frame['data'][12]['content'] = sr_quote_new_raw
+      reg_frame['data'][13]['content'] = regulations['New']['max_beds_raw']
+      reg_frame['data'][14]['content'] = regulations['New']['min_room_size']
+      reg_frame['data'][15]['content'] = regulations['New']['min_common_area_resident']
+      reg_frame['data'][16]['content'] = regulations['New']['comment']
+      reg_frame['data'][17]['content'] = regulations['New']['legal_basis']
+      reg_frame['data'][19]['content'] = sr_quote_existing_raw
+      reg_frame['data'][20]['content'] = regulations['Existing']['max_beds_raw']
+      reg_frame['data'][21]['content'] = regulations['Existing']['min_room_size']
+      reg_frame['data'][22]['content'] = regulations['Existing']['min_common_area_resident']
+      reg_frame['data'][23]['content'] = regulations['Existing']['comment']
   
       # Copy and Fill Dataframe for Assisted Living Analysis
       assliv_frame = copy.deepcopy(ExcelFrames.ala_data)
