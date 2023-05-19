@@ -2572,7 +2572,7 @@ reg_data = {
   'title': 'Regulations Overview',
         'print_area': 'A1:G12',
         'fit_to_pages': (1, 0),
-        'columns_width': [10.71, 10.14, 32.71, 24.86, 50, 10.71, 10.14],
+        'columns_width': [10.71, 10.14, 32.71, 24.86, 66, 10.71, 10.14],
         'row_height': 36,
         'row_start': 1,
         'row_count': 12,

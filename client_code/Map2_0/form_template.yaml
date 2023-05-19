@@ -827,13 +827,13 @@ components:
         layout_properties: {row: KTWRHY, width_xs: 12, col_xs: 0, width: 193.999666}
       - type: Button
         properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-          foreground: 'theme:Gray 300', visible: true, text: create Summary, font_size: null,
-          font: '', spacing_above: small, icon_align: left, spacing_below: small,
+          foreground: 'theme:Gray 300', visible: true, text: create Market Study,
+          font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small,
           italic: false, background: '', bold: false, underline: false, icon: ''}
         name: Summary
         layout_properties: {grid_position: 'DKUUUF,TBTQVD', row: AADDGY, width_xs: 12,
-          col_xs: 0, width: 233.333}
-        event_bindings: {click: Summary_click}
+          col_xs: 0, width: 203}
+        event_bindings: {click: create_market_study}
       - type: Button
         properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', visible: false, text: SUMMARY (EXCEL), font_size: null,

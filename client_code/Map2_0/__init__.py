@@ -452,7 +452,7 @@ class Map2_0(Map2_0Template):
       else:
         icon_container.icon = "fa:angle-right"
    
-#######Noch bearbeiten#######
+  #######Noch bearbeiten#######
   def admin_button_click(self, **event_args): 
     with anvil.server.no_loading_indicator:
       #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
@@ -682,16 +682,18 @@ class Map2_0(Map2_0Template):
 
   #######Noch bearbeiten#######
 
-  #This methos is called when the User want's to generate a Market Summary
-  def Summary_click(self, **event_args):
-    with anvil.server.no_loading_indicator:
-      # #####Get Informations from Map#####
-      Functions.manipulate_loading_overlay(self, True)
-      if self.mobile:
-        self.mobile_hide_click()
-
-      anvil.js.call('update_loading_bar', 0, 'Getting map-based Informations')
+  def create_market_study(self, **event_args):
     
+    '''Import Functions for creating Market Study'''
+    from .Map2_0 import create_market_study_functions
+
+    '''Execute Code without the standard Anvil Loading Animation'''
+    with anvil.server.no_loading_indicator:
+      Functions.manipulate_loading_overlay(self, True)
+      self.mobile_hide_click()
+      anvil.js.call('update_loading_bar', 0, 'Getting map-based Informations')
+      
+      # #####Get Informations from Map#####
       nh_checked = self.pdb_data_cb.checked
       al_checked = self.pdb_data_al.checked
   
@@ -1694,11 +1696,7 @@ class Map2_0(Map2_0Template):
 
       # Copy and Fill Dataframe for Regulations Overview
       reg_frame = copy.deepcopy(ExcelFrames.reg_data)
-      print(regulations)
       reg_frame['data'][10]['content'] = regulations['federal_state']
-      print(type(regulations['New']['sr_quote_raw']))
-      print(type(regulations['New']['sr_quote_raw']) == int)
-      print(type(regulations['New']['sr_quote']) == float)
       if type(regulations['New']['sr_quote_raw']) == int or type(regulations['New']['sr_quote']) == float:
         sr_quote_new_raw = f"{int(regulations['New']['sr_quote_raw'] * 100)} %"
       else:
@@ -3514,17 +3512,17 @@ class Map2_0(Map2_0Template):
   
   def mobile_hide_click(self, **event_args):
     with anvil.server.no_loading_indicator:
-      mobile_menu = document.getElementsByClassName('left-nav')[0]
-      if self.mobile_menu_open:
-        mobile_menu.style.overflowY = 'hidden'
-        mobile_menu.style.height = '7%'
-        mobile_menu.scrollTop = 0
-        self.mobile_menu_open = False
-      else:
-        mobile_menu.style.height = '100%'
-        mobile_menu.style.overflowY = 'auto'
-        self.mobile_menu_open = True
-      pass
+      if self.mobile:
+        mobile_menu = document.getElementsByClassName('left-nav')[0]
+        if self.mobile_menu_open:
+          mobile_menu.style.overflowY = 'hidden'
+          mobile_menu.style.height = '7%'
+          mobile_menu.scrollTop = 0
+          self.mobile_menu_open = False
+        else:
+          mobile_menu.style.height = '100%'
+          mobile_menu.style.overflowY = 'auto'
+          self.mobile_menu_open = True
 
   def share_click(self, **event_args):
     """This method is called when the button is clicked"""
