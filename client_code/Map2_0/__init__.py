@@ -1178,9 +1178,6 @@ class Map2_0(Map2_0Template):
           facilities_double_rooms_future += facility_double_rooms_future
           facilities_bed_amount_future += facility_bed_amount_future
           facilities_single_room_quote_future += facility_single_room_quote_future
-        else:
-          # What to do if single rooms and double rooms are unknown - Use max home size and single room quota from regulations and if they not exist use average from known values ???
-          pass
 
       loss_of_beds = facilities_bed_amount_future - facilities_bed_amount
       beds_adjusted += loss_of_beds
@@ -1427,13 +1424,14 @@ class Map2_0(Map2_0Template):
             sr_quota = 'N/A'
           elif competitor[0]['ez'] == 'N/A':
             rooms = competitor[0]['dz']
-            sr_quota = 0
+            sr_quota = '0 %'
           elif competitor[0]['dz'] == 'N/A':
             rooms = competitor[0]['ez']
-            sr_quota = 100
+            sr_quota = '100 %'
           else:
             rooms = int(competitor[0]['ez']) + int(competitor[0]['dz'])
-            sr_quota = int(competitor[0]['ez']) * 100 / rooms
+            sr_quota_raw = int(round(int(competitor[0]['ez']) * 100 / rooms, 0))
+            sr_quota = f'{sr_quota_raw} %'
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
@@ -1449,7 +1447,7 @@ class Map2_0(Map2_0Template):
             'type': 'text', 
             'insert': 'write', 
             'cell': f'H{start_row}',
-            'content': f'{sr_quota} %',
+            'content': sr_quota,
             'format': {
               'align': 'center',
               'bottom': True,
@@ -1624,7 +1622,7 @@ class Map2_0(Map2_0Template):
             sr_quota = f'100 %'
           else:
             rooms = int(competitor[0]['ez']) + int(competitor[0]['dz'])       
-            sr_quota_raw = int(competitor[0]['ez']) * 100 / rooms
+            sr_quota_raw = int(round(int(competitor[0]['ez']) * 100 / rooms))
             sr_quota = f'{sr_quota_raw} %'
           nurscomp_frame['data'].append({
             'type': 'text', 
