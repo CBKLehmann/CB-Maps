@@ -2568,6 +2568,247 @@ nca_data = {
             }
         ]
     }
+reg_data = {
+  'title': 'Regulations Overview',
+        'print_area': 'A1:G12',
+        'fit_to_pages': (1, 0),
+        'columns_width': [10.71, 10.14, 32.71, 24.86, 24.86, 10.71, 10.14],
+        'row_height': 36,
+        'landscape': False,
+        'data': [
+          {
+            'type': 'image',
+            'cell': 'F1',
+            'file': 'img/cb_logo.png',
+            'style': {
+                'x_scale': .21,
+                'y_scale': .2,
+                'y_offset': 10,
+                'x_offset': 10
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'merge',
+            'cell': 'B2:F2',
+            'content': 'Regulations of Federal State',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'C4',
+            'content': 'Federal State',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'C6',
+            'content': 'single room quota (min.)',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'C7',
+            'content': 'maximum home size',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'C8',
+            'content': 'minimum room size (sr/dr)',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'C9',
+            'content': 'minimum common area/resident',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'C10',
+            'content': 'comment',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'C11',
+            'content': 'legal basis',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'merge',
+            'cell': 'D4:E4',
+            'content': 'Baden-Wurttemberg',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'D5',
+            'content': 'New',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'D6',
+            'content': '100 %',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'D7',
+            'content': '100 beds',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'D8',
+            'content': '14m²/16m²*',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'D9',
+            'content': '5m², min. 2/3 for living spaces',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'D10',
+            'content': '/',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'merge',
+            'cell': 'D11:E11',
+            'content': 'WTPG, LHeimBauVO',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'E5',
+            'content': 'Existing',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'E6',
+            'content': '100 % (as of 2019)',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'E7',
+            'content': '100 beds',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'E8',
+            'content': '14m²/16m²*',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'E9',
+            'content': '5m², min 2/3 for living spaces',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          },
+          {
+            'type': 'text',
+            'insert': 'write',
+            'cell': 'E10',
+            'content': '*Transition period 10 years can be extended to 25 years',
+            'format': {
+                'align': 'center',
+                'color': '#000000'
+            }
+          }
+        ]
+}
 ala_data = {
         'title': 'ASSISTED_LIVING_ANALYSIS',
         'print_area': 'A1:F57',

@@ -1132,7 +1132,6 @@ class Map2_0(Map2_0Template):
       facilities_single_room_quote_future = 0
       for competitor in data_comp_analysis_nh['data']:
         if not competitor[0]['ez'] == 'N/A' and not competitor[0]['dz'] == 'N/A':
-          print(competitor)
           facilities_amount += 1
           ''' Get amount of single Rooms inside Facility '''
           if not competitor[0]['ez'] == 'N/A':
@@ -1188,27 +1187,6 @@ class Map2_0(Map2_0Template):
       beds_surplus_30_avg = round((beds_surplus + beds_surplus_v2) / 2)
       beds_surplus_35_avg = round((beds_surplus_35 + beds_surplus_35_v2) / 2)
       beds_in_reserve_fc = round(beds_adjusted * 0.05)
-      
-
-      # print(facilities_amount)
-      # print(facilities_single_room_quote_future)
-      # print(facilities_single_room_quote_future / facilities_amount * 100)
-      # print('Current')
-      # print(f'single_rooms: {facilities_single_rooms}')
-      # print(f'double_rooms: {facilities_double_rooms}')
-      # print(f'beds: {facilities_bed_amount}')
-      # print(f'rooms: {facilities_rooms}')
-      # print(f'single_rooms_quote: {round(facilities_single_room_quote / facilities_amount * 100, 0)}')
-      # print('#######################################')
-      # print('Future')
-      # print(f'single_rooms: {facilities_single_rooms_future}')
-      # print(f'double_rooms: {facilities_double_rooms_future}')
-      # print(f'beds: {facilities_bed_amount_future}')
-      # print(f'rooms: {facilities_rooms}')
-      # print(f'single_rooms_quote: {round(facilities_single_room_quote_future / facilities_amount * 100, 0)}')
-      # print('#######################################')
-      # print(f'loss of beds due to regulations: {loss_of_beds}')
-      # print(regulations)
       
       # Copy and Fill Dataframe for Excel-Summary
       summary_frame = copy.deepcopy(ExcelFrames.summary_data)
@@ -1713,6 +1691,10 @@ class Map2_0(Map2_0Template):
             }
           })
         start_row += 1
+
+      # Copy and Fill Dataframe for Regulations Overview
+      reg_frame = copy.deepcopy(ExcelFrames.reg_data)
+      
   
       # Copy and Fill Dataframe for Assisted Living Analysis
       assliv_frame = copy.deepcopy(ExcelFrames.ala_data)
@@ -2213,7 +2195,7 @@ class Map2_0(Map2_0Template):
       anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
       
       anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
-      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, checkboxes)
+      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, checkboxes, reg_frame)
   
       # if not Variables.tm_mode:
       #   #Create Charts and Static Map for Analysis
