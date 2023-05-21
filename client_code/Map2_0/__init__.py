@@ -719,11 +719,11 @@ class Map2_0(Map2_0Template):
       #     bbox[2] = point[1]
   
       #Get Place from Geocoder-API for Map-Marker
-      string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{lng_lat_marker['lng']},{lng_lat_marker['lat']}.json?access_token={self.token}"
-      response_data = anvil.http.request(string,json=True)
-      string_test = f"https://nominatim.openstreetmap.org/reverse?format=geojson&addressdetails=1&lat={lng_lat_marker['lat']}&lon={lng_lat_marker['lng']}"
-      response_data_test = anvil.http.request(string_test,json=True)
-      marker_context = response_data['features'][0]['context']
+      # string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{lng_lat_marker['lng']},{lng_lat_marker['lat']}.json?access_token={self.token}"
+      # response_data = anvil.http.request(string,json=True)
+      # string_test = f"https://nominatim.openstreetmap.org/reverse?format=geojson&addressdetails=1&lat={lng_lat_marker['lat']}&lon={lng_lat_marker['lng']}"
+      # response_data_test = anvil.http.request(string_test,json=True)
+      # marker_context = response_data['features'][0]['context']
   
       #Get Information about Zipcode, District, City and Federal-State of Map-Marker-Position
       zipcode = "n.a."
