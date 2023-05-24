@@ -457,14 +457,10 @@ class Map2_0(Map2_0Template):
     with anvil.server.no_loading_indicator:
       #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
       date = datetime.datetime.now()
-      # anvil.server.call('test_i_love_pdf')
       # anvil.server.call('micmaccircle')
-      # anvil.server.call('read_regularien')
-      # anvil.server.call('get_db_stations')
-      
-  #     #Call a Server Function
-  #     anvil.server.call('manipulate')
-  
+      # anvil.server.call('manipulate')
+
+  ''' Get Population of every Municipalitie inside Iso-Layer '''
   #     sendData = anvil.server.call('separate_iso', Variables.activeIso)
       
   #     lk_Array = []
@@ -677,8 +673,6 @@ class Map2_0(Map2_0Template):
   #     """
     
   #     anvil.js.call('open_tab', html)
-  
-      print('Done')
 
   #######Noch bearbeiten#######
 
@@ -1621,7 +1615,6 @@ class Map2_0(Map2_0Template):
               'bottom': True
             }
           })
-          print(competitor[0]['occupancy'])
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
