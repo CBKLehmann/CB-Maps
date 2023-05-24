@@ -1623,7 +1623,6 @@ class Map2_0(Map2_0Template):
               'bottom': True
             }
           })
-          print(competitor[0]['occupancy'])
           nurscomp_frame['data'].append({
             'type': 'text', 
             'insert': 'write', 
