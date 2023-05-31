@@ -97,10 +97,10 @@ components:
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: '', visible: true, text: '', font_size: 13,
-      font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+      font: '', spacing_above: small, type: number, spacing_below: small, italic: false,
       background: '', bold: false, underline: false}
     name: apartment_count_input
-    layout_properties: {row: LGDFQI, width_xs: 5, col_xs: 5, width: 377.333666}
+    layout_properties: {row: LGDFQI, width_xs: 5, col_xs: 5, width: 377.00033399999995}
   - type: Button
     properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
       foreground: 'theme:Gray 100', visible: true, text: Save, font_size: 13, font: '',

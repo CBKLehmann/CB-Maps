@@ -68,10 +68,10 @@ components:
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: beds_no_input
-    layout_properties: {row: VEODPN, width_xs: 3, col_xs: 3, width: 210.666666}
+    layout_properties: {row: VEODPN, width_xs: 3, col_xs: 3, width: 210.333334}
     event_bindings: {}
   - type: Label
     properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
@@ -83,10 +83,10 @@ components:
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: construction_year_input
-    layout_properties: {row: VEODPN, width_xs: 3, col_xs: 9, width: 210.666666}
+    layout_properties: {row: VEODPN, width_xs: 3, col_xs: 9, width: 210.333334}
   - type: Label
     properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Single Rooms:', font_size: 13, font: '', spacing_above: small,
@@ -97,10 +97,10 @@ components:
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: single_room_input
-    layout_properties: {row: KEHTXR, width_xs: 3, col_xs: 3, width: 210.666666}
+    layout_properties: {row: KEHTXR, width_xs: 3, col_xs: 3, width: 210.333334}
   - type: Label
     properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Double Rooms:', font_size: 13, font: '', spacing_above: small,
@@ -111,10 +111,10 @@ components:
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: double_room_input
-    layout_properties: {row: KEHTXR, width_xs: 3, col_xs: 9, width: 210.666666}
+    layout_properties: {row: KEHTXR, width_xs: 3, col_xs: 9, width: 210.333334}
   - type: Label
     properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Patients:', font_size: 13, font: '', spacing_above: small,
@@ -125,10 +125,10 @@ components:
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: patients_input
-    layout_properties: {row: SCIKVK, width_xs: 3, col_xs: 3, width: 210.666666}
+    layout_properties: {row: SCIKVK, width_xs: 3, col_xs: 3, width: 210.333334}
   - type: Label
     properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Occupancy:', font_size: 13, font: '', spacing_above: small,
@@ -139,10 +139,17 @@ components:
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: occupancy_input
-    layout_properties: {row: SCIKVK, width_xs: 3, col_xs: 9, width: 210.666666}
+    layout_properties: {row: SCIKVK, width_xs: 2, col_xs: 9, width: 127.00033400000001}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: '%', font_size: null, font: '', spacing_above: small, icon_align: left,
+      spacing_below: small, italic: false, background: '', bold: false, underline: false,
+      icon: ''}
+    name: percent
+    layout_properties: {row: SCIKVK, width_xs: 1, col_xs: 11, width: 53.3333}
   - type: Label
     properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'Invest cost per day:', font_size: 13, font: '',
@@ -153,10 +160,17 @@ components:
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: invest_cost_input
-    layout_properties: {row: SMOASK, width_xs: 3, col_xs: 3, width: 210.666666}
+    layout_properties: {row: SMOASK, width_xs: 2, col_xs: 3, width: 127.00033400000001}
+  - type: Label
+    properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+      visible: true, text: €, font_size: null, font: '', spacing_above: small, icon_align: left,
+      spacing_below: small, italic: false, background: '', bold: false, underline: false,
+      icon: ''}
+    name: label_1
+    layout_properties: {row: SMOASK, width_xs: 1, col_xs: 5, width: 53.3333}
   - type: Label
     properties: {role: null, align: right, tooltip: '', border: '', foreground: 'theme:Gray
         300', visible: true, text: 'MDK Grade:', font_size: 13, font: '', spacing_above: small,
@@ -167,10 +181,10 @@ components:
   - type: TextBox
     properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '',
       border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '',
-      font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small,
+      font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small,
       italic: false, background: '', bold: false, underline: false}
     name: mdk_grade_input
-    layout_properties: {row: SMOASK, width_xs: 3, col_xs: 9, width: 210.666666}
+    layout_properties: {row: SMOASK, width_xs: 3, col_xs: 9, width: 210.333334}
     event_bindings: {}
   - type: Button
     properties: {role: null, align: center, tooltip: '', border: '', enabled: true,

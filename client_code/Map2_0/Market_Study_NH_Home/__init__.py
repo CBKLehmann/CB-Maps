@@ -24,7 +24,7 @@ class Market_Study_NH_Home(Market_Study_NH_HomeTemplate):
         'ez': self.single_room_input.text,
         'dz': self.double_room_input.text,
         'anz_vers_pat': self.patients_input.text,
-        'occupancy': self.occupancy_input.text,
+        'occupancy': f"{self.occupancy_input.text} %",
         'baujahr': self.construction_year_input.text,
         'status': self.status_input.text,
         'betreiber': self.operator_input.text,
