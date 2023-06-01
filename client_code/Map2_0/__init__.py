@@ -29,9 +29,11 @@ class Map2_0(Map2_0Template):
   def __init__(self, **properties):
     with anvil.server.no_loading_indicator:
       # Set Form properties and Data Bindings
-      maintenance = False
-  
-      if maintenance:
+      maintenance = True
+      self.role = properties['role']
+      print(self.role)
+      
+      if maintenance and not self.role == 'admin':
         from .Maintenance import Maintenance
         alert(content=Maintenance(), dismissible=False, buttons=[], large=True)
       else:
@@ -45,7 +47,6 @@ class Map2_0(Map2_0Template):
         self.competitors = []
         self.custom_marker = []
         self.comp_marker = []
-        self.role = properties['role']
         self.last_popup = None
         self.last_target = None
         self.active_container = None
@@ -752,6 +753,7 @@ class Map2_0(Map2_0Template):
   
       #Get Information from Database for County of Marker-Position
       countie_data = anvil.server.call("get_demographic_district_data", marker_coords)
+      print(countie_data)
       countie = countie_data['ex_dem_lk']['name'].split(',')
   
       #Get Entries from Care-Database based on District
