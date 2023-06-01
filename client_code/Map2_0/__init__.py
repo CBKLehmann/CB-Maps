@@ -753,7 +753,6 @@ class Map2_0(Map2_0Template):
   
       #Get Information from Database for County of Marker-Position
       countie_data = anvil.server.call("get_demographic_district_data", marker_coords)
-      print(countie_data)
       countie = countie_data['ex_dem_lk']['name'].split(',')
   
       #Get Entries from Care-Database based on District

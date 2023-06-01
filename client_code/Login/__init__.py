@@ -32,6 +32,10 @@ class Login(LoginTemplate):
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(self, True)
       try:
+        if self.passwort_input.text == "123456":
+          self.forgot_password.raise_event('click')
+          Functions.manipulate_loading_overlay(self, False)
+          alert('Please update your password using the link in the email you received.', dismissible=False, large=True, role='custom_alert_big')
         user = anvil.users.login_with_email(self.email_input.text, self.passwort_input.text, remember=self.remember_me.checked)
         if user:
           open_form('Map2_0', role=dict(user)['role'])
