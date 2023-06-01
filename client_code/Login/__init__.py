@@ -14,6 +14,7 @@ class Login(LoginTemplate):
     with anvil.server.no_loading_indicator:
       # Set Form properties and Data Bindings.
       self.init_components(**properties)
+      self.user = anvil.users.get_user()
 
   def form_show(self, **event_args):
     hash = get_url_hash()
@@ -38,9 +39,9 @@ class Login(LoginTemplate):
           alert('Please update your password using the link in the email you received.', dismissible=False, large=True, role='custom_alert_big')
         else:
           user = anvil.users.login_with_email(self.email_input.text, self.passwort_input.text, remember=self.remember_me.checked)
-        if user:
-          open_form('Map2_0', role=dict(user)['role'])
-          Functions.manipulate_loading_overlay(self, False)
+          if user:
+            open_form('Map2_0', role=dict(user)['role'])
+            Functions.manipulate_loading_overlay(self, False)
       except anvil.users.AuthenticationFailed:
           self.error.visible = True
           Functions.manipulate_loading_overlay(self, False)

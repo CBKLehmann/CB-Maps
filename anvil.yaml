@@ -60,7 +60,7 @@ services:
   server_config: {enc_delegation_refresh_token: 4X1fdQKAkXWTXMNEEo+FrnAMGPnf3rprVIpzmcb8mhQ8qrLxFsIjuyf//DfIgcCYmYfmRHAJEX1s1o9GG7l/Lc02V7dKahCJPwqT3gFWCcqgdNlU+e5iKFtGTl40WNObkdIFI12vxNZmKaX0RGzbdr08Ss6eWdPR3+EkVcxB4s9DyHkSCgajBAPc2lewfJ4iVuxcqpiOj7nRiAT+kbY0kj2cMmtmW0NmT4pqIvU9Wes2+JDVuW5Z/yPEfgxYVWMEGpcTYIT04BCYtRRwbPO7s8JF6NidesfzaHI/lQ0qMtTZbxmLjm/b8HKODHQocA==}
 - source: /runtime/services/anvil/users.yml
   client_config: {allow_signup: false, enable_automatically: false, use_email: true,
-    confirm_email: true, allow_remember_me: true, remember_me_days: 1}
+    confirm_email: true, allow_remember_me: true, remember_me_days: 365}
   server_config: {user_table: users}
 startup: {type: form, module: Login}
 package_name: How_Far_Can_I_Go_
