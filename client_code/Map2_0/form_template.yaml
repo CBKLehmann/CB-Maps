@@ -850,7 +850,7 @@ components:
           tooltip: ''
           border: ''
           file_types: null
-          enabled: true
+          enabled: false
           files: []
           foreground: theme:Gray 300
           visible: true
@@ -868,7 +868,7 @@ components:
           multiple: false
           icon: ''
         name: upload_mspdf
-        layout_properties: {row: OXTVMR, width_xs: 12, col_xs: 0, width: 233.33300000000003}
+        layout_properties: {row: OXTVMR, width_xs: 12, col_xs: 0, width: 203}
         event_bindings: {change: upload_mspdf_change}
     - type: Button
       properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
@@ -996,12 +996,12 @@ components:
         layout_properties: {row: EBYTEW, width_xs: 11, col_xs: 1, width: 211.385}
         event_bindings: {change: check_box_overlays_change}
     - type: Button
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: false,
         foreground: '#4AC9FF', visible: false, text: Map Link, font_size: 13, font: '',
         spacing_above: none, icon_align: right, spacing_below: none, italic: false,
         background: '', bold: false, underline: false, icon: 'fa:share-square-o'}
       name: share
-      layout_properties: {row: TJNYUM, width_xs: 10, col_xs: 2, width: 184.438}
+      layout_properties: {row: TJNYUM, width_xs: 10, col_xs: 2, width: 184.156}
       event_bindings: {click: share_click}
     - type: Button
       properties: {role: null, align: center, tooltip: '', border: '', enabled: true,

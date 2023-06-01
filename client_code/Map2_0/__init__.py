@@ -29,9 +29,8 @@ class Map2_0(Map2_0Template):
   def __init__(self, **properties):
     with anvil.server.no_loading_indicator:
       # Set Form properties and Data Bindings
-      maintenance = True
+      maintenance = False
       self.role = properties['role']
-      print(self.role)
       
       if maintenance and not self.role == 'admin':
         from .Maintenance import Maintenance
