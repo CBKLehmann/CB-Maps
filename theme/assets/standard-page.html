@@ -81,10 +81,10 @@
     }
   }
 
-  function copy_to_clipboard() {
-    let copyText = document.getElementById('toCopyText')
-    navigator.clipboard.writeText(copyText.innerHTML)
-    alert("Copied the text: " + copyText.innerHTML)
+  function copy_to_clipboard(link) {
+    console.log(link)
+    navigator.clipboard.writeText(link)
+    alert("Copied the text: " + link)
   }
   
   function open_tab(html) {

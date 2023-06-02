@@ -41,16 +41,16 @@ container:
       \ = document.getElementsByClassName('static-popup')\n    if (popup[0].style.display\
       \ === 'none') {\n   \t\tfor(const e of popup) {\n    \t\te.style.display = 'flex';\n\
       \        }\n    }else {\n    \tfor(const e of popup) {\n    \t\te.style.display\
-      \ = 'none';\n    \t}\n    }\n  }\n\n  function copy_to_clipboard() {\n    let\
-      \ copyText = document.getElementById('toCopyText')\n    navigator.clipboard.writeText(copyText.innerHTML)\n\
-      \    alert(\"Copied the text: \" + copyText.innerHTML)\n  }\n  \n  function\
-      \ open_tab(html) {\n    \n    var tab = window.open('about:blank', '_blank');\n\
-      \    tab.document.write(html);\n    tab.document.close();\n    \n  }\n  \n \
-      \ function addHomeAddress(data, topic) {\n    document.getElementById('darkBackground').style.display\
-      \ = 'block'\n    document.getElementById('setHomeAddress').innerHTML = `<form\
-      \ class='setHomeAddressForm' id='inputForm'><p id='text'>Found the following\
-      \ Object for ${topic} with less than 10 meters distance to set Marker:<br><b>${data[0].name}</b><br>Do\
-      \ you want to mark the Object as your marker address ?</p><button class='setHomeAddressButton'\
+      \ = 'none';\n    \t}\n    }\n  }\n\n  function copy_to_clipboard(link) {\n \
+      \   console.log(link)\n    navigator.clipboard.writeText(link)\n    alert(\"\
+      Copied the text: \" + link)\n  }\n  \n  function open_tab(html) {\n    \n  \
+      \  var tab = window.open('about:blank', '_blank');\n    tab.document.write(html);\n\
+      \    tab.document.close();\n    \n  }\n  \n  function addHomeAddress(data, topic)\
+      \ {\n    document.getElementById('darkBackground').style.display = 'block'\n\
+      \    document.getElementById('setHomeAddress').innerHTML = `<form class='setHomeAddressForm'\
+      \ id='inputForm'><p id='text'>Found the following Object for ${topic} with less\
+      \ than 10 meters distance to set Marker:<br><b>${data[0].name}</b><br>Do you\
+      \ want to mark the Object as your marker address ?</p><button class='setHomeAddressButton'\
       \ type='button' value='yes'>Yes</button><button class='setHomeAddressButton'\
       \ type='button' value='no'>No</button></form>`\n    document.querySelectorAll('.setHomeAddressButton').forEach(item\
       \ => {\n      item.addEventListener('click', event => {\n        response =\
@@ -850,7 +850,7 @@ components:
           tooltip: ''
           border: ''
           file_types: null
-          enabled: false
+          enabled: true
           files: []
           foreground: theme:Gray 300
           visible: true

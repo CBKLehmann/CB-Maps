@@ -2397,10 +2397,12 @@ class Map2_0(Map2_0Template):
   
   def upload_mspdf_change(self, file, **event_args):
     with anvil.server.no_loading_indicator:
+      from .Copy_Upload_Link import Copy_Upload_Link
       #This method is called when the Dropdown-Menu has changed
       folder = app_files.market_studies
       file = folder.create_file(f"market_study_{Variables.unique_code}", file)
-      anvil.js.call('show_mun_info', f'<h1>Google Drive Share Link for Market Study PDF</h1><br><br><p id="toCopyText">{file._obj["alternateLink"]}</p><br><button type="button" onClick="copy_to_clipboard()">Copy Link</button><br><br><button type="button" onClick="hide_mun_info()">&#10006;</button>')
+      alert(Copy_Upload_Link(link = file._obj["alternateLink"]), buttons=[], dismissible=False, large=True, role='custom_alert')
+      # anvil.js.call('show_mun_info', f'<h1>Google Drive Share Link for Market Study PDF</h1><br><br><p id="toCopyText">{file._obj["alternateLink"]}</p><br><button type="button" onClick="copy_to_clipboard()">Copy Link</button><br><br><button type="button" onClick="hide_mun_info()">&#10006;</button>')
       self.upload_mspdf.clear()
     
 #####  Button Functions   #####

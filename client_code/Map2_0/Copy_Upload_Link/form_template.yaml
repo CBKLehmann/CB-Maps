@@ -1,0 +1,29 @@
+container:
+  type: ColumnPanel
+  properties: {col_widths: '{}'}
+components:
+- type: GridPanel
+  properties: {}
+  name: content
+  layout_properties: {grid_position: 'EZAGIK,EHWMIW'}
+  components:
+  - type: Label
+    properties: {role: subheading, align: center, tooltip: '', border: '', foreground: '',
+      visible: true, text: Google Drive Share Link for Market Study PDF, font_size: null,
+      font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: true, underline: false, icon: ''}
+    name: heading
+    layout_properties: {row: PEQNOH, width_xs: 12, col_xs: 0, width: 970}
+  - type: Label
+    properties: {}
+    name: link
+    layout_properties: {row: DSEWOW, width_xs: 12, col_xs: 0}
+  - type: Button
+    properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+      foreground: 'theme:Gray 300', visible: true, text: Copy Link, font_size: null,
+      font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: 'theme:Secondary 700', bold: false, underline: false, icon: ''}
+    name: copy
+    layout_properties: {row: FEVBYQ, width_xs: 2, col_xs: 5, width: 136.656}
+    event_bindings: {click: copy_click}
+is_package: true
