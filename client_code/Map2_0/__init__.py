@@ -3218,7 +3218,8 @@ class Map2_0(Map2_0Template):
         if complete_counter <= 30:
           if not last_coord_dist == coordinate[1]:
             counter += 1
-            url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/Pin{index_coords}x075.png'
+            # url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/Pin{index_coords}x075.png'
+            url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/TestPinx075.png'
             encoded_url = url.replace("/", "%2F")
             if complete_counter == len(res_data['sorted_coords']) - 1:
               if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
@@ -3264,7 +3265,7 @@ class Map2_0(Map2_0Template):
           last_coords = coordinate[0]['coords']
       
       if request == []:
-        url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
+        url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075_v2.png'
         encoded_url = url.replace("/", "%2F")
         request_static_map = request_static_map_raw + f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
         request.append(request_static_map)
