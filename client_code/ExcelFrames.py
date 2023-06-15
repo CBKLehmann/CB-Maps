@@ -2181,7 +2181,7 @@ summary_data = {
     }
 nca_data = {
         'title': 'COMPETITOR_ANALYSIS_NH',
-        'print_area': 'A1:L1048576',
+        'print_area': 'A1:N1048576',
         'fit_to_pages': (1, 0),
         'columns_width': [5.82, 28, 9.64, 8.91, 9.36, 9.73, 12.18, 14.36, 10.55, 18.64, 13.73, 13.45],
         'row_height': 50,

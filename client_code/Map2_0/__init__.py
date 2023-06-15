@@ -3219,6 +3219,7 @@ class Map2_0(Map2_0Template):
           if not last_coord_dist == coordinate[1]:
             counter += 1
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/Pin{index_coords}x075.png'
+            # url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/TestPinx075.png'
             encoded_url = url.replace("/", "%2F")
             if complete_counter == len(res_data['sorted_coords']) - 1:
               if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
