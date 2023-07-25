@@ -688,8 +688,8 @@ class Map2_0(Map2_0Template):
       self.mobile_hide_click()
       anvil.js.call('update_loading_bar', 0, 'Getting map-based Informations')
       
-      nh_checked = self.pdb_data_cb.checked
-      al_checked = self.pdb_data_al.checked
+      #nh_checked = self.pdb_data_cb.checked
+      #al_checked = self.pdb_data_al.checked
   
       unique_code = anvil.server.call("get_unique_code")
       searched_address = anvil.js.call('getSearchedAddress')
@@ -1101,9 +1101,23 @@ class Map2_0(Map2_0Template):
       anvil.js.call('update_loading_bar', 60, 'Create Excel for Market Study')
       
       # Copy and Fill Dataframe for Excel-Cover
-      cover_frame = copy.deepcopy(ExcelFrames.cover_data)
-      cover_frame['data'][1]['content'] = zipcode
-      cover_frame['data'][2]['content'] = city.upper()
+      #cover_frame = copy.deepcopy(ExcelFrames.cover_data)
+      #cover_frame['data'][1]['content'] = zipcode
+      #cover_frame['data'][2]['content'] = city.upper()
+
+      population_trend = float("{:.1f}".format((people_u80_fc_35 * 100) / people_u80)) - 100
+      if population_trend < 0:
+        population_trend_string = f"- {population_trend} %"
+      else:
+        population_trend_string = f"+ {population_trend} %"
+
+      date = datetime.datetime.now()
+      print(date)
+      
+      market_study_data = copy.deepcopy(ExcelFrames.market_study_data)
+      market_study_data['pages']['COVER']['cell_content']['textboxes']['Y29'] = f"{purchase_power}"
+      market_study_data['pages']['COVER']['cell_content']['textboxes']['Y38'] = population_trend_string
+      market_study_data['pages']['COVER']['cell_content']['textboxes']['Y47'] = beds_surplus_35_v2
 
       # Calculate updated Beds based on Regulations
       # single_rooms_current = 0

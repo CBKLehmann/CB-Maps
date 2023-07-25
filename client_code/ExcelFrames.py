@@ -6,4876 +6,2659 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
-cover_data = {
-  'title': 'COVER',
-  'print_area': 'A1:P63',
-  'fit_to_pages': (1, 1),
-  'columns_width': [
-    10.88, 6.88, 14.88, 13.13, 9.38, 9.00, 6.25, 5.00, 4.13, 7.00, 10.00, 9.00, 10.38, 7.63, 6.25, 9.00
-  ],
-  'landscape': False,
-  'data': [
-    {
-      'type': 'text',
-      'insert': 'merge',
-      'cell': 'A22:P22',
-      'content': 'MARKET STUDY',
-      'format': {
-        'align': 'center',
-        'font_size': 72,
-        'font': 'Segoe UI Black'
-      }
-    },
-    {
-      'type': 'text',
-      'insert': 'merge',
-      'cell': 'A24:P24',
-      'content': None,
-      'format': {
-        'align': 'center',
-        'font_size': 48,
-        'font': 'Segoe UI Black',
-        'color': '#BFB273'
-      }
-    },
-    {
-      'type': 'text',
-      'insert': 'merge',
-      'cell': 'A25:P25',
-      'content': None,
-      'format': {
-        'align': 'center',
-        'font_size': 48,
-        'font': 'Segoe UI Black',
-        'color': '#BFB273'
-      }
-    },
-    {
-      'type': 'image',
-      'cell': 'D41',
-      'file': 'img/cb_logo.png',
-      'style': {}
-    }
-  ]
-}
-summary_data = {
-        'title': 'SUMMARY',
-        'print_area': 'A1:M81',
-        'fit_to_pages': (1, 1),
-        'columns_width': [
-            43.27, 26.75, 19, 19, 1.55, 9.00, 6.25, 5, 4.08, 7, 13.08, 2, 9.55
-        ],
-        'landscape': False,
-        'data': [
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A1:B1',
-                'content': 'EXECUTIVE SUMMARY',
-                'format': {
-                    'font_size': 24,
-                    'font': 'Segoe UI Black',
-                    'color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A4',
-                'content': 'General Information',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A6',
-                'content': 'Zip Code',
-                'format': {
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A7',
-                'content': 'City',
-                'format': {
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A8',
-                'content': 'District',
-                'format': {
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A9',
-                'content': 'Federal State',
-                'format': {
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A10',
-                'content': 'Radius of analysis',
-                'format': {
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A11',
-                'content': 'Address',
-                'format': {
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A13',
-                'content': 'Demographic trend',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A14',
-                'content': 'Population Berlin',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A15',
-                'content': 'Berlin, LK',
-                'format': {
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A16',
-                'content': 'Population',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A17',
-                'content': 'There of Population 65-79',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A18',
-                'content': 'There of Population 80+',
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A20:B20',
-                'content': 'Patients receiving full inpatient care scenarios',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A21',
-                'content': 'Break even care rate',
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A22:E22',
-                'content': 'Each percent-point greater than the break even care rate indicates an increasing demand on care capacities.',
-                'format': {
-                    'italic': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A24',
-                'content': 'Scenario 1',
-                'format': {
-                    'italic': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A25:H25',
-                'content': 'In scenario 1 the relative situation (product of nursing home rate and care rate) as in 2020 is assumed to be constant for the entire forecasting period.',
-                'format': {
-                    'italic': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A26',
-                'content': 'Care Rate of Population',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A27',
-                'content': 'There of nursing home rate',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A28',
-                'content': 'Patients receiving full inpatient care',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A29',
-                'content': 'Occupancy rate',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A30',
-                'content': 'Beds',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A31',
-                'content': 'Free Beds',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A33',
-                'content': 'Scenario 2',
-                'format': {
-                    'italic': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A34:H34',
-                'content': 'In scenario 2 we assume a very small increase rate of the product of care rate and nursing home rate of about 0.003 percent-points.',
-                'format': {
-                    'italic': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A35',
-                'content': 'Care Rate of Population',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A36',
-                'content': 'There of nursing home rate',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A37',
-                'content': 'Patients receiving full inpatient care',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A38',
-                'content': 'Occupancy rate',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A39',
-                'content': 'Beds',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A40',
-                'content': 'Free Beds',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A42',
-                'content': 'Demand',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A43',
-                'content': 'Number of inpatients',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A44',
-                'content': 'Number of inpatients forecast Scenario 1',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A45',
-                'content': 'Number of inpatients forecast Scenario 2',
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A46:E46',
-                'content': 'In 2030 the number of inpatients will based on our scenarios be between 64 and 69 (in average about 66).',
-                'format': {
-                    'italic': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A47:E47',
-                'content': 'In 2035 the number of inpatients will based on our scenarios be between 67 and 72 (in average about 70).',
-                'format': {
-                    'italic': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A49',
-                'content': 'Supply',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A50',
-                'content': 'Beds',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A51',
-                'content': 'Nursing homes',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A52',
-                'content': 'Nursing homes in planning',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A53',
-                'content': 'Nursing homes under construction',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A54',
-                'content': 'Beds in planning',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A55',
-                'content': 'Beds under construction',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A56',
-                'content': 'Loss of beds due to \nregulations of federal state',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A57',
-                'content': 'Adjusted number of beds \n(incl. beds in planning and under construction)',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A58',
-                'content': 'Occupancy rate',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A59',
-                'content': 'Beds in reserve',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A60',
-                'content': 'Median Invest Cost',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A62',
-                'content': 'Surplus or deficit of beds IC',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A63',
-                'content': 'Scenario 1',
-                'format': {
-                    'italic': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A64',
-                'content': 'Supply',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A65',
-                'content': 'Demand',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A66',
-                'content': 'surplus/deficit',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A68',
-                'content': 'Scenario 2',
-                'format': {
-                    'italic': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A69',
-                'content': 'Supply',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A70',
-                'content': 'Demand',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A71',
-                'content': 'surplus/deficit',
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A72:E72',
-                'content': 'In 2030 the surplus/deficit on beds based on our scenarios is between 8 and 3 (in average 6).',
-                'format': {
-                    'italic': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A73:E73',
-                'content': 'In 2035 the surplus/deficit on beds based on our scenarios is between 5 and 0 (in average 2).',
-                'format': {
-                    'italic': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A75',
-                'content': 'Market shares',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A76',
-                'content': 'Number of operators',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A77',
-                'content': 'Median Number of beds',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A78',
-                'content': 'Median Year of construction',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A79',
-                'content': '% Public operators',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A80',
-                'content': '% Non-profit operators',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A81',
-                'content': '% Private operators',
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B4',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B13',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B14',
-                'content': 3664088,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B15',
-                'content': '2020 Actual',
-                'format': {
-                    'align': 'right',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B16',
-                'content': 3669491,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B17',
-                'content': 484900,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B18',
-                'content': 227100,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B20',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B21',
-                'content': .016,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B26',
-                'content': .042,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B27',
-                'content': .183,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B28',
-                'content': 28525,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B29',
-                'content': .8539,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B30',
-                'content': 33406,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B31',
-                'content': 4881,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B35',
-                'content': .042,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B36',
-                'content': .183,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B37',
-                'content': 28525,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B38',
-                'content': .8539,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B39',
-                'content': 33406,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B40',
-                'content': 4881,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B42',
-                'content': 'Radius:',
-                'format': {
-                    'align': 'right',
-                    'bottom': True,
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B43',
-                'content': 70,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B49',
-                'content': 'Radius:',
-                'format': {
-                    'align': 'right',
-                    'bottom': True,
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B50',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B51',
-                'content': 2,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B52',
-                'content': 0,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B53',
-                'content': 0,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B54',
-                'content': 0,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B55',
-                'content': 0,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B57',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B58',
-                'content': .97,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B59',
-                'content': 2,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B60',
-                'content': 15.18,
-                'format': {
-                    'align': 'right',
-                    'num_format': '#,##0.00 €'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B62',
-                'content': 'Radius:',
-                'format': {
-                    'align': 'right',
-                    'bottom': True,
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B64',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B65',
-                'content': 70,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B69',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B70',
-                'content': 70,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B75',
-                'content': 'Radius:',
-                'format': {
-                    'align': 'right',
-                    'bottom': True,
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B76',
-                'content': 1,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B77',
-                'content': 36,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B78',
-                'content': 1996,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B79',
-                'content': .7,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B80',
-                'content': .2,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B81',
-                'content': .1,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C4',
-                'content': '',
-                'format': {
-                    'align': 'left',
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C13',
-                'content': '',
-                'format': {
-                    'align': 'left',
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C15',
-                'content': '2030 Forecast',
-                'format': {
-                    'align': 'right',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C16',
-                'content': 3877900,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C17',
-                'content': 559500,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C18',
-                'content': 239600,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C20',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C21',
-                'content': .019,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C26',
-                'content': .045,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C27',
-                'content': .183,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C28',
-                'content': 31964,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C29',
-                'content': .95,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C30',
-                'content': 33646,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C31',
-                'content': 1682,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C35',
-                'content': .048,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C36',
-                'content': .183,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C37',
-                'content': 34361,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C38',
-                'content': .95,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C39',
-                'content': 36169,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C40',
-                'content': 1751,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'C42:D42',
-                'content': '15 minutes of walking',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C44',
-                'content': 64,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C45',
-                'content': 69,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'C49:D49',
-                'content': '15 minutes of walking',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C56',
-                'content': -144,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C57',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C58',
-                'content': .95,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C59',
-                'content': 4,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'C62:D62',
-                'content': '15 minutes of walking',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C64',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C65',
-                'content': 64,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C66',
-                'content': 8,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C69',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C70',
-                'content': 69,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C71',
-                'content': 3,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'C75:D75',
-                'content': '15 minutes of walking',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D4',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D6',
-                'content': 10178,
-                'format': {
-                    'align': 'right',
-                    'bold': True,
-                    'num_format': '0'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D7',
-                'content': 'Berlin',
-                'format': {
-                    'align': 'right',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D8',
-                'content': 'Berlin',
-                'format': {
-                    'align': 'right',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D9',
-                'content': 'Berlin',
-                'format': {
-                    'align': 'right',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'C10:D10',
-                'content': '15 minutes of walking',
-                'format': {
-                    'align': 'right',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'B11:D11',
-                'content': 'Blumberger Damm 201, 12687 Berlin, Germany',
-                'format': {
-                    'align': 'right',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D13',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D15',
-                'content': '2035 Forecast',
-                'format': {
-                    'align': 'right',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D16',
-                'content': 3921400,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D17',
-                'content': 587600,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D18',
-                'content': 244300,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D20',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D21',
-                'content': .02,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D26',
-                'content': .046,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D27',
-                'content': .183,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D28',
-                'content': 33276,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D29',
-                'content': .95,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D30',
-                'content': 35027,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D31',
-                'content': 1808,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D35',
-                'content': .05,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D36',
-                'content': .183,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D37',
-                'content': 35772,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D38',
-                'content': .95,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D39',
-                'content': 37655,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D40',
-                'content': 1883,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D42',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D44',
-                'content': 67,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D45',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D49',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D56',
-                'content': -114,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D57',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D58',
-                'content': .95,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D59',
-                'content': 4,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D62',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D64',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D65',
-                'content': 67,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D66',
-                'content': 5,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D69',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D70',
-                'content': 72,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D71',
-                'content': 0,
-                'format': {
-                    'align': 'right'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'F29:M30',
-                'content': 0,
-                'format': {
-                    'align': 'center',
-                    'font_size': 20,
-                    'font': "Segoe UI Black",
-                    'num_format': '0.00'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'BB2',
-                'content': 100,
-                'format': {
-                    'num_format': '0.00'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'BB1',
-                'content': 0,
-                'format': {
-                    'num_format': '0.00'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'F27:M28',
-                'content': 'Purchasing Power',
-                'format': {
-                    'align': 'center',
-                    'font_size': 20,
-                    'font': "Segoe UI Black"
-                }
-            },
-            {
-                'type': 'image',
-                'cell': 'K1',
-                'file': 'img/cb_logo.png',
-                'style': {
-                    'x_scale': .21,
-                    'y_scale': .085,
-                    'x_offset': 50,
-                    'y_offset': 10
-                }
-            },
-            {
-                'type': 'image',
-                'cell': 'F4',
-                'file': 'exampleMap.png',
-                'style': {
-                    'x_scale': .5,
-                    'y_scale': .5
-                }
-            },
-            {
-                'type': 'chart',
-                'subtype': 'column',
-                'position': 'F39',
-                'series': [
-                    {
-                        'values': '=SUMMARY!$B$43',
-                        'name': 'Number of inpatients',
-                        'data_labels': {
-                            'value': True
-                        },
-                        'fill': {
-                            'color': '#404040'
-                        },
-                        'overlap': -20},
-                    {
-                        'values': '=SUMMARY!$B$50',
-                        'name': 'Beds',
-                        'data_labels': {
-                            'value': True
-                        },
-                        'fill': {
-                            'color': '#BFB273'
-                        }
-                    },
-                    {
-                        'values': '=SUMMARY!$C$44',
-                        'name': 'Number of inpatients forecast 2030 Scenario 1',
-                        'data_labels': {
-                            'value': True
-                        },
-                        'pattern': {
-                            'pattern': 'large_grid',
-                            'fg_color': '#BFB273',
-                            'bg_color': '#404040'
-                        }
-                    },
-                    {
-                        'values': '=SUMMARY!$C$57',
-                        'name': 'Adjusted number of beds (incl. beds in planning and under construction) 2030',
-                        'data_labels': {
-                            'value': True
-                        },
-                        'pattern': {
-                            'pattern': 'large_grid',
-                            'fg_color': '#404040',
-                            'bg_color': '#BFB273'
-                        }
-                    },
-                    {
-                        'values': '=SUMMARY!$D$44',
-                        'name': 'Number of inpatients forecast 2035 Scenario 1',
-                        'data_labels': {
-                            'value': True
-                        },
-                        'pattern': {
-                            'pattern': 'dotted_diamond',
-                            'fg_color': '#BFB273',
-                            'bg_color': '#404040'
-                        }
-                    },
-                    {
-                        'values': '=SUMMARY!$D$57',
-                        'name': 'Adjusted number of beds (incl. beds in planning and under construction) 2035',
-                        'data_labels': {
-                            'value': True
-                        },
-                        'pattern': {
-                            'pattern': 'dotted_diamond',
-                            'fg_color': '#404040',
-                            'bg_color': '#BFB273'
-                        }
-                    },
-                ],
-                'styles': {
-                    'x_axis': {
-                        'visible': False
-                    },
-                    'y_axis': {
-                        'visible': False,
-                        'major_gridlines': {
-                            'visible': False
-                        }
-                    },
-                    'title': {
-                        'name': 'DEMAND & SUPPLY',
-                        'name_font': {
-                            'name': 'Segoe UI Black'
-                        },
-                        'layout': {
-                            'y': 0,
-                            'x': 0.25
-                        }
-                    },
-                    'legend': {
-                        'position': 'bottom',
-                        'name_font': {
-                            'name': 'Segoe UI'
-                        },
-                        'layout': {
-                            'x': 0,
-                            'y': 0.7,
-                            'width': 1,
-                            'height': 0.35
-                        }
-                    },
-                    'plotarea': {
-                        'layout': {
-                            'x': 0,
-                            'y': 0.125,
-                            'width': 1,
-                            'height': 0.5
-                        }
-                    },
-                    'chartarea': {
-                        'border': {
-                            'none': True
-                        }
-                    },
-                    'size': {
-                        'width': 430,
-                        'height': 300
-                    },
-                    'chart': {}
-                }
-            },
-            {
-                'type': 'chart',
-                'subtype': 'column',
-                'position': 'F55',
-                'series': [
-                    {
-                        'values': '=SUMMARY!$B$43',
-                        'name': 'Number of inpatients',
-                        'data_labels': {
-                            'value': True
-                        },
-                        'fill': {
-                            'color': '#404040'
-                        },
-                        'overlap': -20},
-                    {
-                        'values': '=SUMMARY!$B$50',
-                        'name': 'Beds',
-                        'data_labels': {
-                            'value': True
-                        },
-                        'fill': {
-                            'color': '#BFB273'
-                        }
-                    },
-                    {
-                        'values': '=SUMMARY!$C$45',
-                        'name': 'Number of inpatients forecast 2030 Scenario 2',
-                        'data_labels': {
-                            'value': True
-                        },
-                        'pattern': {
-                            'pattern': 'large_grid',
-                            'fg_color': '#BFB273',
-                            'bg_color': '#404040'
-                        }
-                    },
-                    {
-                        'values': '=SUMMARY!$C$57',
-                        'name': 'Adjusted number of beds (incl. beds in planning and under construction) 2030',
-                        'data_labels': {
-                            'value': True
-                        },
-                        'pattern': {
-                            'pattern': 'large_grid',
-                            'fg_color': '#404040',
-                            'bg_color': '#BFB273'
-                        }
-                    },
-                    {
-                        'values': '=SUMMARY!$D$45',
-                        'name': 'Number of inpatients forecast 2035 Scenario 2',
-                        'data_labels': {
-                            'value': True
-                        },
-                        'pattern': {
-                            'pattern': 'dotted_diamond',
-                            'fg_color': '#BFB273',
-                            'bg_color': '#404040'
-                        }
-                    },
-                    {
-                        'values': '=SUMMARY!$D$57',
-                        'name': 'Adjusted number of beds (incl. beds in planning and under construction) 2035',
-                        'data_labels': {
-                            'value': True
-                        },
-                        'pattern': {
-                            'pattern': 'dotted_diamond',
-                            'fg_color': '#404040',
-                            'bg_color': '#BFB273'
-                        }
-                    }
-                ],
-                'styles': {
-                    'x_axis': {
-                        'visible': False
-                    },
-                    'y_axis': {
-                        'visible': False,
-                        'major_gridlines': {
-                            'visible': False
-                        }
-                    },
-                    'legend': {
-                        'position': 'bottom',
-                        'name_font': {
-                            'name': 'Segoe UI'
-                        },
-                        'layout': {
-                            'x': 0,
-                            'y': 0.6,
-                            'width': 1,
-                            'height': 0.45
-                        }
-                    },
-                    'plotarea': {
-                        'layout': {
-                            'x': 0,
-                            'y': 0.02,
-                            'width': 1,
-                            'height': 0.5
-                        }
-                    },
-                    'chartarea': {
-                        'border': {
-                            'none': True
-                        }
-                    },
-                    'size': {
-                        'width': 430,
-                        'height': 250
-                    },
-                    'chart': {}
-                }
-            },
-            {
-                'type': 'chart',
-                'subtype': 'bar',
-                'spec_type': 'stacked',
-                'position': 'F31',
-                'series': [
-                    {
-                        'values': '=SUMMARY!$BB$1',
-                        'fill': {
-                            'color': '#BFB273'
-                        }
-                    },
-                    {
-                        'values': '=SUMMARY!$BB$2',
-                        'fill': {
-                            'color': '#404040'
-                        }
-                    }
-                ],
-                'styles': {
-                    'x_axis': {
-                        'visible': False,
-                        'major_gridlines': {
-                            'visible': False
-                        }
-                    },
-                    'y_axis': {
-                        'visible': False,
-                        'major_gridlines': {
-                            'visible': False
-                        }
-                    },
-                    'legend': {
-                        'none': True
-                    },
-                    'plotarea': {
-                        'layout': {
-                            'x': .1,
-                            'y': 0,
-                            'width': .9,
-                            'height': 1
-                        }
-                    },
-                    'chartarea': {
-                        'border': {
-                            'none': True
-                        }
-                    },
-                    'size': {
-                        'width': 430,
-                        'height': 50
-                    },
-                    'chart': {}
-                }
-            },
-            {
-                'type': 'chart',
-                'subtype': 'doughnut',
-                'position': 'F69',
-                'series': [
-                    {
-                        'name': 'MARKET SHARES',
-                        'categories': '=SUMMARY!$A$78:$A$80',
-                        'values': '=SUMMARY!$B$78:$B$80',
-                        'data_labels': {
-                            'value': True,
-                            'custom': [
-                                {
-                                    'value': 'SUMMARY!$B$78',
-                                    'font': {
-                                        'color': '#FFFFFF',
-                                        'name': 'Segoe UI',
-                                        'size': 7
-                                    }
-                                },
-                                {
-                                    'value': 'SUMMARY!$B$79',
-                                    'font': {
-                                        'color': '#000000',
-                                        'name': 'Segoe UI',
-                                        'size': 7
-                                    }
-                                },
-                                {
-                                    'value': 'SUMMARY!$B$80',
-                                    'font': {
-                                        'color': '#000000',
-                                        'name': 'Segoe UI',
-                                        'size': 7
-                                    }
-                                }
-                            ]
-                        },
-                        'points': [
-                            {
-                                'fill': {
-                                    'color': '#404040'
-                                }
-                            },
-                            {
-                                'fill': {
-                                    'color': '#D9D9D6'
-                                }
-                            },
-                            {
-                                'fill': {
-                                    'color': '#BFB273'
-                                }
-                            }
-                        ]
-                    }
-                ],
-                'styles': {
-                    'title': {
-                        'name': 'MARKET SHARES'
-                    },
-                    'legend': {
-                        'position': 'bottom',
-                        'name_font': {
-                            'name': 'Segoe UI'
-                        }
-                    },
-                    'size': {
-                        'width': 430,
-                        'height': 230
-                    },
-                    'chartarea': {
-                        'border': {
-                            'none': True
-                        }
-                    },
-                    'chart': {}
-                }
-            }
-        ]
-    }
-nca_data = {
-        'title': 'COMPETITOR_ANALYSIS_NH',
-        'print_area': 'A1:N1048576',
-        'fit_to_pages': (1, 0),
-        'columns_width': [5.82, 28, 9.64, 8.91, 9.36, 9.73, 12.18, 14.36, 10.55, 18.64, 13.73, 13.45],
-        'row_height': 50,
-        'row_start': 31,
-        'row_count': 6,
-        'landscape': False,
-        'data': [
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A1:G1',
-                'content': 'NURSING COMPETITOR ANALYSIS',
-                'format': {
-                    'font_size': 24,
-                    'font': 'Segoe UI Black',
-                    'color': '#BFB273'
-                }
-            },
-            {
-                'type': 'image',
-                'cell': 'K1',
-                'file': 'img/cb_logo.png',
-                'style': {
-                    'x_scale': .21,
-                    'y_scale': .09,
-                    'y_offset': 10,
-                    'x_offset': 80
-                }
-            },
-            {
-                'type': 'image',
-                'cell': 'A4',
-                'file': 'map_image_5a7990_nh.png',
-                'style': {
-                    'x_scale': .8,
-                    'y_scale': .8
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'J5',
-                'content': 'Median Nursing charge (PG 3)',
-                'format': {
-                    'align': 'right',
-                    'color': '#FFFFFF'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'J6',
-                'content': 'Median Specific co-payment',
-                'format': {
-                    'align': 'right',
-                    'color': '#FFFFFF'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'J7',
-                'content': 'Median Invest costs',
-                'format': {
-                    'align': 'right',
-                    'color': '#FFFFFF'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'J8',
-                'content': 'Median Board and lodging',
-                'format': {
-                    'align': 'right',
-                    'color': '#FFFFFF'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'K5',
-                'content': 54.33,
-                'format': {
-                    'align': 'right',
-                    'num_format': '#,##0.00 €',
-                    'color': '#FFFFFF'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'K6',
-                'content': 12.84,
-                'format': {
-                    'align': 'right',
-                    'num_format': '#,##0.00 €',
-                    'color': '#FFFFFF'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'K7',
-                'content': 18.92,
-                'format': {
-                    'align': 'right',
-                    'num_format': '#,##0.00 €',
-                    'color': '#FFFFFF'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'K8',
-                'content': 18.36,
-                'format': {
-                    'align': 'right',
-                    'num_format': '#,##0.00 €',
-                    'color': '#FFFFFF'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A32',
-                'content': 'no.',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B32',
-                'content': 'name',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C32',
-                'content': 'no. of beds',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D32',
-                'content': 'single rooms',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'E32',
-                'content': 'double rooms',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'F32',
-                'content': 'patients',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'G32',
-                'content': 'rooms',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'H32',
-                'content': 'sr-quota',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'I32',
-                'content': 'occupancy',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'J32',
-                'content': 'year of construction',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'K32',
-                'content': 'status',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'L32',
-                'content': 'operator',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'M32',
-                'content': 'invest costs per day',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'N32',
-                'content': 'MDK grade',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'chart',
-                'subtype': 'doughnut',
-                'position': 'J4',
-                'series': [
-                    {
-                        'name': 'MEDIAN PRICE COMPOSITION',
-                        'categories': '=COMPETITOR_ANALYSIS_NH!$J$5:JK$8',
-                        'values': '=COMPETITOR_ANALYSIS_NH!$K$5:$K$8',
-                        'data_labels': {
-                            'value': True,
-                            'custom': [
-                                {
-                                    'value': 'COMPETITOR_ANALYSIS_NH!$K$5',
-                                    'font': {
-                                        'color': '#FFFFFF',
-                                        'name': 'Segoe UI Black',
-                                        'size': 10
-                                    }
-                                },
-                                {
-                                    'value': 'COMPETITOR_ANALYSIS_NH!$K$6',
-                                    'font': {
-                                        'color': '#000000',
-                                        'name': 'Segoe UI Black',
-                                        'size': 10
-                                    }
-                                },
-                                {
-                                    'value': 'COMPETITOR_ANALYSIS_NH!$K$7',
-                                    'font': {
-                                        'color': '#000000',
-                                        'name': 'Segoe UI Black',
-                                        'size': 10
-                                    }
-                                },
-                                {
-                                    'value': 'COMPETITOR_ANALYSIS_NH!$K$8',
-                                    'font': {
-                                        'color': '#000000',
-                                        'name': 'Segoe UI Black',
-                                        'size': 10
-                                    }
-                                }
-                            ]
-                        },
-                        'points': [
-                            {
-                                'fill': {
-                                    'color': '#404040'
-                                }
-                            },
-                            {
-                                'fill': {
-                                    'color': '#D9D9D6'
-                                }
-                            },
-                            {
-                                'fill': {
-                                    'color': '#BFB273'
-                                }
-                            },
-                            {
-                                'fill': {
-                                    'color': '#E5E0C7'
-                                }
-                            }
-                        ]
-                    }
-                ],
-                'styles': {
-                    'title': {
-                        'name': 'MEDIAN PRICE COMPOSITION'
-                    },
-                    'legend': {
-                        'position': 'bottom',
-                        'name_font': {
-                            'name': 'Segoe UI'
-                        },
-                        'layout': {
-                            'x': 0,
-                            'y': .8,
-                            'width': 1,
-                            'height': .2
-                        }
-                    },
-                    'size': {
-                        'width': 330,
-                        'height': 450
-                    },
-                    'chartarea': {
-                        'border': {
-                            'none': True
-                        }
-                    },
-                    'plotarea': {
-                        'layout': {
-                            'x': .1,
-                            'y': .2,
-                            'width': .8,
-                            'height': .5
-                        }
-                    },
-                    'chart': {
-                        'x_offset': 5
-                    }
-                }
-            }
-        ]
-    }
-reg_data = {
-  'title': 'Regulations Overview',
-        'print_area': 'A1:G12',
-        'fit_to_pages': (1, 0),
-        'columns_width': [10.71, 10.14, 32.71, 24.86, 66, 10.71, 10.14],
-        'row_height': 36,
-        'row_start': 1,
-        'row_count': 12,
-        'landscape': False,
-        'data': [
-          {
-            'type': 'image',
-            'cell': 'F1',
-            'file': 'img/cb_logo.png',
-            'style': {
-                'x_scale': .21,
-                'y_scale': .2,
-                'y_offset': 10,
-                'x_offset': 10
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'merge',
-            'cell': 'B2:F2',
-            'content': 'Regulations of Federal State',
-            'format': {
-              'align': 'center',
-              'valign': 'vcenter',
-              'font_size': 26,
-              'color': '#000000'
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'C4',
-            'content': 'Federal State',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'bg_color': '#948a54',
-              'font_size': 14,
-              'border': 1,
-              'bold': True
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'C5',
-            'content': '',
-            'format': {
+market_study_data = {
+        'base_worksheet_settings': {
+            'paper': 9,
+            'hide_grid': 2,
+            'fit_to_pages': (1, 1),
+            'margins': (0, 0, 0, 0)
+        },
+        'workbook_format': {
+            'font_size': 11,
+            'font_name': "Segoe UI"
+        },
+        'cell_formats': {
+            'normal_format': {
+                'font': "Segoe UI",
+                'font_size': 12
+            },
+            'normal_format_bold': {
+                'font': "Segoe UI Semibold",
+                'font_size': 12
+            },
+            'gold_format': {
+                'font': "Segoe UI",
+                'font_size': 12,
+                'color': '#C8B058'
+            },
+            'gold_format_bold': {
+                'font': "Segoe UI Semibold",
+                'font_size': 12,
+                'color': '#C8B058'
+            },
+            'place_heading_format': {
+                'font': "Segoe UI",
+                'font_size': 27,
+                'color': '#DADADA'
+            },
+            'situation_heading_format': {
+                'font': "Segoe UI",
+                'font_size': 27
+            },
+            'chapter_heading_format': {
+                'font': "Segoe UI Semibold",
+                'font_size': 12,
+                'top': 1,
+                'bottom': 1,
+                'valign': 'vcenter',
+                'indent': 1
+            },
+            'chapter_topics_wrap_format': {
+                'font': "Segoe UI Semibold",
+                'font_size': 9,
+                'text_wrap': True,
+                'indent': 1
+            },
+            'chapter_last_topic_format': {
+                'font': "Segoe UI Semibold",
+                'font_size': 9,
+                'bottom': 1,
+                'indent': 1
+            },
+            'viewing_radius_format': {
+                'font': "Segoe UI Semibold",
+                'font_size': 9,
+                'color': '#C8B058',
+                'indent': 1
+            },
+            'percentage_topic_format': {
+                'font': "Segoe UI Semilight",
+                'font_size': 9,
+                'italic': True,
+                'indent': 1
+            },
+            'side_note_format': {
+                'font': "Segoe UI Semilight",
+                'font_size': 8,
+                'italic': True,
+                'color': '#808080',
+                'indent': 1
+            },
+            'chapter_topics_format': {
+                'font': "Segoe UI Semibold",
+                'font_size': 9,
+                'indent': 1
+            },
+            'blue_column_year_format': {
+                'font': "Segoe UI Semibold",
+                'font_size': 12,
+                'bg_color': '#203144',
+                'top': 1,
+                'bottom': 1,
+                'border_color': '#FFFFFF',
+                'right': 1,
+                'right_color': '#FFFFFF',
+                'color': '#FFFFFF',
+                'valign': 'vcenter',
+                'indent': 1,
+                'align': 'right'
+            },
+            'blue_data_normal': {
+                'font': "Segoe UI Semibold",
+                'font_size': 9,
+                'bg_color': '#203144',
+                'color': '#FFFFFF',
+                'right': 1,
+                'right_color': '#FFFFFF',
+                'indent': 1,
+                'align': 'right'
+            },
+            'blue_data_normal_right': {
+                'font': "Segoe UI Semibold",
+                'font_size': 9,
+                'bg_color': '#203144',
+                'color': '#FFFFFF',
+                'align': 'right',
+                'valign': 'vcenter',
+                'right': 1,
+                'right_color': '#FFFFFF',
+                'indent': 1
+            },
+            'blue_data_normal_percentage': {
+                'font': "Segoe UI Semibold",
+                'font_size': 9,
+                'bg_color': '#203144',
+                'color': '#FFFFFF',
+                'num_format': '0.0%',
+                'right': 1,
+                'right_color': '#FFFFFF',
+                'indent': 1,
+                'align': 'right'
+            },
+            'blue_data_normal_italic': {
+                'font': "Segoe UI Semilight",
+                'font_size': 9,
+                'bg_color': '#203144',
+                'color': '#FFFFFF',
+                'italic': True,
+                'num_format': '0%',
+                'right': 1,
+                'right_color': '#FFFFFF',
+                'indent': 1,
+                'align': 'right'
+            },
+            'grey_scenario_format': {
+                'font': "Segoe UI Semibold",
+                'font_size': 9,
+                'indent': 1,
+                'bg_color': '#DFDFDF',
+                'align': 'right'
+            },
+            'grey_column_year_format': {
+                'font': "Segoe UI Semibold",
+                'font_size': 12,
+                'bg_color': '#DFDFDF',
+                'top': 1,
+                'bottom': 1,
+                'valign': 'vcenter',
+                'indent': 1,
+                'align': 'right'
+            },
+            'grey_data_normal': {
+                'font': "Segoe UI",
+                'font_size': 9,
+                'bg_color': '#DFDFDF',
+                'indent': 1,
+                'align': 'right'
+            },
+            'grey_data_normal_right': {
+                'font': "Segoe UI",
+                'font_size': 9,
+                'bg_color': '#DFDFDF',
+                'align': 'right',
+                'valign': 'vcenter',
+                'indent': 1
+            },
+            'grey_data_normal_right_semibold': {
+                'font': "Segoe UI Semibold",
+                'font_size': 9,
+                'bg_color': '#DFDFDF',
+                'align': 'right',
+                'valign': 'vcenter',
+                'indent': 1,
+                'bottom': 1
+            },
+            'grey_data_normal_percentage': {
+                'font': "Segoe UI",
+                'font_size': 9,
+                'bg_color': '#DFDFDF',
+                'num_format': '0.0%',
+                'indent': 1,
+                'align': 'right'
+            },
+            'grey_data_normal_italic': {
+                'font': "Segoe UI Semilight",
+                'font_size': 9,
+                'bg_color': '#DFDFDF',
+                'italic': True,
+                'num_format': '0%',
+                'indent': 1,
+                'align': 'right'
+            },
+            'grey_text_italic': {
+                'font': "Segoe UI Semilight",
+                'font_size': 9,
+                'bg_color': '#DFDFDF',
+                'italic': True,
+                'indent': 1,
+                'align': 'right',
+                'text_wrap': True,
+                'valign': 'top'
+            },
+            'lightgrey_scenario_format': {
+                'font': "Segoe UI Semibold",
+                'font_size': 9,
+                'indent': 1,
+                'align': 'right',
+                'bg_color': '#F2F2F2'
+            },
+            'lightgrey_column_year_format': {
+                'font': "Segoe UI Semibold",
+                'font_size': 12,
+                'bg_color': '#F2F2F2',
+                'top': 1,
+                'bottom': 1,
+                'valign': 'vcenter',
+                'indent': 1,
+                'align': 'right'
+            },
+            'lightgrey_data_normal': {
+                'font': "Segoe UI",
+                'font_size': 9,
+                'bg_color': '#F2F2F2',
+                'indent': 1,
+                'align': 'right'
+            },
+            'lightgrey_data_normal_right': {
+                'font': "Segoe UI",
+                'font_size': 9,
+                'bg_color': '#F2F2F2',
+                'align': 'right',
+                'valign': 'vcenter',
+                'indent': 1
+            },
+            'lightgrey_data_normal_percentage': {
+                'font': "Segoe UI",
+                'font_size': 9,
+                'bg_color': '#F2F2F2',
+                'num_format': '0.0%',
+                'indent': 1,
+                'align': 'right'
+            },
+            'lightgrey_data_normal_italic': {
+                'font': "Segoe UI Semilight",
+                'font_size': 9,
+                'bg_color': '#F2F2F2',
+                'italic': True,
+                'num_format': '0%',
+                'indent': 1,
+                'align': 'right'
+            },
+            'lightgrey_text_italic': {
+                'font': "Segoe UI Semilight",
+                'font_size': 9,
+                'bg_color': '#F2F2F2',
+                'italic': True,
+                'indent': 1,
+                'align': 'right',
+                'text_wrap': True,
+                'valign': 'top'
+            },
+            'lightgrey_data_normal_right_semibold': {
+                'font': "Segoe UI Semibold",
+                'font_size': 9,
+                'bg_color': '#F2F2F2',
+                'align': 'right',
+                'valign': 'vcenter',
+                'indent': 1,
+                'bottom': 1
+            },
+            'cover_fill_format': {
+                'bg_color': "#203144"
+            },
+            'competitor_text': {
+                'font': 'Segoe UI',
+                'font_size': 9,
+                'color': '#808080',
+                'indent': 2
+            },
+            'icon_text': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 12,
+                'indent': 2
+            },
+            'gpt_text': {
+                'font': 'Segoe UI',
+                'font_size': 9,
+                'text_wrap': True
+            },
+            'underline': {
+                'bottom': 1
+            },
+            'rotated_text': {
+                'font': 'Segoe UI',
+                'font_size': 9,
+                'rotation': 65,
+                'align': 'center'
+            },
+            'nh_heading': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 9,
+                'color': '#F4515E'
+            },
+            'al_heading': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 9,
+                'color': '#F99398'
+            },
+            'operator_heading': {
+                'font': 'Segoe UI',
+                'font_size': 9
+            },
+            'home_icon': {
+                'font_size': 14,
+                'color': '#CCB666',
+                'bg_color': '#1B2939',
                 'align': 'center',
-                'color': '#000000',
-                'border': 1,
-                'bg_color': '#c4bd97'
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'C6',
-            'content': 'single room quota (min.)',
-            'format': {
+                'valign': 'vcenter',
+                'bold': True,
+                'bottom': 1,
+                'bottom_color': '#FFFFFF'
+            },
+            'home_line_normal': {
+                'font': 'Segoe UI',
+                'font_size': 8,
+                'bg_color': '#F4EFDC',
+                'valign': 'vcenter'
+            },
+            'home_line_centered': {
+                'font': 'Segoe UI',
+                'font_size': 8,
                 'align': 'center',
-                'color': '#000000',
-                'border': 1,
-                'bg_color': '#c4bd97'
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'C7',
-            'content': 'maximum home size',
-            'format': {
+                'valign': 'vcenter',
+                'bg_color': '#F4EFDC',
+                'text_wrap': True
+            },
+            'home_line_centered_link': {
+                'font_size': 8,
                 'align': 'center',
-                'color': '#000000',
-                'border': 1,
-                'bg_color': '#c4bd97'
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'C8',
-            'content': 'minimum room size (sr/dr)',
-            'format': {
+                'valign': 'vcenter',
+                'color': '#00B0F0',
+                'bg_color': '#F4EFDC',
+                'underline': 1
+            },
+            'home_line_centered_percentage': {
+                'font': 'Segoe UI',
+                'font_size': 8,
                 'align': 'center',
-                'color': '#000000',
-                'border': 1,
-                'bg_color': '#c4bd97'
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'C9',
-            'content': 'minimum common area/resident',
-            'format': {
+                'valign': 'vcenter',
+                'num_format': '0.0%',
+                'bg_color': '#F4EFDC'
+            },
+            'row_number': {
+                'font': 'Segoe UI',
+                'font_size': 11,
+                'bold': True,
+                'bg_color': '#F4515E',
+                'color': '#FFFFFF',
                 'align': 'center',
-                'color': '#000000',
-                'border': 1,
-                'bg_color': '#c4bd97'
+                'valign': 'vcenter',
+                'bottom': 1,
+                'bottom_color': '#FFFFFF'
+            },
+            'row_normal': {
+                'font': 'Segoe UI',
+                'font_size': 8,
+                'valign': 'vcenter'
+            },
+            'row_centered': {
+                'font': 'Segoe UI',
+                'font_size': 8,
+                'align': 'center',
+                'valign': 'vcenter',
+                'text_wrap': True
+            },
+            'last_row_centered': {
+                'font': 'Segoe UI',
+                'font_size': 8,
+                'align': 'center',
+                'valign': 'vcenter',
+                'text_wrap': True,
+                'bottom': 1
+            },
+            'row_centered_link': {
+                'font_size': 8,
+                'align': 'center',
+                'valign': 'vcenter',
+                'color': '#00B0F0',
+                'underline': 1
+            },
+            'last_row_centered_link': {
+                'font_size': 8,
+                'align': 'center',
+                'valign': 'vcenter',
+                'color': '#00B0F0',
+                'underline': 1,
+                'bottom': 1
+            },
+            'row_centered_percentage': {
+                'font': 'Segoe UI',
+                'font_size': 8,
+                'align': 'center',
+                'valign': 'vcenter',
+                'num_format': '0.0%'
+            },
+            'overall_sum': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 8,
+                'valign': 'vcenter',
+                'num_format': '"∑"_-* #,#'
+            },
+            'overall_median_percentage': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 8,
+                'valign': 'vcenter',
+                'num_format': '"x̃" 0.##% '
+            },
+            'overall_median': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 8,
+                'valign': 'vcenter',
+                'num_format': '"x̃" 0.##'
+            },
+            'row_number_al': {
+                'font': 'Segoe UI',
+                'font_size': 11,
+                'bold': True,
+                'bg_color': '#F99398',
+                'color': '#FFFFFF',
+                'align': 'center',
+                'valign': 'vcenter',
+                'bottom': 1,
+                'bottom_color': '#FFFFFF'
+            },
+            'foot_text': {
+                'font': 'Segoe UI',
+                'font_size': 8,
+                'color': '#808080'
+            },
+            'page_display': {
+                'font': 'Segoe UI',
+                'size': 9,
+                'align': 'right',
+                'valign': 'vcenter',
+                'bold': True
+            },
+            'small_heading': {
+                'font': 'Segoe UI',
+                'font_size': 17,
+                'valign': 'vcenter'
+            },
+            'small_heading_background': {
+                'font': 'Segoe UI',
+                'font_size': 17,
+                'valign': 'vcenter',
+                'bg_color': '#F2F2F2'
+            },
+            'smaller_heading': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 12,
+                'top': 1,
+                'bottom': 1,
+                'valign': 'vcenter'
+            },
+            'smaller_heading_background': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 12,
+                'top': 1,
+                'bottom': 1,
+                'valign': 'vcenter',
+                'bg_color': '#F2F2F2'
+            },
+            'gold_heading': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 9,
+                'color': '#C8B058',
+                'italic': True,
+                'valign': 'vcenter'
+            },
+            'normal_text': {
+                'font': 'Segoe UI',
+                'font_size': 9,
+                'valign': 'vcenter'
+            },
+            'mass_text': {
+                'font': 'Segoe UI',
+                'font_size': 9,
+                'valign': 'vcenter',
+                'text_wrap': True
+            },
+            'mass_text_background': {
+                'font': 'Segoe UI',
+                'font_size': 9,
+                'valign': 'vcenter',
+                'text_wrap': True,
+                'bg_color': '#F2F2F2'
+            },
+            'blue_heading': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 12,
+                'bg_color': '#203144',
+                'color': '#FFFFFF',
+                'top': 1,
+                'bottom': 1,
+                'valign': 'vcenter'
+            },
+            'table_heading': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 12,
+                'valign': 'vcenter',
+                'bg_color': '#F2F2F2'
+            },
+            'table_row_heading': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 9,
+                'valign': 'vcenter',
+                'bg_color': '#F2F2F2'
+            },
+            'table_normal_text': {
+                'font': 'Segoe UI',
+                'font_size': 9,
+                'valign': 'vcenter',
+                'bg_color': '#F2F2F2'
+            },
+            'background': {
+                'bg_color': '#F2F2F2'
+            },
+            'name_format': {
+                'font': "Segoe UI",
+                'font_size': 12,
+                'bg_color': "#F2F2F2",
+                'bold': True
+            },
+            'small_normal_format': {
+                'font': "Segoe UI",
+                'font_size': 9,
+                'bg_color': "#F2F2F2"
+            },
+            'link_format': {
+                'font': "Segoe UI",
+                'font_size': 11,
+                'color': "#00B0F0",
+                'bg_color': "#F2F2F2"
             }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'C10',
-            'content': 'comment',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'border': 1,
-              'bg_color': '#c4bd97'
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'C11',
-            'content': 'legal basis',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'border': 1,
-              'bg_color': '#c4bd97'
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'merge',
-            'cell': 'D4:E4',
-            'content': 'Baden-Wurttemberg',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'bg_color': '#948a54',
-              'font_size': 14,
-              'border': 1,
-              'bold': True
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'D5',
-            'content': 'New',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'border': 1,
-              'bg_color': '#c4bd97'
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'D6',
-            'content': '100 %',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'font_size': 10,
-              'border': 1
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'D7',
-            'content': '100 beds',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'font_size': 10,
-              'border': 1
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'D8',
-            'content': '14m²/16m²*',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'font_size': 10,
-              'border': 1
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'D9',
-            'content': '5m², min. 2/3 for living spaces',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'font_size': 10,
-              'border': 1
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'D10',
-            'content': '/',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'font_size': 10,
-              'border': 1
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'merge',
-            'cell': 'D11:E11',
-            'content': 'WTPG, LHeimBauVO',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'font_size': 10,
-              'border': 1
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'E5',
-            'content': 'Existing',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'border': 1,
-              'bg_color': '#c4bd97'
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'E6',
-            'content': '100 % (as of 2019)',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'font_size': 10,
-              'border': 1
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'E7',
-            'content': '100 beds',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'font_size': 10,
-              'border': 1
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'E8',
-            'content': '14m²/16m²*',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'font_size': 10,
-              'border': 1
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'E9',
-            'content': '5m², min 2/3 for living spaces',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'font_size': 10,
-              'border': 1
-            }
-          },
-          {
-            'type': 'text',
-            'insert': 'write',
-            'cell': 'E10',
-            'content': '*Transition period 10 years can be extended to 25 years',
-            'format': {
-              'align': 'center',
-              'color': '#000000',
-              'font_size': 10,
-              'border': 1
-            }
-          }
-        ]
-}
-ala_data = {
-        'title': 'ASSISTED_LIVING_ANALYSIS',
-        'print_area': 'A1:F57',
-        'fit_to_pages': (1, 1),
-        'columns_width': [39, 15.91, 16.33, 16.08, 16.73, 17.36],
-        'landscape': False,
-        'data': [
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A1:C1',
-                'content': 'ASSISTED LIVING ANALYSIS',
-                'format': {
-                    'font_size': 24,
-                    'font': 'Segoe UI Black',
-                    'color': '#BFB273'
-                }
-            },
-            {
-                'type': 'image',
-                'cell': 'E1',
-                'file': 'img/cb_logo.png',
-                'style': {
-                    'x_scale': .21,
-                    'y_scale': .09,
-                    'y_offset': 10,
-                    'x_offset': 130
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A4',
-                'content': 'District Summary',
-                'format': {
-                    'bottom': True,
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A5',
-                'content': 'Population Salzlandkreis, LK',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A6',
-                'content': 'Population 65-79',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A7',
-                'content': 'Population 80+',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A8',
-                'content': 'Population 65-79 (2030)',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A9',
-                'content': 'Population 80+ (2030)',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A10',
-                'content': 'inpatient care forecast district (2022-2030)',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A11',
-                'content': 'active assisted apts. (adjusted)',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A12',
-                'content': 'active apts. per 10.000 population',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A13',
-                'content': 'active assisted living facilities',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A14',
-                'content': 'planned/under construction assisted living facilities',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A15',
-                'content': 'planned/under construction assisted apts. (adjusted)',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A16',
-                'content': 'assisted Living facilities within 10km',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A17',
-                'content': 'apts. within 10km',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A21',
-                'content': 'Assisted Living Analysis in the region',
-                'format': {
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A22',
-                'content': 'Supply',
-                'format': {
-                    'bold': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A23',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A24',
-                'content': 'active BW with apt. numbers',
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A25',
-                'content': 'active BW without apt. numbers',
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A26',
-                'content': 'active subtotal',
-                'format': {
-                    'border': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A27',
-                'content': 'under construction BW facilities with apt. Numbers',
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A28',
-                'content': 'under construction BW facilities without apt. Numbers',
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A29',
-                'content': 'under construction subtotal adjusted',
-                'format': {
-                    'border': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A30',
-                'content': 'planed BW facilities with apt. Numbers',
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A31',
-                'content': 'planed BW facilities without apt. numbers',
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A32',
-                'content': 'in planning subtotal adjusted',
-                'format': {
-                    'border': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A33',
-                'content': 'Total',
-                'format': {
-                    'border': True,
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A35',
-                'content': 'Demand',
-                'format': {
-                    'bold': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A36',
-                'content': '*Assume: % of 65+ population are in need of Assisted Living apt.',
-                'format': {
-                    'bold': True,
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A37',
-                'content': 0.01,
-                'format': {
-                    'border': True,
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A38',
-                'content': 0.02,
-                'format': {
-                    'border': True,
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A39',
-                'content': 0.03,
-                'format': {
-                    'border': True,
-                    'bg_color': '#F1EFE2',
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A40',
-                'content': 0.04,
-                'format': {
-                    'border': True,
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A41',
-                'content': 0.05,
-                'format': {
-                    'border': True,
-                    'bg_color': '#E5E0C7',
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A42',
-                'content': 0.07,
-                'format': {
-                    'border': True,
-                    'bg_color': '#BFB273',
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A43',
-                'content': 0.09,
-                'format': {
-                    'border': True,
-                    'num_format': '0%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A45:B45',
-                'content': '* assume every apt accommodates 1,5 person'
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A47:B47',
-                'content': 'REGIONAL DEMAND FOR ASSISTED LIVING',
-                'format': {
-                    'color': '#BFB273',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A48',
-                'content': 'Holzminden',
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A49',
-                'content': 'Holzminden, LK 2022',
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A50',
-                'content': 'Holzminden, LK 2030',
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A51',
-                'content': 'potential demand in 2030 is',
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B4',
-                'content': '',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B5',
-                'content': 3669491,
-                'format': {
-                    'align': 'right',
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B6',
-                'content': 484900,
-                'format': {
-                    'align': 'right',
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B7',
-                'content': 227100,
-                'format': {
-                    'align': 'right',
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B8',
-                'content': 559500,
-                'format': {
-                    'align': 'right',
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B9',
-                'content': 239600,
-                'format': {
-                    'align': 'right',
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B10',
-                'content': 0.1206,
-                'format': {
-                    'align': 'right',
-                    'bottom': True,
-                    'num_format': '0.00%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B11',
-                'content': 13870,
-                'format': {
-                    'align': 'right',
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B12',
-                'content': 37,
-                'format': {
-                    'align': 'right',
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B13',
-                'content': 211,
-                'format': {
-                    'align': 'right',
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B14',
-                'content': 11,
-                'format': {
-                  'align': 'right',
-                  'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B15',
-                'content': 1257,
-                'format': {
-                    'align': 'right',
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B16',
-                'content': 77,
-                'format': {
-                    'align': 'right',
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B17',
-                'content': 4889,
-                'format': {
-                    'align': 'right',
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'B21:D21',
-                'content': 'Berlin, LK',
-                'format': {
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B22',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B23',
-                'content': 'Facility No.',
-                'format': {
-                    'align': 'center',
-                    'bold': True,
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B24',
-                'content': 168,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B25',
-                'content': 43,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B26',
-                'content': 211,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B27',
-                'content': 5,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B28',
-                'content': 1,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B29',
-                'content': 6,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B30',
-                'content': 3,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B31',
-                'content': 2,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B32',
-                'content': 5,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B33',
-                'content': 222,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B35',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B36',
-                'content': 'Demand in 2022',
-                'format': {
-                    'align': 'center',
-                    'bold': True,
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B37',
-                'content': 125,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B38',
-                'content': 250,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B39',
-                'content': 375,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#F1EFE2',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B40',
-                'content': 500,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B41',
-                'content': 625,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B42',
-                'content': 875,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#BFB273',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B43',
-                'content': 1125,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B48',
-                'content': 'national level',
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B49',
-                'content': -56,
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B50',
-                'content': -123,
-                'format': {
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B51',
-                'content': 'low',
-                'format': {
-                    'border': True,
-                    'num_format': '0.00%',
-                    'color': 'red'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C4',
-                'content': '',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C5',
-                'content': '',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C6',
-                'content': '',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C7',
-                'content': '',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C8',
-                'content': 0.1274,
-                'format': {
-                    'align': 'right',
-                    'num_format': '0.00%',
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C9',
-                'content': 0.003,
-                'format': {
-                    'bottom': True,
-                    'align': 'right',
-                    'num_format': '0.00%'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C10',
-                'content': '',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C11',
-                'content': 'apts',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C12',
-                'content': 'apts',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C13',
-                'content': '',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C14',
-                'content': '',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C15',
-                'content': 'apts',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C16',
-                'content': '',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C17',
-                'content': 'apts',
-                'format': {
-                    'bottom': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C22',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C23',
-                'content': 'apartments',
-                'format': {
-                    'align': 'center',
-                    'bold': True,
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C24',
-                'content': 308,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C25',
-                'content': 0,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C26',
-                'content': 308,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C27',
-                'content': 29,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C28',
-                'content': 0,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C29',
-                'content': 29,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C30',
-                'content': 70,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C31',
-                'content': 0,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C32',
-                'content': 70,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C33',
-                'content': 407,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C35',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C36',
-                'content': '+surplus/-deficit (2022)',
-                'format': {
-                    'align': 'center',
-                    'bold': True,
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C37',
-                'content': 306,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C38',
-                'content': 181,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C39',
-                'content': 56,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#F1EFE2',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C40',
-                'content': -69,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C41',
-                'content': -194,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C42',
-                'content': -443,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#BFB273',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C43',
-                'content': -693,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D22',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D23',
-                'content': 'average apt./Facility',
-                'format': {
-                    'align': 'center',
-                    'bold': True,
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D24',
-                'content': 62,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D25',
-                'content': 0,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D26',
-                'content': 431,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7',
-                    'bold': True,
-                    'color': 'red'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D27',
-                'content': 29,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D28',
-                'content': 0,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D29',
-                'content': 29,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7',
-                    'bold': True,
-                    'color': 'red'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D30',
-                'content': 35,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D31',
-                'content': 0,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D32',
-                'content': 70,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7',
-                    'bold': True,
-                    'color': 'red'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D33',
-                'content': 530,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bold': True,
-                    'color': 'red'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D35',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D36',
-                'content': 'Demand in 2030',
-                'format': {
-                    'align': 'center',
-                    'bold': True,
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D37',
-                'content': 136,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D38',
-                'content': 271,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D39',
-                'content': 407,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#F1EFE2',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D40',
-                'content': 542,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D41',
-                'content': 678,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D42',
-                'content': 949,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#BFB273',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D43',
-                'content': 1220,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'E26:F26',
-                'content': '(Existing apts in Pro-Forma)',
-                'format': {
-                    'color': 'red'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'E33:F33',
-                'content': '(Existing apts in Pro-Forma)',
-                'format': {
-                    'color': 'red'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'E35',
-                'content': '',
-                'format': {
-                    'bold': True,
-                    'bg_color': '#E5E0C7'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'E36',
-                'content': '+surplus/-deficit (2030)',
-                'format': {
-                    'align': 'center',
-                    'bold': True,
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'E37',
-                'content': 395,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'E38',
-                'content': 259,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'E39',
-                'content': 123,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#F1EFE2',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'E40',
-                'content': -12,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'E41',
-                'content': -148,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#E5E0C7',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'E42',
-                'content': -419,
-                'format': {
-                    'align': 'right',
-                    'border': True,
-                    'bg_color': '#BFB273',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'E43',
-                'content': -690,
-                'format': {
-                    'align': 'right',
-                    'border': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'F39',
-                'content': 'national level',
-                'format': {
-                    'align': 'center',
-                    'bg_color': '#F1EFE2',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'F41',
-                'content': 'small city',
-                'format': {
-                    'align': 'center',
-                    'bg_color': '#E5E0C7',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'F42',
-                'content': 'top 30 city',
-                'format': {
-                    'align': 'center',
-                    'bg_color': '#BFB273',
-                    'bold': True
-                }
-            },
-            {
-                'type': 'chart',
-                'subtype': 'column',
-                'position': 'C45',
-                'series': [
-                    {
-                        'values': '=ASSISTED_LIVING_ANALYSIS!$B$49',
-                        'name': 'Holzminden, LK 2022',
-                        'data_labels': {
-                            'value': True,
-                            'position': 'inside_end',
-                            'font': {
-                                'color': '#FFFFFF',
-                                'name': 'Segoe UI'
+        },
+        'pages': {
+            'COVER': {
+                'settings': {
+                    'area': "A1:AN51",
+                    'column_width': [
+                        1.88, 1.88, 1.88, 0.54, 0.38, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88,
+                        1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88,
+                        1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 1.88, 2.88
+                    ],
+                    'row_height': [
+                        16.50, 14.25, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50,
+                        16.50, 15.00, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50,
+                        16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50,
+                        16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50
+                    ],
+                    'columns_to_fill': [
+                        'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN'
+                    ],
+                    'rows_to_fill': (1, 52),
+                    'fill_format': {
+                        'base': "cover_fill_format"
+                    }
+                },
+                'cell_content': {
+                    'images': {
+                        'AB7': {
+                            'file': "Map.png"
+                        },
+                        'AD4': {
+                            'file': "LogoTrans.png"
+                        },
+                        'AF34': {
+                            'file': "pop_trend.png",
+                            'settings': {
+                                'x_offset': 8,
+                                'y_offset': 15
                             }
                         },
-                        'fill': {
-                            'color': '#404040'
-                        },
-                        'overlap': -60
+                        'AF43': {
+                            'file': "beds.png",
+                            'settings': {
+                                'x_offset': 8,
+                                'y_offset': 15
+                            }
+                        }
                     },
-                    {
-                        'values': '=ASSISTED_LIVING_ANALYSIS!$B$50',
-                        'name': 'Holzminden, LK 2030',
-                        'data_labels': {
-                            'value': True,
-                            'position': 'inside_end',
-                            'font': {
-                                'name': 'Segoe UI'
+                    'textboxes': {
+                        'C20': {
+                            'text': "Market Study",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI Semibold",
+                                    'size': 27
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 250,
+                                'height': 100,
+                                'x_offset': -5
                             }
                         },
-                        'fill': {
-                            'color': '#BFB273'
-                        }
-                    }
-                ],
-                'styles': {
-                    'x_axis': {
-                        'visible': False
-                    },
-                    'y_axis': {
-                        'visible': True,
-                        'major_gridlines': {
-                            'visible': True
-                        }
-                    },
-                    'legend': {
-                        'position': 'bottom',
-                        'name_font': {
-                            'name': 'Segoe UI'
+                        'C21': {
+                            'text': "Care",
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI Semibold',
+                                    'size': 80,
+                                    'color': '#C8B058'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 300,
+                                'height': 150,
+                                'x_offset': -10
+                            }
                         },
-                        'layout': {
-                            'x': 0,
-                            'y': .9,
-                            'width': 1,
-                            'height': .1
+                        'C41_A': {
+                            'text': "The",
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI',
+                                    'size': 12
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': -5
+                            }
+                        },
+                        'C41_B': {
+                            'text': "Market Study",
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI Semibold',
+                                    'size': 12
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 18
+                            }
+                        },
+                        'C41_C': {
+                            'text': "CARE",
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI Semibold',
+                                    'size': 12,
+                                    'color': '#C8B058'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 106
+                            }
+                        },
+                        'C41_D': {
+                            'text': "is a web-based service",
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI',
+                                    'size': 12
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 145,
+                                'width': 174
+                            }
+                        },
+                        'C42': {
+                            'text': "from Capital Bay Group that provides investors with localized market, competition and forecast data on the current care market in Germany. For each location and with a scalable radius within Germany.",
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI',
+                                    'size': 12
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': -5,
+                                'width': 340
+                            }
+                        },
+                        'Y26': {
+                            'text': "LOCATION KEYFACTS",
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI Semibold',
+                                    'size': 14,
+                                    'color': '#C8B058'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'align': {
+                                    'horizontal': 'center',
+                                    'text': 'center'
+                                },
+                                'width': 326
+                            }
+                        },
+                        'Y28': {
+                            'text': "Purchasing Power\nat the location - As of 2022",
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI',
+                                    'size': 9,
+                                    'color': '#FFFFFF'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'align': {
+                                    'horizontal': 'center',
+                                    'text': 'center'
+                                },
+                                'width': 326
+                            }
+                        },
+                        'Y29': {
+                            'text': "102.80",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI Semilight",
+                                    'size': 36,
+                                    'color': '#FFFFFF'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'align': {
+                                    'horizontal': 'center',
+                                    'text': 'center'
+                                },
+                                'width': 326,
+                                'y_offset': 5
+                            }
+                        },
+                        'Y37': {
+                            'text': "Population trend of the 65-79 age group\nat the location - Current to 2035",
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI',
+                                    'size': 9,
+                                    'color': '#FFFFFF'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'align': {
+                                    'horizontal': 'center',
+                                    'text': 'center'
+                                },
+                                'width': 326
+                            }
+                        },
+                        'Y38': {
+                            'text': "+ 6.5%",
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI Semilight',
+                                    'size': 36,
+                                    'color': '#FFFFFF'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'align': {
+                                    'horizontal': 'center',
+                                    'text': 'center'
+                                },
+                                'width': 326,
+                                'y_offset': 5
+                            }
+                        },
+                        'Y46': {
+                            'text': "Surplus or deficit of beds\nat the location - Current to 2035",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'color': '#FFFFFF'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'align': {
+                                    'horizontal': 'center',
+                                    'text': 'center'
+                                },
+                                'width': 326
+                            }
+                        },
+                        'Y47': {
+                            'text': "1058",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI Semilight",
+                                    'size': 36,
+                                    'color': '#FFFFFF'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'align': {
+                                    'horizontal': 'center',
+                                    'text': 'center'
+                                },
+                                'width': 326,
+                                'y_offset': 5
+                            }
+                        },
+                        'C51': {
+                            'text': "Version 1.8.3 Generated on 14.07.2023 07:45:30",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'color': '#A6A6A6'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 450,
+                                'x_offset': -5
+                            }
+                        },
+                    },
+                    'cells': {
+                        'C30': {
+                            'text': "Street, no.",
+                            'format': "normal_format"
+                        },
+                        'C31': {
+                            'text': "Zip code",
+                            'format': "normal_format"
+                        },
+                        'C32': {
+                            'text': "City",
+                            'format': "normal_format"
+                        },
+                        'C33': {
+                            'text': "District",
+                            'format': "normal_format"
+                        },
+                        'C34': {
+                            'text': "Federal state",
+                            'format': "normal_format"
+                        },
+                        'C35': {
+                            'text': "Land",
+                            'format': "normal_format"
+                        },
+                        'C36': {
+                            'text': "Radius of analysis",
+                            'format': "gold_format"
+                        },
+                        'L30': {
+                            'text': "Musterstraße 15",
+                            'format': "normal_format_bold"
+                        },
+                        'L31': {
+                            'text': "63333",
+                            'format': "normal_format_bold"
+                        },
+                        'L32': {
+                            'text': "Bad Soden-Saalmünster",
+                            'format': "normal_format_bold"
+                        },
+                        'L33': {
+                            'text': "Mainz-Kinzig-Kreis",
+                            'format': "normal_format_bold"
+                        },
+                        'L34': {
+                            'text': "Hesse",
+                            'format': "normal_format_bold"
+                        },
+                        'L35': {
+                            'text': "Germany",
+                            'format': "normal_format_bold"
+                        },
+                        'L36': {
+                            'text': "15 min of walking",
+                            'format': "gold_format_bold"
+                        }
+                    }
+                }
+            },
+            'SUMMARY': {
+                'settings': {
+                    'area': "A1:V44",
+                    'column_width': [
+                        2.09, 2.09, 2.09, 2.09, 0.78, 0.56, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 2.73,
+                        12.64, 0.17, 12.64, 12.45, 0.17, 12.64, 12.64
+                    ],
+                    'row_height': [
+                        16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 32.50, 16.50, 16.50, 16.50, 16.50,
+                        16.50, 16.50, 16.50, 32.50, 16.50, 16.50, 42.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50,
+                        16.50, 32.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 33.00, 16.50,
+                        16.00, 16.50, 16.50, 16.50, 22.00
+                    ],
+                    'columns_to_fill': ["P", "R", "S", "U", "V"],
+                    'rows_to_fill': (9, 41),
+                    'fill_format': {
+                        'P': {
+                            17: "blue_column_year_format",
+                            28: "blue_column_year_format",
+                            "base": "blue_data_normal"
+                        },
+                        'R': {
+                            9: "grey_column_year_format",
+                            17: "grey_column_year_format",
+                            28: "grey_column_year_format",
+                            "base": "grey_data_normal"
+                        },
+                        'S': {
+                            17: "grey_column_year_format",
+                            28: "grey_column_year_format",
+                            "base": "grey_data_normal"
+                        },
+                        'U': {
+                            9: "lightgrey_column_year_format",
+                            17: "lightgrey_column_year_format",
+                            28: "lightgrey_column_year_format",
+                            "base": "lightgrey_data_normal"
+                        },
+                        'V': {
+                            17: "lightgrey_column_year_format",
+                            28: "lightgrey_column_year_format",
+                            "base": "lightgrey_data_normal"
+                        }
+                    }
+                },
+                'cell_content': {
+                    'textboxes': {
+                        'A1': {
+                            'text': "Capital Bay Group   |",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                }
+                            }
+                        },
+                        'G1': {
+                            'text': "Market Study",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 10
+                            }
+                        },
+                        'K1': {
+                            'text': "CARE",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True,
+                                    'color': "#C8B058"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                }
+                            }
+                        },
+                        'V1': {
+                            'text': "2 | 7",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'align': {
+                                    'text': 'right'
+                                },
+                                'width': 100
+                            }
                         }
                     },
-                    'plotarea': {
-                        'layout': {
-                            'x': .1,
-                            'y': .2,
-                            'width': .8,
-                            'height': .6
+                    'cells': {
+                        'P9': {
+                            'text': 2020,
+                            'format': "blue_column_year_format"
+                        },
+                        'P10': {
+                            'text': 5527,
+                            'format': "blue_data_normal"
+                        },
+                        'P11': {
+                            'text': 162302,
+                            'format': "blue_data_normal"
+                        },
+                        'P12': {
+                            'text': 1,
+                            'format': "blue_data_normal_italic"
+                        },
+                        'P13': {
+                            'text': .23,
+                            'format': "blue_data_normal_italic"
+                        },
+                        'P15': {
+                            'text': 10600,
+                            'format': "blue_data_normal"
+                        },
+                        'P16': {
+                            'text': .02,
+                            'format': "blue_data_normal_italic"
+                        },
+                        'P21': {
+                            'text': .042,
+                            'format': "blue_data_normal_percentage"
+                        },
+                        'P22': {
+                            'text': .183,
+                            'format': "blue_data_normal_percentage"
+                        },
+                        'P23': {
+                            'text': 28500,
+                            'format': "blue_data_normal"
+                        },
+                        'P24': {
+                            'text': .854,
+                            'format': "blue_data_normal_percentage"
+                        },
+                        'P25': {
+                            'text': 33406,
+                            'format': "blue_data_normal"
+                        },
+                        'P26': {
+                            'text': 4881,
+                            'format': "blue_data_normal"
+                        },
+                        'P30': {
+                            'text': 136,
+                            'format': "blue_data_normal"
+                        },
+                        'P31': {
+                            'text': .854,
+                            'format': "blue_data_normal_percentage"
+                        },
+                        'P32': {
+                            'text': "-",
+                            'format': "blue_data_normal_right"
+                        },
+                        'P33': {
+                            'text': 13703,
+                            'format': "blue_data_normal"
+                        },
+                        'P34': {
+                            'text': 13703,
+                            'format': "blue_data_normal"
+                        },
+                        'P35': {
+                            'text': 16113,
+                            'format': "blue_data_normal"
+                        },
+                        'P36': {
+                            'text': "-",
+                            'format': "blue_data_normal_right"
+                        },
+                        'P37': {
+                            'text': "-",
+                            'format': "blue_data_normal_right"
+                        },
+                        'P38': {
+                            'text': "-",
+                            'format': "blue_data_normal_right"
+                        },
+                        'P39': {
+                            'text': 16113,
+                            'format': "blue_data_normal"
+                        },
+                        'R19': {
+                            'text': "Scenario 1",
+                            'format': "grey_scenario_format"
+                        },
+                        'R20': {
+                            'text': "Constant core situation¹",
+                            'format': "grey_text_italic"
+                        },
+                        'R21': {
+                            'text': .045,
+                            'format': "grey_data_normal_percentage"
+                        },
+                        'R22': {
+                            'text': .183,
+                            'format': "grey_data_normal_percentage"
+                        },
+                        'R23': {
+                            'text': 31964,
+                            'format': "grey_data_normal_right"
+                        },
+                        'R24': {
+                            'text': .95,
+                            'format': "grey_data_normal_percentage"
+                        },
+                        'R25': {
+                            'text': 33646,
+                            'format': "grey_data_normal_right"
+                        },
+                        'R31': {
+                            'text': .95,
+                            'format': "grey_data_normal_percentage"
+                        },
+                        'R33': {
+                            'text': 15343,
+                            'format': "grey_data_normal_right"
+                        },
+                        'R34': {
+                            'text': 15343,
+                            'format': "grey_data_normal_right"
+                        },
+                        'R38': {
+                            'text': -144,
+                            'format': "grey_data_normal_right"
+                        },
+                        'R40': {
+                            'text': 770,
+                            'format': "grey_data_normal_right_semibold"
+                        },
+                        'S9': {
+                            'text': 2030,
+                            'format': "grey_column_year_format"
+                        },
+                        'S10': {
+                            'text': 5000,
+                            'format': "grey_data_normal_right"
+                        },
+                        'S11': {
+                            'text': 161500,
+                            'format': "grey_data_normal_right"
+                        },
+                        'S12': {
+                            'text': 1,
+                            'format': "grey_data_normal_italic"
+                        },
+                        'S13': {
+                            'text': 31800,
+                            'format': "grey_data_normal_right"
+                        },
+                        'S14': {
+                            'text': .23,
+                            'format': "grey_data_normal_italic"
+                        },
+                        'S15': {
+                            'text': 11100,
+                            'format': "grey_data_normal_right"
+                        },
+                        'S16': {
+                            'text': .02,
+                            'format': "grey_data_normal_italic"
+                        },
+                        'S19': {
+                            'text': "Scenario 2",
+                            'format': "grey_scenario_format"
+                        },
+                        'S20': {
+                            'text': "Increase in \ncare need of \n0.003%²",
+                            'format': "grey_text_italic"
+                        },
+                        'S21': {
+                            'text': .048,
+                            'format': "grey_data_normal_percentage"
+                        },
+                        'S22': {
+                            'text': .183,
+                            'format': "grey_data_normal_percentage"
+                        },
+                        'S23': {
+                            'text': 34361,
+                            'format': "grey_data_normal_right"
+                        },
+                        'S24': {
+                            'text': .95,
+                            'format': "grey_data_normal_percentage"
+                        },
+                        'S25': {
+                            'text': 36169000,
+                            'format': "grey_data_normal_right"
+                        },
+                        'S26': {
+                            'text': 1808,
+                            'format': "grey_data_normal_right"
+                        },
+                        'S31': {
+                            'text': .95,
+                            'format': "grey_data_normal_percentage"
+                        },
+                        'S33': {
+                            'text': 16493,
+                            'format': "grey_data_normal_right"
+                        },
+                        'S34': {
+                            'text': 16493,
+                            'format': "grey_data_normal_right"
+                        },
+                        'S38': {
+                            'text': -144,
+                            'format': "grey_data_normal_right"
+                        },
+                        'S40': {
+                            'text': -380,
+                            'format': "grey_data_normal_right_semibold"
+                        },
+                        'U19': {
+                            'text': "Scenario 1",
+                            'format': "lightgrey_scenario_format"
+                        },
+                        'U20': {
+                            'text': "Constant care situation¹",
+                            'format': "lightgrey_text_italic"
+                        },
+                        'U21': {
+                            'text': .046,
+                            'format': "lightgrey_data_normal_percentage"
+                        },
+                        'U22': {
+                            'text': .183,
+                            'format': "lightgrey_data_normal_percentage"
+                        },
+                        'U23': {
+                            'text': 33276,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'U24': {
+                            'text': .95,
+                            'format': "lightgrey_data_normal_percentage"
+                        },
+                        'U25': {
+                            'text': 35027,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'U26': {
+                            'text': 1751,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'U31': {
+                            'text': .95,
+                            'format': "lightgrey_data_normal_percentage"
+                        },
+                        'U33': {
+                            'text': 15972,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'U34': {
+                            'text': 15972,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'U38': {
+                            'text': -144,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'U40': {
+                            'text': 141,
+                            'format': "lightgrey_data_normal_right_semibold"
+                        },
+                        'V9': {
+                            'text': 2035,
+                            'format': "lightgrey_column_year_format"
+                        },
+                        'V10': {
+                            'text': 50000,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V11': {
+                            'text': 160700,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V12': {
+                            'text': 1,
+                            'format': "lightgrey_data_normal_italic"
+                        },
+                        'V13': {
+                            'text': 32800,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V14': {
+                            'text': .23,
+                            'format': "lightgrey_data_normal_italic"
+                        },
+                        'V15': {
+                            'text': 12400,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V16': {
+                            'text': .02,
+                            'format': "lightgrey_data_normal_italic"
+                        },
+                        'V19': {
+                            'text': "Scenario 2",
+                            'format': "lightgrey_scenario_format"
+                        },
+                        'V20': {
+                            'text': "Increase in \ncare needs of \n0.003%²",
+                            'format': "lightgrey_text_italic"
+                        },
+                        'V21': {
+                            'text': .05,
+                            'format': "lightgrey_data_normal_percentage"
+                        },
+                        'V22': {
+                            'text': .183,
+                            'format': "lightgrey_data_normal_percentage"
+                        },
+                        'V23': {
+                            'text': 37655,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V24': {
+                            'text': .95,
+                            'format': "lightgrey_data_normal_percentage"
+                        },
+                        'V25': {
+                            'text': 37655,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V26': {
+                            'text': 1883,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V31': {
+                            'text': .95,
+                            'format': "lightgrey_data_normal_percentage"
+                        },
+                        'V33': {
+                            'text': 17171,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V34': {
+                            'text': 17171,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V38': {
+                            'text': -144,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V40': {
+                            'text': -1058,
+                            'format': "lightgrey_data_normal_right_semibold"
                         }
                     },
-                    'chartarea': {
-                        'border': {
-                            'none': True
+                    'merge_cells': {
+                        'C4:P5': {
+                            'text': "Bad Rappenau",
+                            'format': "place_heading_format"
+                        },
+                        'C6:P7': {
+                            'text': "Current Situation",
+                            'format': "situation_heading_format"
+                        },
+                        'C9:O9': {
+                            'text': "Demographic trend analysis",
+                            'format': "chapter_heading_format"
+                        },
+                        'C10:O10': {
+                            'text': "Population Giebelstadt (City)",
+                            'format': "chapter_topics_format"
+                        },
+                        'C11:O11': {
+                            'text': "Population Würzburg (County)",
+                            'format': "chapter_topics_format"
+                        },
+                        'C12:O12': {
+                            'text': "in %",
+                            'format': "percentage_topic_format"
+                        },
+                        'D13:O13': {
+                            'text': "of which population aged 65-79 years",
+                            'format': "chapter_topics_format"
+                        },
+                        'D14:O14': {
+                            'text': "in %",
+                            'format': "percentage_topic_format"
+                        },
+                        'D15:O15': {
+                            'text': "of which population aged 80+",
+                            'format': "chapter_topics_format"
+                        },
+                        'D16:O16': {
+                            'text': "in %",
+                            'format': "percentage_topic_format"
+                        },
+                        'C17:O17': {
+                            'text': "Full inpatient care",
+                            'format': "chapter_heading_format"
+                        },
+                        'C18:O18': {
+                            'text': "Viewing radius: 15 minutes of driving",
+                            'format': "viewing_radius_format"
+                        },
+                        'C21:O21': {
+                            'text': "Care rate of population",
+                            'format': "chapter_topics_format"
+                        },
+                        'C22:O22': {
+                            'text': "There of nursing home rate",
+                            'format': "chapter_topics_format"
+                        },
+                        'C23:O23': {
+                            'text': "Patients receiving full inpatient care",
+                            'format': "chapter_topics_format"
+                        },
+                        'C24:O24': {
+                            'text': "Occupancy rate",
+                            'format': "chapter_topics_format"
+                        },
+                        'C25:O25': {
+                            'text': "Number of beds",
+                            'format': "chapter_topics_format"
+                        },
+                        'C26:O26': {
+                            'text': "Number of free beds",
+                            'format': "chapter_topics_format"
+                        },
+                        'C28:O28': {
+                            'text': "Demand & Supply",
+                            'format': "chapter_heading_format"
+                        },
+                        'C29:O29': {
+                            'text': "Viewing radius: 15 minutes of driving",
+                            'format': "viewing_radius_format"
+                        },
+                        'C30:O30': {
+                            'text': "Nursing homes",
+                            'format': "chapter_topics_format"
+                        },
+                        'C31:O31': {
+                            'text': "Occupancy rate",
+                            'format': "chapter_topics_format"
+                        },
+                        'C32:O32': {
+                            'text': "Nursing homes in planning",
+                            'format': "chapter_topics_format"
+                        },
+                        'C33:O33': {
+                            'text': "Nursing homes under construction",
+                            'format': "chapter_topics_format"
+                        },
+                        'C34:O34': {
+                            'text': "Demand of number of inpatients",
+                            'format': "chapter_topics_format"
+                        },
+                        'C35:O35': {
+                            'text': "Beds in supply",
+                            'format': "chapter_topics_format"
+                        },
+                        'C36:O36': {
+                            'text': "Beds in planning",
+                            'format': "chapter_topics_format"
+                        },
+                        'C37:O37': {
+                            'text': "Beds under construction",
+                            'format': "chapter_topics_format"
+                        },
+                        'C38:O38': {
+                            'text': "Loss of beds due to regulations of the federal state for nursing homes",
+                            'format': "chapter_topics_wrap_format"
+                        },
+                        'C39:O39': {
+                            'text': "Adjusted number of beds",
+                            'format': "chapter_topics_format"
+                        },
+                        'C40:O40': {
+                            'text': "Surplus or deficit of beds",
+                            'format': "chapter_last_topic_format"
+                        },
+                        'C42:V42': {
+                            'text': "¹In scenario 1 the relative situation (product of nursing home rate and care rate) as in 2020 is assumed to be constant for the entire forecasting period.",
+                            'format': "side_note_format"
+                        },
+                        'C43:V43': {
+                            'text': "²In scenario 2, it is assumed that the proportion of the nursing home rate will increase by 0.003 percent-points from 2020 to 2035.",
+                            'format': "side_note_format"
+                        }
+                    }
+                }
+            },
+            'LOCATION ANALYSIS': {
+                'settings': {
+                    'area': "A1:S38",
+                    'column_width': [
+                        2.18, 2.18, 2.45, 0.22, 27.09, 0.22, 19.00, 3.09, 3.09, 3.09, 3.09, 3.09, 3.09, 3.45, 3.45,
+                        3.45, 3.45, 5.27, 3.09
+                    ],
+                    'row_height': [
+                        16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 95.50, 7.50, 30.00, 30.00, 30.00, 30.00,
+                        30.00, 30.00, 30.00, 30.00, 30.00, 30.00, 30.00, 30.00, 30.00, 11.00, 16.50, 7.00, 11.00, 16.50,
+                        7.00, 11.00, 16.50, 7.00, 11.00, 16.00, 7.00, 11.00, 16.50, 16.00
+                    ]
+                },
+                'cell_content': {
+                    'images': {
+                        'C9': {
+                            'file': "test_map.png",
+                            'settings': {
+                                'x_scale': .965
+                            }
+                        },
+                        'C24': {
+                            'file': "locator.png",
+                            'settings': {
+                                'x_offset': 0,
+                                'y_offset': 10,
+                                'x_scale': .9,
+                                'y_scale': .9
+                            }
+                        },
+                        'C27': {
+                            'file': "nh_pin.png",
+                            'settings': {
+                                'x_offset': 0,
+                                'y_offset': 10,
+                                'x_scale': .9,
+                                'y_scale': .9
+                            }
+                        },
+                        'C30': {
+                            'file': "al_pin.png",
+                            'settings': {
+                                'x_offset': 0,
+                                'y_offset': 10,
+                                'x_scale': .9,
+                                'y_scale': .9
+                            }
+                        },
+                        'C33': {
+                            'file': "mixed_pin.png",
+                            'settings': {
+                                'x_offset': 4,
+                                'y_offset': 10,
+                                'x_scale': .9,
+                                'y_scale': .9
+                            }
+                        },
+                        'C36': {
+                            'file': "distance_layer.png",
+                            'settings': {
+                                'x_offset': 0,
+                                'y_offset': 10,
+                                'x_scale': .9,
+                                'y_scale': .9
+                            }
+                        },
+                        'Q9': {
+                            'file': "web_view.png",
+                            'settings': {
+                                'url': "https://www.capitalbay.de",
+                                'y_offset': 10,
+                                'x_offset': -10,
+                                'y_scale': 1.1
+                            }
                         }
                     },
-                    'size': {
-                        'width': 430,
-                        'height': 250
+                    'textboxes': {
+                        'A1': {
+                            'text': "Capital Bay Group   |",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                }
+                            }
+                        },
+                        'E1_A': {
+                            'text': "Market Study",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 46
+                            }
+                        },
+                        'E1_B': {
+                            'text': "CARE",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True,
+                                    'color': "#C8B058"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 128
+                            }
+                        },
+                        'R1': {
+                            'text': "3 | 7",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'align': {
+                                    'text': 'right'
+                                },
+                                'width': 65
+                            }
+                        }
                     },
-                    'chart': {
-                        'x_offset': 30
+                    'cells': {
+                        'E25': {
+                            'text': "Investment object",
+                            'format': "icon_text"
+                        },
+                        'E27': {
+                            'text': "Competitor",
+                            'format': "competitor_text"
+                        },
+                        'E28': {
+                            'text': "Nursing home",
+                            'format': "icon_text"
+                        },
+                        'E30': {
+                            'text': "Competitor",
+                            'format': "competitor_text"
+                        },
+                        'E31': {
+                            'text': "Assisted living",
+                            'format': "icon_text"
+                        },
+                        'E33': {
+                            'text': "Competitor",
+                            'format': "competitor_text"
+                        },
+                        'E34': {
+                            'text': "Nursing home & Assisted living",
+                            'format': "icon_text"
+                        },
+                        'E36': {
+                            'text': "Distance layer",
+                            'format': "competitor_text"
+                        },
+                        'E37': {
+                            'text': "15 min walking",
+                            'format': "icon_text"
+                        }
                     },
-                    'title': {
-                        'name': 'REGIONAL DEMAND FOR ASSISTED LIVING',
-                        'name_font': {
-                            'size': 12,
-                            'name': 'Segoe UI Black'
+                    'merge_cells': {
+                        'C4:J5': {
+                            'text': "Bad Rappenau",
+                            'format': "place_heading_format"
+                        },
+                        'C6:J7': {
+                            'text': "Location Analysis",
+                            'format': "situation_heading_format"
+                        },
+                        'H25:R37': {
+                            'text': "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+                            'format': "gpt_text"
+                        }
+                    }
+                }
+            },
+            'COMPETITOR ANALYSIS': {
+                'settings': {
+                    'area': "A1:X28",
+                    'column_width': [
+                        2.09, 2.09, 2.64, 0.17, 25.36, 0.00, 24.45, 3.27, 3.27, 6.45, 8.18, 4.73, 3.27, 3.55, 5.82,
+                        5.82, 5.82, 5.82, 5.18, 6.00, 5.27, 4.91, 0.00, 3.91
+                    ],
+                    'row_height': [
+                        16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 95.50, 3.50, 19.00, 17.00, 17.00,
+                        17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 16.50,
+                        14.00, 8.00
+                    ],
+                    'columns_to_fill': [
+                        'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+                        'V', 'W', 'X'
+                    ],
+                    'rows_to_fill': [8, 10, 25],
+                    'fill_format': {
+                        'C': {
+                            8: "underline",
+                            10: "underline"
+                        },
+                        'X': {
+                            8: "underline",
+                            25: "last_row_centered"
+                        },
+                        'base': {
+                            8: "underline"
+                        }
+                    }
+                },
+                'cell_content': {
+                    'textboxes': {
+                        'A1': {
+                            'text': "Capital Bay Group   |",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                }
+                            }
+                        },
+                        'E1_A': {
+                            'text': "Market Study",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 46
+                            }
+                        },
+                        'E1_B': {
+                            'text': "CARE",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True,
+                                    'color': "#C8B058"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 128
+                            }
+                        },
+                        'V1': {
+                            'text': "4 | 7",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'align': {
+                                    'text': 'right'
+                                },
+                                'width': 65
+                            }
+                        }
+                    },
+                    'merge_cells': {
+                        'C3:X4': {
+                            'text': "Bad Rappenau",
+                            'format': "place_heading_format"
+                        },
+                        'C5:X6': {
+                            'text': "Competitor Analysis",
+                            'format': "situation_heading_format"
+                        }
+                    }
+                }
+            },
+            'GOOD TO KNOW': {
+                'settings': {
+                    'area': "A1:Y50",
+                    'column_width': [
+                        2.09, 2.09, 2.09, 2.09, 0.78, 0.50, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 5.18, 6.55, 6.55,
+                        4.82, 12.55, 0.17, 3.18, 14.64, 2.09, 2.09, 2.09, 5.91, 2.09
+                    ],
+                    'row_height': [
+                        16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 32.50, 18.00, 32.50, 18.00, 14.50,
+                        14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50,
+                        14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 11.50, 27.00, 18.00, 15.00,
+                        18.00, 15.00, 32.50, 31.00, 15.00, 15.00, 15.00, 15.00, 30.00, 16.50, 9.00
+                    ],
+                    'columns_to_fill': [
+                        'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+                        'T', 'U', 'V', 'W', 'X', 'Y'
+                    ],
+                    'rows_to_fill': (36, 51),
+                    'fill_format': {
+                        'base': "background"
+                    }
+                },
+                'cell_content': {
+                    'images': {
+                        'Q14': {
+                            'file': "plot1.png",
+                            'settings': {
+                                'x_offset': -20
+                            }
+                        },
+                        'Q23': {
+                            'file': "plot2.png",
+                            'settings': {
+                                'x_offset': -20
+                            }
+                        },
+                        'B17': {
+                            'file': "plot3.png"
+                        },
+                    },
+                    'textboxes': {
+                        'A1': {
+                            'text': "Capital Bay Group   |",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                }
+                            }
+                        },
+                        'E1_A': {
+                            'text': "Market Study",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 26
+                            }
+                        },
+                        'E1_B': {
+                            'text': "CARE",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True,
+                                    'color': "#C8B058"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 96
+                            }
+                        },
+                    },
+                    'cells': {
+                        'C12': {
+                            'text': "Viewing radius: 15 minutes of driving",
+                            'format': "gold_heading"
+                        },
+                        'Q12': {
+                            'text': "Viewing radius: 15 minutes of driving",
+                            'format': "gold_heading"
+                        },
+                        'C13': {
+                            'text': "Number of NH facilities",
+                            'format': "normal_text"
+                        },
+                        'O13': {
+                            'text': 54,
+                            'format': "normal_text"
+                        },
+                        'C14': {
+                            'text': "Number of AL facilities",
+                            'format': "normal_text"
+                        },
+                        'O14': {
+                            'text': 54,
+                            'format': "normal_text"
+                        },
+                        'C15': {
+                            'text': "Median numbers of beds (NH)",
+                            'format': "normal_text"
+                        },
+                        'O15': {
+                            'text': 117,
+                            'format': "normal_text"
+                        },
+                        'C16': {
+                            'text': "Median year of construction (NH)",
+                            'format': "normal_text"
+                        },
+                        'O16': {
+                            'text': 2007,
+                            'format': "normal_text"
+                        },
+                        'C17': {
+                            'text': "Median year of construction (AL)",
+                            'format': "normal_text"
+                        },
+                        'O17': {
+                            'text': 2007,
+                            'format': "normal_text"
+                        },
+                        'Q13': {
+                            'text': "Invest costs in Nursing homes",
+                            'format': "normal_text"
+                        },
+                        'C19': {
+                            'text': "Operator types:",
+                            'format': "normal_text"
+                        },
+                        'Q26': {
+                            'text': "Purchasing power index (Municipality)",
+                            'format': "normal_text"
+                        },
+                        'C44': {
+                            'text': "Single room quota (min.)",
+                            'format': "table_row_heading"
+                        },
+                        'C45': {
+                            'text': "Maximum home size",
+                            'format': "table_row_heading"
+                        },
+                        'C46': {
+                            'text': "Minimum room size (SR/DR)",
+                            'format': "table_row_heading"
+                        },
+                        'C47': {
+                            'text': "Minimum common area/ residential",
+                            'format': "table_row_heading"
+                        },
+                        'C48': {
+                            'text': "Comment",
+                            'format': "table_row_heading"
+                        },
+                        'C49': {
+                            'text': "Legal basis",
+                            'format': "table_row_heading"
+                        }
+                    },
+                    'merge_cells': {
+                        'W1:Y1': {
+                            'text': "5 | 7",
+                            'format': "page_display"
+                        },
+                        'C4:X5': {
+                            'text': "Bad Rappenau",
+                            'format': "place_heading_format"
+                        },
+                        'C6:X7': {
+                            'text': "Good to know",
+                            'format': "situation_heading_format"
+                        },
+                        'C9:N9': {
+                            'text': "Market shares",
+                            'format': "small_heading"
+                        },
+                        'C11:O11': {
+                            'text': "Operator & Facilities",
+                            'format': "smaller_heading"
+                        },
+                        'Q11:X11': {
+                            'text': "Prices",
+                            'format': "smaller_heading"
+                        },
+                        'Q21:X23': {
+                            'text': "The investment cost rates of the facilities within the catchment area range between €5.50 and €35.60.  The median investment cost amount to €10.50. The investment costs at the facility, that is subject to this study amounts to €9.90.",
+                            'format': "mass_text"
+                        },
+                        'C37:S37': {
+                            'text': "Regulations of federal state",
+                            'format': "small_heading_background"
+                        },
+                        'C39:X40': {
+                            'text': "This market study consideres X nursing homes within the vicinity of X minutes driving/walking/cycling. Thereof, Y facilities comply with the federal state regulations and Z facilities that do not fullfill the federal requirements. Assumuning that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to Z.",
+                            'format': "mass_text_background"
+                        },
+                        'C42:N42': {
+                            'text': "Federal state",
+                            'format': "smaller_heading_background"
+                        },
+                        'O42:X42': {
+                            'text': "Baden-Wurttemberg",
+                            'format': "blue_heading"
+                        },
+                        'O43:S43': {
+                            'text': "New",
+                            'format': "table_heading"
+                        },
+                        'O44:S44': {
+                            'text': "100%",
+                            'format': "table_normal_text"
+                        },
+                        'O45:S45': {
+                            'text': "100 beds",
+                            'format': "table_normal_text"
+                        },
+                        'O46:S46': {
+                            'text': "14 sqm/ 16 sqm¹",
+                            'format': "table_normal_text"
+                        },
+                        'O47:S47': {
+                            'text': "5 sqm, min 2/3 for living spaces",
+                            'format': "table_normal_text"
+                        },
+                        'O48:S48': {
+                            'text': "/",
+                            'format': "table_normal_text"
+                        },
+                        'O49:S49': {
+                            'text': "WTPG, LHeimBauVO",
+                            'format': "table_normal_text"
+                        },
+                        'T43:X43': {
+                            'text': "Existing",
+                            'format': "table_heading"
+                        },
+                        'T44:X44': {
+                            'text': "100% (as of 2019)",
+                            'format': "table_normal_text"
+                        },
+                        'T45:X45': {
+                            'text': "100 beds",
+                            'format': "table_normal_text"
+                        },
+                        'T46:X46': {
+                            'text': "14 sqm/ 16 sqm",
+                            'format': "table_normal_text"
+                        },
+                        'T47:X47': {
+                            'text': "5 sqm, min 2/3 for living spaces",
+                            'format': "table_normal_text"
+                        },
+                        'T48:X48': {
+                            'text': "Transition period 10 years can be extended to 25 years",
+                            'format': "table_normal_text"
+                        },
+                        'T49:X49': {
+                            'text': "WTPG, LHeimBauVO",
+                            'format': "table_normal_text"
+                        }
+                    }
+                }
+            },
+            'METHODIC': {
+                'settings': {
+                    'area': "A1:Z34",
+                    'column_width': [
+                        2.09, 2.09, 2.09, 2.09, 0.78, 0.56, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 2.73,
+                        0.17, 12.64, 12.45, 0.17, 6.00, 18.00, 2.09, 2.09, 2.09, 2.09, 2.09
+                    ],
+                    'row_height': [
+                        16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 32.50, 32.50, 18.00, 18.00, 18.00,
+                        16.00, 34.00, 34.00, 32.50, 50.00, 50.00, 50.00, 50.00, 50.00, 50.00, 15.00, 15.00, 15.00,
+                        15.00, 15.00, 15.00, 15.00, 15.00, 15.00, 15.00, 15.00
+                    ]
+                },
+                'cell_content': {
+                    'textboxes': {
+                        'C9': {
+                            'text': "",
+                            'settings': {
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'color': '#F2F2F2'
+                                },
+                                'width': 708,
+                                'height': 847
+                            }
+                        },
+                        'A1': {
+                            'text': "Capital Bay Group   |",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                }
+                            }
+                        },
+                        'E1_A': {
+                            'text': "Market Study",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 26
+                            }
+                        },
+                        'E1_B': {
+                            'text': "CARE",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True,
+                                    'color': "#C8B058"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 96
+                            }
+                        },
+                        'Y1': {
+                            'text': "6 | 7",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                }
+                            }
+                        },
+                        'C3': {
+                            'text': "About the study",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 27,
+                                    'color': "#DADADA"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 320,
+                                'y_offset': 15
+                            }
+                        },
+                        'C5': {
+                            'text': "Methodic",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 27,
+                                    'color': "#000000"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 320,
+                                'y_offset': 15
+                            }
+                        },
+                        'D10': {
+                            'text': "Methodology, Data analysis & forecasting",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI Semibold",
+                                    'size': 12,
+                                    'color': "#000000"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 350
+                            }
+                        },
+                        'D11': {
+                            'text': f"""The market study highlights the current state of the inpatient care market in Germany and provides a forecast for the demand for nursing care until 2030 and 2035. The study emphasizes the key drivers of demand and the methodology employed to arrive at the forecasted figures. 
+
+    The study utilizes a combination of publicly available secondary research. Secondary research includes analyzing geographical, demographical and statistical databases as well as government publications and reputable healthcare sources to gather quantitative data. 
+
+    The collected data is analyzed to identify trends, growth drivers, and market dynamics. The analysis encompasses factors such as population demographics, healthcare policies and available market information on existing and future care facilities, prevalence of chronic diseases, and economic indicators affecting the demand for inpatient care. 
+
+    To forecast the future demand for nursing care, a combination of demographic projection, trend analysis and consideration of new care facilities to be launched on the market is employed. Demographic projection takes into account population growth, aging trends, and migration patterns. Trend analysis examines historical data and identifies patterns and growth rates to project future demand. New care facilities takes into account buildings that are in planning or under construction. 
+
+    All findings of the market study will consider the factors mentioned above to provide a comprehensive understanding of the current state of the inpatient care market.
+            """,
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'color': "#000000"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 310,
+                                'height': 600
+                            }
+                        },
+                        'D23': {
+                            'text': "Limitations",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI Semibold",
+                                    'size': 12,
+                                    'color': "#000000"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 330,
+                                'y_offset': 40
+                            }
+                        },
+                        'D25': {
+                            'text': "The forecast is based on available data and assumes that there will be no major disruptive events or policy changes that could significantly impact the demand for inpatient care.",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'color': "#000000"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 320
+                            }
+                        },
+                        'R10': {
+                            'text': "Data sources",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI Semibold",
+                                    'size': 12,
+                                    'color': "#000000"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 320,
+                                'x_offset': 10
+                            }
+                        },
+                        'R11': {
+                            'text': """Statistisches Bundesamt
+    Statista
+    Pflegemarkt.com
+    Pflegemarktdatenbank (updates every 3 months)
+    Demografieportal
+    Pflegeheim-Atlas Deutschland 2021, Wuest Partner
+    21st Real Estate
+    ChatGPT
+    Open Street Maps
+    Malbox
+            """,
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'color': "#000000"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 320,
+                                'x_offset': 10
+                            }
+                        }
+                    }
+                }
+            },
+            'CONTACT': {
+                'settings': {
+                    'area': "A1:Z35",
+                    'column_width': [
+                        2.09, 2.09, 2.09, 2.09, 0.78, 0.56, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 2.73,
+                        0.17, 12.64, 12.45, 0.17, 6.00, 18.00, 2.09, 2.09, 2.09, 2.09, 2.09
+                    ],
+                    'row_height': [
+                        16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 26.50, 16.50, 16.50, 16.50, 16.50,
+                        9.00, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 50.00, 50.00, 50.00, 50.00, 50.00, 50.00,
+                        50.00, 15.00, 15.00, 15.00, 15.00, 15.00, 15.00, 15.00, 15.00
+                    ],
+                    'columns_to_fill': [
+                        'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+                        'V', 'W', 'X', 'Y', 'Z'
+                    ],
+                    'rows_to_fill': (9, 19),
+                    'fill_format': {
+                        'base': "background"
+                    }
+                },
+                'cell_content': {
+                    'images': {
+                        'D18': {
+                            'file': "Contact.jpg",
+                            'settings': {
+                                'x_offset': 10
+                            }
+                        }
+                    },
+                    'textboxes': {
+                        'A1': {
+                            'text': "Capital Bay Group   |",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                }
+                            }
+                        },
+                        'E1_A': {
+                            'text': "Market Study",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 26
+                            }
+                        },
+                        'E1_B': {
+                            'text': "CARE",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True,
+                                    'color': "#C8B058"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 96
+                            }
+                        },
+                        'Y1': {
+                            'text': "7 | 7",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                }
+                            }
+                        },
+                        'C3': {
+                            'text': "Keep in touch",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 27,
+                                    'color': "#DADADA"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 320,
+                                'y_offset': 15
+                            }
+                        },
+                        'C5': {
+                            'text': "Capital Bay Team",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 27,
+                                    'color': "#000000"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 320,
+                                'y_offset': 15
+                            }
+                        },
+                        'E27': {
+                            'text': """This study has been prepared by Capital Bay Group S.A. (hereinafter Capital Bay) to provide investors and business partners of Capital Bay with an overview of current developments in the care and assisted living sector of the real estate industry. Capital Bay emphasizes that this study is not a sufficient basis for decision making and user discretion is necessary for the decision making process. 
+
+    This study has been prepared with reasonable care. The information presented has not been verified by Capital Bay for completeness or accuracy. It has been obtained from the sources indicated and supplemented by Capital 
+                """,
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'color': "#BFBFBF"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 308,
+                                'height': 280
+                            }
+                        },
+                        'R27': {
+                            'text': """Bay's own market knowledge. No confidential or non-public information has been made use.
+
+    Capital Bay is not responsible for any incomplete or inaccurate information and readers are urged to verify the information themselves before making any decision. Capital Bay shall not be liable for any omissions or inaccuracies in this report or for any other oral or written statements made in connection with this report.
+
+
+    © 2023 Capital Bay Group
+    All rights reserved.
+    """,
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'color': "#BFBFBF"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'width': 308,
+                                'height': 280,
+                                'x_offset': 50
+                            }
+                        }
+                    },
+                    'merge_cells': {
+                        'E10:O10': {
+                            'text': "Stephanie Kühn",
+                            'format': "name_format"
+                        },
+                        'E11:O11': {
+                            'text': "Head of Transaction Management",
+                            'format': "small_normal_format"
+                        },
+                        'E12:O12': {
+                            'text': "CB Transaction Management GmbH",
+                            'format': "small_normal_format"
+                        },
+                        'E13:O13': {
+                            'text': "Sachsendamm 4/5, 10829 Berlin",
+                            'format': "small_normal_format"
+                        },
+                        'E15:O15': {
+                            'text': "T +49 30 120866215",
+                            'format': "small_normal_format"
+                        },
+                        'E16:O16': {
+                            'text': "mailto:stephanie.kuehn@capitalbay.de",
+                            'format': "link_format"
+                        },
+                        'R10:U10': {
+                            'text': "Daniel Ziv",
+                            'format': "name_format"
+                        },
+                        'R11:U11': {
+                            'text': "Junior Transaction Manager",
+                            'format': "small_normal_format"
+                        },
+                        'R12:U12': {
+                            'text': "CB Transaction Management GmbH",
+                            'format': "small_normal_format"
+                        },
+                        'R13:U13': {
+                            'text': "Sachsendamm 4/5, 10829 Berlin",
+                            'format': "small_normal_format"
+                        },
+                        'R15:U15': {
+                            'text': "T +49 30 120866281",
+                            'format': "small_normal_format"
+                        },
+                        'R16:U16': {
+                            'text': "mailto:daniel.ziv@capitalbay.de",
+                            'format': "link_format"
                         }
                     }
                 }
             }
-        ]
+        }
     }
-alca_data = {
-        'title': 'ASS_LIVING_COMPETITOR_ANALYSIS',
-        'print_area': 'A1:G1048576',
-        'fit_to_pages': (1, 0),
-        'columns_width': [5.27, 37.18, 34.27, 14, 16.91, 14.09, 10.55],
-        'row_height': 40,
-        'row_start': 28,
-        'row_count': 7,
-        'landscape': False,
-        'data': [
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A1:E1',
-                'content': 'ASSISTED LIVING COMPETITOR ANALYSIS',
-                'format': {
-                    'font_size': 24,
-                    'font': 'Segoe UI Black',
-                    'color': '#BFB273'
-                }
-            },
-            {
-                'type': 'image',
-                'cell': 'F1',
-                'file': 'img/cb_logo.png',
-                'style': {
-                    'x_scale': .21,
-                    'y_scale': .09,
-                    'y_offset': 10,
-                    'x_offset': 50
-                }
-            },
-            {
-                'type': 'image',
-                'cell': 'A4',
-                'file': 'map_image_5a7990_nh.png',
-                'style': {
-                    'x_scale': .7,
-                    'y_scale': .7
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A29',
-                'content': 'No.',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B29',
-                'content': 'Name',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C29',
-                'content': 'Operator',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D29',
-                'content': 'Type',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'E29',
-                'content': 'City',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'F29',
-                'content': 'Status',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'G29',
-                'content': 'No. of apts.',
-                'format': {
-                    'align': 'center',
-                    'font': 'Segoe UI Black',
-                    'bg_color': '#BFB273'
-                }
-            }
-        ]
-}
-comp_data = {
-        'title': 'Comparable List',
-        'print_area': 'A1:P1048576',
-        'fit_to_pages': (1, 0),
-        'columns_width': [16, 23, 11, 13, 18, 11, 15, 15, 18, 16, 13, 13, 12, 20, 20, 13],
-        'landscape': True,
-        'data': [
-            {
-                'type': 'text',
-                'insert': 'merge',
-                'cell': 'A1:E1',
-                'content': 'Comparable List Micro Living',
-                'format': {
-                    'font_size': 16,
-                    'font': 'Segoe UI Semibold'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'A3',
-                'content': 'Operator name',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'B3',
-                'content': 'Address',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'C3',
-                'content': 'Distance to Investment',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'D3',
-                'content': 'A Company of 360 Operator Platform',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'E3',
-                'content': 'Living Concept',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'F3',
-                'content': 'No. of Apartments',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'G3',
-                'content': 'Apartment size range (sqm)',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'H3',
-                'content': 'All-in rent range (€/ sqm/ month)',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'I3',
-                'content': 'Rent Range per month',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'J3',
-                'content': 'Equipment',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'K3',
-                'content': 'Community Spaces',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'L3',
-                'content': 'Furnishing',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'M3',
-                'content': 'Services',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'N3',
-                'content': 'Note',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'O3',
-                'content': 'Source',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-                'type': 'text',
-                'insert': 'write',
-                'cell': 'P3',
-                'content': 'Data entry',
-                'format': {
-                    'font_size': 10,
-                    'font': 'Segoe UI',
-                    'color': '#FFFFFF',
-                    'bold': True,
-                    'bg_color': '#CCB666'
-                }
-            },
-            {
-              'type': 'image',
-              'cell': 'O1',
-              'file': 'img/cb_logo.png',
-              'style': {
-                    'x_scale': .29,
-                    'y_scale': .21,
-                    'x_offset': 60
-              }
-            }
-        ]
-}
