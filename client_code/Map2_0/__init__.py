@@ -1243,7 +1243,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P35']['text'] = beds_lk
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P36']['text'] = beds_planned
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P37']['text'] = beds_construct
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P39']['text'] = beds_adjusted
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P39']['text'] = beds_lk
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R21']['text'] = care_rate_30_v1_raw
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R22']['text'] = nursing_home_rate
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R23']['text'] = pat_rec_full_care_fc_30_v1
