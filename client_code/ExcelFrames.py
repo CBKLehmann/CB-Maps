@@ -1196,6 +1196,10 @@ market_study_data = {
                             'text': 33646,
                             'format': "grey_data_normal_right"
                         },
+                        'R26': {
+                            'text': 33646,
+                            'format': "grey_data_normal_right"
+                        },
                         'R31': {
                             'text': .95,
                             'format': "grey_data_normal_percentage"
