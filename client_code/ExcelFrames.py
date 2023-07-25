@@ -971,30 +971,30 @@ market_study_data = {
                     'rows_to_fill': (9, 41),
                     'fill_format': {
                         'P': {
-                            17: "blue_column_year_format",
-                            28: "blue_column_year_format",
+                            '17': "blue_column_year_format",
+                            '28': "blue_column_year_format",
                             "base": "blue_data_normal"
                         },
                         'R': {
-                            9: "grey_column_year_format",
-                            17: "grey_column_year_format",
-                            28: "grey_column_year_format",
+                            '9': "grey_column_year_format",
+                            '17': "grey_column_year_format",
+                            '28': "grey_column_year_format",
                             "base": "grey_data_normal"
                         },
                         'S': {
-                            17: "grey_column_year_format",
-                            28: "grey_column_year_format",
+                            '17': "grey_column_year_format",
+                            '28': "grey_column_year_format",
                             "base": "grey_data_normal"
                         },
                         'U': {
-                            9: "lightgrey_column_year_format",
-                            17: "lightgrey_column_year_format",
-                            28: "lightgrey_column_year_format",
+                            '9': "lightgrey_column_year_format",
+                            '17': "lightgrey_column_year_format",
+                            '28': "lightgrey_column_year_format",
                             "base": "lightgrey_data_normal"
                         },
                         'V': {
-                            17: "lightgrey_column_year_format",
-                            28: "lightgrey_column_year_format",
+                            '17': "lightgrey_column_year_format",
+                            '28': "lightgrey_column_year_format",
                             "base": "lightgrey_data_normal"
                         }
                     }
@@ -1089,6 +1089,10 @@ market_study_data = {
                             'format': "blue_data_normal_italic"
                         },
                         'P13': {
+                            'text': 10600,
+                            'format': "blue_data_normal"
+                        },
+                        'P14': {
                             'text': .23,
                             'format': "blue_data_normal_italic"
                         },
@@ -1196,14 +1200,6 @@ market_study_data = {
                             'text': .95,
                             'format': "grey_data_normal_percentage"
                         },
-                        'R33': {
-                            'text': 15343,
-                            'format': "grey_data_normal_right"
-                        },
-                        'R34': {
-                            'text': 15343,
-                            'format': "grey_data_normal_right"
-                        },
                         'R38': {
                             'text': -144,
                             'format': "grey_data_normal_right"
@@ -1215,10 +1211,6 @@ market_study_data = {
                         'S9': {
                             'text': 2030,
                             'format': "grey_column_year_format"
-                        },
-                        'S10': {
-                            'text': 5000,
-                            'format': "grey_data_normal_right"
                         },
                         'S11': {
                             'text': 161500,
@@ -1280,14 +1272,6 @@ market_study_data = {
                             'text': .95,
                             'format': "grey_data_normal_percentage"
                         },
-                        'S33': {
-                            'text': 16493,
-                            'format': "grey_data_normal_right"
-                        },
-                        'S34': {
-                            'text': 16493,
-                            'format': "grey_data_normal_right"
-                        },
                         'S38': {
                             'text': -144,
                             'format': "grey_data_normal_right"
@@ -1331,14 +1315,6 @@ market_study_data = {
                         'U31': {
                             'text': .95,
                             'format': "lightgrey_data_normal_percentage"
-                        },
-                        'U33': {
-                            'text': 15972,
-                            'format': "lightgrey_data_normal_right"
-                        },
-                        'U34': {
-                            'text': 15972,
-                            'format': "lightgrey_data_normal_right"
                         },
                         'U38': {
                             'text': -144,
@@ -1415,14 +1391,6 @@ market_study_data = {
                         'V31': {
                             'text': .95,
                             'format': "lightgrey_data_normal_percentage"
-                        },
-                        'V33': {
-                            'text': 17171,
-                            'format': "lightgrey_data_normal_right"
-                        },
-                        'V34': {
-                            'text': 17171,
-                            'format': "lightgrey_data_normal_right"
                         },
                         'V38': {
                             'text': -144,
@@ -1790,15 +1758,15 @@ market_study_data = {
                     'rows_to_fill': [8, 10, 25],
                     'fill_format': {
                         'C': {
-                            8: "underline",
-                            10: "underline"
+                            '8': "underline",
+                            '10': "underline"
                         },
                         'X': {
-                            8: "underline",
-                            25: "last_row_centered"
+                            '8': "underline",
+                            '25': "last_row_centered"
                         },
                         'base': {
-                            8: "underline"
+                            '8': "underline"
                         }
                     }
                 },
