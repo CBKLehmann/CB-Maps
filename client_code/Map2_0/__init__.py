@@ -1213,7 +1213,7 @@ class Map2_0(Map2_0Template):
       beds_in_reserve_fc = round(beds_adjusted * 0.05)
 
       market_study_data = copy.deepcopy(ExcelFrames.market_study_data)
-      market_study_data['pages']['COVER']['cell_content']['textboxes']['Y29']['text'] = f"{purchase_power}"
+      market_study_data['pages']['COVER']['cell_content']['textboxes']['Y29']['text'] = "{:.2f}".format(purchase_power)
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y38']['text'] = population_trend_string
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y47']['text'] = f"{beds_surplus_35_v2}"
       market_study_data['pages']['COVER']['cell_content']['textboxes']['C51']['text'] = f"Version 1.3.37 Generated on {created_date}"
