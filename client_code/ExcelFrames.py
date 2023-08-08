@@ -584,20 +584,25 @@ market_study_data = {
                 'cell_content': {
                     'images': {
                         'AB7': {
-                            'file': "Map.png"
+                            'file': "img/Map.png",
+                            'settings': {
+                                'x_scale': .32,
+                                'y_scale': .35,
+                                'y_offset': 20
+                            }
                         },
                         'AD4': {
-                            'file': "LogoTrans.png"
+                            'file': "img/LogoTrans.png"
                         },
                         'AF34': {
-                            'file': "pop_trend.png",
+                            'file': "img/pop_trend.png",
                             'settings': {
                                 'x_offset': 8,
                                 'y_offset': 15
                             }
                         },
                         'AF43': {
-                            'file': "beds.png",
+                            'file': "img/beds.png",
                             'settings': {
                                 'x_offset': 8,
                                 'y_offset': 15
@@ -965,10 +970,10 @@ market_study_data = {
                         16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 32.50, 16.50, 16.50, 16.50, 16.50,
                         16.50, 16.50, 16.50, 32.50, 16.50, 42.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50,
                         16.50, 32.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 33.00, 16.50,
-                        16.00, 16.50, 16.50, 16.50, 22.00
+                        16.00, 16.50, 16.50, 22.00
                     ],
                     'columns_to_fill': ["P", "R", "S", "U", "V"],
-                    'rows_to_fill': (9, 41),
+                    'rows_to_fill': (9, 40),
                     'fill_format': {
                         'P': {
                             '17': "blue_column_year_format",
@@ -1566,7 +1571,7 @@ market_study_data = {
                             'text': "Adjusted number of beds",
                             'format': "chapter_topics_format"
                         },
-                        'C40:O40': {
+                        'C39:O39': {
                             'text': "Surplus or deficit of beds",
                             'format': "chapter_last_topic_format"
                         },
@@ -1597,13 +1602,13 @@ market_study_data = {
                 'cell_content': {
                     'images': {
                         'C9': {
-                            'file': "test_map.png",
+                            'file': "img/test_map.png",
                             'settings': {
                                 'x_scale': .965
                             }
                         },
                         'C24': {
-                            'file': "locator.png",
+                            'file': "img/locator.png",
                             'settings': {
                                 'x_offset': 0,
                                 'y_offset': 10,
@@ -1612,7 +1617,7 @@ market_study_data = {
                             }
                         },
                         'C27': {
-                            'file': "nh_pin.png",
+                            'file': "img/nh_pin.png",
                             'settings': {
                                 'x_offset': 0,
                                 'y_offset': 10,
@@ -1621,7 +1626,7 @@ market_study_data = {
                             }
                         },
                         'C30': {
-                            'file': "al_pin.png",
+                            'file': "img/al_pin.png",
                             'settings': {
                                 'x_offset': 0,
                                 'y_offset': 10,
@@ -1630,7 +1635,7 @@ market_study_data = {
                             }
                         },
                         'C33': {
-                            'file': "mixed_pin.png",
+                            'file': "img/mixed_pin.png",
                             'settings': {
                                 'x_offset': 4,
                                 'y_offset': 10,
@@ -1639,7 +1644,7 @@ market_study_data = {
                             }
                         },
                         'C36': {
-                            'file': "distance_layer.png",
+                            'file': "img/distance_layer.png",
                             'settings': {
                                 'x_offset': 0,
                                 'y_offset': 10,
@@ -1648,7 +1653,7 @@ market_study_data = {
                             }
                         },
                         'Q9': {
-                            'file': "web_view.png",
+                            'file': "img/web_view.png",
                             'settings': {
                                 'url': "https://www.capitalbay.de",
                                 'y_offset': 10,
