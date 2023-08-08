@@ -1160,6 +1160,10 @@ market_study_data = {
                             'text': "-",
                             'format': "blue_data_normal_right"
                         },
+                        'P38': {
+                            'text': "-",
+                            'format': "blue_data_normal_right"
+                        },
                         'P39': {
                             'text': 16113,
                             'format': "blue_data_normal"
@@ -1192,7 +1196,7 @@ market_study_data = {
                             'text': 33646,
                             'format': "grey_data_normal_right"
                         },
-                        'R29': {
+                        'R26': {
                             'text': 33646,
                             'format': "grey_data_normal_right"
                         },
@@ -1200,12 +1204,12 @@ market_study_data = {
                             'text': .95,
                             'format': "grey_data_normal_percentage"
                         },
-                        'R38': {
-                            'text': -144,
+                        'R35': {
+                            'text': 34512,
                             'format': "grey_data_normal_right"
                         },
-                        'R39': {
-                            'text': 5468,
+                        'R38': {
+                            'text': -144,
                             'format': "grey_data_normal_right"
                         },
                         'R40': {
@@ -1276,6 +1280,10 @@ market_study_data = {
                             'text': .95,
                             'format': "grey_data_normal_percentage"
                         },
+                        'S35': {
+                            'text': 34512,
+                            'format': "grey_data_normal_right"
+                        },
                         'S38': {
                             'text': -144,
                             'format': "grey_data_normal_right"
@@ -1323,6 +1331,10 @@ market_study_data = {
                         'U31': {
                             'text': .95,
                             'format': "lightgrey_data_normal_percentage"
+                        },
+                        'U35': {
+                            'text': 34512,
+                            'format': "lightgrey_data_normal_right"
                         },
                         'U38': {
                             'text': -144,
@@ -1403,6 +1415,10 @@ market_study_data = {
                         'V31': {
                             'text': .95,
                             'format': "lightgrey_data_normal_percentage"
+                        },
+                        'V35': {
+                            'text': 34512,
+                            'format': "lightgrey_data_normal_right"
                         },
                         'V38': {
                             'text': -144,

@@ -1113,7 +1113,7 @@ class Map2_0(Map2_0Template):
 
       date = datetime.datetime.now()
       if len(str(date.day)) == 1:
-        day = f"0{day.day}"
+        day = f"0{date.day}"
       else:
         day = date.day
       if len(str(date.month)) == 1:
@@ -1249,6 +1249,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R23']['text'] = pat_rec_full_care_fc_30_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R25']['text'] = beds_30_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R26']['text'] = free_beds_30_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R35']['text'] = beds_30_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R38']['text'] = loss_of_beds
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R40']['text'] = beds_surplus      
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S11']['text'] = population_fc
@@ -1261,20 +1262,17 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S23']['text'] = pat_rec_full_care_fc_30_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S25']['text'] = beds_30_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S26']['text'] = free_beds_30_v2
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S35']['text'] = beds_30_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S38']['text'] = loss_of_beds
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S40']['text'] = beds_surplus_v2
-      
-      # market_study_data['pages']['SUMMARY']['cell_content']['cells']['R26'] = free_beds_30_v1
-      # market_study_data['pages']['SUMMARY']['cell_content']['cells']['R26'] = free_beds_30_v1
-      # market_study_data['pages']['SUMMARY']['cell_content']['cells']['R26'] = free_beds_30_v1
-      # market_study_data['pages']['SUMMARY']['cell_content']['cells']['R26'] = free_beds_30_v1
-      # market_study_data['pages']['SUMMARY']['cell_content']['cells']['R26'] = free_beds_30_v1
-      # market_study_data['pages']['SUMMARY']['cell_content']['cells']['R26'] = free_beds_30_v1
-      # market_study_data['pages']['SUMMARY']['cell_content']['cells']['R26'] = free_beds_30_v1
-      # market_study_data['pages']['SUMMARY']['cell_content']['cells']['R26'] = free_beds_30_v1
-      # market_study_data['pages']['SUMMARY']['cell_content']['cells']['R26'] = free_beds_30_v1
-      # market_study_data['pages']['SUMMARY']['cell_content']['cells']['R26'] = free_beds_30_v1
-      # market_study_data['pages']['SUMMARY']['cell_content']['cells']['R26'] = free_beds_30_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S40']['text'] = beds_surplus_v2      
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U21']['text'] = care_rate_30_v1_raw
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U22']['text'] = nursing_home_rate
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U23']['text'] = pat_rec_full_care_fc_30_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U25']['text'] = beds_30_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U26']['text'] = free_beds_30_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U35']['text'] = beds_30_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U38']['text'] = loss_of_beds
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U40']['text'] = beds_surplus  
 
       anvil.server.call('new_ms_test2', market_study_data, unique_code)
       
