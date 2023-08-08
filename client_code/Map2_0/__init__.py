@@ -1300,10 +1300,90 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C4:J5']['text'] = city
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['cells']['E37']['text'] = f"{iso_time} minutes of {movement}"
 
-      anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code)
+      print(len(data_comp_analysis_nh['data']))
+      print(len(data_comp_analysis_al['data']))
 
+      nursing_homes_amount = len(data_comp_analysis_nh['data'])
+      assisted_living_amount = len(data_comp_analysis_al['data'])
+      total_amount = nursing_homes_amount + assisted_living_amount
+      
+      if total_amount <= 13:
+        # Single Page
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['merge_cells']['C9:E9'] = {
+          'text': "Nursing homes",
+          'format': 'nh_heading'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['H9'] = {
+          'text': "Web",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['I9'] = {
+          'text': "Top 30 Operator",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['J9'] = {
+          'text': "Operator type",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['K9'] = {
+          'text': "Asset status",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['L9'] = {
+          'text': "Year of construction",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['M9'] = {
+          'text': "Apartments (AL)",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['N9'] = {
+          'text': "Legally compliant¹",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['O9'] = {
+          'text': "Care beds",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['P9'] = {
+          'text': "Single rooms",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['Q9'] = {
+          'text': "Double rooms",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['R9'] = {
+          'text': "Rooms",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['S9'] = {
+          'text': "Single room quota",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['T9'] = {
+          'text': "Occupancy rates",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['U9'] = {
+          'text': "Invest cost (p. day in €)",
+          'format': 'rotated_text'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['V9'] = {
+          'text': "MDK grade (2019)",
+          'format': 'rotated_text'
+        }
+      else:
+        # Nursing Home Pages
+        pass
+
+        # Assisted Living Pages
+        pass
+
+      #anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code)
+      
       # Copy and Fill Dataframe for Nursing Home Competitor Analysis
-      nurscomp_frame = copy.deepcopy(ExcelFrames.nca_data)
+      #nurscomp_frame = copy.deepcopy(ExcelFrames.nca_data)
       nurscomp_frame['data'][7]['content'] = pg3_median_raw
       nurscomp_frame['data'][8]['content'] = copayment_median_raw
       nurscomp_frame['data'][9]['content'] = invest_med
@@ -3217,7 +3297,7 @@ class Map2_0(Map2_0Template):
       last_coord_dist = 0
       
       for coordinate in reversed(res_data['sorted_coords']):
-        if complete_counter <= 30:
+        if complete_counter <= 25:
           if not last_coord_dist == coordinate[1]:
             counter += 1
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/Pin{index_coords}x075.png'
