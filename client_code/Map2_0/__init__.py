@@ -1244,10 +1244,10 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P31']['text'] = nursing_homes_planned
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P32']['text'] = nursing_homes_construct
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P33']['text'] = inpatients
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P34']['text'] = beds_lk
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P34']['text'] = beds_active
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P35']['text'] = beds_planned
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P36']['text'] = beds_construct
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P38']['text'] = beds_lk
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P38']['text'] = beds_active
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R20']['text'] = care_rate_30_v1_raw
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R21']['text'] = nursing_home_rate
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R22']['text'] = pat_rec_full_care_fc_30_v1
