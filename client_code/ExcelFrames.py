@@ -1352,10 +1352,6 @@ market_study_data = {
                             'text': 2035,
                             'format': "lightgrey_column_year_format"
                         },
-                        'V10': {
-                            'text': 50000,
-                            'format': "lightgrey_data_normal_right"
-                        },
                         'V11': {
                             'text': 160700,
                             'format': "lightgrey_data_normal_right"

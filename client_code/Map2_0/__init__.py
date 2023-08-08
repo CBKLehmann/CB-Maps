@@ -1107,9 +1107,9 @@ class Map2_0(Map2_0Template):
 
       population_trend = "{:.1f}".format((people_u80_fc_35 * 100) / people_u80 - 100)
       if float(population_trend) < 0:
-        population_trend_string = f"- {population_trend}%"
+        population_trend_string = f"-{population_trend}%"
       else:
-        population_trend_string = f"+ {population_trend}%"
+        population_trend_string = f"+{population_trend}%"
 
       date = datetime.datetime.now()
       if len(str(date.day)) == 1:
@@ -1264,15 +1264,28 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S26']['text'] = free_beds_30_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S35']['text'] = beds_30_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S38']['text'] = loss_of_beds
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S40']['text'] = beds_surplus_v2      
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U21']['text'] = care_rate_30_v1_raw
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S40']['text'] = beds_surplus_v2
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U21']['text'] = care_rate_35_v1_raw
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U22']['text'] = nursing_home_rate
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U23']['text'] = pat_rec_full_care_fc_30_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U25']['text'] = beds_30_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U26']['text'] = free_beds_30_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U35']['text'] = beds_30_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U23']['text'] = pat_rec_full_care_fc_35_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U25']['text'] = beds_35_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U26']['text'] = free_beds_35_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U35']['text'] = beds_35_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U38']['text'] = loss_of_beds
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U40']['text'] = beds_surplus  
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U40']['text'] = beds_surplus_35
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V21']['text'] = care_rate_35_v2_raw
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V22']['text'] = nursing_home_rate
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V23']['text'] = pat_rec_full_care_fc_35_v2
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V25']['text'] = beds_35_v2
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V26']['text'] = free_beds_35_v2
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V35']['text'] = beds_35_v2
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V38']['text'] = loss_of_beds
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V40']['text'] = beds_surplus_35_v2
+      market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C4:P5']['text'] = city
+      market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C10:O10']['text'] = f"Population {city} (City)"
+      market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C11:O11']['text'] = f"Population {countie[0]} (County)"
+      market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C18:O18']['text'] = f"Viewing radius: {minute} minutes of {movement}"
+      market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C29:O29']['text'] = f"Viewing radius: {minute} minutes of {movement}"
 
       anvil.server.call('new_ms_test2', market_study_data, unique_code)
       
@@ -1364,18 +1377,18 @@ class Map2_0(Map2_0Template):
       summary_frame['data'][161]['content'] = people_u80_fc_35
       summary_frame['data'][162]['content'] = people_o80_fc_35
       summary_frame['data'][164]['content'] = care_rate_break_even_35_raw
-      summary_frame['data'][165]['content'] = care_rate_35_v1_raw
+      #summary_frame['data'][165]['content'] = care_rate_35_v1_raw
       summary_frame['data'][166]['content'] = nursing_home_rate
-      summary_frame['data'][167]['content'] = pat_rec_full_care_fc_35_v1
+      #summary_frame['data'][167]['content'] = pat_rec_full_care_fc_35_v1
       summary_frame['data'][168]['content'] = 0.95
-      summary_frame['data'][169]['content'] = beds_35_v1
-      summary_frame['data'][170]['content'] = free_beds_35_v1
-      summary_frame['data'][171]['content'] = care_rate_35_v2_raw
+      #summary_frame['data'][169]['content'] = beds_35_v1
+      #summary_frame['data'][170]['content'] = free_beds_35_v1
+      #summary_frame['data'][171]['content'] = care_rate_35_v2_raw
       summary_frame['data'][172]['content'] = nursing_home_rate
-      summary_frame['data'][173]['content'] = pat_rec_full_care_fc_35_v2
+      #summary_frame['data'][173]['content'] = pat_rec_full_care_fc_35_v2
       summary_frame['data'][174]['content'] = 0.95
-      summary_frame['data'][175]['content'] = beds_35_v2
-      summary_frame['data'][176]['content'] = free_beds_35_v2
+      #summary_frame['data'][175]['content'] = beds_35_v2
+      #summary_frame['data'][176]['content'] = free_beds_35_v2
       summary_frame['data'][178]['content'] = inpatients_fc_35
       summary_frame['data'][179]['content'] = inpatients_fc_35_v2
       summary_frame['data'][181]['content'] = loss_of_beds
@@ -1387,7 +1400,7 @@ class Map2_0(Map2_0Template):
       summary_frame['data'][188]['content'] = beds_surplus_35
       summary_frame['data'][189]['content'] = beds_adjusted
       summary_frame['data'][190]['content'] = inpatients_fc_35_v2
-      summary_frame['data'][191]['content'] = beds_surplus_35_v2
+      #summary_frame['data'][191]['content'] = beds_surplus_35_v2
       summary_frame['data'][192]['content'] = purchase_power
       summary_frame['data'][193]['content'] = 100 - purchase_power
       summary_frame['data'][194]['content'] = purchase_power
