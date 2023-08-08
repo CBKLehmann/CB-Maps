@@ -1288,10 +1288,6 @@ market_study_data = {
                             'text': -144,
                             'format': "grey_data_normal_right"
                         },
-                        'R39': {
-                            'text': 5468,
-                            'format': "grey_data_normal_right"
-                        },
                         'S40': {
                             'text': -380,
                             'format': "grey_data_normal_right_semibold"
