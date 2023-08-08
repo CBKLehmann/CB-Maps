@@ -963,7 +963,7 @@ market_study_data = {
                     ],
                     'row_height': [
                         16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 32.50, 16.50, 16.50, 16.50, 16.50,
-                        16.50, 16.50, 16.50, 32.50, 16.50, 16.50, 42.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50,
+                        16.50, 16.50, 16.50, 32.50, 16.50, 42.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50,
                         16.50, 32.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 33.00, 16.50,
                         16.00, 16.50, 16.50, 16.50, 22.00
                     ],
@@ -972,29 +972,29 @@ market_study_data = {
                     'fill_format': {
                         'P': {
                             '17': "blue_column_year_format",
-                            '28': "blue_column_year_format",
+                            '27': "blue_column_year_format",
                             "base": "blue_data_normal"
                         },
                         'R': {
                             '9': "grey_column_year_format",
                             '17': "grey_column_year_format",
-                            '28': "grey_column_year_format",
+                            '27': "grey_column_year_format",
                             "base": "grey_data_normal"
                         },
                         'S': {
                             '17': "grey_column_year_format",
-                            '28': "grey_column_year_format",
+                            '27': "grey_column_year_format",
                             "base": "grey_data_normal"
                         },
                         'U': {
                             '9': "lightgrey_column_year_format",
                             '17': "lightgrey_column_year_format",
-                            '28': "lightgrey_column_year_format",
+                            '27': "lightgrey_column_year_format",
                             "base": "lightgrey_data_normal"
                         },
                         'V': {
                             '17': "lightgrey_column_year_format",
-                            '28': "lightgrey_column_year_format",
+                            '27': "lightgrey_column_year_format",
                             "base": "lightgrey_data_normal"
                         }
                     }
@@ -1104,53 +1104,57 @@ market_study_data = {
                             'text': .02,
                             'format': "blue_data_normal_italic"
                         },
-                        'P21': {
+                        'P20': {
                             'text': .042,
                             'format': "blue_data_normal_percentage"
                         },
-                        'P22': {
+                        'P21': {
                             'text': .183,
                             'format': "blue_data_normal_percentage"
                         },
-                        'P23': {
+                        'P22': {
                             'text': 28500,
                             'format': "blue_data_normal"
                         },
-                        'P24': {
+                        'P23': {
                             'text': .854,
                             'format': "blue_data_normal_percentage"
                         },
-                        'P25': {
+                        'P24': {
                             'text': 33406,
                             'format': "blue_data_normal"
                         },
-                        'P26': {
+                        'P25': {
                             'text': 4881,
                             'format': "blue_data_normal"
                         },
-                        'P30': {
+                        'P29': {
                             'text': 136,
                             'format': "blue_data_normal"
                         },
-                        'P31': {
+                        'P30': {
                             'text': .854,
                             'format': "blue_data_normal_percentage"
                         },
-                        'P32': {
+                        'P31': {
                             'text': "-",
                             'format': "blue_data_normal_right"
+                        },
+                        'P32': {
+                            'text': 13703,
+                            'format': "blue_data_normal"
                         },
                         'P33': {
                             'text': 13703,
                             'format': "blue_data_normal"
                         },
                         'P34': {
-                            'text': 13703,
+                            'text': 16113,
                             'format': "blue_data_normal"
                         },
                         'P35': {
-                            'text': 16113,
-                            'format': "blue_data_normal"
+                            'text': "-",
+                            'format': "blue_data_normal_right"
                         },
                         'P36': {
                             'text': "-",
@@ -1161,58 +1165,62 @@ market_study_data = {
                             'format': "blue_data_normal_right"
                         },
                         'P38': {
-                            'text': "-",
-                            'format': "blue_data_normal_right"
-                        },
-                        'P39': {
                             'text': 16113,
                             'format': "blue_data_normal"
                         },
-                        'R19': {
+                        'R18': {
                             'text': "Scenario 1",
                             'format': "grey_scenario_format"
                         },
-                        'R20': {
+                        'R19': {
                             'text': "Constant core situation¹",
                             'format': "grey_text_italic"
                         },
-                        'R21': {
+                        'R20': {
                             'text': .045,
                             'format': "grey_data_normal_percentage"
                         },
-                        'R22': {
+                        'R21': {
                             'text': .183,
                             'format': "grey_data_normal_percentage"
                         },
-                        'R23': {
+                        'R22': {
                             'text': 31964,
                             'format': "grey_data_normal_right"
                         },
-                        'R24': {
+                        'R23': {
                             'text': .95,
                             'format': "grey_data_normal_percentage"
+                        },
+                        'R24': {
+                            'text': 33646,
+                            'format': "grey_data_normal_right"
                         },
                         'R25': {
                             'text': 33646,
                             'format': "grey_data_normal_right"
                         },
-                        'R26': {
-                            'text': 33646,
-                            'format': "grey_data_normal_right"
-                        },
-                        'R31': {
+                        'R30': {
                             'text': .95,
                             'format': "grey_data_normal_percentage"
                         },
-                        'R35': {
+                        'R33': {
                             'text': 34512,
+                            'format': "grey_data_normal_right"
+                        },
+                        'R34': {
+                            'text': 34512,
+                            'format': "grey_data_normal_right"
+                        },
+                        'R37': {
+                            'text': -144,
                             'format': "grey_data_normal_right"
                         },
                         'R38': {
                             'text': -144,
                             'format': "grey_data_normal_right"
                         },
-                        'R40': {
+                        'R39': {
                             'text': 770,
                             'format': "grey_data_normal_right_semibold"
                         },
@@ -1244,103 +1252,115 @@ market_study_data = {
                             'text': .02,
                             'format': "grey_data_normal_italic"
                         },
-                        'S19': {
+                        'S18': {
                             'text': "Scenario 2",
                             'format': "grey_scenario_format"
                         },
-                        'S20': {
+                        'S19': {
                             'text': "Increase in \ncare need of \n0.003%²",
                             'format': "grey_text_italic"
                         },
-                        'S21': {
+                        'S20': {
                             'text': .048,
                             'format': "grey_data_normal_percentage"
                         },
-                        'S22': {
+                        'S21': {
                             'text': .183,
                             'format': "grey_data_normal_percentage"
                         },
-                        'S23': {
+                        'S22': {
                             'text': 34361,
                             'format': "grey_data_normal_right"
                         },
-                        'S24': {
+                        'S23': {
                             'text': .95,
                             'format': "grey_data_normal_percentage"
                         },
-                        'S25': {
+                        'S24': {
                             'text': 36169000,
                             'format': "grey_data_normal_right"
                         },
-                        'S26': {
+                        'S25': {
                             'text': 1808,
                             'format': "grey_data_normal_right"
                         },
-                        'S31': {
+                        'S30': {
                             'text': .95,
                             'format': "grey_data_normal_percentage"
                         },
-                        'S35': {
+                        'S33': {
                             'text': 34512,
+                            'format': "grey_data_normal_right"
+                        },
+                        'S34': {
+                            'text': 34512,
+                            'format': "grey_data_normal_right"
+                        },
+                        'S37': {
+                            'text': -144,
                             'format': "grey_data_normal_right"
                         },
                         'S38': {
                             'text': -144,
                             'format': "grey_data_normal_right"
                         },
-                        'S40': {
+                        'S39': {
                             'text': -380,
                             'format': "grey_data_normal_right_semibold"
                         },
-                        'U19': {
+                        'U18': {
                             'text': "Scenario 1",
                             'format': "lightgrey_scenario_format"
                         },
-                        'U20': {
+                        'U19': {
                             'text': "Constant care situation¹",
                             'format': "lightgrey_text_italic"
                         },
-                        'U21': {
+                        'U20': {
                             'text': .046,
                             'format': "lightgrey_data_normal_percentage"
                         },
-                        'U22': {
+                        'U21': {
                             'text': .183,
                             'format': "lightgrey_data_normal_percentage"
                         },
-                        'U23': {
+                        'U22': {
                             'text': 33276,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'U24': {
+                        'U23': {
                             'text': .95,
                             'format': "lightgrey_data_normal_percentage"
                         },
-                        'U25': {
+                        'U24': {
                             'text': 35027,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'U26': {
+                        'U25': {
                             'text': 1751,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'U31': {
+                        'U30': {
                             'text': .95,
                             'format': "lightgrey_data_normal_percentage"
                         },
-                        'U35': {
+                        'U33': {
                             'text': 34512,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'U38': {
+                        'U34': {
+                            'text': 34512,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'U37': {
                             'text': -144,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'R39': {
+                        'U38': {
                             'text': 5468,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'U40': {
+                        'U39': {
                             'text': 141,
                             'format': "lightgrey_data_normal_right_semibold"
                         },
@@ -1372,55 +1392,59 @@ market_study_data = {
                             'text': .02,
                             'format': "lightgrey_data_normal_italic"
                         },
-                        'V19': {
+                        'V18': {
                             'text': "Scenario 2",
                             'format': "lightgrey_scenario_format"
                         },
-                        'V20': {
+                        'V19': {
                             'text': "Increase in \ncare needs of \n0.003%²",
                             'format': "lightgrey_text_italic"
                         },
-                        'V21': {
+                        'V20': {
                             'text': .05,
                             'format': "lightgrey_data_normal_percentage"
                         },
-                        'V22': {
+                        'V21': {
                             'text': .183,
                             'format': "lightgrey_data_normal_percentage"
                         },
-                        'V23': {
+                        'V22': {
                             'text': 37655,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'V24': {
+                        'V23': {
                             'text': .95,
                             'format': "lightgrey_data_normal_percentage"
                         },
-                        'V25': {
+                        'V24': {
                             'text': 37655,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'V26': {
+                        'V25': {
                             'text': 1883,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'V31': {
+                        'V30': {
                             'text': .95,
                             'format': "lightgrey_data_normal_percentage"
                         },
-                        'V35': {
+                        'V33': {
                             'text': 34512,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'V38': {
+                        'V34': {
+                            'text': 34512,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V37': {
                             'text': -144,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'R39': {
+                        'V38': {
                             'text': 5468,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'V40': {
+                        'V39': {
                             'text': -1058,
                             'format': "lightgrey_data_normal_right_semibold"
                         }
@@ -1470,79 +1494,75 @@ market_study_data = {
                             'text': "Full inpatient care",
                             'format': "chapter_heading_format"
                         },
-                        'C18:O18': {
-                            'text': "Viewing radius: 15 minutes of driving",
-                            'format': "viewing_radius_format"
-                        },
-                        'C21:O21': {
+                        'C20:O20': {
                             'text': "Care rate of population",
                             'format': "chapter_topics_format"
                         },
-                        'C22:O22': {
+                        'C21:O21': {
                             'text': "There of nursing home rate",
                             'format': "chapter_topics_format"
                         },
-                        'C23:O23': {
+                        'C22:O22': {
                             'text': "Patients receiving full inpatient care",
                             'format': "chapter_topics_format"
                         },
-                        'C24:O24': {
+                        'C23:O23': {
                             'text': "Occupancy rate",
                             'format': "chapter_topics_format"
                         },
-                        'C25:O25': {
+                        'C24:O24': {
                             'text': "Number of beds",
                             'format': "chapter_topics_format"
                         },
-                        'C26:O26': {
+                        'C25:O25': {
                             'text': "Number of free beds",
                             'format': "chapter_topics_format"
                         },
-                        'C28:O28': {
+                        'C27:O27': {
                             'text': "Demand & Supply",
                             'format': "chapter_heading_format"
                         },
-                        'C29:O29': {
+                        'C28:O28': {
                             'text': "Viewing radius: 15 minutes of driving",
                             'format': "viewing_radius_format"
                         },
-                        'C30:O30': {
+                        'C29:O29': {
                             'text': "Nursing homes",
                             'format': "chapter_topics_format"
                         },
-                        'C31:O31': {
+                        'C30:O30': {
                             'text': "Occupancy rate",
                             'format': "chapter_topics_format"
                         },
-                        'C32:O32': {
+                        'C31:O31': {
                             'text': "Nursing homes in planning",
                             'format': "chapter_topics_format"
                         },
-                        'C33:O33': {
+                        'C32:O32': {
                             'text': "Nursing homes under construction",
                             'format': "chapter_topics_format"
                         },
-                        'C34:O34': {
+                        'C33:O33': {
                             'text': "Demand of number of inpatients",
                             'format': "chapter_topics_format"
                         },
-                        'C35:O35': {
+                        'C34:O34': {
                             'text': "Beds in supply",
                             'format': "chapter_topics_format"
                         },
-                        'C36:O36': {
+                        'C35:O35': {
                             'text': "Beds in planning",
                             'format': "chapter_topics_format"
                         },
-                        'C37:O37': {
+                        'C36:O36': {
                             'text': "Beds under construction",
                             'format': "chapter_topics_format"
                         },
-                        'C38:O38': {
+                        'C37:O37': {
                             'text': "Loss of beds due to regulations of the federal state for nursing homes",
                             'format': "chapter_topics_wrap_format"
                         },
-                        'C39:O39': {
+                        'C38:O38': {
                             'text': "Adjusted number of beds",
                             'format': "chapter_topics_format"
                         },
