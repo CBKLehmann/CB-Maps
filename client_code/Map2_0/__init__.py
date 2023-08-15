@@ -1189,14 +1189,14 @@ class Map2_0(Map2_0Template):
             facility_bed_amount_future = int(round(facility_single_rooms_future + facility_double_rooms_future * 2, 0))
           else:
             facility_single_room_quote_future = facility_single_room_quote
-            facility_single_rooms_future = facility_single_rooms
-            facility_double_rooms_future = facility_double_rooms
-            facility_bed_amount_future = facility_bed_amount
+            facility_single_rooms_future = int(facility_single_rooms)
+            facility_double_rooms_future = int(facility_double_rooms)
+            facility_bed_amount_future = int(facility_bed_amount)
           ''' Add current facility values to overall values '''
-          facilities_single_rooms += facility_single_rooms
-          facilities_double_rooms += facility_double_rooms
-          facilities_bed_amount += facility_bed_amount
-          facilities_rooms += facility_rooms
+          facilities_single_rooms += int(facility_single_rooms)
+          facilities_double_rooms += int(facility_double_rooms)
+          facilities_bed_amount += int(facility_bed_amount)
+          facilities_rooms += int(facility_rooms)
           facilities_single_room_quote += facility_single_room_quote
           facilities_single_rooms_future += facility_single_rooms_future
           facilities_double_rooms_future += facility_double_rooms_future
@@ -1382,6 +1382,14 @@ class Map2_0(Map2_0Template):
 
         current_row = 11
         home_counter = 0
+        total_beds = 0
+        total_single_rooms = 0
+        total_double_rooms = 0
+        total_rooms = 0
+        list_single_room_quota = []
+        list_occupancy_rate = []
+        list_invest_cost = []
+        list_mdk_grade = []
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
           #print(competitor)
@@ -1396,7 +1404,7 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['betreiber'] == 'N/A' else competitor[0]['betreiber'],
+              'text': competitor[0]['betreiber'],
               'format': 'home_line_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'H{current_row}'] = {
@@ -1417,7 +1425,7 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
-              'text': '-' if competitor[0]['baujahr'] == 'N/A' else competitor[0]['baujahr'],
+              'text': competitor[0]['baujahr'],
               'format': 'home_line_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
@@ -1429,16 +1437,16 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_centered'
             }
   
-            if competitor[0]['ez'] != '-':
+            if not competitor[0]['ez'] == '-':
               single_rooms = int(competitor[0]['ez'])
             else:
               single_rooms = '-'
-            if competitor[0]['dz'] != '-':
+            if not competitor[0]['dz'] == '-':
               double_rooms = int(competitor[0]['dz'])
             else:
               double_rooms = '-'
-            if single_rooms != '-':
-              if double_rooms != '-':
+            if not single_rooms == '-':
+              if not double_rooms == '-':
                 rooms = single_rooms + double_rooms
                 beds = single_rooms + double_rooms * 2
                 single_room_quote = single_rooms / (single_rooms + double_rooms)
@@ -1447,7 +1455,7 @@ class Map2_0(Map2_0Template):
                 beds = single_rooms
                 single_room_quote = 1
             else:
-              if double_rooms != '-':
+              if not double_rooms == '-':
                 rooms = double_rooms
                 beds = double_rooms * 2
                 single_room_quote = 0
@@ -1455,10 +1463,6 @@ class Map2_0(Map2_0Template):
                 rooms = '-'
                 beds = '-'
                 single_room_quote = '-'
-            if competitor[0]['dz'] != 'N/A':
-              occupancy = competitor[0]['dz']
-            else:
-              occupancy = '-'
               
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
               'text': beds,
@@ -1481,17 +1485,35 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_centered_percentage'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
-              'text': occupancy,
+              'text': competitor[0]['occupancy'],
               'format': 'home_line_centered_percentage'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
-              'text': '-' if competitor[0]['invest'] == 'N/A' else competitor[0]['invest'],
+              'text': competitor[0]['invest'],
               'format': 'home_line_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
-              'text': '-' if competitor[0]['mdk_note'] == 'N/A' else competitor[0]['mdk_note'],
+              'text': competitor[0]['mdk_note'],
               'format': 'home_line_centered'
             }
+
+            if not beds == '-':
+              total_beds += beds
+            if not single_rooms == '-':
+              total_single_rooms += single_rooms
+            if not double_rooms == '-':
+              total_double_rooms += double_rooms
+            if not rooms == '-':
+              total_rooms += rooms
+            if not single_room_quote == '-':
+              list_single_room_quota.append(single_room_quote)
+            if not competitor[0]['occupancy'] == '-':
+              list_occupancy_rate.append(competitor[0]['occupancy'])
+            if not competitor[0]['invest'] == '-':
+              list_invest_cost.append(float(competitor[0]['invest']))
+            if not competitor[0]['mdk_note'] == '-':
+              list_mdk_grade.append(float(competitor[0]['mdk_note']))
+          
           else:
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'C{current_row}'] = {
               'text': index + 1 - home_counter,
@@ -1535,16 +1557,16 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered'
             }
   
-            if competitor[0]['ez'] != '-':
+            if not competitor[0]['ez'] == '-':
               single_rooms = int(competitor[0]['ez'])
             else:
               single_rooms = '-'
-            if competitor[0]['dz'] != '-':
+            if not competitor[0]['dz'] == '-':
               double_rooms = int(competitor[0]['dz'])
             else:
               double_rooms = '-'
-            if single_rooms != '-':
-              if double_rooms != '-':
+            if not single_rooms == '-':
+              if not double_rooms == '-':
                 rooms = single_rooms + double_rooms
                 beds = single_rooms + double_rooms * 2
                 single_room_quote = single_rooms / (single_rooms + double_rooms)
@@ -1553,7 +1575,7 @@ class Map2_0(Map2_0Template):
                 beds = single_rooms
                 single_room_quote = 1
             else:
-              if double_rooms != '-':
+              if not double_rooms == '-':
                 rooms = double_rooms
                 beds = double_rooms * 2
                 single_room_quote = 0
@@ -1561,10 +1583,6 @@ class Map2_0(Map2_0Template):
                 rooms = '-'
                 beds = '-'
                 single_room_quote = '-'
-            if competitor[0]['dz'] != 'N/A':
-              occupancy = competitor[0]['dz']
-            else:
-              occupancy = '-'
               
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
               'text': beds,
@@ -1587,7 +1605,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered_percentage'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
-              'text': occupancy,
+              'text': competitor[0]['occupancy'],
               'format': 'row_centered_percentage'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
@@ -1598,8 +1616,40 @@ class Map2_0(Map2_0Template):
               'text': '-' if competitor[0]['mdk_note'] == 'N/A' else competitor[0]['mdk_note'],
               'format': 'row_centered'
             }
+
+            if not beds == '-':
+              total_beds += beds
+            if not single_rooms == '-':
+              total_single_rooms += single_rooms
+            if not double_rooms == '-':
+              total_double_rooms += double_rooms
+            if not rooms == '-':
+              total_rooms += rooms
+            if not single_room_quote == '-':
+              list_single_room_quota.append(single_room_quote)
+            if not competitor[0]['occupancy'] == '-':
+              list_occupancy_rate.append(competitor[0]['occupancy'])
+            if not competitor[0]['invest'] == '-':
+              list_invest_cost.append(float(competitor[0]['invest']))
+            if not competitor[0]['mdk_note'] == '-':
+              list_mdk_grade.append(float(competitor[0]['mdk_note']))
   
           current_row += 1
+
+        total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
+        total_occupancy_rate = anvil.server.call("get_median", list_occupancy_rate)
+        total_invest_cost = anvil.server.call("get_median", list_invest_cost)
+        total_mdk_grade = anvil.server.call("get_median", list_mdk_grade)
+        
+        print(total_beds)
+        print(total_single_rooms)
+        print(total_double_rooms)
+        print(total_rooms)
+        print(total_single_room_quota)
+        print(total_occupancy_rate)
+        print(total_invest_cost)
+        print(total_mdk_grade)
+        
       else:
         # Nursing Home Pages
         pass
@@ -3353,7 +3403,7 @@ class Map2_0(Map2_0Template):
       # print(res)
       # print(len(entries))
       for entry in entries:
-        print(entry)
+        #print(entry)
         if topic == "nursing_homes":
           lat_entry = "%.6f" % float(entry['coord_lat'])
           lng_entry = "%.6f" % float(entry['coord_lon'])
