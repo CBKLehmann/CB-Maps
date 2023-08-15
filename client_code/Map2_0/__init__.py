@@ -1380,11 +1380,13 @@ class Map2_0(Map2_0Template):
         market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['merge_cells']['C3:X4']['Text'] = city
 
         current_row = 11
+        home_counter = 0
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
+          
           print(competitor)
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'C{current_row}'] = {
-            'text': index,
+            'text': index + 1,
             'format': 'row_number'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'E{current_row}'] = {
@@ -1412,7 +1414,7 @@ class Map2_0(Map2_0Template):
             'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
-            'text': competitor[0]['baujahr'],
+            'text': '-' if competitor[0]['baujahr'] == 'N/A' else competitor[0]['baujahr'],
             'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
@@ -1480,11 +1482,11 @@ class Map2_0(Map2_0Template):
             'format': 'row_centered_percentage'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
-            'text': competitor[0]['invest'],
+            'text': '-' if competitor[0]['invest'] == 'N/A' else competitor[0]['invest'],
             'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
-            'text': competitor[0]['mdk_note'],
+            'text': '-' if competitor[0]['mdk_note'] == 'N/A' else competitor[0]['mdk_note'],
             'format': 'row_centered'
           }
 
