@@ -1806,16 +1806,10 @@ market_study_data = {
                     ],
                     'rows_to_fill': [8, 10, 25],
                     'fill_format': {
-                        'C': {
-                            '8': "underline",
-                            '10': "underline"
-                        },
-                        'X': {
-                            '8': "underline",
-                            '25': "last_row_centered"
-                        },
                         'base': {
-                            '8': "underline"
+                            '8': "underline",
+                            '10': "underline",
+                            '25': "underline"
                         }
                     }
                 },
@@ -1901,7 +1895,8 @@ market_study_data = {
                             'text': "Competitor Analysis",
                             'format': "situation_heading_format"
                         }
-                    }
+                    },
+                    'cells': {}
                 }
             },
             'GOOD TO KNOW': {
