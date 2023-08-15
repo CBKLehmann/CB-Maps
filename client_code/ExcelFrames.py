@@ -355,7 +355,8 @@ market_study_data = {
                 'valign': 'vcenter',
                 'color': '#00B0F0',
                 'bg_color': '#F4EFDC',
-                'underline': 1
+                'underline': 1,
+                'bold': True
             },
             'home_line_centered_percentage': {
                 'font': 'Segoe UI',
