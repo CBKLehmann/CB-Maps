@@ -1389,87 +1389,106 @@ class Map2_0(Map2_0Template):
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'E{current_row}'] = {
             'text': competitor[0]['name'],
-            'format': 'row_number'
+            'format': 'row_normal'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'G{current_row}'] = {
-            'text': competitor[0]['betreiber'],
-            'format': 'row_number'
+            'text': '-' if competitor[0]['betreiber'] == 'N/A' else competitor[0]['betreiber'],
+            'format': 'row_normal'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'H{current_row}'] = {
             'text': "Web",
-            'format': 'row_number'
+            'format': 'row_centered_link'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'I{current_row}'] = {
             'text': "No",
-            'format': 'row_number'
+            'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'J{current_row}'] = {
             'text': "private",
-            'format': 'row_number'
+            'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'K{current_row}'] = {
             'text': competitor[0]['status'],
-            'format': 'row_number'
+            'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
             'text': competitor[0]['baujahr'],
-            'format': 'row_number'
+            'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
             'text': "-",
-            'format': 'row_number'
+            'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'N{current_row}'] = {
             'text': "No",
-            'format': 'row_number'
+            'format': 'row_centered'
           }
 
           if competitor[0]['ez'] != 'N/A':
             single_rooms = int(competitor[0]['ez'])
           else:
-            single_rooms = competitor[0]['ez']
+            single_rooms = '-'
           if competitor[0]['dz'] != 'N/A':
             double_rooms = int(competitor[0]['dz'])
           else:
             double_rooms = '-'
           if single_rooms != '-':
-            if double_rooms != 'N/A':
+            if double_rooms != '-':
               rooms = single_rooms + double_rooms
+              beds = single_rooms + double_rooms * 2
+              single_room_quote = single_rooms / (single_rooms + double_rooms)
             else:
               rooms = single_rooms
+              beds = single_rooms
+              single_room_quote = 1
+          else:
+            if double_rooms != '-':
+              rooms = double_rooms
+              beds = double_rooms * 2
+              single_room_quote = 0
+            else:
+              rooms = '-'
+              beds = '-'
+              single_room_quote = '-'
+          if competitor[0]['dz'] != 'N/A':
+            occupancy = competitor[0]['dz']
+          else:
+            occupancy = '-'
             
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
-            'text': int(competitor[0]['ez']) + int(competitor[0]['dz']) * 2,
-            'format': 'row_number'
+            'text': beds,
+            'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'P{current_row}'] = {
-            'text': competitor[0]['ez'],
-            'format': 'row_number'
+            'text': single_rooms,
+            'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'Q{current_row}'] = {
-            'text': competitor[0]['dz'],
-            'format': 'row_number'
+            'text': double_rooms,
+            'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'R{current_row}'] = {
-            'text': int(competitor[0]['ez']) + int(competitor[0]['dz']),
-            'format': 'row_number'
+            'text': rooms,
+            'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'S{current_row}'] = {
-            'text': "{0}".format((int(competitor[0]['ez']) * 100) / (int(competitor[0]['ez']) + int(competitor[0]['dz']))),
-            'format': 'row_number'
+            'text': single_room_quote,
+            'format': 'row_centered_percentage'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
-            'text': "private",
-            'format': 'row_number'
+            'text': occupancy,
+            'format': 'row_centered_percentage'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
-            'text': "private",
-            'format': 'row_number'
+            'text': competitor[0]['invest'],
+            'format': 'row_centered'
           }
           market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
-            'text': "private",
-            'format': 'row_number'
+            'text': competitor[0]['mdk_note'],
+            'format': 'row_centered'
           }
+
+          current_row += 1
       else:
         # Nursing Home Pages
         pass
