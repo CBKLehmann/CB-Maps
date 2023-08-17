@@ -1762,78 +1762,81 @@ class Map2_0(Map2_0Template):
             }
             
           else:
+            print(index)
+            print(len(data_comp_analysis_al['data']))
+            print('#################################################')
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'C{current_row}'] = {
               'text': index + 1 - home_counter,
               'format': 'row_number_al'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'E{current_row}'] = {
               'text': competitor[0]['name'],
-              'format': 'row_normal'
+              'format': 'row_normal' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'G{current_row}'] = {
               'text': '-' if competitor[0]['operator'] == 'N/A' else competitor[0]['operator'],
-              'format': 'row_normal'
+              'format': 'row_normal' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'H{current_row}'] = {
               'text': competitor[0]['web'],
-              'format': 'row_centered_link',
+              'format': 'row_centered_link' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered_link',
               'string': "↗"
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'I{current_row}'] = {
               'text': "No",
-              'format': 'row_centered'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'J{current_row}'] = {
               'text': competitor[0]['type'],
-              'format': 'row_centered'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'K{current_row}'] = {
               'text': competitor[0]['status'],
-              'format': 'row_centered'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
               'text': '-' if competitor[0]['year_of_construction'] == 'N/A' else competitor[0]['year_of_construction'],
-              'format': 'row_centered'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
               'text': competitor[0]['number_apts'],
-              'format': 'row_centered'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'N{current_row}'] = {
               'text': "-",
-              'format': 'row_centered'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
               'text': "-",
-              'format': 'row_centered'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'P{current_row}'] = {
               'text': "-",
-              'format': 'row_centered'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'Q{current_row}'] = {
               'text': "-",
-              'format': 'row_centered'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'R{current_row}'] = {
               'text': "-",
-              'format': 'row_centered'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'S{current_row}'] = {
               'text': "-",
-              'format': 'row_centered_percentage'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
               'text': "-",
-              'format': 'row_centered_percentage'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
               'text': "-",
-              'format': 'row_centered_number_double'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
               'text': "-",
-              'format': 'row_centered_number'
+              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
             }
   
           current_row += 1

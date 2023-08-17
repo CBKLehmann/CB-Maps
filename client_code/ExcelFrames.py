@@ -400,6 +400,12 @@ market_study_data = {
                 'font_size': 8,
                 'valign': 'vcenter'
             },
+            'last_row_normal': {
+                'font': 'Segoe UI',
+                'font_size': 8,
+                'valign': 'vcenter',
+                'bottom': 1
+            },
             'row_centered': {
                 'font': 'Segoe UI',
                 'font_size': 8,
