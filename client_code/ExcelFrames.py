@@ -407,6 +407,22 @@ market_study_data = {
                 'valign': 'vcenter',
                 'text_wrap': True
             },
+            'row_centered_number': {
+                'font': 'Segoe UI',
+                'font_size': 8,
+                'align': 'center',
+                'valign': 'vcenter',
+                'num_format': '0.0',
+                'text_wrap': True
+            },
+            'row_centered_number_double': {
+                'font': 'Segoe UI',
+                'font_size': 8,
+                'align': 'center',
+                'valign': 'vcenter',
+                'num_format': '0.#0',
+                'text_wrap': True
+            },
             'last_row_centered': {
                 'font': 'Segoe UI',
                 'font_size': 8,
