@@ -1762,9 +1762,6 @@ class Map2_0(Map2_0Template):
             }
             
           else:
-            print(index)
-            print(len(data_comp_analysis_al['data']))
-            print('#################################################')
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'C{current_row}'] = {
               'text': index + 1 - home_counter,
               'format': 'row_number_al'
