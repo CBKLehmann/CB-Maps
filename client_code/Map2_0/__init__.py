@@ -1156,7 +1156,6 @@ class Map2_0(Map2_0Template):
       facilities_bed_amount_future = 0
       facilities_single_room_quote_future = 0
       for competitor in data_comp_analysis_nh['data']:
-        print(competitor)
         if not competitor[0]['ez'] == '-' and not competitor[0]['dz'] == '-':
           facilities_amount += 1
           ''' Get amount of single Rooms inside Facility '''
@@ -1393,7 +1392,6 @@ class Map2_0(Map2_0Template):
         list_mdk_grade = []
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
-          # print(competitor)
           if 'home' in competitor:
             home_counter += 1
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
@@ -1683,7 +1681,7 @@ class Map2_0(Map2_0Template):
         }
 
         current_row += 1
-
+        
         for index, competitor in enumerate(data_comp_analysis_al['data']):
           home_counter = 0
           if 'home' in competitor:
@@ -1853,7 +1851,8 @@ class Map2_0(Map2_0Template):
         list_mdk_grade = []
         page = 1
         sheet_name = f"COMPETITOR ANALYSIS {page}"
-        
+
+        print(len(data_comp_analysis_nh['data']))
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if index % 15 == 0 and not index == 0:
             page += 1
