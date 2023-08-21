@@ -693,6 +693,7 @@ class Map2_0(Map2_0Template):
   
       unique_code = anvil.server.call("get_unique_code")
       searched_address = anvil.js.call('getSearchedAddress')
+      street = searched_address.split(",")[0]
   
       lng_lat_marker = {
                         "lng": (dict(self.marker['_lngLat'])['lng']),
@@ -1222,7 +1223,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y38']['text'] = population_trend_string
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y47']['text'] = f"{beds_surplus_35_v2}"
       market_study_data['pages']['COVER']['cell_content']['textboxes']['C51']['text'] = f"Version 1.3.37 Generated on {created_date}"
-      market_study_data['pages']['COVER']['cell_content']['cells']['L30']['text'] = searched_address
+      market_study_data['pages']['COVER']['cell_content']['cells']['L30']['text'] = street
       market_study_data['pages']['COVER']['cell_content']['cells']['L31']['text'] = zipcode
       market_study_data['pages']['COVER']['cell_content']['cells']['L32']['text'] = city
       market_study_data['pages']['COVER']['cell_content']['cells']['L33']['text'] = district
@@ -1768,469 +1769,615 @@ class Map2_0(Map2_0Template):
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'E{current_row}'] = {
               'text': competitor[0]['name'],
-              'format': 'row_normal' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_normal'
+              'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'G{current_row}'] = {
               'text': '-' if competitor[0]['operator'] == 'N/A' else competitor[0]['operator'],
-              'format': 'row_normal' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_normal'
+              'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'H{current_row}'] = {
               'text': competitor[0]['web'],
-              'format': 'row_centered_link' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered_link',
+              'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
               'string': "↗"
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'I{current_row}'] = {
               'text': "No",
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'J{current_row}'] = {
               'text': competitor[0]['type'],
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'K{current_row}'] = {
               'text': competitor[0]['status'],
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
               'text': '-' if competitor[0]['year_of_construction'] == 'N/A' else competitor[0]['year_of_construction'],
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
               'text': competitor[0]['number_apts'],
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'N{current_row}'] = {
               'text': "-",
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
               'text': "-",
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'P{current_row}'] = {
               'text': "-",
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'Q{current_row}'] = {
               'text': "-",
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'R{current_row}'] = {
               'text': "-",
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'S{current_row}'] = {
               'text': "-",
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
               'text': "-",
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
               'text': "-",
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
               'text': "-",
-              'format': 'row_centered' if not index == len(data_comp_analysis_al['data']) - 1 else 'last_row_centered'
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
   
           current_row += 1
       
       else:
         # Nursing Home Pages
-        pass
+        if nursing_homes_amount <= 13:
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['merge_cells']['C9:E9'] = {
+            'text': "Nursing Homes",
+            'format': 'nh_heading'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['G9'] = {
+            'text': "Operator name",
+            'format': "operator_heading"
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['H9'] = {
+            'text': "Web",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['I9'] = {
+            'text': "Top 30 Operator",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['J9'] = {
+            'text': "Operator type",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['K9'] = {
+            'text': "Asset status",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['L9'] = {
+            'text': "Year of construction",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['M9'] = {
+            'text': "Apartments (AL)",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['N9'] = {
+            'text': "Legally compliant¹",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['O9'] = {
+            'text': "Care beds",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['P9'] = {
+            'text': "Single rooms",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['Q9'] = {
+            'text': "Double rooms",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['R9'] = {
+            'text': "Rooms",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['S9'] = {
+            'text': "Single room quota",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['T9'] = {
+            'text': "Occupancy rates",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['U9'] = {
+            'text': "Invest cost (p. day in €)",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells']['V9'] = {
+            'text': "MDK grade (2019)",
+            'format': 'rotated_text'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['merge_cells']['C3:X4']['Text'] = city
+  
+          current_row = 11
+          home_counter = 0
+          total_beds = 0
+          total_single_rooms = 0
+          total_double_rooms = 0
+          total_rooms = 0
+          list_single_room_quota = []
+          list_occupancy_rate = []
+          list_invest_cost = []
+          list_mdk_grade = []
+          page = 1
+          
+          for index, competitor in enumerate(data_comp_analysis_nh['data']):
+            if index % 15 > 0:
+              page += 1
+              sheet_name = f"COMPETITOR ANALYSIS {page}"
+            
+            if 'home' in competitor:
+              home_counter += 1
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'C{current_row}'] = {
+                'text': '⌂',
+                'format': 'home_icon'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'E{current_row}'] = {
+                'text': competitor[0]['name'],
+                'format': 'home_line_normal'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'G{current_row}'] = {
+                'text': competitor[0]['betreiber'],
+                'format': 'home_line_normal'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'H{current_row}'] = {
+                'text': competitor[0]['web'],
+                'format': 'home_line_centered_link',
+                'string': "↗"
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'I{current_row}'] = {
+                'text': "No",
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'J{current_row}'] = {
+                'text': competitor[0]['operator_type'],
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'K{current_row}'] = {
+                'text': competitor[0]['status'],
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
+                'text': competitor[0]['baujahr'],
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
+                'text': "-",
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'N{current_row}'] = {
+                'text': "No",
+                'format': 'home_line_centered'
+              }
+    
+              if not competitor[0]['ez'] == '-':
+                single_rooms = int(competitor[0]['ez'])
+              else:
+                single_rooms = '-'
+              if not competitor[0]['dz'] == '-':
+                double_rooms = int(competitor[0]['dz'])
+              else:
+                double_rooms = '-'
+              if not single_rooms == '-':
+                if not double_rooms == '-':
+                  rooms = single_rooms + double_rooms
+                  beds = single_rooms + double_rooms * 2
+                  single_room_quote = single_rooms / (single_rooms + double_rooms)
+                else:
+                  rooms = single_rooms
+                  beds = single_rooms
+                  single_room_quote = 1
+              else:
+                if not double_rooms == '-':
+                  rooms = double_rooms
+                  beds = double_rooms * 2
+                  single_room_quote = 0
+                else:
+                  rooms = '-'
+                  beds = '-'
+                  single_room_quote = '-'
+                
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
+                'text': beds,
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'P{current_row}'] = {
+                'text': single_rooms,
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'Q{current_row}'] = {
+                'text': double_rooms,
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'R{current_row}'] = {
+                'text': rooms,
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'S{current_row}'] = {
+                'text': single_room_quote,
+                'format': 'home_line_centered_percentage'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
+                'text': competitor[0]['occupancy'],
+                'format': 'home_line_centered_percentage'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
+                'text': '-' if competitor[0]['invest'] == 'N/A' else float(competitor[0]['invest']),
+                'format': 'home_line_centered_number_double'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
+                'text': '-' if competitor[0]['mdk_note'] == 'N/A' else float(competitor[0]['mdk_note']),
+                'format': 'home_line_centered_number'
+              }
+  
+              if not beds == '-':
+                total_beds += beds
+              if not single_rooms == '-':
+                total_single_rooms += single_rooms
+              if not double_rooms == '-':
+                total_double_rooms += double_rooms
+              if not rooms == '-':
+                total_rooms += rooms
+              if not single_room_quote == '-':
+                list_single_room_quota.append(single_room_quote)
+              if not competitor[0]['occupancy'] == '-':
+                list_occupancy_rate.append(competitor[0]['occupancy'])
+              if not competitor[0]['invest'] == '-':
+                list_invest_cost.append(float(competitor[0]['invest']))
+              if not competitor[0]['mdk_note'] == '-':
+                list_mdk_grade.append(float(competitor[0]['mdk_note']))
+            
+            else:
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'C{current_row}'] = {
+                'text': index + 1 - home_counter,
+                'format': 'row_number'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'E{current_row}'] = {
+                'text': competitor[0]['name'],
+                'format': 'row_normal'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'G{current_row}'] = {
+                'text': '-' if competitor[0]['betreiber'] == 'N/A' else competitor[0]['betreiber'],
+                'format': 'row_normal'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'H{current_row}'] = {
+                'text': competitor[0]['web'],
+                'format': 'row_centered_link',
+                'string': "↗"
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'I{current_row}'] = {
+                'text': "No",
+                'format': 'row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'J{current_row}'] = {
+                'text': competitor[0]['operator_type'],
+                'format': 'row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'K{current_row}'] = {
+                'text': competitor[0]['status'],
+                'format': 'row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
+                'text': '-' if competitor[0]['baujahr'] == 'N/A' else competitor[0]['baujahr'],
+                'format': 'row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
+                'text': "-",
+                'format': 'row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'N{current_row}'] = {
+                'text': "No",
+                'format': 'row_centered'
+              }
+    
+              if not competitor[0]['ez'] == '-':
+                single_rooms = int(competitor[0]['ez'])
+              else:
+                single_rooms = '-'
+              if not competitor[0]['dz'] == '-':
+                double_rooms = int(competitor[0]['dz'])
+              else:
+                double_rooms = '-'
+              if not single_rooms == '-':
+                if not double_rooms == '-':
+                  rooms = single_rooms + double_rooms
+                  beds = single_rooms + double_rooms * 2
+                  single_room_quote = single_rooms / (single_rooms + double_rooms)
+                else:
+                  rooms = single_rooms
+                  beds = single_rooms
+                  single_room_quote = 1
+              else:
+                if not double_rooms == '-':
+                  rooms = double_rooms
+                  beds = double_rooms * 2
+                  single_room_quote = 0
+                else:
+                  rooms = '-'
+                  beds = '-'
+                  single_room_quote = '-'
+                
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
+                'text': beds,
+                'format': 'row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'P{current_row}'] = {
+                'text': single_rooms,
+                'format': 'row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'Q{current_row}'] = {
+                'text': double_rooms,
+                'format': 'row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'R{current_row}'] = {
+                'text': rooms,
+                'format': 'row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'S{current_row}'] = {
+                'text': single_room_quote,
+                'format': 'row_centered_percentage'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
+                'text': competitor[0]['occupancy'],
+                'format': 'row_centered_percentage'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
+                'text': '-' if competitor[0]['invest'] == 'N/A' else float(competitor[0]['invest']),
+                'format': 'row_centered_number_double'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
+                'text': '-' if competitor[0]['mdk_note'] == 'N/A' else float(competitor[0]['mdk_note']),
+                'format': 'row_centered_number'
+              }
+  
+              if not beds == '-':
+                total_beds += beds
+              if not single_rooms == '-':
+                total_single_rooms += single_rooms
+              if not double_rooms == '-':
+                total_double_rooms += double_rooms
+              if not rooms == '-':
+                total_rooms += rooms
+              if not single_room_quote == '-':
+                list_single_room_quota.append(single_room_quote)
+              if not competitor[0]['occupancy'] == '-':
+                list_occupancy_rate.append(competitor[0]['occupancy'])
+              if not competitor[0]['invest'] == '-':
+                list_invest_cost.append(float(competitor[0]['invest']))
+              if not competitor[0]['mdk_note'] == '-':
+                list_mdk_grade.append(float(competitor[0]['mdk_note']))
+    
+            current_row += 1
+  
+          total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
+          total_occupancy_rate = anvil.server.call("get_median", list_occupancy_rate)
+          total_invest_cost = anvil.server.call("get_median", list_invest_cost)
+          total_mdk_grade = anvil.server.call("get_median", list_mdk_grade)
+  
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
+            'text': total_beds,
+            'format': 'overall_sum'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'P{current_row}'] = {
+            'text': total_single_rooms,
+            'format': 'overall_sum'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'Q{current_row}'] = {
+            'text': total_double_rooms,
+            'format': 'overall_sum'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'R{current_row}'] = {
+            'text': total_rooms,
+            'format': 'overall_sum'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'S{current_row}'] = {
+            'text': total_single_room_quota,
+            'format': 'overall_median_percentage'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
+            'text': total_occupancy_rate,
+            'format': 'overall_median_percentage'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
+            'text': total_invest_cost,
+            'format': 'overall_median'
+          }
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
+            'text': total_mdk_grade,
+            'format': 'overall_median'
+          }
+          
+          current_row += 1
+          
+          market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['merge_cells'][f'C{current_row}:E{current_row}'] = {
+            'text': "Assisted Living",
+            'format': 'al_heading'
+          }
+  
+          current_row += 1
+  
+          for index, competitor in enumerate(data_comp_analysis_al['data']):
+            home_counter = 0
+            if 'home' in competitor:
+              home_counter += 1
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'C{current_row}'] = {
+                'text': '⌂',
+                'format': 'home_icon'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'E{current_row}'] = {
+                'text': competitor[0]['name'],
+                'format': 'home_line_normal'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'G{current_row}'] = {
+                'text': competitor[0]['operator'],
+                'format': 'home_line_normal'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'H{current_row}'] = {
+                'text': competitor[0]['web'],
+                'format': 'home_line_centered_link',
+                'string': "↗"
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'I{current_row}'] = {
+                'text': "No",
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'J{current_row}'] = {
+                'text': competitor[0]['type'],
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'K{current_row}'] = {
+                'text': competitor[0]['status'],
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
+                'text': competitor[0]['year_of_construction'],
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
+                'text': competitor[0]['number_apts'],
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'N{current_row}'] = {
+                'text': "-",
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
+                'text': "-",
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'P{current_row}'] = {
+                'text': "-",
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'Q{current_row}'] = {
+                'text': "-",
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'R{current_row}'] = {
+                'text': "-",
+                'format': 'home_line_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'S{current_row}'] = {
+                'text': "-",
+                'format': 'home_line_centered_percentage'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
+                'text': "-",
+                'format': 'home_line_centered_percentage'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
+                'text': "-",
+                'format': 'home_line_centered_number_double'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
+                'text': "-",
+                'format': 'home_line_centered_number'
+              }
+              
+            else:
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'C{current_row}'] = {
+                'text': index + 1 - home_counter,
+                'format': 'row_number_al'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'E{current_row}'] = {
+                'text': competitor[0]['name'],
+                'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'G{current_row}'] = {
+                'text': '-' if competitor[0]['operator'] == 'N/A' else competitor[0]['operator'],
+                'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'H{current_row}'] = {
+                'text': competitor[0]['web'],
+                'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
+                'string': "↗"
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'I{current_row}'] = {
+                'text': "No",
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'J{current_row}'] = {
+                'text': competitor[0]['type'],
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'K{current_row}'] = {
+                'text': competitor[0]['status'],
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
+                'text': '-' if competitor[0]['year_of_construction'] == 'N/A' else competitor[0]['year_of_construction'],
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
+                'text': competitor[0]['number_apts'],
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'N{current_row}'] = {
+                'text': "-",
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
+                'text': "-",
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'P{current_row}'] = {
+                'text': "-",
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'Q{current_row}'] = {
+                'text': "-",
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'R{current_row}'] = {
+                'text': "-",
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'S{current_row}'] = {
+                'text': "-",
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
+                'text': "-",
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
+                'text': "-",
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+              market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
+                'text': "-",
+                'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+              }
+    
+            current_row += 1
 
         # Assisted Living Pages
         pass
 
       anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code)
-      
-      # Copy and Fill Dataframe for Nursing Home Competitor Analysis
-      #nurscomp_frame = copy.deepcopy(ExcelFrames.nca_data)
-      nurscomp_frame['data'][7]['content'] = pg3_median_raw
-      nurscomp_frame['data'][8]['content'] = copayment_median_raw
-      nurscomp_frame['data'][9]['content'] = invest_med
-      nurscomp_frame['data'][10]['content'] = board_median_raw
-      nurscomp_frame['row_count'] = len(data_comp_analysis_nh['data']) + 1
-      
-      start_row = 33
-      index = 0
-      subindex = 1
-      last_coords_dist = 0
-      home_entries = 0
-      
-      for competitor in data_comp_analysis_nh['data']:
-        if 'home' in competitor:
-          if len(competitor[0]['name']) > 35:
-            name_size = 8
-          else:
-            name_size = 11
-          if len(competitor[0]['betreiber']) > 35:
-            op_size = 8
-          else:
-            op_size = 11
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'A{start_row}',
-            'content': 'S',
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'B{start_row}',
-            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
-            'format': {
-              'align': 'center',
-              'font_size': name_size,
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'C{start_row}',
-            'content': competitor[0]['platz_voll_pfl'],
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'D{start_row}',
-            'content': competitor[0]['ez'],
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'E{start_row}',
-            'content': competitor[0]['dz'],
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'F{start_row}',
-            'content': competitor[0]['anz_vers_pat'],
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          if competitor[0]['ez'] == 'N/A' and competitor[0]['dz'] == 'N/A':
-            rooms = 'N/A'
-            sr_quota = 'N/A'
-          elif competitor[0]['ez'] == 'N/A':
-            rooms = competitor[0]['dz']
-            sr_quota = '0 %'
-          elif competitor[0]['dz'] == 'N/A':
-            rooms = competitor[0]['ez']
-            sr_quota = '100 %'
-          else:
-            rooms = int(competitor[0]['ez']) + int(competitor[0]['dz'])
-            sr_quota_raw = int(round(int(competitor[0]['ez']) * 100 / rooms, 0))
-            sr_quota = f'{sr_quota_raw} %'
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'G{start_row}',
-            'content': rooms,
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'H{start_row}',
-            'content': sr_quota,
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'I{start_row}',
-            'content': competitor[0]['occupancy'],
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'J{start_row}',
-            'content': competitor[0]['baujahr'],
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036',
-              'num_format': '0'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'K{start_row}',
-            'content': competitor[0]['status'],
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'L{start_row}',
-            'content': competitor[0]['betreiber'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
-            'format': {
-              'align': 'center',
-              'font_size': op_size,
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          if not competitor[0]['invest'] == 'N/A':
-            invest = f"{competitor[0]['invest']}€"
-          else:
-            invest = competitor[0]['invest']
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'M{start_row}',
-            'content': invest,
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036',
-              'num_format': '#,##0.00€'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'N{start_row}',
-            'content': competitor[0]['mdk_note'],
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          home_entries += 1
-        else:
-          if not last_coords_dist == competitor[1]:
-            index += 1
-            subindex = 1
-            shown_index = f'{index}'
-            if len(data_comp_analysis_nh['data']) > data_comp_analysis_nh['data'].index(competitor) + 1:
-              if competitor[0]['coords'] == data_comp_analysis_nh['data'][data_comp_analysis_nh['data'].index(competitor) + 1][0]['coords']:
-                shown_index = f'{index}.{subindex}'
-          else:
-            shown_index = f'{index}'
-            if not data_comp_analysis_nh['data'].index(competitor) == home_entries:
-                subindex += 1
-                shown_index = f'{index}.{subindex}'
-          last_coords_dist = competitor[1]
-          if len(competitor[0]['name']) > 35:
-            name_size = 8
-          else:
-            name_size = 11
-          if len(competitor[0]['betreiber']) > 35:
-            op_size = 8
-          else:
-            op_size = 11
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'A{start_row}',
-            'content': f'{shown_index}',
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'B{start_row}',
-            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
-            'format': {
-              'align': 'center',
-              'font_size': name_size,
-              'bottom': True
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'C{start_row}',
-            'content': competitor[0]['platz_voll_pfl'],
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'D{start_row}',
-            'content': competitor[0]['ez'],
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'E{start_row}',
-            'content': competitor[0]['dz'],
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'F{start_row}',
-            'content': competitor[0]['anz_vers_pat'],
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          if competitor[0]['ez'] == 'N/A' and competitor[0]['dz'] == 'N/A':
-            rooms = 'N/A'
-            sr_quota = 'N/A'
-          elif competitor[0]['ez'] == 'N/A':
-            rooms = competitor[0]['dz']
-            sr_quota = f'0 %'
-          elif competitor[0]['dz'] == 'N/A':
-            rooms = competitor[0]['ez']
-            sr_quota = f'100 %'
-          else:
-            rooms = int(competitor[0]['ez']) + int(competitor[0]['dz'])       
-            sr_quota_raw = int(round(int(competitor[0]['ez']) * 100 / rooms))
-            sr_quota = f'{sr_quota_raw} %'
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'G{start_row}',
-            'content': rooms,
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'H{start_row}',
-            'content': sr_quota,
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'I{start_row}',
-            'content': competitor[0]['occupancy'],
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'J{start_row}',
-            'content': competitor[0]['baujahr'],
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'num_format': '0'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'K{start_row}',
-            'content': competitor[0]['status'],
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'L{start_row}',
-            'content': competitor[0]['betreiber'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
-            'format': {
-              'align': 'center',
-              'font_size': op_size,
-              'bottom': True
-            }
-          })
-          if not competitor[0]['invest'] == 'N/A':
-            invest = f"{competitor[0]['invest']}€"
-          else:
-            invest = competitor[0]['invest']
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'M{start_row}',
-            'content': invest,
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'num_format': '#,##0.00€'
-            }
-          })
-          nurscomp_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'N{start_row}',
-            'content': competitor[0]['mdk_note'],
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-        start_row += 1
 
       # Copy and Fill Dataframe for Regulations Overview
       reg_frame = copy.deepcopy(ExcelFrames.reg_data)
