@@ -421,6 +421,15 @@ market_study_data = {
                 'num_format': '0.0',
                 'text_wrap': True
             },
+            'last_row_centered_number': {
+                'font': 'Segoe UI',
+                'font_size': 8,
+                'align': 'center',
+                'valign': 'vcenter',
+                'num_format': '0.0',
+                'text_wrap': True,
+                'bottom': 1
+            },
             'row_centered_number_double': {
                 'font': 'Segoe UI',
                 'font_size': 8,
@@ -428,6 +437,15 @@ market_study_data = {
                 'valign': 'vcenter',
                 'num_format': '0.#0',
                 'text_wrap': True
+            },
+            'last_row_centered_number_double': {
+                'font': 'Segoe UI',
+                'font_size': 8,
+                'align': 'center',
+                'valign': 'vcenter',
+                'num_format': '0.#0',
+                'text_wrap': True,
+                'bottom': 1
             },
             'last_row_centered': {
                 'font': 'Segoe UI',
@@ -458,6 +476,14 @@ market_study_data = {
                 'align': 'center',
                 'valign': 'vcenter',
                 'num_format': '0.0%'
+            },
+            'last_row_centered_percentage': {
+                'font': 'Segoe UI',
+                'font_size': 8,
+                'align': 'center',
+                'valign': 'vcenter',
+                'num_format': '0.0%',
+                'bottom': 1
             },
             'overall_sum': {
                 'font': 'Segoe UI Semibold',
