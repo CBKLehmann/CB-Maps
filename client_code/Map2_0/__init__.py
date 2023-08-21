@@ -2617,7 +2617,7 @@ class Map2_0(Map2_0Template):
               'cells': {}
           }
         }
-        market_study_data['pages'][sheet_name]['cell_content']['merge_cells'][f'C{current_row}:E{current_row}'] = {
+        market_study_data['pages'][sheet_name]['cell_content']['merge_cells'][f'C9:E9'] = {
           'text': "Assisted Living",
           'format': 'al_heading'
         }
@@ -2803,7 +2803,7 @@ class Map2_0(Map2_0Template):
                   'cells': {}
               }
             }
-            market_study_data['pages'][sheet_name]['cell_content']['merge_cells'][f'C{current_row}:E{current_row}'] = {
+            market_study_data['pages'][sheet_name]['cell_content']['merge_cells'][f'C9:E9'] = {
               'text': "Assisted Living",
               'format': 'al_heading'
             }
