@@ -1832,7 +1832,7 @@ market_study_data = {
                     }
                 }
             },
-            'COMPETITOR ANALYSIS': {
+            'COMPETITOR ANALYSIS 1': {
                 'settings': {
                     'area': "A1:X28",
                     'column_width': [
