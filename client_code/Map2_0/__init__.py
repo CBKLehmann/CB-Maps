@@ -1852,7 +1852,6 @@ class Map2_0(Map2_0Template):
         page = 1
         sheet_name = f"COMPETITOR ANALYSIS {page}"
 
-        print(len(data_comp_analysis_nh['data']))
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if index % 15 == 0 and not index == 0:
             page += 1
@@ -2321,170 +2320,169 @@ class Map2_0(Map2_0Template):
         }
         
         current_row += 1
-        
-        # market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['merge_cells'][f'C{current_row}:E{current_row}'] = {
-        #   'text': "Assisted Living",
-        #   'format': 'al_heading'
-        # }
-
-        # current_row += 1
-
-        # for index, competitor in enumerate(data_comp_analysis_al['data']):
-        #   home_counter = 0
-        #   if 'home' in competitor:
-        #     home_counter += 1
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'C{current_row}'] = {
-        #       'text': '⌂',
-        #       'format': 'home_icon'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'E{current_row}'] = {
-        #       'text': competitor[0]['name'],
-        #       'format': 'home_line_normal'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'G{current_row}'] = {
-        #       'text': competitor[0]['operator'],
-        #       'format': 'home_line_normal'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'H{current_row}'] = {
-        #       'text': competitor[0]['web'],
-        #       'format': 'home_line_centered_link',
-        #       'string': "↗"
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'I{current_row}'] = {
-        #       'text': "No",
-        #       'format': 'home_line_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'J{current_row}'] = {
-        #       'text': competitor[0]['type'],
-        #       'format': 'home_line_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'K{current_row}'] = {
-        #       'text': competitor[0]['status'],
-        #       'format': 'home_line_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
-        #       'text': competitor[0]['year_of_construction'],
-        #       'format': 'home_line_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
-        #       'text': competitor[0]['number_apts'],
-        #       'format': 'home_line_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'N{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'home_line_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'home_line_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'P{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'home_line_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'Q{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'home_line_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'R{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'home_line_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'S{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'home_line_centered_percentage'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'home_line_centered_percentage'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'home_line_centered_number_double'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'home_line_centered_number'
-        #     }
-            
-        #   else:
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'C{current_row}'] = {
-        #       'text': index + 1 - home_counter,
-        #       'format': 'row_number_al'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'E{current_row}'] = {
-        #       'text': competitor[0]['name'],
-        #       'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'G{current_row}'] = {
-        #       'text': '-' if competitor[0]['operator'] == 'N/A' else competitor[0]['operator'],
-        #       'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'H{current_row}'] = {
-        #       'text': competitor[0]['web'],
-        #       'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
-        #       'string': "↗"
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'I{current_row}'] = {
-        #       'text': "No",
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'J{current_row}'] = {
-        #       'text': competitor[0]['type'],
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'K{current_row}'] = {
-        #       'text': competitor[0]['status'],
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
-        #       'text': '-' if competitor[0]['year_of_construction'] == 'N/A' else competitor[0]['year_of_construction'],
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
-        #       'text': competitor[0]['number_apts'],
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'N{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'P{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'Q{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'R{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'S{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-        #     market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
-        #       'text': "-",
-        #       'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-        #     }
-  
-        #   current_row += 1
 
         # Assisted Living Pages
+        market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['merge_cells'][f'C{current_row}:E{current_row}'] = {
+          'text': "Assisted Living",
+          'format': 'al_heading'
+        }
+
+        current_row += 1
+
+        for index, competitor in enumerate(data_comp_analysis_al['data']):
+          home_counter = 0
+          if 'home' in competitor:
+            home_counter += 1
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'C{current_row}'] = {
+              'text': '⌂',
+              'format': 'home_icon'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'E{current_row}'] = {
+              'text': competitor[0]['name'],
+              'format': 'home_line_normal'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'G{current_row}'] = {
+              'text': competitor[0]['operator'],
+              'format': 'home_line_normal'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'H{current_row}'] = {
+              'text': competitor[0]['web'],
+              'format': 'home_line_centered_link',
+              'string': "↗"
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'I{current_row}'] = {
+              'text': "No",
+              'format': 'home_line_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'J{current_row}'] = {
+              'text': competitor[0]['type'],
+              'format': 'home_line_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'K{current_row}'] = {
+              'text': competitor[0]['status'],
+              'format': 'home_line_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
+              'text': competitor[0]['year_of_construction'],
+              'format': 'home_line_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
+              'text': competitor[0]['number_apts'],
+              'format': 'home_line_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'N{current_row}'] = {
+              'text': "-",
+              'format': 'home_line_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
+              'text': "-",
+              'format': 'home_line_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'P{current_row}'] = {
+              'text': "-",
+              'format': 'home_line_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'Q{current_row}'] = {
+              'text': "-",
+              'format': 'home_line_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'R{current_row}'] = {
+              'text': "-",
+              'format': 'home_line_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'S{current_row}'] = {
+              'text': "-",
+              'format': 'home_line_centered_percentage'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
+              'text': "-",
+              'format': 'home_line_centered_percentage'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
+              'text': "-",
+              'format': 'home_line_centered_number_double'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
+              'text': "-",
+              'format': 'home_line_centered_number'
+            }
+            
+          else:
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'C{current_row}'] = {
+              'text': index + 1 - home_counter,
+              'format': 'row_number_al'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'E{current_row}'] = {
+              'text': competitor[0]['name'],
+              'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'G{current_row}'] = {
+              'text': '-' if competitor[0]['operator'] == 'N/A' else competitor[0]['operator'],
+              'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'H{current_row}'] = {
+              'text': competitor[0]['web'],
+              'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
+              'string': "↗"
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'I{current_row}'] = {
+              'text': "No",
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'J{current_row}'] = {
+              'text': competitor[0]['type'],
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'K{current_row}'] = {
+              'text': competitor[0]['status'],
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'L{current_row}'] = {
+              'text': '-' if competitor[0]['year_of_construction'] == 'N/A' else competitor[0]['year_of_construction'],
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'M{current_row}'] = {
+              'text': competitor[0]['number_apts'],
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'N{current_row}'] = {
+              'text': "-",
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'O{current_row}'] = {
+              'text': "-",
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'P{current_row}'] = {
+              'text': "-",
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'Q{current_row}'] = {
+              'text': "-",
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'R{current_row}'] = {
+              'text': "-",
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'S{current_row}'] = {
+              'text': "-",
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'T{current_row}'] = {
+              'text': "-",
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'U{current_row}'] = {
+              'text': "-",
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+            market_study_data['pages']['COMPETITOR ANALYSIS']['cell_content']['cells'][f'V{current_row}'] = {
+              'text': "-",
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
+  
+          current_row += 1
         pass
 
       anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code)
