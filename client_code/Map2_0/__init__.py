@@ -1925,7 +1925,7 @@ class Map2_0(Map2_0Template):
           page = 1
           
           for index, competitor in enumerate(data_comp_analysis_nh['data']):
-            if index % 15 > 0:
+            if index % 15 == 0 and not index == 0:
               page += 1
               sheet_name = f"COMPETITOR ANALYSIS {page}"
             
