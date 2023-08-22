@@ -567,6 +567,12 @@ market_study_data = {
                 'font_size': 9,
                 'valign': 'vcenter'
             },
+            'normal_text_right': {
+                'font': 'Segoe UI',
+                'font_size': 9,
+                'valign': 'vcenter',
+                'align': 'right'
+            },
             'mass_text': {
                 'font': 'Segoe UI',
                 'font_size': 9,
@@ -667,14 +673,14 @@ market_study_data = {
                         'AF34': {
                             'file': "img/pop_trend.png",
                             'settings': {
-                                'x_offset': 8,
+                                'x_offset': 30,
                                 'y_offset': 15
                             }
                         },
                         'AF43': {
                             'file': "img/beds.png",
                             'settings': {
-                                'x_offset': 8,
+                                'x_offset': 12,
                                 'y_offset': 15
                             }
                         }
@@ -1994,19 +2000,19 @@ market_study_data = {
                 'cell_content': {
                     'images': {
                         'Q14': {
-                            'file': "plot1.png",
+                            'file': "img/plot1.png",
                             'settings': {
                                 'x_offset': -20
                             }
                         },
                         'Q23': {
-                            'file': "plot2.png",
+                            'file': "img/plot2.png",
                             'settings': {
                                 'x_offset': -20
                             }
                         },
                         'B17': {
-                            'file': "plot3.png"
+                            'file': "img/plot3.png"
                         },
                     },
                     'textboxes': {
@@ -2076,7 +2082,7 @@ market_study_data = {
                         },
                         'O13': {
                             'text': 54,
-                            'format': "normal_text"
+                            'format': "normal_text_right"
                         },
                         'C14': {
                             'text': "Number of AL facilities",
@@ -2084,7 +2090,7 @@ market_study_data = {
                         },
                         'O14': {
                             'text': 54,
-                            'format': "normal_text"
+                            'format': "normal_text_right"
                         },
                         'C15': {
                             'text': "Median numbers of beds (NH)",
@@ -2092,7 +2098,7 @@ market_study_data = {
                         },
                         'O15': {
                             'text': 117,
-                            'format': "normal_text"
+                            'format': "normal_text_right"
                         },
                         'C16': {
                             'text': "Median year of construction (NH)",
@@ -2100,7 +2106,7 @@ market_study_data = {
                         },
                         'O16': {
                             'text': 2007,
-                            'format': "normal_text"
+                            'format': "normal_text_right"
                         },
                         'C17': {
                             'text': "Median year of construction (AL)",
@@ -2108,7 +2114,7 @@ market_study_data = {
                         },
                         'O17': {
                             'text': 2007,
-                            'format': "normal_text"
+                            'format': "normal_text_right"
                         },
                         'Q13': {
                             'text': "Invest costs in Nursing homes",
@@ -2180,7 +2186,7 @@ market_study_data = {
                             'text': "Regulations of federal state",
                             'format': "small_heading_background"
                         },
-                        'C39:X40': {
+                        'C39:X41': {
                             'text': "This market study consideres X nursing homes within the vicinity of X minutes driving/walking/cycling. Thereof, Y facilities comply with the federal state regulations and Z facilities that do not fullfill the federal requirements. Assumuning that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to Z.",
                             'format': "mass_text_background"
                         },
@@ -2533,7 +2539,7 @@ market_study_data = {
                 'cell_content': {
                     'images': {
                         'D18': {
-                            'file': "Contact.jpg",
+                            'file': "img/Contact.jpg",
                             'settings': {
                                 'x_offset': 10
                             }

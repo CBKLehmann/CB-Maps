@@ -1160,20 +1160,20 @@ class Map2_0(Map2_0Template):
           facilities_amount += 1
           ''' Get amount of single Rooms inside Facility '''
           if not competitor[0]['ez'] == '-':
-            facility_single_rooms = competitor[0]['ez']
+            facility_single_rooms = int(competitor[0]['ez'])
           else:
             facility_single_rooms = 0
           ''' Get amount of double Rooms inside Facility '''
           if not competitor[0]['dz'] == '-':
-            facility_double_rooms = competitor[0]['dz']
+            facility_double_rooms = int(competitor[0]['dz'])
           else:
             facility_double_rooms = 0
           ''' Get overall amount of Rooms inside Facility '''
           facility_rooms = facility_single_rooms + facility_double_rooms
           ''' Get single room quote of facility '''
-          facility_single_room_quote = int(facility_single_rooms) / int(facility_rooms)
+          facility_single_room_quote = facility_single_rooms / facility_rooms
           ''' Get bed amount of facility '''
-          facility_bed_amount = int(facility_single_rooms) + int(facility_double_rooms) * 2
+          facility_bed_amount = facility_single_rooms + facility_double_rooms * 2
           ''' Get single room quota from regulations '''
           if not regulations['Existing']['sr_quote'] == '/':
             facility_single_room_quote_future = float(regulations['Existing']['sr_quote'])
@@ -1189,14 +1189,14 @@ class Map2_0(Map2_0Template):
             facility_bed_amount_future = int(round(facility_single_rooms_future + facility_double_rooms_future * 2, 0))
           else:
             facility_single_room_quote_future = facility_single_room_quote
-            facility_single_rooms_future = int(facility_single_rooms)
-            facility_double_rooms_future = int(facility_double_rooms)
-            facility_bed_amount_future = int(facility_bed_amount)
+            facility_single_rooms_future = facility_single_rooms
+            facility_double_rooms_future = facility_double_rooms
+            facility_bed_amount_future = facility_bed_amount
           ''' Add current facility values to overall values '''
-          facilities_single_rooms += int(facility_single_rooms)
-          facilities_double_rooms += int(facility_double_rooms)
-          facilities_bed_amount += int(facility_bed_amount)
-          facilities_rooms += int(facility_rooms)
+          facilities_single_rooms += facility_single_rooms
+          facilities_double_rooms += facility_double_rooms
+          facilities_bed_amount += facility_bed_amount
+          facilities_rooms += facility_rooms
           facilities_single_room_quote += facility_single_room_quote
           facilities_single_rooms_future += facility_single_rooms_future
           facilities_double_rooms_future += facility_double_rooms_future
@@ -1301,9 +1301,6 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C4:J5']['text'] = city
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['cells']['E37']['text'] = f"{iso_time} minutes of {movement}"
 
-      # print(len(data_comp_analysis_nh['data']))
-      # print(len(data_comp_analysis_al['data']))
-
       nursing_homes_amount = len(data_comp_analysis_nh['data'])
       assisted_living_amount = len(data_comp_analysis_al['data'])
       total_amount = nursing_homes_amount + assisted_living_amount
@@ -1325,7 +1322,7 @@ class Map2_0(Map2_0Template):
           'format': 'nh_heading'
         }
         market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells']['C26:M26'] = {
-          'text': '1 The Object does / does not comply with the respective national legislation. For more info see page "Good to know"',
+          'text': '¹The Object does / does not comply with the respective national legislation. For more info see page "Good to know"',
           'format': 'foot_text'
         }
         market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['G9'] = {
@@ -1534,7 +1531,7 @@ class Map2_0(Map2_0Template):
             if not competitor[0]['mdk_note'] == '-':
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
-              list_years_of_construction_nh.append(competitor[0]['baujahr'])
+              list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
           
           else:
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
@@ -1663,7 +1660,7 @@ class Map2_0(Map2_0Template):
             if not competitor[0]['mdk_note'] == '-':
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
-              list_years_of_construction_nh.append(competitor[0]['baujahr'])
+              list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
   
           current_row += 1
 
@@ -1792,7 +1789,8 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_centered_number'
             }
 
-            list_years_of_construction_al.append(competitor[0]['year_of_construction'])
+            if not competitor[0]['year_of_construction'] == '-':
+              list_years_of_construction_al.append(int(competitor[0]['year_of_construction']))
             if competitor[0]['type'] == 'gemeinnützig':
               none_profit_operator_al += 1
             elif competitor[0]['type'] == 'kommunal':
@@ -1875,7 +1873,8 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
 
-            list_years_of_construction_al.append(competitor[0]['year_of_construction'])
+            if not competitor[0]['year_of_construction'] == '-':
+              list_years_of_construction_al.append(int(competitor[0]['year_of_construction']))
             if competitor[0]['type'] == 'gemeinnützig':
               none_profit_operator_al += 1
             elif competitor[0]['type'] == 'kommunal':
@@ -2014,8 +2013,8 @@ class Map2_0(Map2_0Template):
           'text': "Nursing Homes",
           'format': 'nh_heading'
         }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells']['C26:M26'] = {
-          'text': '1 The Object does / does not comply with the respective national legislation. For more info see page "Good to know"',
+        market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C26:M26'] = {
+          'text': '¹The Object does / does not comply with the respective national legislation. For more info see page "Good to know"',
           'format': 'foot_text'
         }
         market_study_data['pages'][sheet_name]['cell_content']['cells']['G9'] = {
@@ -2204,6 +2203,10 @@ class Map2_0(Map2_0Template):
               'text': "Nursing Homes",
               'format': 'nh_heading'
             }
+            market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C26:M26'] = {
+              'text': '¹The Object does / does not comply with the respective national legislation. For more info see page "Good to know"',
+              'format': 'foot_text'
+            }
             market_study_data['pages'][sheet_name]['cell_content']['cells']['G9'] = {
               'text': "Operator name",
               'format': "operator_heading"
@@ -2268,7 +2271,7 @@ class Map2_0(Map2_0Template):
               'text': "MDK grade (2019)",
               'format': 'rotated_text'
             }
-            market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['Text'] = city
+            market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
           
           if 'home' in competitor:
             home_counter += 1
@@ -2398,7 +2401,7 @@ class Map2_0(Map2_0Template):
             if not competitor[0]['mdk_note'] == '-':
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
-              list_years_of_construction_nh.append(competitor[0]['baujahr'])
+              list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
           
           else:
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
@@ -2505,7 +2508,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered_number_double' if not current_row == 25 else 'last_row_centered_number_double'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'V{current_row}'] = {
-              'text': '-' if competitor[0]['mdk_note'] == 'N/A' else float(competitor[0]['mdk_note']),
+              'text': float(competitor[0]['mdk_note']) if not competitor[0]['mdk_note'] == '-' else competitor[0]['mdk_note'],
               'format': 'row_centered_number' if not current_row == 25 else 'last_row_centered_number'
             }
 
@@ -2527,7 +2530,7 @@ class Map2_0(Map2_0Template):
             if not competitor[0]['mdk_note'] == '-':
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
-              list_years_of_construction_nh.append(competitor[0]['baujahr'])
+              list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
   
           current_row += 1
 
@@ -2873,7 +2876,7 @@ class Map2_0(Map2_0Template):
                   'cells': {}
               }
             }
-            market_study_data['pages'][sheet_name]['cell_content']['merge_cells'][f'C9:E9'] = {
+            market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C9:E9'] = {
               'text': "Assisted Living",
               'format': 'al_heading'
             }
@@ -2941,7 +2944,7 @@ class Map2_0(Map2_0Template):
               'text': "MDK grade (2019)",
               'format': 'rotated_text'
             }
-            market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['Text'] = city
+            market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
             
           home_counter = 0
           if 'home' in competitor:
@@ -3020,7 +3023,8 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_centered_number'
             }
 
-            list_years_of_construction_al.append(competitor[0]['year_of_construction'])
+            if not competitor[0]['year_of_construction'] == '-':
+              list_years_of_construction_al.append(int(competitor[0]['year_of_construction']))
             if competitor[0]['type'] == 'gemeinnützig':
               none_profit_operator_al += 1
             elif competitor[0]['type'] == 'kommunal':
@@ -3103,7 +3107,8 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
 
-            list_years_of_construction_al.append(competitor[0]['year_of_construction'])
+            if not competitor[0]['year_of_construction'] == '-':
+              list_years_of_construction_al.append(int(competitor[0]['year_of_construction']))
             if competitor[0]['type'] == 'gemeinnützig':
               none_profit_operator_al += 1
             elif competitor[0]['type'] == 'kommunal':
@@ -3113,17 +3118,46 @@ class Map2_0(Map2_0Template):
   
           current_row += 1
 
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C4:X5']['text'] = city
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['C12']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['Q12']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O13']['text'] = len(data_comp_analysis_nh['data'])
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O14']['text'] = len(data_comp_analysis_al['data'])
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O15']['text'] = anvil.server.call('get_median', list_beds)
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O16']['text'] = anvil.server.call('get_median', list_years_of_construction_nh)
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = anvil.server.call('get_median', list_years_of_construction_al)
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = none_profit_operator_nh
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = public_operator_nh
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = private_operator_nh
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = none_profit_operator_al
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = public_operator_al
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = private_operator_al
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O15']['text'] = anvil.server.call('get_median', list_beds) if len(list_beds) > 0 else '-'
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O16']['text'] = anvil.server.call('get_median', list_years_of_construction_nh) if len(list_years_of_construction_nh) > 0 else '-'
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = anvil.server.call('get_median', list_years_of_construction_al) if len(list_years_of_construction_al) > 0 else '-'
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O21'] = {
+        'text': none_profit_operator_nh
+      }
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O22'] = {
+        'text': public_operator_nh
+      }
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O23'] = {
+        'text': private_operator_nh
+      }
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O24'] = {
+        'text': none_profit_operator_al
+      }
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O25'] = {
+        'text': public_operator_al
+      }
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O26'] = {
+        'text': private_operator_al
+      }
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C39:X41']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, Y facilities comply with the federal state regulations and Z facilities that do not fullfill the federal requirements. Assumuning that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O42:X42']['text'] = regulations['federal_state']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O44:S44']['text'] = f"{regulations['New']['sr_quote_raw'] * 100}%" if not type(regulations['New']['sr_quote_raw']) == str else regulations['New']['sr_quote_raw']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O45:S45']['text'] = regulations['New']['max_beds_raw']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O46:S46']['text'] = regulations['New']['min_room_size']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O47:S47']['text'] = regulations['New']['min_common_area_resident']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O48:S48']['text'] = regulations['New']['comment']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O49:S49']['text'] = regulations['New']['legal_basis']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T44:X44']['text'] = f"{regulations['Existing']['sr_quote_raw'] * 100}%" if not type(regulations['Existing']['sr_quote_raw']) == str else regulations['Existing']['sr_quote_raw']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T45:X45']['text'] = regulations['Existing']['max_beds_raw']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T46:X46']['text'] = regulations['Existing']['min_room_size']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T47:X47']['text'] = regulations['Existing']['min_common_area_resident']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
       
       anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code)
 
