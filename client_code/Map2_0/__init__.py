@@ -1229,6 +1229,8 @@ class Map2_0(Map2_0Template):
       beds_in_reserve_fc = round(beds_adjusted * 0.05)
 
       market_study_pages = ["COVER", "SUMMARY", "LOCATION ANALYSIS"]
+      share_url = self.create_share_map('market_study')
+      
       market_study_data = copy.deepcopy(ExcelFrames.market_study_data)
       market_study_data['pages']['COVER']['cell_content']['images']['AB7']['file'] = f"tmp/summary_map_{unique_code}.png"
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y29']['text'] = "{:.2f}".format(purchase_power)
@@ -1313,6 +1315,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C28:O28']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C4:J5']['text'] = city
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['cells']['E37']['text'] = f"{iso_time} minutes of {movement}"
+      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['images']['Q9']['settings']['url'] = share_url
 
       nursing_homes_amount = len(data_comp_analysis_nh['data'])
       assisted_living_amount = len(data_comp_analysis_al['data'])
@@ -4722,8 +4725,13 @@ class Map2_0(Map2_0Template):
 
   def share_click(self, **event_args):
     """This method is called when the button is clicked"""
+    self.create_share_map('click')
+
+  def create_share_map(self, mode):
+    """This method is called when the button is clicked"""
     with anvil.server.no_loading_indicator:
-      Functions.manipulate_loading_overlay(self, True)
+      if mode == 'click':
+        Functions.manipulate_loading_overlay(self, True)
       searched_address = anvil.js.call('getSearchedAddress')
       date = datetime.datetime.now()
       str_date = str(date).split('.')
@@ -4792,7 +4800,7 @@ class Map2_0(Map2_0Template):
         'data': self.cluster_data,
         'settings': Variables.marker
       }
-  
+
       Functions.manipulate_loading_overlay(self, False)
       from .Name_Share_Link import Name_Share_Link
       name = alert(content=Name_Share_Link(searched_address=changed_address), buttons=[], dismissible=False, large=True, role='custom_alert')
@@ -4829,17 +4837,19 @@ class Map2_0(Map2_0Template):
   
       for setting in deleted_marker:
         Variables.marker[setting]['marker'] = deleted_marker[setting]
+
+      if mode == 'click':
+        grid = GridPanel()
+        label = TextBox(text=self.url, enabled=False)
+        button = Button(text="Copy Link")
+        button.add_event_handler('click', self.copy_to_clipboard)
+        grid.add_component(label, row="label", col_xs=1, width_xs=10)
+        grid.add_component(button, row="button", col_xs=1, width_xs=10)
   
-      grid = GridPanel()
-      label = TextBox(text=self.url, enabled=False)
-      button = Button(text="Copy Link")
-      button.add_event_handler('click', self.copy_to_clipboard)
-      grid.add_component(label, row="label", col_xs=1, width_xs=10)
-      grid.add_component(button, row="button", col_xs=1, width_xs=10)
-  
-      Functions.manipulate_loading_overlay(self, False)
-      alert(grid, large=True, dismissible=False, role='custom_alert')
-    pass
+        Functions.manipulate_loading_overlay(self, False)
+        alert(grid, large=True, dismissible=False, role='custom_alert')
+      else:
+        return self.url
 
   def handle_style_change(self, event):
     self.place_layer()
