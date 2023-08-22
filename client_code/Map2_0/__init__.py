@@ -1155,8 +1155,8 @@ class Map2_0(Map2_0Template):
       facilities_double_rooms_future = 0
       facilities_bed_amount_future = 0
       facilities_single_room_quote_future = 0
-      for competitor in data_comp_analysis_nh['data']:
-        if not competitor[0]['ez'] == '-' and not competitor[0]['dz'] == '-':
+      for index, competitor in enumerate(data_comp_analysis_nh['data']):
+        if not competitor[0]['ez'] == '-' or not competitor[0]['dz'] == '-':
           facilities_amount += 1
           ''' Get amount of single Rooms inside Facility '''
           if not competitor[0]['ez'] == '-':
@@ -1179,6 +1179,14 @@ class Map2_0(Map2_0Template):
             facility_single_room_quote_future = float(regulations['Existing']['sr_quote'])
           else:
             facility_single_room_quote_future = 0
+          if not regulations['Existing']['max_beds'] == '/':
+            facility_max_beds_future = float(regulations['Existing']['max_beds'])
+          else:
+            facility_max_beds_future = 0
+          if facility_single_room_quote > facility_single_room_quote_future or facility_bed_amount > facility_max_beds_future:
+            data_comp_analysis_nh['data'][index][0]['legal'] = "No"
+          else:
+            data_comp_analysis_nh['data'][index][0]['legal'] = "Yes"
           ''' Check if single room quota is below quota from regulations '''
           if facility_single_room_quote < facility_single_room_quote_future:
             ''' Calculate future amount of single rooms based on quota from regulations '''
@@ -1193,6 +1201,8 @@ class Map2_0(Map2_0Template):
             facility_double_rooms_future = facility_double_rooms
             facility_bed_amount_future = facility_bed_amount
           ''' Add current facility values to overall values '''
+          if facility_bed_amount_future > facility_max_beds_future:
+              facility_bed_amount_future = facility_max_beds_future
           facilities_single_rooms += facility_single_rooms
           facilities_double_rooms += facility_double_rooms
           facilities_bed_amount += facility_bed_amount
@@ -1202,6 +1212,8 @@ class Map2_0(Map2_0Template):
           facilities_double_rooms_future += facility_double_rooms_future
           facilities_bed_amount_future += facility_bed_amount_future
           facilities_single_room_quote_future += facility_single_room_quote_future
+        else:
+          data_comp_analysis_nh['data'][index][0]['legal'] = "-"
 
       loss_of_beds = facilities_bed_amount_future - facilities_bed_amount
       beds_adjusted_30_v1 = beds_active + loss_of_beds
@@ -1423,15 +1435,15 @@ class Map2_0(Map2_0Template):
               'string': "↗"
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'I{current_row}'] = {
-              'text': "No",
+              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
               'format': 'home_line_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'J{current_row}'] = {
-              'text': competitor[0]['operator_type'],
+              'text': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
               'format': 'home_line_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'K{current_row}'] = {
-              'text': competitor[0]['status'],
+              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
               'format': 'home_line_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'L{current_row}'] = {
@@ -1443,7 +1455,7 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'N{current_row}'] = {
-              'text': anvil.server.call("read_top_30", competitor['raw_betreiber']),
+              'text': competitor[0]['legal'],
               'format': 'home_line_centered'
             }
 
@@ -1552,15 +1564,15 @@ class Map2_0(Map2_0Template):
               'string': "↗"
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'I{current_row}'] = {
-              'text': "No",
+              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
               'format': 'row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'J{current_row}'] = {
-              'text': competitor[0]['operator_type'],
+              'text': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
               'format': 'row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'K{current_row}'] = {
-              'text': competitor[0]['status'],
+              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
               'format': 'row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'L{current_row}'] = {
@@ -1572,7 +1584,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'N{current_row}'] = {
-              'text': anvil.server.call("read_top_30", competitor['raw_betreiber']),
+              'text': competitor[0]['legal'],
               'format': 'row_centered'
             }
 
@@ -1720,11 +1732,11 @@ class Map2_0(Map2_0Template):
               'format': 'home_icon'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['name'],
+              'text': competitor[0]['raw_name'],
               'format': 'home_line_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'G{current_row}'] = {
-              'text': competitor[0]['operator'],
+              'text': competitor[0]['raw_betreiber'],
               'format': 'home_line_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
@@ -1733,15 +1745,15 @@ class Map2_0(Map2_0Template):
               'string': "↗"
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'I{current_row}'] = {
-              'text': "No",
+              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
               'format': 'home_line_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'J{current_row}'] = {
-              'text': competitor[0]['type'],
+              'text': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
               'format': 'home_line_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'K{current_row}'] = {
-              'text': competitor[0]['status'],
+              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
               'format': 'home_line_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'L{current_row}'] = {
@@ -1804,11 +1816,11 @@ class Map2_0(Map2_0Template):
               'format': 'row_number_al'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['name'],
+              'text': competitor[0]['raw_name'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['operator'] == 'N/A' else competitor[0]['operator'],
+              'text': '-' if competitor[0]['raw_betreiber'] == 'N/A' else competitor[0]['raw_betreiber'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
@@ -1817,15 +1829,15 @@ class Map2_0(Map2_0Template):
               'string': "↗"
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'I{current_row}'] = {
-              'text': "No",
+              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'J{current_row}'] = {
-              'text': competitor[0]['type'],
+              'text': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'K{current_row}'] = {
-              'text': competitor[0]['status'],
+              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'L{current_row}'] = {
@@ -2280,11 +2292,11 @@ class Map2_0(Map2_0Template):
               'format': 'home_icon'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['name'],
+              'text': competitor[0]['raw_name'],
               'format': 'home_line_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'G{current_row}'] = {
-              'text': competitor[0]['betreiber'],
+              'text': competitor[0]['raw_betreiber'],
               'format': 'home_line_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
@@ -2293,15 +2305,15 @@ class Map2_0(Map2_0Template):
               'string': "↗"
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
-              'text': "No",
+              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
               'format': 'home_line_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'J{current_row}'] = {
-              'text': competitor[0]['operator_type'],
+              'text': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
               'format': 'home_line_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'K{current_row}'] = {
-              'text': competitor[0]['status'],
+              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
               'format': 'home_line_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'L{current_row}'] = {
@@ -2313,7 +2325,7 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'N{current_row}'] = {
-              'text': "No",
+              'text': competitor[0]['legal'],
               'format': 'home_line_centered'
             }
 
@@ -2409,11 +2421,11 @@ class Map2_0(Map2_0Template):
               'format': 'row_number'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['name'],
+              'text': competitor[0]['raw_name'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['betreiber'] == 'N/A' else competitor[0]['betreiber'],
+              'text': '-' if competitor[0]['raw_betreiber'] == 'N/A' else competitor[0]['raw_betreiber'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
@@ -2422,15 +2434,15 @@ class Map2_0(Map2_0Template):
               'string': "↗"
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
-              'text': "No",
+              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'J{current_row}'] = {
-              'text': competitor[0]['operator_type'],
+              'text': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'K{current_row}'] = {
-              'text': competitor[0]['status'],
+              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'L{current_row}'] = {
@@ -2442,7 +2454,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'N{current_row}'] = {
-              'text': "No",
+              'text': competitor[0]['legal'],
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
 
@@ -2954,11 +2966,11 @@ class Map2_0(Map2_0Template):
               'format': 'home_icon'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['name'],
+              'text': competitor[0]['raw_name'],
               'format': 'home_line_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'G{current_row}'] = {
-              'text': competitor[0]['operator'],
+              'text': competitor[0]['raw_betreiber'],
               'format': 'home_line_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
@@ -2967,15 +2979,15 @@ class Map2_0(Map2_0Template):
               'string': "↗"
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
-              'text': "No",
+              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
               'format': 'home_line_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'J{current_row}'] = {
-              'text': competitor[0]['type'],
+              'text': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
               'format': 'home_line_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'K{current_row}'] = {
-              'text': competitor[0]['status'],
+              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
               'format': 'home_line_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'L{current_row}'] = {
@@ -3038,11 +3050,11 @@ class Map2_0(Map2_0Template):
               'format': 'row_number_al'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['name'],
+              'text': competitor[0]['raw_name'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['operator'] == 'N/A' else competitor[0]['operator'],
+              'text': '-' if competitor[0]['raw_betreiber'] == 'N/A' else competitor[0]['raw_betreiber'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
@@ -3051,15 +3063,15 @@ class Map2_0(Map2_0Template):
               'string': "↗"
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
-              'text': "No",
+              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'J{current_row}'] = {
-              'text': competitor[0]['type'],
+              'text': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'K{current_row}'] = {
-              'text': competitor[0]['status'],
+              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'L{current_row}'] = {
