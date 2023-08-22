@@ -1215,7 +1215,7 @@ class Map2_0(Map2_0Template):
       beds_surplus_30_avg = round((beds_surplus + beds_surplus_v2) / 2)
       beds_surplus_35_avg = round((beds_surplus_35 + beds_surplus_35_v2) / 2)
       beds_in_reserve_fc = round(beds_adjusted * 0.05)
-
+      
       market_study_data = copy.deepcopy(ExcelFrames.market_study_data)
       market_study_data['pages']['COVER']['cell_content']['images']['AB7']['file'] = f"tmp/summary_map_{unique_code}.png"
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y29']['text'] = "{:.2f}".format(purchase_power)
@@ -1307,12 +1307,26 @@ class Map2_0(Map2_0Template):
       nursing_homes_amount = len(data_comp_analysis_nh['data'])
       assisted_living_amount = len(data_comp_analysis_al['data'])
       total_amount = nursing_homes_amount + assisted_living_amount
+
+      list_beds = []
+      list_years_of_construction_nh = []
+      list_years_of_construction_al = []
+      none_profit_operator_nh = 0
+      none_profit_operator_al = 0
+      public_operator_nh = 0
+      public_operator_al = 0
+      private_operator_nh = 0
+      private_operator_al = 0
       
       if total_amount <= 13:
         # Single Page
         market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells']['C9:E9'] = {
           'text': "Nursing Homes",
           'format': 'nh_heading'
+        }
+        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells']['C26:M26'] = {
+          'text': '1 The Object does / does not comply with the respective national legislation. For more info see page "Good to know"',
+          'format': 'foot_text'
         }
         market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['G9'] = {
           'text': "Operator name",
@@ -1378,7 +1392,7 @@ class Map2_0(Map2_0Template):
           'text': "MDK grade (2019)",
           'format': 'rotated_text'
         }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells']['C3:X4']['Text'] = city
+        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells']['C3:X4']['text'] = city
 
         current_row = 11
         home_counter = 0
@@ -1435,7 +1449,13 @@ class Map2_0(Map2_0Template):
               'text': "No",
               'format': 'home_line_centered'
             }
-  
+
+            if competitor[0]['operator_type'] == 'privat':
+              private_operator_nh += 1
+            elif competitor[0]['operator_type'] == 'kommunal':
+              public_operator_nh += 1
+            elif competitor[0]['operator_type'] == 'gemeinnützig':
+              none_profit_operator_nh += 1
             if not competitor[0]['ez'] == '-':
               single_rooms = int(competitor[0]['ez'])
             else:
@@ -1498,6 +1518,7 @@ class Map2_0(Map2_0Template):
 
             if not beds == '-':
               total_beds += beds
+              list_beds.append(beds)
             if not single_rooms == '-':
               total_single_rooms += single_rooms
             if not double_rooms == '-':
@@ -1512,6 +1533,8 @@ class Map2_0(Map2_0Template):
               list_invest_cost.append(float(competitor[0]['invest']))
             if not competitor[0]['mdk_note'] == '-':
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
+            if not competitor[0]['baujahr'] == '-':
+              list_years_of_construction_nh.append(competitor[0]['baujahr'])
           
           else:
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
@@ -1555,7 +1578,13 @@ class Map2_0(Map2_0Template):
               'text': "No",
               'format': 'row_centered'
             }
-  
+
+            if competitor[0]['operator_type'] == 'privat':
+              private_operator_nh += 1
+            elif competitor[0]['operator_type'] == 'kommunal':
+              public_operator_nh += 1
+            elif competitor[0]['operator_type'] == 'gemeinnützig':
+              none_profit_operator_nh += 1
             if not competitor[0]['ez'] == '-':
               single_rooms = int(competitor[0]['ez'])
             else:
@@ -1618,6 +1647,7 @@ class Map2_0(Map2_0Template):
 
             if not beds == '-':
               total_beds += beds
+              list_beds.append(beds)
             if not single_rooms == '-':
               total_single_rooms += single_rooms
             if not double_rooms == '-':
@@ -1632,6 +1662,8 @@ class Map2_0(Map2_0Template):
               list_invest_cost.append(float(competitor[0]['invest']))
             if not competitor[0]['mdk_note'] == '-':
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
+            if not competitor[0]['baujahr'] == '-':
+              list_years_of_construction_nh.append(competitor[0]['baujahr'])
   
           current_row += 1
 
@@ -1759,6 +1791,14 @@ class Map2_0(Map2_0Template):
               'text': "-",
               'format': 'home_line_centered_number'
             }
+
+            list_years_of_construction_al.append(competitor[0]['year_of_construction'])
+            if competitor[0]['type'] == 'gemeinnützig':
+              none_profit_operator_al += 1
+            elif competitor[0]['type'] == 'kommunal':
+              public_operator_al += 1
+            elif competitor[0]['type'] == 'privat':
+              private_operator_al += 1
             
           else:
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
@@ -1834,6 +1874,14 @@ class Map2_0(Map2_0Template):
               'text': "-",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
+
+            list_years_of_construction_al.append(competitor[0]['year_of_construction'])
+            if competitor[0]['type'] == 'gemeinnützig':
+              none_profit_operator_al += 1
+            elif competitor[0]['type'] == 'kommunal':
+              public_operator_al += 1
+            elif competitor[0]['type'] == 'privat':
+              private_operator_al += 1
   
           current_row += 1
       
@@ -1966,6 +2014,10 @@ class Map2_0(Map2_0Template):
           'text': "Nursing Homes",
           'format': 'nh_heading'
         }
+        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells']['C26:M26'] = {
+          'text': '1 The Object does / does not comply with the respective national legislation. For more info see page "Good to know"',
+          'format': 'foot_text'
+        }
         market_study_data['pages'][sheet_name]['cell_content']['cells']['G9'] = {
           'text': "Operator name",
           'format': "operator_heading"
@@ -2030,7 +2082,7 @@ class Map2_0(Map2_0Template):
           'text': "MDK grade (2019)",
           'format': 'rotated_text'
         }
-        market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['Text'] = city
+        market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if index % 15 == 0 and not index == 0:
@@ -2261,7 +2313,13 @@ class Map2_0(Map2_0Template):
               'text': "No",
               'format': 'home_line_centered'
             }
-  
+
+            if competitor[0]['operator_type'] == 'privat':
+              private_operator_nh += 1
+            elif competitor[0]['operator_type'] == 'kommunal':
+              public_operator_nh += 1
+            elif competitor[0]['operator_type'] == 'gemeinnützig':
+              none_profit_operator_nh += 1
             if not competitor[0]['ez'] == '-':
               single_rooms = int(competitor[0]['ez'])
             else:
@@ -2324,6 +2382,7 @@ class Map2_0(Map2_0Template):
 
             if not beds == '-':
               total_beds += beds
+              list_beds.append(beds)
             if not single_rooms == '-':
               total_single_rooms += single_rooms
             if not double_rooms == '-':
@@ -2338,6 +2397,8 @@ class Map2_0(Map2_0Template):
               list_invest_cost.append(float(competitor[0]['invest']))
             if not competitor[0]['mdk_note'] == '-':
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
+            if not competitor[0]['baujahr'] == '-':
+              list_years_of_construction_nh.append(competitor[0]['baujahr'])
           
           else:
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
@@ -2381,7 +2442,13 @@ class Map2_0(Map2_0Template):
               'text': "No",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
-  
+
+            if competitor[0]['operator_type'] == 'privat':
+              private_operator_nh += 1
+            elif competitor[0]['operator_type'] == 'kommunal':
+              public_operator_nh += 1
+            elif competitor[0]['operator_type'] == 'gemeinnützig':
+              none_profit_operator_nh += 1
             if not competitor[0]['ez'] == '-':
               single_rooms = int(competitor[0]['ez'])
             else:
@@ -2444,6 +2511,7 @@ class Map2_0(Map2_0Template):
 
             if not beds == '-':
               total_beds += beds
+              list_beds.append(beds)
             if not single_rooms == '-':
               total_single_rooms += single_rooms
             if not double_rooms == '-':
@@ -2458,6 +2526,8 @@ class Map2_0(Map2_0Template):
               list_invest_cost.append(float(competitor[0]['invest']))
             if not competitor[0]['mdk_note'] == '-':
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
+            if not competitor[0]['baujahr'] == '-':
+              list_years_of_construction_nh.append(competitor[0]['baujahr'])
   
           current_row += 1
 
@@ -2685,7 +2755,7 @@ class Map2_0(Map2_0Template):
           'text': "MDK grade (2019)",
           'format': 'rotated_text'
         }
-        market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['Text'] = city
+        market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
 
         for index, competitor in enumerate(data_comp_analysis_al['data']):
           if index % 15 == 0 and not index == 0:
@@ -2949,6 +3019,14 @@ class Map2_0(Map2_0Template):
               'text': "-",
               'format': 'home_line_centered_number'
             }
+
+            list_years_of_construction_al.append(competitor[0]['year_of_construction'])
+            if competitor[0]['type'] == 'gemeinnützig':
+              none_profit_operator_al += 1
+            elif competitor[0]['type'] == 'kommunal':
+              public_operator_al += 1
+            elif competitor[0]['type'] == 'privat':
+              private_operator_al += 1
             
           else:
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
@@ -3024,10 +3102,29 @@ class Map2_0(Map2_0Template):
               'text': "-",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
+
+            list_years_of_construction_al.append(competitor[0]['year_of_construction'])
+            if competitor[0]['type'] == 'gemeinnützig':
+              none_profit_operator_al += 1
+            elif competitor[0]['type'] == 'kommunal':
+              public_operator_al += 1
+            elif competitor[0]['type'] == 'privat':
+              private_operator_al += 1
   
           current_row += 1
-        pass
 
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O13']['text'] = len(data_comp_analysis_nh['data'])
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O14']['text'] = len(data_comp_analysis_al['data'])
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O15']['text'] = anvil.server.call('get_median', list_beds)
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O16']['text'] = anvil.server.call('get_median', list_years_of_construction_nh)
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = anvil.server.call('get_median', list_years_of_construction_al)
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = none_profit_operator_nh
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = public_operator_nh
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = private_operator_nh
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = none_profit_operator_al
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = public_operator_al
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = private_operator_al
+      
       anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code)
 
       # Copy and Fill Dataframe for Regulations Overview
@@ -3052,283 +3149,6 @@ class Map2_0(Map2_0Template):
       reg_frame['data'][21]['content'] = regulations['Existing']['min_room_size']
       reg_frame['data'][22]['content'] = regulations['Existing']['min_common_area_resident']
       reg_frame['data'][23]['content'] = regulations['Existing']['comment']
-  
-      # Copy and Fill Dataframe for Assisted Living Analysis
-      assliv_frame = copy.deepcopy(ExcelFrames.ala_data)
-      assliv_frame['data'][3]['content'] = f'Population {countie[0]}'
-      assliv_frame['data'][40]['content'] = f'Population {countie[0]}'
-      assliv_frame['data'][41]['content'] = f'Population {countie[0]}, LK 2022'
-      assliv_frame['data'][42]['content'] = f'Population {countie[0]}, LK 2030'
-      assliv_frame['data'][45]['content'] = countie_data['ex_dem_lk']['all_compl']
-      assliv_frame['data'][46]['content'] = people_u80
-      assliv_frame['data'][47]['content'] = people_o80
-      assliv_frame['data'][48]['content'] = people_u80_fc
-      assliv_frame['data'][49]['content'] = people_o80_fc
-      assliv_frame['data'][50]['content'] = change_pat_rec_raw
-      assliv_frame['data'][51]['content'] = apartments_adjusted
-      assliv_frame['data'][52]['content'] = apartments_per_10k
-      assliv_frame['data'][53]['content'] = facilities_active
-      assliv_frame['data'][54]['content'] = facilities_plan_build
-      assliv_frame['data'][55]['content'] = apartments_plan_build_adjusted
-      assliv_frame['data'][56]['content'] = len(al_list)
-      assliv_frame['data'][57]['content'] = apartments_10km
-      assliv_frame['data'][58]['content'] = f'{countie[0]}, LK'
-      assliv_frame['data'][61]['content'] = facilities_active - without_apartment
-      assliv_frame['data'][62]['content'] = without_apartment
-      assliv_frame['data'][63]['content'] = facilities_active
-      assliv_frame['data'][64]['content'] = facilities_building - without_apartment_building
-      assliv_frame['data'][65]['content'] = without_apartment_building
-      assliv_frame['data'][66]['content'] = facilities_building
-      assliv_frame['data'][67]['content'] = facilities_planning - without_apartment_planning
-      assliv_frame['data'][68]['content'] = without_apartment_planning
-      assliv_frame['data'][69]['content'] = facilities_planning
-      assliv_frame['data'][70]['content'] = facilities_active + facilities_building + facilities_planning
-      assliv_frame['data'][73]['content'] = round(((people_u80 + people_o80) * 0.01) / 1.5)
-      assliv_frame['data'][74]['content'] = round(((people_u80 + people_o80) * 0.02) / 1.5)
-      assliv_frame['data'][75]['content'] = round(((people_u80 + people_o80) * 0.03) / 1.5)
-      assliv_frame['data'][76]['content'] = round(((people_u80 + people_o80) * 0.04) / 1.5)
-      assliv_frame['data'][77]['content'] = round(((people_u80 + people_o80) * 0.05) / 1.5)
-      assliv_frame['data'][78]['content'] = round(((people_u80 + people_o80) * 0.07) / 1.5)
-      assliv_frame['data'][79]['content'] = round(((people_u80 + people_o80) * 0.09) / 1.5)
-      assliv_frame['data'][80]['content'] = level
-      assliv_frame['data'][81]['content'] = demand2022
-      assliv_frame['data'][82]['content'] = demand2040
-      assliv_frame['data'][83]['content'] = demand_potential
-      assliv_frame['data'][88]['content'] = change_u80_raw
-      assliv_frame['data'][89]['content'] = change_o80_raw
-      assliv_frame['data'][100]['content'] = apartments
-      assliv_frame['data'][102]['content'] = apartments
-      assliv_frame['data'][103]['content'] = apartments_building
-      assliv_frame['data'][105]['content'] = apartments_building
-      assliv_frame['data'][106]['content'] = apartments_planning
-      assliv_frame['data'][108]['content'] = apartments_planning
-      assliv_frame['data'][109]['content'] = apartments + (facilities_building - without_apartment_building) + apartments_planning
-      assliv_frame['data'][112]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.01) / 1.5)
-      assliv_frame['data'][113]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.02) / 1.5)
-      assliv_frame['data'][114]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.03) / 1.5)
-      assliv_frame['data'][115]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.04) / 1.5)
-      assliv_frame['data'][116]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.05) / 1.5)
-      assliv_frame['data'][117]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.07) / 1.5)
-      assliv_frame['data'][118]['content'] = apartments_adjusted - round(((people_u80 + people_o80) * 0.09) / 1.5)
-      assliv_frame['data'][121]['content'] = apartments_average
-      assliv_frame['data'][123]['content'] = apartments_adjusted
-      assliv_frame['data'][124]['content'] = build_apartments_average
-      assliv_frame['data'][126]['content'] = build_apartments_adjusted
-      assliv_frame['data'][127]['content'] = planning_apartments_average
-      assliv_frame['data'][129]['content'] = planning_apartments_adjusted
-      assliv_frame['data'][130]['content'] = apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted
-      assliv_frame['data'][133]['content'] = round(((people_u80_fc + people_o80_fc) * 0.01) / 1.5)
-      assliv_frame['data'][134]['content'] = round(((people_u80_fc + people_o80_fc) * 0.02) / 1.5)
-      assliv_frame['data'][135]['content'] = round(((people_u80_fc + people_o80_fc) * 0.03) / 1.5)
-      assliv_frame['data'][136]['content'] = round(((people_u80_fc + people_o80_fc) * 0.04) / 1.5)
-      assliv_frame['data'][137]['content'] = round(((people_u80_fc + people_o80_fc) * 0.05) / 1.5)
-      assliv_frame['data'][138]['content'] = round(((people_u80_fc + people_o80_fc) * 0.07) / 1.5)
-      assliv_frame['data'][139]['content'] = round(((people_u80_fc + people_o80_fc) * 0.09) / 1.5)
-      assliv_frame['data'][144]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.01) / 1.5)))
-      assliv_frame['data'][145]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.02) / 1.5)))
-      assliv_frame['data'][146]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.03) / 1.5)))
-      assliv_frame['data'][147]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.04) / 1.5)))
-      assliv_frame['data'][148]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.05) / 1.5)))
-      assliv_frame['data'][149]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.07) / 1.5)))
-      assliv_frame['data'][150]['content'] = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.09) / 1.5)))
-      assliv_frame['data'][154]['series'][0]['name'] = f'{countie[0]}, LK 2022'
-      assliv_frame['data'][154]['series'][1]['name'] = f'{countie[0]}, LK 2030'
-      
-      # Copy and Fill Dataframe for Assisted Living Competitor Analysis
-      alca_frame = copy.deepcopy(ExcelFrames.alca_data)
-      alca_frame['row_count'] = len(data_comp_analysis_al['data']) + 1
-      
-      start_row = 30
-      index = 0
-      subindex = 1
-      last_coords_dist = 0
-      home_entries = 0
-      
-      for competitor in data_comp_analysis_al['data']:
-        if 'home' in competitor:
-          if len(competitor[0]['name']) > 35:
-            name_size = 8
-          else:
-            name_size = 11
-          if len(competitor[0]['operator']) > 35:
-            op_size = 8
-          else:
-            op_size = 11
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'A{start_row}',
-            'content': 'S',
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'B{start_row}',
-            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
-            'format': {
-              'align': 'center',
-              'font_size': name_size,
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'C{start_row}',
-            'content': competitor[0]['operator'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
-            'format': {
-              'align': 'center',
-              'font_size': op_size,
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'D{start_row}',
-            'content': competitor[0]['type'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'E{start_row}',
-            'content': competitor[0]['city'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'F{start_row}',
-            'content': competitor[0]['status'],
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'G{start_row}',
-            'content': competitor[0]['number_apts'],
-            'format': {
-              'align': 'center',
-              'bottom': True,
-              'bg_color': '#FEA036'
-            }
-          })
-          home_entries += 1
-        else:
-          if not last_coords_dist == competitor[1]:
-            index += 1
-            subindex = 1
-            shown_index = f'{index}'
-            if len(data_comp_analysis_al['data']) > data_comp_analysis_al['data'].index(competitor) + 1:
-              if competitor[0]['coords'] == data_comp_analysis_al['data'][data_comp_analysis_al['data'].index(competitor) + 1][0]['coords']:
-                shown_index = f'{index}.{subindex}'
-          else:
-            shown_index = f'{index}'
-            if not data_comp_analysis_al['data'].index(competitor) == home_entries:
-                subindex += 1
-                shown_index = f'{index}.{subindex}'
-          last_coords_dist = competitor[1]
-          if len(competitor[0]['name']) > 35:
-            name_size = 8
-          else:
-            name_size = 11
-          if len(competitor[0]['operator']) > 35:
-            op_size = 8
-          else:
-            op_size = 11
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'A{start_row}',
-            'content': f'{shown_index}',
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'B{start_row}',
-            'content': competitor[0]['name'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’"),
-            'format': {
-              'align': 'center',
-              'font_size': name_size,
-              'bottom': True
-            }
-          })
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'C{start_row}',
-            'content': competitor[0]['operator'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
-            'format': {
-              'align': 'center',
-              'font_size': op_size,
-              'bottom': True
-            }
-          })
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'D{start_row}',
-            'content': competitor[0]['type'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'E{start_row}',
-            'content': competitor[0]['city'].replace("&auml;", "ä").replace("&ouml;", "ö").replace("&uuml", "ü").replace("&Auml;", "Ä").replace("&Ouml;", "Ö").replace("&Uuml", "Ü").replace("&szlig", "ß").replace("&prime;", "’").replace("&ndash;", "-"),
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'F{start_row}',
-            'content': competitor[0]['status'],
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-          alca_frame['data'].append({
-            'type': 'text', 
-            'insert': 'write', 
-            'cell': f'G{start_row}',
-            'content': competitor[0]['number_apts'],
-            'format': {
-              'align': 'center',
-              'bottom': True
-            }
-          })
-        start_row += 1
 
       # #####Waiting for User Input#####
 
