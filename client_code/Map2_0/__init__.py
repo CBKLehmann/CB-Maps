@@ -779,7 +779,7 @@ class Map2_0(Map2_0Template):
 
       Functions.manipulate_loading_overlay(self, False)
       anvil.js.call('update_loading_bar', 35, 'Waiting for User Input')
-      
+
       #Get organized Coords for Nursing Homes
       coords_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', lng_lat_marker)
       
@@ -1410,11 +1410,11 @@ class Map2_0(Map2_0Template):
               'format': 'home_icon'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['name'],
+              'text': competitor[0]['raw_name'],
               'format': 'home_line_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'G{current_row}'] = {
-              'text': competitor[0]['betreiber'],
+              'text': competitor[0]['raw_betreiber'],
               'format': 'home_line_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
@@ -1443,7 +1443,7 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'N{current_row}'] = {
-              'text': "No",
+              'text': anvil.server.call("read_top_30", competitor['raw_betreiber']),
               'format': 'home_line_centered'
             }
 
@@ -1539,11 +1539,11 @@ class Map2_0(Map2_0Template):
               'format': 'row_number'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['name'],
+              'text': competitor[0]['raw_name'],
               'format': 'row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['betreiber'] == 'N/A' else competitor[0]['betreiber'],
+              'text': '-' if competitor[0]['raw_betreiber'] == 'N/A' else competitor[0]['raw_betreiber'],
               'format': 'row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
@@ -1572,7 +1572,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'N{current_row}'] = {
-              'text': "No",
+              'text': anvil.server.call("read_top_30", competitor['raw_betreiber']),
               'format': 'row_centered'
             }
 
@@ -4281,6 +4281,7 @@ class Map2_0(Map2_0Template):
                     
                 data = {
                   "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "raw_name": entry['name'],
                   "platz_voll_pfl": platz_voll_pfl,
                   "ez": entry['ez'],
                   "dz": entry['dz'],
@@ -4289,6 +4290,7 @@ class Map2_0(Map2_0Template):
                   "baujahr": entry['baujahr'],
                   "status": entry['status'],
                   "betreiber": entry['betreiber'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "raw_betreiber": entry['betreiber'],
                   "invest": invest,
                   "mdk_note": entry['mdk_note'],
                   "coords": [lng_icon, lat_icon],
@@ -4299,10 +4301,15 @@ class Map2_0(Map2_0Template):
               elif topic == "assisted_living":
                 data = {
                   "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "raw_name": entry['name'],
                   "operator": entry['betreiber'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "raw_betreiber": entry['betreiber'],
                   "type": entry['art'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "raw_type": entry['art'],
                   "city": entry['ort'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "raw_city": entry['ort'],
                   "status": entry['status'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "raw_status": entry['status'],
                   "number_apts": entry['anz_wohnungen'],
                   "coords": [lng_icon, lat_icon],
                   "web": entry['webseite'],
