@@ -1182,8 +1182,8 @@ class Map2_0(Map2_0Template):
           if not regulations['Existing']['max_beds'] == '/':
             facility_max_beds_future = float(regulations['Existing']['max_beds'])
           else:
-            facility_max_beds_future = 0
-          if facility_single_room_quote > facility_single_room_quote_future or facility_bed_amount > facility_max_beds_future:
+            facility_max_beds_future = 999999
+          if facility_single_room_quote < facility_single_room_quote_future or facility_bed_amount > facility_max_beds_future:
             data_comp_analysis_nh['data'][index][0]['legal'] = "No"
           else:
             data_comp_analysis_nh['data'][index][0]['legal'] = "Yes"
@@ -1227,7 +1227,8 @@ class Map2_0(Map2_0Template):
       beds_surplus_30_avg = round((beds_surplus + beds_surplus_v2) / 2)
       beds_surplus_35_avg = round((beds_surplus_35 + beds_surplus_35_v2) / 2)
       beds_in_reserve_fc = round(beds_adjusted * 0.05)
-      
+
+      market_study_pages = ["COVER", "SUMMARY", "LOCATION ANALYSIS"]
       market_study_data = copy.deepcopy(ExcelFrames.market_study_data)
       market_study_data['pages']['COVER']['cell_content']['images']['AB7']['file'] = f"tmp/summary_map_{unique_code}.png"
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y29']['text'] = "{:.2f}".format(purchase_power)
@@ -1329,6 +1330,8 @@ class Map2_0(Map2_0Template):
       
       if total_amount <= 13:
         # Single Page
+        market_study_pages.append("COMPETITOR ANALYSIS 1")
+        
         market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells']['C9:E9'] = {
           'text': "Nursing Homes",
           'format': 'nh_heading'
@@ -1910,6 +1913,7 @@ class Map2_0(Map2_0Template):
         list_mdk_grade = []
         page = 1
         sheet_name = f"COMPETITOR ANALYSIS {page}"
+        market_study_pages.append(sheet_name)
         market_study_data['pages'][sheet_name] = {
           'settings': {
             'area': "A1:X28",
@@ -2100,6 +2104,7 @@ class Map2_0(Map2_0Template):
             page += 1
             current_row = 11
             sheet_name = f"COMPETITOR ANALYSIS {page}"
+            market_study_pages.append(sheet_name)
             market_study_data['pages'][sheet_name] = {
               'settings': {
                 'area': "A1:X28",
@@ -2591,6 +2596,7 @@ class Map2_0(Map2_0Template):
         home_counter = 0
         page += 1
         sheet_name = f"COMPETITOR ANALYSIS {page}"
+        market_study_pages.append(sheet_name)
         market_study_data['pages'][sheet_name] = {
           'settings': {
             'area': "A1:X28",
@@ -2777,6 +2783,7 @@ class Map2_0(Map2_0Template):
             page += 1
             current_row = 11
             sheet_name = f"COMPETITOR ANALYSIS {page}"
+            market_study_pages.append(sheet_name)
             market_study_data['pages'][sheet_name] = {
               'settings': {
                 'area': "A1:X28",
@@ -3130,6 +3137,10 @@ class Map2_0(Map2_0Template):
   
           current_row += 1
 
+      market_study_pages.append("GOOD TO KNOW")
+      market_study_pages.append("METHODIC")
+      market_study_pages.append("CONTACT")
+      
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C4:X5']['text'] = city
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['C12']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['Q12']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
@@ -3171,7 +3182,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
       
-      anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code)
+      anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages)
 
       # Copy and Fill Dataframe for Regulations Overview
       reg_frame = copy.deepcopy(ExcelFrames.reg_data)

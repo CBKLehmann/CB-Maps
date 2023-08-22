@@ -673,7 +673,7 @@ market_study_data = {
                         'AF34': {
                             'file': "img/pop_trend.png",
                             'settings': {
-                                'x_offset': 30,
+                                'x_offset': 27,
                                 'y_offset': 15
                             }
                         },
