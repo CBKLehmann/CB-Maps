@@ -3139,6 +3139,8 @@ class Map2_0(Map2_0Template):
   
           current_row += 1
 
+      operator_chart_path = anvil.server.call('chart_test_3', [none_profit_operator_al, public_operator_al, private_operator_al], [none_profit_operator_nh, public_operator_nh, private_operator_nh], unique_code)
+      
       market_study_pages.append("GOOD TO KNOW")
       market_study_pages.append("METHODIC")
       market_study_pages.append("CONTACT")
@@ -3151,24 +3153,6 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O15']['text'] = anvil.server.call('get_median', list_beds) if len(list_beds) > 0 else '-'
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O16']['text'] = anvil.server.call('get_median', list_years_of_construction_nh) if len(list_years_of_construction_nh) > 0 else '-'
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = anvil.server.call('get_median', list_years_of_construction_al) if len(list_years_of_construction_al) > 0 else '-'
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O21'] = {
-        'text': none_profit_operator_nh
-      }
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['AE22'] = {
-        'text': public_operator_nh
-      }
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['AE23'] = {
-        'text': private_operator_nh
-      }
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['AE24'] = {
-        'text': none_profit_operator_al
-      }
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['AE25'] = {
-        'text': public_operator_al
-      }
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['AE26'] = {
-        'text': private_operator_al
-      }
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C39:X41']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, Y facilities comply with the federal state regulations and Z facilities that do not fullfill the federal requirements. Assumuning that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O42:X42']['text'] = regulations['federal_state']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O44:S44']['text'] = f"{regulations['New']['sr_quote_raw'] * 100}%" if not type(regulations['New']['sr_quote_raw']) == str else regulations['New']['sr_quote_raw']
@@ -3183,6 +3167,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T47:X47']['text'] = regulations['Existing']['min_common_area_resident']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['B17']['file'] = operator_chart_path
 
       # #####Finalising Data#####
 
