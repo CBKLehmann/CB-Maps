@@ -3184,48 +3184,6 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
 
-      all_data = self.build_competitor_map_request(coords_nh, coords_al)
-      print(all_data)
-      anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, all_data['request'])
-
-      # Copy and Fill Dataframe for Regulations Overview
-      reg_frame = copy.deepcopy(ExcelFrames.reg_data)
-      reg_frame['data'][10]['content'] = regulations['federal_state']
-      if type(regulations['New']['sr_quote_raw']) == int or type(regulations['New']['sr_quote']) == float:
-        sr_quote_new_raw = f"{int(regulations['New']['sr_quote_raw'] * 100)} %"
-      else:
-        sr_quote_new_raw = regulations['New']['sr_quote_raw']
-      if type(regulations['Existing']['sr_quote_raw']) == 'int' or type(regulations['Existing']['sr_quote']) == 'float':
-        sr_quote_existing_raw = f"{int(regulations['Existing']['sr_quote_raw'] * 100)} %"
-      else:
-        sr_quote_existing_raw = regulations['Existing']['sr_quote_raw']
-      reg_frame['data'][12]['content'] = sr_quote_new_raw
-      reg_frame['data'][13]['content'] = regulations['New']['max_beds_raw']
-      reg_frame['data'][14]['content'] = regulations['New']['min_room_size']
-      reg_frame['data'][15]['content'] = regulations['New']['min_common_area_resident']
-      reg_frame['data'][16]['content'] = regulations['New']['comment']
-      reg_frame['data'][17]['content'] = regulations['New']['legal_basis']
-      reg_frame['data'][19]['content'] = sr_quote_existing_raw
-      reg_frame['data'][20]['content'] = regulations['Existing']['max_beds_raw']
-      reg_frame['data'][21]['content'] = regulations['Existing']['min_room_size']
-      reg_frame['data'][22]['content'] = regulations['Existing']['min_common_area_resident']
-      reg_frame['data'][23]['content'] = regulations['Existing']['comment']
-
-      # #####Waiting for User Input#####
-
-      Functions.manipulate_loading_overlay(self, False)
-      anvil.js.call('update_loading_bar', 70, 'Waiting for User Input')
-      
-      t = ColumnPanel()
-      t.add_component(CheckBox(text="Executive Summary", checked=True))
-      t.add_component(CheckBox(text="Nursing Home Competitor Analysis", checked=True))
-      t.add_component(CheckBox(text="Assisted Living Analysis", checked=True))
-      t.add_component(CheckBox(text="Assisted Living Competitor Analysis", checked=True))
-      alert(content=t, title="Choose Pages to create")
-      checkboxes = {}
-      for checkbox in t.get_components():
-        checkboxes[f'{checkbox.text.replace(" ", "_")}'] = checkbox.checked
-
       # #####Finalising Data#####
 
       Functions.manipulate_loading_overlay(self, True)
@@ -3233,42 +3191,42 @@ class Map2_0(Map2_0Template):
         
       ##### Analysis Addition to Market Study #####
   
-      home_facilities = []
+      # home_facilities = []
       
-      ez_rate_asset = 0
-      i_cost_asset = 0
-      occupancy_asset = 0
-      year_of_construction_asset = 0
-      ez_total_comp = 0
-      room_total_comp = 0
-      ez_weight_avg_comp = 0
+      # ez_rate_asset = 0
+      # i_cost_asset = 0
+      # occupancy_asset = 0
+      # year_of_construction_asset = 0
+      # ez_total_comp = 0
+      # room_total_comp = 0
+      # ez_weight_avg_comp = 0
       
-      for entry in data_comp_analysis_nh['data']:
-        if entry[len(entry) - 1] == 'home':
-          home_facilities.append(entry)
-          if entry[0]['ez'] == 'N/A':
-            ez_rate_asset = 0
-          elif entry[0]['dz'] == 'N/A':
-            ez_rate_asset = 100
-          else:
-            ez_rate_asset = round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz'])))
-          if not entry[0]['invest'] == 'N/A':
-            i_cost_asset = float(entry[0]['invest'])
-          else:
-            i_cost_asset = 0
-          if not entry[0]['occupancy'].split(" ")[0] == 'N/A':
-            occupancy_asset = int(entry[0]['occupancy'].split(" ")[0])
-          else:
-            occupancy_asset = 0
-          year_of_construction_asset = entry[0]['baujahr']
-        else:
-          if entry[0]['dz'] == 'N/A':
-            if not entry[0]['ez'] == 'N/A':
-              ez_total_comp += int(entry[0]['ez'])
-              room_total_comp += int(entry[0]['ez'])
-          elif not entry[0]['ez'] == 'N/A':
-            ez_total_comp += int(entry[0]['ez'])
-            room_total_comp += (int(entry[0]['ez']) + int(entry[0]['dz']))
+      # for entry in data_comp_analysis_nh['data']:
+      #   if entry[len(entry) - 1] == 'home':
+      #     home_facilities.append(entry)
+      #     if entry[0]['ez'] == '-':
+      #       ez_rate_asset = 0
+      #     elif entry[0]['dz'] == '-':
+      #       ez_rate_asset = 100
+      #     else:
+      #       ez_rate_asset = round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz'])))
+      #     if not entry[0]['invest'] == '-':
+      #       i_cost_asset = float(entry[0]['invest'])
+      #     else:
+      #       i_cost_asset = 0
+      #     if not entry[0]['occupancy'].split(" ")[0] == '-':
+      #       occupancy_asset = int(entry[0]['occupancy'].split(" ")[0])
+      #     else:
+      #       occupancy_asset = 0
+      #     year_of_construction_asset = entry[0]['baujahr']
+      #   else:
+      #     if entry[0]['dz'] == '-':
+      #       if not entry[0]['ez'] == '-':
+      #         ez_total_comp += int(entry[0]['ez'])
+      #         room_total_comp += int(entry[0]['ez'])
+      #     elif not entry[0]['ez'] == '-':
+      #       ez_total_comp += int(entry[0]['ez'])
+      #       room_total_comp += (int(entry[0]['ez']) + int(entry[0]['dz']))
           # if not entry[0]['invest'] == 'N/A':
           #   i_cost_comp += float(entry[0]['invest'])
           #   i_cost_comp_amount += 1
@@ -3279,10 +3237,10 @@ class Map2_0(Map2_0Template):
           #   year_of_construction_comp += entry[0]['baujahr']
           #   year_of_construction_comp_amount += 1
   
-      if not ez_total_comp == 0 or not  room_total_comp == 0:
-        ez_weight_avg_comp = round(100 + (((ez_total_comp / room_total_comp) - 1) * 100))
-      else:
-        ez_weight_avg_comp = 0
+      # if not ez_total_comp == 0 or not  room_total_comp == 0:
+      #   ez_weight_avg_comp = round(100 + (((ez_total_comp / room_total_comp) - 1) * 100))
+      # else:
+      #   ez_weight_avg_comp = 0
         
       ###Old###
       # ez_rate_asset = 0
@@ -3431,9 +3389,12 @@ class Map2_0(Map2_0Template):
       # #####Create Market Study as Excel and PDF#####
       
       anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
+
+      all_data = self.build_competitor_map_request(coords_nh, coords_al)
+      anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, all_data['request'])
       
-      anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
-      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'], data_comp_analysis_al['request'], cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, checkboxes, reg_frame)
+      # anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
+      # anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'], data_comp_analysis_al['request'], cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, checkboxes, reg_frame)
   
       # if not Variables.tm_mode:
       #   #Create Charts and Static Map for Analysis
@@ -4384,10 +4345,6 @@ class Map2_0(Map2_0Template):
 
 
   def build_competitor_map_request(self, nh_data, al_data):
-    # print(nh_data)
-    # print('#############################################################')
-    # print(al_data)
-    # print('#############################################################')
     with anvil.server.no_loading_indicator:
       nh_home_address = Variables.home_address_nh
       al_home_address = Variables.home_address_al
@@ -4431,7 +4388,11 @@ class Map2_0(Map2_0Template):
       for coordinate in reversed(nh_sorted_coords):
         if complete_counter <= 25 and not last_coord_dist == coordinate[1]:
           counter += 1
-          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/CompetitorPinNursing Kopie@0.75x.png'
+          icon = f'1@0.5x.png'
+          for al_coordinate in reversed(al_sorted_coords):
+            if coordinate[1] == al_coordinate[1]:
+              icon = 'CompetitorPinNursing Kopie@0.75x.png'
+          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
           if complete_counter == len(nh_sorted_coords) - 1:
               if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
@@ -4491,7 +4452,11 @@ class Map2_0(Map2_0Template):
       for coordinate in reversed(al_sorted_coords):
         if complete_counter <= 25 and not last_coord_dist == coordinate[1]:
           counter += 1
-          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/CompetitorPinAssisted Kopie 2@0.75x.png'
+          icon = f'Pin{counter}x075.png'
+          for nh_coordinate in reversed(nh_sorted_coords):
+            if coordinate[1] == nh_coordinate[1]:
+              icon = 'CompetitorPinAssisted Kopie 2@0.75x.png'
+          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
           if complete_counter == len(al_sorted_coords) - 1:
               if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
