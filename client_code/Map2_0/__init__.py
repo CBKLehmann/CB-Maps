@@ -3154,19 +3154,19 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O21'] = {
         'text': none_profit_operator_nh
       }
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O22'] = {
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['AE22'] = {
         'text': public_operator_nh
       }
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O23'] = {
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['AE23'] = {
         'text': private_operator_nh
       }
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O24'] = {
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['AE24'] = {
         'text': none_profit_operator_al
       }
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O25'] = {
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['AE25'] = {
         'text': public_operator_al
       }
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O26'] = {
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['AE26'] = {
         'text': private_operator_al
       }
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C39:X41']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, Y facilities comply with the federal state regulations and Z facilities that do not fullfill the federal requirements. Assumuning that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
