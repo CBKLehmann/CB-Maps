@@ -4392,7 +4392,7 @@ class Map2_0(Map2_0Template):
       nh_home_address = Variables.home_address_nh
       al_home_address = Variables.home_address_al
       nh_sorted_coords = nh_data['sorted_coords']
-      al_sorted_coords = nh_data['sorted_coords']
+      al_sorted_coords = al_data['sorted_coords']
 
       for entry in nh_home_address:
         if entry in nh_sorted_coords:
@@ -4443,7 +4443,7 @@ class Map2_0(Map2_0Template):
                 request_static_map += f"%2C"
               url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
               encoded_url = url.replace("/", "%2F")
-              request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
+              request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{nh_data['marker_coords']['lng']},{nh_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
               request.append(request_static_map)
               request_static_map = request_static_map_raw
               index_coords -= 1
@@ -4503,7 +4503,7 @@ class Map2_0(Map2_0Template):
                 request_static_map += f"%2C"
               url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
               encoded_url = url.replace("/", "%2F")
-              request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
+              request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{al_data['marker_coords']['lng']},{al_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
               request.append(request_static_map)
               request_static_map = request_static_map_raw
               index_coords -= 1
@@ -4529,7 +4529,7 @@ class Map2_0(Map2_0Template):
       if request == []:
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
             encoded_url = url.replace("/", "%2F")
-            request_static_map = request_static_map_raw + f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
+            request_static_map = request_static_map_raw + f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{nh_data['marker_coords']['lng']},{nh_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
             request.append(request_static_map)
             request_static_map = request_static_map_raw
 
