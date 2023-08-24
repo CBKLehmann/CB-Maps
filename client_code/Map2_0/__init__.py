@@ -678,7 +678,6 @@ class Map2_0(Map2_0Template):
   #######Noch bearbeiten#######
 
   def create_market_study(self, **event_args):
-    
     '''Import Functions for creating Market Study'''
     import create_market_study_functions
 
