@@ -2012,7 +2012,11 @@ market_study_data = {
                             }
                         },
                         'B17': {
-                            'file': "img/plot3.png"
+                            'file': "img/plot3.png",
+                            'settings': {
+                                'x_scale': .3,
+                                'y_scale': .75
+                            }
                         },
                     },
                     'textboxes': {

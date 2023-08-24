@@ -1158,12 +1158,12 @@ class Map2_0(Map2_0Template):
         if not competitor[0]['ez'] == '-' or not competitor[0]['dz'] == '-':
           facilities_amount += 1
           ''' Get amount of single Rooms inside Facility '''
-          if not competitor[0]['ez'] == '-':
+          if not competitor[0]['ez'] == '-' and competitor[0]['ez'] is not None:
             facility_single_rooms = int(competitor[0]['ez'])
           else:
             facility_single_rooms = 0
           ''' Get amount of double Rooms inside Facility '''
-          if not competitor[0]['dz'] == '-':
+          if not competitor[0]['dz'] == '-' and competitor[0]['dz'] is not None:
             facility_double_rooms = int(competitor[0]['dz'])
           else:
             facility_double_rooms = 0
