@@ -3184,7 +3184,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
       
-      anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages)
+      anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, data_comp_analysis_nh['request'], data_comp_analysis_al['request'])
 
       # Copy and Fill Dataframe for Regulations Overview
       reg_frame = copy.deepcopy(ExcelFrames.reg_data)
@@ -3431,7 +3431,7 @@ class Map2_0(Map2_0Template):
       anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
       
       anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
-      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, checkboxes, reg_frame)
+      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'], data_comp_analysis_al['request'], cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, checkboxes, reg_frame)
   
       # if not Variables.tm_mode:
       #   #Create Charts and Static Map for Analysis
