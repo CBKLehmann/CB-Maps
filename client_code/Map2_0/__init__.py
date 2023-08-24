@@ -4383,23 +4383,156 @@ class Map2_0(Map2_0Template):
 
 
   def build_competitor_map_request(self, nh_data, al_data):
-    print(nh_data)
-    print(al_data)
+    # print(nh_data)
+    # print('#############################################################')
+    # print(al_data)
+    # print('#############################################################')
     with anvil.server.no_loading_indicator:
       nh_home_address = Variables.home_address_nh
       al_home_address = Variables.home_address_al
+      nh_sorted_coords = nh_data['sorted_coords']
+      al_sorted_coords = nh_data['sorted_coords']
 
       for entry in nh_home_address:
-        if entry in nh_data['sorted_coords']:
-          nh_home_index = nh_data['sorted_coords'].index(entry)
-          nh_data['sorted_coords'][nh_home_index].append('home')
+        if entry in nh_sorted_coords:
+          nh_home_index = nh_sorted_coords.index(entry)
+          nh_sorted_coords[nh_home_index].append('home')
 
       for entry in al_home_address:
-        if entry in al_data['sorted_coords']:
-          al_home_index = al_data['sorted_coords'].index(entry)
-          al_data['sorted_coords'][al_home_index].append('home')
+        if entry in al_sorted_coords:
+          al_home_index = al_sorted_coords.index(entry)
+          al_sorted_coords[al_home_index].append('home')
 
-      
+      counter = 0
+      request = []
+      request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
+      request_static_map = request_static_map_raw
+      index_coords = len(nh_sorted_coords)
+
+      for entry in nh_sorted_coords:
+        if 'home' in entry:
+          index_coords -= 1
+      last_coords = []
+      complete_counter = 0
+
+      test_counter = 0
+      last_coord_dist = 0
+      for coordinate in nh_sorted_coords:
+        if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
+          for second_coordinate in nh_sorted_coords:
+            if not coordinate == second_coordinate and coordinate[1] == second_coordinate[1]:
+              test_counter += 1
+        last_coord_dist = coordinate[1]
+      index_coords -= test_counter
+
+      last_coord_dist = 0
+
+      for coordinate in reversed(nh_sorted_coords):
+        if complete_counter <= 25 and not last_coord_dist == coordinate[1]:
+          counter += 1
+          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/CompetitorPinNursing Kopie@0.75x.png'
+          encoded_url = url.replace("/", "%2F")
+          if complete_counter == len(nh_sorted_coords) - 1:
+              if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
+                if not counter == 1:
+                  request_static_map += f"%2C"
+                request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+              counter = 0
+              if not request_static_map == request_static_map_raw:
+                request_static_map += f"%2C"
+              url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
+              encoded_url = url.replace("/", "%2F")
+              request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
+              request.append(request_static_map)
+              request_static_map = request_static_map_raw
+              index_coords -= 1
+          elif not 'home' in coordinate:
+            if not coordinate[0]['coords'] == last_coords:
+              if not counter == 1:
+                request_static_map += f"%2C"
+              request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+            else:
+              dupe_coord = True
+            index_coords -= 1
+          else:
+            request_static_map += f"%5D%7D"
+            counter = 0
+            request.append(request_static_map)
+            request_static_map = request_static_map_raw
+            break
+        last_coord_dist = coordinate[1]
+          
+        complete_counter += 1
+        last_coords = coordinate[0]['coords']
+
+      counter = 0
+      request_static_map = request_static_map_raw
+      index_coords = len(al_sorted_coords)
+
+      for entry in al_sorted_coords:
+        if 'home' in entry:
+          index_coords -= 1
+      last_coords = []
+      complete_counter = 0
+
+      test_counter = 0
+      last_coord_dist = 0
+      for coordinate in al_sorted_coords:
+        if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
+          for second_coordinate in al_sorted_coords:
+            if not coordinate == second_coordinate and coordinate[1] == second_coordinate[1]:
+              test_counter += 1
+        last_coord_dist = coordinate[1]
+      index_coords -= test_counter
+
+      last_coord_dist = 0
+
+      for coordinate in reversed(al_sorted_coords):
+        if complete_counter <= 25 and not last_coord_dist == coordinate[1]:
+          counter += 1
+          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/CompetitorPinAssisted Kopie 2@0.75x.png'
+          encoded_url = url.replace("/", "%2F")
+          if complete_counter == len(al_sorted_coords) - 1:
+              if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
+                if not counter == 1:
+                  request_static_map += f"%2C"
+                request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+              counter = 0
+              if not request_static_map == request_static_map_raw:
+                request_static_map += f"%2C"
+              url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
+              encoded_url = url.replace("/", "%2F")
+              request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
+              request.append(request_static_map)
+              request_static_map = request_static_map_raw
+              index_coords -= 1
+          elif not 'home' in coordinate:
+            if not coordinate[0]['coords'] == last_coords:
+              if not counter == 1:
+                request_static_map += f"%2C"
+              request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+            else:
+              dupe_coord = True
+            index_coords -= 1
+          else:
+            request_static_map += f"%5D%7D"
+            counter = 0
+            request.append(request_static_map)
+            request_static_map = request_static_map_raw
+            break
+        last_coord_dist = coordinate[1]
+          
+        complete_counter += 1
+        last_coords = coordinate[0]['coords']
+
+      if request == []:
+            url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
+            encoded_url = url.replace("/", "%2F")
+            request_static_map = request_static_map_raw + f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{res_data['marker_coords']['lng']},{res_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
+            request.append(request_static_map)
+            request_static_map = request_static_map_raw
+
+      return({"nh_data": nh_sorted_coords, "al_data": al_sorted_coords, "request": request, "request2": Variables.activeIso})
   
   def build_req_string(self, res_data, topic):
     with anvil.server.no_loading_indicator:
