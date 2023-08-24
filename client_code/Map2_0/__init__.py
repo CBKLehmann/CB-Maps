@@ -4379,7 +4379,27 @@ class Map2_0(Map2_0Template):
       res_data = {'sorted_coords': sorted_coords[:30], 'marker_coords': marker_coords}
       
       return res_data
-    
+
+
+  def build_competitor_map_request(self, nh_data, al_data):
+    print(nh_data)
+    print(al_data)
+    with anvil.server.no_loading_indicator:
+      nh_home_address = Variables.home_address_nh
+      al_home_address = Variables.home_address_al
+
+      for entry in nh_home_address:
+        if entry in nh_data['sorted_coords']:
+          nh_home_index = nh_data['sorted_coords'].index(entry)
+          nh_data['sorted_coords'][nh_home_index].append('home')
+
+      for entry in al_home_address:
+        if entry in al_data['sorted_coords']:
+          al_home_index = al_data['sorted_coords'].index(entry)
+          al_data['sorted_coords'][al_home_index].append('home')
+
+      
+  
   def build_req_string(self, res_data, topic):
     with anvil.server.no_loading_indicator:
       if topic == 'nursing_homes':
