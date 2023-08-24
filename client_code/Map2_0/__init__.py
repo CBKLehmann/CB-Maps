@@ -3184,8 +3184,9 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
 
-      self.build_competitor_map_request(coords_nh, coords_al)
-      anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, data_comp_analysis_nh['request'], data_comp_analysis_al['request'])
+      all_data = self.build_competitor_map_request(coords_nh, coords_al)
+      print(all_data)
+      anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, all_data['request'])
 
       # Copy and Fill Dataframe for Regulations Overview
       reg_frame = copy.deepcopy(ExcelFrames.reg_data)
