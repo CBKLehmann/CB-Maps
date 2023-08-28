@@ -2011,11 +2011,11 @@ market_study_data = {
                                 'x_offset': -20
                             }
                         },
-                        'B17': {
+                        'B20': {
                             'file': "img/plot3.png",
                             'settings': {
-                                'x_scale': .75,
-                                'y_scale': .75
+                                'x_scale': .6,
+                                'y_scale': .6
                             }
                         },
                     },

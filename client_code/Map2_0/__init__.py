@@ -3167,7 +3167,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T47:X47']['text'] = regulations['Existing']['min_common_area_resident']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['B17']['file'] = operator_chart_path
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['B20']['file'] = operator_chart_path
 
       # #####Finalising Data#####
 
