@@ -1319,8 +1319,9 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C28:O28']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
 
       anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
-      
-      analysis_text = anvil.server.call('openai_test', city)
+
+      analysis_text = "I`m a placeholder Text"
+      # analysis_text = anvil.server.call('openai_test', city)
 
       anvil.js.call('update_loading_bar', 70, 'Create Excel for Market Study Part 2')
       
