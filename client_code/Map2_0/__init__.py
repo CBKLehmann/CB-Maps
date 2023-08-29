@@ -1510,7 +1510,7 @@ class Map2_0(Map2_0Template):
                 rooms = '-'
                 beds = '-'
                 single_room_quote = '-'
-              
+            
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'O{current_row}'] = {
               'text': beds,
               'format': 'home_line_centered'
