@@ -1229,13 +1229,18 @@ class Map2_0(Map2_0Template):
 
       market_study_pages = ["COVER", "SUMMARY", "LOCATION ANALYSIS"]
       share_url = self.create_share_map('market_study')
+
+      max_pages = 1
+      summary_page = 1
+      location_analysis_page = 2
+      competitor_analysis_pages = [3]
       
       market_study_data = copy.deepcopy(ExcelFrames.market_study_data)
       market_study_data['pages']['COVER']['cell_content']['images']['AB7']['file'] = f"tmp/summary_map_{unique_code}.png"
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y29']['text'] = "{:.2f}".format(purchase_power)
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y38']['text'] = population_trend_string
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y47']['text'] = f"{beds_surplus_35_v2}"
-      market_study_data['pages']['COVER']['cell_content']['textboxes']['C51']['text'] = f"Version 1.3.37 Generated on {created_date}"
+      market_study_data['pages']['COVER']['cell_content']['textboxes']['C51']['text'] = f"Version 2.0.1 Generated on {created_date}"
       market_study_data['pages']['COVER']['cell_content']['cells']['L30']['text'] = street
       market_study_data['pages']['COVER']['cell_content']['cells']['L31']['text'] = zipcode
       market_study_data['pages']['COVER']['cell_content']['cells']['L32']['text'] = city
@@ -1545,6 +1550,9 @@ class Map2_0(Map2_0Template):
               list_occupancy_rate.append(competitor[0]['occupancy'])
             if not competitor[0]['invest'] == '-':
               list_invest_cost.append(float(competitor[0]['invest']))
+              home_invest = float(competitor[0]['invest'])
+            else:
+              home_invest = -1
             if not competitor[0]['mdk_note'] == '-':
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
@@ -1683,6 +1691,8 @@ class Map2_0(Map2_0Template):
 
         total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
         total_occupancy_rate = anvil.server.call("get_median", list_occupancy_rate)
+        minimum_invest_cost = min(list_invest_cost)
+        maximum_invest_cost = max(list_invest_cost)
         total_invest_cost = anvil.server.call("get_median", list_invest_cost)
         total_mdk_grade = anvil.server.call("get_median", list_mdk_grade)
 
@@ -1932,6 +1942,7 @@ class Map2_0(Map2_0Template):
                 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
                 'V', 'W', 'X'
             ],
+            'landscape': True,
             'rows_to_fill': [8, 10, 25],
             'fill_format': {
                 'base': {
@@ -2103,6 +2114,7 @@ class Map2_0(Map2_0Template):
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if index % 15 == 0 and not index == 0:
+            competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
             page += 1
             current_row = 11
             sheet_name = f"COMPETITOR ANALYSIS {page}"
@@ -2123,6 +2135,7 @@ class Map2_0(Map2_0Template):
                     'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
                     'V', 'W', 'X'
                 ],
+                'landscape': True,
                 'rows_to_fill': [8, 10, 25],
                 'fill_format': {
                     'base': {
@@ -2417,6 +2430,9 @@ class Map2_0(Map2_0Template):
               list_occupancy_rate.append(competitor[0]['occupancy'])
             if not competitor[0]['invest'] == '-':
               list_invest_cost.append(float(competitor[0]['invest']))
+              home_invest = float(competitor[0]['invest'])
+            else:
+              home_invest = -1
             if not competitor[0]['mdk_note'] == '-':
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
@@ -2555,6 +2571,8 @@ class Map2_0(Map2_0Template):
 
         total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
         total_occupancy_rate = anvil.server.call("get_median", list_occupancy_rate)
+        minimum_invest_cost = min(list_invest_cost)
+        maximum_invest_cost = max(list_invest_cost)
         total_invest_cost = anvil.server.call("get_median", list_invest_cost)
         total_mdk_grade = anvil.server.call("get_median", list_mdk_grade)
 
@@ -2596,6 +2614,7 @@ class Map2_0(Map2_0Template):
         # Assisted Living Pages
         current_row = 11
         home_counter = 0
+        competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
         page += 1
         sheet_name = f"COMPETITOR ANALYSIS {page}"
         market_study_pages.append(sheet_name)
@@ -2615,6 +2634,7 @@ class Map2_0(Map2_0Template):
                 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
                 'V', 'W', 'X'
             ],
+            'landscape': True,
             'rows_to_fill': [8, 10, 25],
             'fill_format': {
                 'base': {
@@ -2782,6 +2802,7 @@ class Map2_0(Map2_0Template):
 
         for index, competitor in enumerate(data_comp_analysis_al['data']):
           if index % 15 == 0 and not index == 0:
+            competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
             page += 1
             current_row = 11
             sheet_name = f"COMPETITOR ANALYSIS {page}"
@@ -2802,6 +2823,7 @@ class Map2_0(Map2_0Template):
                     'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
                     'V', 'W', 'X'
                 ],
+                'landscape': True,
                 'rows_to_fill': [8, 10, 25],
                 'fill_format': {
                     'base': {
@@ -3140,6 +3162,13 @@ class Map2_0(Map2_0Template):
           current_row += 1
 
       operator_chart_path = anvil.server.call('chart_test_3', [none_profit_operator_al, public_operator_al, private_operator_al], [none_profit_operator_nh, public_operator_nh, private_operator_nh], unique_code)
+      invest_cost_chart_path = anvil.server.call('chart_test_4', minimum_invest_cost, maximum_invest_cost, total_invest_cost, home_invest, unique_code)
+      purchasing_power_chart_path = anvil.server.call('chart_test_5', purchase_power, unique_code)
+
+      max_pages = competitor_analysis_pages[-1] + 3 
+      good_to_know_page = competitor_analysis_pages[-1] + 1
+      methodic_page = good_to_know_page + 1
+      contact_page = methodic_page + 1
       
       market_study_pages.append("GOOD TO KNOW")
       market_study_pages.append("METHODIC")
@@ -3167,7 +3196,18 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T47:X47']['text'] = regulations['Existing']['min_common_area_resident']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q20:X24']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{total_invest_cost}. The investment costs at the facility, that is subject to this study amounts to €{home_invest}."
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['B20']['file'] = operator_chart_path
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P11']['file'] = invest_cost_chart_path
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P24']['file'] = purchasing_power_chart_path
+
+      market_study_data['pages']['SUMMARY']['cell_content']['textboxes']['V1']['text'] = f"{summary_page} | {max_pages}"
+      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['textboxes']['R1']['text'] = f"{location_analysis_page} | {max_pages}"
+      for page in competitor_analysis_pages:
+        market_study_data['pages'][f'COMPETITOR ANALYSIS {page - 2}']['cell_content']['textboxes']['V1']['text'] = f"{page} | {max_pages}"
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['textboxes']['W1']['text'] = f"{good_to_know_page} | {max_pages}"
+      market_study_data['pages']['METHODIC']['cell_content']['textboxes']['Y1']['text'] = f"{methodic_page} | {max_pages}"
+      market_study_data['pages']['CONTACT']['cell_content']['textboxes']['Y1']['text'] = f"{contact_page} | {max_pages}"
 
       # #####Finalising Data#####
 

@@ -1880,6 +1880,7 @@ market_study_data = {
                         'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
                         'V', 'W', 'X'
                     ],
+                    'landscape': True,
                     'rows_to_fill': [8, 10, 25],
                     'fill_format': {
                         'base': {
@@ -1999,16 +2000,20 @@ market_study_data = {
                 },
                 'cell_content': {
                     'images': {
-                        'Q14': {
+                        'P11': {
                             'file': "img/plot1.png",
                             'settings': {
-                                'x_offset': -20
+                                'x_offset': 15,
+                                'x_scale': .6,
+                                'y_scale': .6
                             }
                         },
-                        'Q23': {
+                        'P24': {
                             'file': "img/plot2.png",
                             'settings': {
-                                'x_offset': -20
+                                'x_offset': 15,
+                                'x_scale': .6,
+                                'y_scale': .6
                             }
                         },
                         'B20': {
@@ -2070,6 +2075,26 @@ market_study_data = {
                                 'x_offset': 96
                             }
                         },
+                        'W1': {
+                            'text': "3 | 7",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'align': {
+                                    'text': 'right'
+                                },
+                                'width': 65
+                            }
+                        }
                     },
                     'cells': {
                         'C12': {
@@ -2158,10 +2183,6 @@ market_study_data = {
                         }
                     },
                     'merge_cells': {
-                        'W1:Y1': {
-                            'text': "5 | 7",
-                            'format': "page_display"
-                        },
                         'C4:X5': {
                             'text': "Bad Rappenau",
                             'format': "place_heading_format"
@@ -2182,7 +2203,7 @@ market_study_data = {
                             'text': "Prices",
                             'format': "smaller_heading"
                         },
-                        'Q21:X23': {
+                        'Q20:X24': {
                             'text': "The investment cost rates of the facilities within the catchment area range between €5.50 and €35.60.  The median investment cost amount to €10.50. The investment costs at the facility, that is subject to this study amounts to €9.90.",
                             'format': "mass_text"
                         },
@@ -2272,23 +2293,18 @@ market_study_data = {
                         16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 32.50, 32.50, 18.00, 18.00, 18.00,
                         16.00, 34.00, 34.00, 32.50, 50.00, 50.00, 50.00, 50.00, 50.00, 50.00, 15.00, 15.00, 15.00,
                         15.00, 15.00, 15.00, 15.00, 15.00, 15.00, 15.00, 15.00
-                    ]
+                    ],
+                    'columns_to_fill': [
+                        'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+                        'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+                    ],
+                    'rows_to_fill': (9, 30),
+                    'fill_format': {
+                        'base': "background"
+                    }
                 },
                 'cell_content': {
                     'textboxes': {
-                        'C9': {
-                            'text': "",
-                            'settings': {
-                                'line': {
-                                    'none': True
-                                },
-                                'fill': {
-                                    'color': '#F2F2F2'
-                                },
-                                'width': 708,
-                                'height': 847
-                            }
-                        },
                         'A1': {
                             'text': "Capital Bay Group   |",
                             'settings': {
