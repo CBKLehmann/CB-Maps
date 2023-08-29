@@ -632,6 +632,12 @@ market_study_data = {
                 'font_size': 11,
                 'color': "#00B0F0",
                 'bg_color': "#F2F2F2"
+            },
+            'web_view_link_format': {
+                'font': "Segoe UI",
+                'font_size': 11,
+                'color': "#00B0F0",
+                'valign': "top"
             }
         },
         'pages': {
@@ -1849,6 +1855,10 @@ market_study_data = {
                         }
                     },
                     'merge_cells': {
+                        'C23:R23': {
+                            'text': "https://www.capitalbay.de",
+                            'format': "web_view_link_format"
+                        },
                         'C4:J5': {
                             'text': "Bad Rappenau",
                             'format': "place_heading_format"

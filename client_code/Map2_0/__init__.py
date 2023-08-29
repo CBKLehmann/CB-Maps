@@ -1327,6 +1327,7 @@ class Map2_0(Map2_0Template):
       
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C4:J5']['text'] = city
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['H25:R38']['text'] = analysis_text
+      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C23:R23']['text'] = share_url
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['cells']['E37']['text'] = f"{iso_time} minutes of {movement}"
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['images']['Q9']['settings']['url'] = share_url
 
