@@ -1317,7 +1317,11 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C10:O10']['text'] = f"Population {city} (City)"
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C11:O11']['text'] = f"Population {countie[0]} (County)"
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C28:O28']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
+
+      analysis_text = anvil.server.call('openai_test', city)
+      
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C4:J5']['text'] = city
+      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['H25:R37']['text'] = analysis_text
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['cells']['E37']['text'] = f"{iso_time} minutes of {movement}"
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['images']['Q9']['settings']['url'] = share_url
 
