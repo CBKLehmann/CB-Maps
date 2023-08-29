@@ -1098,7 +1098,7 @@ class Map2_0(Map2_0Template):
 
       # #####Create Excel for Market Study#####
       
-      anvil.js.call('update_loading_bar', 60, 'Create Excel for Market Study')
+      anvil.js.call('update_loading_bar', 60, 'Create Excel for Market Study Part 1')
       
       # Copy and Fill Dataframe for Excel-Cover
       #cover_frame = copy.deepcopy(ExcelFrames.cover_data)
@@ -1318,10 +1318,14 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C11:O11']['text'] = f"Population {countie[0]} (County)"
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C28:O28']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
 
+      anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
+      
       analysis_text = anvil.server.call('openai_test', city)
+
+      anvil.js.call('update_loading_bar', 70, 'Create Excel for Market Study Part 2')
       
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C4:J5']['text'] = city
-      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['H25:R37']['text'] = analysis_text
+      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['H25:R38']['text'] = analysis_text
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['cells']['E37']['text'] = f"{iso_time} minutes of {movement}"
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['images']['Q9']['settings']['url'] = share_url
 
@@ -1447,7 +1451,7 @@ class Map2_0(Map2_0Template):
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
               'text': competitor[0]['web'],
               'format': 'home_line_centered_link',
-              'string': "↗"
+              # 'string': "↗"
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'I{current_row}'] = {
               'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
@@ -1762,7 +1766,7 @@ class Map2_0(Map2_0Template):
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
               'text': competitor[0]['web'],
               'format': 'home_line_centered_link',
-              'string': "↗"
+              # 'string': "↗"
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'I{current_row}'] = {
               'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
@@ -1846,7 +1850,7 @@ class Map2_0(Map2_0Template):
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
               'text': competitor[0]['web'],
               'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
-              'string': "↗"
+              # 'string': "↗"
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'I{current_row}'] = {
               'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
@@ -2327,7 +2331,7 @@ class Map2_0(Map2_0Template):
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
               'text': competitor[0]['web'],
               'format': 'home_line_centered_link',
-              'string': "↗"
+              # 'string': "↗"
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
               'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
@@ -2459,7 +2463,7 @@ class Map2_0(Map2_0Template):
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
               'text': competitor[0]['web'],
               'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
-              'string': "↗"
+              # 'string': "↗"
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
               'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
@@ -3012,7 +3016,7 @@ class Map2_0(Map2_0Template):
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
               'text': competitor[0]['web'],
               'format': 'home_line_centered_link',
-              'string': "↗"
+              # 'string': "↗"
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
               'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
@@ -3096,7 +3100,7 @@ class Map2_0(Map2_0Template):
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
               'text': competitor[0]['web'],
               'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
-              'string': "↗"
+              # 'string': "↗"
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
               'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
