@@ -779,7 +779,7 @@ market_study_data = {
                             }
                         },
                         'C41_D': {
-                            'text': "is a web-based service",
+                            'text': "is a web based service",
                             'settings': {
                                 'font': {
                                     'name': 'Segoe UI',
@@ -796,7 +796,7 @@ market_study_data = {
                             }
                         },
                         'C42': {
-                            'text': "from Capital Bay Group that provides investors with localized market, competition and forecast data on the current care market in Germany. For each location and with a scalable radius within Germany.",
+                            'text': " by Capital Bay, which provides investors with access to data on the current German care market including demographical forecasts and competitor analysis. This allows for targeted examination of the market, using protractile radii.",
                             'settings': {
                                 'font': {
                                     'name': 'Segoe UI',
