@@ -1338,6 +1338,7 @@ class Map2_0(Map2_0Template):
       public_operator_al = 0
       private_operator_nh = 0
       private_operator_al = 0
+      home_invest = -1
       
       if total_amount <= 13:
         # Single Page
@@ -1578,7 +1579,7 @@ class Map2_0(Map2_0Template):
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
               'text': competitor[0]['web'],
               'format': 'row_centered_link',
-              'string': "↗"
+              # 'string': "↗"
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'I{current_row}'] = {
               'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
@@ -1667,7 +1668,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered_number_double'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'V{current_row}'] = {
-              'text': '-' if competitor[0]['mdk_note'] == 'N/A' else float(competitor[0]['mdk_note']),
+              'text': '-' if competitor[0]['mdk_note'] == '-' else float(competitor[0]['mdk_note']),
               'format': 'row_centered_number'
             }
 
