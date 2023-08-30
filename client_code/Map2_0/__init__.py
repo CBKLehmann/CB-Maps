@@ -1105,7 +1105,7 @@ class Map2_0(Map2_0Template):
       #cover_frame['data'][1]['content'] = zipcode
       #cover_frame['data'][2]['content'] = city.upper()
 
-      population_trend = "{:.1f}".format((people_u80_fc_35 * 100) / people_u80 - 100)
+      population_trend = "{:.1f}".format(((people_u80_fc_35 + people_o80_fc_35) * 100) / (people_u80 + people_o80) - 100)
       if float(population_trend) < 0:
         population_trend_string = f"-{population_trend}%"
       else:
@@ -1129,11 +1129,7 @@ class Map2_0(Map2_0Template):
         minute = f"0{date.minute}"
       else:
         minute = date.minute
-      if len(str(date.second)) == 1:
-        second = f"0{date.second}"
-      else:
-        second = date.second
-      created_date = f"{day}.{month}.{year} {hour}.{minute}.{second}"
+      created_date = f"{day}.{month}.{year} {hour}.{minute}"
 
       # Calculate updated Beds based on Regulations
       # single_rooms_current = 0
@@ -1260,23 +1256,23 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P24']['text'] = beds_lk
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P25']['text'] = free_beds_lk
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P29']['text'] = nursing_homes_active
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P30']['text'] = occupancy_lk_raw
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P31']['text'] = nursing_homes_planned
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P32']['text'] = nursing_homes_construct
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P33']['text'] = inpatients
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P34']['text'] = beds_active
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P35']['text'] = beds_planned
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P36']['text'] = beds_construct
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P38']['text'] = beds_active
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P30']['text'] = beds_active
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P31']['text'] = occupancy_lk_raw
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P32']['text'] = nursing_homes_planned
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P33']['text'] = nursing_homes_construct
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P34']['text'] = beds_planned
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P35']['text'] = beds_construct
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P37']['text'] = beds_active
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P38']['text'] = inpatients
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R20']['text'] = care_rate_30_v1_raw
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R21']['text'] = nursing_home_rate
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R22']['text'] = pat_rec_full_care_fc_30_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R24']['text'] = beds_30_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R25']['text'] = free_beds_30_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R33']['text'] = inpatients_fc
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R34']['text'] = beds_active
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R37']['text'] = loss_of_beds
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R38']['text'] = beds_adjusted_30_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R30']['text'] = beds_active
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R36']['text'] = loss_of_beds
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R37']['text'] = beds_adjusted_30_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R38']['text'] = inpatients_fc
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R39']['text'] = beds_surplus      
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S11']['text'] = population_fc
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S13']['text'] = people_u80_fc
@@ -1288,30 +1284,35 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S22']['text'] = pat_rec_full_care_fc_30_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S24']['text'] = beds_30_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S25']['text'] = free_beds_30_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S33']['text'] = inpatients_fc_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S34']['text'] = beds_active
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S37']['text'] = loss_of_beds
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S38']['text'] = beds_adjusted_30_v2
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S30']['text'] = beds_active
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S36']['text'] = loss_of_beds
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S37']['text'] = beds_adjusted_30_v2
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S38']['text'] = inpatients_fc_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S39']['text'] = beds_surplus_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U20']['text'] = care_rate_35_v1_raw
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U21']['text'] = nursing_home_rate
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U22']['text'] = pat_rec_full_care_fc_35_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U24']['text'] = beds_35_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U25']['text'] = free_beds_35_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U33']['text'] = inpatients_fc_35
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U34']['text'] = beds_active
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U37']['text'] = loss_of_beds
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U38']['text'] = beds_adjusted_35_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U30']['text'] = beds_active
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U36']['text'] = loss_of_beds
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U37']['text'] = beds_adjusted_35_v1
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U38']['text'] = inpatients_fc_35
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U39']['text'] = beds_surplus_35
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S11']['text'] = population_fc_35
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S13']['text'] = people_u80_fc_35
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S14']['text'] = round(people_u80_fc_35 / population_fc_35, 2)
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S15']['text'] = people_o80_fc_35
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S16']['text'] = round(people_o80_fc_35 / population_fc_35, 2)
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V20']['text'] = care_rate_35_v2_raw
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V21']['text'] = nursing_home_rate
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V22']['text'] = pat_rec_full_care_fc_35_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V24']['text'] = beds_35_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V25']['text'] = free_beds_35_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V33']['text'] = inpatients_fc_35_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V34']['text'] = beds_active
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V37']['text'] = loss_of_beds
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V38']['text'] = beds_adjusted_35_v2
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V30']['text'] = beds_active
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V36']['text'] = loss_of_beds
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V37']['text'] = beds_adjusted_35_v2
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V38']['text'] = inpatients_fc_35_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V39']['text'] = beds_surplus_35_v2
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C4:P5']['text'] = city
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C10:O10']['text'] = f"Population {city} (City)"

@@ -1049,16 +1049,17 @@ market_study_data = {
             },
             'SUMMARY': {
                 'settings': {
-                    'area': "A1:V44",
+                    'area': "A1:V43",
                     'column_width': [
                         2.09, 2.09, 2.09, 2.09, 0.78, 0.56, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 2.73,
                         12.64, 0.17, 12.64, 12.45, 0.17, 12.64, 12.64
                     ],
                     'row_height': [
-                        16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 32.50, 16.50, 16.50, 16.50, 16.50,
-                        16.50, 16.50, 16.50, 32.50, 16.50, 42.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50,
-                        16.50, 32.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 33.00, 16.50,
-                        16.00, 16.50, 16.50, 22.00
+                        16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 32.50, 16.50, 
+                        16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 32.50, 16.50, 42.50, 16.50, 
+                        16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 32.50, 16.50, 16.50, 16.50, 
+                        16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.00, 16.50, 
+                        33.00, 16.50, 16.50
                     ],
                     'columns_to_fill': ["P", "R", "S", "U", "V"],
                     'rows_to_fill': (9, 40),
@@ -1226,39 +1227,35 @@ market_study_data = {
                             'format': "blue_data_normal"
                         },
                         'P30': {
+                            'text': 16113,
+                            'format': "blue_data_normal"
+                        },
+                        'P31': {
                             'text': .854,
                             'format': "blue_data_normal_percentage"
                         },
-                        'P31': {
+                        'P32': {
                             'text': "-",
                             'format': "blue_data_normal_right"
-                        },
-                        'P32': {
-                            'text': 13703,
-                            'format': "blue_data_normal"
                         },
                         'P33': {
                             'text': 13703,
                             'format': "blue_data_normal"
                         },
                         'P34': {
-                            'text': 16113,
-                            'format': "blue_data_normal"
+                            'text': "-",
+                            'format': "blue_data_normal_right"
                         },
                         'P35': {
                             'text': "-",
                             'format': "blue_data_normal_right"
                         },
-                        'P36': {
-                            'text': "-",
-                            'format': "blue_data_normal_right"
-                        },
                         'P37': {
-                            'text': "",
-                            'format': "blue_data_normal_right"
+                            'text': 16113,
+                            'format': "blue_data_normal"
                         },
                         'P38': {
-                            'text': 16113,
+                            'text': 13703,
                             'format': "blue_data_normal"
                         },
                         'R18': {
@@ -1294,15 +1291,15 @@ market_study_data = {
                             'format': "grey_data_normal_right"
                         },
                         'R30': {
-                            'text': .95,
-                            'format': "grey_data_normal_percentage"
-                        },
-                        'R33': {
                             'text': 34512,
                             'format': "grey_data_normal_right"
                         },
-                        'R34': {
-                            'text': 34512,
+                        'R31': {
+                            'text': .95,
+                            'format': "grey_data_normal_percentage"
+                        },
+                        'R36': {
+                            'text': -144,
                             'format': "grey_data_normal_right"
                         },
                         'R37': {
@@ -1310,7 +1307,7 @@ market_study_data = {
                             'format': "grey_data_normal_right"
                         },
                         'R38': {
-                            'text': -144,
+                            'text': 34512,
                             'format': "grey_data_normal_right"
                         },
                         'R39': {
@@ -1378,15 +1375,15 @@ market_study_data = {
                             'format': "grey_data_normal_right"
                         },
                         'S30': {
-                            'text': .95,
-                            'format': "grey_data_normal_percentage"
-                        },
-                        'S33': {
                             'text': 34512,
                             'format': "grey_data_normal_right"
                         },
-                        'S34': {
-                            'text': 34512,
+                        'S31': {
+                            'text': .95,
+                            'format': "grey_data_normal_percentage"
+                        },
+                        'S36': {
+                            'text': -144,
                             'format': "grey_data_normal_right"
                         },
                         'S37': {
@@ -1394,7 +1391,7 @@ market_study_data = {
                             'format': "grey_data_normal_right"
                         },
                         'S38': {
-                            'text': -144,
+                            'text': 34512,
                             'format': "grey_data_normal_right"
                         },
                         'S39': {
@@ -1434,23 +1431,23 @@ market_study_data = {
                             'format': "lightgrey_data_normal_right"
                         },
                         'U30': {
+                            'text': 34512,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'U31': {
                             'text': .95,
                             'format': "lightgrey_data_normal_percentage"
                         },
-                        'U33': {
-                            'text': 34512,
-                            'format': "lightgrey_data_normal_right"
-                        },
-                        'U34': {
-                            'text': 34512,
-                            'format': "lightgrey_data_normal_right"
-                        },
-                        'U37': {
+                        'U36': {
                             'text': -144,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'U38': {
+                        'U37': {
                             'text': 5468,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'U38': {
+                            'text': 34512,
                             'format': "lightgrey_data_normal_right"
                         },
                         'U39': {
@@ -1518,23 +1515,23 @@ market_study_data = {
                             'format': "lightgrey_data_normal_right"
                         },
                         'V30': {
+                            'text': 34512,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V31': {
                             'text': .95,
                             'format': "lightgrey_data_normal_percentage"
                         },
-                        'V33': {
-                            'text': 34512,
-                            'format': "lightgrey_data_normal_right"
-                        },
-                        'V34': {
-                            'text': 34512,
-                            'format': "lightgrey_data_normal_right"
-                        },
-                        'V37': {
+                        'V36': {
                             'text': -144,
                             'format': "lightgrey_data_normal_right"
                         },
-                        'V38': {
+                        'V37': {
                             'text': 5468,
+                            'format': "lightgrey_data_normal_right"
+                        },
+                        'V38': {
+                            'text': 34512,
                             'format': "lightgrey_data_normal_right"
                         },
                         'V39': {
@@ -1649,13 +1646,13 @@ market_study_data = {
                         },
                         'C36:O36': {
                             'text': "Beds lost while meeting federal state law",
-                            'format': "chapter_topics_wrap_format"
+                            'format': "chapter_topics_format"
                         },
                         'C37:O37': {
                             'text': "Beds adjusted",
                             'format': "chapter_topics_format"
                         },
-                        'C33:O33': {
+                        'C38:O38': {
                             'text': "Demand of beds",
                             'format': "chapter_topics_format"
                         },
@@ -2200,7 +2197,7 @@ market_study_data = {
                             'format': "place_heading_format"
                         },
                         'C6:X7': {
-                            'text': "Good to know",
+                            'text': "Good to Know",
                             'format': "situation_heading_format"
                         },
                         'C9:N9': {
@@ -2388,7 +2385,7 @@ market_study_data = {
                             }
                         },
                         'C3': {
-                            'text': "About the study",
+                            'text': "About the Study",
                             'settings': {
                                 'font': {
                                     'name': "Segoe UI",
@@ -2649,7 +2646,7 @@ Malbox
                             }
                         },
                         'C3': {
-                            'text': "Keep in touch",
+                            'text': "Keep in Touch",
                             'settings': {
                                 'font': {
                                     'name': "Segoe UI",
