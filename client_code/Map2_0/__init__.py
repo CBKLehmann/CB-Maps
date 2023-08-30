@@ -1327,9 +1327,9 @@ class Map2_0(Map2_0Template):
       
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C4:J5']['text'] = city
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['H25:R38']['text'] = analysis_text
-      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C23:R23']['text'] = share_url
+      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['F23:S23']['text'] = share_url
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['cells']['E37']['text'] = f"{iso_time} minutes of {movement}"
-      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['images']['Q9']['settings']['url'] = share_url
+      # market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['images']['Q9']['settings']['url'] = share_url
 
       nursing_homes_amount = len(data_comp_analysis_nh['data'])
       assisted_living_amount = len(data_comp_analysis_al['data'])
@@ -3208,7 +3208,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q20:X24']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{total_invest_cost}. The investment costs at the facility, that is subject to this study amounts to €{home_invest}."
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['B20']['file'] = operator_chart_path
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A18']['file'] = operator_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P11']['file'] = invest_cost_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P24']['file'] = purchasing_power_chart_path
 

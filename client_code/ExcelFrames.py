@@ -638,6 +638,11 @@ market_study_data = {
                 'font_size': 11,
                 'color': "#00B0F0",
                 'valign': "top"
+            },
+            'web_view_text': {
+              'valign': 'top',
+              'align': 'right',
+              'font': "Segoe UI"
             }
         },
         'pages': {
@@ -673,20 +678,20 @@ market_study_data = {
                                 'y_offset': 20
                             }
                         },
-                        'AD4': {
+                        'AC4': {
                             'file': "img/LogoTrans.png"
                         },
                         'AF34': {
                             'file': "img/pop_trend.png",
                             'settings': {
-                                'x_offset': 27,
+                                'x_offset': 15,
                                 'y_offset': 15
                             }
                         },
                         'AF43': {
                             'file': "img/beds.png",
                             'settings': {
-                                'x_offset': 12,
+                                'x_offset': 4,
                                 'y_offset': 15
                             }
                         }
@@ -796,7 +801,7 @@ market_study_data = {
                             }
                         },
                         'C42': {
-                            'text': " by Capital Bay, which provides investors with access to data on the current German care market including demographical forecasts and competitor analysis. This allows for targeted examination of the market, using protractile radii.",
+                            'text': "by Capital Bay, which provides investors with access to data on the current German care market including demographical forecasts and competitor analysis. This allows for targeted examination of the market, using protractile radii.",
                             'settings': {
                                 'font': {
                                     'name': 'Segoe UI',
@@ -830,7 +835,7 @@ market_study_data = {
                                     'horizontal': 'center',
                                     'text': 'center'
                                 },
-                                'width': 326
+                                'width': 300
                             }
                         },
                         'Y28': {
@@ -851,7 +856,7 @@ market_study_data = {
                                     'horizontal': 'center',
                                     'text': 'center'
                                 },
-                                'width': 326
+                                'width': 300
                             }
                         },
                         'Y29': {
@@ -872,12 +877,12 @@ market_study_data = {
                                     'horizontal': 'center',
                                     'text': 'center'
                                 },
-                                'width': 326,
-                                'y_offset': 5
+                                'width': 300,
+                                'y_offset': 8
                             }
                         },
                         'Y37': {
-                            'text': "Population trend of the 65-79 age group\nat the location - Current to 2035",
+                            'text': "Population trend of the 65+ age group\nat the location - 2035",
                             'settings': {
                                 'font': {
                                     'name': 'Segoe UI',
@@ -894,7 +899,7 @@ market_study_data = {
                                     'horizontal': 'center',
                                     'text': 'center'
                                 },
-                                'width': 326
+                                'width': 300
                             }
                         },
                         'Y38': {
@@ -915,12 +920,12 @@ market_study_data = {
                                     'horizontal': 'center',
                                     'text': 'center'
                                 },
-                                'width': 326,
-                                'y_offset': 5
+                                'width': 300,
+                                'y_offset': 8
                             }
                         },
                         'Y46': {
-                            'text': "Surplus or deficit of beds\nat the location - Current to 2035",
+                            'text': "Surplus or deficit of beds\nat the location - 2035",
                             'settings': {
                                 'font': {
                                     'name': "Segoe UI",
@@ -937,7 +942,7 @@ market_study_data = {
                                     'horizontal': 'center',
                                     'text': 'center'
                                 },
-                                'width': 326
+                                'width': 300
                             }
                         },
                         'Y47': {
@@ -958,12 +963,12 @@ market_study_data = {
                                     'horizontal': 'center',
                                     'text': 'center'
                                 },
-                                'width': 326,
-                                'y_offset': 5
+                                'width': 300,
+                                'y_offset': 8
                             }
                         },
                         'C51': {
-                            'text': "Version 1.8.3 Generated on 14.07.2023 07:45:30",
+                            'text': "Version 1.8.3 Generated on 14.07.2023 07:45",
                             'settings': {
                                 'font': {
                                     'name': "Segoe UI",
@@ -976,7 +981,7 @@ market_study_data = {
                                 'fill': {
                                     'none': True
                                 },
-                                'width': 450,
+                                'width': 400,
                                 'x_offset': -5
                             }
                         },
@@ -1248,7 +1253,7 @@ market_study_data = {
                             'format': "blue_data_normal_right"
                         },
                         'P37': {
-                            'text': "-",
+                            'text': "",
                             'format': "blue_data_normal_right"
                         },
                         'P38': {
@@ -1606,7 +1611,7 @@ market_study_data = {
                             'format': "chapter_topics_format"
                         },
                         'C27:O27': {
-                            'text': "Demand & Supply",
+                            'text': "Demand & supply",
                             'format': "chapter_heading_format"
                         },
                         'C28:O28': {
@@ -1618,43 +1623,43 @@ market_study_data = {
                             'format': "chapter_topics_format"
                         },
                         'C30:O30': {
-                            'text': "Occupancy rate",
-                            'format': "chapter_topics_format"
-                        },
-                        'C31:O31': {
-                            'text': "Nursing homes in planning",
-                            'format': "chapter_topics_format"
-                        },
-                        'C32:O32': {
-                            'text': "Nursing homes under construction",
-                            'format': "chapter_topics_format"
-                        },
-                        'C33:O33': {
-                            'text': "Demand of number of inpatients",
-                            'format': "chapter_topics_format"
-                        },
-                        'C34:O34': {
                             'text': "Beds in supply",
                             'format': "chapter_topics_format"
                         },
-                        'C35:O35': {
+                        'C31:O31': {
+                            'text': "Occupancy rate",
+                            'format': "chapter_topics_format"
+                        },
+                        'C32:O32': {
+                            'text': "Nursing homes in planning",
+                            'format': "chapter_topics_format"
+                        },
+                        'C33:O33': {
+                            'text': "Nursing homes under construction",
+                            'format': "chapter_topics_format"
+                        },
+                        'C34:O34': {
                             'text': "Beds in planning",
                             'format': "chapter_topics_format"
                         },
-                        'C36:O36': {
+                        'C35:O35': {
                             'text': "Beds under construction",
                             'format': "chapter_topics_format"
                         },
-                        'C37:O37': {
-                            'text': "Loss of beds due to regulations of the federal state for nursing homes",
+                        'C36:O36': {
+                            'text': "Beds lost while meeting federal state law",
                             'format': "chapter_topics_wrap_format"
                         },
-                        'C38:O38': {
-                            'text': "Adjusted number of beds",
+                        'C37:O37': {
+                            'text': "Beds adjusted",
+                            'format': "chapter_topics_format"
+                        },
+                        'C33:O33': {
+                            'text': "Demand of beds",
                             'format': "chapter_topics_format"
                         },
                         'C39:O39': {
-                            'text': "Surplus or deficit of beds",
+                            'text': "Beds in surplus or deficit",
                             'format': "chapter_last_topic_format"
                         },
                         'C42:V42': {
@@ -1734,15 +1739,15 @@ market_study_data = {
                                 'y_scale': .9
                             }
                         },
-                        'Q9': {
-                            'file': "img/web_view.png",
-                            'settings': {
-                                'url': "https://www.capitalbay.de",
-                                'y_offset': 10,
-                                'x_offset': -10,
-                                'y_scale': 1.1
-                            }
-                        }
+                        # 'Q9': {
+                        #     'file': "img/web_view.png",
+                        #     'settings': {
+                        #         'url': "https://www.capitalbay.de",
+                        #         'y_offset': 10,
+                        #         'x_offset': -10,
+                        #         'y_scale': 1.1
+                        #     }
+                        # }
                     },
                     'textboxes': {
                         'A1': {
@@ -1852,10 +1857,14 @@ market_study_data = {
                         'E37': {
                             'text': "15 min walking",
                             'format': "icon_text"
-                        }
+                        },
                     },
                     'merge_cells': {
-                        'C23:R23': {
+                        'C23:E23': {
+                            'text': "Web view: ",
+                            'format': "web_view_text"  
+                          },
+                        'F23:S23': {
                             'text': "https://www.capitalbay.de",
                             'format': "web_view_link_format"
                         },
@@ -2026,11 +2035,11 @@ market_study_data = {
                                 'y_scale': .6
                             }
                         },
-                        'B20': {
+                        'A16': {
                             'file': "img/plot3.png",
                             'settings': {
-                                'x_scale': .6,
-                                'y_scale': .6
+                                'x_scale': .7,
+                                'y_scale': .7
                             }
                         },
                     },
@@ -2156,15 +2165,7 @@ market_study_data = {
                             'format': "normal_text_right"
                         },
                         'Q13': {
-                            'text': "Invest costs in Nursing homes",
-                            'format': "normal_text"
-                        },
-                        'C19': {
-                            'text': "Operator types:",
-                            'format': "normal_text"
-                        },
-                        'Q26': {
-                            'text': "Purchasing power index (Municipality)",
+                            'text': "Invest costs in nursing homes",
                             'format': "normal_text"
                         },
                         'C44': {
@@ -2206,7 +2207,7 @@ market_study_data = {
                             'format': "small_heading"
                         },
                         'C11:O11': {
-                            'text': "Operator & Facilities",
+                            'text': "Operator & facilities",
                             'format': "smaller_heading"
                         },
                         'Q11:X11': {
@@ -2214,7 +2215,7 @@ market_study_data = {
                             'format': "smaller_heading"
                         },
                         'Q20:X24': {
-                            'text': "The investment cost rates of the facilities within the catchment area range between €5.50 and €35.60.  The median investment cost amount to €10.50. The investment costs at the facility, that is subject to this study amounts to €9.90.",
+                            'text': "The investment cost rates of the facilities within the catchment area range between €5.50 and €35.60. The median investment cost amount to €10.50. The investment costs at the facility, that is subject to this study amounts to €9.90.",
                             'format': "mass_text"
                         },
                         'C37:S37': {
@@ -2260,6 +2261,10 @@ market_study_data = {
                         'O49:S49': {
                             'text': "WTPG, LHeimBauVO",
                             'format': "table_normal_text"
+                        },
+                        'Q26:X26': {
+                            'text': "Purchasing power index (municipality)",
+                            'format': "smaller_heading"
                         },
                         'T43:X43': {
                             'text': "Existing",
