@@ -1240,10 +1240,10 @@ class Map2_0(Map2_0Template):
       market_study_pages = ["COVER", "SUMMARY", "LOCATION ANALYSIS"]
       share_url = self.create_share_map('market_study')
 
-      max_pages = 1
-      summary_page = 1
-      location_analysis_page = 2
-      competitor_analysis_pages = [3]
+      max_pages = 2
+      summary_page = 2
+      location_analysis_page = 3
+      competitor_analysis_pages = [4]
       
       market_study_data = copy.deepcopy(ExcelFrames.market_study_data)
       market_study_data['pages']['COVER']['cell_content']['images']['AB7']['file'] = f"tmp/summary_map_{unique_code}.png"
@@ -1360,6 +1360,8 @@ class Map2_0(Map2_0Template):
       private_operator_nh = 0
       private_operator_al = 0
       home_invest = -1
+      complied_regulations = 0
+      uncomplied_regulations = 0
       
       if total_amount <= 13:
         # Single Page
@@ -1370,7 +1372,7 @@ class Map2_0(Map2_0Template):
           'format': 'nh_heading'
         }
         market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells']['C26:M26'] = {
-          'text': '¹The Object does / does not comply with the respective national legislation. For more info see page "Good to know"',
+          'text': '¹The Facility does / does not comply with the respective federal state regulation. For more info see page "Good to Know"',
           'format': 'foot_text'
         }
         market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['G9'] = {
@@ -1494,6 +1496,12 @@ class Map2_0(Map2_0Template):
               'text': competitor[0]['legal'],
               'format': 'home_line_centered'
             }
+
+            if not competitor[0]['legal'] == '-':
+              if competitor[0]['legal'] == 'Yes':
+                complied_regulations += 1
+              else:
+                uncomplied_regulations += 1
 
             if competitor[0]['operator_type'] == 'privat':
               private_operator_nh += 1
@@ -1627,6 +1635,12 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered'
             }
 
+            if not competitor[0]['legal'] == '-':
+              if competitor[0]['legal'] == 'Yes':
+                complied_regulations += 1
+              else:
+                uncomplied_regulations += 1
+            
             if competitor[0]['operator_type'] == 'privat':
               private_operator_nh += 1
             elif competitor[0]['operator_type'] == 'kommunal':
@@ -2069,7 +2083,7 @@ class Map2_0(Map2_0Template):
           'format': 'nh_heading'
         }
         market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C26:M26'] = {
-          'text': '¹The Object does / does not comply with the respective national legislation. For more info see page "Good to know"',
+          'text': '¹The Facility does / does not comply with the respective federal state regulation. For more info see page "Good to Know"',
           'format': 'foot_text'
         }
         market_study_data['pages'][sheet_name]['cell_content']['cells']['G9'] = {
@@ -2262,7 +2276,7 @@ class Map2_0(Map2_0Template):
               'format': 'nh_heading'
             }
             market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C26:M26'] = {
-              'text': '¹The Object does / does not comply with the respective national legislation. For more info see page "Good to know"',
+              'text': '¹The Facility does / does not comply with the respective federal state regulation. For more info see page "Good to Know"',
               'format': 'foot_text'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells']['G9'] = {
@@ -2375,6 +2389,12 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_centered'
             }
 
+            if not competitor[0]['legal'] == '-':
+              if competitor[0]['legal'] == 'Yes':
+                complied_regulations += 1
+              else:
+                uncomplied_regulations += 1
+            
             if competitor[0]['operator_type'] == 'privat':
               private_operator_nh += 1
             elif competitor[0]['operator_type'] == 'kommunal':
@@ -2507,6 +2527,12 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
 
+            if not competitor[0]['legal'] == '-':
+              if competitor[0]['legal'] == 'Yes':
+                complied_regulations += 1
+              else:
+                uncomplied_regulations += 1
+            
             if competitor[0]['operator_type'] == 'privat':
               private_operator_nh += 1
             elif competitor[0]['operator_type'] == 'kommunal':
@@ -3208,21 +3234,21 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O15']['text'] = anvil.server.call('get_median', list_beds) if len(list_beds) > 0 else '-'
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O16']['text'] = anvil.server.call('get_median', list_years_of_construction_nh) if len(list_years_of_construction_nh) > 0 else '-'
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = anvil.server.call('get_median', list_years_of_construction_al) if len(list_years_of_construction_al) > 0 else '-'
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C39:X41']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, Y facilities comply with the federal state regulations and Z facilities that do not fullfill the federal requirements. Assumuning that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C39:X41']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, {complied_regulations} facilities comply with the federal state regulations and {uncomplied_regulations} facilities that do not fullfill the federal requirements. Assumuning that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O42:X42']['text'] = regulations['federal_state']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O44:S44']['text'] = f"{regulations['New']['sr_quote_raw'] * 100}%" if not type(regulations['New']['sr_quote_raw']) == str else regulations['New']['sr_quote_raw']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O44:S44']['text'] = f"{int(regulations['New']['sr_quote_raw'] * 100)}%" if not type(regulations['New']['sr_quote_raw']) == str else regulations['New']['sr_quote_raw']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O45:S45']['text'] = regulations['New']['max_beds_raw']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O46:S46']['text'] = regulations['New']['min_room_size']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O47:S47']['text'] = regulations['New']['min_common_area_resident']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O48:S48']['text'] = regulations['New']['comment']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O49:S49']['text'] = regulations['New']['legal_basis']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T44:X44']['text'] = f"{regulations['Existing']['sr_quote_raw'] * 100}%" if not type(regulations['Existing']['sr_quote_raw']) == str else regulations['Existing']['sr_quote_raw']
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T44:X44']['text'] = f"{int(regulations['Existing']['sr_quote_raw'] * 100)}%" if not type(regulations['Existing']['sr_quote_raw']) == str else regulations['Existing']['sr_quote_raw']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T45:X45']['text'] = regulations['Existing']['max_beds_raw']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T46:X46']['text'] = regulations['Existing']['min_room_size']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T47:X47']['text'] = regulations['Existing']['min_common_area_resident']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q20:X24']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{total_invest_cost}. The investment costs at the facility, that is subject to this study amounts to €{home_invest}."
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q20:X24']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{total_invest_cost}. {f'The investment costs at the facility, that is subject to this study amounts to €{home_invest}.' if not home_invest == -1 else ''}"
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A16']['file'] = operator_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P11']['file'] = invest_cost_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P22']['file'] = purchasing_power_chart_path
@@ -3230,7 +3256,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['textboxes']['V1']['text'] = f"{summary_page} | {max_pages}"
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['textboxes']['R1']['text'] = f"{location_analysis_page} | {max_pages}"
       for page in competitor_analysis_pages:
-        market_study_data['pages'][f'COMPETITOR ANALYSIS {page - 2}']['cell_content']['textboxes']['V1']['text'] = f"{page} | {max_pages}"
+        market_study_data['pages'][f'COMPETITOR ANALYSIS {page - 3}']['cell_content']['textboxes']['V1']['text'] = f"{page} | {max_pages}"
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['textboxes']['W1']['text'] = f"{good_to_know_page} | {max_pages}"
       market_study_data['pages']['METHODIC']['cell_content']['textboxes']['Y1']['text'] = f"{methodic_page} | {max_pages}"
       market_study_data['pages']['CONTACT']['cell_content']['textboxes']['Y1']['text'] = f"{contact_page} | {max_pages}"
@@ -4440,10 +4466,10 @@ class Map2_0(Map2_0Template):
         if not 'home' in coordinate:
           if complete_counter <= 20 and not last_coord_dist == coordinate[1]:
             counter += 1
-            icon = f'1@0.5x.png'
+            icon = f'NursingFull{counter}.png'
             for al_coordinate in al_sorted_coords:
               if coordinate[1] == al_coordinate[1]:
-                icon = f'Nursing{complete_counter}.png'
+                icon = f'Nursing{counter}.png'
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
             encoded_url = url.replace("/", "%2F")
             if complete_counter == len(nh_sorted_coords) - 1:
@@ -4499,10 +4525,10 @@ class Map2_0(Map2_0Template):
         if not 'home' in coordinate:
           if complete_counter <= 20 and not last_coord_dist == coordinate[1]:
             counter += 1
-            icon = f'Pin{counter}x075.png'
+            icon = f'AssistedFull{counter}.png'
             for nh_coordinate in nh_sorted_coords:
               if coordinate[1] == nh_coordinate[1]:
-                icon = f'Assisted{complete_counter}.png'
+                icon = f'Assisted{counter}.png'
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
             encoded_url = url.replace("/", "%2F")
             if complete_counter == len(al_sorted_coords) - 1:
