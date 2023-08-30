@@ -877,9 +877,9 @@ class Map2_0(Map2_0Template):
           nursing_homes_active += 1
           if not care_entry['ez'] == "-":
             beds_active += int(care_entry['ez'])
-            beds_amount += int(care_entry['ez']) * 2
+            beds_amount += int(care_entry['ez'])
           if not care_entry['dz'] == "-":
-            beds_active += int(care_entry['dz'])
+            beds_active += int(care_entry['dz']) * 2
             beds_amount += int(care_entry['dz']) * 2
           # if not care_entry['platz_voll_pfl'] == "-":
           #   beds_active += int(care_entry['platz_voll_pfl'])
