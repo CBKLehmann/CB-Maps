@@ -875,32 +875,46 @@ class Map2_0(Map2_0Template):
           inpatients += int(care_entry['anz_vers_pat'])
         if care_entry['status'] == "aktiv":
           nursing_homes_active += 1
-          if not care_entry['platz_voll_pfl'] == "-":
-            beds_active += int(care_entry['platz_voll_pfl'])
-            beds_amount += int(care_entry['platz_voll_pfl'])
-          if not care_entry['platz_kurzpfl'] == "-":
-            beds_active += int(care_entry['platz_kurzpfl'])
-            beds_amount += int(care_entry['platz_kurzpfl'])
-          if not care_entry['platz_nachtpfl'] == "-":
-            beds_active += int(care_entry['platz_nachtpfl'])
-            beds_amount += int(care_entry['platz_nachtpfl'])
+          if not care_entry['ez'] == "-":
+            beds_active += int(care_entry['ez'])
+            beds_amount += int(care_entry['ez']) * 2
+          if not care_entry['dz'] == "-":
+            beds_active += int(care_entry['dz'])
+            beds_amount += int(care_entry['dz']) * 2
+          # if not care_entry['platz_voll_pfl'] == "-":
+          #   beds_active += int(care_entry['platz_voll_pfl'])
+          #   beds_amount += int(care_entry['platz_voll_pfl'])
+          # if not care_entry['platz_kurzpfl'] == "-":
+          #   beds_active += int(care_entry['platz_kurzpfl'])
+          #   beds_amount += int(care_entry['platz_kurzpfl'])
+          # if not care_entry['platz_nachtpfl'] == "-":
+          #   beds_active += int(care_entry['platz_nachtpfl'])
+          #   beds_amount += int(care_entry['platz_nachtpfl'])
           beds.append(beds_amount)
         elif care_entry['status'] == "in Planung":
           nursing_homes_planned += 1
-          if not care_entry['platz_voll_pfl'] == "-":
-            beds_planned += int(care_entry['platz_voll_pfl'])
-          if not care_entry['platz_kurzpfl'] == "-":
-            beds_planned += int(care_entry['platz_kurzpfl'])
-          if not care_entry['platz_nachtpfl'] == "-":
-            beds_planned += int(care_entry['platz_nachtpfl'])
+          if not care_entry['ez'] == "-":
+            beds_planned += int(care_entry['ez'])
+          if not care_entry['dz'] == "-":
+            beds_planned += int(care_entry['dz']) * 2
+          # if not care_entry['platz_voll_pfl'] == "-":
+          #   beds_planned += int(care_entry['platz_voll_pfl'])
+          # if not care_entry['platz_kurzpfl'] == "-":
+          #   beds_planned += int(care_entry['platz_kurzpfl'])
+          # if not care_entry['platz_nachtpfl'] == "-":
+          #   beds_planned += int(care_entry['platz_nachtpfl'])
         elif care_entry['status'] == "im Bau":
           nursing_homes_construct += 1
-          if not care_entry['platz_voll_pfl'] == "-":
-            beds_construct += int(care_entry['platz_voll_pfl'])
-          if not care_entry['platz_kurzpfl'] == "-":
-            beds_construct += int(care_entry['platz_kurzpfl'])
-          if not care_entry['platz_nachtpfl'] == "-":
-            beds_construct += int(care_entry['platz_nachtpfl'])
+          if not care_entry['ez'] == "-":
+            beds_construct += int(care_entry['ez'])
+          if not care_entry['dz'] == "-":
+            beds_construct += int(care_entry['dz']) * 2
+          # if not care_entry['platz_voll_pfl'] == "-":
+          #   beds_construct += int(care_entry['platz_voll_pfl'])
+          # if not care_entry['platz_kurzpfl'] == "-":
+          #   beds_construct += int(care_entry['platz_kurzpfl'])
+          # if not care_entry['platz_nachtpfl'] == "-":
+          #   beds_construct += int(care_entry['platz_nachtpfl'])
         if not care_entry['invest'] == "-":
           invest_cost.append(float(care_entry['invest']))
         if not care_entry['betreiber'] == "-":
@@ -1258,10 +1272,10 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P29']['text'] = nursing_homes_active
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P30']['text'] = beds_active
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P31']['text'] = occupancy_lk_raw
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P32']['text'] = nursing_homes_planned
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P33']['text'] = nursing_homes_construct
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P34']['text'] = beds_planned
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P35']['text'] = beds_construct
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P32']['text'] = '-' if nursing_homes_planned == 0 else nursing_homes_planned
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P33']['text'] = '-' if nursing_homes_construct == 0 else nursing_homes_construct
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P34']['text'] = '-' if beds_planned == 0 else beds_planned
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P35']['text'] = '-' if beds_construct == 0 else beds_construct
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P37']['text'] = beds_active
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['P38']['text'] = inpatients
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R20']['text'] = care_rate_30_v1_raw
@@ -1299,11 +1313,11 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U37']['text'] = beds_adjusted_35_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U38']['text'] = inpatients_fc_35
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U39']['text'] = beds_surplus_35
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S11']['text'] = population_fc_35
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S13']['text'] = people_u80_fc_35
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S14']['text'] = round(people_u80_fc_35 / population_fc_35, 2)
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S15']['text'] = people_o80_fc_35
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S16']['text'] = round(people_o80_fc_35 / population_fc_35, 2)
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V11']['text'] = population_fc_35
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V13']['text'] = people_u80_fc_35
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V14']['text'] = round(people_u80_fc_35 / population_fc_35, 2)
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V15']['text'] = people_o80_fc_35
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V16']['text'] = round(people_o80_fc_35 / population_fc_35, 2)
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V20']['text'] = care_rate_35_v2_raw
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V21']['text'] = nursing_home_rate
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V22']['text'] = pat_rec_full_care_fc_35_v2
@@ -4423,12 +4437,12 @@ class Map2_0(Map2_0Template):
       last_coord_dist = 0
 
       for coordinate in reversed(nh_sorted_coords):
-        if complete_counter <= 25 and not last_coord_dist == coordinate[1]:
+        if complete_counter <= 20 and not last_coord_dist == coordinate[1]:
           counter += 1
           icon = f'1@0.5x.png'
           for al_coordinate in reversed(al_sorted_coords):
             if coordinate[1] == al_coordinate[1]:
-              icon = 'CompetitorPinNursing Kopie@0.75x.png'
+              icon = f'Nursing{complete_counter}.png'
           url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
           if complete_counter == len(nh_sorted_coords) - 1:
@@ -4487,12 +4501,12 @@ class Map2_0(Map2_0Template):
       last_coord_dist = 0
 
       for coordinate in reversed(al_sorted_coords):
-        if complete_counter <= 25 and not last_coord_dist == coordinate[1]:
+        if complete_counter <= 20 and not last_coord_dist == coordinate[1]:
           counter += 1
           icon = f'Pin{counter}x075.png'
           for nh_coordinate in reversed(nh_sorted_coords):
             if coordinate[1] == nh_coordinate[1]:
-              icon = 'CompetitorPinAssisted Kopie 2@0.75x.png'
+              icon = f'Assisted{complete_counter}.png'
           url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
           if complete_counter == len(al_sorted_coords) - 1:
