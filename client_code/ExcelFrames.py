@@ -611,7 +611,8 @@ market_study_data = {
                 'font': 'Segoe UI',
                 'font_size': 9,
                 'valign': 'vcenter',
-                'bg_color': '#F2F2F2'
+                'bg_color': '#F2F2F2',
+                'text_wrap': True
             },
             'background': {
                 'bg_color': '#F2F2F2'
@@ -2005,8 +2006,8 @@ market_study_data = {
                     'row_height': [
                         16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 32.50, 18.00, 32.50, 18.00, 14.50,
                         14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50,
-                        14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 11.50, 27.00, 18.00, 15.00,
-                        18.00, 15.00, 32.50, 31.00, 15.00, 15.00, 15.00, 15.00, 30.00, 16.50, 9.00
+                        14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 7.50, 7.50, 7.50, 11.50, 27.00, 18.00, 15.00,
+                        18.00, 15.00, 32.50, 31.00, 15.00, 15.00, 15.00, 15.00, 40.50, 16.50, 9.00
                     ],
                     'columns_to_fill': [
                         'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
@@ -2027,7 +2028,7 @@ market_study_data = {
                                 'y_scale': .6
                             }
                         },
-                        'P24': {
+                        'P22': {
                             'file': "img/plot2.png",
                             'settings': {
                                 'x_offset': 15,
@@ -2262,7 +2263,7 @@ market_study_data = {
                             'text': "WTPG, LHeimBauVO",
                             'format': "table_normal_text"
                         },
-                        'Q26:X26': {
+                        'Q25:X26': {
                             'text': "Purchasing power index (municipality)",
                             'format': "smaller_heading"
                         },
@@ -2442,13 +2443,13 @@ market_study_data = {
                         'D11': {
                             'text': f"""The market study highlights the current state of the inpatient care market in Germany and provides a forecast for the demand for nursing care until 2030 and 2035. The study emphasizes the key drivers of demand and the methodology employed to arrive at the forecasted figures. 
 
-    The study utilizes a combination of publicly available secondary research. Secondary research includes analyzing geographical, demographical and statistical databases as well as government publications and reputable healthcare sources to gather quantitative data. 
+The study utilizes a combination of publicly available secondary research. Secondary research includes analyzing geographical, demographical and statistical databases as well as government publications and reputable healthcare sources to gather quantitative data. 
 
-    The collected data is analyzed to identify trends, growth drivers, and market dynamics. The analysis encompasses factors such as population demographics, healthcare policies and available market information on existing and future care facilities, prevalence of chronic diseases, and economic indicators affecting the demand for inpatient care. 
+The collected data is analyzed to identify trends, growth drivers, and market dynamics. The analysis encompasses factors such as population demographics, healthcare policies and available market information on existing and future care facilities, prevalence of chronic diseases, and economic indicators affecting the demand for inpatient care. 
 
-    To forecast the future demand for nursing care, a combination of demographic projection, trend analysis and consideration of new care facilities to be launched on the market is employed. Demographic projection takes into account population growth, aging trends, and migration patterns. Trend analysis examines historical data and identifies patterns and growth rates to project future demand. New care facilities takes into account buildings that are in planning or under construction. 
+To forecast the future demand for nursing care, a combination of demographic projection, trend analysis and consideration of new care facilities to be launched on the market is employed. Demographic projection takes into account population growth, aging trends, and migration patterns. Trend analysis examines historical data and identifies patterns and growth rates to project future demand. New care facilities takes into account buildings that are in planning or under construction. 
 
-    All findings of the market study will consider the factors mentioned above to provide a comprehensive understanding of the current state of the inpatient care market.
+All findings of the market study will consider the factors mentioned above to provide a comprehensive understanding of the current state of the inpatient care market.
             """,
                             'settings': {
                                 'font': {
@@ -2521,15 +2522,15 @@ market_study_data = {
                         },
                         'R11': {
                             'text': """Statistisches Bundesamt
-    Statista
-    Pflegemarkt.com
-    Pflegemarktdatenbank (updates every 3 months)
-    Demografieportal
-    Pflegeheim-Atlas Deutschland 2021, Wuest Partner
-    21st Real Estate
-    ChatGPT
-    Open Street Maps
-    Malbox
+Statista
+Pflegemarkt.com
+Pflegemarktdatenbank (updates every 3 months)
+Demografieportal
+Pflegeheim-Atlas Deutschland 2021, Wuest Partner
+21st Real Estate
+ChatGPT
+Open Street Maps
+Malbox
             """,
                             'settings': {
                                 'font': {
@@ -2686,7 +2687,7 @@ market_study_data = {
                         'E27': {
                             'text': """This study has been prepared by Capital Bay Group S.A. (hereinafter Capital Bay) to provide investors and business partners of Capital Bay with an overview of current developments in the care and assisted living sector of the real estate industry. Capital Bay emphasizes that this study is not a sufficient basis for decision making and user discretion is necessary for the decision making process. 
 
-    This study has been prepared with reasonable care. The information presented has not been verified by Capital Bay for completeness or accuracy. It has been obtained from the sources indicated and supplemented by Capital 
+This study has been prepared with reasonable care. The information presented has not been verified by Capital Bay for completeness or accuracy. It has been obtained from the sources indicated and supplemented by Capital 
                 """,
                             'settings': {
                                 'font': {
@@ -2707,11 +2708,11 @@ market_study_data = {
                         'R27': {
                             'text': """Bay's own market knowledge. No confidential or non-public information has been made use.
 
-    Capital Bay is not responsible for any incomplete or inaccurate information and readers are urged to verify the information themselves before making any decision. Capital Bay shall not be liable for any omissions or inaccuracies in this report or for any other oral or written statements made in connection with this report.
+Capital Bay is not responsible for any incomplete or inaccurate information and readers are urged to verify the information themselves before making any decision. Capital Bay shall not be liable for any omissions or inaccuracies in this report or for any other oral or written statements made in connection with this report.
 
 
-    © 2023 Capital Bay Group
-    All rights reserved.
+© 2023 Capital Bay Group
+All rights reserved.
     """,
                             'settings': {
                                 'font': {

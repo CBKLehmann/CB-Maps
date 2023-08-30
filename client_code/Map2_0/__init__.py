@@ -3208,9 +3208,9 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q20:X24']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{total_invest_cost}. The investment costs at the facility, that is subject to this study amounts to €{home_invest}."
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A18']['file'] = operator_chart_path
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A16']['file'] = operator_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P11']['file'] = invest_cost_chart_path
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P24']['file'] = purchasing_power_chart_path
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P22']['file'] = purchasing_power_chart_path
 
       market_study_data['pages']['SUMMARY']['cell_content']['textboxes']['V1']['text'] = f"{summary_page} | {max_pages}"
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['textboxes']['R1']['text'] = f"{location_analysis_page} | {max_pages}"
