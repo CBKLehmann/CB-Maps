@@ -113,6 +113,17 @@ market_study_data = {
                 'indent': 1,
                 'align': 'right'
             },
+            'blue_data_number': {
+                'font': "Segoe UI Semibold",
+                'font_size': 9,
+                'bg_color': '#203144',
+                'color': '#FFFFFF',
+                'right': 1,
+                'right_color': '#FFFFFF',
+                'indent': 1,
+                'align': 'right',
+                'num_format': '#,##0'
+            },
             'blue_data_normal_right': {
                 'font': "Segoe UI Semibold",
                 'font_size': 9,
@@ -179,6 +190,15 @@ market_study_data = {
                 'valign': 'vcenter',
                 'indent': 1
             },
+            'grey_data_normal_right_number': {
+                'font': "Segoe UI",
+                'font_size': 9,
+                'bg_color': '#DFDFDF',
+                'align': 'right',
+                'valign': 'vcenter',
+                'indent': 1,
+                'num_format': '#,##0'
+            },
             'grey_data_normal_right_semibold': {
                 'font': "Segoe UI Semibold",
                 'font_size': 9,
@@ -186,7 +206,8 @@ market_study_data = {
                 'align': 'right',
                 'valign': 'vcenter',
                 'indent': 1,
-                'bottom': 1
+                'bottom': 1,
+                'num_format': '#,##0'
             },
             'grey_data_normal_percentage': {
                 'font': "Segoe UI",
@@ -247,6 +268,15 @@ market_study_data = {
                 'valign': 'vcenter',
                 'indent': 1
             },
+            'lightgrey_data_normal_right_number': {
+                'font': "Segoe UI",
+                'font_size': 9,
+                'bg_color': '#F2F2F2',
+                'align': 'right',
+                'valign': 'vcenter',
+                'indent': 1,
+                'num_format': '#,##0'
+            },
             'lightgrey_data_normal_percentage': {
                 'font': "Segoe UI",
                 'font_size': 9,
@@ -281,7 +311,8 @@ market_study_data = {
                 'align': 'right',
                 'valign': 'vcenter',
                 'indent': 1,
-                'bottom': 1
+                'bottom': 1,
+                'num_format': '#,##0'
             },
             'cover_fill_format': {
                 'bg_color': "#203144"
@@ -1172,11 +1203,11 @@ market_study_data = {
                         },
                         'P10': {
                             'text': 5527,
-                            'format': "blue_data_normal"
+                            'format': "blue_data_number"
                         },
                         'P11': {
                             'text': 162302,
-                            'format': "blue_data_normal"
+                            'format': "blue_data_number"
                         },
                         'P12': {
                             'text': 1,
@@ -1184,7 +1215,7 @@ market_study_data = {
                         },
                         'P13': {
                             'text': 10600,
-                            'format': "blue_data_normal"
+                            'format': "blue_data_number"
                         },
                         'P14': {
                             'text': .23,
@@ -1192,7 +1223,7 @@ market_study_data = {
                         },
                         'P15': {
                             'text': 10600,
-                            'format': "blue_data_normal"
+                            'format': "blue_data_number"
                         },
                         'P16': {
                             'text': .02,
@@ -1208,7 +1239,7 @@ market_study_data = {
                         },
                         'P22': {
                             'text': 28500,
-                            'format': "blue_data_normal"
+                            'format': "blue_data_number"
                         },
                         'P23': {
                             'text': .854,
@@ -1216,19 +1247,19 @@ market_study_data = {
                         },
                         'P24': {
                             'text': 33406,
-                            'format': "blue_data_normal"
+                            'format': "blue_data_number"
                         },
                         'P25': {
                             'text': 4881,
-                            'format': "blue_data_normal"
+                            'format': "blue_data_number"
                         },
                         'P29': {
                             'text': 136,
-                            'format': "blue_data_normal"
+                            'format': "blue_data_number"
                         },
                         'P30': {
                             'text': 16113,
-                            'format': "blue_data_normal"
+                            'format': "blue_data_number"
                         },
                         'P31': {
                             'text': .854,
@@ -1236,27 +1267,27 @@ market_study_data = {
                         },
                         'P32': {
                             'text': "-",
-                            'format': "blue_data_normal_right"
+                            'format': "blue_data_number"
                         },
                         'P33': {
                             'text': 13703,
-                            'format': "blue_data_normal"
+                            'format': "blue_data_number"
                         },
                         'P34': {
                             'text': "-",
-                            'format': "blue_data_normal_right"
+                            'format': "blue_data_number"
                         },
                         'P35': {
                             'text': "-",
-                            'format': "blue_data_normal_right"
+                            'format': "blue_data_number"
                         },
                         'P37': {
                             'text': 16113,
-                            'format': "blue_data_normal"
+                            'format': "blue_data_number"
                         },
                         'P38': {
                             'text': 13703,
-                            'format': "blue_data_normal"
+                            'format': "blue_data_number"
                         },
                         'R18': {
                             'text': "Scenario 1",
@@ -1276,7 +1307,7 @@ market_study_data = {
                         },
                         'R22': {
                             'text': 31964,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'R23': {
                             'text': .95,
@@ -1284,15 +1315,15 @@ market_study_data = {
                         },
                         'R24': {
                             'text': 33646,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'R25': {
                             'text': 33646,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'R30': {
                             'text': 34512,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'R31': {
                             'text': .95,
@@ -1300,15 +1331,15 @@ market_study_data = {
                         },
                         'R36': {
                             'text': -144,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'R37': {
                             'text': -144,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'R38': {
                             'text': 34512,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'R39': {
                             'text': 770,
@@ -1320,7 +1351,7 @@ market_study_data = {
                         },
                         'S11': {
                             'text': 161500,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'S12': {
                             'text': 1,
@@ -1328,7 +1359,7 @@ market_study_data = {
                         },
                         'S13': {
                             'text': 31800,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'S14': {
                             'text': .23,
@@ -1336,7 +1367,7 @@ market_study_data = {
                         },
                         'S15': {
                             'text': 11100,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'S16': {
                             'text': .02,
@@ -1360,7 +1391,7 @@ market_study_data = {
                         },
                         'S22': {
                             'text': 34361,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'S23': {
                             'text': .95,
@@ -1368,15 +1399,15 @@ market_study_data = {
                         },
                         'S24': {
                             'text': 36169000,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'S25': {
                             'text': 1808,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'S30': {
                             'text': 34512,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'S31': {
                             'text': .95,
@@ -1384,15 +1415,15 @@ market_study_data = {
                         },
                         'S36': {
                             'text': -144,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'S37': {
                             'text': -144,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'S38': {
                             'text': 34512,
-                            'format': "grey_data_normal_right"
+                            'format': "grey_data_normal_right_number"
                         },
                         'S39': {
                             'text': -380,
@@ -1416,7 +1447,7 @@ market_study_data = {
                         },
                         'U22': {
                             'text': 33276,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'U23': {
                             'text': .95,
@@ -1424,15 +1455,15 @@ market_study_data = {
                         },
                         'U24': {
                             'text': 35027,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'U25': {
                             'text': 1751,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'U30': {
                             'text': 34512,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'U31': {
                             'text': .95,
@@ -1440,15 +1471,15 @@ market_study_data = {
                         },
                         'U36': {
                             'text': -144,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'U37': {
                             'text': 5468,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'U38': {
                             'text': 34512,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'U39': {
                             'text': 141,
@@ -1460,7 +1491,7 @@ market_study_data = {
                         },
                         'V11': {
                             'text': 160700,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'V12': {
                             'text': 1,
@@ -1468,7 +1499,7 @@ market_study_data = {
                         },
                         'V13': {
                             'text': 32800,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'V14': {
                             'text': .23,
@@ -1476,7 +1507,7 @@ market_study_data = {
                         },
                         'V15': {
                             'text': 12400,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'V16': {
                             'text': .02,
@@ -1500,7 +1531,7 @@ market_study_data = {
                         },
                         'V22': {
                             'text': 37655,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'V23': {
                             'text': .95,
@@ -1508,15 +1539,15 @@ market_study_data = {
                         },
                         'V24': {
                             'text': 37655,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'V25': {
                             'text': 1883,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'V30': {
                             'text': 34512,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'V31': {
                             'text': .95,
@@ -1524,15 +1555,15 @@ market_study_data = {
                         },
                         'V36': {
                             'text': -144,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'V37': {
                             'text': 5468,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'V38': {
                             'text': 34512,
-                            'format': "lightgrey_data_normal_right"
+                            'format': "lightgrey_data_normal_right_number"
                         },
                         'V39': {
                             'text': -1058,

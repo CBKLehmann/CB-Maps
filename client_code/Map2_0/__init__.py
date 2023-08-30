@@ -1250,7 +1250,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['COVER']['cell_content']['images']['AB7']['file'] = f"tmp/summary_map_{unique_code}.png"
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y29']['text'] = "{:.2f}".format(purchase_power)
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y38']['text'] = population_trend_string
-      market_study_data['pages']['COVER']['cell_content']['textboxes']['Y47']['text'] = f"{beds_surplus_35_v2}"
+      market_study_data['pages']['COVER']['cell_content']['textboxes']['Y47']['text'] = f"{beds_surplus_35_v2:,}"
       market_study_data['pages']['COVER']['cell_content']['textboxes']['C51']['text'] = f"Version 2.0.1 Generated on {created_date}"
       market_study_data['pages']['COVER']['cell_content']['cells']['L30']['text'] = street
       market_study_data['pages']['COVER']['cell_content']['cells']['L31']['text'] = zipcode
