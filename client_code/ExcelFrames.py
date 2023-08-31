@@ -2558,7 +2558,7 @@ Pflegeheim-Atlas Deutschland 2021, Wuest Partner
 21st Real Estate
 ChatGPT
 Open Street Maps
-Malbox
+Mapbox
             """,
                             'settings': {
                                 'font': {
