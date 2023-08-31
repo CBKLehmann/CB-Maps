@@ -1565,11 +1565,11 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_centered_percentage'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'U{current_row}'] = {
-              'text': '-' if competitor[0]['invest'] == 'N/A' else float(competitor[0]['invest']),
+              'text': '-' if competitor[0]['invest'] == '-' else float(competitor[0]['invest']),
               'format': 'home_line_centered_number_double'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'V{current_row}'] = {
-              'text': '-' if competitor[0]['mdk_note'] == 'N/A' else float(competitor[0]['mdk_note']),
+              'text': '-' if competitor[0]['mdk_note'] == '-' else float(competitor[0]['mdk_note']),
               'format': 'home_line_centered_number'
             }
 
@@ -1606,7 +1606,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['raw_betreiber'] == 'N/A' else competitor[0]['raw_betreiber'],
+              'text': '-' if competitor[0]['raw_betreiber'] == '-' else competitor[0]['raw_betreiber'],
               'format': 'row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
@@ -1627,7 +1627,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'L{current_row}'] = {
-              'text': '-' if competitor[0]['baujahr'] == 'N/A' else competitor[0]['baujahr'],
+              'text': '-' if competitor[0]['baujahr'] == '-' else competitor[0]['baujahr'],
               'format': 'row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'M{current_row}'] = {
@@ -1703,7 +1703,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered_percentage'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'U{current_row}'] = {
-              'text': '-' if competitor[0]['invest'] == 'N/A' else float(competitor[0]['invest']),
+              'text': '-' if competitor[0]['invest'] == '-' else float(competitor[0]['invest']),
               'format': 'row_centered_number_double'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'V{current_row}'] = {
@@ -1879,7 +1879,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['raw_betreiber'] == 'N/A' else competitor[0]['raw_betreiber'],
+              'text': '-' if competitor[0]['raw_betreiber'] == '-' else competitor[0]['raw_betreiber'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
@@ -1900,7 +1900,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'L{current_row}'] = {
-              'text': '-' if competitor[0]['year_of_construction'] == 'N/A' else competitor[0]['year_of_construction'],
+              'text': '-' if competitor[0]['year_of_construction'] == '-' else competitor[0]['year_of_construction'],
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'M{current_row}'] = {
@@ -2457,11 +2457,11 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_centered_percentage'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'U{current_row}'] = {
-              'text': '-' if competitor[0]['invest'] == 'N/A' else float(competitor[0]['invest']),
+              'text': '-' if competitor[0]['invest'] == '-' else float(competitor[0]['invest']),
               'format': 'home_line_centered_number_double'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'V{current_row}'] = {
-              'text': '-' if competitor[0]['mdk_note'] == 'N/A' else float(competitor[0]['mdk_note']),
+              'text': '-' if competitor[0]['mdk_note'] == '-' else float(competitor[0]['mdk_note']),
               'format': 'home_line_centered_number'
             }
 
@@ -2498,7 +2498,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['raw_betreiber'] == 'N/A' else competitor[0]['raw_betreiber'],
+              'text': '-' if competitor[0]['raw_betreiber'] == '-' else competitor[0]['raw_betreiber'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
@@ -2519,7 +2519,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'L{current_row}'] = {
-              'text': '-' if competitor[0]['baujahr'] == 'N/A' else competitor[0]['baujahr'],
+              'text': '-' if competitor[0]['baujahr'] == '-' else competitor[0]['baujahr'],
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'M{current_row}'] = {
@@ -2595,7 +2595,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered_percentage' if not current_row == 25 else 'last_row_centered_percentage'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'U{current_row}'] = {
-              'text': '-' if competitor[0]['invest'] == 'N/A' else float(competitor[0]['invest']),
+              'text': '-' if competitor[0]['invest'] == '-' else float(competitor[0]['invest']),
               'format': 'row_centered_number_double' if not current_row == 25 else 'last_row_centered_number_double'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'V{current_row}'] = {
@@ -3141,7 +3141,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['raw_betreiber'] == 'N/A' else competitor[0]['raw_betreiber'],
+              'text': '-' if competitor[0]['raw_betreiber'] == '-' else competitor[0]['raw_betreiber'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
@@ -3162,7 +3162,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'L{current_row}'] = {
-              'text': '-' if competitor[0]['year_of_construction'] == 'N/A' else competitor[0]['year_of_construction'],
+              'text': '-' if competitor[0]['year_of_construction'] == '-' else competitor[0]['year_of_construction'],
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'M{current_row}'] = {
