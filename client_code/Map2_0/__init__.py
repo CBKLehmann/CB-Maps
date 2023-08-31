@@ -1283,7 +1283,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R22']['text'] = pat_rec_full_care_fc_30_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R24']['text'] = beds_30_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R25']['text'] = free_beds_30_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R30']['text'] = beds_active
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R30']['text'] = beds_active + beds_planned + beds_construct
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R36']['text'] = loss_of_beds
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R37']['text'] = beds_adjusted_30_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['R38']['text'] = inpatients_fc
@@ -1298,7 +1298,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S22']['text'] = pat_rec_full_care_fc_30_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S24']['text'] = beds_30_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S25']['text'] = free_beds_30_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S30']['text'] = beds_active
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S30']['text'] = beds_active + beds_planned + beds_construct
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S36']['text'] = loss_of_beds
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S37']['text'] = beds_adjusted_30_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['S38']['text'] = inpatients_fc_v2
@@ -1308,7 +1308,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U22']['text'] = pat_rec_full_care_fc_35_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U24']['text'] = beds_35_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U25']['text'] = free_beds_35_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U30']['text'] = beds_active
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U30']['text'] = beds_active + beds_planned + beds_construct
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U36']['text'] = loss_of_beds
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U37']['text'] = beds_adjusted_35_v1
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['U38']['text'] = inpatients_fc_35
@@ -1323,7 +1323,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V22']['text'] = pat_rec_full_care_fc_35_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V24']['text'] = beds_35_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V25']['text'] = free_beds_35_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V30']['text'] = beds_active
+      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V30']['text'] = beds_active + beds_planned + beds_construct
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V36']['text'] = loss_of_beds
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V37']['text'] = beds_adjusted_35_v2
       market_study_data['pages']['SUMMARY']['cell_content']['cells']['V38']['text'] = inpatients_fc_35_v2
