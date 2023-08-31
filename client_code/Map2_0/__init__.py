@@ -1335,8 +1335,8 @@ class Map2_0(Map2_0Template):
 
       anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
       
-      analysis_text = "I`m a placeholder Text"
-      # analysis_text = anvil.server.call('openai_test', city)
+      # analysis_text = "I`m a placeholder Text"
+      analysis_text = anvil.server.call('openai_test', city)
       from .ChatGPT import ChatGPT
       Functions.manipulate_loading_overlay(self, False)
       analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
