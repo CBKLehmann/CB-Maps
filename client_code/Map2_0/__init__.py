@@ -1225,10 +1225,10 @@ class Map2_0(Map2_0Template):
           data_comp_analysis_nh['data'][index][0]['legal'] = "-"
 
       loss_of_beds = facilities_bed_amount_future - facilities_bed_amount
-      beds_adjusted_30_v1 = beds_active + loss_of_beds
-      beds_adjusted_30_v2 = beds_active + loss_of_beds
-      beds_adjusted_35_v1 = beds_active + loss_of_beds
-      beds_adjusted_35_v2 = beds_active + loss_of_beds
+      beds_adjusted_30_v1 = beds_active + beds_planned + beds_construct + loss_of_beds
+      beds_adjusted_30_v2 = beds_active + beds_planned + beds_construct + loss_of_beds
+      beds_adjusted_35_v1 = beds_active + beds_planned + beds_construct + loss_of_beds
+      beds_adjusted_35_v2 = beds_active + beds_planned + beds_construct + loss_of_beds
       beds_surplus_35 = beds_adjusted_35_v1 - inpatients_fc_35
       beds_surplus_35_v2 = beds_adjusted_35_v2 - inpatients_fc_35_v2
       beds_surplus = beds_adjusted_30_v1 - inpatients_fc
