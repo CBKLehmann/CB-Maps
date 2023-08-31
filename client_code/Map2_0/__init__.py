@@ -871,7 +871,6 @@ class Map2_0(Map2_0Template):
       #Get Values of Variables for every Entry in Care-Database inside Iso-Layer-Bounding-Box
       for care_entry in data_comp_analysis_nh['data']:
         beds_amount = 0
-        print(care_entry)
         if not care_entry[0]['anz_vers_pat'] == '-':
           inpatients += int(care_entry[0]['anz_vers_pat'])
         if care_entry[0]['status'] == "aktiv":
@@ -1335,9 +1334,13 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C28:O28']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
 
       anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
-
+      
       analysis_text = "I`m a placeholder Text"
       # analysis_text = anvil.server.call('openai_test', city)
+      from .ChatGPT import ChatGPT
+      Functions.manipulate_loading_overlay(self, False)
+      analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
+      Functions.manipulate_loading_overlay(self, True)
 
       anvil.js.call('update_loading_bar', 70, 'Create Excel for Market Study Part 2')
       
@@ -4557,8 +4560,6 @@ class Map2_0(Map2_0Template):
             
           complete_counter += 1
           last_coords = coordinate[0]['coords']
-
-      print(request)
       
       if request == []:
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
