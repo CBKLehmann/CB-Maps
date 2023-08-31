@@ -3472,9 +3472,9 @@ class Map2_0(Map2_0Template):
       anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
 
       all_data = self.build_competitor_map_request(coords_nh, coords_al)
+      anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
       anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, all_data['request'])
-      
-      # anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
+
       # anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'], data_comp_analysis_al['request'], cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, checkboxes, reg_frame)
   
       # if not Variables.tm_mode:
