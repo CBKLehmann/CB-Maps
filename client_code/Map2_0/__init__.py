@@ -1335,8 +1335,8 @@ class Map2_0(Map2_0Template):
 
       anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
       
-      analysis_text = "I`m a placeholder Text"
-      # analysis_text = anvil.server.call('openai_test', city)
+      # analysis_text = "I`m a placeholder Text"
+      analysis_text = anvil.server.call('openai_test', city)
       from .ChatGPT import ChatGPT
       Functions.manipulate_loading_overlay(self, False)
       analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
@@ -4470,10 +4470,10 @@ class Map2_0(Map2_0Template):
         if not 'home' in coordinate:
           if complete_counter <= 20 and not last_coord_dist == coordinate[1]:
             counter += 1
-            icon = f'NursingFull{counter}.png'
+            icon = f'{counter} Nursing@0.75x.png'
             for al_coordinate in al_sorted_coords:
               if coordinate[1] == al_coordinate[1]:
-                icon = f'Nursing{counter}.png'
+                icon = f'Nursing{counter}@0.75x.png'
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
             encoded_url = url.replace("/", "%2F")
             if complete_counter == len(nh_sorted_coords) - 1:
@@ -4529,10 +4529,10 @@ class Map2_0(Map2_0Template):
         if not 'home' in coordinate:
           if complete_counter <= 20 and not last_coord_dist == coordinate[1]:
             counter += 1
-            icon = f'AssistedFull{counter}.png'
+            icon = f'{counter}@0.75x.png'
             for nh_coordinate in nh_sorted_coords:
               if coordinate[1] == nh_coordinate[1]:
-                icon = f'Assisted{counter}.png'
+                icon = f'Assisted{counter}@0.75x.png'
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
             encoded_url = url.replace("/", "%2F")
             if complete_counter == len(al_sorted_coords) - 1:
