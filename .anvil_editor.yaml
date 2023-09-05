@@ -34,7 +34,7 @@ unique_ids:
   server_modules:
     ServerModule1: '167402801782526104127461.58941'
   assets:
-    Pins/Pflegeheim@4x.png: '1673857731004212368076812.33304'
+    Pins/Pflegeheim@4x.png: '1693919099972471235767543.5923'
     Pins/Zahnarzt@4x.png: '1673857796202275631298034.9804'
     Pins/CB_MapPin_Wo.png: '1675767185319246161614013.16373'
     Pins/CB MapPin Sc.png: '1674028800913861268219572.4941'
@@ -139,3 +139,4 @@ unique_ids:
     ladengeschaft.png: '1633691760240414353589634.9486'
     Pins/Arztpraxis@4x.png: '1673857651851434278749961.55237'
     Pins/CB_MapPin_grey.png: '1674028721673799870471391.9895'
+    Pins/Pflegeheim@4x_old.png: '1673857731004212368076812.33304'

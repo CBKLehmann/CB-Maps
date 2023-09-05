@@ -876,46 +876,32 @@ class Map2_0(Map2_0Template):
           inpatients += int(care_entry[0]['anz_vers_pat'])
         if care_entry[0]['status'] == "aktiv":
           nursing_homes_active += 1
-          if not care_entry[0]['ez'] == "-":
-            beds_active += int(care_entry[0]['ez'])
-            beds_amount += int(care_entry[0]['ez'])
-          if not care_entry[0]['dz'] == "-":
-            beds_active += int(care_entry[0]['dz']) * 2
-            beds_amount += int(care_entry[0]['dz']) * 2
-          # if not care_entry['platz_voll_pfl'] == "-":
-          #   beds_active += int(care_entry['platz_voll_pfl'])
-          #   beds_amount += int(care_entry['platz_voll_pfl'])
-          # if not care_entry['platz_kurzpfl'] == "-":
-          #   beds_active += int(care_entry['platz_kurzpfl'])
-          #   beds_amount += int(care_entry['platz_kurzpfl'])
-          # if not care_entry['platz_nachtpfl'] == "-":
-          #   beds_active += int(care_entry['platz_nachtpfl'])
-          #   beds_amount += int(care_entry['platz_nachtpfl'])
+          # if not care_entry[0]['ez'] == "-":
+          #   beds_active += int(care_entry[0]['ez'])
+          #   beds_amount += int(care_entry[0]['ez'])
+          # if not care_entry[0]['dz'] == "-":
+          #   beds_active += int(care_entry[0]['dz']) * 2
+          #   beds_amount += int(care_entry[0]['dz']) * 2
+          if not care_entry[0]['platz_voll_pfl'] == "-":
+            beds_active += int(care_entry[0]['platz_voll_pfl'])
+            beds_amount = int(care_entry[0]['platz_voll_pfl'])
           beds.append(beds_amount)
         elif care_entry[0]['status'] == "in Planung":
           nursing_homes_planned += 1
-          if not care_entry[0]['ez'] == "-":
-            beds_planned += int(care_entry[0]['ez'])
-          if not care_entry[0]['dz'] == "-":
-            beds_planned += int(care_entry[0]['dz']) * 2
-          # if not care_entry['platz_voll_pfl'] == "-":
-          #   beds_planned += int(care_entry['platz_voll_pfl'])
-          # if not care_entry['platz_kurzpfl'] == "-":
-          #   beds_planned += int(care_entry['platz_kurzpfl'])
-          # if not care_entry['platz_nachtpfl'] == "-":
-          #   beds_planned += int(care_entry['platz_nachtpfl'])
+          # if not care_entry[0]['ez'] == "-":
+          #   beds_planned += int(care_entry[0]['ez'])
+          # if not care_entry[0]['dz'] == "-":
+          #   beds_planned += int(care_entry[0]['dz']) * 2
+          if not care_entry[0]['platz_voll_pfl'] == "-":
+            beds_planned += int(care_entry[0]['platz_voll_pfl'])
         elif care_entry[0]['status'] == "im Bau":
           nursing_homes_construct += 1
-          if not care_entry[0]['ez'] == "-":
-            beds_construct += int(care_entry[0]['ez'])
-          if not care_entry[0]['dz'] == "-":
-            beds_construct += int(care_entry[0]['dz']) * 2
-          # if not care_entry['platz_voll_pfl'] == "-":
-          #   beds_construct += int(care_entry['platz_voll_pfl'])
-          # if not care_entry['platz_kurzpfl'] == "-":
-          #   beds_construct += int(care_entry['platz_kurzpfl'])
-          # if not care_entry['platz_nachtpfl'] == "-":
-          #   beds_construct += int(care_entry['platz_nachtpfl'])
+          # if not care_entry[0]['ez'] == "-":
+          #   beds_construct += int(care_entry[0]['ez'])
+          # if not care_entry[0]['dz'] == "-":
+          #   beds_construct += int(care_entry[0]['dz']) * 2
+          if not care_entry[0]['platz_voll_pfl'] == "-":
+            beds_construct += int(care_entry[0]['platz_voll_pfl'])
         if not care_entry[0]['invest'] == "-":
           invest_cost.append(float(care_entry[0]['invest']))
         if not care_entry[0]['betreiber'] == "-":
@@ -1336,8 +1322,8 @@ class Map2_0(Map2_0Template):
 
       anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
       
-      # analysis_text = "I`m a placeholder Text"
-      analysis_text = anvil.server.call('openai_test', city)
+      analysis_text = "I`m a placeholder Text"
+      # analysis_text = anvil.server.call('openai_test', city)
       from .ChatGPT import ChatGPT
       Functions.manipulate_loading_overlay(self, False)
       analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
@@ -1458,6 +1444,7 @@ class Map2_0(Map2_0Template):
         list_mdk_grade = []
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
+          print(competitor)
           if 'home' in competitor:
             home_counter += 1
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
@@ -1522,19 +1509,20 @@ class Map2_0(Map2_0Template):
               double_rooms = int(competitor[0]['dz'])
             else:
               double_rooms = '-'
+            if not competitor[0]['platz_voll_pfl'] == '-':
+              beds = competitor[0]['platz_voll_pfl']
+            else:
+              beds = '-'
             if not single_rooms == '-':
               if not double_rooms == '-':
                 rooms = single_rooms + double_rooms
-                beds = single_rooms + double_rooms * 2
                 single_room_quote = single_rooms / (single_rooms + double_rooms)
               else:
                 rooms = single_rooms
-                beds = single_rooms
                 single_room_quote = 1
             else:
               if not double_rooms == '-':
                 rooms = double_rooms
-                beds = double_rooms * 2
                 single_room_quote = 0
               else:
                 rooms = '-'
@@ -1660,23 +1648,23 @@ class Map2_0(Map2_0Template):
               double_rooms = int(competitor[0]['dz'])
             else:
               double_rooms = '-'
+            if not competitor[0]['platz_voll_pfl'] == '-':
+              beds = competitor[0]['platz_voll_pfl']
+            else:
+              beds = '-'
             if not single_rooms == '-':
               if not double_rooms == '-':
                 rooms = single_rooms + double_rooms
-                beds = single_rooms + double_rooms * 2
                 single_room_quote = single_rooms / (single_rooms + double_rooms)
               else:
                 rooms = single_rooms
-                beds = single_rooms
                 single_room_quote = 1
             else:
               if not double_rooms == '-':
                 rooms = double_rooms
-                beds = double_rooms * 2
                 single_room_quote = 0
               else:
                 rooms = '-'
-                beds = '-'
                 single_room_quote = '-'
               
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'O{current_row}'] = {
@@ -2414,23 +2402,23 @@ class Map2_0(Map2_0Template):
               double_rooms = int(competitor[0]['dz'])
             else:
               double_rooms = '-'
+            if not competitor[0]['platz_voll_pfl'] == '-':
+              beds = competitor[0]['platz_voll_pfl']
+            else:
+              beds = '-'
             if not single_rooms == '-':
               if not double_rooms == '-':
                 rooms = single_rooms + double_rooms
-                beds = single_rooms + double_rooms * 2
                 single_room_quote = single_rooms / (single_rooms + double_rooms)
               else:
                 rooms = single_rooms
-                beds = single_rooms
                 single_room_quote = 1
             else:
               if not double_rooms == '-':
                 rooms = double_rooms
-                beds = double_rooms * 2
                 single_room_quote = 0
               else:
                 rooms = '-'
-                beds = '-'
                 single_room_quote = '-'
               
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'O{current_row}'] = {
@@ -2552,6 +2540,10 @@ class Map2_0(Map2_0Template):
               double_rooms = int(competitor[0]['dz'])
             else:
               double_rooms = '-'
+            if not competitor[0]['platz_voll_pfl'] == '-':
+              beds = competitor[0]['platz_voll_pfl']
+            else:
+              beds = '-'
             if not single_rooms == '-':
               if not double_rooms == '-':
                 rooms = single_rooms + double_rooms
