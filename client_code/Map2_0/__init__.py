@@ -73,6 +73,7 @@ class Map2_0(Map2_0Template):
 
       if self.role == 'admin':
         self.admin_button.visible = 'visible'
+        self.db_upload.visible = 'visible'
 
       if self.role == 'guest':
         draggable = False
@@ -3850,7 +3851,18 @@ class Map2_0(Map2_0Template):
         self.file_loader_upload.clear()
         Functions.manipulate_loading_overlay(self, False)
         anvil.js.call('update_loading_bar', 0, '')
-    
+
+  # This Function is called when a DB Update should be done
+  def db_upload_change(self, file, **event_args):
+    splitted_file_name = file.name.split(' ')
+    if 'Betreutes' in splitted_file_name:
+      anvil.server.call('write_caredb_bw', file)
+    elif 'Pflegeheime' in splitted_file_name:
+      anvil.server.call('write_caredb_care', file)
+    else:
+      print('Uploaded incorrect File')
+    self.db_upload.clear()
+
   #####  Upload Functions   #####
   ###############################
   #####   Extra Functions   #####
