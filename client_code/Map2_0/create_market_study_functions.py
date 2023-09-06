@@ -1,9 +1,9 @@
 from anvil import *
 
 class Basic_App_Informations:
-  self.bounding_box = [0, 0, 0, 0]
   
   def __init__(self, map):
+    self.bounding_box = [0, 0, 0, 0]
     self.nursing_homes_checked = map.pdb_data_cb.checked
     self.assisted_living_checked = map.pdb_data_al.checked
     self.unique_code = server.call('get_unique_code')
@@ -25,9 +25,9 @@ class Basic_App_Informations:
 
 
 class Marker:
-  self.marker_context = None
   
   def __init__(self, map):
+    self.marker_context = None
     self.marker_coords_lng = dict(map.marker['_lngLat'])['lng']
     self.marker_coords_lat = dict(map.marker['_lngLat'])['lat']
     self.marker_coords = {
