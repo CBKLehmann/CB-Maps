@@ -2052,8 +2052,8 @@ market_study_data = {
                             'file': "img/plot1.png",
                             'settings': {
                                 'x_offset': 15,
-                                'x_scale': .6,
-                                'y_scale': .6
+                                'x_scale': .4,
+                                'y_scale': .4
                             }
                         },
                         'P22': {

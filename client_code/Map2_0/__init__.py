@@ -1442,9 +1442,9 @@ class Map2_0(Map2_0Template):
         list_occupancy_rate = []
         list_invest_cost = []
         list_mdk_grade = []
+        invest_plot_data = []
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
-          print(competitor)
           if 'home' in competitor:
             home_counter += 1
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
@@ -1584,6 +1584,8 @@ class Map2_0(Map2_0Template):
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
               list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
+            if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
+              invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
           
           else:
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
@@ -1719,9 +1721,11 @@ class Map2_0(Map2_0Template):
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
               list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
+            if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
+              invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1])
   
           current_row += 1
-
+        
         total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
         total_occupancy_rate = anvil.server.call("get_median", list_occupancy_rate)
         minimum_invest_cost = min(list_invest_cost)
@@ -2476,6 +2480,8 @@ class Map2_0(Map2_0Template):
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
               list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
+            if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
+              invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
           
           else:
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
@@ -2615,6 +2621,8 @@ class Map2_0(Map2_0Template):
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
               list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
+            if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
+              invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1])
   
           current_row += 1
 
@@ -3209,9 +3217,9 @@ class Map2_0(Map2_0Template):
               private_operator_al += 1
   
           current_row += 1
-
+      
       operator_chart_path = anvil.server.call('chart_test_3', [none_profit_operator_al, public_operator_al, private_operator_al], [none_profit_operator_nh, public_operator_nh, private_operator_nh], unique_code)
-      invest_cost_chart_path = anvil.server.call('chart_test_4', minimum_invest_cost, maximum_invest_cost, total_invest_cost, home_invest, unique_code)
+      invest_cost_chart_path = anvil.server.call('chart_test_6', invest_plot_data, unique_code)
       purchasing_power_chart_path = anvil.server.call('chart_test_5', purchase_power, unique_code)
 
       max_pages = competitor_analysis_pages[-1] + 3 
