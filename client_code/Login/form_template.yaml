@@ -70,9 +70,9 @@ components:
       layout_properties: {row: TYLETP, width_xs: 3, col_xs: 2, width: 636.656}
     - type: CheckBox
       properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
-        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: false,
-        text: Remember Me, font_size: null, font: '', spacing_above: small, spacing_below: small,
-        italic: false, background: '', bold: false, checked: false, underline: false}
+        foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: Remember Me,
+        font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+        background: '', bold: false, checked: false, underline: false}
       name: remember_me
       layout_properties: {row: EWVUQI, width_xs: 8, col_xs: 2, width: 636.667, grid_position: 'KCRKQA,VGFNAQ'}
       event_bindings: {}
