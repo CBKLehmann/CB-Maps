@@ -4349,16 +4349,21 @@ class Map2_0(Map2_0Template):
               if topic == "nursing_homes":
                 if not entry['anz_vers_pat'] == "-":
                   anz_vers_pat = int(entry['anz_vers_pat'])
+                else:
+                  anz_vers_pat = "-"
                   
                 if not entry['platz_voll_pfl'] == "-":
                   platz_voll_pfl = int(entry['platz_voll_pfl'])
+                else:
+                  platz_voll_pfl = "-"
                   
-                if not anz_vers_pat == "-" and not platz_voll_pfl == "-":
+                if not entry['anz_vers_pat'] == "-" and not entry['platz_voll_pfl'] == "-":
                   occupancy_raw = anz_vers_pat / platz_voll_pfl
                   if occupancy_raw > 1:
                     occupancy_raw = 1
                 else:
                   occupancy = "-"
+                  occupancy_raw = "-"
                   
                 if not entry['invest'] == "-":
                   if len(entry['invest']) == 4:
@@ -4368,6 +4373,8 @@ class Map2_0(Map2_0Template):
                       invest = entry['invest']
                   else:
                     invest = entry['invest']
+                else:
+                  invest = "-"
                     
                 data = {
                   "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
