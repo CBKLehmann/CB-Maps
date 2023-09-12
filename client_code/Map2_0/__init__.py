@@ -461,6 +461,15 @@ class Map2_0(Map2_0Template):
       # anvil.server.call('micmaccircle')
       # anvil.server.call('manipulate')
 
+      addresses = [
+        "Im Lerchenfeld 3, 07743 Jena",
+        "Brauereihof 19, 13585 Berlin",
+        "Sächsische Str. 46, 10707 Berlin",
+        "Belziger Str. 53 c, 10823 Berlin",
+        "Bennigsenstr. 23/24, 12159 Berlin",
+        "Britzer Damm 140, 12347 Berlin"
+      ]
+      
       ''' Get Population of every Municipalitie inside Iso-Layer '''
       # sendData = anvil.server.call('separate_iso', Variables.activeIso)
       
@@ -4484,6 +4493,11 @@ class Map2_0(Map2_0Template):
           icon = f'{index + 1}Nursing@0.75x.png'
           for al_index, al_coordinate in enumerate(al_sorted_coords):
             if anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(al_coordinate[0]['coords'][0]), float(al_coordinate[0]['coords'][1])]) <= 0.01:
+              print('##################################')
+              print(index + 1)
+              print(coordinate)
+              print(al_index + 1)
+              print(al_coordinate)
               icon = f'Nursing{index + 1}@0.75x.png'
           url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
