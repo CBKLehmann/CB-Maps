@@ -17,16 +17,19 @@ class Login(LoginTemplate):
       self.user = anvil.users.get_user()
 
   def form_show(self, **event_args):
-    hash = get_url_hash()
-    if len(hash) > 0:
-      open_form('Map2_0', role='guest')
+    if self.user is not None:
+      open_form('Map2_0', role=self.user['role'])
     else:
-      self.login_grid.visible = True
-      width = anvil.js.window.innerWidth if anvil.js.window.innerWidth > 0 else anvil.js.screen.width;
-      height = anvil.js.window.innerHeight if anvil.js.window.innerHeight > 0 else anvil.js.screen.height;
-      if width <= 998:
-        self.email_icon.visible = False
-        self.password_icon.visible = False
+      hash = get_url_hash()
+      if len(hash) > 0:
+        open_form('Map2_0', role='guest')
+      else:
+        self.login_grid.visible = True
+        width = anvil.js.window.innerWidth if anvil.js.window.innerWidth > 0 else anvil.js.screen.width;
+        height = anvil.js.window.innerHeight if anvil.js.window.innerHeight > 0 else anvil.js.screen.height;
+        if width <= 998:
+          self.email_icon.visible = False
+          self.password_icon.visible = False
     
   
   def login_click(self, **event_args):
@@ -38,9 +41,9 @@ class Login(LoginTemplate):
           Functions.manipulate_loading_overlay(self, False)
           alert('Please update your password using the link in the email you received.', dismissible=False, large=True, role='custom_alert_big')
         else:
-          user = anvil.users.login_with_email(self.email_input.text, self.passwort_input.text, remember=self.remember_me.checked)
-          if user:
-            open_form('Map2_0', role=dict(user)['role'])
+          self.user = anvil.users.login_with_email(self.email_input.text, self.passwort_input.text, remember=self.remember_me.checked)
+          if self.user:
+            open_form('Map2_0', role=self.user['role'])
             Functions.manipulate_loading_overlay(self, False)
       except anvil.users.AuthenticationFailed:
           self.error.visible = True

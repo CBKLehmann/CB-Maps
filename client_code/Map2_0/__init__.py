@@ -4480,22 +4480,24 @@ class Map2_0(Map2_0Template):
 
       for index, coordinate in enumerate(nh_sorted_coords):
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
-      		counter += 1
-      		icon = f'{index + 1}Nursing@0.75x.png'
-      		for al_coordinate in al_sorted_coords:
-      			if coordinate[1] == al_coordinate[1]:
-      				icon = f'Nursing{index + 1}@0.75x.png'
-      		url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
-      		encoded_url = url.replace("/", "%2F")
-      		if index == len(nh_sorted_coords) - 1 or counter == 20:
-      			if not counter == 1:
-      				request_static_map += f"%2C"
-      			request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+          counter += 1
+          icon = f'{index + 1}Nursing@0.75x.png'
+          for al_coordinate in al_sorted_coords:
+            print(coordinate[1])
+            print(al_coordinate[1])
+            if coordinate[1] == al_coordinate[1]:
+              icon = f'Nursing{index + 1}@0.75x.png'
+          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
+          encoded_url = url.replace("/", "%2F")
+          if index == len(nh_sorted_coords) - 1 or counter == 20:
+            if not counter == 1:
+              request_static_map += f"%2C"
+            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
       			# counter = 0
-      			request.append(request_static_map)
-      			request_static_map = request_static_map_raw
-      		else:
-      			if not counter == 1:
+            request.append(request_static_map)
+            request_static_map = request_static_map_raw
+          else:
+            if not counter == 1:
       				request_static_map += f"%2C"
       			request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
       	last_coord_dist = coordinate[1]
@@ -4543,45 +4545,6 @@ class Map2_0(Map2_0Template):
       				request_static_map += f"%2C"
       			request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
       	last_coord_dist = coordinate[1]
-      
-      # for coordinate in al_sorted_coords:
-      #   if not 'home' in coordinate:
-      #     if complete_counter <= 20 and not last_coord_dist == coordinate[1]:
-      #       counter += 1
-      #       icon = f'{counter}@0.75x.png'
-      #       for nh_coordinate in nh_sorted_coords:
-      #         if coordinate[1] == nh_coordinate[1]:
-      #           icon = f'Assisted{counter}@0.75x.png'
-      #       url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
-      #       encoded_url = url.replace("/", "%2F")
-      #       if complete_counter == len(al_sorted_coords) - 1:
-      #           if not coordinate[0]['coords'] == last_coords and not 'home' in coordinate:
-      #             if not counter == 1:
-      #               request_static_map += f"%2C"
-      #             request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
-      #           counter = 0
-      #           if not request_static_map == request_static_map_raw:
-      #             request_static_map += f"%2C"
-      #           url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
-      #           encoded_url = url.replace("/", "%2F")
-      #           request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{al_data['marker_coords']['lng']},{al_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
-      #           print('Inside Assisted')  
-      #           request.append(request_static_map)
-      #           request_static_map = request_static_map_raw
-      #           index_coords -= 1
-      #       elif not 'home' in coordinate:
-      #         if not coordinate[0]['coords'] == last_coords:
-      #           if not counter == 1:
-      #             request_static_map += f"%2C"
-      #           request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
-      #         else:
-      #           dupe_coord = True
-      #     last_coord_dist = coordinate[1]
-            
-      #     complete_counter += 1
-      #     last_coords = coordinate[0]['coords']
-
-      # print(len(request))
       
       if request == []:
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
