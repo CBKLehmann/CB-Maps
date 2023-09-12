@@ -1353,6 +1353,7 @@ class Map2_0(Map2_0Template):
       home_invest = -1
       complied_regulations = 0
       uncomplied_regulations = 0
+      invest_plot_data = []
       
       if total_amount <= 13:
         # Single Page
@@ -1442,7 +1443,6 @@ class Map2_0(Map2_0Template):
         list_occupancy_rate = []
         list_invest_cost = []
         list_mdk_grade = []
-        invest_plot_data = []
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if 'home' in competitor:
