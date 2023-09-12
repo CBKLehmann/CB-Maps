@@ -4482,10 +4482,8 @@ class Map2_0(Map2_0Template):
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
           icon = f'{index + 1}Nursing@0.75x.png'
-          for al_coordinate in al_sorted_coords:
-            print(coordinate[1])
-            print(al_coordinate[1])
-            if coordinate[1] == al_coordinate[1]:
+          for al_index, al_coordinate in enumerate(al_sorted_coords):
+            if anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(al_coordinate[0]['coords'][0]), float(al_coordinate[0]['coords'][1])]) <= 0.01:
               icon = f'Nursing{index + 1}@0.75x.png'
           url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
@@ -4499,7 +4497,7 @@ class Map2_0(Map2_0Template):
           else:
             if not counter == 1:
       				request_static_map += f"%2C"
-      			request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
       	last_coord_dist = coordinate[1]
 
       counter = 0
@@ -4526,25 +4524,25 @@ class Map2_0(Map2_0Template):
 
       for index, coordinate in enumerate(al_sorted_coords):
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
-      		counter += 1
-      		icon = f'{index + 1}@0.75x.png'
-      		for nh_coordinate in nh_sorted_coords:
-      			if coordinate[1] == nh_coordinate[1]:
-      				icon = f'Assisted{index + 1}@0.75x.png'
-      		url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
-      		encoded_url = url.replace("/", "%2F")
-      		if index == len(al_sorted_coords) - 1 or counter == 20:
-      			if not counter == 1:
-      				request_static_map += f"%2C"
-      			request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-      			# counter = 0
-      			request.append(request_static_map)
-      			request_static_map = request_static_map_raw
-      		else:
-      			if not counter == 1:
-      				request_static_map += f"%2C"
-      			request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
-      	last_coord_dist = coordinate[1]
+          counter += 1
+          icon = f'{index + 1}@0.75x.png'
+          for nh_index, nh_coordinate in enumerate(nh_sorted_coords):
+            if anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(nh_coordinate[0]['coords'][0]), float(nh_coordinate[0]['coords'][1])]) <= 0.01:
+              icon = f'Assisted{index + 1}@0.75x.png'
+            url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
+          encoded_url = url.replace("/", "%2F")
+          if index == len(al_sorted_coords) - 1 or counter == 20:
+            if not counter == 1:
+              request_static_map += f"%2C"
+            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+            # counter = 0
+            request.append(request_static_map)
+            request_static_map = request_static_map_raw
+          else:
+            if not counter == 1:
+              request_static_map += f"%2C"
+            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+        last_coord_dist = coordinate[1]
       
       if request == []:
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
