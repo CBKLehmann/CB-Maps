@@ -2036,27 +2036,19 @@ market_study_data = {
                         14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50,
                         14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 7.50, 7.50, 7.50, 11.50, 27.00, 18.00, 15.00,
                         18.00, 15.00, 32.50, 31.00, 15.00, 15.00, 15.00, 15.00, 40.50, 16.50, 9.00
-                    ],
-                    'columns_to_fill': [
-                        'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-                        'T', 'U', 'V', 'W', 'X', 'Y'
-                    ],
-                    'rows_to_fill': (36, 51),
-                    'fill_format': {
-                        'base': "background"
-                    }
+                    ]
                 },
                 'cell_content': {
                     'images': {
-                        'P11': {
+                        'P14': {
                             'file': "img/plot1.png",
                             'settings': {
                                 'x_offset': 15,
-                                'x_scale': .4,
-                                'y_scale': .4
+                                'x_scale': .8,
+                                'y_scale': .8
                             }
                         },
-                        'P22': {
+                        'C37': {
                             'file': "img/plot2.png",
                             'settings': {
                                 'x_offset': 15,
@@ -2196,30 +2188,6 @@ market_study_data = {
                         'Q13': {
                             'text': "Invest costs in nursing homes",
                             'format': "normal_text"
-                        },
-                        'C44': {
-                            'text': "Single room quota (min.)",
-                            'format': "table_row_heading"
-                        },
-                        'C45': {
-                            'text': "Maximum home size",
-                            'format': "table_row_heading"
-                        },
-                        'C46': {
-                            'text': "Minimum room size (SR/DR)",
-                            'format': "table_row_heading"
-                        },
-                        'C47': {
-                            'text': "Minimum common area/ residential",
-                            'format': "table_row_heading"
-                        },
-                        'C48': {
-                            'text': "Comment",
-                            'format': "table_row_heading"
-                        },
-                        'C49': {
-                            'text': "Legal basis",
-                            'format': "table_row_heading"
                         }
                     },
                     'merge_cells': {
@@ -2243,83 +2211,216 @@ market_study_data = {
                             'text': "Prices",
                             'format': "smaller_heading"
                         },
-                        'Q20:X24': {
+                        'Q31:X36': {
                             'text': "The investment cost rates of the facilities within the catchment area range between €5.50 and €35.60. The median investment cost amount to €10.50. The investment costs at the facility, that is subject to this study amounts to €9.90.",
                             'format': "mass_text"
                         },
-                        'C37:S37': {
+                        'C38:O39': {
+                            'text': "Purchasing power index (municipality)",
+                            'format': "smaller_heading"
+                        }
+                    }
+                }
+            },
+            'REGULATIONS': {
+                'settings': {
+                    'area': "A1:Y50",
+                    'column_width': [
+                        2.09, 2.09, 2.09, 2.09, 0.78, 0.50, 2.09, 2.09, 2.09, 2.09, 2.09, 2.09, 5.18, 6.55, 6.55,
+                        4.82, 12.55, 0.17, 3.18, 14.64, 2.09, 2.09, 2.09, 5.91, 2.09
+                    ],
+                    'row_height': [
+                        16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 11.50, 27.00, 18.00, 15.00,
+                        18.00, 15.00, 32.50, 31.00, 15.00, 15.00, 15.00, 15.00, 40.50, 16.50, 9.00, 32.50, 18.00, 
+                        32.50, 18.00, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 
+                        14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 7.50, 7.50
+                    ],
+                    'columns_to_fill': [
+                        'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+                        'T', 'U', 'V', 'W', 'X', 'Y'
+                    ],
+                    'rows_to_fill': (9, 24),
+                    'fill_format': {
+                        'base': "background"
+                    }
+                },
+                'cell_content': {
+                    'textboxes': {
+                        'A1': {
+                            'text': "Capital Bay Group   |",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                }
+                            }
+                        },
+                        'E1_A': {
+                            'text': "Market Study",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 26
+                            }
+                        },
+                        'E1_B': {
+                            'text': "CARE",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True,
+                                    'color': "#C8B058"
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 96
+                            }
+                        },
+                        'W1': {
+                            'text': "3 | 7",
+                            'settings': {
+                                'font': {
+                                    'name': "Segoe UI",
+                                    'size': 9,
+                                    'bold': True
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'align': {
+                                    'text': 'right'
+                                },
+                                'width': 65
+                            }
+                        }
+                    },
+                    'cells': {
+                        'C15': {
+                            'text': "Single room quota (min.)",
+                            'format': "table_row_heading"
+                        },
+                        'C16': {
+                            'text': "Maximum home size",
+                            'format': "table_row_heading"
+                        },
+                        'C17': {
+                            'text': "Minimum room size (SR/DR)",
+                            'format': "table_row_heading"
+                        },
+                        'C18': {
+                            'text': "Minimum common area/ residential",
+                            'format': "table_row_heading"
+                        },
+                        'C19': {
+                            'text': "Comment",
+                            'format': "table_row_heading"
+                        },
+                        'C20': {
+                            'text': "Legal basis",
+                            'format': "table_row_heading"
+                        }
+                    },
+                    'merge_cells': {
+                        'C4:X5': {
+                            'text': "Bad Rappenau",
+                            'format': "place_heading_format"
+                        },
+                        'C6:X7': {
+                            'text': "REGULATIONS",
+                            'format': "situation_heading_format"
+                        },
+                        'C10:S10': {
                             'text': "Regulations of federal state",
                             'format': "small_heading_background"
                         },
-                        'C39:X41': {
+                        'C12:X14': {
                             'text': "This market study consideres X nursing homes within the vicinity of X minutes driving/walking/cycling. Thereof, Y facilities comply with the federal state regulations and Z facilities that do not fullfill the federal requirements. Assumuning that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to Z.",
                             'format': "mass_text_background"
                         },
-                        'C42:N42': {
+                        'C15:N15': {
                             'text': "Federal state",
                             'format': "smaller_heading_background"
                         },
-                        'O42:X42': {
+                        'O15:X15': {
                             'text': "Baden-Wurttemberg",
                             'format': "blue_heading"
                         },
-                        'O43:S43': {
+                        'O16:S16': {
                             'text': "New",
                             'format': "table_heading"
                         },
-                        'O44:S44': {
+                        'O17:S17': {
                             'text': "100%",
                             'format': "table_normal_text"
                         },
-                        'O45:S45': {
+                        'O18:S18': {
                             'text': "100 beds",
                             'format': "table_normal_text"
                         },
-                        'O46:S46': {
+                        'O19:S19': {
                             'text': "14 sqm/ 16 sqm¹",
                             'format': "table_normal_text"
                         },
-                        'O47:S47': {
+                        'O20:S20': {
                             'text': "5 sqm, min 2/3 for living spaces",
                             'format': "table_normal_text"
                         },
-                        'O48:S48': {
+                        'O21:S21': {
                             'text': "/",
                             'format': "table_normal_text"
                         },
-                        'O49:S49': {
+                        'O22:S22': {
                             'text': "WTPG, LHeimBauVO",
                             'format': "table_normal_text"
                         },
-                        'Q25:X26': {
-                            'text': "Purchasing power index (municipality)",
-                            'format': "smaller_heading"
-                        },
-                        'T43:X43': {
+                        'T16:X16': {
                             'text': "Existing",
                             'format': "table_heading"
                         },
-                        'T44:X44': {
+                        'T17:X17': {
                             'text': "100% (as of 2019)",
                             'format': "table_normal_text"
                         },
-                        'T45:X45': {
+                        'T18:X18': {
                             'text': "100 beds",
                             'format': "table_normal_text"
                         },
-                        'T46:X46': {
+                        'T19:X19': {
                             'text': "14 sqm/ 16 sqm",
                             'format': "table_normal_text"
                         },
-                        'T47:X47': {
+                        'T20:X20': {
                             'text': "5 sqm, min 2/3 for living spaces",
                             'format': "table_normal_text"
                         },
-                        'T48:X48': {
+                        'T21:X21': {
                             'text': "Transition period 10 years can be extended to 25 years",
                             'format': "table_normal_text"
                         },
-                        'T49:X49': {
+                        'T22:X22': {
                             'text': "WTPG, LHeimBauVO",
                             'format': "table_normal_text"
                         }

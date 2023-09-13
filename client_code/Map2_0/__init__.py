@@ -3262,6 +3262,7 @@ class Map2_0(Map2_0Template):
       contact_page = methodic_page + 1
       
       market_study_pages.append("GOOD TO KNOW")
+      market_study_pages.append("REGULATIONS")
       market_study_pages.append("METHODIC")
       market_study_pages.append("CONTACT")
       
@@ -3273,7 +3274,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O15']['text'] = anvil.server.call('get_median', list_beds) if len(list_beds) > 0 else '-'
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O16']['text'] = anvil.server.call('get_median', list_years_of_construction_nh) if len(list_years_of_construction_nh) > 0 else '-'
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = anvil.server.call('get_median', list_years_of_construction_al) if len(list_years_of_construction_al) > 0 else '-'
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C39:X41']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, {complied_regulations} facilities comply with the federal state regulations and {uncomplied_regulations} facilities that do not fullfill the federal requirements. Assumuning that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C39:X41']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, {complied_regulations} facilities comply with the federal state regulations and {uncomplied_regulations} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O42:X42']['text'] = regulations['federal_state']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O44:S44']['text'] = f"{int(regulations['New']['sr_quote_raw'] * 100)}%" if not type(regulations['New']['sr_quote_raw']) == str else regulations['New']['sr_quote_raw']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O45:S45']['text'] = regulations['New']['max_beds_raw']
@@ -4178,7 +4179,13 @@ class Map2_0(Map2_0Template):
             if not counter == 1:
       				request_static_map += f"%2C"
             request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
-      	last_coord_dist = coordinate[1]
+      	elif index == len(nh_sorted_coords) - 1:
+          if not counter == 1:
+              request_static_map += f"%2C"
+          request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+          # counter = 0
+          request.append(request_static_map)
+        last_coord_dist = coordinate[1]
 
       counter = 0
       request_static_map = request_static_map_raw
@@ -4203,6 +4210,8 @@ class Map2_0(Map2_0Template):
       last_coord_dist = 0
       
       for index, coordinate in enumerate(al_sorted_coords):
+        print(index)
+        print(coordinate)
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
           complete_counter += 1
@@ -4223,6 +4232,12 @@ class Map2_0(Map2_0Template):
             if not counter == 1:
               request_static_map += f"%2C"
             request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
+        elif index == len(al_sorted_coords) - 1:
+          if not counter == 1:
+              request_static_map += f"%2C"
+          request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+          # counter = 0
+          request.append(request_static_map)
         last_coord_dist = coordinate[1]
         
       url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
