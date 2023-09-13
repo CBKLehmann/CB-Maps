@@ -788,7 +788,7 @@ class Map2_0(Map2_0Template):
 
       Functions.manipulate_loading_overlay(self, False)
       anvil.js.call('update_loading_bar', 35, 'Waiting for User Input')
-
+      
       #Get organized Coords for Nursing Homes
       coords_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', lng_lat_marker)
       
@@ -1117,7 +1117,7 @@ class Map2_0(Map2_0Template):
 
       population_trend = "{:.1f}".format(((people_u80_fc_35 + people_o80_fc_35) * 100) / (people_u80 + people_o80) - 100)
       if float(population_trend) < 0:
-        population_trend_string = f"-{population_trend}%"
+        population_trend_string = f"{population_trend}%"
       else:
         population_trend_string = f"+{population_trend}%"
 
@@ -1452,6 +1452,8 @@ class Map2_0(Map2_0Template):
         list_occupancy_rate = []
         list_invest_cost = []
         list_mdk_grade = []
+        prev_competitor_distance = 0
+        prev_competitor_index = 0
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if 'home' in competitor:
@@ -1597,6 +1599,10 @@ class Map2_0(Map2_0Template):
               invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
           
           else:
+            if not prev_competitor_distance == competitor[1]:
+              prev_competitor_distance = competitor[1]
+              prev_competitor_index += 1
+              
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
               'text': index + 1 - home_counter,
               'format': 'row_number'
@@ -1783,6 +1789,8 @@ class Map2_0(Map2_0Template):
         }
 
         current_row += 1
+        prev_competitor_distance = 0
+        prev_competitor_index = 0
         
         for index, competitor in enumerate(data_comp_analysis_al['data']):
           home_counter = 0
@@ -1872,6 +1880,10 @@ class Map2_0(Map2_0Template):
               private_operator_al += 1
             
           else:
+            if not prev_competitor_distance == competitor[1]:
+              prev_competitor_distance = competitor[1]
+              prev_competitor_index += 1
+              
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
               'text': index + 1 - home_counter,
               'format': 'row_number_al'
@@ -1969,6 +1981,8 @@ class Map2_0(Map2_0Template):
         list_occupancy_rate = []
         list_invest_cost = []
         list_mdk_grade = []
+        prev_competitor_distance = 0
+        prev_competitor_index = 0
         page = 1
         sheet_name = f"COMPETITOR ANALYSIS {page}"
         market_study_pages.append(sheet_name)
@@ -2159,6 +2173,7 @@ class Map2_0(Map2_0Template):
         market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
+          
           if index % 15 == 0 and not index == 0:
             competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
             page += 1
@@ -2493,8 +2508,12 @@ class Map2_0(Map2_0Template):
               invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
           
           else:
+            if not prev_competitor_distance == competitor[1]:
+              prev_competitor_distance = competitor[1]
+              prev_competitor_index += 1
+            
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
-              'text': index + 1 - home_counter,
+              'text': prev_competitor_index,
               'format': 'row_number'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'E{current_row}'] = {
@@ -2680,6 +2699,8 @@ class Map2_0(Map2_0Template):
         # Assisted Living Pages
         current_row = 11
         home_counter = 0
+        prev_competitor_distance = 0
+        prev_competitor_index = 0
         competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
         page += 1
         sheet_name = f"COMPETITOR ANALYSIS {page}"
@@ -3142,6 +3163,10 @@ class Map2_0(Map2_0Template):
               private_operator_al += 1
             
           else:
+            if not prev_competitor_distance == competitor[1]:
+              prev_competitor_distance = competitor[1]
+              prev_competitor_index += 1
+              
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
               'text': index + 1 - home_counter,
               'format': 'row_number_al'
@@ -3262,7 +3287,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T47:X47']['text'] = regulations['Existing']['min_common_area_resident']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q20:X24']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{total_invest_cost}. {f'The investment costs at the facility, that is subject to this study amounts to €{home_invest}.' if not home_invest == -1 else ''}"
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q20:X24']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{'{:.2f}'.format(total_invest_cost)}. {f'The investment costs at the facility, that is subject to this study amounts to €{home_invest}.' if not home_invest == -1 else ''}"
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A16']['file'] = operator_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P11']['file'] = invest_cost_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P22']['file'] = purchasing_power_chart_path
@@ -3274,388 +3299,18 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['textboxes']['W1']['text'] = f"{good_to_know_page} | {max_pages}"
       market_study_data['pages']['METHODIC']['cell_content']['textboxes']['Y1']['text'] = f"{methodic_page} | {max_pages}"
       market_study_data['pages']['CONTACT']['cell_content']['textboxes']['Y1']['text'] = f"{contact_page} | {max_pages}"
-
-      # #####Finalising Data#####
-
-      Functions.manipulate_loading_overlay(self, True)
-      anvil.js.call('update_loading_bar', 75, 'Finalising Data for Market Study')
-        
-      ##### Analysis Addition to Market Study #####
-  
-      # home_facilities = []
-      
-      # ez_rate_asset = 0
-      # i_cost_asset = 0
-      # occupancy_asset = 0
-      # year_of_construction_asset = 0
-      # ez_total_comp = 0
-      # room_total_comp = 0
-      # ez_weight_avg_comp = 0
-      
-      # for entry in data_comp_analysis_nh['data']:
-      #   if entry[len(entry) - 1] == 'home':
-      #     home_facilities.append(entry)
-      #     if entry[0]['ez'] == '-':
-      #       ez_rate_asset = 0
-      #     elif entry[0]['dz'] == '-':
-      #       ez_rate_asset = 100
-      #     else:
-      #       ez_rate_asset = round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz'])))
-      #     if not entry[0]['invest'] == '-':
-      #       i_cost_asset = float(entry[0]['invest'])
-      #     else:
-      #       i_cost_asset = 0
-      #     if not entry[0]['occupancy'].split(" ")[0] == '-':
-      #       occupancy_asset = int(entry[0]['occupancy'].split(" ")[0])
-      #     else:
-      #       occupancy_asset = 0
-      #     year_of_construction_asset = entry[0]['baujahr']
-      #   else:
-      #     if entry[0]['dz'] == '-':
-      #       if not entry[0]['ez'] == '-':
-      #         ez_total_comp += int(entry[0]['ez'])
-      #         room_total_comp += int(entry[0]['ez'])
-      #     elif not entry[0]['ez'] == '-':
-      #       ez_total_comp += int(entry[0]['ez'])
-      #       room_total_comp += (int(entry[0]['ez']) + int(entry[0]['dz']))
-          # if not entry[0]['invest'] == 'N/A':
-          #   i_cost_comp += float(entry[0]['invest'])
-          #   i_cost_comp_amount += 1
-          # if not entry[0]['occupancy'] == 'N/A':
-          #   occupancy_comp += float(entry[0]['occupancy'].split(" ")[0])
-          #   occupancy_comp_amount += 1
-          # if not entry[0]['baujahr'] == 'N/A':
-          #   year_of_construction_comp += entry[0]['baujahr']
-          #   year_of_construction_comp_amount += 1
-  
-      # if not ez_total_comp == 0 or not  room_total_comp == 0:
-      #   ez_weight_avg_comp = round(100 + (((ez_total_comp / room_total_comp) - 1) * 100))
-      # else:
-      #   ez_weight_avg_comp = 0
-        
-      ###Old###
-      # ez_rate_asset = 0
-      # ez_rate_comp = 0
-      # ez_comp_amount = 0
-      # ez_rate_state = 0
-      # ez_state_amount = 0
-      # i_cost_asset = 0
-      # i_cost_comp = 0
-      # i_cost_comp_amount = 0
-      # i_cost_state = 0
-      # i_cost_state_amount = 0
-      # occupancy_asset = 0
-      # occupancy_comp = 0
-      # occupancy_comp_amount = 0
-      # occupancy_state = 0
-      # occupancy_state_amount = 0
-      # year_of_construction_asset = 0
-      # year_of_construction_comp = 0
-      # year_of_construction_comp_amount = 0
-      # year_of_construction_state = 0
-      # year_of_construction_state_amount = 0
-  
-      # home_facilities = []
-      
-      # for entry in data_comp_analysis_nh['data']:
-      #   if entry[len(entry) - 1] == 'home':
-      #     home_facilities.append(entry)
-      #     if entry[0]['ez'] == 'N/A':
-      #       ez_rate_asset = 0
-      #     elif entry[0]['dz'] == 'N/A':
-      #       ez_rate_asset = 100
-      #     else:
-      #       ez_rate_asset = round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz'])))
-      #     i_cost_asset = float(entry[0]['invest'])
-      #     occupancy_asset = int(entry[0]['occupancy'].split(" ")[0])
-      #     year_of_construction_asset = entry[0]['baujahr']
-      #   else:
-      #     if entry[0]['dz'] == 'N/A':
-      #       if not entry[0]['ez'] == 'N/A':
-      #         print(entry[0]['ez'])
-      #         print('##############################')
-      #         ez_rate_comp += 100
-      #         ez_comp_amount += int(entry[0]['ez'])
-      #     elif not entry[0]['ez'] == 'N/A':
-      #       print(entry[0]['ez'])
-      #       print(entry[0]['dz'])
-      #       ez_rate_comp += round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz'])))
-      #       ez_comp_amount += int(entry[0]['ez'])
-      #       print(round((int(entry[0]['ez']) * 100) / (int(entry[0]['ez']) + int(entry[0]['dz']))))
-      #       print('##############################')
-      #     if not entry[0]['invest'] == 'N/A':
-      #       i_cost_comp += float(entry[0]['invest'])
-      #       i_cost_comp_amount += 1
-      #     if not entry[0]['occupancy'] == 'N/A':
-      #       occupancy_comp += float(entry[0]['occupancy'].split(" ")[0])
-      #       occupancy_comp_amount += 1
-      #     if not entry[0]['baujahr'] == 'N/A':
-      #       year_of_construction_comp += entry[0]['baujahr']
-      #       year_of_construction_comp_amount += 1
-  
-      # if not ez_comp_amount == 0:
-      #   ez_rate_comp = round(ez_rate_comp / ez_comp_amount)
-      # else:
-      #   ez_rate_comp = 0
-      # if not i_cost_comp_amount == 0:
-      #   i_cost_comp = round(i_cost_comp / i_cost_comp_amount, 2)
-      # else:
-      #   i_cost_comp = 0
-      # if not occupancy_comp_amount == 0:
-      #   occupancy_comp = round(occupancy_comp /occupancy_comp_amount)
-      # else:
-      #   occupancy_comp = 0
-      # if not year_of_construction_comp_amount == 0:
-      #   year_of_construction_comp = round(year_of_construction_comp / year_of_construction_comp_amount)
-      # else:
-      #   year_of_construction_comp = 0
-  
-      # nursing_homes_federal_state = anvil.server.call('get_nursing_homes_federal_states', federal_state)
-  
-      # home = False
-      # for nursing_home in nursing_homes_federal_state:
-      #   # print(nursing_home)
-      #   for facility in home_facilities:
-      #     if facility[0]['name'] == nursing_home['name']:
-      #       home = True
-      #   if not home:
-      #     if not nursing_home['ez'] == '-':
-      #       ez_rate_state += int(nursing_home['ez'])
-      #       ez_state_amount += 1
-      #     if not nursing_home['invest'] == '-':
-      #       i_cost_state += float(nursing_home['invest'])
-      #       i_cost_state_amount += 1
-      #     if not nursing_home['anz_vers_pat'] == '-' and not nursing_home['platz_voll_pfl'] == '-':
-      #       occupancy_state += float((int(nursing_home['anz_vers_pat']) * 100) / int(nursing_home['platz_voll_pfl']))
-      #       occupancy_state_amount += 1
-      #     if not nursing_home['baujahr'] == '-':
-      #       year_of_construction_state += int(nursing_home['baujahr'])
-      #       year_of_construction_state_amount += 1
-      #   else:
-      #     home = False
-  
-      # if not ez_state_amount == 0:
-      #   ez_rate_state = round(ez_rate_state / ez_state_amount)
-      # else:
-      #   ez_rate_state = 0
-      # if not i_cost_state_amount == 0:
-      #   i_cost_state = round(i_cost_state / i_cost_state_amount, 2)
-      # else:
-      #   i_cost_state = 0
-      # if not occupancy_state_amount == 0:
-      #   occupancy_state = round(occupancy_state /occupancy_state_amount)
-      # else:
-      #   occupancy_state = 0
-      # if not year_of_construction_state_amount == 0:
-      #   year_of_construction_state = round(year_of_construction_state / year_of_construction_state_amount)
-      # else:
-      #   year_of_construction_state = 0
-      
-      # print('###### Asset ######')
-      # print(f'ez_rate_asset: {ez_rate_asset}')
-      # print(f'i_cost_asset: {i_cost_asset}')
-      # print(f'occupancy_asset: {occupancy_asset}')
-      # print(f'year_of_construction_asset: {year_of_construction_asset}')
-      # print('###### Competitors ######')
-      # print(f'ez_rate_comp: {ez_rate_comp}')
-      # print(f'ez_comp_amount: {ez_comp_amount}')
-      # print(f'i_cost_comp: {i_cost_comp}')
-      # print(f'i_cost_comp_amount: {i_cost_comp_amount}')
-      # print(f'occupancy_comp: {occupancy_comp}')
-      # print(f'occupancy_comp_amount: {occupancy_comp_amount}')
-      # print(f'year_of_construction_comp: {year_of_construction_comp}')
-      # print(f'year_of_construction_comp_amount: {year_of_construction_comp_amount}')
-      # print('###### Federal State ######')
-      # print(f'ez_rate_state: {ez_rate_state}')
-      # print(f'ez_state_amount: {ez_state_amount}')
-      # print(f'i_cost_state: {i_cost_asset}')
-      # print(f'i_cost_comp_amount: {i_cost_state_amount}')
-      # print(f'occupancy_state: {occupancy_state}')
-      # print(f'occupancy_state_amount: {occupancy_state_amount}')
-      # print(f'year_of_construction_state: {year_of_construction_state}')
-      # print(f'year_of_construction_state_amount: {year_of_construction_state_amount}')
         
     ##### Analysis Addition to Market Study #####
 
       # #####Create Market Study as Excel and PDF#####
-      
+
+      Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
 
       all_data = self.build_competitor_map_request(coords_nh, coords_al)
       anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
       anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, all_data['request'])
-
-      # anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'], data_comp_analysis_al['request'], cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, checkboxes, reg_frame)
-  
-      # if not Variables.tm_mode:
-      #   #Create Charts and Static Map for Analysis
-      #   values_pie_ca = [{"topic": "Median Nursing charge (PG 3) in €", "value": pg3_median}, {"topic": "Median Specific co-payment in €", "value": copayment_median}, {"topic": "Median Invest Cost in €", "value": invest_median}, {"topic": "Median Board and lodging in €", "value": board_median}]
-      #   anvil.server.call("create_pie_chart", values_pie_ca, f"donut_ca_{unique_code}", 'donut_ca')
-      #   values_pie_sum = [{"topic": "% Public operators", "value": len(operator_public)}, {"topic": "% Non-profit operators", "value": len(operator_nonProfit)}, {"topic": "% Private operators", "value": len(operator_private)}]
-      #   anvil.server.call("create_pie_chart", values_pie_sum, f"donut_sum_{unique_code}", 'other_donut')
-      #   values_bar_sum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030 Scenario 1", "value": inpatients_fc}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2030", "value": beds_adjusted}, {"topic": "Number of inpatients forecast 2035 Scenario 1", "value": inpatients_fc_35}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2035", "value": beds_adjusted}]
-      #   anvil.server.call("create_bar_chart", values_bar_sum, f"bar_v1_{unique_code}")
-      #   values_bar_sum = [{"topic": "Number of inpatients", "value": inpatients}, {"topic": "Beds", "value": beds_active}, {"topic": "Number of inpatients forecast 2030 Scenario 2", "value": inpatients_fc_v2}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2030", "value": beds_adjusted}, {"topic": "Number of inpatients forecast 2035 Scenario 2", "value": inpatients_fc_35_v2}, {"topic": "Adjusted number of beds<br>(incl. beds in planning and under construction) 2035", "value": beds_adjusted}]
-      #   anvil.server.call("create_bar_chart", values_bar_sum, f"bar_v2_{unique_code}")
-      #   anvil.server.call("create_bar_chart", [{"topic": f"{countie[0]}, LK 2022", "value": demand2022}, {"topic": f"{countie[0]}, LK 2030", "value": demand2040}], f"bar_al_{unique_code}")
-        
-      #   #Create Data-Objects for Summary
-      #   sendData_Summary = {"zipcode": zipcode,
-      #                       "city": city,
-      #                       "district": district,
-      #                       "federal_state": federal_state,
-      #                       "time": iso_time,
-      #                       "movement": movement,
-      #                       "countie": countie[0],
-      #                       "population": "{:,}".format(countie_data['ex_dem_lk']['all_compl']),
-      #                       "people_u80": "{:,}".format(people_u80),
-      #                       "people_o80": "{:,}".format(people_o80),
-      #                       "pat_rec_full_care": "{:,}".format(inpatients_lk),
-      #                       "inpatients": "{:,}".format(inpatients),
-      #                       "beds_active": "{:,}".format(beds_active),
-      #                       "nursing_homes_active": nursing_homes_active,
-      #                       "nursing_homes_planned": nursing_homes_planned,
-      #                       "nursing_homes_construct": nursing_homes_construct,
-      #                       "beds_planned": "{:,}".format(beds_planned),
-      #                       "beds_construct": "{:,}".format(beds_construct),
-      #                       "beds_adjusted": "{:,}".format(beds_adjusted),
-      #                       "occupancy_percent": occupancy_percent,
-      #                       "invest_median": invest_median,
-      #                       "operator": len(operator),
-      #                       "beds_median": beds_median,
-      #                       "year_median": year_median,
-      #                       "op_public_percent": op_public_percent,
-      #                       "op_nonProfit_percent": op_nonProfit_percent,
-      #                       "op_private_percent": op_private_percent,
-      #                       "people_u80_fc": "{:,}".format(people_u80_fc),
-      #                       "change_u80": "{:,}".format(change_u80),
-      #                       "change_o80": "{:,}".format(change_o80),
-      #                       "people_o80_fc": "{:,}".format(people_o80_fc),
-      #                       "pat_rec_full_care_fc": "{:,}".format(pat_rec_full_care_fc_30_v1),
-      #                       "inpatients_fc": "{:,}".format(inpatients_fc),
-      #                       "beds_surplus": "{:,}".format(beds_surplus),
-      #                       "without_apartment": without_apartment,
-      #                       "change_pat_rec": "{:,}".format(change_pat_rec),
-      #                       "city_population": "{:,}".format(countie_data['dem_city']['bevoelkerung_ges']),
-      #                       "occupancy_lk": "{:,}".format(occupancy_lk),
-      #                       "people_u80_fc_35": "{:,}".format(people_u80_fc_35),
-      #                       "people_o80_fc_35": "{:,}".format(people_o80_fc_35),
-      #                       "pat_rec_full_care_fc_35": "{:,}".format(pat_rec_full_care_fc_35_v1),
-      #                       "nursing_home_rate": nursing_home_rate_perc,
-      #                       "care_rate": new_care_rate_perc,
-      #                       "pat_rec_full_care_fc_s2": "{:,}".format(pat_rec_full_care_fc_30_v2),
-      #                       "care_rate_v2": care_rate_30_v2_perc,
-      #                       "nh_rate_30": care_rate_30_v1_perc,
-      #                       "care_rate_v2_35": care_rate_35_v2_perc,
-      #                       "population_30": "{:,}".format(population_fc),
-      #                       "population_35": "{:,}".format(population_fc_35),
-      #                       "nh_rate_35": care_rate_35_v1_perc,
-      #                       "pat_rec_full_care_fc_35_s2": "{:,}".format(pat_rec_full_care_fc_35_v2),
-      #                       "inpatients_fc_35": "{:,}".format(inpatients_fc_35),
-      #                       "inpatients_fc_v2": "{:,}".format(inpatients_fc_v2),
-      #                       "inpatients_fc_35_v2": "{:,}".format(inpatients_fc_35_v2),
-      #                       "beds_surplus_35": "{:,}".format(beds_surplus_35),
-      #                       "beds_surplus_v2": "{:,}".format(beds_surplus_v2),
-      #                       "beds_surplus_35_v2": "{:,}".format(beds_surplus_35_v2),
-      #                       "care_rate_break_even_perc": care_rate_break_even_perc,
-      #                       "care_rate_break_even_30_perc": care_rate_break_even_30_perc,
-      #                       "care_rate_break_even_35_perc": care_rate_break_even_35_perc,
-      #                       "beds_surplus_v2": beds_surplus_v2,
-      #                       "beds_surplus_35_v2": beds_surplus_35_v2,
-      #                       "beds_lk": "{:,}".format(beds_lk),
-      #                       "free_beds_lk" : "{:,}".format(free_beds_lk),
-      #                       "beds_in_reserve_20": "{:,}".format(beds_in_reserve_20),
-      #                       "beds_in_reserve_fc": "{:,}".format(beds_in_reserve_fc),
-      #                       "free_beds_30_v1": "{:,}".format(free_beds_30_v1),
-      #                       "free_beds_30_v2": "{:,}".format(free_beds_30_v2),
-      #                       "free_beds_35_v1": "{:,}".format(free_beds_35_v1),
-      #                       "free_beds_35_v2": "{:,}".format(free_beds_35_v2),
-      #                       "beds_30_v1": "{:,}".format(beds_30_v1),
-      #                       "beds_30_v2": "{:,}".format(beds_30_v2),
-      #                       "beds_35_v1": "{:,}".format(beds_35_v1),
-      #                       "beds_35_v2": "{:,}".format(beds_35_v2),
-      #                       "inpatents_fc_30_avg": "{:,}".format(inpatents_fc_30_avg),
-      #                       "inpatents_fc_35_avg": "{:,}".format(inpatents_fc_35_avg),
-      #                       "beds_surplus_30_avg": "{:,}".format(beds_surplus_30_avg),
-      #                       "beds_surplus_35_avg": "{:,}".format(beds_surplus_35_avg),
-      #                       "searched_address": searched_address,
-      #                       "nh_checked": nh_checked}
-      #   sendData_ALAnalysis = {"countie": countie[0],
-      #                         "population": "{:,}".format(countie_data['ex_dem_lk']['all_compl']),
-      #                         "people_u80": "{:,}".format(people_u80),
-      #                         "people_o80": "{:,}".format(people_o80),
-      #                         "apartments": "{:,}".format(apartments),
-      #                         "apartments_per_10k": "{:,}".format(apartments_per_10k),
-      #                         "people_u80_fc": "{:,}".format(people_u80_fc),
-      #                         "people_o80_fc": "{:,}".format(people_o80_fc),
-      #                         "change_u80": change_u80,
-      #                         "change_o80": change_o80,
-      #                         "facilities_active": "{:,}".format(facilities_active),
-      #                         "facilities_plan_build": "{:,}".format(facilities_plan_build),
-      #                         "apartments_plan_build": "{:,}".format(apartments_plan_build),
-      #                         "facilities_10km": "{:,}".format(len(al_list)),
-      #                         "apartments_10km": "{:,}".format(apartments_10km),
-      #                         "with_apartment": "{:,}".format(facilities_active - without_apartment),
-      #                         "without_apartment": "{:,}".format(without_apartment),
-      #                         "apartments_adjusted": "{:,}".format(apartments_adjusted),
-      #                         "facilities_building": "{:,}".format(facilities_building),
-      #                         "with_apartment_building": "{:,}".format(facilities_building - without_apartment_building),
-      #                         "without_apartment_building": "{:,}".format(without_apartment_building),
-      #                         "apartments_building": "{:,}".format(apartments_building),
-      #                         "build_apartments_average": "{:,}".format(build_apartments_average),
-      #                         "build_apartments_adjusted": "{:,}".format(build_apartments_adjusted),
-      #                         "apartments_planning": "{:,}".format(apartments_planning),
-      #                         "without_apartment_planning": "{:,}".format(without_apartment_planning),
-      #                         "facilities_planning": "{:,}".format(facilities_planning),
-      #                         "planning_apartments_average": "{:,}".format(planning_apartments_average),
-      #                         "planning_apartments_adjusted": "{:,}".format(planning_apartments_adjusted),
-      #                         "average_with_apartments": "{:,}".format(apartments_average),
-      #                         "planned_with_apartments": "{:,}".format(facilities_planning - without_apartment_planning),
-      #                         "total_facility": "{:,}".format(facilities_active + facilities_building + facilities_planning),
-      #                         "total_apartments": "{:,}".format(apartments + (facilities_building - without_apartment_building) + apartments_planning),
-      #                         "total_apartments_adjusted": "{:,}".format(apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted),
-      #                         "demand_1_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.01) / 1.5)),
-      #                         "demand_1_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.01) / 1.5)),
-      #                         "demand_1_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.01) / 1.5)),
-      #                         "demand_1_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.01) / 1.5)))),
-      #                         "demand_2_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.02) / 1.5)),
-      #                         "demand_2_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.02) / 1.5)),
-      #                         "demand_2_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.02) / 1.5)),
-      #                         "demand_2_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.02) / 1.5)))),
-      #                         "demand_3_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.03) / 1.5)),
-      #                         "demand_3_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.03) / 1.5)),
-      #                         "demand_3_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.03) / 1.5)),
-      #                         "demand_3_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.03) / 1.5)))),
-      #                         "demand_4_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.04) / 1.5)),
-      #                         "demand_4_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.04) / 1.5)),
-      #                         "demand_4_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.04) / 1.5)),
-      #                         "demand_4_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.04) / 1.5)))),
-      #                         "demand_5_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.05) / 1.5)),
-      #                         "demand_5_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.05) / 1.5)),
-      #                         "demand_5_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.05) / 1.5)),
-      #                         "demand_5_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.05) / 1.5)))),
-      #                         "demand_7_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.07) / 1.5)),
-      #                         "demand_7_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.07) / 1.5)),
-      #                         "demand_7_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.07) / 1.5)),
-      #                         "demand_7_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.07) / 1.5)))),
-      #                         "demand_9_2022": "{:,}".format(round(((people_u80 + people_o80) * 0.09) / 1.5)),
-      #                         "demand_9_2022_surplus": "{:,}".format(apartments_adjusted - round(((people_u80 + people_o80) * 0.09) / 1.5)),
-      #                         "demand_9_2040": "{:,}".format(round(((people_u80_fc + people_o80_fc) * 0.09) / 1.5)),
-      #                         "demand_9_2040_surplus": "{:,}".format(round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (round(((people_u80_fc + people_o80_fc) * 0.09) / 1.5)))),
-      #                         "level": level,
-      #                         "surplus_2022": surplus2022,
-      #                         "demand_2022": demand2022,
-      #                         "surplus_2040": surplus2040,
-      #                         "demand_2040": demand2040,
-      #                         "demand_potential": demand_potential,
-      #                         "apartments_plan_build_adjusted": apartments_plan_build_adjusted,
-      #                         "change_pat_rec": change_pat_rec,
-      #                         "city": city,
-      #                         "al_checked": al_checked}
-        
-      #   #Create Summary-PDF
-      #   anvil.server.call("write_pdf_file", sendData_Summary, mapRequestData, sendData_ALAnalysis, unique_code, bbox, data_comp_analysis_nh['data'], data_comp_analysis_nh['request'], data_comp_analysis_al['data'], data_comp_analysis_al['request'], checkboxes)
-
+      
       # #####Downloading Files#####
       
       anvil.js.call('update_loading_bar', 100, 'Download Files')
@@ -4333,6 +3988,7 @@ class Map2_0(Map2_0Template):
       # print(res)
       # print(len(entries))
       for entry in entries:
+        added = False
         if topic == "nursing_homes":
           lat_entry = "%.6f" % float(entry['coord_lat'])
           lng_entry = "%.6f" % float(entry['coord_lon'])
@@ -4340,81 +3996,84 @@ class Map2_0(Map2_0Template):
           lat_entry = "%.6f" % float(entry['coord_lat'])
           lng_entry = "%.6f" % float(entry['coord_lon'])
         for icon in Variables.activeIcons[topic]:
+          if not added:
             lng_icon = "%.6f" % icon['_lngLat']['lng']
             lat_icon = "%.6f" % icon['_lngLat']['lat']
             if lng_entry == lng_icon and lat_entry == lat_icon:
-              coords.append([lng_icon, lat_icon])
-              counter += 1
-              
-              if topic == "nursing_homes":
-                if not entry['anz_vers_pat'] == "-":
-                  anz_vers_pat = int(entry['anz_vers_pat'])
-                else:
-                  anz_vers_pat = "-"
-                  
-                if not entry['platz_voll_pfl'] == "-":
-                  platz_voll_pfl = int(entry['platz_voll_pfl'])
-                else:
-                  platz_voll_pfl = "-"
-                  
-                if not entry['anz_vers_pat'] == "-" and not entry['platz_voll_pfl'] == "-":
-                  occupancy_raw = anz_vers_pat / platz_voll_pfl
-                  if occupancy_raw > 1:
-                    occupancy_raw = 1
-                else:
-                  occupancy = "-"
-                  occupancy_raw = "-"
-                  
-                if not entry['invest'] == "-":
-                  if len(entry['invest']) == 4:
-                    if entry['invest'].index(".") == 2:
-                      invest = entry['invest'] + "0"
+                coords.append([lng_icon, lat_icon])
+                counter += 1
+                
+                if topic == "nursing_homes":
+                  if not entry['anz_vers_pat'] == "-":
+                    anz_vers_pat = int(entry['anz_vers_pat'])
+                  else:
+                    anz_vers_pat = "-"
+                    
+                  if not entry['platz_voll_pfl'] == "-":
+                    platz_voll_pfl = int(entry['platz_voll_pfl'])
+                  else:
+                    platz_voll_pfl = "-"
+                    
+                  if not entry['anz_vers_pat'] == "-" and not entry['platz_voll_pfl'] == "-":
+                    occupancy_raw = anz_vers_pat / platz_voll_pfl
+                    if occupancy_raw > 1:
+                      occupancy_raw = 1
+                  else:
+                    occupancy = "-"
+                    occupancy_raw = "-"
+                    
+                  if not entry['invest'] == "-":
+                    if len(entry['invest']) == 4:
+                      if entry['invest'].index(".") == 2:
+                        invest = entry['invest'] + "0"
+                      else:
+                        invest = entry['invest']
                     else:
                       invest = entry['invest']
                   else:
-                    invest = entry['invest']
-                else:
-                  invest = "-"
-                    
-                data = {
-                  "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                  "raw_name": entry['name'],
-                  "platz_voll_pfl": platz_voll_pfl,
-                  "ez": entry['ez'],
-                  "dz": entry['dz'],
-                  "anz_vers_pat": anz_vers_pat,
-                  "occupancy": occupancy_raw,
-                  "baujahr": entry['baujahr'],
-                  "status": entry['status'],
-                  "betreiber": entry['betreiber'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                  "raw_betreiber": entry['betreiber'],
-                  "invest": invest,
-                  "mdk_note": entry['mdk_note'],
-                  "coords": [lng_icon, lat_icon],
-                  "web": entry['webseite'],
-                  "operator_type": entry['art']
-                }
-                data_comp_analysis.append(data)
-              elif topic == "assisted_living":
-                data = {
-                  "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                  "raw_name": entry['name'],
-                  "operator": entry['betreiber'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                  "raw_betreiber": entry['betreiber'],
-                  "type": entry['art'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                  "raw_type": entry['art'],
-                  "city": entry['ort'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                  "raw_city": entry['ort'],
-                  "status": entry['status'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                  "raw_status": entry['status'],
-                  "number_apts": entry['anz_wohnungen'],
-                  "coords": [lng_icon, lat_icon],
-                  "web": entry['webseite'],
-                  "type": entry['art'],
-                  "year_of_construction": entry['baujahr']
-                }
-                data_comp_analysis.append(data)
-  
+                    invest = "-"
+                      
+                  data = {
+                    "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                    "raw_name": entry['name'],
+                    "platz_voll_pfl": platz_voll_pfl,
+                    "ez": entry['ez'],
+                    "dz": entry['dz'],
+                    "anz_vers_pat": anz_vers_pat,
+                    "occupancy": occupancy_raw,
+                    "baujahr": entry['baujahr'],
+                    "status": entry['status'],
+                    "betreiber": entry['betreiber'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                    "raw_betreiber": entry['betreiber'],
+                    "invest": invest,
+                    "mdk_note": entry['mdk_note'],
+                    "coords": [lng_icon, lat_icon],
+                    "web": entry['webseite'],
+                    "operator_type": entry['art']
+                  }
+                  data_comp_analysis.append(data)
+                  added = True
+                elif topic == "assisted_living":
+                  data = {
+                    "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                    "raw_name": entry['name'],
+                    "operator": entry['betreiber'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                    "raw_betreiber": entry['betreiber'],
+                    "type": entry['art'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                    "raw_type": entry['art'],
+                    "city": entry['ort'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                    "raw_city": entry['ort'],
+                    "status": entry['status'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                    "raw_status": entry['status'],
+                    "number_apts": entry['anz_wohnungen'],
+                    "coords": [lng_icon, lat_icon],
+                    "web": entry['webseite'],
+                    "type": entry['art'],
+                    "year_of_construction": entry['baujahr']
+                  }
+                  data_comp_analysis.append(data)
+                  added = True
+
       # Sort Coordinates by Distance
       sorted_coords = anvil.server.call("get_distance", marker_coords, data_comp_analysis)
       from .Market_Study_Existing_Home import Market_Study_Existing_Home
@@ -4501,10 +4160,11 @@ class Map2_0(Map2_0Template):
       for index, coordinate in enumerate(nh_sorted_coords):
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
-          icon = f'{index + 1 - nh_home_counter}Nursing@0.75x.png'
+          complete_counter += 1
+          icon = f'{complete_counter}Nursing@0.75x.png'
           for al_index, al_coordinate in enumerate(al_sorted_coords):
             if anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(al_coordinate[0]['coords'][0]), float(al_coordinate[0]['coords'][1])]) <= 0.01:
-              icon = f'Nursing{index + 1 - nh_home_counter}@0.75x.png'
+              icon = f'Nursing{complete_counter}@0.75x.png'
           url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
           if index == len(nh_sorted_coords) - 1 or counter == 20:
@@ -4541,16 +4201,15 @@ class Map2_0(Map2_0Template):
       index_coords -= test_counter
 
       last_coord_dist = 0
-
-      print(al_sorted_coords)
       
       for index, coordinate in enumerate(al_sorted_coords):
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
-          icon = f'{index + 1 - al_home_counter}@0.75x.png'
+          complete_counter += 1
+          icon = f'{complete_counter}@0.75x.png'
           for nh_index, nh_coordinate in enumerate(nh_sorted_coords):
             if anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(nh_coordinate[0]['coords'][0]), float(nh_coordinate[0]['coords'][1])]) <= 0.01:
-              icon = f'Assisted{index + 1 - al_home_counter}@0.75x.png'
+              icon = f'Assisted{complete_counter}@0.75x.png'
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
           if index == len(al_sorted_coords) - 1 or counter == 20:
