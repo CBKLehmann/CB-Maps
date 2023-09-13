@@ -3274,24 +3274,25 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O15']['text'] = anvil.server.call('get_median', list_beds) if len(list_beds) > 0 else '-'
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O16']['text'] = anvil.server.call('get_median', list_years_of_construction_nh) if len(list_years_of_construction_nh) > 0 else '-'
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = anvil.server.call('get_median', list_years_of_construction_al) if len(list_years_of_construction_al) > 0 else '-'
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C39:X41']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, {complied_regulations} facilities comply with the federal state regulations and {uncomplied_regulations} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O42:X42']['text'] = regulations['federal_state']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O44:S44']['text'] = f"{int(regulations['New']['sr_quote_raw'] * 100)}%" if not type(regulations['New']['sr_quote_raw']) == str else regulations['New']['sr_quote_raw']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O45:S45']['text'] = regulations['New']['max_beds_raw']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O46:S46']['text'] = regulations['New']['min_room_size']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O47:S47']['text'] = regulations['New']['min_common_area_resident']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O48:S48']['text'] = regulations['New']['comment']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['O49:S49']['text'] = regulations['New']['legal_basis']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T44:X44']['text'] = f"{int(regulations['Existing']['sr_quote_raw'] * 100)}%" if not type(regulations['Existing']['sr_quote_raw']) == str else regulations['Existing']['sr_quote_raw']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T45:X45']['text'] = regulations['Existing']['max_beds_raw']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T46:X46']['text'] = regulations['Existing']['min_room_size']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T47:X47']['text'] = regulations['Existing']['min_common_area_resident']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T48:X48']['text'] = regulations['Existing']['comment']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['T49:X49']['text'] = regulations['Existing']['legal_basis']
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q20:X24']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{'{:.2f}'.format(total_invest_cost)}. {f'The investment costs at the facility, that is subject to this study amounts to €{home_invest}.' if not home_invest == -1 else ''}"
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q31:X36']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{'{:.2f}'.format(total_invest_cost)}. {f'The investment costs at the facility, that is subject to this study amounts to €{home_invest}.' if not home_invest == -1 else ''}"
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A16']['file'] = operator_chart_path
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P11']['file'] = invest_cost_chart_path
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P22']['file'] = purchasing_power_chart_path
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P14']['file'] = invest_cost_chart_path
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['C37']['file'] = purchasing_power_chart_path
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C4:X5']['text'] = city
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C12:X14']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, {complied_regulations} facilities comply with the federal state regulations and {uncomplied_regulations} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C15:N15']['text'] = regulations['federal_state']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O17:S17']['text'] = f"{int(regulations['New']['sr_quote_raw'] * 100)}%" if not type(regulations['New']['sr_quote_raw']) == str else regulations['New']['sr_quote_raw']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O18:S18']['text'] = regulations['New']['max_beds_raw']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O19:S19']['text'] = regulations['New']['min_room_size']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O20:S20']['text'] = regulations['New']['min_common_area_resident']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O21:S21']['text'] = regulations['New']['comment']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O22:S22']['text'] = regulations['New']['legal_basis']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['T17:X17']['text'] = f"{int(regulations['Existing']['sr_quote_raw'] * 100)}%" if not type(regulations['Existing']['sr_quote_raw']) == str else regulations['Existing']['sr_quote_raw']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['T18:X18']['text'] = regulations['Existing']['max_beds_raw']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['T19:X19']['text'] = regulations['Existing']['min_room_size']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['T20:X20']['text'] = regulations['Existing']['min_common_area_resident']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['T21:X21']['text'] = regulations['Existing']['comment']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['T22:X22']['text'] = regulations['Existing']['legal_basis']
 
       market_study_data['pages']['SUMMARY']['cell_content']['textboxes']['V1']['text'] = f"{summary_page} | {max_pages}"
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['textboxes']['R1']['text'] = f"{location_analysis_page} | {max_pages}"
@@ -3986,8 +3987,6 @@ class Map2_0(Map2_0Template):
         Variables.home_address_al = []
 
       # res = anvil.js.call('getDeletedMarker')
-      # print(res)
-      # print(len(entries))
       for entry in entries:
         added = False
         if topic == "nursing_homes":
@@ -4210,8 +4209,6 @@ class Map2_0(Map2_0Template):
       last_coord_dist = 0
       
       for index, coordinate in enumerate(al_sorted_coords):
-        print(index)
-        print(coordinate)
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
           complete_counter += 1
