@@ -4501,7 +4501,7 @@ class Map2_0(Map2_0Template):
       for index, coordinate in enumerate(nh_sorted_coords):
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
-          icon = f'{index + 1}Nursing@0.75x.png'
+          icon = f'{index + 1 - nh_home_counter}Nursing@0.75x.png'
           for al_index, al_coordinate in enumerate(al_sorted_coords):
             if anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(al_coordinate[0]['coords'][0]), float(al_coordinate[0]['coords'][1])]) <= 0.01:
               icon = f'Nursing{index + 1 - nh_home_counter}@0.75x.png'
@@ -4542,13 +4542,15 @@ class Map2_0(Map2_0Template):
 
       last_coord_dist = 0
 
+      print(al_sorted_coords)
+      
       for index, coordinate in enumerate(al_sorted_coords):
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
-          icon = f'{index + 1 - nh_home_counter}@0.75x.png'
+          icon = f'{index + 1 - al_home_counter}@0.75x.png'
           for nh_index, nh_coordinate in enumerate(nh_sorted_coords):
             if anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(nh_coordinate[0]['coords'][0]), float(nh_coordinate[0]['coords'][1])]) <= 0.01:
-              icon = f'Assisted{index + 1}@0.75x.png'
+              icon = f'Assisted{index + 1 - al_home_counter}@0.75x.png'
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
           if index == len(al_sorted_coords) - 1 or counter == 20:
