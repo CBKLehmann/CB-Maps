@@ -2048,7 +2048,7 @@ market_study_data = {
                                 'y_scale': .6
                             }
                         },
-                        'C37': {
+                        'A37': {
                             'file': "img/plot2.png",
                             'settings': {
                                 'x_offset': 15,
