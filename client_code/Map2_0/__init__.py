@@ -2207,7 +2207,7 @@ class Map2_0(Map2_0Template):
       anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
       
       anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
-      anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, checkboxes, reg_frame)
+      status = anvil.server.call('write_excel_file', mapRequestData, bbox, unique_code, data_comp_analysis_nh['request'] , data_comp_analysis_al['request'] ,cover_frame, summary_frame, nurscomp_frame, assliv_frame, alca_frame, nh_checked, al_checked, checkboxes, reg_frame)
   
       # if not Variables.tm_mode:
       #   #Create Charts and Static Map for Analysis
@@ -2384,9 +2384,10 @@ class Map2_0(Map2_0Template):
         
       #Get PDF from Table and start Download
       table = app_tables.pictures.search()
-      mapPDF = app_tables.pictures.search()[1]
       mapExcel = app_tables.pictures.search()[0]
-      anvil.media.download(mapPDF['pic'])
+      if not status == 404:
+        mapPDF = app_tables.pictures.search()[1]
+        anvil.media.download(mapPDF['pic'])
       time.sleep(1)
       anvil.media.download(mapExcel['pic'])
       Variables.unique_code = unique_code
