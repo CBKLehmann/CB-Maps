@@ -2063,21 +2063,21 @@ market_study_data = {
                                 'y_scale': .7
                             }
                         },
-                        'Q30': {
+                        'Q31': {
                             'file': "img/plot1.png",
                             'settings': {
                                 'x_scale': 1,
                                 'y_scale': 1
                             }
                         },
-                        'Q36': {
+                        'Q39': {
                             'file': "img/plot1.png",
                             'settings': {
                                 'x_scale': 1,
                                 'y_scale': 1
                             }
                         },
-                        'Q40': {
+                        'Q44': {
                             'file': "img/plot1.png",
                             'settings': {
                                 'x_scale': 1,
@@ -2238,6 +2238,18 @@ market_study_data = {
                         },
                         'C38:O39': {
                             'text': "Purchasing power index (municipality)",
+                            'format': "smaller_heading"
+                        },
+                        'Q30:Y30': {
+                            'text': "Operator & facilities",
+                            'format': "smaller_heading"
+                        },
+                        'Q38:Y38': {
+                            'text': "Operator & facilities",
+                            'format': "smaller_heading"
+                        },
+                        'Q43:Y43': {
+                            'text': "Operator & facilities",
                             'format': "smaller_heading"
                         }
                     }

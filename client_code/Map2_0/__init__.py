@@ -1363,6 +1363,12 @@ class Map2_0(Map2_0Template):
       complied_regulations = 0
       uncomplied_regulations = 0
       invest_plot_data = []
+      invest_costs_public = []
+      invest_costs_non_profit = []
+      invest_costs_private = []
+      invest_costs_public_home = -1
+      invest_costs_non_profit_home = -1
+      invest_costs_private_home = -1
       
       if total_amount <= 13:
         # Single Page
@@ -1508,10 +1514,19 @@ class Map2_0(Map2_0Template):
 
             if competitor[0]['operator_type'] == 'privat':
               private_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_private.append(float(competitor[0]['invest']))
+                invest_costs_private_home = float(competitor[0]['invest'])
             elif competitor[0]['operator_type'] == 'kommunal':
               public_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_public.append(float(competitor[0]['invest']))
+                invest_costs_public_home = float(competitor[0]['invest'])
             elif competitor[0]['operator_type'] == 'gemeinnützig':
               none_profit_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_non_profit.append(float(competitor[0]['invest']))
+                invest_costs_non_profit_home = float(competitor[0]['invest'])
             if not competitor[0]['ez'] == '-':
               single_rooms = int(competitor[0]['ez'])
             else:
@@ -1653,10 +1668,16 @@ class Map2_0(Map2_0Template):
             
             if competitor[0]['operator_type'] == 'privat':
               private_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_private.append(float(competitor[0]['invest']))
             elif competitor[0]['operator_type'] == 'kommunal':
               public_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_public.append(float(competitor[0]['invest']))
             elif competitor[0]['operator_type'] == 'gemeinnützig':
               none_profit_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_non_profit.append(float(competitor[0]['invest']))
             if not competitor[0]['ez'] == '-':
               single_rooms = int(competitor[0]['ez'])
             else:
@@ -2436,10 +2457,19 @@ class Map2_0(Map2_0Template):
             
             if competitor[0]['operator_type'] == 'privat':
               private_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_private.append(float(competitor[0]['invest']))
+                invest_costs_private_home = float(competitor[0]['invest'])
             elif competitor[0]['operator_type'] == 'kommunal':
               public_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_public.append(float(competitor[0]['invest']))
+                invest_costs_public_home = float(competitor[0]['invest'])
             elif competitor[0]['operator_type'] == 'gemeinnützig':
               none_profit_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_non_profit.append(float(competitor[0]['invest']))
+                invest_costs_non_profit_home = float(competitor[0]['invest'])
             if not competitor[0]['ez'] == '-':
               single_rooms = int(competitor[0]['ez'])
             else:
@@ -2580,10 +2610,16 @@ class Map2_0(Map2_0Template):
             
             if competitor[0]['operator_type'] == 'privat':
               private_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_private.append(float(competitor[0]['invest']))
             elif competitor[0]['operator_type'] == 'kommunal':
               public_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_public.append(float(competitor[0]['invest']))
             elif competitor[0]['operator_type'] == 'gemeinnützig':
               none_profit_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_non_profit.append(float(competitor[0]['invest']))
             if not competitor[0]['ez'] == '-':
               single_rooms = int(competitor[0]['ez'])
             else:
@@ -3291,9 +3327,9 @@ class Map2_0(Map2_0Template):
       operator_chart_path = anvil.server.call('chart_test_3', [none_profit_operator_al, public_operator_al, private_operator_al], [none_profit_operator_nh, public_operator_nh, private_operator_nh], unique_code)
       invest_cost_chart_path = anvil.server.call('chart_test_6', invest_plot_data, unique_code)
       purchasing_power_chart_path = anvil.server.call('chart_test_5', purchase_power, unique_code)
-      invest_cost_chart_public_path = anvil.server.call('chart_test_4', minimum_public, maximum_public, median_public, marker, unique_code, 'public')
-      invest_cost_chart_non_profit_path = anvil.server.call('chart_test_4', minimum_non_profit, maximum_non_profit, median_non_profit, marker, unique_code, 'non_profit')
-      invest_cost_chart_private_path = anvil.server.call('chart_test_4', minimum_private, maximum_private, median_private, marker, unique_code, 'private')
+      invest_cost_chart_public_path = anvil.server.call('chart_test_4', invest_costs_public, invest_costs_public_home, unique_code, 'public')
+      invest_cost_chart_non_profit_path = anvil.server.call('chart_test_4', invest_costs_non_profit, invest_costs_non_profit_home, unique_code, 'non_profit')
+      invest_cost_chart_private_path = anvil.server.call('chart_test_4', invest_costs_private, invest_costs_private_home, unique_code, 'private')
 
       max_pages = competitor_analysis_pages[-1] + 3 
       good_to_know_page = competitor_analysis_pages[-1] + 1
@@ -3317,6 +3353,9 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A16']['file'] = operator_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P14']['file'] = invest_cost_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A37']['file'] = purchasing_power_chart_path
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A37']['file'] = invest_cost_chart_non_profit_path
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A37']['file'] = invest_cost_chart_public_path
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A37']['file'] = invest_cost_chart_private_path
       market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C4:X5']['text'] = city
       market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C12:X14']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, {complied_regulations} facilities comply with the federal state regulations and {uncomplied_regulations} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
       market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C15:N15']['text'] = regulations['federal_state']
