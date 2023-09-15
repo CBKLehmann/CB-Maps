@@ -2063,6 +2063,27 @@ market_study_data = {
                                 'y_scale': .7
                             }
                         },
+                        'Q30': {
+                            'file': "img/plot1.png",
+                            'settings': {
+                                'x_scale': 1,
+                                'y_scale': 1
+                            }
+                        },
+                        'Q36': {
+                            'file': "img/plot1.png",
+                            'settings': {
+                                'x_scale': 1,
+                                'y_scale': 1
+                            }
+                        },
+                        'Q40': {
+                            'file': "img/plot1.png",
+                            'settings': {
+                                'x_scale': 1,
+                                'y_scale': 1
+                            }
+                        },
                     },
                     'textboxes': {
                         'A1': {
@@ -2211,7 +2232,7 @@ market_study_data = {
                             'text': "Prices",
                             'format': "smaller_heading"
                         },
-                        'Q31:X36': {
+                        'Q46:X50': {
                             'text': "The investment cost rates of the facilities within the catchment area range between €5.50 and €35.60. The median investment cost amount to €10.50. The investment costs at the facility, that is subject to this study amounts to €9.90.",
                             'format': "mass_text"
                         },

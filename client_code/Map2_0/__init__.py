@@ -1331,8 +1331,8 @@ class Map2_0(Map2_0Template):
 
       anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
       
-      # analysis_text = "I`m a placeholder Text"
-      analysis_text = anvil.server.call('openai_test', city)
+      analysis_text = "I`m a placeholder Text"
+      # analysis_text = anvil.server.call('openai_test', city)
       from .ChatGPT import ChatGPT
       Functions.manipulate_loading_overlay(self, False)
       analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
@@ -3291,6 +3291,9 @@ class Map2_0(Map2_0Template):
       operator_chart_path = anvil.server.call('chart_test_3', [none_profit_operator_al, public_operator_al, private_operator_al], [none_profit_operator_nh, public_operator_nh, private_operator_nh], unique_code)
       invest_cost_chart_path = anvil.server.call('chart_test_6', invest_plot_data, unique_code)
       purchasing_power_chart_path = anvil.server.call('chart_test_5', purchase_power, unique_code)
+      invest_cost_chart_public_path = anvil.server.call('chart_test_4', minimum_public, maximum_public, median_public, marker, unique_code, 'public')
+      invest_cost_chart_non_profit_path = anvil.server.call('chart_test_4', minimum_non_profit, maximum_non_profit, median_non_profit, marker, unique_code, 'non_profit')
+      invest_cost_chart_private_path = anvil.server.call('chart_test_4', minimum_private, maximum_private, median_private, marker, unique_code, 'private')
 
       max_pages = competitor_analysis_pages[-1] + 3 
       good_to_know_page = competitor_analysis_pages[-1] + 1
@@ -3310,7 +3313,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O15']['text'] = anvil.server.call('get_median', list_beds) if len(list_beds) > 0 else '-'
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O16']['text'] = anvil.server.call('get_median', list_years_of_construction_nh) if len(list_years_of_construction_nh) > 0 else '-'
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = anvil.server.call('get_median', list_years_of_construction_al) if len(list_years_of_construction_al) > 0 else '-'
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q31:X36']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{'{:.2f}'.format(total_invest_cost)}. {f'The investment costs at the facility, that is subject to this study amounts to €{home_invest}.' if not home_invest == -1 else ''}"
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q46:X50']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{'{:.2f}'.format(total_invest_cost)}. {f'The investment costs at the facility, that is subject to this study amounts to €{home_invest}.' if not home_invest == -1 else ''}"
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A16']['file'] = operator_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P14']['file'] = invest_cost_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A37']['file'] = purchasing_power_chart_path
@@ -3355,10 +3358,10 @@ class Map2_0(Map2_0Template):
         
       #Get PDF from Table and start Download
       table = app_tables.pictures.search()
-      mapPDF = app_tables.pictures.search()[1]
+      # mapPDF = app_tables.pictures.search()[1]
       mapExcel = app_tables.pictures.search()[0]
-      anvil.media.download(mapPDF['pic'])
-      time.sleep(1)
+      # anvil.media.download(mapPDF['pic'])
+      # time.sleep(1)
       anvil.media.download(mapExcel['pic'])
       Variables.unique_code = unique_code
 
