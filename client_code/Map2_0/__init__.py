@@ -3323,6 +3323,10 @@ class Map2_0(Map2_0Template):
               private_operator_al += 1
   
           current_row += 1
+
+      print(invest_costs_public)
+      print(invest_costs_non_profit)
+      print(invest_costs_private)
       
       operator_chart_path = anvil.server.call('chart_test_3', [none_profit_operator_al, public_operator_al, private_operator_al], [none_profit_operator_nh, public_operator_nh, private_operator_nh], unique_code)
       invest_cost_chart_path = anvil.server.call('chart_test_6', invest_plot_data, unique_code)
@@ -3331,6 +3335,10 @@ class Map2_0(Map2_0Template):
       invest_cost_chart_non_profit_path = anvil.server.call('chart_test_4', invest_costs_non_profit, invest_costs_non_profit_home, unique_code, 'non_profit')
       invest_cost_chart_private_path = anvil.server.call('chart_test_4', invest_costs_private, invest_costs_private_home, unique_code, 'private')
 
+      print(invest_cost_chart_public_path)
+      print(invest_cost_chart_non_profit_path)
+      print(invest_cost_chart_private_path)
+      
       max_pages = competitor_analysis_pages[-1] + 3 
       good_to_know_page = competitor_analysis_pages[-1] + 1
       methodic_page = good_to_know_page + 1
@@ -3353,9 +3361,47 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A16']['file'] = operator_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P14']['file'] = invest_cost_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A37']['file'] = purchasing_power_chart_path
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A37']['file'] = invest_cost_chart_non_profit_path
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A37']['file'] = invest_cost_chart_public_path
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A37']['file'] = invest_cost_chart_private_path
+      cells = [['Q31', 'Q30:Y30'], ['Q39', 'Q38:Y38'], ['Q44', 'Q43:Y43']]
+      cell_index = 0
+      if not invest_cost_chart_non_profit_path == 404:
+        market_study_data['pages']['GOOD TO KNOW']['cell_content']['images'][cells[cell_index][0]] = {
+          'file': invest_cost_chart_non_profit_path,
+          'settings': {
+              'x_scale': 1,
+              'y_scale': 1
+          }
+        }
+        market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells'][cells[cell_index][1]] = {
+          'text': "Non Profit",
+          'format': "smaller_heading"
+        }
+        cell_index += 1
+      if not invest_cost_chart_public_path == 404:
+        market_study_data['pages']['GOOD TO KNOW']['cell_content']['images'][cells[cell_index][0]] = {
+          'file': invest_cost_chart_public_path,
+          'settings': {
+              'x_scale': 1,
+              'y_scale': 1
+          }
+        }
+        market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells'][cells[cell_index][1]] = {
+          'text': "Public",
+          'format': "smaller_heading"
+        }
+        cell_index += 1
+      if not invest_cost_chart_private_path == 404:
+        market_study_data['pages']['GOOD TO KNOW']['cell_content']['images'][cells[cell_index][0]] = {
+          'file': invest_cost_chart_private_path,
+          'settings': {
+              'x_scale': 1,
+              'y_scale': 1
+          }
+        }
+        market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells'][cells[cell_index][1]] = {
+          'text': "Private",
+          'format': "smaller_heading"
+        }
+        cell_index += 1
       market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C4:X5']['text'] = city
       market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C12:X14']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, {complied_regulations} facilities comply with the federal state regulations and {uncomplied_regulations} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
       market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C15:N15']['text'] = regulations['federal_state']
