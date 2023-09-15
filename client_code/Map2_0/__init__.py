@@ -1331,8 +1331,8 @@ class Map2_0(Map2_0Template):
 
       anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
       
-      analysis_text = "I`m a placeholder Text"
-      # analysis_text = anvil.server.call('openai_test', city)
+      # analysis_text = "I`m a placeholder Text"
+      analysis_text = anvil.server.call('openai_test', city)
       from .ChatGPT import ChatGPT
       Functions.manipulate_loading_overlay(self, False)
       analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
@@ -1740,13 +1740,31 @@ class Map2_0(Map2_0Template):
               invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1])
   
           current_row += 1
-        
-        total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
-        total_occupancy_rate = anvil.server.call("get_median", list_occupancy_rate)
-        minimum_invest_cost = min(list_invest_cost)
-        maximum_invest_cost = max(list_invest_cost)
-        total_invest_cost = anvil.server.call("get_median", list_invest_cost)
-        total_mdk_grade = anvil.server.call("get_median", list_mdk_grade)
+
+        if len(list_single_room_quota) > 0:
+          total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
+        else:
+          total_single_room_quota = 0
+        if len(list_occupancy_rate) > 0:
+          total_occupancy_rate = anvil.server.call("get_median", list_occupancy_rate)
+        else:
+          total_occupancy_rate = 0
+        if len(list_invest_cost) > 0:
+          minimum_invest_cost = min(list_invest_cost)
+        else:
+          minimum_invest_cost = 0
+        if len(list_invest_cost) > 0:
+          maximum_invest_cost = max(list_invest_cost)
+        else:
+          maximum_invest_cost = 0
+        if len(list_invest_cost) > 0:
+          total_invest_cost = anvil.server.call("get_median", list_invest_cost)
+        else:
+          total_invest_cost = 0
+        if len(list_mdk_grade) > 0:
+          total_mdk_grade = anvil.server.call("get_median", list_mdk_grade)
+        else:
+          total_mdk_grade = 0
 
         market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'O{current_row}'] = {
           'text': total_beds,
@@ -2654,12 +2672,30 @@ class Map2_0(Map2_0Template):
   
           current_row += 1
 
-        total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
-        total_occupancy_rate = anvil.server.call("get_median", list_occupancy_rate)
-        minimum_invest_cost = min(list_invest_cost)
-        maximum_invest_cost = max(list_invest_cost)
-        total_invest_cost = anvil.server.call("get_median", list_invest_cost)
-        total_mdk_grade = anvil.server.call("get_median", list_mdk_grade)
+        if len(list_single_room_quota) > 0:
+          total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
+        else:
+          total_single_room_quota = 0
+        if len(list_occupancy_rate) > 0:
+          total_occupancy_rate = anvil.server.call("get_median", list_occupancy_rate)
+        else:
+          total_occupancy_rate = 0
+        if len(list_invest_cost) > 0:
+          minimum_invest_cost = min(list_invest_cost)
+        else:
+          minimum_invest_cost = 0
+        if len(list_invest_cost) > 0:
+          maximum_invest_cost = max(list_invest_cost)
+        else:
+          maximum_invest_cost = 0
+        if len(list_invest_cost) > 0:
+          total_invest_cost = anvil.server.call("get_median", list_invest_cost)
+        else:
+          total_invest_cost = 0
+        if len(list_mdk_grade) > 0:
+          total_mdk_grade = anvil.server.call("get_median", list_mdk_grade)
+        else:
+          total_mdk_grade = 0
 
         market_study_data['pages'][sheet_name]['cell_content']['cells'][f'O{current_row}'] = {
           'text': total_beds,
@@ -3319,10 +3355,10 @@ class Map2_0(Map2_0Template):
         
       #Get PDF from Table and start Download
       table = app_tables.pictures.search()
-      # mapPDF = app_tables.pictures.search()[1]
+      mapPDF = app_tables.pictures.search()[1]
       mapExcel = app_tables.pictures.search()[0]
-      # anvil.media.download(mapPDF['pic'])
-      # time.sleep(1)
+      anvil.media.download(mapPDF['pic'])
+      time.sleep(1)
       anvil.media.download(mapExcel['pic'])
       Variables.unique_code = unique_code
 
