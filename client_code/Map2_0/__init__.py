@@ -28,18 +28,21 @@ class Map2_0(Map2_0Template):
 
   def __init__(self, **properties):
     with anvil.server.no_loading_indicator:
-      # Set Form properties and Data Bindings
       maintenance = False
-      self.role = properties['role']
+      try:
+        self.token = anvil.server.call_s('get_token')
+      except:
+        maintenance = True
       
-      if maintenance and not self.role == 'admin':
+      # Set Form properties and Data Bindings
+      if maintenance:
         from .Maintenance import Maintenance
         alert(content=Maintenance(), dismissible=False, buttons=[], large=True)
       else:
+        self.role = properties['role']
         self.init_components(**properties)
         self.dom = anvil.js.get_dom_node(self.spacer_1)
         self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
-        self.token = anvil.server.call_s('get_token')
         self.app_url = anvil.server.call_s('get_app_url')
         self.last_menu_height = '30%'
         self.cluster_data = {}

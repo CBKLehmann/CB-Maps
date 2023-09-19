@@ -16,19 +16,16 @@ components:
     layout_properties: {row: PLMLKU, width_xs: 12, col_xs: 0, width: 970}
   - type: Label
     properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
-      visible: true, text: "Die Seite befindet sich aktuell im Wartungsmodus und sollte\
-        \ in K\xfcrze wieder zur Verf\xfcgung stehen. \nDies ist kein ungewollter\
-        \ Fehler ! Vielen Dank f\xfcr eure Geduld.", font_size: 18, font: '', spacing_above: small,
-      icon_align: left, spacing_below: small, italic: false, background: '', bold: false,
-      underline: false, icon: ''}
+      visible: true, text: "Die Webseite befindet sich derzeit im Wartungsmodus und\
+        \ sollte in K\xfcrze wieder verf\xfcgbar sein. \nVielen Dank f\xfcr Ihre Geduld.",
+      font_size: 18, font: '', spacing_above: small, icon_align: left, spacing_below: small,
+      italic: false, background: '', bold: false, underline: false, icon: ''}
     name: label_2
     layout_properties: {row: LOONGP, width_xs: 12, col_xs: 0, width: 970}
   - type: Label
     properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
-      visible: true, text: 'This Page is currently under Maintenance and should be
-        soon available again.
-
-        This is not an unwanted Error ! Thanks for your patience. ', font_size: 18,
+      visible: true, text: "The website is currently in maintenance mode and should\
+        \ be available again shortly. \nThank you for your patience.", font_size: 18,
       font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
       background: '', bold: false, underline: false, icon: ''}
     name: label_3
