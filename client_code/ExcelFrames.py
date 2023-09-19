@@ -321,7 +321,8 @@ market_study_data = {
                 'font': 'Segoe UI',
                 'font_size': 9,
                 'color': '#808080',
-                'indent': 2
+                'indent': 2,
+                'valign': 'vcenter'
             },
             'icon_text': {
                 'font': 'Segoe UI Semibold',
@@ -675,7 +676,8 @@ market_study_data = {
                 'font': "Segoe UI",
                 'font_size': 11,
                 'color': "#00B0F0",
-                'valign': "top"
+                'valign': "top",
+                'text_wrap': True
             },
             'web_view_text': {
               'valign': 'top',
@@ -1904,7 +1906,7 @@ market_study_data = {
                             'text': "Location Analysis",
                             'format': "situation_heading_format"
                         },
-                        'H25:R38': {
+                        'H23:R38': {
                             'text': "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
                             'format': "gpt_text"
                         }
