@@ -61,6 +61,7 @@ class Map2_0(Map2_0Template):
       height = screen[1]
       
       if self.role == 'admin' or self.role == 'user':
+        self.parent.
         self.dist_layer.visible = True
         self.poi_categories.visible = True
         self.button_overlay.visible = True
@@ -3324,9 +3325,9 @@ class Map2_0(Map2_0Template):
   
           current_row += 1
 
-      print(invest_costs_public)
-      print(invest_costs_non_profit)
-      print(invest_costs_private)
+      # print(invest_costs_public)
+      # print(invest_costs_non_profit)
+      # print(invest_costs_private)
       
       operator_chart_path = anvil.server.call('chart_test_3', [none_profit_operator_al, public_operator_al, private_operator_al], [none_profit_operator_nh, public_operator_nh, private_operator_nh], unique_code)
       invest_cost_chart_path = anvil.server.call('chart_test_6', invest_plot_data, unique_code)
@@ -3335,9 +3336,9 @@ class Map2_0(Map2_0Template):
       invest_cost_chart_non_profit_path = anvil.server.call('chart_test_4', invest_costs_non_profit, invest_costs_non_profit_home, unique_code, 'non_profit')
       invest_cost_chart_private_path = anvil.server.call('chart_test_4', invest_costs_private, invest_costs_private_home, unique_code, 'private')
 
-      print(invest_cost_chart_public_path)
-      print(invest_cost_chart_non_profit_path)
-      print(invest_cost_chart_private_path)
+      # print(invest_cost_chart_public_path)
+      # print(invest_cost_chart_non_profit_path)
+      # print(invest_cost_chart_private_path)
       
       max_pages = competitor_analysis_pages[-1] + 3 
       good_to_know_page = competitor_analysis_pages[-1] + 1
@@ -3361,14 +3362,16 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A16']['file'] = operator_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P14']['file'] = invest_cost_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A37']['file'] = purchasing_power_chart_path
-      cells = [['Q31', 'Q30:Y30'], ['Q39', 'Q38:Y38'], ['Q44', 'Q43:Y43']]
+      cells = [['P26', 'Q30:Y30'], ['P33', 'Q38:Y38'], ['P41', 'Q43:Y43']]
       cell_index = 0
       if not invest_cost_chart_non_profit_path == 404:
         market_study_data['pages']['GOOD TO KNOW']['cell_content']['images'][cells[cell_index][0]] = {
           'file': invest_cost_chart_non_profit_path,
           'settings': {
-              'x_scale': 1,
-              'y_scale': 1
+              'x_scale': .6,
+              'y_scale': .6,
+              'x_offset': 20,
+              'y_offset': 5
           }
         }
         market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells'][cells[cell_index][1]] = {
@@ -3380,8 +3383,10 @@ class Map2_0(Map2_0Template):
         market_study_data['pages']['GOOD TO KNOW']['cell_content']['images'][cells[cell_index][0]] = {
           'file': invest_cost_chart_public_path,
           'settings': {
-              'x_scale': 1,
-              'y_scale': 1
+              'x_scale': .6,
+              'y_scale': .6,
+              'x_offset': 20,
+              'y_offset': 5
           }
         }
         market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells'][cells[cell_index][1]] = {
@@ -3393,8 +3398,10 @@ class Map2_0(Map2_0Template):
         market_study_data['pages']['GOOD TO KNOW']['cell_content']['images'][cells[cell_index][0]] = {
           'file': invest_cost_chart_private_path,
           'settings': {
-              'x_scale': 1,
-              'y_scale': 1
+              'x_scale': .6,
+              'y_scale': .6,
+              'x_offset': 20,
+              'y_offset': 5
           }
         }
         market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells'][cells[cell_index][1]] = {

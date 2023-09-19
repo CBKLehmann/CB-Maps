@@ -1720,7 +1720,7 @@ market_study_data = {
                         'C9': {
                             'file': "img/test_map.png",
                             'settings': {
-                                'x_scale': .965
+                                'x_scale': .8
                             }
                         },
                         'C24': {
@@ -1767,16 +1767,7 @@ market_study_data = {
                                 'x_scale': .9,
                                 'y_scale': .9
                             }
-                        },
-                        # 'Q9': {
-                        #     'file': "img/web_view.png",
-                        #     'settings': {
-                        #         'url': "https://www.capitalbay.de",
-                        #         'y_offset': 10,
-                        #         'x_offset': -10,
-                        #         'y_scale': 1.1
-                        #     }
-                        # }
+                        }
                     },
                     'textboxes': {
                         'A1': {
