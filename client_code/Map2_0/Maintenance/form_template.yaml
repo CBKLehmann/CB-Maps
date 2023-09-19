@@ -30,4 +30,15 @@ components:
       background: '', bold: false, underline: false, icon: ''}
     name: label_3
     layout_properties: {row: VRAHKG, width_xs: 12, col_xs: 0, width: 970}
+  - type: Spacer
+    properties: {height: 25}
+    name: spacer_1
+    layout_properties: {row: ZVQBIW, width_xs: 12, col_xs: 0}
+  - type: YouTubeVideo
+    properties: {role: null, loop: false, height: '450', autoplay: false, mute: false,
+      border: '', foreground: '', visible: true, youtube_id: HOKGIC3xqJs, spacing_above: small,
+      duration: 0, spacing_below: small, state: UNKNOWN, volume: 0, current_time: 0,
+      background: ''}
+    name: youtube_video_1
+    layout_properties: {row: JZWUST, width_xs: 8, col_xs: 2, width: 634.656}
 is_package: true
