@@ -1726,7 +1726,9 @@ market_study_data = {
                         'C9': {
                             'file': "img/test_map.png",
                             'settings': {
-                                'x_scale': .8
+                                'x_scale': .78,
+                                'y_scale': .78,
+                                'y_offset': 20
                             }
                         },
                         'C24': {
@@ -1886,11 +1888,11 @@ market_study_data = {
                         },
                     },
                     'merge_cells': {
-                        'C23:E23': {
+                        'C20:E20': {
                             'text': "Web view: ",
                             'format': "web_view_text"  
                           },
-                        'F23:S23': {
+                        'F20:S20': {
                             'text': "https://www.capitalbay.de",
                             'format': "web_view_link_format"
                         },
@@ -2045,12 +2047,12 @@ market_study_data = {
                                 'y_scale': .6
                             }
                         },
-                        'A37': {
+                        'A34': {
                             'file': "img/plot2.png",
                             'settings': {
-                                'x_offset': 15,
                                 'x_scale': .6,
-                                'y_scale': .6
+                                'y_scale': .6,
+                                'y_offset': 5
                             }
                         },
                         'A16': {
@@ -2208,11 +2210,11 @@ market_study_data = {
                             'text': "Prices",
                             'format': "smaller_heading"
                         },
-                        'Q43:X48': {
+                        'Q47:X51': {
                             'text': "The investment cost rates of the facilities within the catchment area range between €5.50 and €35.60. The median investment cost amount to €10.50. The investment costs at the facility, that is subject to this study amounts to €9.90.",
                             'format': "mass_text"
                         },
-                        'C38:O39': {
+                        'C37:O38': {
                             'text': "Purchasing power index (municipality)",
                             'format': "smaller_heading"
                         }

@@ -1139,7 +1139,7 @@ class Map2_0(Map2_0Template):
         minute = f"0{date.minute}"
       else:
         minute = date.minute
-      created_date = f"{day}.{month}.{year} {hour}.{minute}"
+      created_date = f"{day}.{month}.{year} {hour}:{minute}"
 
       # Calculate updated Beds based on Regulations
       # single_rooms_current = 0
@@ -1246,7 +1246,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y29']['text'] = "{:.2f}".format(purchase_power)
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y38']['text'] = population_trend_string
       market_study_data['pages']['COVER']['cell_content']['textboxes']['Y47']['text'] = f"{beds_surplus_35_v2:,}"
-      market_study_data['pages']['COVER']['cell_content']['textboxes']['C51']['text'] = f"Version 2.0.1 Generated on {created_date}"
+      market_study_data['pages']['COVER']['cell_content']['textboxes']['C51']['text'] = f"Version 2.1.0 Generated on {created_date}"
       market_study_data['pages']['COVER']['cell_content']['cells']['L30']['text'] = street
       market_study_data['pages']['COVER']['cell_content']['cells']['L31']['text'] = zipcode
       market_study_data['pages']['COVER']['cell_content']['cells']['L32']['text'] = city
@@ -1331,8 +1331,8 @@ class Map2_0(Map2_0Template):
 
       anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
       
-      analysis_text = "I`m a placeholder Text"
-      # analysis_text = anvil.server.call('openai_test', city)
+      # analysis_text = "I`m a placeholder Text"
+      analysis_text = anvil.server.call('openai_test', city)
       from .ChatGPT import ChatGPT
       Functions.manipulate_loading_overlay(self, False)
       analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
@@ -1342,7 +1342,7 @@ class Map2_0(Map2_0Template):
       
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C4:J5']['text'] = city
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['H25:R38']['text'] = analysis_text
-      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['F23:S23']['text'] = share_url
+      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['F20:S20']['text'] = share_url
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['cells']['E37']['text'] = f"{iso_time} minutes of {movement}"
       # market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['images']['Q9']['settings']['url'] = share_url
 
@@ -3357,11 +3357,11 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O15']['text'] = anvil.server.call('get_median', list_beds) if len(list_beds) > 0 else '-'
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O16']['text'] = anvil.server.call('get_median', list_years_of_construction_nh) if len(list_years_of_construction_nh) > 0 else '-'
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = anvil.server.call('get_median', list_years_of_construction_al) if len(list_years_of_construction_al) > 0 else '-'
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q43:X48']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{'{:.2f}'.format(total_invest_cost)}. {f'The investment costs at the facility, that is subject to this study amounts to €{home_invest}.' if not home_invest == -1 else ''}"
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q47:X51']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{'{:.2f}'.format(total_invest_cost)}. {f'The investment costs at the facility, that is subject to this study amounts to €{home_invest}.' if not home_invest == -1 else ''}"
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A16']['file'] = operator_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P14']['file'] = invest_cost_chart_path
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A37']['file'] = purchasing_power_chart_path
-      cells = [['P25', 'Q30:X30'], ['P30', 'Q37:X37'], ['P37', 'Q41:X41']]
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A34']['file'] = purchasing_power_chart_path
+      cells = [['P27', 'Q32:X32'], ['P34', 'Q39:X39'], ['P40', 'Q43:X43']]
       cell_index = 0
       if not invest_cost_chart_non_profit_path == 404:
         market_study_data['pages']['GOOD TO KNOW']['cell_content']['images'][cells[cell_index][0]] = {
@@ -3410,7 +3410,7 @@ class Map2_0(Map2_0Template):
         cell_index += 1
       market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C4:X5']['text'] = city
       market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C12:X14']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, {complied_regulations} facilities comply with the federal state regulations and {uncomplied_regulations} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C15:N15']['text'] = regulations['federal_state']
+      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O15:X15']['text'] = regulations['federal_state']
       market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O17:S17']['text'] = f"{int(regulations['New']['sr_quote_raw'] * 100)}%" if not type(regulations['New']['sr_quote_raw']) == str else regulations['New']['sr_quote_raw']
       market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O18:S18']['text'] = regulations['New']['max_beds_raw']
       market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O19:S19']['text'] = regulations['New']['min_room_size']
