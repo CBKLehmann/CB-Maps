@@ -578,6 +578,12 @@ market_study_data = {
                 'bottom': 1,
                 'valign': 'vcenter'
             },
+            'smaller_heading_borderless_center': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 12,
+                'valign': 'vcenter',
+                'align': 'center'
+            },
             'smaller_heading_background': {
                 'font': 'Segoe UI Semibold',
                 'font_size': 12,
@@ -2106,7 +2112,7 @@ market_study_data = {
                                 'x_offset': 96
                             }
                         },
-                        'W1': {
+                        'X1': {
                             'text': "3 | 7",
                             'settings': {
                                 'font': {

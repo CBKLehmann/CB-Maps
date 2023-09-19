@@ -61,7 +61,6 @@ class Map2_0(Map2_0Template):
       height = screen[1]
       
       if self.role == 'admin' or self.role == 'user':
-        self.parent.
         self.dist_layer.visible = True
         self.poi_categories.visible = True
         self.button_overlay.visible = True
@@ -3362,7 +3361,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A16']['file'] = operator_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P14']['file'] = invest_cost_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A37']['file'] = purchasing_power_chart_path
-      cells = [['P26', 'Q30:Y30'], ['P33', 'Q38:Y38'], ['P41', 'Q43:Y43']]
+      cells = [['P26', 'Q30:X30'], ['P33', 'Q38:X38'], ['P41', 'Q43:X43']]
       cell_index = 0
       if not invest_cost_chart_non_profit_path == 404:
         market_study_data['pages']['GOOD TO KNOW']['cell_content']['images'][cells[cell_index][0]] = {
@@ -3376,7 +3375,7 @@ class Map2_0(Map2_0Template):
         }
         market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells'][cells[cell_index][1]] = {
           'text': "Non Profit",
-          'format': "smaller_heading"
+          'format': "smaller_heading_borderless_center"
         }
         cell_index += 1
       if not invest_cost_chart_public_path == 404:
@@ -3391,7 +3390,7 @@ class Map2_0(Map2_0Template):
         }
         market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells'][cells[cell_index][1]] = {
           'text': "Public",
-          'format': "smaller_heading"
+          'format': "smaller_heading_borderless_center"
         }
         cell_index += 1
       if not invest_cost_chart_private_path == 404:
@@ -3406,7 +3405,7 @@ class Map2_0(Map2_0Template):
         }
         market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells'][cells[cell_index][1]] = {
           'text': "Private",
-          'format': "smaller_heading"
+          'format': "smaller_heading_borderless_center"
         }
         cell_index += 1
       market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C4:X5']['text'] = city
@@ -3429,7 +3428,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['textboxes']['R1']['text'] = f"{location_analysis_page} | {max_pages}"
       for page in competitor_analysis_pages:
         market_study_data['pages'][f'COMPETITOR ANALYSIS {page - 3}']['cell_content']['textboxes']['V1']['text'] = f"{page} | {max_pages}"
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['textboxes']['W1']['text'] = f"{good_to_know_page} | {max_pages}"
+      market_study_data['pages']['GOOD TO KNOW']['cell_content']['textboxes']['X1']['text'] = f"{good_to_know_page} | {max_pages}"
       market_study_data['pages']['METHODIC']['cell_content']['textboxes']['Y1']['text'] = f"{methodic_page} | {max_pages}"
       market_study_data['pages']['CONTACT']['cell_content']['textboxes']['Y1']['text'] = f"{contact_page} | {max_pages}"
         
