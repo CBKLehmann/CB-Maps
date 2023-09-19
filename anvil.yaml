@@ -1,4 +1,7 @@
-dependencies: []
+dependencies:
+- dep_id: dep_onabh5yfyvi
+  version: {dev: false}
+  resolution_hints: {app_id: WR3UELIEBJV25YXK, name: Clone of IFrame Component, package_name: IFrame}
 services:
 - source: /runtime/services/tables.yml
   client_config: {}
