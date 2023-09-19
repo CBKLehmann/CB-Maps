@@ -321,7 +321,8 @@ market_study_data = {
                 'font': 'Segoe UI',
                 'font_size': 9,
                 'color': '#808080',
-                'indent': 2
+                'indent': 2,
+                'valign': 'vcenter'
             },
             'icon_text': {
                 'font': 'Segoe UI Semibold',
@@ -578,6 +579,12 @@ market_study_data = {
                 'bottom': 1,
                 'valign': 'vcenter'
             },
+            'smaller_heading_borderless_center': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 12,
+                'valign': 'vcenter',
+                'align': 'center'
+            },
             'smaller_heading_background': {
                 'font': 'Segoe UI Semibold',
                 'font_size': 12,
@@ -669,7 +676,8 @@ market_study_data = {
                 'font': "Segoe UI",
                 'font_size': 11,
                 'color': "#00B0F0",
-                'valign': "top"
+                'valign': "top",
+                'text_wrap': True
             },
             'web_view_text': {
               'valign': 'top',
@@ -1720,7 +1728,9 @@ market_study_data = {
                         'C9': {
                             'file': "img/test_map.png",
                             'settings': {
-                                'x_scale': .965
+                                'x_scale': .78,
+                                'y_scale': .78,
+                                'y_offset': 20
                             }
                         },
                         'C24': {
@@ -1767,16 +1777,7 @@ market_study_data = {
                                 'x_scale': .9,
                                 'y_scale': .9
                             }
-                        },
-                        # 'Q9': {
-                        #     'file': "img/web_view.png",
-                        #     'settings': {
-                        #         'url': "https://www.capitalbay.de",
-                        #         'y_offset': 10,
-                        #         'x_offset': -10,
-                        #         'y_scale': 1.1
-                        #     }
-                        # }
+                        }
                     },
                     'textboxes': {
                         'A1': {
@@ -1889,11 +1890,11 @@ market_study_data = {
                         },
                     },
                     'merge_cells': {
-                        'C23:E23': {
+                        'C20:E20': {
                             'text': "Web view: ",
                             'format': "web_view_text"  
                           },
-                        'F23:S23': {
+                        'F20:S20': {
                             'text': "https://www.capitalbay.de",
                             'format': "web_view_link_format"
                         },
@@ -1905,7 +1906,7 @@ market_study_data = {
                             'text': "Location Analysis",
                             'format': "situation_heading_format"
                         },
-                        'H25:R38': {
+                        'H23:R38': {
                             'text': "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
                             'format': "gpt_text"
                         }
@@ -2048,12 +2049,12 @@ market_study_data = {
                                 'y_scale': .6
                             }
                         },
-                        'A37': {
+                        'A34': {
                             'file': "img/plot2.png",
                             'settings': {
-                                'x_offset': 15,
                                 'x_scale': .6,
-                                'y_scale': .6
+                                'y_scale': .6,
+                                'y_offset': 5
                             }
                         },
                         'A16': {
@@ -2062,7 +2063,7 @@ market_study_data = {
                                 'x_scale': .7,
                                 'y_scale': .7
                             }
-                        },
+                        }
                     },
                     'textboxes': {
                         'A1': {
@@ -2115,7 +2116,7 @@ market_study_data = {
                                 'x_offset': 96
                             }
                         },
-                        'W1': {
+                        'X1': {
                             'text': "3 | 7",
                             'settings': {
                                 'font': {
@@ -2211,11 +2212,11 @@ market_study_data = {
                             'text': "Prices",
                             'format': "smaller_heading"
                         },
-                        'Q31:X36': {
+                        'Q47:X51': {
                             'text': "The investment cost rates of the facilities within the catchment area range between €5.50 and €35.60. The median investment cost amount to €10.50. The investment costs at the facility, that is subject to this study amounts to €9.90.",
                             'format': "mass_text"
                         },
-                        'C38:O39': {
+                        'C37:O38': {
                             'text': "Purchasing power index (municipality)",
                             'format': "smaller_heading"
                         }
