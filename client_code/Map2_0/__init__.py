@@ -3442,13 +3442,9 @@ class Map2_0(Map2_0Template):
       Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
 
-      print(datetime.datetime.now())
       all_data = self.build_competitor_map_request(coords_nh, coords_al)
-      print(datetime.datetime.now())
       anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
-      print(datetime.datetime.now())
       anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, all_data['request'])
-      print(datetime.datetime.now())
       
       # #####Downloading Files#####
       
@@ -4251,12 +4247,15 @@ class Map2_0(Map2_0Template):
 
   def build_competitor_map_request(self, nh_data, al_data):
     with anvil.server.no_loading_indicator:
+      print(datetime.datetime.now())
       nh_home_address = Variables.home_address_nh
       al_home_address = Variables.home_address_al
       nh_sorted_coords = nh_data['sorted_coords']
       al_sorted_coords = al_data['sorted_coords']
       nh_home_counter = 0
       al_home_counter = 0
+
+      print(datetime.datetime.now())
       
       for entry in nh_home_address:
         if entry in nh_sorted_coords:
@@ -4264,12 +4263,16 @@ class Map2_0(Map2_0Template):
           nh_sorted_coords[nh_home_index].append('home')
           nh_home_counter += 1
 
+      print(datetime.datetime.now())
+      
       for entry in al_home_address:
         if entry in al_sorted_coords:
           al_home_index = al_sorted_coords.index(entry)
           al_sorted_coords[al_home_index].append('home')
           al_home_counter += 1
 
+      print(datetime.datetime.now())
+      
       counter = 0
       request = []
       request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
@@ -4282,6 +4285,8 @@ class Map2_0(Map2_0Template):
       last_coords = []
       complete_counter = 0
 
+      print(datetime.datetime.now())
+      
       test_counter = 0
       last_coord_dist = 0
       for coordinate in nh_sorted_coords:
@@ -4294,6 +4299,8 @@ class Map2_0(Map2_0Template):
 
       last_coord_dist = 0
 
+      print(datetime.datetime.now())
+      
       for index, coordinate in enumerate(nh_sorted_coords):
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
@@ -4329,12 +4336,16 @@ class Map2_0(Map2_0Template):
       request_static_map = request_static_map_raw
       index_coords = len(al_sorted_coords)
 
+      print(datetime.datetime.now())
+      
       for entry in al_sorted_coords:
         if 'home' in entry:
           index_coords -= 1
       last_coords = []
       complete_counter = 0
 
+      print(datetime.datetime.now())
+      
       test_counter = 0
       last_coord_dist = 0
       for coordinate in al_sorted_coords:
@@ -4346,6 +4357,8 @@ class Map2_0(Map2_0Template):
       index_coords -= test_counter
 
       last_coord_dist = 0
+
+      print(datetime.datetime.now())
       
       for index, coordinate in enumerate(al_sorted_coords):
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
@@ -4377,7 +4390,9 @@ class Map2_0(Map2_0Template):
           print(request_static_map)
           request.append(request_static_map)
         last_coord_dist = coordinate[1]
-        
+
+      print(datetime.datetime.now())
+      
       url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
       encoded_url = url.replace("/", "%2F")
       request_static_map = request_static_map_raw + f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{nh_data['marker_coords']['lng']},{nh_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
