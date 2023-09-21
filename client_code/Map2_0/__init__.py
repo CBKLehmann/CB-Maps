@@ -3442,9 +3442,13 @@ class Map2_0(Map2_0Template):
       Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
 
+      print(datetime.datetime.now())
       all_data = self.build_competitor_map_request(coords_nh, coords_al)
+      print(datetime.datetime.now())
       anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
+      print(datetime.datetime.now())
       anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, all_data['request'])
+      print(datetime.datetime.now())
       
       # #####Downloading Files#####
       
@@ -4294,7 +4298,7 @@ class Map2_0(Map2_0Template):
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
           complete_counter += 1
-          icon = f'{complete_counter}Nursing@0.75x.png'
+          icon = f'{complete_counter}Nursing@0.6x.png'
           for al_index, al_coordinate in enumerate(al_sorted_coords):
             if anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(al_coordinate[0]['coords'][0]), float(al_coordinate[0]['coords'][1])]) <= 0.01:
               icon = f'Nursing{complete_counter}@0.75x.png'
@@ -4305,6 +4309,7 @@ class Map2_0(Map2_0Template):
               request_static_map += f"%2C"
             request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
       			# counter = 0
+            print(request_static_map)
             request.append(request_static_map)
             request_static_map = request_static_map_raw
           else:
@@ -4316,6 +4321,7 @@ class Map2_0(Map2_0Template):
               request_static_map += f"%2C"
           request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
           # counter = 0
+          print(request_static_map)
           request.append(request_static_map)
         last_coord_dist = coordinate[1]
 
@@ -4345,7 +4351,7 @@ class Map2_0(Map2_0Template):
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
           complete_counter += 1
-          icon = f'{complete_counter}@0.75x.png'
+          icon = f'{complete_counter}@0.6x.png'
           for nh_index, nh_coordinate in enumerate(nh_sorted_coords):
             if anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(nh_coordinate[0]['coords'][0]), float(nh_coordinate[0]['coords'][1])]) <= 0.01:
               icon = f'Assisted{complete_counter}@0.75x.png'
@@ -4356,6 +4362,7 @@ class Map2_0(Map2_0Template):
               request_static_map += f"%2C"
             request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
             # counter = 0
+            print(request_static_map)
             request.append(request_static_map)
             request_static_map = request_static_map_raw
           else:
@@ -4367,6 +4374,7 @@ class Map2_0(Map2_0Template):
               request_static_map += f"%2C"
           request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
           # counter = 0
+          print(request_static_map)
           request.append(request_static_map)
         last_coord_dist = coordinate[1]
         
