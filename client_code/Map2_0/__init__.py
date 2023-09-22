@@ -4300,11 +4300,12 @@ class Map2_0(Map2_0Template):
               icon = f'Nursing{complete_counter}@0.6x.png'
           url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
-          if index == len(nh_sorted_coords) - 1 or counter == 30:
+          if index == len(nh_sorted_coords) - 1 or counter == 20:
             if not counter == 1:
               request_static_map += f"%2C"
             request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-      			# counter = 0
+            counter = 0
+            print(request_static_map)
             request.append(request_static_map)
             request_static_map = request_static_map_raw
           else:
@@ -4316,6 +4317,7 @@ class Map2_0(Map2_0Template):
               request_static_map += f"%2C"
           request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
           # counter = 0
+          print(request_static_map)
           request.append(request_static_map)
         last_coord_dist = coordinate[1]
 
@@ -4351,11 +4353,12 @@ class Map2_0(Map2_0Template):
               icon = f'Assisted{complete_counter}@0.6x.png'
             url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
-          if index == len(al_sorted_coords) - 1 or counter == 30:
+          if index == len(al_sorted_coords) - 1 or counter == 20:
             if not counter == 1:
               request_static_map += f"%2C"
             request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-            # counter = 0
+            counter = 0
+            print(request_static_map)
             request.append(request_static_map)
             request_static_map = request_static_map_raw
           else:
@@ -4367,6 +4370,7 @@ class Map2_0(Map2_0Template):
               request_static_map += f"%2C"
           request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
           # counter = 0
+          print(request_static_map)
           request.append(request_static_map)
         last_coord_dist = coordinate[1]
       
