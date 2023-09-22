@@ -692,7 +692,10 @@ class Map2_0(Map2_0Template):
 
   def create_market_study(self, **event_args):
     '''Import Functions for creating Market Study'''
-    import create_market_study_functions
+    from market_study_classes import Basic_App_Informations
+
+    basic_app_informations = Basic_App_Informations(self)
+
 
     '''Execute Code without the standard Anvil Loading Animation'''
     with anvil.server.no_loading_indicator:
@@ -4305,7 +4308,6 @@ class Map2_0(Map2_0Template):
               request_static_map += f"%2C"
             request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
             counter = 0
-            print(request_static_map)
             request.append(request_static_map)
             request_static_map = request_static_map_raw
           else:
@@ -4316,8 +4318,6 @@ class Map2_0(Map2_0Template):
           if not counter == 1:
               request_static_map += f"%2C"
           request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-          # counter = 0
-          print(request_static_map)
           request.append(request_static_map)
         last_coord_dist = coordinate[1]
 
@@ -4358,7 +4358,6 @@ class Map2_0(Map2_0Template):
               request_static_map += f"%2C"
             request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
             counter = 0
-            print(request_static_map)
             request.append(request_static_map)
             request_static_map = request_static_map_raw
           else:
@@ -4369,8 +4368,6 @@ class Map2_0(Map2_0Template):
           if not counter == 1:
               request_static_map += f"%2C"
           request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-          # counter = 0
-          print(request_static_map)
           request.append(request_static_map)
         last_coord_dist = coordinate[1]
       
