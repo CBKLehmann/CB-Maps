@@ -2218,7 +2218,7 @@ class Map2_0(Map2_0Template):
         market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
-          
+          print(competitor[0]['web'])
           if index % 15 == 0 and not index == 0:
             competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
             page += 1
