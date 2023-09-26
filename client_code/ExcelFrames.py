@@ -674,14 +674,13 @@ market_study_data = {
             },
             'web_view_link_format': {
                 'font': "Segoe UI",
-                'font_size': 11,
+                'font_size': 8,
                 'color': "#00B0F0",
-                'valign': "top",
-                'text_wrap': True
+                'valign': "top"
             },
             'web_view_text': {
-              'valign': 'top',
-              'align': 'right',
+              'valign': 'bottom',
+              'align': 'left',
               'font': "Segoe UI"
             }
         },
@@ -1897,7 +1896,7 @@ market_study_data = {
                             'text': "Web view: ",
                             'format': "web_view_text"  
                           },
-                        'F20:S20': {
+                        'C21:S21': {
                             'text': "https://www.capitalbay.de",
                             'format': "web_view_link_format"
                         },

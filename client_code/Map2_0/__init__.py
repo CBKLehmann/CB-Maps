@@ -1240,7 +1240,7 @@ class Map2_0(Map2_0Template):
       beds_in_reserve_fc = round(beds_adjusted * 0.05)
 
       market_study_pages = ["COVER", "SUMMARY", "LOCATION ANALYSIS"]
-      share_url = self.create_share_map('market_study')
+      share_url = self.create_share_map('market_study').replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss")
 
       max_pages = 2
       summary_page = 2
@@ -1348,7 +1348,7 @@ class Map2_0(Map2_0Template):
       
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C4:J5']['text'] = city
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['H23:R38']['text'] = analysis_text
-      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['F20:S20']['text'] = share_url
+      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C21:S21']['text'] = share_url
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['cells']['E37']['text'] = f"{iso_time} minutes of {movement}"
       # market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['images']['Q9']['settings']['url'] = share_url
 
