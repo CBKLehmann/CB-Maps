@@ -719,7 +719,11 @@ market_study_data = {
                             }
                         },
                         'AC4': {
-                            'file': "img/LogoTrans.png"
+                            'file': "img/LogoTrans.png",
+                            'settings': {
+                              'x_offset': 20,
+                              'y_offset': 20
+                            }
                         },
                         'AF34': {
                             'file': "img/pop_trend.png",
