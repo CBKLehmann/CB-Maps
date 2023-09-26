@@ -1240,7 +1240,7 @@ class Map2_0(Map2_0Template):
       beds_in_reserve_fc = round(beds_adjusted * 0.05)
 
       market_study_pages = ["COVER", "SUMMARY", "LOCATION ANALYSIS"]
-      share_url = self.create_share_map('market_study').replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss")
+      share_url = self.create_share_map('market_study')
 
       max_pages = 2
       summary_page = 2
@@ -2218,7 +2218,6 @@ class Map2_0(Map2_0Template):
         market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
-          print(competitor[0]['web'])
           if index % 15 == 0 and not index == 0:
             competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
             page += 1
@@ -4252,17 +4251,23 @@ class Map2_0(Map2_0Template):
     with anvil.server.no_loading_indicator:
       nh_home_address = Variables.home_address_nh
       al_home_address = Variables.home_address_al
-      nh_sorted_coords = nh_data['sorted_coords']
-      al_sorted_coords = al_data['sorted_coords']
+      nh_sorted_coords = copy.deepcopy(nh_data['sorted_coords'])
+      nh_sorted_coords_throwaway = copy.deepcopy(nh_data['sorted_coords'])
+      al_sorted_coords = copy.deepcopy(al_data['sorted_coords'])
+      al_sorted_coords_throwaway = copy.deepcopy(al_data['sorted_coords'])
       nh_home_counter = 0
       al_home_counter = 0
+
+      print(nh_data['sorted_coords'])
+      print(nh_sorted_coords)
+      print(nh_sorted_coords_throwaway)
       
       for entry in nh_home_address:
         if entry in nh_sorted_coords:
           nh_home_index = nh_sorted_coords.index(entry)
           nh_sorted_coords[nh_home_index].append('home')
           nh_home_counter += 1
-      
+
       for entry in al_home_address:
         if entry in al_sorted_coords:
           al_home_index = al_sorted_coords.index(entry)
@@ -4292,15 +4297,19 @@ class Map2_0(Map2_0Template):
       index_coords -= test_counter
 
       last_coord_dist = 0
-      
+
+      print(f"{datetime.datetime.now()} - Start Loop")
       for index, coordinate in enumerate(nh_sorted_coords):
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
           complete_counter += 1
           icon = f'{complete_counter}Nursing@0.6x.png'
-          for al_index, al_coordinate in enumerate(al_sorted_coords):
+          for al_index, al_coordinate in enumerate(al_sorted_coords_throwaway):
             if anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(al_coordinate[0]['coords'][0]), float(al_coordinate[0]['coords'][1])]) <= 0.01:
               icon = f'Nursing{complete_counter}@0.6x.png'
+              break
+            else:
+              al_sorted_coords_throwaway.pop()
           url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
           if index == len(nh_sorted_coords) - 1 or counter == 20:
@@ -4321,10 +4330,12 @@ class Map2_0(Map2_0Template):
           request.append(request_static_map)
         last_coord_dist = coordinate[1]
 
+      print(f"{datetime.datetime.now()} - Finish Loop")
+      
       counter = 0
       request_static_map = request_static_map_raw
       index_coords = len(al_sorted_coords)
-      
+
       for entry in al_sorted_coords:
         if 'home' in entry:
           index_coords -= 1
@@ -4343,15 +4354,24 @@ class Map2_0(Map2_0Template):
 
       last_coord_dist = 0
       
+      print(f"{datetime.datetime.now()} - Start Loop")
       for index, coordinate in enumerate(al_sorted_coords):
+        print('###########################################################')
+        print(coordinate)
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
           complete_counter += 1
           icon = f'{complete_counter}@0.6x.png'
-          for nh_index, nh_coordinate in enumerate(nh_sorted_coords):
-            if anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(nh_coordinate[0]['coords'][0]), float(nh_coordinate[0]['coords'][1])]) <= 0.01:
+          for nh_index, nh_coordinate in enumerate(nh_sorted_coords_throwaway):
+            distance = anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(nh_coordinate[0]['coords'][0]), float(nh_coordinate[0]['coords'][1])])
+            print(distance)
+            if distance <= 0.01:
               icon = f'Assisted{complete_counter}@0.6x.png'
-            url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
+              print(icon)
+              break
+            else:
+              nh_sorted_coords_throwaway.pop()
+          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
           if index == len(al_sorted_coords) - 1 or counter == 20:
             if not counter == 1:
@@ -4370,6 +4390,8 @@ class Map2_0(Map2_0Template):
           request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
           request.append(request_static_map)
         last_coord_dist = coordinate[1]
+
+      print(f"{datetime.datetime.now()} - Finish Loop")
       
       url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
       encoded_url = url.replace("/", "%2F")
@@ -4819,8 +4841,8 @@ class Map2_0(Map2_0Template):
         'poi_food_drinks': poi_food_drinks,
         'poi_opnv': poi_opnv,
         'iso_layer': self.checkbox_poi_x_hfcig.checked,
-        'name': name,
-        'url': self.url,
+        'name': name.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss"),
+        'url': self.url.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss"),
         'study_pin': study_pin,
         'zoom': self.mapbox.getZoom(),
         'center': {'lng': center.lng, 'lat': center.lat},
@@ -4847,7 +4869,7 @@ class Map2_0(Map2_0Template):
         Functions.manipulate_loading_overlay(self, False)
         alert(grid, large=True, dismissible=False, role='custom_alert')
       else:
-        return self.url
+        return self.url.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss")
 
   def handle_style_change(self, event):
     self.place_layer()
