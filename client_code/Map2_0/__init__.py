@@ -3444,9 +3444,13 @@ class Map2_0(Map2_0Template):
       Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
 
+      print(datetime.datetime.now())
       all_data = self.build_competitor_map_request(coords_nh, coords_al)
+      print(datetime.datetime.now())
       anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
+      print(datetime.datetime.now())
       anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, all_data['request'])
+      print(datetime.datetime.now())
       
       # #####Downloading Files#####
       
@@ -4252,15 +4256,9 @@ class Map2_0(Map2_0Template):
       nh_home_address = Variables.home_address_nh
       al_home_address = Variables.home_address_al
       nh_sorted_coords = copy.deepcopy(nh_data['sorted_coords'])
-      nh_sorted_coords_throwaway = copy.deepcopy(nh_data['sorted_coords'])
       al_sorted_coords = copy.deepcopy(al_data['sorted_coords'])
-      al_sorted_coords_throwaway = copy.deepcopy(al_data['sorted_coords'])
       nh_home_counter = 0
       al_home_counter = 0
-
-      print(nh_data['sorted_coords'])
-      print(nh_sorted_coords)
-      print(nh_sorted_coords_throwaway)
       
       for entry in nh_home_address:
         if entry in nh_sorted_coords:
@@ -4304,12 +4302,12 @@ class Map2_0(Map2_0Template):
           counter += 1
           complete_counter += 1
           icon = f'{complete_counter}Nursing@0.6x.png'
-          for al_index, al_coordinate in enumerate(al_sorted_coords_throwaway):
-            if anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(al_coordinate[0]['coords'][0]), float(al_coordinate[0]['coords'][1])]) <= 0.01:
-              icon = f'Nursing{complete_counter}@0.6x.png'
-              break
-            else:
-              al_sorted_coords_throwaway.pop()
+          for al_index, al_coordinate in enumerate(al_sorted_coords):
+            if abs(al_coordinate[1] - coordinate[1]) <= .015:
+              distance = anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(al_coordinate[0]['coords'][0]), float(al_coordinate[0]['coords'][1])])
+              if distance <= 0.01:
+                icon = f'Nursing{complete_counter}@0.6x.png'
+                break
           url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
           if index == len(nh_sorted_coords) - 1 or counter == 20:
@@ -4356,21 +4354,16 @@ class Map2_0(Map2_0Template):
       
       print(f"{datetime.datetime.now()} - Start Loop")
       for index, coordinate in enumerate(al_sorted_coords):
-        print('###########################################################')
-        print(coordinate)
         if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
           counter += 1
           complete_counter += 1
           icon = f'{complete_counter}@0.6x.png'
-          for nh_index, nh_coordinate in enumerate(nh_sorted_coords_throwaway):
-            distance = anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(nh_coordinate[0]['coords'][0]), float(nh_coordinate[0]['coords'][1])])
-            print(distance)
-            if distance <= 0.01:
-              icon = f'Assisted{complete_counter}@0.6x.png'
-              print(icon)
-              break
-            else:
-              nh_sorted_coords_throwaway.pop()
+          for nh_index, nh_coordinate in enumerate(nh_sorted_coords):
+            if abs(nh_coordinate[1] - coordinate[1]) <= .015:
+              distance = anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(nh_coordinate[0]['coords'][0]), float(nh_coordinate[0]['coords'][1])])
+              if distance <= .01:
+                icon = f'Assisted{complete_counter}@0.6x.png'
+                break
           url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
           encoded_url = url.replace("/", "%2F")
           if index == len(al_sorted_coords) - 1 or counter == 20:
