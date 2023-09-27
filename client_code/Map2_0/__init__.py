@@ -1483,7 +1483,7 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'],
+              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
               'format': 'home_line_centered_link',
               # 'string': "↗"
             }
@@ -1637,7 +1637,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'],
+              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
               'format': 'row_centered_link',
               # 'string': "↗"
             }
@@ -1854,7 +1854,7 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'],
+              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
               'format': 'home_line_centered_link',
               # 'string': "↗"
             }
@@ -1942,7 +1942,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'],
+              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
               'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
               # 'string': "↗"
             }
@@ -2425,7 +2425,7 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'],
+              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
               'format': 'home_line_centered_link',
               # 'string': "↗"
             }
@@ -2578,7 +2578,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'],
+              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
               'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
               # 'string': "↗"
             }
@@ -3169,7 +3169,7 @@ class Map2_0(Map2_0Template):
               'format': 'home_line_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'],
+              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
               'format': 'home_line_centered_link',
               # 'string': "↗"
             }
@@ -3257,7 +3257,7 @@ class Map2_0(Map2_0Template):
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'],
+              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
               'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
               # 'string': "↗"
             }
@@ -3460,11 +3460,11 @@ class Map2_0(Map2_0Template):
         
       #Get PDF from Table and start Download
       table = app_tables.pictures.search()
-      # mapPDF = app_tables.pictures.search()[1]
-      mapExcel = app_tables.pictures.search()[0]
-      # anvil.media.download(mapPDF['pic'])
+      mapPDF = app_tables.pictures.search()[0]
+      # mapExcel = app_tables.pictures.search()[0]
+      anvil.media.download(mapPDF['pic'])
       # time.sleep(1)
-      anvil.media.download(mapExcel['pic'])
+      # anvil.media.download(mapExcel['pic'])
       Variables.unique_code = unique_code
 
       # #####Reset Loading Bar#####
