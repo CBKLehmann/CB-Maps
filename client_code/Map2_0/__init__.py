@@ -699,6 +699,7 @@ class Map2_0(Map2_0Template):
 
     '''Execute Code without the standard Anvil Loading Animation'''
     with anvil.server.no_loading_indicator:
+      print(f"Start of Market Study Creation: {datetime.datetime.now()}")
       Functions.manipulate_loading_overlay(self, True)
       self.mobile_hide_click()
       anvil.js.call('update_loading_bar', 0, 'Getting map-based Informations')
@@ -1110,7 +1111,7 @@ class Map2_0(Map2_0Template):
       else:
         demand_potential = "very strong"
 
-      purchase_power = anvil.server.call('get_purchasing_power', location={'lat': lng_lat_marker['lat'], 'lon': lng_lat_marker['lng']})
+      purchase_power = anvil.server.call('get_purchasing_power', location={'lat': lng_lat_marker['lat'], 'lng': lng_lat_marker['lng']})
 
       # #####Create Excel for Market Study#####
       
@@ -3447,7 +3448,11 @@ class Map2_0(Map2_0Template):
       anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
 
       print(datetime.datetime.now())
-      all_data = self.build_competitor_map_request(coords_nh, coords_al)
+      request_data = self.build_competitor_map_request(coords_nh, Variables.home_address_nh, coords_al, [])
+      print(datetime.datetime.now())
+      request_data = self.build_competitor_map_request(request_data['controlling_marker'], Variables.home_address_al, request_data['working_marker'], request_data['request'])
+      print(datetime.datetime.now())
+      request = self.build_home_marker_map_request(request_data['controlling_marker']['marker_coords']['lng'], request_data['controlling_marker']['marker_coords']['lat'], request_data['request'])
       print(datetime.datetime.now())
       anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
       print(datetime.datetime.now())
@@ -3471,6 +3476,7 @@ class Map2_0(Map2_0Template):
       
       anvil.js.call('update_loading_bar', 0, '')
       Functions.manipulate_loading_overlay(self, False)
+      print(f"End of Market Study Creation: {datetime.datetime.now()}")
   
   def upload_mspdf_change(self, file, **event_args):
     with anvil.server.no_loading_indicator:
@@ -4247,154 +4253,61 @@ class Map2_0(Map2_0Template):
             Variables.home_address_al = alert(content=Market_Study_AL_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
           if not Variables.home_address_al == []:
             sorted_coords.insert(0, Variables.home_address_al)
-      
+
+      # print(sorted_coords[:30])
       res_data = {'sorted_coords': sorted_coords[:30], 'marker_coords': marker_coords}
       
       return res_data
 
 
-  def build_competitor_map_request(self, nh_data, al_data):
-    with anvil.server.no_loading_indicator:
-      nh_home_address = Variables.home_address_nh
-      al_home_address = Variables.home_address_al
-      nh_sorted_coords = copy.deepcopy(nh_data['sorted_coords'])
-      al_sorted_coords = copy.deepcopy(al_data['sorted_coords'])
-      nh_home_counter = 0
-      al_home_counter = 0
-      
-      for entry in nh_home_address:
-        if entry in nh_sorted_coords:
-          nh_home_index = nh_sorted_coords.index(entry)
-          nh_sorted_coords[nh_home_index].append('home')
-          nh_home_counter += 1
+  def build_competitor_map_request(self, working_marker, home_marker, controlling_marker, request):
+    request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
+    request_static_map = request_static_map_raw
+    marker_number = 0
+    last_coord_dist = 0
 
-      for entry in al_home_address:
-        if entry in al_sorted_coords:
-          al_home_index = al_sorted_coords.index(entry)
-          al_sorted_coords[al_home_index].append('home')
-          al_home_counter += 1
-      
-      counter = 0
-      request = []
-      request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
-      request_static_map = request_static_map_raw
-      index_coords = len(nh_sorted_coords)
-
-      for entry in nh_sorted_coords:
-        if 'home' in entry:
-          index_coords -= 1
-      last_coords = []
-      complete_counter = 0
-      
-      test_counter = 0
-      last_coord_dist = 0
-      for coordinate in nh_sorted_coords:
-        if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
-          for second_coordinate in nh_sorted_coords:
-            if not coordinate == second_coordinate and coordinate[1] == second_coordinate[1]:
-              test_counter += 1
-        last_coord_dist = coordinate[1]
-      index_coords -= test_counter
-
-      last_coord_dist = 0
-
-      print(f"{datetime.datetime.now()} - Start Loop")
-      for index, coordinate in enumerate(nh_sorted_coords):
-        if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
-          counter += 1
-          complete_counter += 1
-          icon = f'{complete_counter}Nursing@0.6x.png'
-          for al_index, al_coordinate in enumerate(al_sorted_coords):
-            if abs(al_coordinate[1] - coordinate[1]) <= .015:
-              distance = anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(al_coordinate[0]['coords'][0]), float(al_coordinate[0]['coords'][1])])
-              if distance <= 0.01:
-                icon = f'Nursing{complete_counter}@0.6x.png'
-                break
-          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
-          encoded_url = url.replace("/", "%2F")
-          if index == len(nh_sorted_coords) - 1 or counter == 20:
-            if not counter == 1:
-              request_static_map += f"%2C"
-            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-            counter = 0
-            request.append(request_static_map)
-            request_static_map = request_static_map_raw
-          else:
-            if not counter == 1:
-      				request_static_map += f"%2C"
-            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
-      	elif index == len(nh_sorted_coords) - 1:
-          if not counter == 1:
-              request_static_map += f"%2C"
-          request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
+    for working_marker_index, working_marker_coordinate in enumerate(working_marker['sorted_coords']):
+      if working_marker_coordinate in home_marker:
+        working_marker['sorted_coords'][working_marker_index].append('home')
+      elif not last_coord_dist == working_marker_coordinate[1]:
+        marker_number += 1
+        icon = f'{marker_number}@0.6x.png'
+        if not working_marker_coordinate[2]:
+            for controlling_maker_index, controlling_maker_coordinate in enumerate(controlling_marker['sorted_coords']):
+              if abs(controlling_maker_coordinate[1] - working_marker_coordinate[1]) <= .015:
+                distance = controlling_marker.server.call(
+                  'get_point_distance',
+                  [float(working_marker_coordinate[0]['coords'][0]), float(working_marker_coordinate[0]['coords'][1])],
+                  [float(controlling_maker_coordinate[0]['coords'][0]), float(controlling_maker_coordinate[0]['coords'][1])]
+                )
+                if distance <= .01:
+                  icon = f'Assisted{marker_number}@0.6x.png'
+                  controlling_marker['sorted_coords'][controlling_maker_index].append(True)
+                  working_marker['sorted_coords'][working_marker_index].append(True)
+                  break
+        else:
+          icon = f'Assisted{marker_number}@0.6x.png'
+        url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
+        encoded_url = url.replace("/", "%2F")
+        if not (working_marker_index + 1) % 20 == 1:
+          request_static_map += f"%2C"
+        request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{working_marker_coordinate[0]['coords'][0]},{working_marker_coordinate[0]['coords'][1]}%5D%7D%7D"
+        if working_marker_index == len(working_marker['sorted_coords']) - 1 or (working_marker_index + 1) % 20 == 0:
+          request_static_map += "%5D%7D"
           request.append(request_static_map)
-        last_coord_dist = coordinate[1]
+          request_static_map = request_static_map_raw
+      last_coord_dist = working_marker_coordinate[1]
 
-      print(f"{datetime.datetime.now()} - Finish Loop")
-      
-      counter = 0
-      request_static_map = request_static_map_raw
-      index_coords = len(al_sorted_coords)
+    return {'request': request, 'working_marker': working_marker, 'controlling_marker': controlling_marker}
 
-      for entry in al_sorted_coords:
-        if 'home' in entry:
-          index_coords -= 1
-      last_coords = []
-      complete_counter = 0
-      
-      test_counter = 0
-      last_coord_dist = 0
-      for coordinate in al_sorted_coords:
-        if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
-          for second_coordinate in al_sorted_coords:
-            if not coordinate == second_coordinate and coordinate[1] == second_coordinate[1]:
-              test_counter += 1
-        last_coord_dist = coordinate[1]
-      index_coords -= test_counter
 
-      last_coord_dist = 0
-      
-      print(f"{datetime.datetime.now()} - Start Loop")
-      for index, coordinate in enumerate(al_sorted_coords):
-        if not last_coord_dist == coordinate[1] and not 'home' in coordinate:
-          counter += 1
-          complete_counter += 1
-          icon = f'{complete_counter}@0.6x.png'
-          for nh_index, nh_coordinate in enumerate(nh_sorted_coords):
-            if abs(nh_coordinate[1] - coordinate[1]) <= .015:
-              distance = anvil.server.call('get_point_distance', [float(coordinate[0]['coords'][0]), float(coordinate[0]['coords'][1])], [float(nh_coordinate[0]['coords'][0]), float(nh_coordinate[0]['coords'][1])])
-              if distance <= .01:
-                icon = f'Assisted{complete_counter}@0.6x.png'
-                break
-          url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
-          encoded_url = url.replace("/", "%2F")
-          if index == len(al_sorted_coords) - 1 or counter == 20:
-            if not counter == 1:
-              request_static_map += f"%2C"
-            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-            counter = 0
-            request.append(request_static_map)
-            request_static_map = request_static_map_raw
-          else:
-            if not counter == 1:
-              request_static_map += f"%2C"
-            request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D"
-        elif index == len(al_sorted_coords) - 1:
-          if not counter == 1:
-              request_static_map += f"%2C"
-          request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{coordinate[0]['coords'][0]},{coordinate[0]['coords'][1]}%5D%7D%7D%5D%7D"
-          request.append(request_static_map)
-        last_coord_dist = coordinate[1]
-
-      print(f"{datetime.datetime.now()} - Finish Loop")
-      
-      url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
-      encoded_url = url.replace("/", "%2F")
-      request_static_map = request_static_map_raw + f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{nh_data['marker_coords']['lng']},{nh_data['marker_coords']['lat']}%5D%7D%7D%5D%7D"
-      request.append(request_static_map)
-      request_static_map = request_static_map_raw
-
-      return({"nh_data": nh_sorted_coords, "al_data": al_sorted_coords, "request": request, "request2": Variables.activeIso})
+  def build_home_marker_map_request(self, longitude, latitude, request):
+    request_static_map = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
+    url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/PinCBx075.png'
+    encoded_url = url.replace("/", "%2F")
+    request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{longitude},{latitude}%5D%7D%7D%5D%7D"
+    request.append(request_static_map)
+    return request
   
   def build_req_string(self, res_data, topic):
     with anvil.server.no_loading_indicator:
