@@ -3344,9 +3344,10 @@ class Map2_0(Map2_0Template):
       # print(invest_cost_chart_non_profit_path)
       # print(invest_cost_chart_private_path)
       
-      max_pages = competitor_analysis_pages[-1] + 3 
+      max_pages = competitor_analysis_pages[-1] + 4 
       good_to_know_page = competitor_analysis_pages[-1] + 1
-      methodic_page = good_to_know_page + 1
+      regulations_page = good_to_know_page + 1
+      methodic_page = regulations_page + 1
       contact_page = methodic_page + 1
       
       market_study_pages.append("GOOD TO KNOW")
@@ -3431,6 +3432,7 @@ class Map2_0(Map2_0Template):
 
       market_study_data['pages']['SUMMARY']['cell_content']['textboxes']['V1']['text'] = f"{summary_page} | {max_pages}"
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['textboxes']['R1']['text'] = f"{location_analysis_page} | {max_pages}"
+      market_study_data['pages']['REGULATIONS']['cell_content']['textboxes']['W1']['text'] = f"{regulations_page} | {max_pages}"
       for page in competitor_analysis_pages:
         market_study_data['pages'][f'COMPETITOR ANALYSIS {page - 3}']['cell_content']['textboxes']['V1']['text'] = f"{page} | {max_pages}"
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['textboxes']['X1']['text'] = f"{good_to_know_page} | {max_pages}"

@@ -2321,27 +2321,27 @@ market_study_data = {
                         }
                     },
                     'cells': {
-                        'C15': {
+                        'C17': {
                             'text': "Single room quota (min.)",
                             'format': "table_row_heading"
                         },
-                        'C16': {
+                        'C18': {
                             'text': "Maximum home size",
                             'format': "table_row_heading"
                         },
-                        'C17': {
+                        'C19': {
                             'text': "Minimum room size (SR/DR)",
                             'format': "table_row_heading"
                         },
-                        'C18': {
+                        'C20': {
                             'text': "Minimum common area/ residential",
                             'format': "table_row_heading"
                         },
-                        'C19': {
+                        'C21': {
                             'text': "Comment",
                             'format': "table_row_heading"
                         },
-                        'C20': {
+                        'C22': {
                             'text': "Legal basis",
                             'format': "table_row_heading"
                         }
