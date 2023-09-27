@@ -1337,8 +1337,8 @@ class Map2_0(Map2_0Template):
 
       anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
       
-      # analysis_text = "I`m a placeholder Text"
-      analysis_text = anvil.server.call('openai_test', city)
+      analysis_text = "I`m a placeholder Text"
+      # analysis_text = anvil.server.call('openai_test', city)
       from .ChatGPT import ChatGPT
       Functions.manipulate_loading_overlay(self, False)
       analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
@@ -3460,10 +3460,10 @@ class Map2_0(Map2_0Template):
         
       #Get PDF from Table and start Download
       table = app_tables.pictures.search()
-      mapPDF = app_tables.pictures.search()[1]
+      # mapPDF = app_tables.pictures.search()[1]
       mapExcel = app_tables.pictures.search()[0]
-      anvil.media.download(mapPDF['pic'])
-      time.sleep(1)
+      # anvil.media.download(mapPDF['pic'])
+      # time.sleep(1)
       anvil.media.download(mapExcel['pic'])
       Variables.unique_code = unique_code
 
