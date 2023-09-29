@@ -765,7 +765,8 @@ class Map2_0(Map2_0Template):
       marker_coords = dict(self.marker.getLngLat())
 
       # #####Get Database Informations#####
-      
+
+      print(f"Get Informations from Database: {datetime.datetime.now()}")
       anvil.js.call('update_loading_bar', 10, 'Get Informations from Database')
   
       #Get Information from Database for County of Marker-Position
@@ -776,7 +777,8 @@ class Map2_0(Map2_0Template):
       care_data_district = anvil.server.call("get_care_district_data", countie_data['ex_dem_lk']['key'])
 
       # #####Calculate Data for Market Study#####
-      
+
+      print(f"Calculate Data for Market Study: {datetime.datetime.now()}")
       anvil.js.call('update_loading_bar', 25, 'Calculate Data for Market Study')
   
       #Get different Values for Assisted Living Analysis and/or Executive Summary
@@ -804,6 +806,7 @@ class Map2_0(Map2_0Template):
 
       # #####Calculate Data for Market Study#####
 
+      print(f"Calculate Nursing Home Data for Market Study: {datetime.datetime.now()}")
       Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 40, 'Calculate Nursing Home Data for Market Study')
       
@@ -838,6 +841,7 @@ class Map2_0(Map2_0Template):
 
       # #####Calculate Data for Market Study#####
 
+      print(f"Calculate Assisted Living Data for Market Study: {datetime.datetime.now()}")
       Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 50, 'Calculate Assisted Living Data for Market Study')
       
@@ -1114,7 +1118,8 @@ class Map2_0(Map2_0Template):
       purchase_power = anvil.server.call('get_purchasing_power', location={'lat': lng_lat_marker['lat'], 'lng': lng_lat_marker['lng']})
 
       # #####Create Excel for Market Study#####
-      
+
+      print(f"Create Excel for Market Study Part 1: {datetime.datetime.now()}")
       anvil.js.call('update_loading_bar', 60, 'Create Excel for Market Study Part 1')
       
       # Copy and Fill Dataframe for Excel-Cover
@@ -1336,6 +1341,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C11:O11']['text'] = f"Population {countie[0]} (County)"
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C28:O28']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
 
+      print(f"Generating Analysis Text: {datetime.datetime.now()}")
       anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
       
       analysis_text = "I`m a placeholder Text"
@@ -1345,6 +1351,7 @@ class Map2_0(Map2_0Template):
       analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
       Functions.manipulate_loading_overlay(self, True)
 
+      print(f"Create Excel for Market Study Part 2: {datetime.datetime.now()}")
       anvil.js.call('update_loading_bar', 70, 'Create Excel for Market Study Part 2')
       
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C4:J5']['text'] = city
@@ -1357,6 +1364,8 @@ class Map2_0(Map2_0Template):
       assisted_living_amount = len(data_comp_analysis_al['data'])
       total_amount = nursing_homes_amount + assisted_living_amount
 
+      print('Here 1')
+      
       list_beds = []
       list_years_of_construction_nh = []
       list_years_of_construction_al = []
@@ -3330,6 +3339,8 @@ class Map2_0(Map2_0Template):
   
           current_row += 1
 
+      print('Here 2')
+      
       # print(invest_costs_public)
       # print(invest_costs_non_profit)
       # print(invest_costs_private)
@@ -3355,6 +3366,8 @@ class Map2_0(Map2_0Template):
       market_study_pages.append("REGULATIONS")
       market_study_pages.append("METHODIC")
       market_study_pages.append("CONTACT")
+
+      print('Here 3')
       
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C4:X5']['text'] = city
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['C12']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
@@ -3444,20 +3457,15 @@ class Map2_0(Map2_0Template):
 
       # #####Create Market Study as Excel and PDF#####
 
+      print(f"Creating Market Study as Excel and PDF: {datetime.datetime.now()}")
       Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
 
-      print(datetime.datetime.now())
       request_data = self.build_competitor_map_request(coords_nh, Variables.home_address_nh, coords_al, [])
-      print(datetime.datetime.now())
       request_data = self.build_competitor_map_request(request_data['controlling_marker'], Variables.home_address_al, request_data['working_marker'], request_data['request'])
-      print(datetime.datetime.now())
       request = self.build_home_marker_map_request(request_data['controlling_marker']['marker_coords']['lng'], request_data['controlling_marker']['marker_coords']['lat'], request_data['request'])
-      print(datetime.datetime.now())
       anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
-      print(datetime.datetime.now())
       anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, all_data['request'])
-      print(datetime.datetime.now())
       
       # #####Downloading Files#####
       
