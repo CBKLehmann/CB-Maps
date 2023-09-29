@@ -1363,8 +1363,6 @@ class Map2_0(Map2_0Template):
       nursing_homes_amount = len(data_comp_analysis_nh['data'])
       assisted_living_amount = len(data_comp_analysis_al['data'])
       total_amount = nursing_homes_amount + assisted_living_amount
-
-      print('Here 1')
       
       list_beds = []
       list_years_of_construction_nh = []
@@ -2025,6 +2023,7 @@ class Map2_0(Map2_0Template):
           current_row += 1
       
       else:
+        print('Here 1')
         # Nursing Home Pages
         current_row = 11
         home_counter = 0
@@ -2227,6 +2226,7 @@ class Map2_0(Map2_0Template):
         }
         market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
 
+        print('Here 2')
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if index % 15 == 0 and not index == 0:
             competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
@@ -2571,58 +2571,70 @@ class Map2_0(Map2_0Template):
               invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
           
           else:
+            
             if not prev_competitor_distance == competitor[1]:
               prev_competitor_distance = competitor[1]
               prev_competitor_index += 1
-            
+            print('Here 2.1')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
               'text': prev_competitor_index,
               'format': 'row_number'
             }
+            print('Here 2.3')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'E{current_row}'] = {
               'text': competitor[0]['raw_name'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
+            print('Here 2.4')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'G{current_row}'] = {
               'text': '-' if competitor[0]['raw_betreiber'] == '-' else competitor[0]['raw_betreiber'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
+            print('Here 2.5')  
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
               'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
               'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
               # 'string': "↗"
             }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
-              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
+            print('Here 2.6')
+            print(index)
+            print(competitor[0]['raw_betreiber'])
+            print(anvil.server.call("read_top_30", competitor[0]['raw_betreiber']))
+            # market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
+            #   'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
+            #   'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            # }
+            print('Here 2.7')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'J{current_row}'] = {
               'text': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
+            print('Here 2.8')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'K{current_row}'] = {
               'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
+            print('Here 2.9')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'L{current_row}'] = {
               'text': '-' if competitor[0]['baujahr'] == '-' else competitor[0]['baujahr'],
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
+            print('Here 2.10')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'M{current_row}'] = {
               'text': "-",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
+            print('Here 2.11')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'N{current_row}'] = {
               'text': competitor[0]['legal'],
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
-
+            
             if not competitor[0]['legal'] == '-':
               if competitor[0]['legal'] == 'Yes':
                 complied_regulations += 1
               else:
                 uncomplied_regulations += 1
-            
             if competitor[0]['operator_type'] == 'privat':
               private_operator_nh += 1
               if not competitor[0]['invest'] == '-':
@@ -2665,7 +2677,7 @@ class Map2_0(Map2_0Template):
                 rooms = '-'
                 beds = '-'
                 single_room_quote = '-'
-              
+                
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'O{current_row}'] = {
               'text': beds,
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
@@ -2698,7 +2710,7 @@ class Map2_0(Map2_0Template):
               'text': float(competitor[0]['mdk_note']) if not competitor[0]['mdk_note'] == '-' else competitor[0]['mdk_note'],
               'format': 'row_centered_number' if not current_row == 25 else 'last_row_centered_number'
             }
-
+            
             if not beds == '-':
               total_beds += beds
               list_beds.append(beds)
@@ -2720,9 +2732,11 @@ class Map2_0(Map2_0Template):
               list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
             if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
               invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1])
-  
+            
           current_row += 1
 
+        print('Here 3')
+        
         if len(list_single_room_quota) > 0:
           total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
         else:
@@ -2748,6 +2762,8 @@ class Map2_0(Map2_0Template):
         else:
           total_mdk_grade = 0
 
+        print('Here 4')
+        
         market_study_data['pages'][sheet_name]['cell_content']['cells'][f'O{current_row}'] = {
           'text': total_beds,
           'format': 'overall_sum'
@@ -2974,6 +2990,8 @@ class Map2_0(Map2_0Template):
         }
         market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
 
+        print('Here 5')
+        
         for index, competitor in enumerate(data_comp_analysis_al['data']):
           if index % 15 == 0 and not index == 0:
             competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
@@ -3339,7 +3357,7 @@ class Map2_0(Map2_0Template):
   
           current_row += 1
 
-      print('Here 2')
+        print('Here 6')
       
       # print(invest_costs_public)
       # print(invest_costs_non_profit)
@@ -3366,8 +3384,6 @@ class Map2_0(Map2_0Template):
       market_study_pages.append("REGULATIONS")
       market_study_pages.append("METHODIC")
       market_study_pages.append("CONTACT")
-
-      print('Here 3')
       
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C4:X5']['text'] = city
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['C12']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
