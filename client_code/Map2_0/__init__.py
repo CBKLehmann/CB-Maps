@@ -4299,7 +4299,7 @@ class Map2_0(Map2_0Template):
         if not working_marker_coordinate[2]:
             for controlling_maker_index, controlling_maker_coordinate in enumerate(controlling_marker['sorted_coords']):
               if abs(controlling_maker_coordinate[1] - working_marker_coordinate[1]) <= .015:
-                distance = controlling_marker.server.call(
+                distance = anvil.server.call(
                   'get_point_distance',
                   [float(working_marker_coordinate[0]['coords'][0]), float(working_marker_coordinate[0]['coords'][1])],
                   [float(controlling_maker_coordinate[0]['coords'][0]), float(controlling_maker_coordinate[0]['coords'][1])]
