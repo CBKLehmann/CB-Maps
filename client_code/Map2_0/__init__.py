@@ -699,7 +699,6 @@ class Map2_0(Map2_0Template):
 
     '''Execute Code without the standard Anvil Loading Animation'''
     with anvil.server.no_loading_indicator:
-      print(f"Start of Market Study Creation: {datetime.datetime.now()}")
       Functions.manipulate_loading_overlay(self, True)
       self.mobile_hide_click()
       anvil.js.call('update_loading_bar', 0, 'Getting map-based Informations')
@@ -766,7 +765,6 @@ class Map2_0(Map2_0Template):
 
       # #####Get Database Informations#####
 
-      print(f"Get Informations from Database: {datetime.datetime.now()}")
       anvil.js.call('update_loading_bar', 10, 'Get Informations from Database')
   
       #Get Information from Database for County of Marker-Position
@@ -778,7 +776,6 @@ class Map2_0(Map2_0Template):
 
       # #####Calculate Data for Market Study#####
 
-      print(f"Calculate Data for Market Study: {datetime.datetime.now()}")
       anvil.js.call('update_loading_bar', 25, 'Calculate Data for Market Study')
   
       #Get different Values for Assisted Living Analysis and/or Executive Summary
@@ -806,7 +803,6 @@ class Map2_0(Map2_0Template):
 
       # #####Calculate Data for Market Study#####
 
-      print(f"Calculate Nursing Home Data for Market Study: {datetime.datetime.now()}")
       Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 40, 'Calculate Nursing Home Data for Market Study')
       
@@ -841,7 +837,6 @@ class Map2_0(Map2_0Template):
 
       # #####Calculate Data for Market Study#####
 
-      print(f"Calculate Assisted Living Data for Market Study: {datetime.datetime.now()}")
       Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 50, 'Calculate Assisted Living Data for Market Study')
       
@@ -1119,7 +1114,6 @@ class Map2_0(Map2_0Template):
 
       # #####Create Excel for Market Study#####
 
-      print(f"Create Excel for Market Study Part 1: {datetime.datetime.now()}")
       anvil.js.call('update_loading_bar', 60, 'Create Excel for Market Study Part 1')
       
       # Copy and Fill Dataframe for Excel-Cover
@@ -1341,7 +1335,6 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C11:O11']['text'] = f"Population {countie[0]} (County)"
       market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C28:O28']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
 
-      print(f"Generating Analysis Text: {datetime.datetime.now()}")
       anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
       
       analysis_text = "I`m a placeholder Text"
@@ -1351,7 +1344,6 @@ class Map2_0(Map2_0Template):
       analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
       Functions.manipulate_loading_overlay(self, True)
 
-      print(f"Create Excel for Market Study Part 2: {datetime.datetime.now()}")
       anvil.js.call('update_loading_bar', 70, 'Create Excel for Market Study Part 2')
       
       market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C4:J5']['text'] = city
@@ -2023,7 +2015,6 @@ class Map2_0(Map2_0Template):
           current_row += 1
       
       else:
-        print('Here 1')
         # Nursing Home Pages
         current_row = 11
         home_counter = 0
@@ -2226,7 +2217,6 @@ class Map2_0(Map2_0Template):
         }
         market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
 
-        print('Here 2')
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if index % 15 == 0 and not index == 0:
             competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
@@ -2575,56 +2565,43 @@ class Map2_0(Map2_0Template):
             if not prev_competitor_distance == competitor[1]:
               prev_competitor_distance = competitor[1]
               prev_competitor_index += 1
-            print('Here 2.1')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
               'text': prev_competitor_index,
               'format': 'row_number'
             }
-            print('Here 2.3')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'E{current_row}'] = {
               'text': competitor[0]['raw_name'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
-            print('Here 2.4')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'G{current_row}'] = {
               'text': '-' if competitor[0]['raw_betreiber'] == '-' else competitor[0]['raw_betreiber'],
               'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
             }
-            print('Here 2.5')  
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
               'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
               'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
               # 'string': "↗"
             }
-            print('Here 2.6')
-            print(index)
-            print(competitor[0]['raw_betreiber'])
-            # print(anvil.server.call("read_top_30", competitor[0]['raw_betreiber']))
-            # market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
-            #   'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
-            #   'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            # }
-            print('Here 2.7')
+            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
+              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
+              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
+            }
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'J{current_row}'] = {
               'text': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
-            print('Here 2.8')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'K{current_row}'] = {
               'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
-            print('Here 2.9')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'L{current_row}'] = {
               'text': '-' if competitor[0]['baujahr'] == '-' else competitor[0]['baujahr'],
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
-            print('Here 2.10')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'M{current_row}'] = {
               'text': "-",
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
             }
-            print('Here 2.11')
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'N{current_row}'] = {
               'text': competitor[0]['legal'],
               'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
@@ -2734,8 +2711,6 @@ class Map2_0(Map2_0Template):
               invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1])
             
           current_row += 1
-
-        print('Here 3')
         
         if len(list_single_room_quota) > 0:
           total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
@@ -2761,8 +2736,6 @@ class Map2_0(Map2_0Template):
           total_mdk_grade = anvil.server.call("get_median", list_mdk_grade)
         else:
           total_mdk_grade = 0
-
-        print('Here 4')
         
         market_study_data['pages'][sheet_name]['cell_content']['cells'][f'O{current_row}'] = {
           'text': total_beds,
@@ -2989,8 +2962,6 @@ class Map2_0(Map2_0Template):
           'format': 'rotated_text'
         }
         market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
-
-        print('Here 5')
         
         for index, competitor in enumerate(data_comp_analysis_al['data']):
           if index % 15 == 0 and not index == 0:
@@ -3356,8 +3327,6 @@ class Map2_0(Map2_0Template):
               private_operator_al += 1
   
           current_row += 1
-
-        print('Here 6')
       
       # print(invest_costs_public)
       # print(invest_costs_non_profit)
@@ -3473,7 +3442,6 @@ class Map2_0(Map2_0Template):
 
       # #####Create Market Study as Excel and PDF#####
 
-      print(f"Creating Market Study as Excel and PDF: {datetime.datetime.now()}")
       Functions.manipulate_loading_overlay(self, True)
       anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
 
@@ -3500,7 +3468,6 @@ class Map2_0(Map2_0Template):
       
       anvil.js.call('update_loading_bar', 0, '')
       Functions.manipulate_loading_overlay(self, False)
-      print(f"End of Market Study Creation: {datetime.datetime.now()}")
   
   def upload_mspdf_change(self, file, **event_args):
     with anvil.server.no_loading_indicator:
