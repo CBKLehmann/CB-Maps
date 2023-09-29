@@ -3449,7 +3449,7 @@ class Map2_0(Map2_0Template):
       request_data = self.build_competitor_map_request(request_data['controlling_marker'], Variables.home_address_al, request_data['working_marker'], request_data['request'])
       request = self.build_home_marker_map_request(request_data['controlling_marker']['marker_coords']['lng'], request_data['controlling_marker']['marker_coords']['lat'], request_data['request'])
       anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
-      anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, all_data['request'])
+      anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, request)
       
       # #####Downloading Files#####
       
