@@ -2599,7 +2599,7 @@ class Map2_0(Map2_0Template):
             print('Here 2.6')
             print(index)
             print(competitor[0]['raw_betreiber'])
-            print(anvil.server.call("read_top_30", competitor[0]['raw_betreiber']))
+            # print(anvil.server.call("read_top_30", competitor[0]['raw_betreiber']))
             # market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
             #   'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
             #   'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
