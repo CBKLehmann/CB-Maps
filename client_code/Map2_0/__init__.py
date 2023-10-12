@@ -1375,6 +1375,7 @@ class Map2_0(Map2_0Template):
       invest_costs_public_home = -1
       invest_costs_non_profit_home = -1
       invest_costs_private_home = -1
+      ignored_facilities = 0
       
       if total_amount <= 13:
         # Single Page
@@ -1764,7 +1765,9 @@ class Map2_0(Map2_0Template):
             if not competitor[0]['baujahr'] == '-':
               list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
             if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
-              invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1])
+              invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1 - ignored_facilities])
+            else:
+              ignored_facilities += 1
   
           current_row += 1
 
@@ -2709,7 +2712,9 @@ class Map2_0(Map2_0Template):
             if not competitor[0]['baujahr'] == '-':
               list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
             if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
-              invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1])
+              invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1 - ignored_facilities])
+            else:
+              ignored_facilities += 1
   
           current_row += 1
 
