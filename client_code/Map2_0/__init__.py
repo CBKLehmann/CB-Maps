@@ -1469,6 +1469,7 @@ class Map2_0(Map2_0Template):
         prev_competitor_index = 0
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
+          is_prev_competitor = False
           if 'home' in competitor:
             home_counter += 1
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
@@ -1624,6 +1625,8 @@ class Map2_0(Map2_0Template):
             if not prev_competitor_distance == competitor[1]:
               prev_competitor_distance = competitor[1]
               prev_competitor_index += 1
+            else:
+              is_prev_competitor = True
               
             market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
               'text': index + 1 - home_counter,
@@ -1764,10 +1767,11 @@ class Map2_0(Map2_0Template):
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
               list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
-            if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
-              invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1 - ignored_facilities])
-            else:
-              ignored_facilities += 1
+            if not is_prev_competitor:
+              if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
+                invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1 - ignored_facilities])
+              else:
+                ignored_facilities += 1
   
           current_row += 1
 
@@ -1838,9 +1842,9 @@ class Map2_0(Map2_0Template):
 
         current_row += 1
         prev_competitor_distance = 0
-        prev_competitor_index = 0
         
         for index, competitor in enumerate(data_comp_analysis_al['data']):
+          is_prev_competitor = False
           home_counter = 0
           if 'home' in competitor:
             home_counter += 1
@@ -2567,6 +2571,8 @@ class Map2_0(Map2_0Template):
             if not prev_competitor_distance == competitor[1]:
               prev_competitor_distance = competitor[1]
               prev_competitor_index += 1
+            else:
+              is_prev_competitor = False
             
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
               'text': prev_competitor_index,
@@ -2711,10 +2717,11 @@ class Map2_0(Map2_0Template):
               list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
               list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
-            if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
-              invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1 - ignored_facilities])
-            else:
-              ignored_facilities += 1
+            if not is_prev_competitor:
+              if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
+                invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1 - ignored_facilities])
+              else:
+                ignored_facilities += 1
   
           current_row += 1
 
