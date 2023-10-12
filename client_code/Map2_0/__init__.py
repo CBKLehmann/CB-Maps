@@ -2225,6 +2225,7 @@ class Map2_0(Map2_0Template):
         market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
 
         for index, competitor in enumerate(data_comp_analysis_nh['data']):
+          is_prev_competitor = False
           if index % 15 == 0 and not index == 0:
             competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
             page += 1
@@ -2568,11 +2569,14 @@ class Map2_0(Map2_0Template):
               invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
           
           else:
+            print('###########################################')
+            print(prev_competitor_distance)
+            print( competitor[1])
             if not prev_competitor_distance == competitor[1]:
               prev_competitor_distance = competitor[1]
               prev_competitor_index += 1
             else:
-              is_prev_competitor = False
+              is_prev_competitor = True
             
             market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
               'text': prev_competitor_index,
@@ -2719,9 +2723,13 @@ class Map2_0(Map2_0Template):
               list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
             if not is_prev_competitor:
               if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
+                print(index)
+                print(home_counter)
+                print(ignored_facilities)
+                print(index - home_counter + 1 - ignored_facilities)
                 invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1 - ignored_facilities])
-              else:
-                ignored_facilities += 1
+            else:
+              ignored_facilities += 1
   
           current_row += 1
 
@@ -3379,7 +3387,7 @@ class Map2_0(Map2_0Template):
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A16']['file'] = operator_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P14']['file'] = invest_cost_chart_path
       market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A34']['file'] = purchasing_power_chart_path
-      cells = [['P27', 'Q32:X32'], ['P34', 'Q39:X39'], ['P40', 'Q43:X43']]
+      cells = [['P27', 'Q31:X31'], ['P34', 'Q38:X38'], ['P40', 'Q42:X42']]
       cell_index = 0
       if not invest_cost_chart_non_profit_path == 404:
         market_study_data['pages']['GOOD TO KNOW']['cell_content']['images'][cells[cell_index][0]] = {
