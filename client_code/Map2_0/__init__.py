@@ -1770,8 +1770,8 @@ class Map2_0(Map2_0Template):
             if not is_prev_competitor:
               if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
                 invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1 - ignored_facilities])
-              else:
-                ignored_facilities += 1
+            else:
+              ignored_facilities += 1
   
           current_row += 1
 
@@ -2569,9 +2569,6 @@ class Map2_0(Map2_0Template):
               invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
           
           else:
-            print('###########################################')
-            print(prev_competitor_distance)
-            print( competitor[1])
             if not prev_competitor_distance == competitor[1]:
               prev_competitor_distance = competitor[1]
               prev_competitor_index += 1
@@ -2723,10 +2720,6 @@ class Map2_0(Map2_0Template):
               list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
             if not is_prev_competitor:
               if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
-                print(index)
-                print(home_counter)
-                print(ignored_facilities)
-                print(index - home_counter + 1 - ignored_facilities)
                 invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1 - ignored_facilities])
             else:
               ignored_facilities += 1
