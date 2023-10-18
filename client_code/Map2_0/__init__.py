@@ -464,14 +464,33 @@ class Map2_0(Map2_0Template):
       # anvil.server.call('micmaccircle')
       # anvil.server.call('manipulate')
 
-      addresses = [
-        "Im Lerchenfeld 3, 07743 Jena",
-        "Brauereihof 19, 13585 Berlin",
-        "Sächsische Str. 46, 10707 Berlin",
-        "Belziger Str. 53 c, 10823 Berlin",
-        "Bennigsenstr. 23/24, 12159 Berlin",
-        "Britzer Damm 140, 12347 Berlin"
-      ]
+      cool_dictionary = {
+        'a': {
+          'a': 1,
+          'b': 2
+        },
+        'b': 3,
+        'c': {
+          'a': 1,
+          'b': 2,
+          'c': {
+            'a': 1,
+            'b': 2,
+            'c': 3
+          }
+        }
+      }
+
+      anvil.server.call('test_function', cool_dictionary)
+      
+      # addresses = [
+      #   "Im Lerchenfeld 3, 07743 Jena",
+      #   "Brauereihof 19, 13585 Berlin",
+      #   "Sächsische Str. 46, 10707 Berlin",
+      #   "Belziger Str. 53 c, 10823 Berlin",
+      #   "Bennigsenstr. 23/24, 12159 Berlin",
+      #   "Britzer Damm 140, 12347 Berlin"
+      # ]
       
       ''' Get Population of every Municipalitie inside Iso-Layer '''
       # sendData = anvil.server.call('separate_iso', Variables.activeIso)
