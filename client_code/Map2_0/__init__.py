@@ -1101,7 +1101,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 50,
                 'h': 6,
-                'txt': competitor[0]['raw_name'],
+                'txt': competitor[0]['raw_name'] if len(competitor[0]['raw_name']) <= 30 else f"{competitor[0]['raw_name'][:30]}...",
                 'align': 'left',
                 'fill': True,
                 'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
@@ -1115,7 +1115,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height + 6,
                 'w': 50,
                 'h': 6,
-                'txt': competitor[0]['raw_betreiber'],
+                'txt': competitor[0]['raw_betreiber'] if len(competitor[0]['raw_betreiber']) <= 30 else f"{competitor[0]['raw_betreiber'][:30]}...",
                 'align': 'left',
                 'fill': True
             }
@@ -1383,7 +1383,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 50,
                 'h': 6,
-                'txt': competitor[0]['raw_name'],
+                'txt': competitor[0]['raw_name'] if len(competitor[0]['raw_name']) <= 30 else f"{competitor[0]['raw_name'][:30]}...",
                 'align': 'left',
                 'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
             }
@@ -1395,7 +1395,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height + 6,
                 'w': 50,
                 'h': 6,
-                'txt': competitor[0]['raw_betreiber'],
+                'txt': competitor[0]['raw_betreiber'] if len(competitor[0]['raw_betreiber']) <= 30 else f"{competitor[0]['raw_betreiber'][:30]}...",
                 'align': 'left',
             }
             current_competitor_page['cell'][f'competitor_{table_position}_top_30_operator'] = {
@@ -1833,7 +1833,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 50,
                 'h': 6,
-                'txt': competitor[0]['raw_name'],
+                'txt': competitor[0]['raw_name'] if len(competitor[0]['raw_name']) <= 30 else f"{competitor[0]['raw_name'][:30]}...",
                 'align': 'left',
                 'fill': True,
                 'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
@@ -1847,7 +1847,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height + 6,
                 'w': 50,
                 'h': 6,
-                'txt': competitor[0]['raw_betreiber'],
+                'txt': competitor[0]['raw_betreiber'] if len(competitor[0]['raw_betreiber']) <= 30 else f"{competitor[0]['raw_betreiber'][:30]}...",
                 'align': 'left',
                 'fill': True
             }
@@ -1954,7 +1954,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 50,
                 'h': 6,
-                'txt': competitor[0]['raw_name'],
+                'txt': competitor[0]['raw_name'] if len(competitor[0]['raw_name']) <= 30 else f"{competitor[0]['raw_name'][:30]}...",
                 'align': 'left',
                 'fill': True,
                 'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
@@ -1968,7 +1968,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height + 6,
                 'w': 50,
                 'h': 6,
-                'txt': competitor[0]['raw_betreiber'],
+                'txt': competitor[0]['raw_betreiber'] if len(competitor[0]['raw_betreiber']) <= 30 else f"{competitor[0]['raw_betreiber'][:30]}...",
                 'align': 'left',
                 'fill': True
             }
@@ -2132,7 +2132,7 @@ class Map2_0(Map2_0Template):
                             'size': 12,
                             'x': 10,
                             'y': 210,
-                            'txt': 'Heading'
+                            'txt': 'Country'
                         },
                         'street_value': {
                             'color': [0, 0, 0],
@@ -2180,7 +2180,7 @@ class Map2_0(Map2_0Template):
                             'size': 12,
                             'x': 55,
                             'y': 210,
-                            'txt': 'Germanyg'
+                            'txt': 'Germany'
                         },
                         'radius_of_analysis': {
                             'color': [200, 176, 88],
@@ -3035,7 +3035,7 @@ class Map2_0(Map2_0Template):
                         'x': 76,
                         'y': 71,
                         'w': 23,
-                        'txt': '{:,}%'.format(countie_data['ex_dem_lk']['all_compl']),
+                        'txt': '{:,}'.format(countie_data['ex_dem_lk']['all_compl']),
                         'align': 'right'
                     },
                     'population_county_in_percent_2020': {
