@@ -850,7 +850,7 @@ class Map2_0(Map2_0Template):
     change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
     change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
     population_trend = "{:.1f}".format((people_u80_fc_35 + people_o80_fc_35) * 100 / (people_u80 + people_o80) - 100)
-    nursing_home_rate = float(countie_data['pfleg_stat_lk']['heimquote2019'])
+    nursing_home_rate = round(float(countie_data['pfleg_stat_lk']['heimquote2019']) * 100)
     keys = ['g_u6', 'g_6tou10', 'g_10tou16', 'g_16tou20', 'g_20tou30', 'g_30tou50', 'g_50tou65', 'g_65tou70', 'g_70tou80', 'g_80plus']
     population_fc_30 = 0
     population_fc_35 = 0
@@ -871,20 +871,20 @@ class Map2_0(Map2_0Template):
             beds_lk += int(el['platz_kurzpfl'])
         if not el['platz_nachtpfl'] == '-':
             beds_lk += int(el['platz_nachtpfl'])
-    occupancy_lk = float("{:.2f}".format((inpatients_lk * 100) / beds_lk)) / 100
+    occupancy_lk = round((inpatients_lk * 100) / beds_lk)
     free_beds_lk = beds_lk - inpatients_lk
     
     # #####Calculate Data for Market Study#####
     new_r_care_rate_raw = float("{:.3f}".format(inpatients_lk / (people_u80 + people_o80)))
-    new_care_rate_raw = float("{:.3f}".format(inpatients_lk / round((nursing_home_rate * countie_data['ex_dem_lk']['all_compl']) + 1)))
+    new_care_rate_raw = round((inpatients_lk * 100 / round((nursing_home_rate * countie_data['ex_dem_lk']['all_compl']) + 1)) * 100, 1)
     pat_rec_full_care_fc_30_v1 = round(new_r_care_rate_raw * (people_u80_fc + people_o80_fc))
-    care_rate_30_v1_raw = float("{:.3f}".format(pat_rec_full_care_fc_30_v1 / (population_fc_30 * nursing_home_rate)))
+    care_rate_30_v1_raw = round((pat_rec_full_care_fc_30_v1 * 100 / (population_fc_30 * nursing_home_rate)) * 100, 1)
     pat_rec_full_care_fc_30_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc + people_o80_fc))
-    care_rate_30_v2_raw = float("{:.3f}".format(pat_rec_full_care_fc_30_v2 / (population_fc_30 * nursing_home_rate)))
+    care_rate_30_v2_raw = round((pat_rec_full_care_fc_30_v2 * 100 / (population_fc_30 * nursing_home_rate)) * 100, 1)
     pat_rec_full_care_fc_35_v1 = round(new_r_care_rate_raw * (people_u80_fc_35 + people_o80_fc_35))
-    care_rate_35_v1_raw = float("{:.3f}".format(pat_rec_full_care_fc_35_v1 / (population_fc_35 * nursing_home_rate)))
+    care_rate_35_v1_raw = round((pat_rec_full_care_fc_35_v1 * 100 / (population_fc_35 * nursing_home_rate)) * 100, 1)
     pat_rec_full_care_fc_35_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc_35 + people_o80_fc_35))
-    care_rate_35_v2_raw = float("{:.3f}".format(pat_rec_full_care_fc_35_v2 / (population_fc_35 * nursing_home_rate)))
+    care_rate_35_v2_raw = round((pat_rec_full_care_fc_35_v2 * 100 / (population_fc_35 * nursing_home_rate)) * 100, 1)
     inpatients_fc = round(pat_rec_full_care_fc_30_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
     inpatients_fc_v2 = round(pat_rec_full_care_fc_30_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
     inpatients_fc_35 = round(pat_rec_full_care_fc_35_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
@@ -1076,6 +1076,7 @@ class Map2_0(Map2_0Template):
                 current_competitor_analysis_page += 1
             current_competitor_page = copy.deepcopy(nursing_homes_competitor_skeleton)
             current_competitor_page['page_number'] = current_competitor_analysis_page
+            current_page_height = 177
     
         if 'home' in competitor:
             home_counter += 1
@@ -1220,10 +1221,10 @@ class Map2_0(Map2_0Template):
             if not single_rooms == '-':
                 if not double_rooms == '-':
                     rooms = single_rooms + double_rooms
-                    single_room_quote = single_rooms / (single_rooms + double_rooms)
+                    single_room_quote = round(single_rooms / (single_rooms + double_rooms) * 100)
                 else:
                     rooms = single_rooms
-                    single_room_quote = 1
+                    single_room_quote = 100
             else:
                 if not double_rooms == '-':
                     rooms = double_rooms
@@ -1328,7 +1329,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 10,
                 'h': 6,
-                'txt': '{:,}%'.format(competitor[0]['occupancy']),
+                'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100)),
                 'align': 'center',
                 'fill': True,
             }
@@ -1341,7 +1342,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 10,
                 'h': 6,
-                'txt': '-' if competitor[0]['invest'] == '-' else '{:,}%'.format(float(competitor[0]['invest'])),
+                'txt': '-' if competitor[0]['invest'] == '-' else '{:,}€'.format(float(competitor[0]['invest'])),
                 'align': 'center',
                 'fill': True,
             }
@@ -1354,7 +1355,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 10,
                 'h': 6,
-                'txt': '-' if competitor[0]['mdk_note'] == '-' else '{:,}%'.format(float(competitor[0]['mdk_note'])),
+                'txt': '-' if competitor[0]['mdk_note'] == '-' else '{:,}'.format(float(competitor[0]['mdk_note'])),
                 'align': 'center',
                 'fill': True,
             }
@@ -1366,6 +1367,7 @@ class Map2_0(Map2_0Template):
                 prev_competitor_index += 1
             current_competitor_page['cell'][f'competitor_{table_position}_icon'] = {
                 'color': [255, 255, 255],
+                'fill_color': [244, 81, 94],
                 'font': 'segoeui',
                 'size': 11,
                 'x': 10,
@@ -1374,6 +1376,7 @@ class Map2_0(Map2_0Template):
                 'h': 6,
                 'txt': str(prev_competitor_index),
                 'align': 'center',
+                'fill': True
             }
             current_competitor_page['cell'][f'competitor_{table_position}_name'] = {
                 'color': [0, 176, 240] if not "keine " in competitor[0]['web'] else [0, 0, 0],
@@ -1486,7 +1489,7 @@ class Map2_0(Map2_0Template):
             if not single_rooms == '-':
                 if not double_rooms == '-':
                     rooms = single_rooms + double_rooms
-                    single_room_quote = single_rooms / (single_rooms + double_rooms)
+                    single_room_quote = round(single_rooms / (single_rooms + double_rooms) * 100)
                 else:
                     rooms = single_rooms
                     single_room_quote = 1
@@ -1517,7 +1520,7 @@ class Map2_0(Map2_0Template):
             if not competitor[0]['baujahr'] == '-':
                 list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
             if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
-                invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
+                invest_plot_data.append(["private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public", competitor[0]['invest'], competitor[0]['baujahr'], prev_competitor_index])
 
             current_competitor_page['cell'][f'competitor_{table_position}_beds'] = {
                 'color': [0, 0, 0],
@@ -1582,7 +1585,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 10,
                 'h': 6,
-                'txt': '{:,}%'.format(competitor[0]['occupancy']) if not competitor[0]['occupancy'] == '-' else competitor[0]['occupancy'],
+                'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100)) if not competitor[0]['occupancy'] == '-' else competitor[0]['occupancy'],
                 'align': 'center',
             }
             current_competitor_page['cell'][f'competitor_{table_position}_invest'] = {
@@ -1593,7 +1596,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 10,
                 'h': 6,
-                'txt': '-' if competitor[0]['invest'] == '-' else '{:,}%'.format(float(competitor[0]['invest'])),
+                'txt': '-' if competitor[0]['invest'] == '-' else '{:,}€'.format(float(competitor[0]['invest'])),
                 'align': 'center',
             }
             current_competitor_page['cell'][f'competitor_{table_position}_quality'] = {
@@ -1604,13 +1607,14 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 10,
                 'h': 6,
-                'txt': '-' if competitor[0]['mdk_note'] == '-' else '{:,}%'.format(float(competitor[0]['mdk_note'])),
+                'txt': '-' if competitor[0]['mdk_note'] == '-' else '{:,}'.format(float(competitor[0]['mdk_note'])),
                 'align': 'center',
             }
     
         current_page_height += 12
     
         if index == len(data_comp_analysis_nh['data']) - 1:
+            print(index)
             median_dictionary = anvil.server.call(
                 "get_multiple_median",
                 {
@@ -1650,7 +1654,7 @@ class Map2_0(Map2_0Template):
                 'font': 'seguisb',
                 'size': 8,
                 'x': 119,
-                'y': current_page_height,
+                'y': 285,
                 'w': 10,
                 'h': 6,
                 'txt': 'Σ {:,}'.format(total_beds),
@@ -1661,7 +1665,7 @@ class Map2_0(Map2_0Template):
                 'font': 'seguisb',
                 'size': 8,
                 'x': 129,
-                'y': current_page_height,
+                'y': 285,
                 'w': 12,
                 'h': 6,
                 'txt': 'Σ {:,}'.format(total_single_rooms),
@@ -1672,7 +1676,7 @@ class Map2_0(Map2_0Template):
                 'font': 'seguisb',
                 'size': 8,
                 'x': 141,
-                'y': current_page_height,
+                'y': 285,
                 'w': 12,
                 'h': 6,
                 'txt': 'Σ {:,}'.format(total_double_rooms),
@@ -1683,7 +1687,7 @@ class Map2_0(Map2_0Template):
                 'font': 'seguisb',
                 'size': 8,
                 'x': 153,
-                'y': current_page_height,
+                'y': 285,
                 'w': 10,
                 'h': 6,
                 'txt': 'Σ {:,}'.format(total_rooms),
@@ -1694,7 +1698,7 @@ class Map2_0(Map2_0Template):
                 'font': 'seguisb',
                 'size': 8,
                 'x': 163,
-                'y': current_page_height,
+                'y': 285,
                 'w': 10,
                 'h': 6,
                 'txt': 'x̃ {:,}%'.format(total_single_room_quota),
@@ -1705,7 +1709,7 @@ class Map2_0(Map2_0Template):
                 'font': 'seguisb',
                 'size': 8,
                 'x': 173,
-                'y': current_page_height,
+                'y': 285,
                 'w': 10,
                 'h': 6,
                 'txt': 'x̃ {:,}%'.format(total_occupancy_rate),
@@ -1716,7 +1720,7 @@ class Map2_0(Map2_0Template):
                 'font': 'seguisb',
                 'size': 8,
                 'x': 183,
-                'y': current_page_height,
+                'y': 285,
                 'w': 10,
                 'h': 6,
                 'txt': 'x̃ {:,}'.format(total_invest_cost),
@@ -1727,7 +1731,7 @@ class Map2_0(Map2_0Template):
                 'font': 'seguisb',
                 'size': 8,
                 'x': 193,
-                'y': current_page_height,
+                'y': 285,
                 'w': 10,
                 'h': 6,
                 'txt': '{:,}'.format(total_mdk_grade),
@@ -1788,12 +1792,12 @@ class Map2_0(Map2_0Template):
                 'x': 10,
                 'y': 45,
                 'w': 150,
-                'path': "tmp/marker_map.png"
+                'path': f"tmp/map_image_{Variables.unique_code}.png"
             },
             'table_header': {
                 'x': 70,
                 'y': 142,
-                'w': 130,
+                'w': 47,
                 'path': "img/al_header.png"
             }
         },
@@ -1808,6 +1812,7 @@ class Map2_0(Map2_0Template):
                 current_competitor_analysis_page += 1
             current_competitor_page = copy.deepcopy(assisted_living_competitor_skeleton)
             current_competitor_page['page_number'] = current_competitor_analysis_page
+            current_page_height = 177
     
         if 'home' in competitor:
             home_counter += 1
@@ -1947,7 +1952,6 @@ class Map2_0(Map2_0Template):
             }
             current_competitor_page['cell'][f'competitor_{table_position}_name'] = {
                 'color': [0, 176, 240] if not "keine " in competitor[0]['web'] else [0, 0, 0],
-                'fill_color': [244, 239, 220],
                 'font': 'segoeui',
                 'size': 8,
                 'x': 17,
@@ -1956,12 +1960,10 @@ class Map2_0(Map2_0Template):
                 'h': 6,
                 'txt': competitor[0]['raw_name'] if len(competitor[0]['raw_name']) <= 30 else f"{competitor[0]['raw_name'][:30]}...",
                 'align': 'left',
-                'fill': True,
                 'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
             }
             current_competitor_page['cell'][f'competitor_{table_position}_operator'] = {
                 'color': [0, 0, 0],
-                'fill_color': [244, 239, 220],
                 'font': 'segoeui',
                 'size': 8,
                 'x': 17,
@@ -1969,12 +1971,10 @@ class Map2_0(Map2_0Template):
                 'w': 50,
                 'h': 6,
                 'txt': competitor[0]['raw_betreiber'] if len(competitor[0]['raw_betreiber']) <= 30 else f"{competitor[0]['raw_betreiber'][:30]}...",
-                'align': 'left',
-                'fill': True
+                'align': 'left'
             }
             current_competitor_page['cell'][f'competitor_{table_position}_top_30_operator'] = {
                 'color': [0, 0, 0],
-                'fill_color': [244, 239, 220],
                 'font': 'segoeui',
                 'size': 8,
                 'x': 67,
@@ -1983,11 +1983,9 @@ class Map2_0(Map2_0Template):
                 'h': 6,
                 'txt': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
                 'align': 'center',
-                'fill': True,
             }
             current_competitor_page['cell'][f'competitor_{table_position}_operator_type'] = {
                 'color': [0, 0, 0],
-                'fill_color': [244, 239, 220],
                 'font': 'segoeui',
                 'size': 8,
                 'x': 77,
@@ -1996,11 +1994,9 @@ class Map2_0(Map2_0Template):
                 'h': 6,
                 'txt': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
                 'align': 'center',
-                'fill': True,
             }
             current_competitor_page['cell'][f'competitor_{table_position}_status'] = {
                 'color': [0, 0, 0],
-                'fill_color': [244, 239, 220],
                 'font': 'segoeui',
                 'size': 8,
                 'x': 89,
@@ -2009,11 +2005,9 @@ class Map2_0(Map2_0Template):
                 'h': 6,
                 'txt': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
                 'align': 'center',
-                'fill': True,
             }
             current_competitor_page['cell'][f'competitor_{table_position}_year_of_construction'] = {
                 'color': [0, 0, 0],
-                'fill_color': [244, 239, 220],
                 'font': 'segoeui',
                 'size': 8,
                 'x': 101,
@@ -2022,11 +2016,9 @@ class Map2_0(Map2_0Template):
                 'h': 6,
                 'txt': competitor[0]['year_of_construction'],
                 'align': 'center',
-                'fill': True,
             }
             current_competitor_page['cell'][f'competitor_{table_position}_apartments'] = {
                 'color': [0, 0, 0],
-                'fill_color': [244, 239, 220],
                 'font': 'segoeui',
                 'size': 8,
                 'x': 111,
@@ -2035,7 +2027,6 @@ class Map2_0(Map2_0Template):
                 'h': 6,
                 'txt': '{:,}'.format(int(competitor[0]['number_apts'])) if not competitor[0]['number_apts'] == '-' else competitor[0]['number_apts'],
                 'align': 'center',
-                'fill': True,
             }
     
             if not competitor[0]['year_of_construction'] == '-':
@@ -2343,7 +2334,7 @@ class Map2_0(Map2_0Template):
                             'x': 120,
                             'y': 280,
                             'w': 90,
-                            'txt': '{:,}%'.format(beds_surplus_35_v2),
+                            'txt': '{:,}'.format(beds_surplus_35_v2),
                             'align': 'center'
                         }
                     },
@@ -3028,6 +3019,16 @@ class Map2_0(Map2_0Template):
                         'txt': '2020',
                         'align': 'right'
                     },
+                    'population_city_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 65,
+                        'w': 23,
+                        'txt': '{:,}'.format(countie_data['dem_city']['bevoelkerung_ges']),
+                        'align': 'right'
+                    },
                     'population_county_2020': {
                         'color': [255, 255, 255],
                         'font': 'seguisb',
@@ -3055,7 +3056,7 @@ class Map2_0(Map2_0Template):
                         'x': 76,
                         'y': 83,
                         'w': 23,
-                        'txt': '{:,}%'.format(people_u80),
+                        'txt': '{:,}'.format(people_u80),
                         'align': 'right'
                     },
                     'population_aged_65_79_in_percent_2020': {
@@ -3065,7 +3066,7 @@ class Map2_0(Map2_0Template):
                         'x': 76,
                         'y': 89,
                         'w': 23,
-                        'txt': '{:,}%'.format(round(people_u80 / countie_data['ex_dem_lk']['all_compl'], 2)),
+                        'txt': '{:,}%'.format(round(people_u80 * 100 / countie_data['ex_dem_lk']['all_compl'])),
                         'align': 'right'
                     },
                     'population_aged_80_2020': {
@@ -3085,7 +3086,7 @@ class Map2_0(Map2_0Template):
                         'x': 76,
                         'y': 101,
                         'w': 23,
-                        'txt': '{:,}%'.format(round(people_o80 / countie_data['ex_dem_lk']['all_compl'], 2)),
+                        'txt': '{:,}%'.format(round(people_o80 * 100 / countie_data['ex_dem_lk']['all_compl'])),
                         'align': 'right'
                     },
                     'care_rate_2020': {
@@ -3095,7 +3096,7 @@ class Map2_0(Map2_0Template):
                         'x': 76,
                         'y': 133,
                         'w': 23,
-                        'txt': '{:.2}%'.format(new_care_rate_raw),
+                        'txt': '{:,}%'.format(new_care_rate_raw),
                         'align': 'right'
                     },
                     'nursing_home_rate_2020': {
@@ -3105,7 +3106,7 @@ class Map2_0(Map2_0Template):
                         'x': 76,
                         'y': 139,
                         'w': 23,
-                        'txt': '{:.2}%'.format(nursing_home_rate),
+                        'txt': '{:,}%'.format(nursing_home_rate),
                         'align': 'right'
                     },
                     'full_inpatient_care_2020': {
@@ -3125,7 +3126,7 @@ class Map2_0(Map2_0Template):
                         'x': 76,
                         'y': 151,
                         'w': 23,
-                        'txt': '{:,}'.format(occupancy_lk),
+                        'txt': '{:,}%'.format(occupancy_lk),
                         'align': 'right'
                     },
                     'number_of_beds_2020': {
@@ -3250,16 +3251,6 @@ class Map2_0(Map2_0Template):
                         'txt': '2030',
                         'align': 'right'
                     },
-                    'population_city_2030': {
-                        'color': [0, 0, 0],
-                        'font': 'segoeui',
-                        'size': 9,
-                        'x': 101,
-                        'y': 65,
-                        'w': 48,
-                        'txt': '{:,}'.format(population_fc_30),
-                        'align': 'right'
-                    },
                     'population_county_2030': {
                         'color': [0, 0, 0],
                         'font': 'segoeui',
@@ -3267,7 +3258,7 @@ class Map2_0(Map2_0Template):
                         'x': 101,
                         'y': 71,
                         'w': 48,
-                        'txt': '{:,}'.format(people_u80_fc),
+                        'txt': '{:,}'.format(population_fc_30),
                         'align': 'right'
                     },
                     'population_county_in_percent_2030': {
@@ -3297,7 +3288,7 @@ class Map2_0(Map2_0Template):
                         'x': 101,
                         'y': 89,
                         'w': 48,
-                        'txt': '{:,}%'.format(round((people_u80_fc * 100) / population_fc_30, 2)),
+                        'txt': '{:,}%'.format(round((people_u80_fc * 100) / population_fc_30)),
                         'align': 'right'
                     },
                     'population_aged_80_2030': {
@@ -3317,7 +3308,7 @@ class Map2_0(Map2_0Template):
                         'x': 101,
                         'y': 101,
                         'w': 48,
-                        'txt': '{:,}%'.format(round((people_o80_fc * 100) / population_fc_30, 2)),
+                        'txt': '{:,}%'.format(round((people_o80_fc * 100) / population_fc_30)),
                         'align': 'right'
                     },
                     'scenario_1_2030': {
@@ -3367,7 +3358,7 @@ class Map2_0(Map2_0Template):
                         'x': 101,
                         'y': 151,
                         'w': 23,
-                        'txt': '95,0%',
+                        'txt': '95%',
                         'align': 'right'
                     },
                     'number_of_beds_2030_s1': {
@@ -3407,7 +3398,7 @@ class Map2_0(Map2_0Template):
                         'x': 101,
                         'y': 201,
                         'w': 23,
-                        'txt': '95,0%',
+                        'txt': '95%',
                         'align': 'right'
                     },
                     'loss_of_beds_2030_s1': {
@@ -3497,7 +3488,7 @@ class Map2_0(Map2_0Template):
                         'x': 125,
                         'y': 151,
                         'w': 23,
-                        'txt': '95,0%',
+                        'txt': '95%',
                         'align': 'right'
                     },
                     'number_of_beds_2030_s2': {
@@ -3537,7 +3528,7 @@ class Map2_0(Map2_0Template):
                         'x': 125,
                         'y': 201,
                         'w': 23,
-                        'txt': '95,0%',
+                        'txt': '95%',
                         'align': 'right'
                     },
                     'loss_of_beds_2030_s2': {
@@ -3629,7 +3620,7 @@ class Map2_0(Map2_0Template):
                         'x': 151,
                         'y': 89,
                         'w': 48,
-                        'txt': '{:,}%'.format(round(people_u80_fc_35 / population_fc_35, 2)),
+                        'txt': '{:,}%'.format(round(people_u80_fc_35 * 100 / population_fc_35)),
                         'align': 'right'
                     },
                     'population_aged_80_2035': {
@@ -3649,7 +3640,7 @@ class Map2_0(Map2_0Template):
                         'x': 151,
                         'y': 101,
                         'w': 48,
-                        'txt': '{:,}%'.format(round(people_o80_fc_35 / population_fc_35, 2)),
+                        'txt': '{:,}%'.format(round(people_o80_fc_35 * 100 / population_fc_35)),
                         'align': 'right'
                     },
                     'scenario_1_2035': {
@@ -3699,7 +3690,7 @@ class Map2_0(Map2_0Template):
                         'x': 151,
                         'y': 151,
                         'w': 23,
-                        'txt': '95,0%',
+                        'txt': '95%',
                         'align': 'right'
                     },
                     'number_of_beds_2035_s1': {
@@ -3739,7 +3730,7 @@ class Map2_0(Map2_0Template):
                         'x': 151,
                         'y': 201,
                         'w': 23,
-                        'txt': '95,0%',
+                        'txt': '95%',
                         'align': 'right'
                     },
                     'loss_of_beds_2035_s1': {
@@ -3799,7 +3790,7 @@ class Map2_0(Map2_0Template):
                         'x': 175,
                         'y': 133,
                         'w': 23,
-                        'txt': '{:,}&'.format(care_rate_35_v2_raw),
+                        'txt': '{:,}%'.format(care_rate_35_v2_raw),
                         'align': 'right'
                     },
                     'nursing_home_rate_2035_s2': {
@@ -3809,7 +3800,7 @@ class Map2_0(Map2_0Template):
                         'x': 175,
                         'y': 139,
                         'w': 23,
-                        'txt': '{:,}&'.format(nursing_home_rate),
+                        'txt': '{:,}%'.format(nursing_home_rate),
                         'align': 'right'
                     },
                     'full_inpatient_care_2035_s2': {
@@ -3829,7 +3820,7 @@ class Map2_0(Map2_0Template):
                         'x': 175,
                         'y': 151,
                         'w': 23,
-                        'txt': '95,0%',
+                        'txt': '95%',
                         'align': 'right'
                     },
                     'number_of_beds_2035_s2': {
@@ -3869,7 +3860,7 @@ class Map2_0(Map2_0Template):
                         'x': 175,
                         'y': 201,
                         'w': 23,
-                        'txt': '95,0%',
+                        'txt': '95%',
                         'align': 'right'
                     },
                     'loss_of_beds_2035_s2': {
