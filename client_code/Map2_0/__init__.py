@@ -707,2778 +707,4326 @@ class Map2_0(Map2_0Template):
       # anvil.js.call('open_tab', html)
       print('Ready')
 
-  #######Noch bearbeiten#######
+  #######Noch bearbeiten#######[]
 
   def create_market_study(self, **event_args):
-    '''Import Functions for creating Market Study'''
-    from market_study_classes import Basic_App_Informations
-
-    basic_app_informations = Basic_App_Informations(self)
-
-
+    print(datetime.datetime.now())
     '''Execute Code without the standard Anvil Loading Animation'''
-    with anvil.server.no_loading_indicator:
-      Functions.manipulate_loading_overlay(self, True)
-      self.mobile_hide_click()
-      anvil.js.call('update_loading_bar', 0, 'Getting map-based Informations')
-      
-      #nh_checked = self.pdb_data_cb.checked
-      #al_checked = self.pdb_data_al.checked
-  
-      unique_code = anvil.server.call("get_unique_code")
-      searched_address = anvil.js.call('getSearchedAddress')
-      street = searched_address.split(",")[0]
-  
-      lng_lat_marker = {
-                        "lng": (dict(self.marker['_lngLat'])['lng']),
-                        "lat": (dict(self.marker['_lngLat'])['lat'])
-                      }
-  
-      iso = dict(self.mapbox.getSource('iso'))
-      bbox = [0, 0, 0, 0]
-      for point in iso['_data']['features'][0]['geometry']['coordinates'][0]:
-        if point[0] < bbox[1] or bbox[1] == 0:
-          bbox[1] = point[0]
-        if point[0] > bbox[3] or bbox[3] == 0:
-          bbox[3] = point[0]
-        if point[1] < bbox[0] or bbox[0] == 0:
-          bbox[0] = point[1]
-        if point[1] > bbox[2] or bbox[2] == 0:
-          bbox[2] = point[1]
-  
-      #Get Place from Geocoder-API for Map-Marker
-      string = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{lng_lat_marker['lng']},{lng_lat_marker['lat']}.json?access_token={self.token}"
-      response_data = anvil.http.request(string,json=True)
-      string_test = f"https://nominatim.openstreetmap.org/reverse?format=geojson&addressdetails=1&lat={lng_lat_marker['lat']}&lon={lng_lat_marker['lng']}"
-      response_data_test = anvil.http.request(string_test,json=True)
-      marker_context = response_data['features'][0]['context']
-  
-      #Get Information about Zipcode, District, City and Federal-State of Map-Marker-Position
-      zipcode = "n.a."
-      district = "n.a."
-      city = "n.a."
-      city_alt = "n.a."
-      federal_state = "n.a."
-      for info in marker_context:
-        if "postcode" in info['id'] :
-          zipcode = info['text']
-        elif "locality" in info['id']:
-          district = info['text']
-        elif "place" in info['id']:
-          city = info['text']
-          city_alt = info['text']
-        elif "region" in info['id']:
-          federal_state = info['text']
-      if federal_state == "n.a.":
-        federal_state = city
-      if district == "n.a.":
-        district = city
-  
-      #Get Value of choosen Time and Movement
-      iso_time = self.time_dropdown.selected_value
-      if iso_time == "-1":
-        iso_time = "20"
-      movement = self.profile_dropdown.selected_value.lower()
-  
-      marker_coords = dict(self.marker.getLngLat())
-
-      # #####Get Database Informations#####
-
-      anvil.js.call('update_loading_bar', 10, 'Get Informations from Database')
-  
-      #Get Information from Database for County of Marker-Position
-      countie_data = anvil.server.call("get_demographic_district_data", marker_coords)
-      countie = countie_data['ex_dem_lk']['name'].split(',')
-  
-      #Get Entries from Care-Database based on District
-      care_data_district = anvil.server.call("get_care_district_data", countie_data['ex_dem_lk']['key'])
-
-      # #####Calculate Data for Market Study#####
-
-      anvil.js.call('update_loading_bar', 25, 'Calculate Data for Market Study')
-  
-      #Get different Values for Assisted Living Analysis and/or Executive Summary
-      people_u80 = int(countie_data['dem_fc_lk']['g_65tou70_2020_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2020_abs'])
-      people_o80 = int(countie_data['dem_fc_lk']['g_80plus_2020_abs'])
-      people_u80_fc = int(countie_data['dem_fc_lk']['g_65tou70_2030_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2030_abs'])
-      people_o80_fc = int(countie_data['dem_fc_lk']['g_80plus_2030_abs'])
-      people_u80_fc_35 = int(countie_data['dem_fc_lk']['g_65tou70_2035_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2035_abs'])
-      people_o80_fc_35 = int(countie_data['dem_fc_lk']['g_80plus_2035_abs'])
-      change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
-      change_u80_raw = change_u80 / 100
-      change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
-      change_o80_raw = change_o80 / 100
-
-      # #####Calculate Data for Market Study#####
-
-      Functions.manipulate_loading_overlay(self, False)
-      anvil.js.call('update_loading_bar', 35, 'Waiting for User Input')
-      
-      #Get organized Coords for Nursing Homes
-      coords_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', lng_lat_marker)
-      
-      #Get Data for both Nursing Homes
-      data_comp_analysis_nh = self.build_req_string(coords_nh, 'nursing_homes')
-
-      # #####Calculate Data for Market Study#####
-
-      Functions.manipulate_loading_overlay(self, True)
-      anvil.js.call('update_loading_bar', 40, 'Calculate Nursing Home Data for Market Study')
-      
-      inpatients_lk = 0
-      beds_lk = 0
-      for el in care_data_district:
-        if not el['anz_vers_pat'] == '-':
-          inpatients_lk += int(el['anz_vers_pat'])
-        if not el['platz_voll_pfl'] == '-':
-          beds_lk += int(el['platz_voll_pfl'])
-        if not el['platz_kurzpfl'] == '-':
-          beds_lk += int(el['platz_kurzpfl'])
-        if not el['platz_nachtpfl'] == '-':
-          beds_lk += int(el['platz_nachtpfl'])
-      occupancy_lk = float("{:.2f}".format((inpatients_lk * 100) / beds_lk))
-      occupancy_lk_raw = occupancy_lk / 100
-      free_beds_lk = beds_lk - inpatients_lk
-  
-      population_fc = int(countie_data['dem_fc_lk']['g_u6_2030_abs']) + int(countie_data['dem_fc_lk']['g_6tou10_2030_abs']) + int(countie_data['dem_fc_lk']['g_10tou16_2030_abs']) + int(countie_data['dem_fc_lk']['g_16tou20_2030_abs']) + int(countie_data['dem_fc_lk']['g_20tou30_2030_abs']) + int(countie_data['dem_fc_lk']['g_30tou50_2030_abs']) + int(countie_data['dem_fc_lk']['g_50tou65_2030_abs']) + int(countie_data['dem_fc_lk']['g_65tou70_2030_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2030_abs']) + int(countie_data['dem_fc_lk']['g_80plus_2030_abs'])
-      population_fc_35 = int(countie_data['dem_fc_lk']['g_u6_2035_abs']) + int(countie_data['dem_fc_lk']['g_6tou10_2035_abs']) + int(countie_data['dem_fc_lk']['g_10tou16_2035_abs']) + int(countie_data['dem_fc_lk']['g_16tou20_2035_abs']) + int(countie_data['dem_fc_lk']['g_20tou30_2035_abs']) + int(countie_data['dem_fc_lk']['g_30tou50_2035_abs']) + int(countie_data['dem_fc_lk']['g_50tou65_2035_abs']) + int(countie_data['dem_fc_lk']['g_65tou70_2035_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2035_abs']) + int(countie_data['dem_fc_lk']['g_80plus_2035_abs'])
-
-      # #####Calculate Data for Market Study#####
-
-      Functions.manipulate_loading_overlay(self, False)
-      anvil.js.call('update_loading_bar', 45, 'Waiting for User Input')
-      
-      #Get organized Coords for both Assisted Living
-      coords_al = self.organize_ca_data(Variables.assisted_living_entries, 'assisted_living', lng_lat_marker)
-          
-      #Get Data for both Assisted Living
-      data_comp_analysis_al = self.build_req_string(coords_al, 'assisted_living') 
-
-      # #####Calculate Data for Market Study#####
-
-      Functions.manipulate_loading_overlay(self, True)
-      anvil.js.call('update_loading_bar', 50, 'Calculate Assisted Living Data for Market Study')
-      
-      nursing_home_rate = float(countie_data['pfleg_stat_lk']['heimquote2019'])
-      nursing_home_rate_perc = "{:.1f}".format(nursing_home_rate * 100)
-      new_r_care_rate_raw = float("{:.3f}".format(inpatients_lk / (people_u80 + people_o80)))
-      new_r_care_rate_perc = "{:.1f}".format(new_r_care_rate_raw * 100)
-      new_care_rate_raw = float("{:.3f}".format(inpatients_lk / round((nursing_home_rate * countie_data['ex_dem_lk']['all_compl']) + 1)))
-      new_care_rate_perc = "{:.1f}".format(new_care_rate_raw * 100)
-      pat_rec_full_care_fc_30_v1 = round(new_r_care_rate_raw * (people_u80_fc + people_o80_fc))
-      care_rate_30_v1_raw = float("{:.3f}".format(pat_rec_full_care_fc_30_v1 / (population_fc * nursing_home_rate)))
-      care_rate_30_v1_perc = "{:.1f}".format(care_rate_30_v1_raw * 100)   
-      pat_rec_full_care_fc_30_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc + people_o80_fc))
-      care_rate_30_v2_raw = float("{:.3f}".format(pat_rec_full_care_fc_30_v2 / (population_fc * nursing_home_rate)))
-      care_rate_30_v2_perc = "{:.1f}".format(care_rate_30_v2_raw * 100)
-      pat_rec_full_care_fc_35_v1 = round(new_r_care_rate_raw * (people_u80_fc_35 + people_o80_fc_35))
-      care_rate_35_v1_raw = float("{:.3f}".format(pat_rec_full_care_fc_35_v1 / (population_fc_35 * nursing_home_rate)))
-      care_rate_35_v1_perc = "{:.1f}".format(care_rate_35_v1_raw * 100)
-      pat_rec_full_care_fc_35_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc_35 + people_o80_fc_35))
-      care_rate_35_v2_raw = float("{:.3f}".format(pat_rec_full_care_fc_35_v2 / (population_fc_35 * nursing_home_rate)))
-      care_rate_35_v2_perc = "{:.1f}".format(care_rate_35_v2_raw * 100)
-      change_pat_rec_raw = pat_rec_full_care_fc_30_v1 / inpatients_lk - 1
-      change_pat_rec = float("{:.2f}".format(change_pat_rec_raw * 100))
+    # with anvil.server.no_loading_indicator:
+    date = datetime.datetime.now()
+    if len(str(date.day)) == 1:
+        day = f"0{date.day}"
+    else:
+        day = date.day
+    if len(str(date.month)) == 1:
+        month = f"0{date.month}"
+    else:
+        month = date.month
+    year = date.year
+    if len(str(date.hour)) == 1:
+        hour = f"0{date.hour}"
+    else:
+        hour = date.hour
+    if len(str(date.minute)) == 1:
+        minute = f"0{date.minute}"
+    else:
+        minute = date.minute
+    created_date = f"{day}.{month}.{year} {hour}:{minute}"
     
-      #Get Data from Care-Database based on Iso-Layer
-      care_data_iso = anvil.server.call("get_iso_data", bbox)
-      
-      #Create Variables for different Values for Summary
-      inpatients = 0
-      beds_active = 0
-      beds_planned = 0
-      beds_construct = 0
-      nursing_homes_active = 0
-      nursing_homes_planned = 0
-      nursing_homes_construct = 0
-      patients = 0
-      invest_cost = []
-      operator = []
-      beds = []
-      year = []
-      operator_public = []
-      operator_nonProfit = []
-      operator_private = []
-      pg3_cost = []
-      copayment_cost = []
-      board_cost = []
-
-      #Get Values of Variables for every Entry in Care-Database inside Iso-Layer-Bounding-Box
-      for care_entry in data_comp_analysis_nh['data']:
+    # Get unique Code to identify Files and Images with current MS-Creation
+    Variables.unique_code = anvil.server.call("get_unique_code")
+    
+    # Get Map based Information
+    street = anvil.js.call('getSearchedAddress').split(",")[0]
+    marker_coords = {
+        'lng': (dict(self.marker['_lngLat'])['lng']),
+        'lat': (dict(self.marker['_lngLat'])['lat'])
+    }
+    purchase_power = anvil.server.call('get_purchasing_power', location={'lat': marker_coords['lat'], 'lng': marker_coords['lng']})
+    iso = dict(self.mapbox.getSource('iso'))
+    iso_time = self.time_dropdown.selected_value
+    if iso_time == "-1":
+        iso_time = "20"
+    iso_movement = self.profile_dropdown.selected_value.lower()
+    bounding_box = [0, 0, 0, 0]
+    for point in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+        if point[0] < bounding_box[1] or bounding_box[1] == 0:
+            bounding_box[1] = point[0]
+        if point[0] > bounding_box[3] or bounding_box[3] == 0:
+            bounding_box[3] = point[0]
+        if point[1] < bounding_box[0] or bounding_box[0] == 0:
+            bounding_box[0] = point[1]
+        if point[1] > bounding_box[2] or bounding_box[2] == 0:
+            bounding_box[2] = point[1]
+    
+    # Get Data for Nursing Homes and Assisted Living
+    coords_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', marker_coords)
+    coords_al = self.organize_ca_data(Variables.assisted_living_entries, 'assisted_living', marker_coords)
+    data_comp_analysis_nh = self.build_req_string(coords_nh, 'nursing_homes')
+    data_comp_analysis_al = self.build_req_string(coords_al, 'assisted_living')
+    
+    inpatients = 0
+    beds_active = 0
+    beds_planned = 0
+    beds_construct = 0
+    nursing_homes_active = 0
+    nursing_homes_planned = 0
+    nursing_homes_construct = 0
+    invest_cost = []
+    operator = []
+    beds = []
+    operator_public = []
+    operator_nonProfit = []
+    operator_private = []
+    for care_entry in data_comp_analysis_nh['data']:
         beds_amount = 0
         if not care_entry[0]['anz_vers_pat'] == '-':
-          inpatients += int(care_entry[0]['anz_vers_pat'])
+            inpatients += int(care_entry[0]['anz_vers_pat'])
         if care_entry[0]['status'] == "aktiv":
-          nursing_homes_active += 1
-          # if not care_entry[0]['ez'] == "-":
-          #   beds_active += int(care_entry[0]['ez'])
-          #   beds_amount += int(care_entry[0]['ez'])
-          # if not care_entry[0]['dz'] == "-":
-          #   beds_active += int(care_entry[0]['dz']) * 2
-          #   beds_amount += int(care_entry[0]['dz']) * 2
-          if not care_entry[0]['platz_voll_pfl'] == "-":
-            beds_active += int(care_entry[0]['platz_voll_pfl'])
-            beds_amount = int(care_entry[0]['platz_voll_pfl'])
-          beds.append(beds_amount)
+            nursing_homes_active += 1
+            if not care_entry[0]['platz_voll_pfl'] == "-":
+                beds_active += int(care_entry[0]['platz_voll_pfl'])
+                beds_amount = int(care_entry[0]['platz_voll_pfl'])
+            beds.append(beds_amount)
         elif care_entry[0]['status'] == "in Planung":
-          nursing_homes_planned += 1
-          # if not care_entry[0]['ez'] == "-":
-          #   beds_planned += int(care_entry[0]['ez'])
-          # if not care_entry[0]['dz'] == "-":
-          #   beds_planned += int(care_entry[0]['dz']) * 2
-          if not care_entry[0]['platz_voll_pfl'] == "-":
-            beds_planned += int(care_entry[0]['platz_voll_pfl'])
+            nursing_homes_planned += 1
+            if not care_entry[0]['platz_voll_pfl'] == "-":
+                beds_planned += int(care_entry[0]['platz_voll_pfl'])
         elif care_entry[0]['status'] == "im Bau":
-          nursing_homes_construct += 1
-          # if not care_entry[0]['ez'] == "-":
-          #   beds_construct += int(care_entry[0]['ez'])
-          # if not care_entry[0]['dz'] == "-":
-          #   beds_construct += int(care_entry[0]['dz']) * 2
-          if not care_entry[0]['platz_voll_pfl'] == "-":
-            beds_construct += int(care_entry[0]['platz_voll_pfl'])
+            nursing_homes_construct += 1
+            if not care_entry[0]['platz_voll_pfl'] == "-":
+                beds_construct += int(care_entry[0]['platz_voll_pfl'])
         if not care_entry[0]['invest'] == "-":
-          invest_cost.append(float(care_entry[0]['invest']))
+            invest_cost.append(float(care_entry[0]['invest']))
         if not care_entry[0]['betreiber'] == "-":
-          if care_entry[0]['operator_type'] == "privat":
-            if not care_entry[0]['betreiber'] in operator_private:
-              operator_private.append(care_entry[0]['betreiber'])
-          elif care_entry[0]['operator_type'] == "gemeinnützig":
-            if not care_entry[0]['betreiber'] in operator_nonProfit:
-              operator_nonProfit.append(care_entry[0]['betreiber'])
-          elif care_entry[0]['operator_type'] == "kommunal":
-            if not care_entry[0]['betreiber'] in operator_public:
-              operator_public.append(care_entry[0]['betreiber'])
-          if not care_entry[0]['betreiber'] in operator:
-            operator.append(care_entry[0]['betreiber'])
-        if not care_entry[0]['baujahr'] == "-":
-          year.append(int(care_entry[0]['baujahr']))
-        # if not care_entry['pg_3'] == "-":
-        #   pg3_cost.append(float(care_entry['pg_3']))
-        # if not care_entry['eee'] == "-":
-        #   copayment_cost.append(float(care_entry['eee']))
-        # if not care_entry['uuv'] == "-":
-        #   board_cost.append(float(care_entry['uuv']))
-  
-      #Get Data for Summary and Competitor-Analysis-Piechart
-      inpatients_fc = round(pat_rec_full_care_fc_30_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
-      inpatients_fc_v2 = round(pat_rec_full_care_fc_30_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
-      inpatients_fc_35 = round(pat_rec_full_care_fc_35_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
-      inpatients_fc_35_v2 = round(pat_rec_full_care_fc_35_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
-      inpatents_fc_30_avg = round((inpatients_fc + inpatients_fc_v2) / 2)
-      inpatents_fc_35_avg = round((inpatients_fc_35 + inpatients_fc_35_v2) / 2)
-      invest_med = anvil.server.call("get_median", invest_cost)
-      invest_median = "{:.2f}".format(invest_med)
-      beds_median = anvil.server.call("get_median", beds)
-      year_median = round(anvil.server.call("get_median", year))
-      # pg3_median_raw = anvil.server.call("get_median", pg3_cost)
-      # pg3_median = "{:.2f}".format(pg3_median_raw)
-      # copayment_median_raw = anvil.server.call("get_median", copayment_cost)
-      # copayment_median = "{:.2f}".format(copayment_median_raw)
-      # board_median_raw = anvil.server.call("get_median", board_cost)
-      # board_median = "{:.2f}".format(board_median_raw)
-      if not len(operator_private) == 0:
-        if not len(operator) == 0:
-          op_private_percent = round((len(operator_private) * 100) / len(operator))
-          op_private_raw = op_private_percent / 100
-      else:
-        op_private_percent = 0
-        op_private_raw = 0
-      if not len(operator_nonProfit) == 0:
-        if not len(operator) == 0:
-          op_nonProfit_percent = round((len(operator_nonProfit) * 100) / len(operator))
-          op_nonProfit_raw = op_nonProfit_percent / 100
-      else:
-        op_nonProfit_percent = 0
-        op_nonProfit_raw = 0
-      if not len(operator_public) == 0:
-        if not len(operator) == 0:
-          op_public_percent = round((len(operator_public) * 100) / len(operator))
-          op_public_raw = op_public_percent / 100
-      else:
-        op_public_percent = 0
-        op_public_raw = 0
-      if not inpatients == 0 and not beds_active == 0:
-        occupancy_percent = round((inpatients * 100) / beds_active)
-        occupancy_raw = occupancy_percent / 100
-      else:
-        occupancy_percent = 0
-        occupancy_raw = 0
-      beds_adjusted = beds_active + beds_construct + beds_planned
-      beds_surplus = beds_adjusted - inpatients_fc
-      beds_surplus_35 = beds_adjusted - inpatients_fc_35
-      beds_surplus_v2 = beds_adjusted - inpatients_fc_v2
-      beds_surplus_35_v2 = beds_adjusted - inpatients_fc_35_v2
-      beds_in_reserve_20 = round(beds_active * (1 - occupancy_raw))
-      
-  ################################################Neue Berechnungen################################################
-  
-      care_rate_break_even_raw = float("{:.3f}".format((beds_adjusted * 0.95) / (countie_data['ex_dem_lk']['all_compl'] * nursing_home_rate)))
-      care_rate_break_even_perc = "{:.1f}".format(care_rate_break_even_raw * 100)
-      care_rate_break_even_30_raw = float("{:.3f}".format((beds_adjusted * 0.95) / (population_fc * nursing_home_rate)))
-      care_rate_break_even_30_perc = "{:.1f}".format(care_rate_break_even_30_raw * 100)
-      care_rate_break_even_35_raw = float("{:.3f}".format((beds_adjusted * 0.95) / (population_fc_35 * nursing_home_rate)))
-      care_rate_break_even_35_perc = "{:.1f}".format(care_rate_break_even_35_raw * 100)
-      beds_30_v1 = round((pat_rec_full_care_fc_30_v1 / 0.95))
-      beds_30_v2 = round((pat_rec_full_care_fc_30_v2 / 0.95))
-      beds_35_v1 = round((pat_rec_full_care_fc_35_v1 / 0.95))
-      beds_35_v2 = round((pat_rec_full_care_fc_35_v2 / 0.95))
-      free_beds_30_v1 =  beds_30_v1 - pat_rec_full_care_fc_30_v1
-      free_beds_30_v2 =  beds_30_v2 - pat_rec_full_care_fc_30_v2
-      free_beds_35_v1 =  beds_35_v1 - pat_rec_full_care_fc_35_v1
-      free_beds_35_v2 =  beds_35_v2 - pat_rec_full_care_fc_35_v2
-      
-  
-  ################################################Neue Berechnungen################################################
-      
-      #Create Variables for different Values for Assisted Living Analysis
-      mapRequestData = [lng_lat_marker['lng'], lng_lat_marker['lat'], self.token]
-      apartments = 0
-      facilities_active = 0
-      facilities_planning = 0
-      facilities_building = 0
-      facilities_overall = 0
-      apartments_planning = 0
-      apartments_building = 0
-      without_apartment = 0
-      without_apartment_building = 0
-      without_apartment_planning = 0
-      
-      #Get Assisted Living Facilities in Countie and inside 10km Radius of Marker
-      al_entries = anvil.server.call("get_al_for_district", countie_data['ex_dem_lk']['key'])
-      al_list = anvil.server.call("get_all_al_in_10km", lng_lat_marker, al_entries)
-  
-      #Get Data from Assisted Living Facilities
-      for el in al_entries:
-        facilities_overall += 1
-        if el['status'] == "aktiv":
-          facilities_active += 1
-          if not el['anz_wohnungen'] == "-":
-            apartments += int(float(el['anz_wohnungen']))
-          else:
-            without_apartment += 1
-        elif el['status'] == "in Planung":
-          facilities_planning += 1
-          if not el['anz_wohnungen'] == "-":
-            apartments_planning += int(float(el['anz_wohnungen']))
-          else:
-            without_apartment_planning += 1
-        elif el['status'] == "im Bau":
-          facilities_building += 1
-          if not el['anz_wohnungen'] == "-":
-            apartments_building += int(float(el['anz_wohnungen']))
-          else:
-            without_apartment_building += 1
-      if facilities_building > 0 and apartments_building > 0 and without_apartment_building > 0:
-        build_apartments_average = round(apartments_building / (facilities_building - without_apartment_building))
-        build_apartments_adjusted = apartments_building + (build_apartments_average * without_apartment_building)
-      else:
-        build_apartments_average = 0
-        build_apartments_adjusted = 0
-      if facilities_active > 0 and apartments > 0:
-        apartments_average = round(apartments / facilities_active)
-        apartments_adjusted = apartments + (apartments_average * without_apartment)
-      else:
-        apartments_average = 0
-        apartments_adjusted = 0
-      if facilities_planning > 0 and apartments_planning > 0:
-        planning_apartments_average = round(apartments_planning / (facilities_planning - without_apartment_planning))
-        planning_apartments_adjusted = apartments_planning + (planning_apartments_average * without_apartment_planning)
-      else:
-        planning_apartments_average = 0
-        planning_apartments_adjusted = 0
-      facilities_plan_build = facilities_planning + facilities_building
-      apartments_plan_build = apartments_planning + apartments_building
-      apartments_per_10k = apartments_adjusted // round(countie_data['ex_dem_lk']['all_compl'] // 10000)
-        
-      #Get Data for apartments in 10km Radius
-      apartments_10km = 0
-      for el in al_list:
-        if not el['anz_wohnungen'] == "-":
-          apartments_10km += int(float(el['anz_wohnungen']))
-          
-      apartments_plan_build_adjusted = build_apartments_adjusted + planning_apartments_adjusted
-          
-      #Get level, multiplier, surplus, demand and potential for Assisted Living Analysis
-      if countie_data['dem_city']['bevoelkerung_ges'] < 30001:
-        level = "national level"
-        multiplier = 0.03
-      elif countie_data['dem_city']['bevoelkerung_ges'] < 260000:
-        level = "small city"
-        multiplier = 0.05
-      else:
-        level = "top 30 city"
-        multiplier = 0.07
-      surplus2022 = round(apartments_adjusted - (((people_u80 + people_o80) * multiplier) / 1.5))
-      if surplus2022 > 0:
-        demand2022 = -abs(surplus2022)
-      else:
-        demand2022 = abs(surplus2022)
-      surplus2040 = round((apartments_adjusted + build_apartments_adjusted + planning_apartments_adjusted) - (((people_u80_fc + people_o80_fc) * multiplier) / 1.5))
-      if surplus2040 > 0:
-        demand2040 = -abs(surplus2040)
-      else:
-        demand2040 = abs(surplus2040)
-      if demand2040 <= -200:
-        demand_potential = "very low"
-      elif demand2040 <= 0:
-        demand_potential = "low"
-      elif demand2040 <= 200:
-        demand_potential = "average"
-      elif demand2040 <= 500:
-        demand_potential = "strong"
-      else:
-        demand_potential = "very strong"
-
-      purchase_power = anvil.server.call('get_purchasing_power', location={'lat': lng_lat_marker['lat'], 'lng': lng_lat_marker['lng']})
-
-      # #####Create Excel for Market Study#####
-
-      anvil.js.call('update_loading_bar', 60, 'Create Excel for Market Study Part 1')
-      
-      # Copy and Fill Dataframe for Excel-Cover
-      #cover_frame = copy.deepcopy(ExcelFrames.cover_data)
-      #cover_frame['data'][1]['content'] = zipcode
-      #cover_frame['data'][2]['content'] = city.upper()
-
-      population_trend = "{:.1f}".format(((people_u80_fc_35 + people_o80_fc_35) * 100) / (people_u80 + people_o80) - 100)
-      if float(population_trend) < 0:
-        population_trend_string = f"{population_trend}%"
-      else:
-        population_trend_string = f"+{population_trend}%"
-
-      date = datetime.datetime.now()
-      if len(str(date.day)) == 1:
-        day = f"0{date.day}"
-      else:
-        day = date.day
-      if len(str(date.month)) == 1:
-        month = f"0{date.month}"
-      else:
-        month = date.month
-      year = date.year
-      if len(str(date.hour)) == 1:
-        hour = f"0{date.hour}"
-      else:
-        hour = date.hour
-      if len(str(date.minute)) == 1:
-        minute = f"0{date.minute}"
-      else:
-        minute = date.minute
-      created_date = f"{day}.{month}.{year} {hour}:{minute}"
-
-      # Calculate updated Beds based on Regulations
-      # single_rooms_current = 0
-      # double_rooms_current = 0
-      # rooms_fulfillment = 0
-      # fulfillment = 0.8
-      # beds_loss = 0
-      # rooms_future = 0
-      # current_rooms = 0
-      regulations = anvil.server.call('read_regulations', federal_state)
-      facilities_amount = 0
-      facilities_single_rooms = 0
-      facilities_double_rooms = 0
-      facilities_bed_amount = 0
-      facilities_rooms = 0
-      facilities_single_room_quote = 0
-      facilities_single_rooms_future = 0
-      facilities_double_rooms_future = 0
-      facilities_bed_amount_future = 0
-      facilities_single_room_quote_future = 0
-      for index, competitor in enumerate(data_comp_analysis_nh['data']):
+            if care_entry[0]['operator_type'] == "privat":
+                if not care_entry[0]['betreiber'] in operator_private:
+                    operator_private.append(care_entry[0]['betreiber'])
+            elif care_entry[0]['operator_type'] == "gemeinnützig":
+                if not care_entry[0]['betreiber'] in operator_nonProfit:
+                    operator_nonProfit.append(care_entry[0]['betreiber'])
+            elif care_entry[0]['operator_type'] == "kommunal":
+                if not care_entry[0]['betreiber'] in operator_public:
+                    operator_public.append(care_entry[0]['betreiber'])
+            if not care_entry[0]['betreiber'] in operator:
+                operator.append(care_entry[0]['betreiber'])
+    
+    # Get Place from Geocoder-API for Map-Marker and extract needed Information
+    request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{marker_coords['lng']},{marker_coords['lat']}.json?access_token={self.token}"
+    response_data = anvil.http.request(request, json=True)
+    marker_context = response_data['features'][0]['context']
+    zipcode = "n.a."
+    district = "n.a."
+    city = "n.a."
+    federal_state = "n.a."
+    for info in marker_context:
+        if "postcode" in info['id']:
+            zipcode = info['text']
+        elif "locality" in info['id']:
+            district = info['text']
+        elif "place" in info['id']:
+            city = info['text']
+        elif "region" in info['id']:
+            federal_state = info['text']
+    if federal_state == "n.a.":
+        federal_state = city
+    if district == "n.a.":
+        district = city
+    
+    # Get generated Analysis-Text for City
+    from .ChatGPT import ChatGPT
+    analysis_text = anvil.server.call('openai_test', city)
+    analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
+    
+    # Get Information from Database for County of Marker-Position and extract Data
+    countie_data = anvil.server.call("get_demographic_district_data", marker_coords)
+    countie = countie_data['ex_dem_lk']['name'].split(',')
+    people_u80 = int(countie_data['dem_fc_lk']['g_65tou70_2020_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2020_abs'])
+    people_o80 = int(countie_data['dem_fc_lk']['g_80plus_2020_abs'])
+    people_u80_fc = int(countie_data['dem_fc_lk']['g_65tou70_2030_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2030_abs'])
+    people_o80_fc = int(countie_data['dem_fc_lk']['g_80plus_2030_abs'])
+    people_u80_fc_35 = int(countie_data['dem_fc_lk']['g_65tou70_2035_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2035_abs'])
+    people_o80_fc_35 = int(countie_data['dem_fc_lk']['g_80plus_2035_abs'])
+    change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
+    change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
+    population_trend = "{:.1f}".format((people_u80_fc_35 + people_o80_fc_35) * 100 / (people_u80 + people_o80) - 100)
+    nursing_home_rate = float(countie_data['pfleg_stat_lk']['heimquote2019'])
+    keys = ['g_u6', 'g_6tou10', 'g_10tou16', 'g_16tou20', 'g_20tou30', 'g_30tou50', 'g_50tou65', 'g_65tou70', 'g_70tou80', 'g_80plus']
+    population_fc_30 = 0
+    population_fc_35 = 0
+    for key in keys:
+        population_fc_30 += int(countie_data['dem_fc_lk'][f'{key}_2030_abs'])
+        population_fc_35 += int(countie_data['dem_fc_lk'][f'{key}_2035_abs'])
+    
+    # Get Entries from Care-Database based on District and extract Data
+    care_data_district = anvil.server.call("get_care_district_data", countie_data['ex_dem_lk']['key'])
+    inpatients_lk = 0
+    beds_lk = 0
+    for el in care_data_district:
+        if not el['anz_vers_pat'] == '-':
+            inpatients_lk += int(el['anz_vers_pat'])
+        if not el['platz_voll_pfl'] == '-':
+            beds_lk += int(el['platz_voll_pfl'])
+        if not el['platz_kurzpfl'] == '-':
+            beds_lk += int(el['platz_kurzpfl'])
+        if not el['platz_nachtpfl'] == '-':
+            beds_lk += int(el['platz_nachtpfl'])
+    occupancy_lk = float("{:.2f}".format((inpatients_lk * 100) / beds_lk)) / 100
+    free_beds_lk = beds_lk - inpatients_lk
+    
+    # #####Calculate Data for Market Study#####
+    new_r_care_rate_raw = float("{:.3f}".format(inpatients_lk / (people_u80 + people_o80)))
+    new_care_rate_raw = float("{:.3f}".format(inpatients_lk / round((nursing_home_rate * countie_data['ex_dem_lk']['all_compl']) + 1)))
+    pat_rec_full_care_fc_30_v1 = round(new_r_care_rate_raw * (people_u80_fc + people_o80_fc))
+    care_rate_30_v1_raw = float("{:.3f}".format(pat_rec_full_care_fc_30_v1 / (population_fc_30 * nursing_home_rate)))
+    pat_rec_full_care_fc_30_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc + people_o80_fc))
+    care_rate_30_v2_raw = float("{:.3f}".format(pat_rec_full_care_fc_30_v2 / (population_fc_30 * nursing_home_rate)))
+    pat_rec_full_care_fc_35_v1 = round(new_r_care_rate_raw * (people_u80_fc_35 + people_o80_fc_35))
+    care_rate_35_v1_raw = float("{:.3f}".format(pat_rec_full_care_fc_35_v1 / (population_fc_35 * nursing_home_rate)))
+    pat_rec_full_care_fc_35_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc_35 + people_o80_fc_35))
+    care_rate_35_v2_raw = float("{:.3f}".format(pat_rec_full_care_fc_35_v2 / (population_fc_35 * nursing_home_rate)))
+    inpatients_fc = round(pat_rec_full_care_fc_30_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
+    inpatients_fc_v2 = round(pat_rec_full_care_fc_30_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
+    inpatients_fc_35 = round(pat_rec_full_care_fc_35_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
+    inpatients_fc_35_v2 = round(pat_rec_full_care_fc_35_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
+    beds_30_v1 = round((pat_rec_full_care_fc_30_v1 / 0.95))
+    beds_30_v2 = round((pat_rec_full_care_fc_30_v2 / 0.95))
+    beds_35_v1 = round((pat_rec_full_care_fc_35_v1 / 0.95))
+    beds_35_v2 = round((pat_rec_full_care_fc_35_v2 / 0.95))
+    free_beds_30_v1 = beds_30_v1 - pat_rec_full_care_fc_30_v1
+    free_beds_30_v2 = beds_30_v2 - pat_rec_full_care_fc_30_v2
+    free_beds_35_v1 = beds_35_v1 - pat_rec_full_care_fc_35_v1
+    free_beds_35_v2 = beds_35_v2 - pat_rec_full_care_fc_35_v2
+    
+    regulations = anvil.server.call('read_regulations', federal_state)
+    facilities_bed_amount = 0
+    facilities_bed_amount_future = 0
+    for index, competitor in enumerate(data_comp_analysis_nh['data']):
         if not competitor[0]['ez'] == '-' or not competitor[0]['dz'] == '-':
-          facilities_amount += 1
-          ''' Get amount of single Rooms inside Facility '''
-          if not competitor[0]['ez'] == '-' and competitor[0]['ez'] is not None:
-            facility_single_rooms = int(competitor[0]['ez'])
-          else:
-            facility_single_rooms = 0
-          ''' Get amount of double Rooms inside Facility '''
-          if not competitor[0]['dz'] == '-' and competitor[0]['dz'] is not None:
-            facility_double_rooms = int(competitor[0]['dz'])
-          else:
-            facility_double_rooms = 0
-          ''' Get overall amount of Rooms inside Facility '''
-          facility_rooms = facility_single_rooms + facility_double_rooms
-          ''' Get single room quote of facility '''
-          facility_single_room_quote = facility_single_rooms / facility_rooms
-          ''' Get bed amount of facility '''
-          facility_bed_amount = facility_single_rooms + facility_double_rooms * 2
-          ''' Get single room quota from regulations '''
-          if not regulations['Existing']['sr_quote'] == '/':
-            facility_single_room_quote_future = float(regulations['Existing']['sr_quote'])
-          else:
-            facility_single_room_quote_future = 0
-          if not regulations['Existing']['max_beds'] == '/':
-            facility_max_beds_future = float(regulations['Existing']['max_beds'])
-          else:
-            facility_max_beds_future = 999999
-          if facility_single_room_quote < facility_single_room_quote_future or facility_bed_amount > facility_max_beds_future:
-            data_comp_analysis_nh['data'][index][0]['legal'] = "No"
-          else:
-            data_comp_analysis_nh['data'][index][0]['legal'] = "Yes"
-          ''' Check if single room quota is below quota from regulations '''
-          if facility_single_room_quote < facility_single_room_quote_future:
-            ''' Calculate future amount of single rooms based on quota from regulations '''
-            facility_single_rooms_future = int(round(facility_rooms * facility_single_room_quote_future, 0))
-            ''' Calculate future amount of double rooms based on quota from regulations '''
-            facility_double_rooms_future = int(round(facility_rooms - facility_single_rooms_future, 0))
-            ''' Calculate future amount of beds based on quota from regulations '''
-            facility_bed_amount_future = int(round(facility_single_rooms_future + facility_double_rooms_future * 2, 0))
-          else:
-            facility_single_room_quote_future = facility_single_room_quote
-            facility_single_rooms_future = facility_single_rooms
-            facility_double_rooms_future = facility_double_rooms
-            facility_bed_amount_future = facility_bed_amount
-          ''' Add current facility values to overall values '''
-          if facility_bed_amount_future > facility_max_beds_future:
-              facility_bed_amount_future = facility_max_beds_future
-          facilities_single_rooms += facility_single_rooms
-          facilities_double_rooms += facility_double_rooms
-          facilities_bed_amount += facility_bed_amount
-          facilities_rooms += facility_rooms
-          facilities_single_room_quote += facility_single_room_quote
-          facilities_single_rooms_future += facility_single_rooms_future
-          facilities_double_rooms_future += facility_double_rooms_future
-          facilities_bed_amount_future += facility_bed_amount_future
-          facilities_single_room_quote_future += facility_single_room_quote_future
+            if not competitor[0]['ez'] == '-' and competitor[0]['ez'] is not None:
+                facility_single_rooms = int(competitor[0]['ez'])
+            else:
+                facility_single_rooms = 0
+            if not competitor[0]['dz'] == '-' and competitor[0]['dz'] is not None:
+                facility_double_rooms = int(competitor[0]['dz'])
+            else:
+                facility_double_rooms = 0
+            facility_rooms = facility_single_rooms + facility_double_rooms
+            facility_single_room_quote = facility_single_rooms / facility_rooms
+            facility_bed_amount = facility_single_rooms + facility_double_rooms * 2
+            if not regulations['Existing']['sr_quote'] == '/':
+                facility_single_room_quote_future = float(regulations['Existing']['sr_quote'])
+            else:
+                facility_single_room_quote_future = 0
+            if not regulations['Existing']['max_beds'] == '/':
+                facility_max_beds_future = float(regulations['Existing']['max_beds'])
+            else:
+                facility_max_beds_future = 999999
+            if facility_single_room_quote < facility_single_room_quote_future or facility_bed_amount > facility_max_beds_future:
+                data_comp_analysis_nh['data'][index][0]['legal'] = "No"
+            else:
+                data_comp_analysis_nh['data'][index][0]['legal'] = "Yes"
+            if facility_single_room_quote < facility_single_room_quote_future:
+                facility_single_rooms_future = int(round(facility_rooms * facility_single_room_quote_future, 0))
+                facility_double_rooms_future = int(round(facility_rooms - facility_single_rooms_future, 0))
+                facility_bed_amount_future = int(
+                    round(facility_single_rooms_future + facility_double_rooms_future * 2, 0))
+            else:
+                facility_bed_amount_future = facility_bed_amount
+            if facility_bed_amount_future > facility_max_beds_future:
+                facility_bed_amount_future = facility_max_beds_future
+            facilities_bed_amount += facility_bed_amount
+            facilities_bed_amount_future += facility_bed_amount_future
         else:
-          data_comp_analysis_nh['data'][index][0]['legal'] = "-"
-
-      loss_of_beds = facilities_bed_amount_future - facilities_bed_amount
-      beds_adjusted_30_v1 = beds_active + beds_planned + beds_construct + loss_of_beds
-      beds_adjusted_30_v2 = beds_active + beds_planned + beds_construct + loss_of_beds
-      beds_adjusted_35_v1 = beds_active + beds_planned + beds_construct + loss_of_beds
-      beds_adjusted_35_v2 = beds_active + beds_planned + beds_construct + loss_of_beds
-      beds_surplus_35 = beds_adjusted_35_v1 - inpatients_fc_35
-      beds_surplus_35_v2 = beds_adjusted_35_v2 - inpatients_fc_35_v2
-      beds_surplus = beds_adjusted_30_v1 - inpatients_fc
-      beds_surplus_v2 = beds_adjusted_30_v2 - inpatients_fc_v2
-      beds_surplus_30_avg = round((beds_surplus + beds_surplus_v2) / 2)
-      beds_surplus_35_avg = round((beds_surplus_35 + beds_surplus_35_v2) / 2)
-      beds_in_reserve_fc = round(beds_adjusted * 0.05)
-
-      market_study_pages = ["COVER", "SUMMARY", "LOCATION ANALYSIS"]
-      share_url = self.create_share_map('market_study')
-
-      max_pages = 2
-      summary_page = 2
-      location_analysis_page = 3
-      competitor_analysis_pages = [4]
-      
-      market_study_data = copy.deepcopy(ExcelFrames.market_study_data)
-      market_study_data['pages']['COVER']['cell_content']['images']['AB7']['file'] = f"tmp/summary_map_{unique_code}.png"
-      market_study_data['pages']['COVER']['cell_content']['textboxes']['Y29']['text'] = "{:.2f}".format(purchase_power)
-      market_study_data['pages']['COVER']['cell_content']['textboxes']['Y38']['text'] = population_trend_string
-      market_study_data['pages']['COVER']['cell_content']['textboxes']['Y47']['text'] = f"{beds_surplus_35_v2:,}"
-      market_study_data['pages']['COVER']['cell_content']['textboxes']['C51']['text'] = f"Version 2.1.0 Generated on {created_date}"
-      market_study_data['pages']['COVER']['cell_content']['cells']['L30']['text'] = street
-      market_study_data['pages']['COVER']['cell_content']['cells']['L31']['text'] = zipcode
-      market_study_data['pages']['COVER']['cell_content']['cells']['L32']['text'] = city
-      market_study_data['pages']['COVER']['cell_content']['cells']['L33']['text'] = district
-      market_study_data['pages']['COVER']['cell_content']['cells']['L34']['text'] = federal_state
-      market_study_data['pages']['COVER']['cell_content']['cells']['L36']['text'] = f"{iso_time} minutes of {movement}"
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P10']['text'] = countie_data['dem_city']['bevoelkerung_ges']
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P11']['text'] = countie_data['ex_dem_lk']['all_compl']
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P13']['text'] = people_u80
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P14']['text'] = round(people_u80 / countie_data['ex_dem_lk']['all_compl'], 2)
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P15']['text'] = people_o80
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P16']['text'] = round(people_o80 / countie_data['ex_dem_lk']['all_compl'], 2)
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P20']['text'] = new_care_rate_raw
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P21']['text'] = nursing_home_rate
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P22']['text'] = inpatients_lk
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P23']['text'] = occupancy_lk_raw
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P24']['text'] = beds_lk
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P25']['text'] = free_beds_lk
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P29']['text'] = nursing_homes_active
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P30']['text'] = beds_active
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P31']['text'] = occupancy_lk_raw
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P32']['text'] = '-' if nursing_homes_planned == 0 else nursing_homes_planned
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P33']['text'] = '-' if nursing_homes_construct == 0 else nursing_homes_construct
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P34']['text'] = '-' if beds_planned == 0 else beds_planned
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P35']['text'] = '-' if beds_construct == 0 else beds_construct
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P37']['text'] = beds_active
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['P38']['text'] = inpatients
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R20']['text'] = care_rate_30_v1_raw
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R21']['text'] = nursing_home_rate
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R22']['text'] = pat_rec_full_care_fc_30_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R24']['text'] = beds_30_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R25']['text'] = free_beds_30_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R30']['text'] = beds_active + beds_planned + beds_construct
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R36']['text'] = loss_of_beds
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R37']['text'] = beds_adjusted_30_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R38']['text'] = inpatients_fc
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['R39']['text'] = beds_surplus      
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S11']['text'] = population_fc
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S13']['text'] = people_u80_fc
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S14']['text'] = round(people_u80_fc / population_fc, 2)
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S15']['text'] = people_o80_fc
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S16']['text'] = round(people_o80_fc / population_fc, 2)
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S20']['text'] = care_rate_30_v2_raw
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S21']['text'] = nursing_home_rate
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S22']['text'] = pat_rec_full_care_fc_30_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S24']['text'] = beds_30_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S25']['text'] = free_beds_30_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S30']['text'] = beds_active + beds_planned + beds_construct
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S36']['text'] = loss_of_beds
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S37']['text'] = beds_adjusted_30_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S38']['text'] = inpatients_fc_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['S39']['text'] = beds_surplus_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U20']['text'] = care_rate_35_v1_raw
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U21']['text'] = nursing_home_rate
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U22']['text'] = pat_rec_full_care_fc_35_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U24']['text'] = beds_35_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U25']['text'] = free_beds_35_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U30']['text'] = beds_active + beds_planned + beds_construct
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U36']['text'] = loss_of_beds
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U37']['text'] = beds_adjusted_35_v1
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U38']['text'] = inpatients_fc_35
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['U39']['text'] = beds_surplus_35
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V11']['text'] = population_fc_35
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V13']['text'] = people_u80_fc_35
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V14']['text'] = round(people_u80_fc_35 / population_fc_35, 2)
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V15']['text'] = people_o80_fc_35
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V16']['text'] = round(people_o80_fc_35 / population_fc_35, 2)
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V20']['text'] = care_rate_35_v2_raw
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V21']['text'] = nursing_home_rate
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V22']['text'] = pat_rec_full_care_fc_35_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V24']['text'] = beds_35_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V25']['text'] = free_beds_35_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V30']['text'] = beds_active + beds_planned + beds_construct
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V36']['text'] = loss_of_beds
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V37']['text'] = beds_adjusted_35_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V38']['text'] = inpatients_fc_35_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['cells']['V39']['text'] = beds_surplus_35_v2
-      market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C4:P5']['text'] = city
-      market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C10:O10']['text'] = f"Population {city} (City)"
-      market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C11:O11']['text'] = f"Population {countie[0]} (County)"
-      market_study_data['pages']['SUMMARY']['cell_content']['merge_cells']['C28:O28']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
-
-      anvil.js.call('update_loading_bar', 65, 'Generating Analysis Text')
-      
-      analysis_text = "I`m a placeholder Text"
-      # analysis_text = anvil.server.call('openai_test', city)
-      from .ChatGPT import ChatGPT
-      Functions.manipulate_loading_overlay(self, False)
-      analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
-      Functions.manipulate_loading_overlay(self, True)
-
-      anvil.js.call('update_loading_bar', 70, 'Create Excel for Market Study Part 2')
-      
-      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C4:J5']['text'] = city
-      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['H23:R38']['text'] = analysis_text
-      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['merge_cells']['C21:S21']['text'] = share_url
-      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['cells']['E37']['text'] = f"{iso_time} minutes of {movement}"
-      # market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['images']['Q9']['settings']['url'] = share_url
-
-      nursing_homes_amount = len(data_comp_analysis_nh['data'])
-      assisted_living_amount = len(data_comp_analysis_al['data'])
-      total_amount = nursing_homes_amount + assisted_living_amount
-      
-      list_beds = []
-      list_years_of_construction_nh = []
-      list_years_of_construction_al = []
-      none_profit_operator_nh = 0
-      none_profit_operator_al = 0
-      public_operator_nh = 0
-      public_operator_al = 0
-      private_operator_nh = 0
-      private_operator_al = 0
-      home_invest = -1
-      complied_regulations = 0
-      uncomplied_regulations = 0
-      invest_plot_data = []
-      invest_costs_public = []
-      invest_costs_non_profit = []
-      invest_costs_private = []
-      invest_costs_public_home = -1
-      invest_costs_non_profit_home = -1
-      invest_costs_private_home = -1
-      
-      if total_amount <= 13:
-        # Single Page
-        market_study_pages.append("COMPETITOR ANALYSIS 1")
-        
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells']['C9:E9'] = {
-          'text': "Nursing Homes",
-          'format': 'nh_heading'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells']['C26:M26'] = {
-          'text': '¹The Facility does / does not comply with the respective federal state regulation. For more info see page "Good to Know"',
-          'format': 'foot_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['G9'] = {
-          'text': "Operator name",
-          'format': "operator_heading"
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['H9'] = {
-          'text': "Web",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['I9'] = {
-          'text': "Top 30 Operator",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['J9'] = {
-          'text': "Operator type",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['K9'] = {
-          'text': "Asset status",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['L9'] = {
-          'text': "Year of construction",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['M9'] = {
-          'text': "Apartments (AL)",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['N9'] = {
-          'text': "Legally compliant¹",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['O9'] = {
-          'text': "Care beds",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['P9'] = {
-          'text': "Single rooms",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['Q9'] = {
-          'text': "Double rooms",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['R9'] = {
-          'text': "Rooms",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['S9'] = {
-          'text': "Single room quota",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['T9'] = {
-          'text': "Occupancy rates",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['U9'] = {
-          'text': "Invest cost (p. day in €)",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells']['V9'] = {
-          'text': "MDK grade (2019)",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells']['C3:X4']['text'] = city
-
-        current_row = 11
-        home_counter = 0
-        total_beds = 0
-        total_single_rooms = 0
-        total_double_rooms = 0
-        total_rooms = 0
-        list_single_room_quota = []
-        list_occupancy_rate = []
-        list_invest_cost = []
-        list_mdk_grade = []
-        prev_competitor_distance = 0
-        prev_competitor_index = 0
-
-        for index, competitor in enumerate(data_comp_analysis_nh['data']):
-          if 'home' in competitor:
+            data_comp_analysis_nh['data'][index][0]['legal'] = "-"
+    
+    loss_of_beds = facilities_bed_amount_future - facilities_bed_amount
+    beds_adjusted_30_v1 = beds_active + beds_planned + beds_construct + loss_of_beds
+    beds_adjusted_30_v2 = beds_active + beds_planned + beds_construct + loss_of_beds
+    beds_adjusted_35_v1 = beds_active + beds_planned + beds_construct + loss_of_beds
+    beds_adjusted_35_v2 = beds_active + beds_planned + beds_construct + loss_of_beds
+    beds_surplus_35 = beds_adjusted_35_v1 - inpatients_fc_35
+    beds_surplus_35_v2 = beds_adjusted_35_v2 - inpatients_fc_35_v2
+    beds_surplus = beds_adjusted_30_v1 - inpatients_fc
+    beds_surplus_v2 = beds_adjusted_30_v2 - inpatients_fc_v2
+    
+    share_url = self.create_share_map('market_study')
+    
+    market_study_pages = ["cover", "summary", "location_analysis"]
+    max_pages = 3
+    summary_page = 2
+    location_analysis_page = 3
+    current_competitor_analysis_page = 3
+    
+    nursing_homes_amount = len(data_comp_analysis_nh['data'])
+    assisted_living_amount = len(data_comp_analysis_al['data'])
+    total_amount = nursing_homes_amount + assisted_living_amount
+    list_beds = []
+    list_years_of_construction_nh = []
+    list_years_of_construction_al = []
+    none_profit_operator_nh = 0
+    none_profit_operator_al = 0
+    public_operator_nh = 0
+    public_operator_al = 0
+    private_operator_nh = 0
+    private_operator_al = 0
+    home_invest = -1
+    complied_regulations = 0
+    uncomplied_regulations = 0
+    invest_plot_data = []
+    invest_costs_public = []
+    invest_costs_non_profit = []
+    invest_costs_private = []
+    invest_costs_public_home = -1
+    invest_costs_non_profit_home = -1
+    invest_costs_private_home = -1
+    competitor_pages = {}
+    page = 1
+    
+    # Nursing Home Pages
+    home_counter = 0
+    total_beds = 0
+    total_single_rooms = 0
+    total_double_rooms = 0
+    total_rooms = 0
+    list_single_room_quota = []
+    list_occupancy_rate = []
+    list_invest_cost = []
+    list_mdk_grade = []
+    prev_competitor_distance = 0
+    prev_competitor_index = 0
+    current_page_height = 177
+    nursing_homes_competitor_skeleton = {
+        'page_number': 4,
+        'line': {
+            'top_line': {
+                'x1': 17,
+                'y1': 176,
+                'x2': 203,
+                'y2': 176
+            },
+            'bottom_line': {
+                'x1': 10,
+                'y1': 285,
+                'x2': 203,
+                'y2': 285
+            }
+        },
+        'text': {
+            'heading_city': {
+                'color': [218, 218, 218],
+                'font': 'segoeui',
+                'size': 27,
+                'x': 10,
+                'y': 30,
+                'txt': city
+            },
+            'page_name': {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 27,
+                'x': 10,
+                'y': 40,
+                'txt': 'Competitor Analysis'
+            },
+            'facility_type': {
+                'color': [244, 81, 94],
+                'font': 'seguisb',
+                'size': 9,
+                'x': 19,
+                'y': 173,
+                'txt': 'Nursing homes'
+            }
+        },
+        'image': {
+            'location_map': {
+                'x': 10,
+                'y': 45,
+                'w': 150,
+                'path': f"tmp/map_image_{Variables.unique_code}.png"
+            },
+            'table_header': {
+                'x': 70,
+                'y': 142,
+                'w': 130,
+                'path': "img/nh_header.png"
+            }
+        },
+        'cell': {},
+        'multi_cell': {
+                        'legal_info': {
+                            'color': [128, 128, 128],
+                            'font': 'segoeui',
+                            'size': 7,
+                            'x': 10,
+                            'y': 285,
+                            'w': 190,
+                            'h': 4,
+                            'txt': '¹The Facility does / does not comply with the respective federal state regulation.\nFor more info see page "Regulations"',
+                            'align': 'left'
+                        }
+                    }
+    }
+    
+    for index, competitor in enumerate(data_comp_analysis_nh['data']):
+        if index % 9 == 0:
+            if index > 0:
+                competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
+                page += 1
+                current_competitor_analysis_page += 1
+            current_competitor_page = copy.deepcopy(nursing_homes_competitor_skeleton)
+            current_competitor_page['page_number'] = current_competitor_analysis_page
+    
+        if 'home' in competitor:
             home_counter += 1
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
-              'text': '⌂',
-              'format': 'home_icon'
+            current_competitor_page['cell'][f'home_{home_counter}_icon'] = {
+                'color': [204, 182, 102],
+                'fill_color': [27, 41, 57],
+                'font': 'calibri',
+                'size': 14,
+                'x': 10,
+                'y': current_page_height,
+                'w': 6,
+                'h': 6,
+                'txt': '⌂',
+                'align': 'center',
+                'fill': True
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['raw_name'],
-              'format': 'home_line_normal'
+            current_competitor_page['cell'][f'home_{home_counter}_name'] = {
+                'color': [0, 176, 240] if not "keine " in competitor[0]['web'] else [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 17,
+                'y': current_page_height,
+                'w': 50,
+                'h': 6,
+                'txt': competitor[0]['raw_name'],
+                'align': 'left',
+                'fill': True,
+                'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'G{current_row}'] = {
-              'text': competitor[0]['raw_betreiber'],
-              'format': 'home_line_normal'
+            current_competitor_page['cell'][f'home_{home_counter}_operator'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 17,
+                'y': current_page_height + 6,
+                'w': 50,
+                'h': 6,
+                'txt': competitor[0]['raw_betreiber'],
+                'align': 'left',
+                'fill': True
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
-              'format': 'home_line_centered_link',
-              # 'string': "↗"
+            current_competitor_page['cell'][f'home_{home_counter}_top_30_operator'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 67,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
+                'align': 'center',
+                'fill': True,
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'I{current_row}'] = {
-              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
-              'format': 'home_line_centered'
+            current_competitor_page['cell'][f'home_{home_counter}_operator_type'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 77,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
+                'align': 'center',
+                'fill': True,
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'J{current_row}'] = {
-              'text': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
-              'format': 'home_line_centered'
+            current_competitor_page['cell'][f'home_{home_counter}_status'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 89,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
+                'align': 'center',
+                'fill': True,
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'K{current_row}'] = {
-              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
-              'format': 'home_line_centered'
+            current_competitor_page['cell'][f'home_{home_counter}_year_of_construction'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 101,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': competitor[0]['baujahr'],
+                'align': 'center',
+                'fill': True,
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'L{current_row}'] = {
-              'text': competitor[0]['baujahr'],
-              'format': 'home_line_centered'
+            current_competitor_page['cell'][f'home_{home_counter}_legal'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 111,
+                'y': current_page_height,
+                'w': 8,
+                'h': 6,
+                'txt': competitor[0]['legal'],
+                'align': 'center',
+                'fill': True,
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'M{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'N{current_row}'] = {
-              'text': competitor[0]['legal'],
-              'format': 'home_line_centered'
-            }
-
+    
             if not competitor[0]['legal'] == '-':
-              if competitor[0]['legal'] == 'Yes':
-                complied_regulations += 1
-              else:
-                uncomplied_regulations += 1
-
+                if competitor[0]['legal'] == 'Yes':
+                    complied_regulations += 1
+                else:
+                    uncomplied_regulations += 1
             if competitor[0]['operator_type'] == 'privat':
-              private_operator_nh += 1
-              if not competitor[0]['invest'] == '-':
-                invest_costs_private.append(float(competitor[0]['invest']))
-                invest_costs_private_home = float(competitor[0]['invest'])
+                private_operator_nh += 1
+                if not competitor[0]['invest'] == '-':
+                    invest_costs_private.append(float(competitor[0]['invest']))
+                    invest_costs_private_home = float(competitor[0]['invest'])
             elif competitor[0]['operator_type'] == 'kommunal':
-              public_operator_nh += 1
-              if not competitor[0]['invest'] == '-':
-                invest_costs_public.append(float(competitor[0]['invest']))
-                invest_costs_public_home = float(competitor[0]['invest'])
+                public_operator_nh += 1
+                if not competitor[0]['invest'] == '-':
+                    invest_costs_public.append(float(competitor[0]['invest']))
+                    invest_costs_public_home = float(competitor[0]['invest'])
             elif competitor[0]['operator_type'] == 'gemeinnützig':
-              none_profit_operator_nh += 1
-              if not competitor[0]['invest'] == '-':
-                invest_costs_non_profit.append(float(competitor[0]['invest']))
-                invest_costs_non_profit_home = float(competitor[0]['invest'])
+                none_profit_operator_nh += 1
+                if not competitor[0]['invest'] == '-':
+                    invest_costs_non_profit.append(float(competitor[0]['invest']))
+                    invest_costs_non_profit_home = float(competitor[0]['invest'])
             if not competitor[0]['ez'] == '-':
-              single_rooms = int(competitor[0]['ez'])
+                single_rooms = int(competitor[0]['ez'])
             else:
-              single_rooms = '-'
+                single_rooms = '-'
             if not competitor[0]['dz'] == '-':
-              double_rooms = int(competitor[0]['dz'])
+                double_rooms = int(competitor[0]['dz'])
             else:
-              double_rooms = '-'
+                double_rooms = '-'
             if not competitor[0]['platz_voll_pfl'] == '-':
-              beds = competitor[0]['platz_voll_pfl']
+                beds = competitor[0]['platz_voll_pfl']
             else:
-              beds = '-'
-            if not single_rooms == '-':
-              if not double_rooms == '-':
-                rooms = single_rooms + double_rooms
-                single_room_quote = single_rooms / (single_rooms + double_rooms)
-              else:
-                rooms = single_rooms
-                single_room_quote = 1
-            else:
-              if not double_rooms == '-':
-                rooms = double_rooms
-                single_room_quote = 0
-              else:
-                rooms = '-'
                 beds = '-'
-                single_room_quote = '-'
-            
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'O{current_row}'] = {
-              'text': beds,
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'P{current_row}'] = {
-              'text': single_rooms,
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'Q{current_row}'] = {
-              'text': double_rooms,
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'R{current_row}'] = {
-              'text': rooms,
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'S{current_row}'] = {
-              'text': single_room_quote,
-              'format': 'home_line_centered_percentage'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'T{current_row}'] = {
-              'text': competitor[0]['occupancy'],
-              'format': 'home_line_centered_percentage'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'U{current_row}'] = {
-              'text': '-' if competitor[0]['invest'] == '-' else float(competitor[0]['invest']),
-              'format': 'home_line_centered_number_double'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'V{current_row}'] = {
-              'text': '-' if competitor[0]['mdk_note'] == '-' else float(competitor[0]['mdk_note']),
-              'format': 'home_line_centered_number'
-            }
-
-            if not beds == '-':
-              total_beds += beds
-              list_beds.append(beds)
             if not single_rooms == '-':
-              total_single_rooms += single_rooms
-            if not double_rooms == '-':
-              total_double_rooms += double_rooms
-            if not rooms == '-':
-              total_rooms += rooms
-            if not single_room_quote == '-':
-              list_single_room_quota.append(single_room_quote)
-            if not competitor[0]['occupancy'] == '-':
-              list_occupancy_rate.append(competitor[0]['occupancy'])
-            if not competitor[0]['invest'] == '-':
-              list_invest_cost.append(float(competitor[0]['invest']))
-              home_invest = float(competitor[0]['invest'])
+                if not double_rooms == '-':
+                    rooms = single_rooms + double_rooms
+                    single_room_quote = single_rooms / (single_rooms + double_rooms)
+                else:
+                    rooms = single_rooms
+                    single_room_quote = 1
             else:
-              home_invest = -1
+                if not double_rooms == '-':
+                    rooms = double_rooms
+                    single_room_quote = 0
+                else:
+                    rooms = '-'
+                    single_room_quote = '-'
+            if not beds == '-':
+                total_beds += beds
+                list_beds.append(beds)
+            if not single_rooms == '-':
+                total_single_rooms += single_rooms
+            if not double_rooms == '-':
+                total_double_rooms += double_rooms
+            if not rooms == '-':
+                total_rooms += rooms
+            if not single_room_quote == '-':
+                list_single_room_quota.append(single_room_quote)
+            if not competitor[0]['occupancy'] == '-':
+                list_occupancy_rate.append(competitor[0]['occupancy'])
+            if not competitor[0]['invest'] == '-':
+                list_invest_cost.append(float(competitor[0]['invest']))
+                home_invest = float(competitor[0]['invest'])
             if not competitor[0]['mdk_note'] == '-':
-              list_mdk_grade.append(float(competitor[0]['mdk_note']))
+                list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
-              list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
+                list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
             if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
-              invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
-          
-          else:
+                invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
+    
+            current_competitor_page['cell'][f'home_{home_counter}_beds'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 119,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '{:,}'.format(beds),
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_single_rooms'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 129,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': '{:,}'.format(single_rooms),
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_double_rooms'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 141,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': '{:,}'.format(double_rooms),
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_rooms'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 153,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '{:,}'.format(rooms),
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_single_room_quota'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 163,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '{:,}%'.format(single_room_quote),
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_occupancy'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 173,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '{:,}%'.format(competitor[0]['occupancy']),
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_invest'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 183,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '-' if competitor[0]['invest'] == '-' else '{:,}%'.format(float(competitor[0]['invest'])),
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_quality'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 193,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '-' if competitor[0]['mdk_note'] == '-' else '{:,}%'.format(float(competitor[0]['mdk_note'])),
+                'align': 'center',
+                'fill': True,
+            }
+    
+        else:
+            table_position = (index % 9) + 1
             if not prev_competitor_distance == competitor[1]:
-              prev_competitor_distance = competitor[1]
-              prev_competitor_index += 1
-              
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
-              'text': index + 1 - home_counter,
-              'format': 'row_number'
+                prev_competitor_distance = competitor[1]
+                prev_competitor_index += 1
+            current_competitor_page['cell'][f'competitor_{table_position}_icon'] = {
+                'color': [255, 255, 255],
+                'font': 'segoeui',
+                'size': 11,
+                'x': 10,
+                'y': current_page_height,
+                'w': 6,
+                'h': 6,
+                'txt': prev_competitor_index,
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['raw_name'],
-              'format': 'row_normal'
+            current_competitor_page['cell'][f'competitor_{table_position}_name'] = {
+                'color': [0, 176, 240] if not "keine " in competitor[0]['web'] else [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 17,
+                'y': current_page_height,
+                'w': 50,
+                'h': 6,
+                'txt': competitor[0]['raw_name'],
+                'align': 'left',
+                'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['raw_betreiber'] == '-' else competitor[0]['raw_betreiber'],
-              'format': 'row_normal'
+            current_competitor_page['cell'][f'competitor_{table_position}_operator'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 17,
+                'y': current_page_height + 6,
+                'w': 50,
+                'h': 6,
+                'txt': competitor[0]['raw_betreiber'],
+                'align': 'left',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
-              'format': 'row_centered_link',
-              # 'string': "↗"
+            current_competitor_page['cell'][f'competitor_{table_position}_top_30_operator'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 67,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'I{current_row}'] = {
-              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
-              'format': 'row_centered'
+            current_competitor_page['cell'][f'competitor_{table_position}_operator_type'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 77,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'J{current_row}'] = {
-              'text': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
-              'format': 'row_centered'
+            current_competitor_page['cell'][f'competitor_{table_position}_status'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 89,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'K{current_row}'] = {
-              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
-              'format': 'row_centered'
+            current_competitor_page['cell'][f'competitor_{table_position}_year_of_construction'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 101,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': competitor[0]['baujahr'],
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'L{current_row}'] = {
-              'text': '-' if competitor[0]['baujahr'] == '-' else competitor[0]['baujahr'],
-              'format': 'row_centered'
+            current_competitor_page['cell'][f'competitor_{table_position}_legal'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 111,
+                'y': current_page_height,
+                'w': 8,
+                'h': 6,
+                'txt': competitor[0]['legal'],
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'M{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'N{current_row}'] = {
-              'text': competitor[0]['legal'],
-              'format': 'row_centered'
-            }
-
+    
             if not competitor[0]['legal'] == '-':
-              if competitor[0]['legal'] == 'Yes':
-                complied_regulations += 1
-              else:
-                uncomplied_regulations += 1
-            
+                if competitor[0]['legal'] == 'Yes':
+                    complied_regulations += 1
+                else:
+                    uncomplied_regulations += 1
             if competitor[0]['operator_type'] == 'privat':
-              private_operator_nh += 1
-              if not competitor[0]['invest'] == '-':
-                invest_costs_private.append(float(competitor[0]['invest']))
+                private_operator_nh += 1
+                if not competitor[0]['invest'] == '-':
+                    invest_costs_private.append(float(competitor[0]['invest']))
             elif competitor[0]['operator_type'] == 'kommunal':
-              public_operator_nh += 1
-              if not competitor[0]['invest'] == '-':
-                invest_costs_public.append(float(competitor[0]['invest']))
+                public_operator_nh += 1
+                if not competitor[0]['invest'] == '-':
+                    invest_costs_public.append(float(competitor[0]['invest']))
             elif competitor[0]['operator_type'] == 'gemeinnützig':
-              none_profit_operator_nh += 1
-              if not competitor[0]['invest'] == '-':
-                invest_costs_non_profit.append(float(competitor[0]['invest']))
+                none_profit_operator_nh += 1
+                if not competitor[0]['invest'] == '-':
+                    invest_costs_non_profit.append(float(competitor[0]['invest']))
             if not competitor[0]['ez'] == '-':
-              single_rooms = int(competitor[0]['ez'])
+                single_rooms = int(competitor[0]['ez'])
             else:
-              single_rooms = '-'
+                single_rooms = '-'
             if not competitor[0]['dz'] == '-':
-              double_rooms = int(competitor[0]['dz'])
+                double_rooms = int(competitor[0]['dz'])
             else:
-              double_rooms = '-'
+                double_rooms = '-'
             if not competitor[0]['platz_voll_pfl'] == '-':
-              beds = competitor[0]['platz_voll_pfl']
+                beds = competitor[0]['platz_voll_pfl']
             else:
-              beds = '-'
+                beds = '-'
             if not single_rooms == '-':
-              if not double_rooms == '-':
-                rooms = single_rooms + double_rooms
-                single_room_quote = single_rooms / (single_rooms + double_rooms)
-              else:
-                rooms = single_rooms
-                single_room_quote = 1
+                if not double_rooms == '-':
+                    rooms = single_rooms + double_rooms
+                    single_room_quote = single_rooms / (single_rooms + double_rooms)
+                else:
+                    rooms = single_rooms
+                    single_room_quote = 1
             else:
-              if not double_rooms == '-':
-                rooms = double_rooms
-                single_room_quote = 0
-              else:
-                rooms = '-'
-                single_room_quote = '-'
-              
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'O{current_row}'] = {
-              'text': beds,
-              'format': 'row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'P{current_row}'] = {
-              'text': single_rooms,
-              'format': 'row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'Q{current_row}'] = {
-              'text': double_rooms,
-              'format': 'row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'R{current_row}'] = {
-              'text': rooms,
-              'format': 'row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'S{current_row}'] = {
-              'text': single_room_quote,
-              'format': 'row_centered_percentage'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'T{current_row}'] = {
-              'text': competitor[0]['occupancy'],
-              'format': 'row_centered_percentage'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'U{current_row}'] = {
-              'text': '-' if competitor[0]['invest'] == '-' else float(competitor[0]['invest']),
-              'format': 'row_centered_number_double'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'V{current_row}'] = {
-              'text': '-' if competitor[0]['mdk_note'] == '-' else float(competitor[0]['mdk_note']),
-              'format': 'row_centered_number'
-            }
-
+                if not double_rooms == '-':
+                    rooms = double_rooms
+                    single_room_quote = 0
+                else:
+                    rooms = '-'
+                    single_room_quote = '-'
             if not beds == '-':
-              total_beds += beds
-              list_beds.append(beds)
+                total_beds += beds
+                list_beds.append(beds)
             if not single_rooms == '-':
-              total_single_rooms += single_rooms
+                total_single_rooms += single_rooms
             if not double_rooms == '-':
-              total_double_rooms += double_rooms
+                total_double_rooms += double_rooms
             if not rooms == '-':
-              total_rooms += rooms
+                total_rooms += rooms
             if not single_room_quote == '-':
-              list_single_room_quota.append(single_room_quote)
+                list_single_room_quota.append(single_room_quote)
             if not competitor[0]['occupancy'] == '-':
-              list_occupancy_rate.append(competitor[0]['occupancy'])
+                list_occupancy_rate.append(competitor[0]['occupancy'])
             if not competitor[0]['invest'] == '-':
-              list_invest_cost.append(float(competitor[0]['invest']))
+                list_invest_cost.append(float(competitor[0]['invest']))
             if not competitor[0]['mdk_note'] == '-':
-              list_mdk_grade.append(float(competitor[0]['mdk_note']))
+                list_mdk_grade.append(float(competitor[0]['mdk_note']))
             if not competitor[0]['baujahr'] == '-':
-              list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
+                list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
             if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
-              invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1])
-  
-          current_row += 1
+                invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
 
-        if len(list_single_room_quota) > 0:
-          total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
-        else:
-          total_single_room_quota = 0
-        if len(list_occupancy_rate) > 0:
-          total_occupancy_rate = anvil.server.call("get_median", list_occupancy_rate)
-        else:
-          total_occupancy_rate = 0
-        if len(list_invest_cost) > 0:
-          minimum_invest_cost = min(list_invest_cost)
-        else:
-          minimum_invest_cost = 0
-        if len(list_invest_cost) > 0:
-          maximum_invest_cost = max(list_invest_cost)
-        else:
-          maximum_invest_cost = 0
-        if len(list_invest_cost) > 0:
-          total_invest_cost = anvil.server.call("get_median", list_invest_cost)
-        else:
-          total_invest_cost = 0
-        if len(list_mdk_grade) > 0:
-          total_mdk_grade = anvil.server.call("get_median", list_mdk_grade)
-        else:
-          total_mdk_grade = 0
-
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'O{current_row}'] = {
-          'text': total_beds,
-          'format': 'overall_sum'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'P{current_row}'] = {
-          'text': total_single_rooms,
-          'format': 'overall_sum'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'Q{current_row}'] = {
-          'text': total_double_rooms,
-          'format': 'overall_sum'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'R{current_row}'] = {
-          'text': total_rooms,
-          'format': 'overall_sum'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'S{current_row}'] = {
-          'text': total_single_room_quota,
-          'format': 'overall_median_percentage'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'T{current_row}'] = {
-          'text': total_occupancy_rate,
-          'format': 'overall_median_percentage'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'U{current_row}'] = {
-          'text': total_invest_cost,
-          'format': 'overall_median'
-        }
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'V{current_row}'] = {
-          'text': total_mdk_grade,
-          'format': 'overall_median'
-        }
-        
-        current_row += 1
-        
-        market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['merge_cells'][f'C{current_row}:E{current_row}'] = {
-          'text': "Assisted Living",
-          'format': 'al_heading'
-        }
-
-        current_row += 1
-        prev_competitor_distance = 0
-        prev_competitor_index = 0
-        
-        for index, competitor in enumerate(data_comp_analysis_al['data']):
-          home_counter = 0
-          if 'home' in competitor:
-            home_counter += 1
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
-              'text': '⌂',
-              'format': 'home_icon'
+            current_competitor_page['cell'][f'competitor_{table_position}_beds'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 119,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '{:,}'.format(beds),
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['raw_name'],
-              'format': 'home_line_normal'
+            current_competitor_page['cell'][f'competitor_{table_position}_single_rooms'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 129,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': '{:,}'.format(single_rooms) if not single_rooms == '-' else single_rooms,
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'G{current_row}'] = {
-              'text': competitor[0]['raw_betreiber'],
-              'format': 'home_line_normal'
+            current_competitor_page['cell'][f'competitor_{table_position}_double_rooms'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 141,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': '{:,}'.format(double_rooms) if not double_rooms == '-' else double_rooms,
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
-              'format': 'home_line_centered_link',
-              # 'string': "↗"
+            current_competitor_page['cell'][f'competitor_{table_position}_rooms'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 153,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '{:,}'.format(rooms) if not rooms == '-' else rooms,
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'I{current_row}'] = {
-              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
-              'format': 'home_line_centered'
+            current_competitor_page['cell'][f'competitor_{table_position}_single_room_quota'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 163,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '{:,}%'.format(single_room_quote) if not single_room_quote == '-' else single_room_quote,
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'J{current_row}'] = {
-              'text': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
-              'format': 'home_line_centered'
+            current_competitor_page['cell'][f'competitor_{table_position}_occupancy'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 173,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '{:,}%'.format(competitor[0]['occupancy']) if not competitor[0]['occupancy'] == '-' else competitor[0]['occupancy'],
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'K{current_row}'] = {
-              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
-              'format': 'home_line_centered'
+            current_competitor_page['cell'][f'competitor_{table_position}_invest'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 183,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '-' if competitor[0]['invest'] == '-' else '{:,}%'.format(float(competitor[0]['invest'])),
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'L{current_row}'] = {
-              'text': competitor[0]['year_of_construction'],
-              'format': 'home_line_centered'
+            current_competitor_page['cell'][f'competitor_{table_position}_quality'] = {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 193,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '-' if competitor[0]['mdk_note'] == '-' else '{:,}%'.format(float(competitor[0]['mdk_note'])),
+                'align': 'center',
             }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'M{current_row}'] = {
-              'text': competitor[0]['number_apts'],
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'N{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'O{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'P{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'Q{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'R{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'S{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered_percentage'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'T{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered_percentage'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'U{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered_number_double'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'V{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered_number'
-            }
-
-            if not competitor[0]['year_of_construction'] == '-':
-              list_years_of_construction_al.append(int(competitor[0]['year_of_construction']))
-            if competitor[0]['type'] == 'gemeinnützig':
-              none_profit_operator_al += 1
-            elif competitor[0]['type'] == 'kommunal':
-              public_operator_al += 1
-            elif competitor[0]['type'] == 'privat':
-              private_operator_al += 1
-            
-          else:
-            if not prev_competitor_distance == competitor[1]:
-              prev_competitor_distance = competitor[1]
-              prev_competitor_index += 1
-              
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'C{current_row}'] = {
-              'text': index + 1 - home_counter,
-              'format': 'row_number_al'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['raw_name'],
-              'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['raw_betreiber'] == '-' else competitor[0]['raw_betreiber'],
-              'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
-              'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
-              # 'string': "↗"
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'I{current_row}'] = {
-              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'J{current_row}'] = {
-              'text': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'K{current_row}'] = {
-              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'L{current_row}'] = {
-              'text': '-' if competitor[0]['year_of_construction'] == '-' else competitor[0]['year_of_construction'],
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'M{current_row}'] = {
-              'text': competitor[0]['number_apts'],
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'N{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'O{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'P{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'Q{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'R{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'S{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'T{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'U{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages']['COMPETITOR ANALYSIS 1']['cell_content']['cells'][f'V{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-
-            if not competitor[0]['year_of_construction'] == '-':
-              list_years_of_construction_al.append(int(competitor[0]['year_of_construction']))
-            if competitor[0]['type'] == 'gemeinnützig':
-              none_profit_operator_al += 1
-            elif competitor[0]['type'] == 'kommunal':
-              public_operator_al += 1
-            elif competitor[0]['type'] == 'privat':
-              private_operator_al += 1
-  
-          current_row += 1
-      
-      else:
-        # Nursing Home Pages
-        current_row = 11
-        home_counter = 0
-        total_beds = 0
-        total_single_rooms = 0
-        total_double_rooms = 0
-        total_rooms = 0
-        list_single_room_quota = []
-        list_occupancy_rate = []
-        list_invest_cost = []
-        list_mdk_grade = []
-        prev_competitor_distance = 0
-        prev_competitor_index = 0
-        page = 1
-        sheet_name = f"COMPETITOR ANALYSIS {page}"
-        market_study_pages.append(sheet_name)
-        market_study_data['pages'][sheet_name] = {
-          'settings': {
-            'area': "A1:X28",
-            'column_width': [
-                2.09, 2.09, 2.64, 0.17, 25.36, 0.00, 24.45, 3.27, 3.27, 6.45, 8.18, 4.73, 3.27, 3.55, 5.82,
-                5.82, 5.82, 5.82, 5.18, 6.00, 5.27, 4.91, 0.00, 3.91
-            ],
-            'row_height': [
-                16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 95.50, 3.50, 19.00, 17.00, 17.00,
-                17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 16.50,
-                14.00, 8.00
-            ],
-            'columns_to_fill': [
-                'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-                'V', 'W', 'X'
-            ],
-            'landscape': True,
-            'rows_to_fill': [8, 10, 25],
-            'fill_format': {
-                'base': {
-                    '8': "underline",
-                    '10': "underline",
-                    '25': "underline"
+    
+        current_page_height += 12
+    
+        if index == len(data_comp_analysis_nh['data']) - 1:
+            median_dictionary = anvil.server.call(
+                "get_multiple_median",
+                {
+                    'single_room_quota': list_single_room_quota,
+                    'occupancy_rate': list_occupancy_rate,
+                    'invest_cost': list_invest_cost,
+                    'mdk_grade': list_mdk_grade
                 }
+            )
+            if len(list_single_room_quota) > 0:
+                total_single_room_quota = median_dictionary['single_room_quota']
+            else:
+                total_single_room_quota = 0
+            if len(list_occupancy_rate) > 0:
+                total_occupancy_rate = median_dictionary['occupancy_rate']
+            else:
+                total_occupancy_rate = 0
+            if len(list_invest_cost) > 0:
+                minimum_invest_cost = min(list_invest_cost)
+            else:
+                minimum_invest_cost = 0
+            if len(list_invest_cost) > 0:
+                maximum_invest_cost = max(list_invest_cost)
+            else:
+                maximum_invest_cost = 0
+            if len(list_invest_cost) > 0:
+                total_invest_cost = median_dictionary['invest_cost']
+            else:
+                total_invest_cost = 0
+            if len(list_mdk_grade) > 0:
+                total_mdk_grade = median_dictionary['mdk_grade']
+            else:
+                total_mdk_grade = 0
+    
+            current_competitor_page['cell'][f'competitor_sum_beds'] = {
+                'color': [0, 0, 0],
+                'font': 'seguisb',
+                'size': 8,
+                'x': 119,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': 'Σ {:,}'.format(total_beds),
+                'align': 'center',
             }
-          },
-          'cell_content': {
-              'textboxes': {
-                  'A1': {
-                      'text': "Capital Bay Group   |",
-                      'settings': {
-                          'font': {
-                              'name': "Segoe UI",
-                              'size': 9
-                          },
-                          'line': {
-                              'none': True
-                          },
-                          'fill': {
-                              'none': True
-                          }
-                      }
-                  },
-                  'E1_A': {
-                      'text': "Market Study",
-                      'settings': {
-                          'font': {
-                              'name': "Segoe UI",
-                              'size': 9,
-                              'bold': True
-                          },
-                          'line': {
-                              'none': True
-                          },
-                          'fill': {
-                              'none': True
-                          },
-                          'x_offset': 46
-                      }
-                  },
-                  'E1_B': {
-                      'text': "CARE",
-                      'settings': {
-                          'font': {
-                              'name': "Segoe UI",
-                              'size': 9,
-                              'bold': True,
-                              'color': "#C8B058"
-                          },
-                          'line': {
-                              'none': True
-                          },
-                          'fill': {
-                              'none': True
-                          },
-                          'x_offset': 128
-                      }
-                  },
-                  'V1': {
-                      'text': "4 | 7",
-                      'settings': {
-                          'font': {
-                              'name': "Segoe UI",
-                              'size': 9,
-                              'bold': True
-                          },
-                          'line': {
-                              'none': True
-                          },
-                          'fill': {
-                              'none': True
-                          },
-                          'align': {
-                              'text': 'right'
-                          },
-                          'width': 65
-                      }
-                  }
-              },
-              'merge_cells': {
-                  'C3:X4': {
-                      'text': "Bad Rappenau",
-                      'format': "place_heading_format"
-                  },
-                  'C5:X6': {
-                      'text': "Competitor Analysis",
-                      'format': "situation_heading_format"
-                  }
-              },
-              'cells': {}
-          }
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C9:E9'] = {
-          'text': "Nursing Homes",
-          'format': 'nh_heading'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C26:M26'] = {
-          'text': '¹The Facility does / does not comply with the respective federal state regulation. For more info see page "Good to Know"',
-          'format': 'foot_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['G9'] = {
-          'text': "Operator name",
-          'format': "operator_heading"
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['H9'] = {
-          'text': "Web",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['I9'] = {
-          'text': "Top 30 Operator",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['J9'] = {
-          'text': "Operator type",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['K9'] = {
-          'text': "Asset status",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['L9'] = {
-          'text': "Year of construction",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['M9'] = {
-          'text': "Apartments (AL)",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['N9'] = {
-          'text': "Legally compliant¹",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['O9'] = {
-          'text': "Care beds",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['P9'] = {
-          'text': "Single rooms",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['Q9'] = {
-          'text': "Double rooms",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['R9'] = {
-          'text': "Rooms",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['S9'] = {
-          'text': "Single room quota",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['T9'] = {
-          'text': "Occupancy rates",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['U9'] = {
-          'text': "Invest cost (p. day in €)",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['V9'] = {
-          'text': "MDK grade (2019)",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
-
-        for index, competitor in enumerate(data_comp_analysis_nh['data']):
-          if index % 15 == 0 and not index == 0:
-            competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
-            page += 1
-            current_row = 11
-            sheet_name = f"COMPETITOR ANALYSIS {page}"
-            market_study_pages.append(sheet_name)
-            market_study_data['pages'][sheet_name] = {
-              'settings': {
-                'area': "A1:X28",
-                'column_width': [
-                    2.09, 2.09, 2.64, 0.17, 25.36, 0.00, 24.45, 3.27, 3.27, 6.45, 8.18, 4.73, 3.27, 3.55, 5.82,
-                    5.82, 5.82, 5.82, 5.18, 6.00, 5.27, 4.91, 0.00, 3.91
-                ],
-                'row_height': [
-                    16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 95.50, 3.50, 19.00, 17.00, 17.00,
-                    17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 16.50,
-                    14.00, 8.00
-                ],
-                'columns_to_fill': [
-                    'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-                    'V', 'W', 'X'
-                ],
-                'landscape': True,
-                'rows_to_fill': [8, 10, 25],
-                'fill_format': {
-                    'base': {
-                        '8': "underline",
-                        '10': "underline",
-                        '25': "underline"
+            current_competitor_page['cell'][f'competitor_sum_single_rooms'] = {
+                'color': [0, 0, 0],
+                'font': 'seguisb',
+                'size': 8,
+                'x': 129,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': 'Σ {:,}'.format(total_single_rooms),
+                'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_sum_double_rooms'] = {
+                'color': [0, 0, 0],
+                'font': 'seguisb',
+                'size': 8,
+                'x': 141,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': 'Σ {:,}'.format(total_double_rooms),
+                'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_sum_rooms'] = {
+                'color': [0, 0, 0],
+                'font': 'seguisb',
+                'size': 8,
+                'x': 153,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': 'Σ {:,}'.format(total_rooms),
+                'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_median_single_room_quota'] = {
+                'color': [0, 0, 0],
+                'font': 'seguisb',
+                'size': 8,
+                'x': 163,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': 'x̃ {:,}%'.format(total_single_room_quota),
+                'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_median_occupancy'] = {
+                'color': [0, 0, 0],
+                'font': 'seguisb',
+                'size': 8,
+                'x': 173,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': 'x̃ {:,}%'.format(total_occupancy_rate),
+                'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_median_invest'] = {
+                'color': [0, 0, 0],
+                'font': 'seguisb',
+                'size': 8,
+                'x': 183,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': 'x̃ {:,}'.format(total_invest_cost),
+                'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_median_quality'] = {
+                'color': [0, 0, 0],
+                'font': 'seguisb',
+                'size': 8,
+                'x': 193,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '{:,}'.format(total_mdk_grade),
+                'align': 'center',
+            }
+    
+            competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
+    
+    # Assisted Living Pages
+    home_counter = 0
+    prev_competitor_distance = 0
+    prev_competitor_index = 0
+    current_page_height = 177
+    assisted_living_competitor_skeleton = {
+        'page_number': 4,
+        'line': {
+            'top_line': {
+                'x1': 17,
+                'y1': 176,
+                'x2': 203,
+                'y2': 176
+            },
+            'bottom_line': {
+                'x1': 10,
+                'y1': 285,
+                'x2': 203,
+                'y2': 285
+            }
+        },
+        'text': {
+            'heading_city': {
+                'color': [218, 218, 218],
+                'font': 'segoeui',
+                'size': 27,
+                'x': 10,
+                'y': 30,
+                'txt': city
+            },
+            'page_name': {
+                'color': [0, 0, 0],
+                'font': 'segoeui',
+                'size': 27,
+                'x': 10,
+                'y': 40,
+                'txt': 'Competitor Analysis'
+            },
+            'facility_type': {
+                'color': [249, 147, 152],
+                'font': 'seguisb',
+                'size': 9,
+                'x': 19,
+                'y': 173,
+                'txt': 'Assisted Living'
+            }
+        },
+        'image': {
+            'location_map': {
+                'x': 10,
+                'y': 45,
+                'w': 150,
+                'path': "tmp/marker_map.png"
+            },
+            'table_header': {
+                'x': 70,
+                'y': 142,
+                'w': 130,
+                'path': "img/al_header.png"
+            }
+        },
+        'cell': {}
+    }
+    
+    for index, competitor in enumerate(data_comp_analysis_al['data']):
+        if index % 9 == 0:
+            if index > 0:
+                competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
+                page += 1
+                current_competitor_analysis_page += 1
+            current_competitor_page = copy.deepcopy(assisted_living_competitor_skeleton)
+            current_competitor_page['page_number'] = current_competitor_analysis_page
+    
+        if 'home' in competitor:
+            home_counter += 1
+            current_competitor_page['cell'][f'home_{home_counter}_icon'] = {
+                'color': [204, 182, 102],
+                'fill_color': [27, 41, 57],
+                'font': 'calibri',
+                'size': 14,
+                'x': 10,
+                'y': current_page_height,
+                'w': 6,
+                'h': 6,
+                'txt': '⌂',
+                'align': 'center',
+                'fill': True
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_name'] = {
+                'color': [0, 176, 240] if not "keine " in competitor[0]['web'] else [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 17,
+                'y': current_page_height,
+                'w': 50,
+                'h': 6,
+                'txt': competitor[0]['raw_name'],
+                'align': 'left',
+                'fill': True,
+                'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_operator'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 17,
+                'y': current_page_height + 6,
+                'w': 50,
+                'h': 6,
+                'txt': competitor[0]['raw_betreiber'],
+                'align': 'left',
+                'fill': True
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_top_30_operator'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 67,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_operator_type'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 77,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_status'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 89,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_year_of_construction'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 101,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': competitor[0]['year_of_construction'],
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_apartments'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 111,
+                'y': current_page_height,
+                'w': 8,
+                'h': 6,
+                'txt': '{:,}'.format(competitor[0]['number_apts']),
+                'align': 'center',
+                'fill': True,
+            }
+    
+            if not competitor[0]['year_of_construction'] == '-':
+                list_years_of_construction_al.append(int(competitor[0]['year_of_construction']))
+            if competitor[0]['type'] == 'gemeinnützig':
+                none_profit_operator_al += 1
+            elif competitor[0]['type'] == 'kommunal':
+                public_operator_al += 1
+            elif competitor[0]['type'] == 'privat':
+                private_operator_al += 1
+    
+        else:
+            table_position = (index % 9) + 1
+            if not prev_competitor_distance == competitor[1]:
+                prev_competitor_distance = competitor[1]
+                prev_competitor_index += 1
+    
+            current_competitor_page['cell'][f'competitor_{table_position}_icon'] = {
+                'color': [255, 255, 255],
+                'fill_color': [249, 147, 152],
+                'font': 'segoeui',
+                'size': 11,
+                'x': 10,
+                'y': current_page_height,
+                'w': 6,
+                'h': 6,
+                'txt': prev_competitor_index,
+                'align': 'center',
+                'fill': True
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_name'] = {
+                'color': [0, 176, 240] if not "keine " in competitor[0]['web'] else [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 17,
+                'y': current_page_height,
+                'w': 50,
+                'h': 6,
+                'txt': competitor[0]['raw_name'],
+                'align': 'left',
+                'fill': True,
+                'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_operator'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 17,
+                'y': current_page_height + 6,
+                'w': 50,
+                'h': 6,
+                'txt': competitor[0]['raw_betreiber'],
+                'align': 'left',
+                'fill': True
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_top_30_operator'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 67,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_operator_type'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 77,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_status'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 89,
+                'y': current_page_height,
+                'w': 12,
+                'h': 6,
+                'txt': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_year_of_construction'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 101,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': competitor[0]['year_of_construction'],
+                'align': 'center',
+                'fill': True,
+            }
+            print(competitor[0]['number_apts'])
+            current_competitor_page['cell'][f'competitor_{table_position}_apartments'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 111,
+                'y': current_page_height,
+                'w': 8,
+                'h': 6,
+                'txt': '{:,}'.format(int(competitor[0]['number_apts'])) if not competitor[0]['number_apts'] == '-' else competitor[0]['number_apts'],
+                'align': 'center',
+                'fill': True,
+            }
+    
+            if not competitor[0]['year_of_construction'] == '-':
+                list_years_of_construction_al.append(int(competitor[0]['year_of_construction']))
+            if competitor[0]['type'] == 'gemeinnützig':
+                none_profit_operator_al += 1
+            elif competitor[0]['type'] == 'kommunal':
+                public_operator_al += 1
+            elif competitor[0]['type'] == 'privat':
+                private_operator_al += 1
+    
+        current_page_height += 12
+    
+        if index == len(data_comp_analysis_al['data']) - 1:
+            competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
+    
+    market_study_data = {
+        'number_of_pages': 0,
+        'settings': {
+            'fonts': ['segoeui', 'seguisb', 'segoeuisl', 'calibri']
+        },
+        'pages': {
+            'cover': {
+                    'rect': {
+                        'blue_rect': {
+                            'color': [32, 49, 68],
+                            'x': 120,
+                            'y': 0,
+                            'w': 90,
+                            'h': 297,
+                            'style': 'F'
+                        }
+                    },
+                    'text': {
+                        'ms_heading': {
+                            'color': [0, 0, 0],
+                            'font': 'seguisb',
+                            'size': 27,
+                            'x': 10,
+                            'y': 130,
+                            'txt': 'Market Study'
+                        },
+                        'ms_care': {
+                            'color': [200, 176, 88],
+                            'font': 'seguisb',
+                            'size': 80,
+                            'x': 10,
+                            'y': 155,
+                            'txt': 'Care'
+                        },
+                        'street_heading': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 180,
+                            'txt': 'Street, no.'
+                        },
+                        'zip_heading': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 186,
+                            'txt': 'Zip code'
+                        },
+                        'city_heading': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 192,
+                            'txt': 'City'
+                        },
+                        'district_heading': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 198,
+                            'txt': 'District'
+                        },
+                        'federal_state_heading': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 204,
+                            'txt': 'Federal State'
+                        },
+                        'country_heading': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 210,
+                            'txt': 'Heading'
+                        },
+                        'street_value': {
+                            'color': [0, 0, 0],
+                            'font': 'seguisb',
+                            'size': 12,
+                            'x': 55,
+                            'y': 180,
+                            'txt': street
+                        },
+                        'zip_value': {
+                            'color': [0, 0, 0],
+                            'font': 'seguisb',
+                            'size': 12,
+                            'x': 55,
+                            'y': 186,
+                            'txt': zipcode
+                        },
+                        'city_value': {
+                            'color': [0, 0, 0],
+                            'font': 'seguisb',
+                            'size': 12,
+                            'x': 55,
+                            'y': 192,
+                            'txt': city
+                        },
+                        'district_value': {
+                            'color': [0, 0, 0],
+                            'font': 'seguisb',
+                            'size': 12,
+                            'x': 55,
+                            'y': 198,
+                            'txt': district
+                        },
+                        'federal_state_value': {
+                            'color': [0, 0, 0],
+                            'font': 'seguisb',
+                            'size': 12,
+                            'x': 55,
+                            'y': 204,
+                            'txt': federal_state
+                        },
+                        'country_value': {
+                            'color': [0, 0, 0],
+                            'font': 'seguisb',
+                            'size': 12,
+                            'x': 55,
+                            'y': 210,
+                            'txt': 'Germanyg'
+                        },
+                        'radius_of_analysis': {
+                            'color': [200, 176, 88],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 216,
+                            'txt': 'Radius of analysis'
+                        },
+                        'radius_of_analysis_value': {
+                            'color': [200, 176, 88],
+                            'font': 'seguisb',
+                            'size': 12,
+                            'x': 55,
+                            'y': 216,
+                            'txt': f'{iso_time} minutes of {iso_movement}'
+                        },
+                        'ms_text_1': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 240,
+                            'txt': 'The'
+                        },
+                        'ms_text_2': {
+                            'color': [0, 0, 0],
+                            'font': 'seguisb',
+                            'size': 12,
+                            'x': 18,
+                            'y': 240,
+                            'txt': 'Market Study'
+                        },
+                        'ms_text_3': {
+                            'color': [200, 176, 88],
+                            'font': 'seguisb',
+                            'size': 12,
+                            'x': 45,
+                            'y': 240,
+                            'txt': 'Care'
+                        },
+                        'ms_text_4': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 55,
+                            'y': 240,
+                            'txt': 'is a web based service'
+                        },
+                        'ms_text_5': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 246,
+                            'txt': 'by Capital Bay, which provides investors with access'
+                        },
+                        'ms_text_6': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 252,
+                            'txt': 'to data on the current German care market including'
+                        },
+                        'ms_text_7': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 258,
+                            'txt': 'demographical forecasts and competitor analysis.'
+                        },
+                        'ms_text_8': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 264,
+                            'txt': 'This allows for targeted examination of the market,'
+                        },
+                        'ms_text_9': {
+                            'color': [0, 0, 0],
+                            'font': 'segoeui',
+                            'size': 12,
+                            'x': 10,
+                            'y': 270,
+                            'txt': 'using protractile radii.'
+                        },
+                        'version': {
+                            'color': [166, 166, 166],
+                            'font': 'segoeui',
+                            'size': 9,
+                            'x': 10,
+                            'y': 290,
+                            'txt': f'Version 2.1.0 - Generated on {created_date}'
+                        }
+                    },
+                    'image': {
+                        'logo': {
+                            'x': 147,
+                            'y': 12,
+                            'w': 36,
+                            'path': "img/LogoTrans.png"
+                        },
+                        'map': {
+                            'x': 135,
+                            'y': 30,
+                            'w': 60,
+                            'path': f"tmp/summary_map_{Variables.unique_code}.png"
+                        },
+                        'population': {
+                            'x': 161,
+                            'y': 195,
+                            'w': 8,
+                            'path': "img/pop_trend.png"
+                        },
+                        'beds': {
+                            'x': 158,
+                            'y': 245,
+                            'w': 14,
+                            'path': "img/beds.png"
+                        }
+                    },
+                    'cell': {
+                        'keyfacts': {
+                            'color': [200, 176, 88],
+                            'font': 'seguisb',
+                            'size': 14,
+                            'x': 120,
+                            'y': 150,
+                            'w': 90,
+                            'txt': 'LOCATION KEYFACTS',
+                            'align': 'center'
+                        },
+                        'purchasing_power_value': {
+                            'color': [255, 255, 255],
+                            'font': 'segoeuisl',
+                            'size': 36,
+                            'x': 120,
+                            'y': 180,
+                            'w': 90,
+                            'txt': '{:,}%'.format(purchase_power),
+                            'align': 'center'
+                        },
+                        'population_value': {
+                            'color': [255, 255, 255],
+                            'font': 'segoeuisl',
+                            'size': 36,
+                            'x': 120,
+                            'y': 230,
+                            'w': 90,
+                            'txt': '{:,}%'.format(float(population_trend)) if float(population_trend) < 0 else '+{:,}%'.format(float(population_trend)),
+                            'align': 'center'
+                        },
+                        'beds_value': {
+                            'color': [255, 255, 255],
+                            'font': 'segoeuisl',
+                            'size': 36,
+                            'x': 120,
+                            'y': 280,
+                            'w': 90,
+                            'txt': '{:,}%'.format(beds_surplus_35_v2),
+                            'align': 'center'
+                        }
+                    },
+                    'multi_cell': {
+                        'purchasing_power_heading': {
+                            'color': [255, 255, 255],
+                            'font': 'segoeui',
+                            'size': 9,
+                            'x': 120,
+                            'y': 160,
+                            'w': 90,
+                            'h': 4,
+                            'txt': 'Purchasing Power\nat the location - As of 2022',
+                            'align': 'center'
+                        },
+                        'population_trend_heading': {
+                            'color': [255, 255, 255],
+                            'font': 'segoeui',
+                            'size': 9,
+                            'x': 120,
+                            'y': 210,
+                            'w': 90,
+                            'h': 4,
+                            'txt': 'Population trend of the 65+ age group\nat the location - 2035',
+                            'align': 'center'
+                        },
+                        'beds_heading': {
+                            'color': [255, 255, 255],
+                            'font': 'segoeui',
+                            'size': 9,
+                            'x': 120,
+                            'y': 260,
+                            'w': 90,
+                            'h': 4,
+                            'txt': 'Surplus or deficit of beds\nat the location - 2035',
+                            'align': 'center'
+                        },
+                    }
+                },
+            'summary': {
+                'page_number': 2,
+                'rect': {
+                    'blue_rect_1': {
+                        'color': [32, 49, 68],
+                        'x': 76,
+                        'y': 50.3,
+                        'w': 24,
+                        'h': 9.7,
+                        'style': 'F'
+                    },
+                    'blue_rect_2': {
+                        'color': [32, 49, 68],
+                        'x': 76,
+                        'y': 60.3,
+                        'w': 24,
+                        'h': 44.7,
+                        'style': 'F'
+                    },
+                    'blue_rect_3': {
+                        'color': [32, 49, 68],
+                        'x': 76,
+                        'y': 105.3,
+                        'w': 24,
+                        'h': 9.7,
+                        'style': 'F'
+                    },
+                    'blue_rect_4': {
+                        'color': [32, 49, 68],
+                        'x': 76,
+                        'y': 115.3,
+                        'w': 24,
+                        'h': 52.7,
+                        'style': 'F'
+                    },
+                    'blue_rect_5': {
+                        'color': [32, 49, 68],
+                        'x': 76,
+                        'y': 168.3,
+                        'w': 24,
+                        'h': 9.7,
+                        'style': 'F'
+                    },
+                    'blue_rect_6': {
+                        'color': [32, 49, 68],
+                        'x': 76,
+                        'y': 178.3,
+                        'w': 24,
+                        'h': 74.7,
+                        'style': 'F'
+                    },
+                    'gray_rect_1': {
+                        'color': [223, 223, 223],
+                        'x': 101,
+                        'y': 50.3,
+                        'w': 49,
+                        'h': 9.7,
+                        'style': 'F'
+                    },
+                    'gray_rect_2': {
+                        'color': [223, 223, 223],
+                        'x': 101,
+                        'y': 60.3,
+                        'w': 49,
+                        'h': 44.7,
+                        'style': 'F'
+                    },
+                    'gray_rect_3': {
+                        'color': [223, 223, 223],
+                        'x': 101,
+                        'y': 105.3,
+                        'w': 49,
+                        'h': 9.7,
+                        'style': 'F'
+                    },
+                    'gray_rect_4': {
+                        'color': [223, 223, 223],
+                        'x': 101,
+                        'y': 115.3,
+                        'w': 49,
+                        'h': 52.7,
+                        'style': 'F'
+                    },
+                    'gray_rect_5': {
+                        'color': [223, 223, 223],
+                        'x': 101,
+                        'y': 168.3,
+                        'w': 49,
+                        'h': 9.7,
+                        'style': 'F'
+                    },
+                    'gray_rect_6': {
+                        'color': [223, 223, 223],
+                        'x': 101,
+                        'y': 178.3,
+                        'w': 49,
+                        'h': 74.7,
+                        'style': 'F'
+                    },
+                    'lightgray_rect_1': {
+                        'color': [242, 242, 242],
+                        'x': 151,
+                        'y': 50.3,
+                        'w': 49,
+                        'h': 9.7,
+                        'style': 'F'
+                    },
+                    'lightgray_rect_2': {
+                        'color': [242, 242, 242],
+                        'x': 151,
+                        'y': 60.3,
+                        'w': 49,
+                        'h': 44.7,
+                        'style': 'F'
+                    },
+                    'lightgray_rect_3': {
+                        'color': [242, 242, 242],
+                        'x': 151,
+                        'y': 105.3,
+                        'w': 49,
+                        'h': 9.7,
+                        'style': 'F'
+                    },
+                    'lightgray_rect_4': {
+                        'color': [242, 242, 242],
+                        'x': 151,
+                        'y': 115.3,
+                        'w': 49,
+                        'h': 52.7,
+                        'style': 'F'
+                    },
+                    'lightgray_rect_5': {
+                        'color': [242, 242, 242],
+                        'x': 151,
+                        'y': 168.3,
+                        'w': 49,
+                        'h': 9.7,
+                        'style': 'F'
+                    },
+                    'lightgray_rect_6': {
+                        'color': [242, 242, 242],
+                        'x': 151,
+                        'y': 178.3,
+                        'w': 49,
+                        'h': 74.7,
+                        'style': 'F'
+                    },
+                    'demographic_top_line_1': {
+                        'color': [0, 0, 0],
+                        'x': 10,
+                        'y': 50,
+                        'w': 65,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'demographic_bottom_line_1': {
+                        'color': [0, 0, 0],
+                        'x': 10,
+                        'y': 60,
+                        'w': 65,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'demographic_top_line_2': {
+                        'color': [0, 0, 0],
+                        'x': 101,
+                        'y': 50,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'demographic_bottom_line_2': {
+                        'color': [0, 0, 0],
+                        'x': 101,
+                        'y': 60,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'demographic_top_line_3': {
+                        'color': [0, 0, 0],
+                        'x': 151,
+                        'y': 50,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'demographic_bottom_line_3': {
+                        'color': [0, 0, 0],
+                        'x': 151,
+                        'y': 60,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'inpatient_care_top_line_1': {
+                        'color': [0, 0, 0],
+                        'x': 10,
+                        'y': 105,
+                        'w': 65,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'inpatient_care_bottom_line_1': {
+                        'color': [0, 0, 0],
+                        'x': 10,
+                        'y': 115,
+                        'w': 65,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'inpatient_care_top_line_2': {
+                        'color': [0, 0, 0],
+                        'x': 101,
+                        'y': 105,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'inpatient_care_bottom_line_2': {
+                        'color': [0, 0, 0],
+                        'x': 101,
+                        'y': 115,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'inpatient_care_top_line_3': {
+                        'color': [0, 0, 0],
+                        'x': 151,
+                        'y': 105,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'inpatient_care_bottom_line_3': {
+                        'color': [0, 0, 0],
+                        'x': 151,
+                        'y': 115,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'demand_supply_top_line_1': {
+                        'color': [0, 0, 0],
+                        'x': 10,
+                        'y': 168,
+                        'w': 65,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'demand_supply_bottom_line_1': {
+                        'color': [0, 0, 0],
+                        'x': 10,
+                        'y': 178,
+                        'w': 65,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'demand_supply_top_line_2': {
+                        'color': [0, 0, 0],
+                        'x': 101,
+                        'y': 168,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'demand_supply_bottom_line_2': {
+                        'color': [0, 0, 0],
+                        'x': 101,
+                        'y': 178,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'demand_supply_top_line_3': {
+                        'color': [0, 0, 0],
+                        'x': 151,
+                        'y': 168,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'demand_supply_bottom_line_3': {
+                        'color': [0, 0, 0],
+                        'x': 151,
+                        'y': 178,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'final_line_1': {
+                        'color': [0, 0, 0],
+                        'x': 10,
+                        'y': 253,
+                        'w': 65,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'final_line_2': {
+                        'color': [0, 0, 0],
+                        'x': 101,
+                        'y': 253,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    },
+                    'final_line_3': {
+                        'color': [0, 0, 0],
+                        'x': 151,
+                        'y': 253,
+                        'w': 49,
+                        'h': .3,
+                        'style': 'F'
+                    }
+                },
+                'text': {
+                    'heading_city': {
+                        'color': [218, 218, 218],
+                        'font': 'segoeui',
+                        'size': 27,
+                        'x': 10,
+                        'y': 30,
+                        'txt': city
+                    },
+                    'page_name': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 27,
+                        'x': 10,
+                        'y': 40,
+                        'txt': 'Current Situation'
+                    }
+                },
+                'cell': {
+                    'demographic_trend_analysis': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 12,
+                        'y': 55,
+                        'w': 20,
+                        'txt': 'Demographic trend analysis',
+                        'align': 'left'
+                    },
+                    'population_city_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 65,
+                        'w': 20,
+                        'txt': f'Population {city} (City)',
+                        'align': 'left'
+                    },
+                    'population_county_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 71,
+                        'w': 20,
+                        'txt': f'Population {countie[0]} (County)',
+                        'align': 'left'
+                    },
+                    'population_county_in_percent_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 12,
+                        'y': 77,
+                        'w': 20,
+                        'txt': 'in %',
+                        'align': 'left'
+                    },
+                    'population_aged_65_79_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 15,
+                        'y': 83,
+                        'w': 20,
+                        'txt': 'of which population aged 65-79 years',
+                        'align': 'left'
+                    },
+                    'population_aged_65_79_in_percent_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 15,
+                        'y': 89,
+                        'w': 20,
+                        'txt': 'in %',
+                        'align': 'left'
+                    },
+                    'population_aged_80_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 15,
+                        'y': 95,
+                        'w': 20,
+                        'txt': 'of which population aged 80+',
+                        'align': 'left'
+                    },
+                    'population_aged_80_in_percent_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 15,
+                        'y': 101,
+                        'w': 20,
+                        'txt': 'in %',
+                        'align': 'left'
+                    },
+                    'full_inpatient_care': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 12,
+                        'y': 110,
+                        'w': 20,
+                        'txt': 'Full inpatient care',
+                        'align': 'left'
+                    },
+                    'care_rate_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 133,
+                        'w': 20,
+                        'txt': 'Care rate of population',
+                        'align': 'left'
+                    },
+                    'nursing_home_rate_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 139,
+                        'w': 20,
+                        'txt': 'There of nursing home rate',
+                        'align': 'left'
+                    },
+                    'full_inpatient_care_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 145,
+                        'w': 20,
+                        'txt': 'Patients receiving full inpatient care',
+                        'align': 'left'
+                    },
+                    'occupancy_rate_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 151,
+                        'w': 20,
+                        'txt': 'Occupancy rate',
+                        'align': 'left'
+                    },
+                    'number_of_beds_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 157,
+                        'w': 20,
+                        'txt': 'Number of beds',
+                        'align': 'left'
+                    },
+                    'number_of_free_beds_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 163,
+                        'w': 20,
+                        'txt': 'Number of free beds',
+                        'align': 'left'
+                    },
+                    'demand_supply': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 12,
+                        'y': 173,
+                        'w': 20,
+                        'txt': 'Demand & Supply',
+                        'align': 'left'
+                    },
+                    'demand_supply_viewing_radius': {
+                        'color': [200, 176, 88],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 183,
+                        'w': 20,
+                        'txt': f'Viewing radius: {iso_time} minutes of {iso_movement}',
+                        'align': 'left'
+                    },
+                    'nursing_homes_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 189,
+                        'w': 20,
+                        'txt': 'Nursing homes',
+                        'align': 'left'
+                    },
+                    'beds_supply_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 195,
+                        'w': 20,
+                        'txt': 'Beds in supply',
+                        'align': 'left'
+                    },
+                    'demand_occupancy_rate_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 201,
+                        'w': 20,
+                        'txt': 'Occupancy rate',
+                        'align': 'left'
+                    },
+                    'planned_nursing_homes_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 207,
+                        'w': 20,
+                        'txt': 'Nursing homes in planning',
+                        'align': 'left'
+                    },
+                    'constructing_nursing_homes_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 213,
+                        'w': 20,
+                        'txt': 'Nursing homes under construction',
+                        'align': 'left'
+                    },
+                    'beds_planning_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 219,
+                        'w': 20,
+                        'txt': 'Beds in planning',
+                        'align': 'left'
+                    },
+                    'beds_constructing_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 225,
+                        'w': 20,
+                        'txt': 'Beds under construction',
+                        'align': 'left'
+                    },
+                    'loss_of_beds_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 231,
+                        'w': 20,
+                        'txt': 'Beds lost while meeting federal state law',
+                        'align': 'left'
+                    },
+                    'adjusted_beds_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 237,
+                        'w': 20,
+                        'txt': 'Adjusted number of beds',
+                        'align': 'left'
+                    },
+                    'demand_inpatients_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 243,
+                        'w': 20,
+                        'txt': 'Demand of number of inpatients',
+                        'align': 'left'
+                    },
+                    'surplus_deficit_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 12,
+                        'y': 249,
+                        'w': 20,
+                        'txt': 'Surplus or deficit of beds',
+                        'align': 'left'
+                    },
+                    'scenario_1_text': {
+                        'color': [128, 128, 128],
+                        'font': 'segoeui',
+                        'size': 7,
+                        'x': 12,
+                        'y': 275,
+                        'w': 20,
+                        'txt': '¹In scenario 1 the relative situation (product of nursing home rate and care rate) as in 2020 is assumed to be constant for the entire forecasting period.',
+                        'align': 'left'
+                    },
+                    'scenario_2_text': {
+                        'color': [128, 128, 128],
+                        'font': 'segoeui',
+                        'size': 7,
+                        'x': 12,
+                        'y': 281,
+                        'w': 20,
+                        'txt': '²In scenario 2, it is assumed that the proportion of the nursing home rate will increase by 0.003 percent-points from 2020 to 2035.',
+                        'align': 'left'
+                    },
+                    '2020_heading': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 76,
+                        'y': 55,
+                        'w': 23,
+                        'txt': '2020',
+                        'align': 'right'
+                    },
+                    'population_county_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 71,
+                        'w': 23,
+                        'txt': '{:,}%'.format(countie_data['ex_dem_lk']['all_compl']),
+                        'align': 'right'
+                    },
+                    'population_county_in_percent_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 76,
+                        'y': 77,
+                        'w': 23,
+                        'txt': '100%',
+                        'align': 'right'
+                    },
+                    'population_aged_65_79_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 83,
+                        'w': 23,
+                        'txt': '{:,}%'.format(people_u80),
+                        'align': 'right'
+                    },
+                    'population_aged_65_79_in_percent_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 76,
+                        'y': 89,
+                        'w': 23,
+                        'txt': '{:,}%'.format(round(people_u80 / countie_data['ex_dem_lk']['all_compl'], 2)),
+                        'align': 'right'
+                    },
+                    'population_aged_80_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 95,
+                        'w': 23,
+                        'txt': '{:,}'.format(people_o80),
+                        'align': 'right'
+                    },
+                    'population_aged_80_in_percent_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 76,
+                        'y': 101,
+                        'w': 23,
+                        'txt': '{:,}%'.format(round(people_o80 / countie_data['ex_dem_lk']['all_compl'], 2)),
+                        'align': 'right'
+                    },
+                    'care_rate_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 133,
+                        'w': 23,
+                        'txt': '{:.2}%'.format(new_care_rate_raw),
+                        'align': 'right'
+                    },
+                    'nursing_home_rate_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 139,
+                        'w': 23,
+                        'txt': '{:.2}%'.format(nursing_home_rate),
+                        'align': 'right'
+                    },
+                    'full_inpatient_care_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 145,
+                        'w': 23,
+                        'txt': '{:,}'.format(inpatients_lk),
+                        'align': 'right'
+                    },
+                    'occupancy_rate_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 151,
+                        'w': 23,
+                        'txt': '{:,}'.format(occupancy_lk),
+                        'align': 'right'
+                    },
+                    'number_of_beds_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 157,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_lk),
+                        'align': 'right'
+                    },
+                    'number_of_free_beds_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 163,
+                        'w': 23,
+                        'txt': '{:,}'.format(free_beds_lk),
+                        'align': 'right'
+                    },
+                    'nursing_homes_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 189,
+                        'w': 23,
+                        'txt': '{:,}'.format(nursing_homes_active),
+                        'align': 'right'
+                    },
+                    'beds_supply_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 195,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_active),
+                        'align': 'right'
+                    },
+                    'demand_occupancy_rate_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 201,
+                        'w': 23,
+                        'txt': '{:,}%'.format(occupancy_lk),
+                        'align': 'right'
+                    },
+                    'planned_nursing_homes_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 207,
+                        'w': 23,
+                        'txt': '-' if nursing_homes_planned == 0 else '{:,}'.format(nursing_homes_planned),
+                        'align': 'right'
+                    },
+                    'constructing_nursing_homes_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 213,
+                        'w': 23,
+                        'txt': '-' if nursing_homes_construct == 0 else '{:,}'.format(nursing_homes_construct),
+                        'align': 'right'
+                    },
+                    'beds_planning_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 219,
+                        'w': 23,
+                        'txt': '-' if beds_planned == 0 else '{:,}'.format(beds_planned),
+                        'align': 'right'
+                    },
+                    'beds_constructing_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 225,
+                        'w': 23,
+                        'txt': '-' if beds_construct == 0 else '{:,}'.format(beds_construct),
+                        'align': 'right'
+                    },
+                    'adjusted_beds_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 237,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_active),
+                        'align': 'right'
+                    },
+                    'demand_inpatients_2020': {
+                        'color': [255, 255, 255],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 76,
+                        'y': 243,
+                        'w': 23,
+                        'txt': '{:,}'.format(inpatients),
+                        'align': 'right'
+                    },
+                    '2030_heading': {
+                        'color': [0, 0, 0],
+                        'fill_color': [223, 223, 223],
+                        'font': 'segoeui',
+                        'size': 12,
+                        'x': 101,
+                        'y': 50,
+                        'w': 48,
+                        'h': 10,
+                        'txt': '2030',
+                        'align': 'right'
+                    },
+                    'population_city_2030': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 65,
+                        'w': 48,
+                        'txt': '{:,}'.format(population_fc_30),
+                        'align': 'right'
+                    },
+                    'population_county_2030': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 71,
+                        'w': 48,
+                        'txt': '{:,}'.format(people_u80_fc),
+                        'align': 'right'
+                    },
+                    'population_county_in_percent_2030': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 77,
+                        'w': 48,
+                        'txt': '100%',
+                        'align': 'right'
+                    },
+                    'population_aged_65_79_2030': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 83,
+                        'w': 48,
+                        'txt': '{:,}'.format(people_u80_fc),
+                        'align': 'right'
+                    },
+                    'population_aged_65_79_in_percent_2030': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 89,
+                        'w': 48,
+                        'txt': '{:,}%'.format(round((people_u80_fc * 100) / population_fc_30, 2)),
+                        'align': 'right'
+                    },
+                    'population_aged_80_2030': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 95,
+                        'w': 48,
+                        'txt': '{:,}'.format(people_o80_fc),
+                        'align': 'right'
+                    },
+                    'population_aged_80_in_percent_2030': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 101,
+                        'w': 48,
+                        'txt': '{:,}%'.format(round((people_o80_fc * 100) / population_fc_30, 2)),
+                        'align': 'right'
+                    },
+                    'scenario_1_2030': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 101,
+                        'y': 120,
+                        'w': 23,
+                        'txt': 'Scenario 1',
+                        'align': 'right'
+                    },
+                    'care_rate_2030_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 133,
+                        'w': 23,
+                        'txt': '{:,}%'.format(care_rate_30_v1_raw),
+                        'align': 'right'
+                    },
+                    'nursing_home_rate_2030_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 139,
+                        'w': 23,
+                        'txt': '{:,}%'.format(nursing_home_rate),
+                        'align': 'right'
+                    },
+                    'full_inpatient_care_2030_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 145,
+                        'w': 23,
+                        'txt': '{:,}'.format(pat_rec_full_care_fc_30_v1),
+                        'align': 'right'
+                    },
+                    'occupancy_rate_2030_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 151,
+                        'w': 23,
+                        'txt': '95,0%',
+                        'align': 'right'
+                    },
+                    'number_of_beds_2030_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 157,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_30_v1),
+                        'align': 'right'
+                    },
+                    'number_of_free_beds_2030_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 163,
+                        'w': 23,
+                        'txt': '{:,}'.format(free_beds_30_v1),
+                        'align': 'right'
+                    },
+                    'beds_supply_2030_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 195,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_active + beds_planned + beds_construct),
+                        'align': 'right'
+                    },
+                    'demand_occupancy_rate_2030_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 201,
+                        'w': 23,
+                        'txt': '95,0%',
+                        'align': 'right'
+                    },
+                    'loss_of_beds_2030_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 231,
+                        'w': 23,
+                        'txt': '{:,}'.format(loss_of_beds),
+                        'align': 'right'
+                    },
+                    'adjusted_beds_2030_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 237,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_adjusted_30_v1),
+                        'align': 'right'
+                    },
+                    'demand_inpatients_2030_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 243,
+                        'w': 23,
+                        'txt': '{:,}'.format(inpatients_fc),
+                        'align': 'right'
+                    },
+                    'surplus_deficit_2030_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 101,
+                        'y': 249,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_surplus),
+                        'align': 'right'
+                    },
+                    'scenario_2_2030': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 125,
+                        'y': 120,
+                        'w': 23,
+                        'txt': 'Scenario 2',
+                        'align': 'right'
+                    },
+                    'care_rate_2030_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 125,
+                        'y': 133,
+                        'w': 23,
+                        'txt': '{:,}%'.format(care_rate_30_v2_raw),
+                        'align': 'right'
+                    },
+                    'nursing_home_rate_2030_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 125,
+                        'y': 139,
+                        'w': 23,
+                        'txt': '{:,}%'.format(nursing_home_rate),
+                        'align': 'right'
+                    },
+                    'full_inpatient_care_2030_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 125,
+                        'y': 145,
+                        'w': 23,
+                        'txt': '{:,}'.format(pat_rec_full_care_fc_30_v2),
+                        'align': 'right'
+                    },
+                    'occupancy_rate_2030_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 125,
+                        'y': 151,
+                        'w': 23,
+                        'txt': '95,0%',
+                        'align': 'right'
+                    },
+                    'number_of_beds_2030_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 125,
+                        'y': 157,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_30_v2),
+                        'align': 'right'
+                    },
+                    'number_of_free_beds_2030_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 125,
+                        'y': 163,
+                        'w': 23,
+                        'txt': '{:,}'.format(free_beds_30_v2),
+                        'align': 'right'
+                    },
+                    'beds_supply_2030_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 125,
+                        'y': 195,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_active + beds_planned + beds_construct),
+                        'align': 'right'
+                    },
+                    'demand_occupancy_rate_2030_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 125,
+                        'y': 201,
+                        'w': 23,
+                        'txt': '95,0%',
+                        'align': 'right'
+                    },
+                    'loss_of_beds_2030_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 125,
+                        'y': 231,
+                        'w': 23,
+                        'txt': '{:,}'.format(loss_of_beds),
+                        'align': 'right'
+                    },
+                    'adjusted_beds_2030_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 125,
+                        'y': 237,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_adjusted_30_v2),
+                        'align': 'right'
+                    },
+                    'demand_inpatients_2030_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 125,
+                        'y': 243,
+                        'w': 23,
+                        'txt': '{:,}'.format(inpatients_fc_v2),
+                        'align': 'right'
+                    },
+                    'surplus_deficit_2030_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 125,
+                        'y': 249,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_surplus_v2),
+                        'align': 'right'
+                    },
+                    '2035_heading': {
+                        'color': [0, 0, 0],
+                        'fill_color': [242, 242, 242],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 151,
+                        'y': 50,
+                        'w': 48,
+                        'h': 10,
+                        'txt': '2035',
+                        'align': 'right'
+                    },
+                    'population_county_2035': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 71,
+                        'w': 48,
+                        'txt': '{:,}'.format(population_fc_35),
+                        'align': 'right'
+                    },
+                    'population_county_in_percent_2035': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 77,
+                        'w': 48,
+                        'txt': '100%',
+                        'align': 'right'
+                    },
+                    'population_aged_65_79_2035': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 83,
+                        'w': 48,
+                        'txt': '{:,}'.format(people_u80_fc_35),
+                        'align': 'right'
+                    },
+                    'population_aged_65_79_in_percent_2035': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 89,
+                        'w': 48,
+                        'txt': '{:,}%'.format(round(people_u80_fc_35 / population_fc_35, 2)),
+                        'align': 'right'
+                    },
+                    'population_aged_80_2035': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 95,
+                        'w': 48,
+                        'txt': '{:,}'.format(people_o80_fc_35),
+                        'align': 'right'
+                    },
+                    'population_aged_80_in_percent_2035': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 101,
+                        'w': 48,
+                        'txt': '{:,}%'.format(round(people_o80_fc_35 / population_fc_35, 2)),
+                        'align': 'right'
+                    },
+                    'scenario_1_2035': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 151,
+                        'y': 120,
+                        'w': 23,
+                        'txt': 'Scenario 1',
+                        'align': 'right'
+                    },
+                    'care_rate_2035_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 133,
+                        'w': 23,
+                        'txt': '{:,}%'.format(care_rate_35_v1_raw),
+                        'align': 'right'
+                    },
+                    'nursing_home_rate_2035_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 139,
+                        'w': 23,
+                        'txt': '{:,}%'.format(nursing_home_rate),
+                        'align': 'right'
+                    },
+                    'full_inpatient_care_2035_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 145,
+                        'w': 23,
+                        'txt': '{:,}'.format(pat_rec_full_care_fc_35_v1),
+                        'align': 'right'
+                    },
+                    'occupancy_rate_2035_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 151,
+                        'w': 23,
+                        'txt': '95,0%',
+                        'align': 'right'
+                    },
+                    'number_of_beds_2035_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 157,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_35_v1),
+                        'align': 'right'
+                    },
+                    'number_of_free_beds_2035_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 163,
+                        'w': 23,
+                        'txt': '{:,}'.format(free_beds_35_v1),
+                        'align': 'right'
+                    },
+                    'beds_supply_2035_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 195,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_active + beds_planned + beds_construct),
+                        'align': 'right'
+                    },
+                    'demand_occupancy_rate_2035_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 201,
+                        'w': 23,
+                        'txt': '95,0%',
+                        'align': 'right'
+                    },
+                    'loss_of_beds_2035_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 231,
+                        'w': 23,
+                        'txt': '{:,}'.format(loss_of_beds),
+                        'align': 'right'
+                    },
+                    'adjusted_beds_2035_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 237,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_adjusted_35_v1),
+                        'align': 'right'
+                    },
+                    'demand_inpatients_2035_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 243,
+                        'w': 23,
+                        'txt': '{:,}'.format(inpatients_fc_35),
+                        'align': 'right'
+                    },
+                    'surplus_deficit_2035_s1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 151,
+                        'y': 249,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_surplus_35),
+                        'align': 'right'
+                    },
+                    'scenario_2_2035': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 175,
+                        'y': 120,
+                        'w': 24,
+                        'txt': 'Scenario 2',
+                        'align': 'right'
+                    },
+                    'care_rate_2035_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 175,
+                        'y': 133,
+                        'w': 23,
+                        'txt': '{:,}&'.format(care_rate_35_v2_raw),
+                        'align': 'right'
+                    },
+                    'nursing_home_rate_2035_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 175,
+                        'y': 139,
+                        'w': 23,
+                        'txt': '{:,}&'.format(nursing_home_rate),
+                        'align': 'right'
+                    },
+                    'full_inpatient_care_2035_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 175,
+                        'y': 145,
+                        'w': 23,
+                        'txt': '{:,}'.format(pat_rec_full_care_fc_35_v2),
+                        'align': 'right'
+                    },
+                    'occupancy_rate_2035_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 175,
+                        'y': 151,
+                        'w': 23,
+                        'txt': '95,0%',
+                        'align': 'right'
+                    },
+                    'number_of_beds_2035_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 175,
+                        'y': 157,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_35_v2),
+                        'align': 'right'
+                    },
+                    'number_of_free_beds_2035_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 175,
+                        'y': 163,
+                        'w': 23,
+                        'txt': '{:,}'.format(free_beds_35_v2),
+                        'align': 'right'
+                    },
+                    'beds_supply_2035_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 175,
+                        'y': 195,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_active + beds_planned + beds_construct),
+                        'align': 'right'
+                    },
+                    'demand_occupancy_rate_2035_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 175,
+                        'y': 201,
+                        'w': 23,
+                        'txt': '95,0%',
+                        'align': 'right'
+                    },
+                    'loss_of_beds_2035_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 175,
+                        'y': 231,
+                        'w': 23,
+                        'txt': '{:,}'.format(loss_of_beds),
+                        'align': 'right'
+                    },
+                    'adjusted_beds_2035_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 175,
+                        'y': 237,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_adjusted_35_v2),
+                        'align': 'right'
+                    },
+                    'demand_inpatients_2035_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 175,
+                        'y': 243,
+                        'w': 23,
+                        'txt': '{:,}'.format(inpatients_fc_35_v2),
+                        'align': 'right'
+                    },
+                    'surplus_deficit_2035_s2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 175,
+                        'y': 249,
+                        'w': 23,
+                        'txt': '{:,}'.format(beds_surplus_35_v2),
+                        'align': 'right'
+                    }
+                },
+                'multi_cell': {
+                    'scenario_1_2030_text': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 7,
+                        'x': 101,
+                        'y': 122,
+                        'w': 24,
+                        'h': 4,
+                        'txt': "Constant care\nsituation¹",
+                        'align': 'right'
+                    },
+                    'scenario_2_2030_text': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 7,
+                        'x': 125,
+                        'y': 122,
+                        'w': 24,
+                        'h': 4,
+                        'txt': "Increase in care needs of 0,003%²",
+                        'align': 'right'
+                    },
+                    'scenario_1_2035_text': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 7,
+                        'x': 151,
+                        'y': 122,
+                        'w': 24,
+                        'h': 4,
+                        'txt': "Constant care\nsituation¹",
+                        'align': 'right'
+                    },
+                    'scenario_2_2035_text': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 7,
+                        'x': 175,
+                        'y': 122,
+                        'w': 24,
+                        'h': 4,
+                        'txt': "Increase in care needs of 0,003%²",
+                        'align': 'right'
+                    }
+                },
+            },
+            'location_analysis': {
+                'page_number': 3,
+                'text': {
+                    'heading_city': {
+                        'color': [218, 218, 218],
+                        'font': 'segoeui',
+                        'size': 27,
+                        'x': 10,
+                        'y': 30,
+                        'txt': city
+                    },
+                    'page_name': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 27,
+                        'x': 10,
+                        'y': 40,
+                        'txt': 'Location Analysis'
+                    },
+                    'investment_object': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 30,
+                        'y': 210,
+                        'txt': 'Investment object'
+                    },
+                    'nursing_home_competitor': {
+                        'color': [128, 128, 128],
+                        'font': 'segoeuisl',
+                        'size': 9,
+                        'x': 30,
+                        'y': 216,
+                        'txt': 'Competitor'
+                    },
+                    'nursing_home': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 30,
+                        'y': 220,
+                        'txt': 'Nursing home'
+                    },
+                    'assisted_living_competitor': {
+                        'color': [128, 128, 128],
+                        'font': 'segoeuisl',
+                        'size': 9,
+                        'x': 30,
+                        'y': 226,
+                        'txt': 'Competitor'
+                    },
+                    'assisted_living': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 30,
+                        'y': 230,
+                        'txt': 'Assisted Living'
+                    },
+                    'nursing_home_assisted_living_competitor': {
+                        'color': [128, 128, 128],
+                        'font': 'segoeuisl',
+                        'size': 9,
+                        'x': 30,
+                        'y': 236,
+                        'txt': 'Competitor'
+                    },
+                    'nursing_home_assisted_living': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 30,
+                        'y': 240,
+                        'txt': 'Nursing home & Assisted living'
+                    },
+                    'distance_layer': {
+                        'color': [128, 128, 128],
+                        'font': 'segoeuisl',
+                        'size': 9,
+                        'x': 30,
+                        'y': 246,
+                        'txt': 'Distance layer'
+                    },
+                    'distance_amount': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 30,
+                        'y': 250,
+                        'txt': f'{iso_time} minutes of {iso_movement}'
+                    }
+                },
+                'image': {
+                    'location_map': {
+                        'x': 10,
+                        'y': 50,
+                        'w': 200,
+                        'path': f"tmp/map_image_{Variables.unique_code}.png"
+                    },
+                    'invest_marker': {
+                        'x': 13.5,
+                        'y': 204,
+                        'w': 8,
+                        'path': "img/home_pin.png"
+                    },
+                    'nursing_home_marker': {
+                        'x': 14,
+                        'y': 214,
+                        'w': 7,
+                        'path': "img/nh_pin.png"
+                    },
+                    'assisted_living_marker': {
+                        'x': 14,
+                        'y': 224,
+                        'w': 7,
+                        'path': "img/al_pin.png"
+                    },
+                    'nh_al_marker': {
+                        'x': 15,
+                        'y': 234,
+                        'w': 7,
+                        'path': "img/mixed_pin.png"
+                    },
+                    'distance_layer': {
+                        'x': 15,
+                        'y': 244,
+                        'w': 7,
+                        'path': "img/distance_layer.png"
+                    },
+                    'web_view': {
+                        'x': 178,
+                        'y': 55,
+                        'w': 25,
+                        'path': "img/web_view.png",
+                        'link': share_url
+                    }
+                },
+                'multi_cell': {
+                    'gpt_text': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 115,
+                        'y': 205,
+                        'w': 85,
+                        'h': 4,
+                        'txt': analysis_text,
+                        'align': 'left'
                     }
                 }
-              },
-              'cell_content': {
-                  'textboxes': {
-                      'A1': {
-                          'text': "Capital Bay Group   |",
-                          'settings': {
-                              'font': {
-                                  'name': "Segoe UI",
-                                  'size': 9
-                              },
-                              'line': {
-                                  'none': True
-                              },
-                              'fill': {
-                                  'none': True
-                              }
-                          }
-                      },
-                      'E1_A': {
-                          'text': "Market Study",
-                          'settings': {
-                              'font': {
-                                  'name': "Segoe UI",
-                                  'size': 9,
-                                  'bold': True
-                              },
-                              'line': {
-                                  'none': True
-                              },
-                              'fill': {
-                                  'none': True
-                              },
-                              'x_offset': 46
-                          }
-                      },
-                      'E1_B': {
-                          'text': "CARE",
-                          'settings': {
-                              'font': {
-                                  'name': "Segoe UI",
-                                  'size': 9,
-                                  'bold': True,
-                                  'color': "#C8B058"
-                              },
-                              'line': {
-                                  'none': True
-                              },
-                              'fill': {
-                                  'none': True
-                              },
-                              'x_offset': 128
-                          }
-                      },
-                      'V1': {
-                          'text': "4 | 7",
-                          'settings': {
-                              'font': {
-                                  'name': "Segoe UI",
-                                  'size': 9,
-                                  'bold': True
-                              },
-                              'line': {
-                                  'none': True
-                              },
-                              'fill': {
-                                  'none': True
-                              },
-                              'align': {
-                                  'text': 'right'
-                              },
-                              'width': 65
-                          }
-                      }
-                  },
-                  'merge_cells': {
-                      'C3:X4': {
-                          'text': "Bad Rappenau",
-                          'format': "place_heading_format"
-                      },
-                      'C5:X6': {
-                          'text': "Competitor Analysis",
-                          'format': "situation_heading_format"
-                      }
-                  },
-                  'cells': {}
-              }
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C9:E9'] = {
-              'text': "Nursing Homes",
-              'format': 'nh_heading'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C26:M26'] = {
-              'text': '¹The Facility does / does not comply with the respective federal state regulation. For more info see page "Good to Know"',
-              'format': 'foot_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['G9'] = {
-              'text': "Operator name",
-              'format': "operator_heading"
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['H9'] = {
-              'text': "Web",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['I9'] = {
-              'text': "Top 30 Operator",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['J9'] = {
-              'text': "Operator type",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['K9'] = {
-              'text': "Asset status",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['L9'] = {
-              'text': "Year of construction",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['M9'] = {
-              'text': "Apartments (AL)",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['N9'] = {
-              'text': "Legally compliant¹",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['O9'] = {
-              'text': "Care beds",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['P9'] = {
-              'text': "Single rooms",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['Q9'] = {
-              'text': "Double rooms",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['R9'] = {
-              'text': "Rooms",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['S9'] = {
-              'text': "Single room quota",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['T9'] = {
-              'text': "Occupancy rates",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['U9'] = {
-              'text': "Invest cost (p. day in €)",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['V9'] = {
-              'text': "MDK grade (2019)",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
-          
-          if 'home' in competitor:
-            home_counter += 1
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
-              'text': '⌂',
-              'format': 'home_icon'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['raw_name'],
-              'format': 'home_line_normal'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'G{current_row}'] = {
-              'text': competitor[0]['raw_betreiber'],
-              'format': 'home_line_normal'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
-              'format': 'home_line_centered_link',
-              # 'string': "↗"
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
-              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'J{current_row}'] = {
-              'text': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'K{current_row}'] = {
-              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'L{current_row}'] = {
-              'text': competitor[0]['baujahr'],
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'M{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'N{current_row}'] = {
-              'text': competitor[0]['legal'],
-              'format': 'home_line_centered'
-            }
-
-            if not competitor[0]['legal'] == '-':
-              if competitor[0]['legal'] == 'Yes':
-                complied_regulations += 1
-              else:
-                uncomplied_regulations += 1
-            
-            if competitor[0]['operator_type'] == 'privat':
-              private_operator_nh += 1
-              if not competitor[0]['invest'] == '-':
-                invest_costs_private.append(float(competitor[0]['invest']))
-                invest_costs_private_home = float(competitor[0]['invest'])
-            elif competitor[0]['operator_type'] == 'kommunal':
-              public_operator_nh += 1
-              if not competitor[0]['invest'] == '-':
-                invest_costs_public.append(float(competitor[0]['invest']))
-                invest_costs_public_home = float(competitor[0]['invest'])
-            elif competitor[0]['operator_type'] == 'gemeinnützig':
-              none_profit_operator_nh += 1
-              if not competitor[0]['invest'] == '-':
-                invest_costs_non_profit.append(float(competitor[0]['invest']))
-                invest_costs_non_profit_home = float(competitor[0]['invest'])
-            if not competitor[0]['ez'] == '-':
-              single_rooms = int(competitor[0]['ez'])
-            else:
-              single_rooms = '-'
-            if not competitor[0]['dz'] == '-':
-              double_rooms = int(competitor[0]['dz'])
-            else:
-              double_rooms = '-'
-            if not competitor[0]['platz_voll_pfl'] == '-':
-              beds = competitor[0]['platz_voll_pfl']
-            else:
-              beds = '-'
-            if not single_rooms == '-':
-              if not double_rooms == '-':
-                rooms = single_rooms + double_rooms
-                single_room_quote = single_rooms / (single_rooms + double_rooms)
-              else:
-                rooms = single_rooms
-                single_room_quote = 1
-            else:
-              if not double_rooms == '-':
-                rooms = double_rooms
-                single_room_quote = 0
-              else:
-                rooms = '-'
-                single_room_quote = '-'
-              
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'O{current_row}'] = {
-              'text': beds,
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'P{current_row}'] = {
-              'text': single_rooms,
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'Q{current_row}'] = {
-              'text': double_rooms,
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'R{current_row}'] = {
-              'text': rooms,
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'S{current_row}'] = {
-              'text': single_room_quote,
-              'format': 'home_line_centered_percentage'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'T{current_row}'] = {
-              'text': competitor[0]['occupancy'],
-              'format': 'home_line_centered_percentage'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'U{current_row}'] = {
-              'text': '-' if competitor[0]['invest'] == '-' else float(competitor[0]['invest']),
-              'format': 'home_line_centered_number_double'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'V{current_row}'] = {
-              'text': '-' if competitor[0]['mdk_note'] == '-' else float(competitor[0]['mdk_note']),
-              'format': 'home_line_centered_number'
-            }
-
-            if not beds == '-':
-              total_beds += beds
-              list_beds.append(beds)
-            if not single_rooms == '-':
-              total_single_rooms += single_rooms
-            if not double_rooms == '-':
-              total_double_rooms += double_rooms
-            if not rooms == '-':
-              total_rooms += rooms
-            if not single_room_quote == '-':
-              list_single_room_quota.append(single_room_quote)
-            if not competitor[0]['occupancy'] == '-':
-              list_occupancy_rate.append(competitor[0]['occupancy'])
-            if not competitor[0]['invest'] == '-':
-              list_invest_cost.append(float(competitor[0]['invest']))
-              home_invest = float(competitor[0]['invest'])
-            else:
-              home_invest = -1
-            if not competitor[0]['mdk_note'] == '-':
-              list_mdk_grade.append(float(competitor[0]['mdk_note']))
-            if not competitor[0]['baujahr'] == '-':
-              list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
-            if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
-              invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
-          
-          else:
-            
-            if not prev_competitor_distance == competitor[1]:
-              prev_competitor_distance = competitor[1]
-              prev_competitor_index += 1
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
-              'text': prev_competitor_index,
-              'format': 'row_number'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['raw_name'],
-              'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['raw_betreiber'] == '-' else competitor[0]['raw_betreiber'],
-              'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
-              'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
-              # 'string': "↗"
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
-              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'J{current_row}'] = {
-              'text': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'K{current_row}'] = {
-              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'L{current_row}'] = {
-              'text': '-' if competitor[0]['baujahr'] == '-' else competitor[0]['baujahr'],
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'M{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'N{current_row}'] = {
-              'text': competitor[0]['legal'],
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            
-            if not competitor[0]['legal'] == '-':
-              if competitor[0]['legal'] == 'Yes':
-                complied_regulations += 1
-              else:
-                uncomplied_regulations += 1
-            if competitor[0]['operator_type'] == 'privat':
-              private_operator_nh += 1
-              if not competitor[0]['invest'] == '-':
-                invest_costs_private.append(float(competitor[0]['invest']))
-            elif competitor[0]['operator_type'] == 'kommunal':
-              public_operator_nh += 1
-              if not competitor[0]['invest'] == '-':
-                invest_costs_public.append(float(competitor[0]['invest']))
-            elif competitor[0]['operator_type'] == 'gemeinnützig':
-              none_profit_operator_nh += 1
-              if not competitor[0]['invest'] == '-':
-                invest_costs_non_profit.append(float(competitor[0]['invest']))
-            if not competitor[0]['ez'] == '-':
-              single_rooms = int(competitor[0]['ez'])
-            else:
-              single_rooms = '-'
-            if not competitor[0]['dz'] == '-':
-              double_rooms = int(competitor[0]['dz'])
-            else:
-              double_rooms = '-'
-            if not competitor[0]['platz_voll_pfl'] == '-':
-              beds = competitor[0]['platz_voll_pfl']
-            else:
-              beds = '-'
-            if not single_rooms == '-':
-              if not double_rooms == '-':
-                rooms = single_rooms + double_rooms
-                beds = single_rooms + double_rooms * 2
-                single_room_quote = single_rooms / (single_rooms + double_rooms)
-              else:
-                rooms = single_rooms
-                beds = single_rooms
-                single_room_quote = 1
-            else:
-              if not double_rooms == '-':
-                rooms = double_rooms
-                beds = double_rooms * 2
-                single_room_quote = 0
-              else:
-                rooms = '-'
-                beds = '-'
-                single_room_quote = '-'
-                
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'O{current_row}'] = {
-              'text': beds,
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'P{current_row}'] = {
-              'text': single_rooms,
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'Q{current_row}'] = {
-              'text': double_rooms,
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'R{current_row}'] = {
-              'text': rooms,
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'S{current_row}'] = {
-              'text': single_room_quote,
-              'format': 'row_centered_percentage' if not current_row == 25 else 'last_row_centered_percentage'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'T{current_row}'] = {
-              'text': competitor[0]['occupancy'],
-              'format': 'row_centered_percentage' if not current_row == 25 else 'last_row_centered_percentage'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'U{current_row}'] = {
-              'text': '-' if competitor[0]['invest'] == '-' else float(competitor[0]['invest']),
-              'format': 'row_centered_number_double' if not current_row == 25 else 'last_row_centered_number_double'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'V{current_row}'] = {
-              'text': float(competitor[0]['mdk_note']) if not competitor[0]['mdk_note'] == '-' else competitor[0]['mdk_note'],
-              'format': 'row_centered_number' if not current_row == 25 else 'last_row_centered_number'
-            }
-            
-            if not beds == '-':
-              total_beds += beds
-              list_beds.append(beds)
-            if not single_rooms == '-':
-              total_single_rooms += single_rooms
-            if not double_rooms == '-':
-              total_double_rooms += double_rooms
-            if not rooms == '-':
-              total_rooms += rooms
-            if not single_room_quote == '-':
-              list_single_room_quota.append(single_room_quote)
-            if not competitor[0]['occupancy'] == '-':
-              list_occupancy_rate.append(competitor[0]['occupancy'])
-            if not competitor[0]['invest'] == '-':
-              list_invest_cost.append(float(competitor[0]['invest']))
-            if not competitor[0]['mdk_note'] == '-':
-              list_mdk_grade.append(float(competitor[0]['mdk_note']))
-            if not competitor[0]['baujahr'] == '-':
-              list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
-            if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
-              invest_plot_data.append(['non-profit' if competitor[0]['operator_type'] == 'gemeinnützig' else 'private' if competitor[0]['operator_type'] == 'privat' else 'public', competitor[0]['invest'], competitor[0]['baujahr'], index - home_counter + 1])
-            
-          current_row += 1
-        
-        if len(list_single_room_quota) > 0:
-          total_single_room_quota = anvil.server.call("get_median", list_single_room_quota)
-        else:
-          total_single_room_quota = 0
-        if len(list_occupancy_rate) > 0:
-          total_occupancy_rate = anvil.server.call("get_median", list_occupancy_rate)
-        else:
-          total_occupancy_rate = 0
-        if len(list_invest_cost) > 0:
-          minimum_invest_cost = min(list_invest_cost)
-        else:
-          minimum_invest_cost = 0
-        if len(list_invest_cost) > 0:
-          maximum_invest_cost = max(list_invest_cost)
-        else:
-          maximum_invest_cost = 0
-        if len(list_invest_cost) > 0:
-          total_invest_cost = anvil.server.call("get_median", list_invest_cost)
-        else:
-          total_invest_cost = 0
-        if len(list_mdk_grade) > 0:
-          total_mdk_grade = anvil.server.call("get_median", list_mdk_grade)
-        else:
-          total_mdk_grade = 0
-        
-        market_study_data['pages'][sheet_name]['cell_content']['cells'][f'O{current_row}'] = {
-          'text': total_beds,
-          'format': 'overall_sum'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells'][f'P{current_row}'] = {
-          'text': total_single_rooms,
-          'format': 'overall_sum'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells'][f'Q{current_row}'] = {
-          'text': total_double_rooms,
-          'format': 'overall_sum'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells'][f'R{current_row}'] = {
-          'text': total_rooms,
-          'format': 'overall_sum'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells'][f'S{current_row}'] = {
-          'text': total_single_room_quota,
-          'format': 'overall_median_percentage'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells'][f'T{current_row}'] = {
-          'text': total_occupancy_rate,
-          'format': 'overall_median_percentage'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells'][f'U{current_row}'] = {
-          'text': total_invest_cost,
-          'format': 'overall_median'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells'][f'V{current_row}'] = {
-          'text': total_mdk_grade,
-          'format': 'overall_median'
-        }
-        
-        current_row += 1
-
-        # Assisted Living Pages
-        current_row = 11
-        home_counter = 0
-        prev_competitor_distance = 0
-        prev_competitor_index = 0
-        competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
-        page += 1
-        sheet_name = f"COMPETITOR ANALYSIS {page}"
-        market_study_pages.append(sheet_name)
-        market_study_data['pages'][sheet_name] = {
-          'settings': {
-            'area': "A1:X28",
-            'column_width': [
-                2.09, 2.09, 2.64, 0.17, 25.36, 0.00, 24.45, 3.27, 3.27, 6.45, 8.18, 4.73, 3.27, 3.55, 5.82,
-                5.82, 5.82, 5.82, 5.18, 6.00, 5.27, 4.91, 0.00, 3.91
-            ],
-            'row_height': [
-                16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 95.50, 3.50, 19.00, 17.00, 17.00,
-                17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 16.50,
-                14.00, 8.00
-            ],
-            'columns_to_fill': [
-                'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-                'V', 'W', 'X'
-            ],
-            'landscape': True,
-            'rows_to_fill': [8, 10, 25],
-            'fill_format': {
-                'base': {
-                    '8': "underline",
-                    '10': "underline",
-                    '25': "underline"
-                }
-            }
-          },
-          'cell_content': {
-              'textboxes': {
-                  'A1': {
-                      'text': "Capital Bay Group   |",
-                      'settings': {
-                          'font': {
-                              'name': "Segoe UI",
-                              'size': 9
-                          },
-                          'line': {
-                              'none': True
-                          },
-                          'fill': {
-                              'none': True
-                          }
-                      }
-                  },
-                  'E1_A': {
-                      'text': "Market Study",
-                      'settings': {
-                          'font': {
-                              'name': "Segoe UI",
-                              'size': 9,
-                              'bold': True
-                          },
-                          'line': {
-                              'none': True
-                          },
-                          'fill': {
-                              'none': True
-                          },
-                          'x_offset': 46
-                      }
-                  },
-                  'E1_B': {
-                      'text': "CARE",
-                      'settings': {
-                          'font': {
-                              'name': "Segoe UI",
-                              'size': 9,
-                              'bold': True,
-                              'color': "#C8B058"
-                          },
-                          'line': {
-                              'none': True
-                          },
-                          'fill': {
-                              'none': True
-                          },
-                          'x_offset': 128
-                      }
-                  },
-                  'V1': {
-                      'text': "4 | 7",
-                      'settings': {
-                          'font': {
-                              'name': "Segoe UI",
-                              'size': 9,
-                              'bold': True
-                          },
-                          'line': {
-                              'none': True
-                          },
-                          'fill': {
-                              'none': True
-                          },
-                          'align': {
-                              'text': 'right'
-                          },
-                          'width': 65
-                      }
-                  }
-              },
-              'merge_cells': {
-                  'C3:X4': {
-                      'text': "Bad Rappenau",
-                      'format': "place_heading_format"
-                  },
-                  'C5:X6': {
-                      'text': "Competitor Analysis",
-                      'format': "situation_heading_format"
-                  }
-              },
-              'cells': {}
-          }
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['merge_cells'][f'C9:E9'] = {
-          'text': "Assisted Living",
-          'format': 'al_heading'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['G9'] = {
-          'text': "Operator name",
-          'format': "operator_heading"
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['H9'] = {
-          'text': "Web",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['I9'] = {
-          'text': "Top 30 Operator",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['J9'] = {
-          'text': "Operator type",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['K9'] = {
-          'text': "Asset status",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['L9'] = {
-          'text': "Year of construction",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['M9'] = {
-          'text': "Apartments (AL)",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['N9'] = {
-          'text': "Legally compliant¹",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['O9'] = {
-          'text': "Care beds",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['P9'] = {
-          'text': "Single rooms",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['Q9'] = {
-          'text': "Double rooms",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['R9'] = {
-          'text': "Rooms",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['S9'] = {
-          'text': "Single room quota",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['T9'] = {
-          'text': "Occupancy rates",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['U9'] = {
-          'text': "Invest cost (p. day in €)",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['cells']['V9'] = {
-          'text': "MDK grade (2019)",
-          'format': 'rotated_text'
-        }
-        market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
-        
-        for index, competitor in enumerate(data_comp_analysis_al['data']):
-          if index % 15 == 0 and not index == 0:
-            competitor_analysis_pages.append(competitor_analysis_pages[-1] + 1)
-            page += 1
-            current_row = 11
-            sheet_name = f"COMPETITOR ANALYSIS {page}"
-            market_study_pages.append(sheet_name)
-            market_study_data['pages'][sheet_name] = {
-              'settings': {
-                'area': "A1:X28",
-                'column_width': [
-                    2.09, 2.09, 2.64, 0.17, 25.36, 0.00, 24.45, 3.27, 3.27, 6.45, 8.18, 4.73, 3.27, 3.55, 5.82,
-                    5.82, 5.82, 5.82, 5.18, 6.00, 5.27, 4.91, 0.00, 3.91
-                ],
-                'row_height': [
-                    16.50, 15.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 95.50, 3.50, 19.00, 17.00, 17.00,
-                    17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 17.00, 16.50,
-                    14.00, 8.00
-                ],
-                'columns_to_fill': [
-                    'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-                    'V', 'W', 'X'
-                ],
-                'landscape': True,
-                'rows_to_fill': [8, 10, 25],
-                'fill_format': {
-                    'base': {
-                        '8': "underline",
-                        '10': "underline",
-                        '25': "underline"
+            },
+            'good_to_know': {
+                'page_number': 7,
+                'line': {
+                    'operator_top_line': {
+                        'x1': 10,
+                        'y1': 65,
+                        'x2': 100,
+                        'y2': 65
+                    },
+                    'operator_bottom_line': {
+                        'x1': 10,
+                        'y1': 76,
+                        'x2': 100,
+                        'y2': 76
+                    },
+                    'prices_top_line': {
+                        'x1': 110,
+                        'y1': 65,
+                        'x2': 203,
+                        'y2': 65
+                    },
+                    'prices_bottom_line': {
+                        'x1': 110,
+                        'y1': 76,
+                        'x2': 203,
+                        'y2': 76
+                    },
+                    'purchase_power_top_line': {
+                        'x1': 10,
+                        'y1': 199,
+                        'x2': 100,
+                        'y2': 199
+                    },
+                    'purchase_power_bottom_line': {
+                        'x1': 10,
+                        'y1': 210,
+                        'x2': 100,
+                        'y2': 210
+                    }
+                },
+                'text': {
+                    'heading_city': {
+                        'color': [218, 218, 218],
+                        'font': 'segoeui',
+                        'size': 27,
+                        'x': 10,
+                        'y': 30,
+                        'txt': city
+                    },
+                    'page_name': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 27,
+                        'x': 10,
+                        'y': 40,
+                        'txt': 'Good to know'
+                    },
+                    'market_shares': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 17,
+                        'x': 10,
+                        'y': 55,
+                        'txt': 'Market shares'
+                    },
+                    'operator': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 10,
+                        'y': 72,
+                        'txt': 'Operator'
+                    },
+                    'prices': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 110,
+                        'y': 72,
+                        'txt': 'Prices'
+                    },
+                    'purchase_power': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 10,
+                        'y': 206,
+                        'txt': 'Purchasing power index (municipality)'
+                    }
+                },
+                'image': {
+                    'operator_chart': {
+                        'x': -5,
+                        'y': 105,
+                        'w': 120,
+                        'path': "tmp/operator_chart.png"
+                    },
+                    'invest_scatter_chart': {
+                        'x': 105,
+                        'y': 85,
+                        'w': 100,
+                        'path': "tmp/invest_cost_scatter_chart.png"
+                    },
+                    'purchasing_power_chart': {
+                        'x': 10,
+                        'y': 190,
+                        'w': 90,
+                        'path': "tmp/purchasing_power_chart.png"
+                    }
+                },
+                'cell': {
+                    'operator_viewing_radius': {
+                        'color': [200, 176, 88],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 10,
+                        'y': 80,
+                        'w': 20,
+                        'txt': f"Viewing radius: {iso_time} minutes of {iso_movement}",
+                        'align': 'left'
+                    },
+                    'number_facilities_nh': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 10,
+                        'y': 85,
+                        'w': 20,
+                        'txt': 'Number of facilities (NH)',
+                        'align': 'left'
+                    },
+                    'number_facilities_nh_value': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 80,
+                        'y': 85,
+                        'w': 20,
+                        'txt': '{:,}'.format(len(data_comp_analysis_nh['data'])),
+                        'align': 'right'
+                    },
+                    'number_facilities_al': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 10,
+                        'y': 90,
+                        'w': 20,
+                        'txt': 'Number of facilities (AL)',
+                        'align': 'left'
+                    },
+                    'number_facilities_al_value': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 80,
+                        'y': 90,
+                        'w': 20,
+                        'txt': '{:,}'.format(len(data_comp_analysis_al['data'])),
+                        'align': 'right'
+                    },
+                    'median_beds': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 10,
+                        'y': 95,
+                        'w': 20,
+                        'txt': 'Median numbers of beds (NH)',
+                        'align': 'left'
+                    },
+                    'median_beds_value': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 80,
+                        'y': 95,
+                        'w': 20,
+                        'txt': '20',
+                        'align': 'right'
+                    },
+                    'median_year_of_construct_nh': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 10,
+                        'y': 100,
+                        'w': 20,
+                        'txt': 'Median year of construction (NH)',
+                        'align': 'left'
+                    },
+                    'median_year_of_construct_value': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 80,
+                        'y': 100,
+                        'w': 20,
+                        'txt': '1997',
+                        'align': 'right'
+                    },
+                    'median_year_of_construct_al': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 10,
+                        'y': 105,
+                        'w': 20,
+                        'txt': 'Median year of construction (AL)',
+                        'align': 'left'
+                    },
+                    'median_year_of_construct_al_value': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 80,
+                        'y': 105,
+                        'w': 20,
+                        'txt': '2010',
+                        'align': 'right'
+                    },
+                    'operator_types': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 10,
+                        'y': 115,
+                        'w': 20,
+                        'txt': 'Operator types',
+                        'align': 'left'
+                    },
+                    'prices_viewing_radius': {
+                        'color': [200, 176, 88],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 110,
+                        'y': 80,
+                        'w': 20,
+                        'txt': f"Viewing radius: {iso_time} minutes of {iso_movement}",
+                        'align': 'left'
+                    },
+                    'invest_cost_nursing_home': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 110,
+                        'y': 85,
+                        'w': 20,
+                        'txt': 'Invest costs in Nursing homes',
+                        'align': 'left'
+                    }
+                },
+                'multi_cell': {
+                    'invest_text': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 110,
+                        'y': 270,
+                        'w': 90,
+                        'h': 4,
+                        'txt': f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{'{:.2f}'.format(total_invest_cost)}. {f'The investment costs at the facility, that is subject to this study amounts to €{home_invest}.' if not home_invest == -1 else ''}",
+                        'align': 'left'
                     }
                 }
-              },
-              'cell_content': {
-                  'textboxes': {
-                      'A1': {
-                          'text': "Capital Bay Group   |",
-                          'settings': {
-                              'font': {
-                                  'name': "Segoe UI",
-                                  'size': 9
-                              },
-                              'line': {
-                                  'none': True
-                              },
-                              'fill': {
-                                  'none': True
-                              }
-                          }
-                      },
-                      'E1_A': {
-                          'text': "Market Study",
-                          'settings': {
-                              'font': {
-                                  'name': "Segoe UI",
-                                  'size': 9,
-                                  'bold': True
-                              },
-                              'line': {
-                                  'none': True
-                              },
-                              'fill': {
-                                  'none': True
-                              },
-                              'x_offset': 46
-                          }
-                      },
-                      'E1_B': {
-                          'text': "CARE",
-                          'settings': {
-                              'font': {
-                                  'name': "Segoe UI",
-                                  'size': 9,
-                                  'bold': True,
-                                  'color': "#C8B058"
-                              },
-                              'line': {
-                                  'none': True
-                              },
-                              'fill': {
-                                  'none': True
-                              },
-                              'x_offset': 128
-                          }
-                      },
-                      'V1': {
-                          'text': "4 | 7",
-                          'settings': {
-                              'font': {
-                                  'name': "Segoe UI",
-                                  'size': 9,
-                                  'bold': True
-                              },
-                              'line': {
-                                  'none': True
-                              },
-                              'fill': {
-                                  'none': True
-                              },
-                              'align': {
-                                  'text': 'right'
-                              },
-                              'width': 65
-                          }
-                      }
-                  },
-                  'merge_cells': {
-                      'C3:X4': {
-                          'text': "Bad Rappenau",
-                          'format': "place_heading_format"
-                      },
-                      'C5:X6': {
-                          'text': "Competitor Analysis",
-                          'format': "situation_heading_format"
-                      }
-                  },
-                  'cells': {}
-              }
+            },
+            'regulations': {
+                'page_number': 8,
+                'rect': {
+                    'grey_rect': {
+                        'color': [242, 242, 242],
+                        'x': 10,
+                        'y': 50,
+                        'w': 190,
+                        'h': 110,
+                        'style': 'F'
+                    }
+                },
+                'line': {
+                    'state_top_line': {
+                        'x1': 15,
+                        'y1': 84,
+                        'x2': 195,
+                        'y2': 84
+                    },
+                    'state_bottom_line': {
+                        'x1': 15,
+                        'y1': 95,
+                        'x2': 195,
+                        'y2': 95
+                    }
+                },
+                'text': {
+                    'heading_city': {
+                        'color': [218, 218, 218],
+                        'font': 'segoeui',
+                        'size': 27,
+                        'x': 10,
+                        'y': 30,
+                        'txt': city
+                    },
+                    'page_name': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 27,
+                        'x': 10,
+                        'y': 40,
+                        'txt': 'Regulations'
+                    }
+                },
+                'cell': {
+                    'regulations_heading': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 15,
+                        'x': 15,
+                        'y': 60,
+                        'w': 20,
+                        'txt': 'Regulations of federal state',
+                        'align': 'left'
+                    },
+                    'federal_state': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 15,
+                        'y': 90,
+                        'w': 20,
+                        'txt': 'Federal state',
+                        'align': 'left'
+                    },
+                    'federal_state_value': {
+                        'color': [255, 255, 255],
+                        'fill_color': [32, 49, 68],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 85,
+                        'y': 84,
+                        'w': 110,
+                        'h': 11,
+                        'txt': regulations['federal_state'],
+                        'align': 'left',
+                        'fill': True
+                    },
+                    'single_room_quota': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 15,
+                        'y': 110,
+                        'w': 20,
+                        'txt': 'Single room quota (min.)',
+                        'align': 'left'
+                    },
+                    'home_size': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 15,
+                        'y': 116,
+                        'w': 20,
+                        'txt': 'Maximum home size',
+                        'align': 'left'
+                    },
+                    'room_size': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 15,
+                        'y': 122,
+                        'w': 20,
+                        'txt': 'Minimum room size (SR/DR)',
+                        'align': 'left'
+                    },
+                    'common_area': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 15,
+                        'y': 128,
+                        'w': 20,
+                        'txt': 'Minimum common area/residential',
+                        'align': 'left'
+                    },
+                    'comment': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 15,
+                        'y': 134,
+                        'w': 20,
+                        'txt': 'Comment',
+                        'align': 'left'
+                    },
+                    'legal_basis': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 9,
+                        'x': 15,
+                        'y': 153,
+                        'w': 20,
+                        'txt': 'Legal basis',
+                        'align': 'left'
+                    },
+                    'new': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 85,
+                        'y': 100,
+                        'w': 20,
+                        'txt': 'New',
+                        'align': 'left'
+                    },
+                    'new_single_room_quota': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 85,
+                        'y': 110,
+                        'w': 20,
+                        'txt': f"{int(regulations['New']['sr_quote_raw'] * 100)}%" if not type(regulations['New']['sr_quote_raw']) == str else regulations['New']['sr_quote_raw'],
+                        'align': 'left'
+                    },
+                    'new_home_size': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 85,
+                        'y': 116,
+                        'w': 20,
+                        'txt': regulations['New']['max_beds_raw'],
+                        'align': 'left'
+                    },
+                    'new_room_size': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 85,
+                        'y': 122,
+                        'w': 20,
+                        'txt': regulations['New']['min_room_size'],
+                        'align': 'left'
+                    },
+                    'new_common_area': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 85,
+                        'y': 128,
+                        'w': 20,
+                        'txt': regulations['New']['min_common_area_resident'],
+                        'align': 'left'
+                    },
+                    'new_legal_basis': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 85,
+                        'y': 153,
+                        'w': 20,
+                        'txt': regulations['New']['legal_basis'],
+                        'align': 'left'
+                    },
+                    'existing': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 140,
+                        'y': 100,
+                        'w': 20,
+                        'txt': 'Existing',
+                        'align': 'left'
+                    },
+                    'existing_single_room_quota': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 140,
+                        'y': 110,
+                        'w': 20,
+                        'txt': f"{int(regulations['Existing']['sr_quote_raw'] * 100)}%" if not type(regulations['Existing']['sr_quote_raw']) == str else regulations['Existing']['sr_quote_raw'],
+                        'align': 'left'
+                    },
+                    'existing_home_size': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 140,
+                        'y': 116,
+                        'w': 20,
+                        'txt': regulations['Existing']['max_beds_raw'],
+                        'align': 'left'
+                    },
+                    'existing_room_size': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 140,
+                        'y': 122,
+                        'w': 20,
+                        'txt': regulations['Existing']['min_room_size'],
+                        'align': 'left'
+                    },
+                    'existing_common_area': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 140,
+                        'y': 128,
+                        'w': 20,
+                        'txt': regulations['Existing']['min_common_area_resident'],
+                        'align': 'left'
+                    },
+                    'existing_legal_basis': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 140,
+                        'y': 153,
+                        'w': 20,
+                        'txt': regulations['Existing']['legal_basis'],
+                        'align': 'left'
+                    }
+                },
+                'multi_cell': {
+                    'regulations_text': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 8,
+                        'x': 15,
+                        'y': 70,
+                        'w': 180,
+                        'h': 4,
+                        'txt': f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {iso_movement}. Thereof, {complied_regulations} facilities comply with the federal state regulations and {uncomplied_regulations} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}.",
+                        'align': 'left'
+                    },
+                    'new_comment': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 85,
+                        'y': 134,
+                        'w': 55,
+                        'h': 4,
+                        'txt': regulations['New']['comment'],
+                        'align': 'left'
+                    },
+                    'existing_comment': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 140,
+                        'y': 134,
+                        'w': 55,
+                        'h': 4,
+                        'txt': regulations['Existing']['comment'],
+                        'align': 'left'
+                    }
+                }
+            },
+            'methodic': {
+                'page_number': 9,
+                'rect': {
+                    'grey_rect': {
+                        'color': [242, 242, 242],
+                        'x': 10,
+                        'y': 50,
+                        'w': 205,
+                        'h': 227,
+                        'style': 'F'
+                    }
+                },
+                'text': {
+                    'about_the_study': {
+                        'color': [218, 218, 218],
+                        'font': 'segoeui',
+                        'size': 27,
+                        'x': 10,
+                        'y': 30,
+                        'txt': 'About the study'
+                    },
+                    'methodic': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 27,
+                        'x': 10,
+                        'y': 40,
+                        'txt': 'Methodic'
+                    }
+                },
+                'multi_cell': {
+                    'heading_1': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 15,
+                        'y': 65,
+                        'w': 80,
+                        'h': 4,
+                        'txt': 'Methodology, Data analysis &\nforecasting',
+                        'align': 'left'
+                    },
+                    'paragraph_1': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 15,
+                        'y': 80,
+                        'w': 80,
+                        'h': 4,
+                        'txt': 'The market study highlights the current state of the\ninpatient care market in Germany and provides a\nforecast for the demand for nursing care until 2030\nand 2035. The study emphasizes the key drivers of\ndemand and the methodology employed to arrive at\nthe forecasted figures\n\nThe study utilizes a combination of publicly available\nsecondary research. Secondary research includes\nanalyzing geographical, demographical and\nstatistical databases as well as government\npublications and reputable healthcare sources to\ngather quantitative data.\n\nThe collected data is analyzed to identify trends,\ngrowth drivers, and market dynamics. The analysis\nencompasses factors such as population\ndemographics, healthcare policies and available\nmarket information on existing and future care\nfacilities, prevalence of chronic diseases, and\neconomic indicators affecting the demand for\ninpatient care.\n\nTo forecast the future demand for nursing care, a\ncombination of demographic projection, trend\nanalysis and consideration of new care facilities to\nbe launched on the market is employed.\nDemographic projection takes into account\npopulation growth, aging trends, and migration\npatterns. Trend analysis examines historical data and\nidentifies patterns and growth rates to project future\ndemand. New care facilities takes into account\nbuildings that are in planning or under construction.\n\nAll findings of the market study will consider the\nfactors mentioned above to provide a\ncomprehensive understanding of the current state of\nthe inpatient care market.',
+                        'align': 'left'
+                    },
+                    'heading_2': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 15,
+                        'y': 240,
+                        'w': 70,
+                        'h': 4,
+                        'txt': 'Limitations',
+                        'align': 'left'
+                    },
+                    'paragraph_2': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 15,
+                        'y': 250,
+                        'w': 80,
+                        'h': 4,
+                        'txt': 'The forecast is based on available data and assumes\nthat there will be no major disruptive events or\npolicy changes that could significantly impact the\ndemand for inpatient care.',
+                        'align': 'left'
+                    },
+                    'heading_3': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 120,
+                        'y': 68,
+                        'w': 80,
+                        'h': 4,
+                        'txt': 'Data sources',
+                        'align': 'left'
+                    },
+                    'paragraph_3': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 120,
+                        'y': 80,
+                        'w': 80,
+                        'h': 4,
+                        'txt': 'Statistisches Bundesamt\nStatista\nPflegemarkt.com\nPflegemarktdatenbank (updates every 3 months)\nDemografieportal\nPflegeheim-Atlas Deutschland 2021, Wuest Partner\n21st Real Estate\nChatGPT\nOpen Street Maps\nMalbox',
+                        'align': 'left'
+                    }
+                }
+            },
+            'contact': {
+                'page_number': 10,
+                'rect': {
+                    'grey_rect': {
+                        'color': [242, 242, 242],
+                        'x': 10,
+                        'y': 50,
+                        'w': 205,
+                        'h': 60,
+                        'style': 'F'
+                    }
+                },
+                'text': {
+                    'keep_in_touch': {
+                        'color': [218, 218, 218],
+                        'font': 'segoeui',
+                        'size': 27,
+                        'x': 10,
+                        'y': 30,
+                        'txt': 'Keep in touch'
+                    },
+                    'capital_bay_team': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 27,
+                        'x': 10,
+                        'y': 40,
+                        'txt': 'Capital Bay Team'
+                    },
+                    'left_person_name': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 25,
+                        'y': 65,
+                        'txt': 'Stephanie Kühn'
+                    },
+                    'left_person_position': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 25,
+                        'y': 70,
+                        'txt': 'Head of Transaction Management'
+                    },
+                    'left_person_company': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 25,
+                        'y': 75,
+                        'txt': 'CB Transaction Management GmbH'
+                    },
+                    'left_person_address': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 25,
+                        'y': 80,
+                        'txt': 'Sachsendamm 4/5, 10829 Berlin'
+                    },
+                    'left_person_phone': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 25,
+                        'y': 85,
+                        'txt': 'T + 49 30 120866215'
+                    },
+                    'right_person_name': {
+                        'color': [0, 0, 0],
+                        'font': 'seguisb',
+                        'size': 12,
+                        'x': 100,
+                        'y': 65,
+                        'txt': 'Daniel Ziv'
+                    },
+                    'right_person_position': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 100,
+                        'y': 70,
+                        'txt': 'Junior Transaction Manager'
+                    },
+                    'right_person_company': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 100,
+                        'y': 75,
+                        'txt': 'CB Transaction Management GmbH'
+                    },
+                    'right_person_address': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 100,
+                        'y': 80,
+                        'txt': 'Sachsendamm 4/5, 10829 Berlin'
+                    },
+                    'right_person_phone': {
+                        'color': [0, 0, 0],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 100,
+                        'y': 85,
+                        'txt': 'T + 49 30 120866281'
+                    }
+                },
+                'image': {
+                    'contact': {
+                        'x': 25,
+                        'y': 100,
+                        'w': 178,
+                        'path': "img/contact.jpg"
+                    }
+                },
+                'cell': {
+                    'left_person_mail': {
+                        'color': [0, 176, 240],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 25,
+                        'y': 90,
+                        'w': 20,
+                        'txt': 'stephanie.kuehn@capitalbay.de',
+                        'align': 'left',
+                        'link': 'mailto:stephanie.kuehn@capitalbay.de'
+                    },
+                    'right_person_mail': {
+                        'color': [0, 176, 240],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 100,
+                        'y': 90,
+                        'w': 20,
+                        'txt': 'daniel.ziv@capitalbay.de',
+                        'align': 'left',
+                        'link': 'mailto:daniel.ziv@capitalbay.de'
+                    }
+                },
+                'multi_cell': {
+                    'bottom_text_left': {
+                        'color': [191, 191, 191],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 25,
+                        'y': 230,
+                        'w': 90,
+                        'h': 4,
+                        'txt': "This study has been prepared by Capital Bay Group\nS.A. (hereinafter Capital Bay) to provide investors and\nbusiness partners of Capital Bay with an overview of\ncurrent developments in the care and assisted living\nsector of the real estate industry. Capital Bay\nemphasizes that this study is not a sufficient basis for\ndecision making and user discretion is necessary for\nthe decision making process.\n\nThis study has been prepared with reasonable care.\nThe information presented has not been verified by\nCapital Bay for completeness or accuracy.\nIt has beenobtained from the sources indicated and\nsupplemented by Capital Bay's own market\nknowledge. No confidential or non-public information\nhas been made use.",
+                        'align': 'left'
+                    },
+                    'bottom_text_right': {
+                        'color': [191, 191, 191],
+                        'font': 'segoeui',
+                        'size': 9,
+                        'x': 110,
+                        'y': 230,
+                        'w': 90,
+                        'h': 4,
+                        'txt': "Capital Bay is not responsible for any incomplete or\ninaccurate information and readers are urged to verify\nthe information themselves before making any\ndecision. Capital Bay shall not be liable for any\nomissions or inaccuracies in this report or for any\nother oral or written statements made in connection\nwith this report.\n\n© 2023 Capital Bay Group\nAll rights reserved.",
+                        'align': 'left'
+                    }
+                }
             }
-            market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C9:E9'] = {
-              'text': "Assisted Living",
-              'format': 'al_heading'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['G9'] = {
-              'text': "Operator name",
-              'format': "operator_heading"
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['H9'] = {
-              'text': "Web",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['I9'] = {
-              'text': "Top 30 Operator",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['J9'] = {
-              'text': "Operator type",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['K9'] = {
-              'text': "Asset status",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['L9'] = {
-              'text': "Year of construction",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['M9'] = {
-              'text': "Apartments (AL)",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['N9'] = {
-              'text': "Legally compliant¹",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['O9'] = {
-              'text': "Care beds",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['P9'] = {
-              'text': "Single rooms",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['Q9'] = {
-              'text': "Double rooms",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['R9'] = {
-              'text': "Rooms",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['S9'] = {
-              'text': "Single room quota",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['T9'] = {
-              'text': "Occupancy rates",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['U9'] = {
-              'text': "Invest cost (p. day in €)",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells']['V9'] = {
-              'text': "MDK grade (2019)",
-              'format': 'rotated_text'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['merge_cells']['C3:X4']['text'] = city
-            
-          home_counter = 0
-          if 'home' in competitor:
-            home_counter += 1
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
-              'text': '⌂',
-              'format': 'home_icon'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['raw_name'],
-              'format': 'home_line_normal'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'G{current_row}'] = {
-              'text': competitor[0]['raw_betreiber'],
-              'format': 'home_line_normal'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
-              'format': 'home_line_centered_link',
-              # 'string': "↗"
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
-              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'J{current_row}'] = {
-              'text': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'K{current_row}'] = {
-              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'L{current_row}'] = {
-              'text': competitor[0]['year_of_construction'],
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'M{current_row}'] = {
-              'text': competitor[0]['number_apts'],
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'N{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'O{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'P{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'Q{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'R{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'S{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered_percentage'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'T{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered_percentage'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'U{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered_number_double'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'V{current_row}'] = {
-              'text': "-",
-              'format': 'home_line_centered_number'
-            }
-
-            if not competitor[0]['year_of_construction'] == '-':
-              list_years_of_construction_al.append(int(competitor[0]['year_of_construction']))
-            if competitor[0]['type'] == 'gemeinnützig':
-              none_profit_operator_al += 1
-            elif competitor[0]['type'] == 'kommunal':
-              public_operator_al += 1
-            elif competitor[0]['type'] == 'privat':
-              private_operator_al += 1
-            
-          else:
-            if not prev_competitor_distance == competitor[1]:
-              prev_competitor_distance = competitor[1]
-              prev_competitor_index += 1
-              
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'C{current_row}'] = {
-              'text': index + 1 - home_counter,
-              'format': 'row_number_al'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'E{current_row}'] = {
-              'text': competitor[0]['raw_name'],
-              'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'G{current_row}'] = {
-              'text': '-' if competitor[0]['raw_betreiber'] == '-' else competitor[0]['raw_betreiber'],
-              'format': 'row_normal' if not current_row == 25 else 'last_row_normal'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'H{current_row}'] = {
-              'text': competitor[0]['web'] if not "keine " in competitor[0]['web'] else "-",
-              'format': 'row_centered_link' if not current_row == 25 else 'last_row_centered_link',
-              # 'string': "↗"
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'I{current_row}'] = {
-              'text': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'J{current_row}'] = {
-              'text': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'K{current_row}'] = {
-              'text': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'L{current_row}'] = {
-              'text': '-' if competitor[0]['year_of_construction'] == '-' else competitor[0]['year_of_construction'],
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'M{current_row}'] = {
-              'text': competitor[0]['number_apts'],
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'N{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'O{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'P{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'Q{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'R{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'S{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'T{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'U{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-            market_study_data['pages'][sheet_name]['cell_content']['cells'][f'V{current_row}'] = {
-              'text': "-",
-              'format': 'row_centered' if not current_row == 25 else 'last_row_centered'
-            }
-
-            if not competitor[0]['year_of_construction'] == '-':
-              list_years_of_construction_al.append(int(competitor[0]['year_of_construction']))
-            if competitor[0]['type'] == 'gemeinnützig':
-              none_profit_operator_al += 1
-            elif competitor[0]['type'] == 'kommunal':
-              public_operator_al += 1
-            elif competitor[0]['type'] == 'privat':
-              private_operator_al += 1
-  
-          current_row += 1
-      
-      operator_chart_path = anvil.server.call('chart_test_3', [none_profit_operator_al, public_operator_al, private_operator_al], [none_profit_operator_nh, public_operator_nh, private_operator_nh], unique_code)
-      invest_cost_chart_path = anvil.server.call('chart_test_6', invest_plot_data, unique_code)
-      purchasing_power_chart_path = anvil.server.call('chart_test_5', purchase_power, unique_code)
-      invest_cost_chart_public_path = anvil.server.call('chart_test_4', invest_costs_public, invest_costs_public_home, unique_code, 'public')
-      invest_cost_chart_non_profit_path = anvil.server.call('chart_test_4', invest_costs_non_profit, invest_costs_non_profit_home, unique_code, 'non_profit')
-      invest_cost_chart_private_path = anvil.server.call('chart_test_4', invest_costs_private, invest_costs_private_home, unique_code, 'private')
-      
-      max_pages = competitor_analysis_pages[-1] + 4 
-      good_to_know_page = competitor_analysis_pages[-1] + 1
-      regulations_page = good_to_know_page + 1
-      methodic_page = regulations_page + 1
-      contact_page = methodic_page + 1
-      
-      market_study_pages.append("GOOD TO KNOW")
-      market_study_pages.append("REGULATIONS")
-      market_study_pages.append("METHODIC")
-      market_study_pages.append("CONTACT")
-      
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['C4:X5']['text'] = city
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['C12']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['Q12']['text'] = f"Viewing radius: {iso_time} minutes of {movement}"
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O13']['text'] = len(data_comp_analysis_nh['data'])
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O14']['text'] = len(data_comp_analysis_al['data'])
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O15']['text'] = anvil.server.call('get_median', list_beds) if len(list_beds) > 0 else '-'
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O16']['text'] = anvil.server.call('get_median', list_years_of_construction_nh) if len(list_years_of_construction_nh) > 0 else '-'
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['cells']['O17']['text'] = anvil.server.call('get_median', list_years_of_construction_al) if len(list_years_of_construction_al) > 0 else '-'
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells']['Q47:X51']['text'] = f"The investment cost rates of the facilities within the catchment area range between €{minimum_invest_cost} and €{maximum_invest_cost}.  The median investment cost amount to €{'{:.2f}'.format(total_invest_cost)}. {f'The investment costs at the facility, that is subject to this study amounts to €{home_invest}.' if not home_invest == -1 else ''}"
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A16']['file'] = operator_chart_path
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['P14']['file'] = invest_cost_chart_path
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['images']['A34']['file'] = purchasing_power_chart_path
-      cells = [['P27', 'Q32:X32'], ['P34', 'Q39:X39'], ['P40', 'Q43:X43']]
-      cell_index = 0
-      if not invest_cost_chart_non_profit_path == 404:
-        market_study_data['pages']['GOOD TO KNOW']['cell_content']['images'][cells[cell_index][0]] = {
-          'file': invest_cost_chart_non_profit_path,
-          'settings': {
-              'x_scale': .6,
-              'y_scale': .6,
-              'x_offset': 20,
-              'y_offset': 5
-          }
         }
-        market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells'][cells[cell_index][1]] = {
-          'text': "Non Profit",
-          'format': "smaller_heading_borderless_center"
+    }
+    
+    for page in competitor_pages:
+        market_study_data['pages'][page] = competitor_pages[page]
+        market_study_pages.append(page)
+        max_pages += 1
+    
+    max_pages += 4
+    market_study_pages.append('good_to_know')
+    market_study_pages.append('regulations')
+    market_study_pages.append('methodic')
+    market_study_pages.append('contact')
+    market_study_data['number_of_pages'] = max_pages
+    market_study_data['pages']['good_to_know']['page_number'] = max_pages - 3
+    market_study_data['pages']['regulations']['page_number'] = max_pages - 2
+    market_study_data['pages']['methodic']['page_number'] = max_pages - 1
+    market_study_data['pages']['contact']['page_number'] = max_pages
+    
+    good_to_know_median = anvil.server.call(
+        'get_multiple_median',
+        {
+            'beds': list_beds,
+            'years_of_construction_nh': list_years_of_construction_nh,
+            'years_of_construction_al': list_years_of_construction_al
         }
-        cell_index += 1
-      if not invest_cost_chart_public_path == 404:
-        market_study_data['pages']['GOOD TO KNOW']['cell_content']['images'][cells[cell_index][0]] = {
-          'file': invest_cost_chart_public_path,
-          'settings': {
-              'x_scale': .6,
-              'y_scale': .6,
-              'x_offset': 20,
-              'y_offset': 5
-          }
-        }
-        market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells'][cells[cell_index][1]] = {
-          'text': "Public",
-          'format': "smaller_heading_borderless_center"
-        }
-        cell_index += 1
-      if not invest_cost_chart_private_path == 404:
-        market_study_data['pages']['GOOD TO KNOW']['cell_content']['images'][cells[cell_index][0]] = {
-          'file': invest_cost_chart_private_path,
-          'settings': {
-              'x_scale': .6,
-              'y_scale': .6,
-              'x_offset': 20,
-              'y_offset': 5
-          }
-        }
-        market_study_data['pages']['GOOD TO KNOW']['cell_content']['merge_cells'][cells[cell_index][1]] = {
-          'text': "Private",
-          'format': "smaller_heading_borderless_center"
-        }
-        cell_index += 1
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C4:X5']['text'] = city
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['C12:X14']['text'] = f"This market study consideres {len(data_comp_analysis_nh['data'])} nursing homes within the vicinity of {iso_time} minutes {movement}. Thereof, {complied_regulations} facilities comply with the federal state regulations and {uncomplied_regulations} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {loss_of_beds}."
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O15:X15']['text'] = regulations['federal_state']
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O17:S17']['text'] = f"{int(regulations['New']['sr_quote_raw'] * 100)}%" if not type(regulations['New']['sr_quote_raw']) == str else regulations['New']['sr_quote_raw']
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O18:S18']['text'] = regulations['New']['max_beds_raw']
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O19:S19']['text'] = regulations['New']['min_room_size']
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O20:S20']['text'] = regulations['New']['min_common_area_resident']
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O21:S21']['text'] = regulations['New']['comment']
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['O22:S22']['text'] = regulations['New']['legal_basis']
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['T17:X17']['text'] = f"{int(regulations['Existing']['sr_quote_raw'] * 100)}%" if not type(regulations['Existing']['sr_quote_raw']) == str else regulations['Existing']['sr_quote_raw']
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['T18:X18']['text'] = regulations['Existing']['max_beds_raw']
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['T19:X19']['text'] = regulations['Existing']['min_room_size']
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['T20:X20']['text'] = regulations['Existing']['min_common_area_resident']
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['T21:X21']['text'] = regulations['Existing']['comment']
-      market_study_data['pages']['REGULATIONS']['cell_content']['merge_cells']['T22:X22']['text'] = regulations['Existing']['legal_basis']
-
-      market_study_data['pages']['SUMMARY']['cell_content']['textboxes']['V1']['text'] = f"{summary_page} | {max_pages}"
-      market_study_data['pages']['LOCATION ANALYSIS']['cell_content']['textboxes']['R1']['text'] = f"{location_analysis_page} | {max_pages}"
-      market_study_data['pages']['REGULATIONS']['cell_content']['textboxes']['W1']['text'] = f"{regulations_page} | {max_pages}"
-      for page in competitor_analysis_pages:
-        market_study_data['pages'][f'COMPETITOR ANALYSIS {page - 3}']['cell_content']['textboxes']['V1']['text'] = f"{page} | {max_pages}"
-      market_study_data['pages']['GOOD TO KNOW']['cell_content']['textboxes']['X1']['text'] = f"{good_to_know_page} | {max_pages}"
-      market_study_data['pages']['METHODIC']['cell_content']['textboxes']['Y1']['text'] = f"{methodic_page} | {max_pages}"
-      market_study_data['pages']['CONTACT']['cell_content']['textboxes']['Y1']['text'] = f"{contact_page} | {max_pages}"
-        
-    ##### Analysis Addition to Market Study #####
-
-      # #####Create Market Study as Excel and PDF#####
-
-      Functions.manipulate_loading_overlay(self, True)
-      anvil.js.call('update_loading_bar', 85, 'Creating Market Study as Excel and PDF')
-
-      request_data = self.build_competitor_map_request(coords_nh, Variables.home_address_nh, coords_al, [])
-      request_data = self.build_competitor_map_request(request_data['controlling_marker'], Variables.home_address_al, request_data['working_marker'], request_data['request'])
-      request = self.build_home_marker_map_request(request_data['controlling_marker']['marker_coords']['lng'], request_data['controlling_marker']['marker_coords']['lat'], request_data['request'])
-      anvil.server.call('create_iso_map', Variables.activeIso, Functions.create_bounding_box(self), unique_code)
-      anvil.server.call('new_ms_test2', market_study_data, bbox, mapRequestData, unique_code, market_study_pages, request)
-      
-      # #####Downloading Files#####
-      
-      anvil.js.call('update_loading_bar', 100, 'Download Files')
-        
-      #Get PDF from Table and start Download
-      table = app_tables.pictures.search()
-      mapPDF = app_tables.pictures.search()[0]
-      # mapExcel = app_tables.pictures.search()[0]
-      anvil.media.download(mapPDF['pic'])
-      # time.sleep(1)
-      # anvil.media.download(mapExcel['pic'])
-      Variables.unique_code = unique_code
-
-      # #####Reset Loading Bar#####
-      
-      anvil.js.call('update_loading_bar', 0, '')
-      Functions.manipulate_loading_overlay(self, False)
+    )
+    market_study_data['pages']['good_to_know']['cell']['median_beds_value']['txt'] = good_to_know_median['beds']
+    market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_value']['txt'] = good_to_know_median['years_of_construction_nh']
+    market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_al_value']['txt'] = good_to_know_median['years_of_construction_al']
+    
+    # Create Map Request for Competitor Map
+    competitor_map_request_data = self.build_competitor_map_request(
+        coords_nh,
+        Variables.home_address_nh,
+        coords_al,
+        []
+    )
+    competitor_map_request_data = self.build_competitor_map_request(
+        competitor_map_request_data['controlling_marker'],
+        Variables.home_address_al,
+        competitor_map_request_data['working_marker'],
+        competitor_map_request_data['request']
+    )
+    competitor_map_request = self.build_home_marker_map_request(
+        competitor_map_request_data['controlling_marker']['marker_coords']['lng'],
+        competitor_map_request_data['controlling_marker']['marker_coords']['lat'],
+        competitor_map_request_data['request']
+    )
+    
+    chart_data = {
+        'operator': {
+            'nursing_home_data': [none_profit_operator_nh, public_operator_nh, private_operator_nh],
+            'assisted_living_data': [none_profit_operator_al, public_operator_al, private_operator_al]
+        },
+        'invest_cost_overall': invest_plot_data,
+        'purchasing_power': purchase_power,
+        'invest_cost_public': {
+            'data': invest_costs_public,
+            'home': invest_costs_public_home
+        },
+        'invest_cost_non_profit': {
+            'data': invest_costs_non_profit,
+            'home': invest_costs_non_profit_home
+        },
+        'invest_cost_private': {
+            'data': invest_costs_private,
+            'home': invest_costs_private_home
+        },
+    }
+    
+    # Generate Market Study PDF
+    anvil.server.call(
+        'generate_market_study_pdf',
+        market_study_data,  # Dictionary of Data to fill Market Study PDF
+        bounding_box,  # Bounding Box of the Map
+        Variables.unique_code,  # Unique creation Code for current Market Study
+        market_study_pages,  # Ordered List of Pages inside Market Study
+        competitor_map_request,  # Request Data for Competitor Map
+        Variables.activeIso,  # Data of current Iso Layer
+        marker_coords,  # Coordinates of Map Marker
+        chart_data,  # Data to create all needed charts
+    )
+    
+    # Download Market Study PDF
+    market_study = app_tables.pictures.search()[0]
+    anvil.media.download(market_study['pic'])
+    print(datetime.datetime.now())
   
   def upload_mspdf_change(self, file, **event_args):
     with anvil.server.no_loading_indicator:
@@ -4660,8 +6208,8 @@ class Map2_0(Map2_0Template):
   def create_share_map(self, mode):
     """This method is called when the button is clicked"""
     with anvil.server.no_loading_indicator:
-      if mode == 'click':
-        Functions.manipulate_loading_overlay(self, True)
+      # if mode == 'click':
+        # Functions.manipulate_loading_overlay(self, True)
       searched_address = anvil.js.call('getSearchedAddress')
       date = datetime.datetime.now()
       str_date = str(date).split('.')
@@ -4731,10 +6279,10 @@ class Map2_0(Map2_0Template):
         'settings': Variables.marker
       }
 
-      Functions.manipulate_loading_overlay(self, False)
+      # Functions.manipulate_loading_overlay(self, False)
       from .Name_Share_Link import Name_Share_Link
       name = alert(content=Name_Share_Link(searched_address=changed_address), buttons=[], dismissible=False, large=True, role='custom_alert')
-      Functions.manipulate_loading_overlay(self, True)
+      # Functions.manipulate_loading_overlay(self, True)
       self.url = anvil.server.call('get_app_url') + f'#?name={name}'
       center = self.mapbox.getCenter()
       
@@ -4776,7 +6324,7 @@ class Map2_0(Map2_0Template):
         grid.add_component(label, row="label", col_xs=1, width_xs=10)
         grid.add_component(button, row="button", col_xs=1, width_xs=10)
   
-        Functions.manipulate_loading_overlay(self, False)
+        # Functions.manipulate_loading_overlay(self, False)
         alert(grid, large=True, dismissible=False, role='custom_alert')
       else:
         return self.url.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss")
