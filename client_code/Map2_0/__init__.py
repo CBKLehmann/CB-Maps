@@ -1372,7 +1372,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 6,
                 'h': 6,
-                'txt': prev_competitor_index,
+                'txt': str(prev_competitor_index),
                 'align': 'center',
             }
             current_competitor_page['cell'][f'competitor_{table_position}_name'] = {
@@ -1941,7 +1941,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 6,
                 'h': 6,
-                'txt': prev_competitor_index,
+                'txt': str(prev_competitor_index),
                 'align': 'center',
                 'fill': True
             }
@@ -2024,7 +2024,6 @@ class Map2_0(Map2_0Template):
                 'align': 'center',
                 'fill': True,
             }
-            print(competitor[0]['number_apts'])
             current_competitor_page['cell'][f'competitor_{table_position}_apartments'] = {
                 'color': [0, 0, 0],
                 'fill_color': [244, 239, 220],
@@ -4966,9 +4965,9 @@ class Map2_0(Map2_0Template):
             'years_of_construction_al': list_years_of_construction_al
         }
     )
-    market_study_data['pages']['good_to_know']['cell']['median_beds_value']['txt'] = good_to_know_median['beds']
-    market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_value']['txt'] = good_to_know_median['years_of_construction_nh']
-    market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_al_value']['txt'] = good_to_know_median['years_of_construction_al']
+    market_study_data['pages']['good_to_know']['cell']['median_beds_value']['txt'] = str(good_to_know_median['beds'])
+    market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_value']['txt'] = str(good_to_know_median['years_of_construction_nh'])
+    market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_al_value']['txt'] = str(good_to_know_median['years_of_construction_al'])
     
     # Create Map Request for Competitor Map
     competitor_map_request_data = self.build_competitor_map_request(
