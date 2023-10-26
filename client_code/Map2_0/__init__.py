@@ -956,7 +956,7 @@ class Map2_0(Map2_0Template):
     max_pages = 3
     summary_page = 2
     location_analysis_page = 3
-    current_competitor_analysis_page = 3
+    current_competitor_analysis_page = 4
     
     nursing_homes_amount = len(data_comp_analysis_nh['data'])
     assisted_living_amount = len(data_comp_analysis_al['data'])
@@ -1700,7 +1700,7 @@ class Map2_0(Map2_0Template):
                 'y': 285,
                 'w': 10,
                 'h': 6,
-                'txt': 'x̃ {:,}%'.format(total_single_room_quota),
+                'txt': 'x̃ {:,}%'.format(round(total_single_room_quota, 1)),
                 'align': 'center',
             }
             current_competitor_page['cell'][f'competitor_median_occupancy'] = {
@@ -1711,7 +1711,7 @@ class Map2_0(Map2_0Template):
                 'y': 285,
                 'w': 10,
                 'h': 6,
-                'txt': 'x̃ {:,}%'.format(total_occupancy_rate),
+                'txt': 'x̃ {:,}%'.format(round(total_occupancy_rate * 100, 1)),
                 'align': 'center',
             }
             current_competitor_page['cell'][f'competitor_median_invest'] = {
@@ -1722,7 +1722,7 @@ class Map2_0(Map2_0Template):
                 'y': 285,
                 'w': 10,
                 'h': 6,
-                'txt': 'x̃ {:,}'.format(total_invest_cost),
+                'txt': 'x̃ {:,}'.format(round(total_invest_cost, 2)),
                 'align': 'center',
             }
             current_competitor_page['cell'][f'competitor_median_quality'] = {
@@ -1805,10 +1805,9 @@ class Map2_0(Map2_0Template):
     
     for index, competitor in enumerate(data_comp_analysis_al['data']):
         if index % 9 == 0:
-            if index > 0:
-                competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
-                page += 1
-                current_competitor_analysis_page += 1
+            competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
+            page += 1
+            current_competitor_analysis_page += 1
             current_competitor_page = copy.deepcopy(assisted_living_competitor_skeleton)
             current_competitor_page['page_number'] = current_competitor_analysis_page
             current_page_height = 177
@@ -1877,7 +1876,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 12,
                 'h': 6,
-                'txt': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
+                'txt': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
                 'align': 'center',
                 'fill': True,
             }
@@ -1916,7 +1915,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 8,
                 'h': 6,
-                'txt': '{:,}'.format(competitor[0]['number_apts']),
+                'txt': '{:,}'.format(int(competitor[0]['number_apts'])),
                 'align': 'center',
                 'fill': True,
             }
@@ -4935,8 +4934,6 @@ class Map2_0(Map2_0Template):
         market_study_data['pages'][page] = competitor_pages[page]
         market_study_pages.append(page)
         max_pages += 1
-
-    print(market_study_pages)
     
     max_pages += 4
     market_study_pages.append('good_to_know')
