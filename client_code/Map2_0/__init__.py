@@ -850,7 +850,7 @@ class Map2_0(Map2_0Template):
     change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
     change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
     population_trend = "{:.1f}".format((people_u80_fc_35 + people_o80_fc_35) * 100 / (people_u80 + people_o80) - 100)
-    nursing_home_rate = round(float(countie_data['pfleg_stat_lk']['heimquote2019']) * 100)
+    nursing_home_rate = round(float(countie_data['pfleg_stat_lk']['heimquote2019']) * 100, 1)
     keys = ['g_u6', 'g_6tou10', 'g_10tou16', 'g_16tou20', 'g_20tou30', 'g_30tou50', 'g_50tou65', 'g_65tou70', 'g_70tou80', 'g_80plus']
     population_fc_30 = 0
     population_fc_35 = 0
@@ -871,7 +871,7 @@ class Map2_0(Map2_0Template):
             beds_lk += int(el['platz_kurzpfl'])
         if not el['platz_nachtpfl'] == '-':
             beds_lk += int(el['platz_nachtpfl'])
-    occupancy_lk = round((inpatients_lk * 100) / beds_lk)
+    occupancy_lk = round((inpatients_lk * 100) / beds_lk, 1)
     free_beds_lk = beds_lk - inpatients_lk
     
     # #####Calculate Data for Market Study#####
@@ -1067,7 +1067,7 @@ class Map2_0(Map2_0Template):
                         }
                     }
     }
-    
+
     for index, competitor in enumerate(data_comp_analysis_nh['data']):
         if index % 9 == 0:
             if index > 0:
@@ -1221,14 +1221,14 @@ class Map2_0(Map2_0Template):
             if not single_rooms == '-':
                 if not double_rooms == '-':
                     rooms = single_rooms + double_rooms
-                    single_room_quote = round(single_rooms / (single_rooms + double_rooms) * 100)
+                    single_room_quote = round(single_rooms / (single_rooms + double_rooms) * 100, 1)
                 else:
                     rooms = single_rooms
-                    single_room_quote = 100
+                    single_room_quote = 100.0
             else:
                 if not double_rooms == '-':
                     rooms = double_rooms
-                    single_room_quote = 0
+                    single_room_quote = 0.0
                 else:
                     rooms = '-'
                     single_room_quote = '-'
@@ -1329,7 +1329,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 10,
                 'h': 6,
-                'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100)),
+                'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100), 1),
                 'align': 'center',
                 'fill': True,
             }
@@ -1489,14 +1489,14 @@ class Map2_0(Map2_0Template):
             if not single_rooms == '-':
                 if not double_rooms == '-':
                     rooms = single_rooms + double_rooms
-                    single_room_quote = round(single_rooms / (single_rooms + double_rooms) * 100)
+                    single_room_quote = round(single_rooms / (single_rooms + double_rooms) * 100, 1)
                 else:
                     rooms = single_rooms
-                    single_room_quote = 1
+                    single_room_quote = 100.0
             else:
                 if not double_rooms == '-':
                     rooms = double_rooms
-                    single_room_quote = 0
+                    single_room_quote = 0.0
                 else:
                     rooms = '-'
                     single_room_quote = '-'
@@ -1585,7 +1585,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 10,
                 'h': 6,
-                'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100)) if not competitor[0]['occupancy'] == '-' else competitor[0]['occupancy'],
+                'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100), 1) if not competitor[0]['occupancy'] == '-' else competitor[0]['occupancy'],
                 'align': 'center',
             }
             current_competitor_page['cell'][f'competitor_{table_position}_invest'] = {
@@ -1612,9 +1612,8 @@ class Map2_0(Map2_0Template):
             }
     
         current_page_height += 12
-    
+
         if index == len(data_comp_analysis_nh['data']) - 1:
-            print(index)
             median_dictionary = anvil.server.call(
                 "get_multiple_median",
                 {
@@ -1737,7 +1736,7 @@ class Map2_0(Map2_0Template):
                 'txt': '{:,}'.format(total_mdk_grade),
                 'align': 'center',
             }
-    
+          
             competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
     
     # Assisted Living Pages
@@ -3358,7 +3357,7 @@ class Map2_0(Map2_0Template):
                         'x': 101,
                         'y': 151,
                         'w': 23,
-                        'txt': '95%',
+                        'txt': '95.0%',
                         'align': 'right'
                     },
                     'number_of_beds_2030_s1': {
@@ -3398,7 +3397,7 @@ class Map2_0(Map2_0Template):
                         'x': 101,
                         'y': 201,
                         'w': 23,
-                        'txt': '95%',
+                        'txt': '95.0%',
                         'align': 'right'
                     },
                     'loss_of_beds_2030_s1': {
@@ -3488,7 +3487,7 @@ class Map2_0(Map2_0Template):
                         'x': 125,
                         'y': 151,
                         'w': 23,
-                        'txt': '95%',
+                        'txt': '95.0%',
                         'align': 'right'
                     },
                     'number_of_beds_2030_s2': {
@@ -3528,7 +3527,7 @@ class Map2_0(Map2_0Template):
                         'x': 125,
                         'y': 201,
                         'w': 23,
-                        'txt': '95%',
+                        'txt': '95.0%',
                         'align': 'right'
                     },
                     'loss_of_beds_2030_s2': {
@@ -3690,7 +3689,7 @@ class Map2_0(Map2_0Template):
                         'x': 151,
                         'y': 151,
                         'w': 23,
-                        'txt': '95%',
+                        'txt': '95.0%',
                         'align': 'right'
                     },
                     'number_of_beds_2035_s1': {
@@ -3730,7 +3729,7 @@ class Map2_0(Map2_0Template):
                         'x': 151,
                         'y': 201,
                         'w': 23,
-                        'txt': '95%',
+                        'txt': '95.0%',
                         'align': 'right'
                     },
                     'loss_of_beds_2035_s1': {
@@ -3820,7 +3819,7 @@ class Map2_0(Map2_0Template):
                         'x': 175,
                         'y': 151,
                         'w': 23,
-                        'txt': '95%',
+                        'txt': '95.0%',
                         'align': 'right'
                     },
                     'number_of_beds_2035_s2': {
@@ -3860,7 +3859,7 @@ class Map2_0(Map2_0Template):
                         'x': 175,
                         'y': 201,
                         'w': 23,
-                        'txt': '95%',
+                        'txt': '95.0%',
                         'align': 'right'
                     },
                     'loss_of_beds_2035_s2': {
@@ -4936,6 +4935,8 @@ class Map2_0(Map2_0Template):
         market_study_data['pages'][page] = competitor_pages[page]
         market_study_pages.append(page)
         max_pages += 1
+
+    print(market_study_pages)
     
     max_pages += 4
     market_study_pages.append('good_to_know')
