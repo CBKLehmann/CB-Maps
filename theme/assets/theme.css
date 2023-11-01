@@ -1300,6 +1300,7 @@ select > option {
 
 .anvil-root-container {
   overflow: hidden;
+  height: 100%;
 }
 
 .mapboxgl-map {
@@ -1412,6 +1413,13 @@ select > option {
   padding: 0 !important;
 }
 
+.anvil-role-login_grid {
+  height: 100%;
+  position: relative;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
 #mapPopup {
   position: absolute;
   z-index: 300;
@@ -1440,6 +1448,7 @@ body {
   width: 100vw;
   background-image: url("_/theme/beach-2562563.jpg");
   background-size: cover;
+  height: 100vh;
 }
 
 /* .anvil-role-copyright {
@@ -1477,12 +1486,22 @@ a:hover {
 }
 
 .blur_background {
-  height: 100%;
-/*   position: absolute;
-  top: 0;
-  right: 0; */
+  height: 100vh;
+  position: absolute;
+  right: 0;
   width: 50%;
-  background-color: %color:Primary 700%;
-  opacity: .5;
-  backdrop-filter: blur(10px);
+  background-color: rgba(27, 41, 57, .3);
+  backdrop-filter: blur(4px);
+}
+
+#appGoesHere {
+  height: 100%;
+}
+
+#appGoesHere > .anvil-container {
+  height: 100%;
+}
+
+.anvil-inline-container {
+  height: 100%;
 }
