@@ -1400,9 +1400,12 @@ select > option {
   height: 100vh;
   display: grid;
   align-items: center;
+  background-image: url("_/theme/beach-2562563.jpg");
+  background-size: cover;
 }
 
 .anvil-role-login_panel {
+  height: 100% !important;
 }
 
 .anvil-role-login_grid > div {
@@ -1435,6 +1438,8 @@ select > option {
 
 body {
   width: 100vw;
+  background-image: url("_/theme/beach-2562563.jpg");
+  background-size: cover;
 }
 
 /* .anvil-role-copyright {
@@ -1469,4 +1474,15 @@ a:hover {
 
 .anvil-role-custom_alert_big {
   width: 100%;
+}
+
+.blur_background {
+  height: 100%;
+/*   position: absolute;
+  top: 0;
+  right: 0; */
+  width: 50%;
+  background-color: %color:Primary 700%;
+  opacity: .5;
+  backdrop-filter: blur(10px);
 }

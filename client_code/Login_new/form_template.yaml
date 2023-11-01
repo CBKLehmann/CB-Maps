@@ -1,0 +1,7 @@
+container:
+  type: HtmlTemplate
+  properties: {html: '<div class="blur_background"></div>
+
+      <div anvil-slot="default"></div>', role: null}
+components: []
+is_package: true

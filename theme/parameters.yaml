@@ -53,6 +53,8 @@ roles:
 - {name: login_grid}
 - {name: copyright}
 - {name: custom_sidebar}
+- {name: background_image, components: null}
+- {name: blur_background}
 color_scheme:
   preset_groups:
   - name: Primary Colour

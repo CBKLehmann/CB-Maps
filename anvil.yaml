@@ -65,7 +65,7 @@ services:
   client_config: {allow_signup: false, enable_automatically: false, use_email: true,
     confirm_email: true, allow_remember_me: true, remember_me_days: 30}
   server_config: {user_table: users}
-startup: {type: form, module: Login}
+startup: {type: form, module: Login_new}
 package_name: How_Far_Can_I_Go_
 allow_embedding: false
 name: MAP
