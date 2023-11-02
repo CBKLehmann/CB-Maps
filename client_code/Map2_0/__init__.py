@@ -1848,7 +1848,7 @@ class Map2_0(Map2_0Template):
                 'size': 8,
                 'x': 17,
                 'y': current_page_height + 6,
-                'w': 50,
+                'w': 183,
                 'h': 6,
                 'txt': competitor[0]['raw_betreiber'] if len(competitor[0]['raw_betreiber']) <= 30 else f"{competitor[0]['raw_betreiber'][:30]}...",
                 'align': 'left',
@@ -1916,6 +1916,19 @@ class Map2_0(Map2_0Template):
                 'w': 8,
                 'h': 6,
                 'txt': '{:,}'.format(int(competitor[0]['number_apts'])),
+                'align': 'center',
+                'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_empty'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 119,
+                'y': current_page_height,
+                'w': 81,
+                'h': 6,
+                'txt': "",
                 'align': 'center',
                 'fill': True,
             }
