@@ -1054,7 +1054,7 @@ class Map2_0(Map2_0Template):
         },
         'cell': {},
         'multi_cell': {
-                        'legal_info': {
+                        'legal_info_1': {
                             'color': [128, 128, 128],
                             'font': 'segoeui',
                             'size': 7,
@@ -1062,7 +1062,18 @@ class Map2_0(Map2_0Template):
                             'y': 285,
                             'w': 190,
                             'h': 4,
-                            'txt': '¹The Facility does / does not comply with the respective federal state regulation.\nFor more info see page "Regulations"',
+                            'txt': '¹The Facility does / does not comply with the respective federal state regulation.',
+                            'align': 'left'
+                        },
+                        'legal_info_2': {
+                            'color': [128, 128, 128],
+                            'font': 'segoeui',
+                            'size': 7,
+                            'x': 10,
+                            'y': 289,
+                            'w': 190,
+                            'h': 4,
+                            'txt': 'For more info see page "Regulations"',
                             'align': 'left'
                         }
                     }
@@ -1114,7 +1125,7 @@ class Map2_0(Map2_0Template):
                 'size': 8,
                 'x': 17,
                 'y': current_page_height + 4,
-                'w': 186,
+                'w': 185,
                 'h': 6,
                 'txt': competitor[0]['raw_betreiber'] if len(competitor[0]['raw_betreiber']) <= 30 else f"{competitor[0]['raw_betreiber'][:30]}...",
                 'align': 'left',
