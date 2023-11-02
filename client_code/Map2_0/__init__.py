@@ -1277,7 +1277,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 12,
                 'h': 6,
-                'txt': '{:,}'.format(single_rooms),
+                'txt': '{:,}'.format(single_rooms) if not single_rooms == '-' else single_rooms,
                 'align': 'center',
                 'fill': True,
             }
@@ -1290,7 +1290,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 12,
                 'h': 6,
-                'txt': '{:,}'.format(double_rooms),
+                'txt': '{:,}'.format(double_rooms) if not single_rooms == '-' else single_rooms,
                 'align': 'center',
                 'fill': True,
             }
@@ -1303,7 +1303,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 10,
                 'h': 6,
-                'txt': '{:,}'.format(rooms),
+                'txt': '{:,}'.format(rooms) if not single_rooms == '-' else single_rooms,
                 'align': 'center',
                 'fill': True,
             }
@@ -1316,7 +1316,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 10,
                 'h': 6,
-                'txt': '{:,}%'.format(single_room_quote),
+                'txt': '{:,}%'.format(single_room_quote) if not single_rooms == '-' else single_rooms,
                 'align': 'center',
                 'fill': True,
             }
