@@ -4987,13 +4987,15 @@ class Map2_0(Map2_0Template):
         coords_nh,
         Variables.home_address_nh,
         coords_al,
-        []
+        [],
+        'nursing_home'
     )
     competitor_map_request_data = self.build_competitor_map_request(
         competitor_map_request_data['controlling_marker'],
         Variables.home_address_al,
         competitor_map_request_data['working_marker'],
-        competitor_map_request_data['request']
+        competitor_map_request_data['request'],
+        'assisted_living'
     )
     competitor_map_request = self.build_home_marker_map_request(
         competitor_map_request_data['controlling_marker']['marker_coords']['lng'],
@@ -5822,7 +5824,7 @@ class Map2_0(Map2_0Template):
       return res_data
 
 
-  def build_competitor_map_request(self, working_marker, home_marker, controlling_marker, request):
+  def build_competitor_map_request(self, working_marker, home_marker, controlling_marker, request, type):
     request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
     request_static_map = request_static_map_raw
     marker_number = 0
@@ -5833,7 +5835,10 @@ class Map2_0(Map2_0Template):
         working_marker['sorted_coords'][working_marker_index].append('home')
       elif not last_coord_dist == working_marker_coordinate[1]:
         marker_number += 1
-        icon = f'{marker_number}@0.6x.png'
+        if type == 'nursing_home':
+          icon = f'{marker_number}Nursing@0.6x.png'
+        else:
+          icon = f'{marker_number}@0.6x.png'
         if not working_marker_coordinate[2]:
             for controlling_maker_index, controlling_maker_coordinate in enumerate(controlling_marker['sorted_coords']):
               if abs(controlling_maker_coordinate[1] - working_marker_coordinate[1]) <= .015:
@@ -5843,15 +5848,21 @@ class Map2_0(Map2_0Template):
                   [float(controlling_maker_coordinate[0]['coords'][0]), float(controlling_maker_coordinate[0]['coords'][1])]
                 )
                 if distance <= .01:
-                  icon = f'Assisted{marker_number}@0.6x.png'
+                  if type == 'nursing_home':
+                    icon = f'Nursing{marker_number}@0.6x.png'
+                  else:
+                    icon = f'Assisted{marker_number}@0.6x.png'
                   controlling_marker['sorted_coords'][controlling_maker_index].append(True)
                   working_marker['sorted_coords'][working_marker_index].append(True)
                   break
         else:
-          icon = f'Assisted{marker_number}@0.6x.png'
+          if type == 'nursing_home':
+            icon = f'Nursing{marker_number}@0.6x.png'
+          else:
+            icon = f'Assisted{marker_number}@0.6x.png'
         url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
         encoded_url = url.replace("/", "%2F")
-        if not (working_marker_index + 1) % 20 == 1:
+        if not (working_marker_index + 1) % 20 == 1 and not request_static_map[-1] == "B":
           request_static_map += f"%2C"
         request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{working_marker_coordinate[0]['coords'][0]},{working_marker_coordinate[0]['coords'][1]}%5D%7D%7D"
         if working_marker_index == len(working_marker['sorted_coords']) - 1 or (working_marker_index + 1) % 20 == 0:
