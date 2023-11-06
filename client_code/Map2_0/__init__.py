@@ -1926,7 +1926,7 @@ class Map2_0(Map2_0Template):
                 'y': current_page_height,
                 'w': 8,
                 'h': 6,
-                'txt': '{:,}'.format(int(competitor[0]['number_apts'])),
+                'txt': '{:,}'.format(int(competitor[0]['number_apts'])) if not competitor[0]['number_apts'] == '-' else competitor[0]['number_apts'],
                 'align': 'center',
                 'fill': True,
             }
