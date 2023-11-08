@@ -710,54 +710,41 @@ class Map2_0(Map2_0Template):
   #######Noch bearbeiten#######[]
 
   def create_market_study(self, **event_args):
-    print(datetime.datetime.now())
-    '''Execute Code without the standard Anvil Loading Animation'''
-    # with anvil.server.no_loading_indicator:
-    date = datetime.datetime.now()
-    if len(str(date.day)) == 1:
-        day = f"0{date.day}"
-    else:
-        day = date.day
-    if len(str(date.month)) == 1:
-        month = f"0{date.month}"
-    else:
-        month = date.month
-    year = date.year
-    if len(str(date.hour)) == 1:
-        hour = f"0{date.hour}"
-    else:
-        hour = date.hour
-    if len(str(date.minute)) == 1:
-        minute = f"0{date.minute}"
-    else:
-        minute = date.minute
-    created_date = f"{day}.{month}.{year} {hour}:{minute}"
+    with anvil.server.no_loading_indicator:
+      if self.role == 'admin':
+        print(datetime.datetime.now())
+
+      Functions.manipulate_loading_overlay(self, True)
+      anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
+      
+      ''' Generate created Date of Market Study '''
+      created_date = Functions.get_current_date_as_string()
     
-    # Get unique Code to identify Files and Images with current MS-Creation
-    Variables.unique_code = anvil.server.call("get_unique_code")
+      ''' Get unique Code to identify Files and Images with current MS-Creation '''
+      Variables.unique_code = anvil.server.call("get_unique_code")
     
-    # Get Map based Information
-    street = anvil.js.call('getSearchedAddress').split(",")[0]
-    marker_coords = {
-        'lng': (dict(self.marker['_lngLat'])['lng']),
-        'lat': (dict(self.marker['_lngLat'])['lat'])
-    }
-    purchase_power = anvil.server.call('get_purchasing_power', location={'lat': marker_coords['lat'], 'lng': marker_coords['lng']})
-    iso = dict(self.mapbox.getSource('iso'))
-    iso_time = self.time_dropdown.selected_value
-    if iso_time == "-1":
-        iso_time = "20"
-    iso_movement = self.profile_dropdown.selected_value.lower()
-    bounding_box = [0, 0, 0, 0]
-    for point in iso['_data']['features'][0]['geometry']['coordinates'][0]:
-        if point[0] < bounding_box[1] or bounding_box[1] == 0:
-            bounding_box[1] = point[0]
-        if point[0] > bounding_box[3] or bounding_box[3] == 0:
-            bounding_box[3] = point[0]
-        if point[1] < bounding_box[0] or bounding_box[0] == 0:
-            bounding_box[0] = point[1]
-        if point[1] > bounding_box[2] or bounding_box[2] == 0:
-            bounding_box[2] = point[1]
+      ''' Get Map based Information '''
+      street = anvil.js.call('getSearchedAddress').split(",")[0]
+      marker_coords = {
+          'lng': (dict(self.marker['_lngLat'])['lng']),
+          'lat': (dict(self.marker['_lngLat'])['lat'])
+      }
+      purchase_power = anvil.server.call('get_purchasing_power', location={'lat': marker_coords['lat'], 'lng': marker_coords['lng']})
+      iso = dict(self.mapbox.getSource('iso'))
+      iso_time = self.time_dropdown.selected_value
+      if iso_time == "-1":
+          iso_time = "20"
+      iso_movement = self.profile_dropdown.selected_value.lower()
+      bounding_box = [0, 0, 0, 0]
+      for point in iso['_data']['features'][0]['geometry']['coordinates'][0]:
+          if point[0] < bounding_box[1] or bounding_box[1] == 0:
+              bounding_box[1] = point[0]
+          if point[0] > bounding_box[3] or bounding_box[3] == 0:
+              bounding_box[3] = point[0]
+          if point[1] < bounding_box[0] or bounding_box[0] == 0:
+              bounding_box[0] = point[1]
+          if point[1] > bounding_box[2] or bounding_box[2] == 0:
+              bounding_box[2] = point[1]
     
     # Get Data for Nursing Homes and Assisted Living
     coords_nh = self.organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', marker_coords)

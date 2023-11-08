@@ -575,3 +575,25 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
 
 def addPopup():
   print('Added')
+
+def get_current_date_as_string():
+  with anvil.server.no_loading_indicator:
+    date = datetime.datetime.now()
+    if len(str(date.day)) == 1:
+      day = f"0{date.day}"
+    else:
+      day = date.day
+    if len(str(date.month)) == 1:
+      month = f"0{date.month}"
+    else:
+      month = date.month
+    year = date.year
+    if len(str(date.hour)) == 1:
+      hour = f"0{date.hour}"
+    else:
+      hour = date.hour
+    if len(str(date.minute)) == 1:
+      minute = f"0{date.minute}"
+    else:
+      minute = date.minute
+    return f"{day}.{month}.{year} {hour}:{minute}"
