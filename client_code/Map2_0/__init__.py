@@ -994,88 +994,6 @@ class Map2_0(Map2_0Template):
       prev_competitor_distance = 0
       prev_competitor_index = 0
       current_page_height = 177
-      nursing_homes_competitor_skeleton = {
-          'page_number': 4,
-          'line': {
-              'top_line': {
-                  'x1': 17,
-                  'y1': 176,
-                  'x2': 203,
-                  'y2': 176
-              },
-              'bottom_line': {
-                  'x1': 10,
-                  'y1': 285,
-                  'x2': 203,
-                  'y2': 285
-              }
-          },
-          'text': {
-              'heading_city': {
-                  'color': [218, 218, 218],
-                  'font': 'segoeui',
-                  'size': 27,
-                  'x': 10,
-                  'y': 30,
-                  'txt': city
-              },
-              'page_name': {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 27,
-                  'x': 10,
-                  'y': 40,
-                  'txt': 'Competitor Analysis'
-              },
-              'facility_type': {
-                  'color': [244, 81, 94],
-                  'font': 'seguisb',
-                  'size': 9,
-                  'x': 19,
-                  'y': 173,
-                  'txt': 'Nursing homes'
-              }
-          },
-          'image': {
-              'location_map': {
-                  'x': 10,
-                  'y': 45,
-                  'w': 150,
-                  'path': f"tmp/map_image_{Variables.unique_code}.png"
-              },
-              'table_header': {
-                  'x': 70,
-                  'y': 142,
-                  'w': 130,
-                  'path': "img/nh_header.png"
-              }
-          },
-          'cell': {},
-          'multi_cell': {
-                          'legal_info_1': {
-                              'color': [128, 128, 128],
-                              'font': 'segoeui',
-                              'size': 7,
-                              'x': 10,
-                              'y': 285,
-                              'w': 190,
-                              'h': 4,
-                              'txt': '¹The Facility does / does not comply with the respective federal state regulation.',
-                              'align': 'left'
-                          },
-                          'legal_info_2': {
-                              'color': [128, 128, 128],
-                              'font': 'segoeui',
-                              'size': 7,
-                              'x': 10,
-                              'y': 288,
-                              'w': 190,
-                              'h': 4,
-                              'txt': 'For more info see page "Regulations"',
-                              'align': 'left'
-                          }
-                      }
-      }
 
       for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if index % 9 == 0:
@@ -1083,8 +1001,11 @@ class Map2_0(Map2_0Template):
                   competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
                   page += 1
                   current_competitor_analysis_page += 1
-              current_competitor_page = copy.deepcopy(nursing_homes_competitor_skeleton)
+              from . import Nursing_Homes_Competitor_Skeleton
+              current_competitor_page = copy.deepcopy(Nursing_Homes_Competitor_Skeleton.nursing_homes_competitor_skeleton)
               current_competitor_page['page_number'] = current_competitor_analysis_page
+              current_competitor_page['text']['heading_city']['txt'] = city
+              current_competitor_page['image']['location_map']['path'] = f"tmp/map_image_{Variables.unique_code}.png"
               current_page_height = 177
       
           if 'home' in competitor:
@@ -1753,72 +1674,17 @@ class Map2_0(Map2_0Template):
       prev_competitor_distance = 0
       prev_competitor_index = 0
       current_page_height = 177
-      assisted_living_competitor_skeleton = {
-          'page_number': 4,
-          'line': {
-              'top_line': {
-                  'x1': 17,
-                  'y1': 176,
-                  'x2': 203,
-                  'y2': 176
-              },
-              'bottom_line': {
-                  'x1': 10,
-                  'y1': 285,
-                  'x2': 203,
-                  'y2': 285
-              }
-          },
-          'text': {
-              'heading_city': {
-                  'color': [218, 218, 218],
-                  'font': 'segoeui',
-                  'size': 27,
-                  'x': 10,
-                  'y': 30,
-                  'txt': city
-              },
-              'page_name': {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 27,
-                  'x': 10,
-                  'y': 40,
-                  'txt': 'Competitor Analysis'
-              },
-              'facility_type': {
-                  'color': [249, 147, 152],
-                  'font': 'seguisb',
-                  'size': 9,
-                  'x': 19,
-                  'y': 173,
-                  'txt': 'Assisted Living'
-              }
-          },
-          'image': {
-              'location_map': {
-                  'x': 10,
-                  'y': 45,
-                  'w': 150,
-                  'path': f"tmp/map_image_{Variables.unique_code}.png"
-              },
-              'table_header': {
-                  'x': 70,
-                  'y': 142,
-                  'w': 47,
-                  'path': "img/al_header.png"
-              }
-          },
-          'cell': {}
-      }
       
       for index, competitor in enumerate(data_comp_analysis_al['data']):
           if index % 9 == 0:
               competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
               page += 1
               current_competitor_analysis_page += 1
-              current_competitor_page = copy.deepcopy(assisted_living_competitor_skeleton)
+              from . import Assisted_Living_Competitor_Skeleton
+              current_competitor_page = copy.deepcopy(Assisted_Living_Competitor_Skeleton.assisted_living_competitor_skeleton)
               current_competitor_page['page_number'] = current_competitor_analysis_page
+              current_competitor_page['text']['heading_city']['txt'] = city
+              current_competitor_page['image']['location_map']['path'] = f"tmp/map_image_{Variables.unique_code}.png"
               current_page_height = 177
       
           if 'home' in competitor:
