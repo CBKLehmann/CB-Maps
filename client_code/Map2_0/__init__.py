@@ -828,8 +828,10 @@ class Map2_0(Map2_0Template):
       ''' Get generated Analysis-Text for City '''
       from .ChatGPT import ChatGPT
       analysis_text = anvil.server.call('openai_test', city)
+      Functions.manipulate_loading_overlay(self, False)
       analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
-
+      Functions.manipulate_loading_overlay(self, True)
+      
       anvil.js.call('update_loading_bar', 50, 'Calculating Data for Market Study')
     
       ''' Get Information from Database for County of Marker-Position and extract Data '''
@@ -5041,6 +5043,7 @@ class Map2_0(Map2_0Template):
       print(datetime.datetime.now())
 
       anvil.js.call('update_loading_bar', 0, '')
+      Functions.manipulate_loading_overlay(self, False)
   
   def upload_mspdf_change(self, file, **event_args):
     with anvil.server.no_loading_indicator:
@@ -6064,10 +6067,10 @@ class Map2_0(Map2_0Template):
         'settings': Variables.marker
       }
 
-      # Functions.manipulate_loading_overlay(self, False)
       from .Name_Share_Link import Name_Share_Link
+      Functions.manipulate_loading_overlay(self, False)
       name = alert(content=Name_Share_Link(searched_address=changed_address), buttons=[], dismissible=False, large=True, role='custom_alert')
-      # Functions.manipulate_loading_overlay(self, True)
+      Functions.manipulate_loading_overlay(self, True)
       self.url = anvil.server.call('get_app_url') + f'#?name={name}'
       center = self.mapbox.getCenter()
       

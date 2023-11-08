@@ -107,7 +107,9 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
     from .Market_Study_Existing_Home import Market_Study_Existing_Home
     for entry in sorted_coords:
       if entry[1] <= 0.01:
+        Functions.manipulate_loading_overlay(self, False)
         res = alert(content=Market_Study_Existing_Home(entry=entry, topic=topic), dismissible=False, large=True, buttons=[], role='custom_alert')
+        Functions.manipulate_loading_overlay(self, True)
         if res == 'Yes':
           if topic == 'nursing_homes':
             Variables.home_address_nh.append(entry)
