@@ -302,7 +302,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
 
           if not deleted:
             distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
-  
+            
             # Create Popup for Element
             popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
               f"<p class='popup_name'><b>{ele['name']}</b></p>"
@@ -559,7 +559,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
         if not deleted:
 
           # Add Icon to the Map
-          newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+          newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup).setPopup(name_popup)
           newiconElement = newicon.getElement()
           self.addHoverEffect(newiconElement, popup, newicon, ele, category, marker_details)
           # anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.role)
