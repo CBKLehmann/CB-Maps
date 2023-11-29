@@ -121,13 +121,13 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
 
   elif category in Variables.micro_living_categories:
     if category == 'business_living':
-      geojson = anvil.server.call('get_micro_living_facilities', 'Business living', bbox)
+      geojson = anvil.server.call('get_micro_living_facilities', 'Business living', marker_coords)
     elif category == 'co_living':
-      geojson = anvil.server.call('get_micro_living_facilities', 'Co-living', bbox)
+      geojson = anvil.server.call('get_micro_living_facilities', 'Co-living', marker_coords)
     elif category == 'service_living':
-      geojson = anvil.server.call('get_micro_living_facilities', 'Serviced living', bbox)
+      geojson = anvil.server.call('get_micro_living_facilities', 'Serviced living', marker_coords)
     elif category == 'student_living':
-      geojson = anvil.server.call('get_micro_living_facilities', 'Student living', bbox)
+      geojson = anvil.server.call('get_micro_living_facilities', 'Student living', marker_coords)
   
   else:
 
