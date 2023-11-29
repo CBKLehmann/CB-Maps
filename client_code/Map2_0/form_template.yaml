@@ -686,6 +686,65 @@ components:
           layout_properties: {row: YSEYID, width_xs: 10, col_xs: 2, width: 164.438}
       - type: Button
         properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
+          enabled: true, foreground: 'theme:Gray 300', visible: true, text: Micro Living,
+          font_size: 13, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
+          italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
+        name: micro_living_btn
+        layout_properties: {row: VBIDON, width_xs: 12, col_xs: 0, width: 203.333}
+        event_bindings: {click: button_toggle_menu_parts}
+      - type: GridPanel
+        properties: {spacing_above: none, spacing_below: none, background: '', foreground: '',
+          border: '', visible: false, role: null, tooltip: ''}
+        name: micro_living_grid
+        layout_properties: {row: NFSPMN, width_xs: 12, col_xs: 0, width: 203.333}
+        components:
+        - type: CheckBox
+          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
+            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
+            visible: true, text: Select All, font_size: 13, font: Roboto+Flex, spacing_above: small,
+            spacing_below: none, italic: false, background: '', bold: false, checked: false,
+            underline: false}
+          name: select_all_micro_living
+          layout_properties: {row: RBYCNR, width_xs: 11, col_xs: 1, width: 183.885}
+          event_bindings: {change: select_all_change}
+        - type: CheckBox
+          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
+            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
+            visible: true, text: Business Living, font_size: 13, font: Roboto+Flex,
+            spacing_above: none, spacing_below: none, italic: false, background: '',
+            bold: false, checked: false, underline: false}
+          name: check_box_bl
+          layout_properties: {row: DZBJQS, width_xs: 10, col_xs: 2, width: 164.438}
+          event_bindings: {change: check_box_poi_change}
+        - type: CheckBox
+          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
+            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
+            visible: true, text: Co-living, font_size: 13, font: Roboto+Flex, spacing_above: none,
+            spacing_below: none, italic: false, background: '', bold: false, checked: false,
+            underline: false}
+          name: check_box_cl
+          layout_properties: {row: FFEUGE, width_xs: 10, col_xs: 2, width: 164.438}
+          event_bindings: {change: check_box_poi_change}
+        - type: CheckBox
+          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
+            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
+            visible: true, text: Serviced Living, font_size: 13, font: Roboto+Flex,
+            spacing_above: none, spacing_below: none, italic: false, background: '',
+            bold: false, checked: false, underline: false}
+          name: check_box_sl
+          layout_properties: {row: MBUVEA, width_xs: 10, col_xs: 2, width: 164.438}
+          event_bindings: {change: check_box_poi_change}
+        - type: CheckBox
+          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
+            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
+            visible: true, text: Student Living, font_size: 13, font: Roboto+Flex,
+            spacing_above: none, spacing_below: none, italic: false, background: '',
+            bold: false, checked: false, underline: false}
+          name: check_box_stl
+          layout_properties: {row: YLHQYA, width_xs: 10, col_xs: 2, width: 164.438}
+          event_bindings: {change: check_box_poi_change}
+      - type: Button
+        properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
           enabled: true, foreground: 'theme:Gray 300', visible: true, text: Food & Drinks,
           font_size: 13, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
           italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}

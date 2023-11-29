@@ -105,6 +105,7 @@ class Map2_0(Map2_0Template):
       self.select_all_opnv.tag.categorie = 'ÖPNV'
       self.select_all_edu.tag.categorie = 'Student Living'
       self.select_all_food.tag.categorie = 'Food & Drinks'
+      self.select_all_micro_living.tag.categorie = 'Micro Living'
       
       mapboxgl.accessToken = self.token
       self.mapbox = mapboxgl.Map({'container': self.dom,
@@ -352,6 +353,14 @@ class Map2_0(Map2_0Template):
         Variables.last_bbox_al = self.create_icons(self.check_box_su.checked, Variables.last_bbox_su, "subway", f'{self.app_url}/_/theme/Pins/U_Bahn_Pin.png')
       elif event_args['sender'].text == "Airport":
         Variables.last_bbox_ap = self.create_icons(self.check_box_ap.checked, Variables.last_bbox_ap, "aerodrome", f'{self.app_url}/_/theme/Pins/Flughafen_Pin.png')
+      elif event_args['sender'].text == "Business Living":
+        Variables.last_bbox_bl = self.create_icons(self.check_box_bl.checked, Variables.last_bbox_bl, "business_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+      elif event_args['sender'].text == "Co-living":
+        Variables.last_bbox_cl = self.create_icons(self.check_box_cl.checked, Variables.last_bbox_cl, "co_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+      elif event_args['sender'].text == "Serviced Living":
+        Variables.last_bbox_sl = self.create_icons(self.check_box_sl.checked, Variables.last_bbox_sl, "service_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+      elif event_args['sender'].text == "Student Living":
+        Variables.last_bbox_stl = self.create_icons(self.check_box_stl.checked, Variables.last_bbox_stl, "student_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
       Functions.manipulate_loading_overlay(self, False)
 
   def checkbox_poi_x_hfcig_change(self, **event_args):
@@ -444,6 +453,10 @@ class Map2_0(Map2_0Template):
         'Competitors': {
           'container': self.competitor_grid,
           'icon_container': self.competitor_btn
+        },
+        'Micro Living': {
+          'container': self.micro_living_grid,
+          'icon_container': self.micro_living_btn
         }
       }
       
@@ -2327,6 +2340,9 @@ class Map2_0(Map2_0Template):
       # Check if Checkbox is checked
       if check_box == True:
 
+        print(dict(self.marker['_pos']))
+        print('#')
+        print(dict(self.marker['_map']))
         marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
         
         # Check if Checkbox for Iso-Layer' is checked
@@ -2636,7 +2652,11 @@ class Map2_0(Map2_0Template):
           if not component == event_args['sender']:
             component.checked = event_args['sender'].checked
             component.raise_event('change')
-      pass
+      elif event_args['sender'].tag.categorie == 'Micro Living':
+        for component in self.micro_living_grid.get_components():
+          if not component == event_args['sender']:
+            component.checked = event_args['sender'].checked
+            component.raise_event('change')
 
   def iso_layer_active_change(self, **event_args):
     with anvil.server.no_loading_indicator:

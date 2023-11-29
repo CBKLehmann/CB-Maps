@@ -104,6 +104,7 @@ def manipulate_loading_overlay(self, state):
       Variables.loading = False
 
 def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_coords, mapboxgl):
+
   # Check if Category is PflegeDB
   if category == 'nursing_homes':
     geojson = anvil.server.call('get_care_db_data', bbox, 'Pflegeheime')
@@ -118,6 +119,16 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
 
     geojson = anvil.server.call('get_einrichtungen', bbox)
 
+  elif category in Variables.micro_living_categories:
+    if category == 'business_living':
+      geojson = anvil.server.call('get_micro_living_facilities', 'Business living', bbox)
+    elif category == 'co_living':
+      geojson = anvil.server.call('get_micro_living_facilities', 'Co-living', bbox)
+    elif category == 'service_living':
+      geojson = anvil.server.call('get_micro_living_facilities', 'Serviced living', bbox)
+    elif category == 'student_living':
+      geojson = anvil.server.call('get_micro_living_facilities', 'Student living', bbox)
+  
   else:
 
     # Get geojson of POIs inside Bounding Box
