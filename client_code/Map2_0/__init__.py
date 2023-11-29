@@ -2340,9 +2340,6 @@ class Map2_0(Map2_0Template):
       # Check if Checkbox is checked
       if check_box == True:
 
-        print(dict(self.marker['_pos']))
-        print('#')
-        print(dict(self.marker['_map']))
         marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
         
         # Check if Checkbox for Iso-Layer' is checked
