@@ -560,13 +560,14 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
                 average_rent_per_square_meter_raw = average_rent_per_apartment_raw
                 average_rent_per_square_meter = average_rent_per_apartment
             else:
+              average_rent_per_square_meter_raw = 'n.A.'
               average_rent_per_square_meter = 'n.A.'
 
             if not average_rent_per_square_meter == 'n.A.':
-              if average_rent_per_square_meter < minimum_average_rent:
-                minimum_average_rent = average_rent_per_square_meter
-              if average_rent_per_square_meter > maximum_average_rent:
-                maximum_average_rent = average_rent_per_square_meter
+              if average_rent_per_square_meter_raw < minimum_average_rent:
+                minimum_average_rent = average_rent_per_square_meter_raw
+              if average_rent_per_square_meter_raw > maximum_average_rent:
+                maximum_average_rent = average_rent_per_square_meter_raw
             
             distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
 
@@ -695,7 +696,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
     Variables.activeIcons.update({f'{category}': icons})
     last_bbox = bbox
     Variables.last_cat = f'{category}'
-    return minimum_average_rent, maximum_average_rent
+    return "{:.2f}".format(minimum_average_rent), "{:.2f}".format(maximum_average_rent)
 
 def addPopup():
   print('Added')
