@@ -743,6 +743,57 @@ components:
           name: check_box_stl
           layout_properties: {row: YLHQYA, width_xs: 10, col_xs: 2, width: 164.438}
           event_bindings: {change: check_box_poi_change}
+        - type: Spacer
+          properties: {height: 13}
+          name: spacer_4
+          layout_properties: {row: ZTGWMI, width_xs: 11, col_xs: 0}
+        - type: Label
+          properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
+            visible: true, text: Average rent per m², font_size: 15, font: '', spacing_above: small,
+            icon_align: left, spacing_below: small, italic: false, background: '',
+            bold: true, underline: false, icon: ''}
+          name: miete_label
+          layout_properties: {row: PUDLIB, width_xs: 12, col_xs: 0, width: 203.333}
+        - type: form:dep_qxtrfrkcq2g1q:Slider
+          properties: {role: '', pips_mode: '', min: 0, tooltips: null, margin: '15',
+            pips_stepped: false, pips: false, pips_values: '', max: 100, padding: '',
+            enabled: false, pips_density: null, limit: '', animate: true, visible: true,
+            connect: 'false,true,false', start: '0,100', behaviour: tap, handle_size: '20',
+            spacing_above: none, spacing_below: none, bar_height: '10', color: null,
+            format: .2f, step: null}
+          name: micro_living_rent_slider
+          layout_properties: {row: FEQJUG, width_xs: 10, col_xs: 1, width: 164.438}
+          event_bindings: {slide: micro_living_rent_slider_slide, change: micro_living_rent_slider_change}
+        - type: Label
+          properties: {role: null, align: left, tooltip: '', border: '', foreground: '',
+            visible: true, text: min., font_size: null, font: '', spacing_above: small,
+            icon_align: left, spacing_below: none, italic: false, background: '',
+            bold: false, underline: false, icon: ''}
+          name: label_3
+          layout_properties: {row: HGJBAR, width_xs: 5, col_xs: 1, width: 67.2188}
+        - type: Label
+          properties: {role: null, align: right, tooltip: '', border: '', foreground: '',
+            visible: true, text: max., font_size: null, font: '', spacing_above: small,
+            icon_align: left, spacing_below: none, italic: false, background: '',
+            bold: false, underline: false, icon: ''}
+          name: label_4
+          layout_properties: {row: HGJBAR, width_xs: 5, col_xs: 6, width: 67.2188}
+        - type: TextBox
+          properties: {role: null, align: center, hide_text: false, tooltip: '', placeholder: '',
+            border: '', enabled: false, foreground: '', visible: true, text: '0,00',
+            font_size: null, font: '', spacing_above: none, type: number, spacing_below: none,
+            italic: false, background: '', bold: false, underline: false}
+          name: slider_minimum
+          layout_properties: {row: UTEOWE, width_xs: 5, col_xs: 1, width: 57.885466}
+          event_bindings: {pressed_enter: slider_textbox_pressed_enter, change: slider_textbox_change}
+        - type: TextBox
+          properties: {role: null, align: center, hide_text: false, tooltip: '', placeholder: '',
+            border: '', enabled: false, foreground: '', visible: true, text: '100,00',
+            font_size: null, font: '', spacing_above: none, type: number, spacing_below: none,
+            italic: false, background: '', bold: false, underline: false}
+          name: slider_maximum
+          layout_properties: {row: UTEOWE, width_xs: 5, col_xs: 6, width: 57.885466}
+          event_bindings: {pressed_enter: slider_textbox_pressed_enter, change: slider_textbox_change}
       - type: Button
         properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
           enabled: true, foreground: 'theme:Gray 300', visible: true, text: Food & Drinks,

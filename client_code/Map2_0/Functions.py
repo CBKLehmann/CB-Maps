@@ -215,6 +215,8 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
       #Create empty Icons Array to save Elements
       icons = []
       id_counter = 0
+      minimum_average_rent = 100
+      maximum_average_rent = 0
 
       # Loop through every Element in geojson
       for ele in geojson:
@@ -524,7 +526,6 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
 
           if not deleted:
               
-            print(ele)
             if ele['all_in_rent_from'] is not None:
               if ele['all_in_rent_up_to'] is not None:
                 average_rent_per_apartment_raw = (ele['all_in_rent_from'] + ele['all_in_rent_up_to']) / 2
@@ -553,11 +554,19 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
 
             if not average_rent_per_apartment == 'n.A.':
               if not average_square_meter_per_apartment == 'n.A.':
-                average_rent_per_square_meter = "{:.2f} €".format(average_rent_per_apartment_raw / average_square_meter_per_apartment_raw)
+                average_rent_per_square_meter_raw = average_rent_per_apartment_raw / average_square_meter_per_apartment_raw
+                average_rent_per_square_meter = "{:.2f} €".format(average_rent_per_square_meter_raw)
               else:
-                average_rent_per_square_meter = average_rent_per_apartment_raw
+                average_rent_per_square_meter_raw = average_rent_per_apartment_raw
+                average_rent_per_square_meter = average_rent_per_apartment
             else:
               average_rent_per_square_meter = 'n.A.'
+
+            if not average_rent_per_square_meter == 'n.A.':
+              if average_rent_per_square_meter < minimum_average_rent:
+                minimum_average_rent = average_rent_per_square_meter
+              if average_rent_per_square_meter > maximum_average_rent:
+                maximum_average_rent = average_rent_per_square_meter
             
             distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
 
@@ -686,6 +695,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
     Variables.activeIcons.update({f'{category}': icons})
     last_bbox = bbox
     Variables.last_cat = f'{category}'
+    return minimum_average_rent, maximum_average_rent
 
 def addPopup():
   print('Added')
