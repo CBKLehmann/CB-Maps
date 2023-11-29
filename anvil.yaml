@@ -2,6 +2,9 @@ dependencies:
 - dep_id: dep_onabh5yfyvi
   version: {dev: false}
   resolution_hints: {app_id: WR3UELIEBJV25YXK, name: Clone of IFrame Component, package_name: IFrame}
+- dep_id: dep_qxtrfrkcq2g1q
+  version: {dev: false}
+  resolution_hints: {app_id: C6ZZPAPN4YYF5NVJ, name: Anvil Extras, package_name: anvil_extras}
 services:
 - source: /runtime/services/tables.yml
   client_config: {}
