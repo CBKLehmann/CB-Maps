@@ -79,3 +79,9 @@ unique_code = None
 loading = False
 removed_markers = {}
 micro_living_categories = ['business_living', 'co_living', 'service_living', 'student_living']
+average_rents = {
+  'business_living': [0, 100],
+  'co_living': [0, 100],
+  'service_living': [0, 100],
+  'student_living': [0, 100],
+}

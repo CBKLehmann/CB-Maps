@@ -2427,6 +2427,7 @@ class Map2_0(Map2_0Template):
           if bbox[0] < last_bbox[0] or bbox[1] < last_bbox[1] or bbox[2] > last_bbox[2] or bbox[3] > last_bbox[3]:
       
             minimum_average_rent, maximum_average_rent = Functions.create_marker(self, check_box, last_bbox, category, picture, bbox, marker_coords, mapboxgl)
+            Variables.average_rents[category] = [minimum_average_rent, maximum_average_rent]
       
           # Do if new Bounding Box is smaller or same than old Bounding Box
           else:
@@ -2476,7 +2477,21 @@ class Map2_0(Map2_0Template):
         if category == "subway":
           for id in self.opnv_layer:
             self.mapbox.setLayoutProperty(id, 'visibility', 'none')
-      
+
+        elif category in Variables.micro_living_categories:
+          if self.check_box_bl.checked:
+            minimum_average_rent = Variables.average_rents['business_living'][0] if float(Variables.average_rents['business_living'][0]) < self.slider_minimum.text else self.slider_minimum.text
+            maximum_average_rent = Variables.average_rents['business_living'][1] if float(Variables.average_rents['business_living'][1]) < self.slider_maximum.text else self.slider_maximum.text
+          if self.check_box_cl.checked:
+            minimum_average_rent = Variables.average_rents['co_living'][0] if float(Variables.average_rents['co_living'][0]) < self.slider_minimum.text else self.slider_minimum.text
+            maximum_average_rent = Variables.average_rents['co_living'][1] if float(Variables.average_rents['co_living'][1]) < self.slider_maximum.text else self.slider_maximum.text
+          if self.check_box_sl.checked:
+            minimum_average_rent = Variables.average_rents['service_living'][0] if float(Variables.average_rents['service_living'][0]) < self.slider_minimum.text else self.slider_minimum.text
+            maximum_average_rent = Variables.average_rents['service_living'][1] if float(Variables.average_rents['service_living'][1]) < self.slider_maximum.text else self.slider_maximum.text
+          if self.check_box_stl.checked:
+            minimum_average_rent = Variables.average_rents['student_living'][0] if float(Variables.average_rents['student_living'][0]) < self.slider_minimum.text else self.slider_minimum.text
+            maximum_average_rent = Variables.average_rents['student_living'][1] if float(Variables.average_rents['student_living'][1]) < self.slider_maximum.text else self.slider_maximum.text
+        
         # Loop through every Element in global Icon-Elements
         for el in Variables.icons[f'{category}']:
           
