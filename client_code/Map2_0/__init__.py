@@ -314,53 +314,85 @@ class Map2_0(Map2_0Template):
       Functions.manipulate_loading_overlay(self, True)
       # Check or uncheck various Check Boxes for different POI Categories
       if dict(event_args)['sender'].text == "Veterinary":
-        Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
+        Variables.last_bbox_vet, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
       elif dict(event_args)['sender'].text == "Social Facility":
-        Variables.last_bbox_soc = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, "social_facility", Variables.icon_social)   
+        Variables.last_bbox_soc, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, "social_facility", Variables.icon_social)   
       elif dict(event_args)['sender'].text == "Pharmacy":
-        Variables.last_bbox_pha = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
+        Variables.last_bbox_pha, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
       elif dict(event_args)['sender'].text == "Hospital":
-        Variables.last_bbox_hos = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
+        Variables.last_bbox_hos, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
       elif dict(event_args)['sender'].text == "Clinic":
-        Variables.last_bbox_cli = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
+        Variables.last_bbox_cli, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
       elif dict(event_args)['sender'].text == "Dentist":
-        Variables.last_bbox_den = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
+        Variables.last_bbox_den, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
       elif dict(event_args)['sender'].text == "Doctor":
-        Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)      
+        Variables.last_bbox_doc, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)      
       elif dict(event_args)['sender'].text == "Nursing School":
-        Variables.last_bbox_nsc = self.create_icons(self.check_box_nsc.checked, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools) 
+        Variables.last_bbox_nsc, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_nsc.checked, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools) 
       elif dict(event_args)['sender'].text == "Supermarket":
-        Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
+        Variables.last_bbox_sma, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
       elif dict(event_args)['sender'].text == "Restaurant":
-        Variables.last_bbox_res = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant)  
+        Variables.last_bbox_res, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant)  
       elif dict(event_args)['sender'].text == "Cafe":
-        Variables.last_bbox_caf = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
+        Variables.last_bbox_caf, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
       elif dict(event_args)['sender'].text == "University":
-        Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, "university", Variables.icon_university)  
+        Variables.last_bbox_uni, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, "university", Variables.icon_university)  
       elif dict(event_args)['sender'].text == "Bus Stop":
-        Variables.last_bbox_bus = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)  
+        Variables.last_bbox_bus, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)  
       elif dict(event_args)['sender'].text == "Tram Stop":
-        Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
+        Variables.last_bbox_tra, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
       elif dict(event_args)['sender'].text == "Nursing Home":
-        Variables.last_bbox_nh = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
+        Variables.last_bbox_nh, minimum_average_rent, maximum_average_rent = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
       elif dict(event_args)['sender'].text == "Assisted Living":
-        Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+        Variables.last_bbox_al, minimum_average_rent, maximum_average_rent = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
       elif dict(event_args)['sender'].text == "Podiatrist":
-        Variables.last_bbox_pdt = self.create_icons(self.check_box_pdt.checked, Variables.last_bbox_pdt, "podiatrist", Variables.icon_podiatrist)
+        Variables.last_bbox_pdt, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_pdt.checked, Variables.last_bbox_pdt, "podiatrist", Variables.icon_podiatrist)
       elif dict(event_args)['sender'].text == "Hairdresser":
-        Variables.last_bbox_hd = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
+        Variables.last_bbox_hd, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
       elif event_args['sender'].text == "S-Bahn/U-Bahn":
-        Variables.last_bbox_al = self.create_icons(self.check_box_su.checked, Variables.last_bbox_su, "subway", f'{self.app_url}/_/theme/Pins/U_Bahn_Pin.png')
+        Variables.last_bbox_al, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_su.checked, Variables.last_bbox_su, "subway", f'{self.app_url}/_/theme/Pins/U_Bahn_Pin.png')
       elif event_args['sender'].text == "Airport":
-        Variables.last_bbox_ap = self.create_icons(self.check_box_ap.checked, Variables.last_bbox_ap, "aerodrome", f'{self.app_url}/_/theme/Pins/Flughafen_Pin.png')
+        Variables.last_bbox_ap, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_ap.checked, Variables.last_bbox_ap, "aerodrome", f'{self.app_url}/_/theme/Pins/Flughafen_Pin.png')
       elif event_args['sender'].text == "Business Living":
-        Variables.last_bbox_bl = self.create_icons(self.check_box_bl.checked, Variables.last_bbox_bl, "business_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+        Variables.last_bbox_bl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_bl.checked, Variables.last_bbox_bl, "business_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+        self.slider_maximum.enabled = True
+        self.slider_minimum.enabled = True
+        self.slider_minimum.text = minimum_average_rent
+        self.slider_maximum.text = maximum_average_rent
+        self.micro_living_rent_slider.enabled = True
+        self.micro_living_rent_slider.min = float(minimum_average_rent)
+        self.micro_living_rent_slider.max = float(maximum_average_rent)
+        self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Co-living":
-        Variables.last_bbox_cl = self.create_icons(self.check_box_cl.checked, Variables.last_bbox_cl, "co_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+        Variables.last_bbox_cl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cl.checked, Variables.last_bbox_cl, "co_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+        self.slider_maximum.enabled = True
+        self.slider_minimum.enabled = True
+        self.slider_minimum.text = minimum_average_rent
+        self.slider_maximum.text = maximum_average_rent
+        self.micro_living_rent_slider.enabled = True
+        self.micro_living_rent_slider.min = float(minimum_average_rent)
+        self.micro_living_rent_slider.max = float(maximum_average_rent)
+        self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Serviced Living":
-        Variables.last_bbox_sl = self.create_icons(self.check_box_sl.checked, Variables.last_bbox_sl, "service_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+        Variables.last_bbox_sl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_sl.checked, Variables.last_bbox_sl, "service_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+        self.slider_maximum.enabled = True
+        self.slider_minimum.enabled = True
+        self.slider_minimum.text = minimum_average_rent
+        self.slider_maximum.text = maximum_average_rent
+        self.micro_living_rent_slider.enabled = True
+        self.micro_living_rent_slider.min = float(minimum_average_rent)
+        self.micro_living_rent_slider.max = float(maximum_average_rent)
+        self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Student Living":
-        Variables.last_bbox_stl = self.create_icons(self.check_box_stl.checked, Variables.last_bbox_stl, "student_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+        Variables.last_bbox_stl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_stl.checked, Variables.last_bbox_stl, "student_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+        self.slider_maximum.enabled = True
+        self.slider_minimum.enabled = True
+        self.slider_minimum.text = minimum_average_rent
+        self.slider_maximum.text = maximum_average_rent
+        self.micro_living_rent_slider.enabled = True
+        self.micro_living_rent_slider.min = float(minimum_average_rent)
+        self.micro_living_rent_slider.max = float(maximum_average_rent)
+        self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       Functions.manipulate_loading_overlay(self, False)
 
   def checkbox_poi_x_hfcig_change(self, **event_args):
@@ -2337,12 +2369,12 @@ class Map2_0(Map2_0Template):
   #This method is called from the check_box_change-Functions to place Icons on Map  
   def create_icons(self, check_box, last_bbox, category, picture):
     with anvil.server.no_loading_indicator:
+      minimum_average_rent = 0
+      maximum_average_rent = 100
+      
       # Check if Checkbox is checked
       if check_box == True:
 
-        print(dict(self.marker['_pos']))
-        print('#')
-        print(dict(self.marker['_map']))
         marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
         
         # Check if Checkbox for Iso-Layer' is checked
@@ -2394,7 +2426,7 @@ class Map2_0(Map2_0Template):
           # Check if new Bounding Box is overlapping old Bounding Box
           if bbox[0] < last_bbox[0] or bbox[1] < last_bbox[1] or bbox[2] > last_bbox[2] or bbox[3] > last_bbox[3]:
       
-            Functions.create_marker(self, check_box, last_bbox, category, picture, bbox, marker_coords, mapboxgl)
+            minimum_average_rent, maximum_average_rent = Functions.create_marker(self, check_box, last_bbox, category, picture, bbox, marker_coords, mapboxgl)
       
           # Do if new Bounding Box is smaller or same than old Bounding Box
           else:
@@ -2452,7 +2484,7 @@ class Map2_0(Map2_0Template):
           el.remove()
       
       # Send Value back to origin Function
-      return (last_bbox)
+      return last_bbox, minimum_average_rent, maximum_average_rent
       
   #This method is called from the file uploader to set Markers based on Excel-Data
   def set_excel_markers(self, marker_cat, coords, marker_list, el, asset):
@@ -3261,3 +3293,18 @@ class Map2_0(Map2_0Template):
         else:
           Variables.removed_markers[category].append(dict(marker['_lngLat']))
         marker.remove()
+
+  def micro_living_rent_slider_slide(self, handle, **event_args):
+    if handle == 0:
+      self.slider_minimum.text = self.micro_living_rent_slider.formatted_values[handle]
+    else:
+      self.slider_maximum.text = self.micro_living_rent_slider.formatted_values[handle]
+
+  def slider_textbox_change(self, **event_args):
+    self.micro_living_rent_slider.values = self.slider_minimum.text, self.slider_maximum.text
+
+  def slider_textbox_pressed_enter(self, **event_args):
+    pass
+
+  def micro_living_rent_slider_change(self, handle, **event_args):
+    pass

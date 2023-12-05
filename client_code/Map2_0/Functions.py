@@ -121,13 +121,13 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
 
   elif category in Variables.micro_living_categories:
     if category == 'business_living':
-      geojson = anvil.server.call('get_micro_living_facilities', 'Business living', bbox)
+      geojson = anvil.server.call('get_micro_living_facilities', 'Business living', marker_coords)
     elif category == 'co_living':
-      geojson = anvil.server.call('get_micro_living_facilities', 'Co-living', bbox)
+      geojson = anvil.server.call('get_micro_living_facilities', 'Co-living', marker_coords)
     elif category == 'service_living':
-      geojson = anvil.server.call('get_micro_living_facilities', 'Serviced living', bbox)
+      geojson = anvil.server.call('get_micro_living_facilities', 'Serviced living', marker_coords)
     elif category == 'student_living':
-      geojson = anvil.server.call('get_micro_living_facilities', 'Student living', bbox)
+      geojson = anvil.server.call('get_micro_living_facilities', 'Student living', marker_coords)
   
   else:
 
@@ -215,6 +215,8 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
       #Create empty Icons Array to save Elements
       icons = []
       id_counter = 0
+      minimum_average_rent = 100
+      maximum_average_rent = 0
 
       # Loop through every Element in geojson
       for ele in geojson:
@@ -241,27 +243,34 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
           if not category == 'assisted_living':
 
             if not category == 'nursing-schools':
+
+              if not category in Variables.micro_living_categories:
             
-              # Get coordinates of current Icon
-              el_coords = ele['geometry']['coordinates']
-  
-              # Get different Informations from geojson
-              city = ele['properties']['city']
-              suburb = ele['properties']['suburb']
-              street = ele['properties']['street']
-              housenumber = ele['properties']['housenumber']
-              postcode = ele['properties']['postcode']
-              phone = ele['properties']['phone']
-              website = ele['properties']['website']
-              healthcare = ele['properties']['healthcare']
-              name = ele['properties']['name']
-              opening_hours = ele['properties']['opening_hours']
-              wheelchair = ele['properties']['wheelchair']
-              o_id = ele['properties']['id']
-              fax = ele['properties']['fax']
-              email = ele['properties']['email']
-              speciality = ele['properties']['healthcare:speciality']
-              operator = ele['properties']['operator']
+                # Get coordinates of current Icon
+                el_coords = ele['geometry']['coordinates']
+    
+                # Get different Informations from geojson
+                city = ele['properties']['city']
+                suburb = ele['properties']['suburb']
+                street = ele['properties']['street']
+                housenumber = ele['properties']['housenumber']
+                postcode = ele['properties']['postcode']
+                phone = ele['properties']['phone']
+                website = ele['properties']['website']
+                healthcare = ele['properties']['healthcare']
+                name = ele['properties']['name']
+                opening_hours = ele['properties']['opening_hours']
+                wheelchair = ele['properties']['wheelchair']
+                o_id = ele['properties']['id']
+                fax = ele['properties']['fax']
+                email = ele['properties']['email']
+                speciality = ele['properties']['healthcare:speciality']
+                operator = ele['properties']['operator']
+
+              else:
+
+                # Get coordinates of current Icon
+                el_coords = [ele['longitude'], ele['latitude']]
 
             else:
 
@@ -508,6 +517,109 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
               f"<p class='popup_type'>Nursing School</p>"
               f"<p class='popup_distance'>{distance} km  to the location</p>"
             )
+
+        elif category in Variables.micro_living_categories:
+          if category in Variables.removed_markers.keys():
+            for marker in Variables.removed_markers[category]:
+              if str(marker['lng']) == el_coords[0] and str(marker['lat']) == el_coords[1]:
+                deleted = True
+
+          if not deleted:
+              
+            if ele['all_in_rent_from'] is not None:
+              if ele['all_in_rent_up_to'] is not None:
+                average_rent_per_apartment_raw = (ele['all_in_rent_from'] + ele['all_in_rent_up_to']) / 2
+                average_rent_per_apartment = "{:.0f} €".format(average_rent_per_apartment_raw)
+              else:
+                average_rent_per_apartment_raw = ele['all_in_rent_from']
+                average_rent_per_apartment = "{:.0f} €".format(average_rent_per_apartment_raw)
+            elif ele['all_in_rent_up_to'] is not None:
+              average_rent_per_apartment_raw = ele['all_in_rent_up_to']
+              average_rent_per_apartment = "{:.0f} €".format(average_rent_per_apartment_raw)
+            else:
+              average_rent_per_apartment = 'n.A.'
+
+            if ele['apartment_size_from'] is not None:
+              if ele['apartment_size_up_to'] is not None:
+                average_square_meter_per_apartment_raw = (ele['apartment_size_from'] + ele['apartment_size_up_to']) / 2
+                average_square_meter_per_apartment = "{:.2f} m²".format(average_square_meter_per_apartment_raw)
+              else:
+                average_square_meter_per_apartment_raw = ele['apartment_size_from']
+                average_square_meter_per_apartment = "{:.2f} m²".format(average_square_meter_per_apartment_raw)
+            elif ele['apartment_size_up_to'] is not None:
+              average_square_meter_per_apartment_raw = ele['apartment_size_up_to']
+              average_square_meter_per_apartment = "{:.2f} m²".format(average_square_meter_per_apartment_raw)
+            else:
+              average_square_meter_per_apartment = 'n.A.'
+
+            if not average_rent_per_apartment == 'n.A.':
+              if not average_square_meter_per_apartment == 'n.A.':
+                average_rent_per_square_meter_raw = average_rent_per_apartment_raw / average_square_meter_per_apartment_raw
+                average_rent_per_square_meter = "{:.2f} €".format(average_rent_per_square_meter_raw)
+              else:
+                average_rent_per_square_meter_raw = average_rent_per_apartment_raw
+                average_rent_per_square_meter = average_rent_per_apartment
+            else:
+              average_rent_per_square_meter_raw = 'n.A.'
+              average_rent_per_square_meter = 'n.A.'
+
+            if not average_rent_per_square_meter == 'n.A.':
+              if average_rent_per_square_meter_raw < minimum_average_rent:
+                minimum_average_rent = average_rent_per_square_meter_raw
+              if average_rent_per_square_meter_raw > maximum_average_rent:
+                maximum_average_rent = average_rent_per_square_meter_raw
+            
+            distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
+
+            popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+              f"<p class='popup_name'><b>{ele['operator']}</b></p>"
+              f"<p class='popup_type'>{ele['living_concept']}</p>"
+              f"<p class='popup_distance'>{distance} km  to the location</p>"
+            )
+            
+            # Name of Object
+            marker_details = f"<div class='objectName'>{ele['operator']}</div>"
+            marker_details += f"<p>{ele['living_concept']}</p>"
+            # Parting Line
+            marker_details += "<div class='partingLine'></div>"
+            # Contact Details
+            if ele['street'] is not None:
+              marker_details += f"<p>{ele['street']}</p>"
+            marker_details += f"<p>{ele['postcode'] if ele['postcode'] is not None else ''} {ele['city']}</p>"
+            # Parting Line
+            marker_details += "<div class='partingLine'></div>"
+            # Amenities
+            marker_details += f"<p>Furnished: {'&check;' if ele['furnishing'] else '&#x58;' if not ele['furnishing'] else 'n.A.'}</p>"
+            marker_details += f"<p>Kitchen: {'&check;' if ele['kitchen'] else '&#x58;' if not ele['kitchen'] else 'n.A.'}</p>"
+            marker_details += f"<p>Balcony: {'&check;' if ele['balcony'] else '&#x58;' if not ele['balcony'] else 'n.A.'}</p>"
+            marker_details += f"<p>Own bath: {'&check;' if ele['bath'] else '&#x58;' if not ele['bath'] else 'n.A.'}</p>"
+            marker_details += f"<p>Community spaces: {'&check;' if ele['community_spaces'] else '&#x58;' if not ele['community_spaces'] else 'n.A.'}</p>"
+            marker_details += f"<p>Services: {'&check;' if ele['services'] else '&#x58;' if not ele['services'] else 'n.A.'}</p>"
+            marker_details += f"<p>Gym: {'&check;' if ele['gym'] else '&#x58;' if not ele['gym'] else 'n.A.'}</p>"
+            marker_details += f"<p>Media-Lounge: {'&check;' if ele['media_lounge'] else '&#x58;' if not ele['media_lounge'] else 'n.A.'}</p>"
+            marker_details += f"<p>Study lounge: {'&check;' if ele['study_lounge'] else '&#x58;' if not ele['study_lounge'] else 'n.A.'}</p>"
+            marker_details += f"<p>Laundry room: {'&check;' if ele['laundry_room'] else '&#x58;' if not ele['laundry_room'] else 'n.A.'}</p>"
+            marker_details += f"<p>Rooms for events: {'&check;' if ele['rooms_for_events'] else '&#x58;' if not ele['rooms_for_events'] else 'n.A.'}</p>"
+            marker_details += f"<p>Bar: {'&check;' if ele['bar'] else '&#x58;' if not ele['bar'] else 'n.A.'}</p>"
+            marker_details += f"<p>Collaborative cooking: {'&check;' if ele['collaborative_cooking'] else '&#x58;' if not ele['collaborative_cooking'] else 'n.A.'}</p>"
+            # Parting Line
+            marker_details += "<div class='partingLine'></div>"
+            # Informations
+            marker_details += f"<p>Number of apartments: {ele['number_of_apartments'] if ele['number_of_apartments'] is not None else 'n.A.'}</p>"
+            marker_details += f"<p>Lower rent range: {str(ele['all_in_rent_from']) + ' €' if ele['all_in_rent_from'] is not None else 'n.A.'}</p>"
+            marker_details += f"<p>Upper rent range: {str(ele['all_in_rent_up_to']) + ' €' if ele['all_in_rent_up_to'] is not None else 'n.A.'}</p>"
+            marker_details += f"<p>Average rent per apartment: {average_rent_per_apartment}</p>"
+            marker_details += f"<p>Smallest apartment: {str(ele['apartment_size_from']) + 'm²' if ele['apartment_size_from'] is not None else 'n.A.'}</p>"
+            marker_details += f"<p>Biggest apartment: {str(ele['apartment_size_up_to']) + 'm²' if ele['apartment_size_up_to'] is not None else 'n.A.'}</p>"
+            marker_details += f"<p>Average m² per apartment: {average_square_meter_per_apartment}</p>"
+            marker_details += f"<p>Average rent per m²: {average_rent_per_square_meter}</p>"
+            # Parting Line
+            marker_details += "<div class='partingLine'></div>"
+            marker_details += f"<p>Created: {ele['created'].split(' ')[0]}</p>"
+            if ele['updated'] is not None:
+              marker_details += f"<p>Updated: {ele['updated'].split(' ')[0]}</p>"
+            if not self.role == 'guest':
+              marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
           
         # Check if Category is not Bus or Tram or PflegeDB
         else:
@@ -570,7 +682,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
         if not deleted:
 
           # Add Icon to the Map
-          newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup).setPopup(name_popup)
+          newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)#.setPopup(name_popup)
           newiconElement = newicon.getElement()
           self.addHoverEffect(newiconElement, popup, newicon, ele, category, marker_details)
           # anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.role)
@@ -584,6 +696,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
     Variables.activeIcons.update({f'{category}': icons})
     last_bbox = bbox
     Variables.last_cat = f'{category}'
+    return "{:.2f}".format(minimum_average_rent), "{:.2f}".format(maximum_average_rent)
 
 def addPopup():
   print('Added')
