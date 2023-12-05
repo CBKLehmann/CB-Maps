@@ -357,50 +357,50 @@ class Map2_0(Map2_0Template):
         Variables.last_bbox_bl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_bl.checked, Variables.last_bbox_bl, "business_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
-        if self.slider_minimum.text is None or minimum_average_rent < self.slider_minimum.text:
-          self.slider_minimum.text = minimum_average_rent
+        if self.slider_minimum.text is None or minimum_average_rent < self.micro_living_rent_slider.min:
+          # self.slider_minimum.text = minimum_average_rent
           self.micro_living_rent_slider.min = float(minimum_average_rent)
-        if self.slider_maximum.text is None or maximum_average_rent > self.slider_maximum.text:
-          self.slider_maximum.text = maximum_average_rent
+        if self.slider_maximum.text is None or maximum_average_rent > self.micro_living_rent_slider.max:
+          # self.slider_maximum.text = maximum_average_rent
           self.micro_living_rent_slider.max = float(maximum_average_rent)
         self.micro_living_rent_slider.enabled = True
-        self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
+        # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Co-living":
         Variables.last_bbox_cl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cl.checked, Variables.last_bbox_cl, "co_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
-        if self.slider_minimum.text is None or float(minimum_average_rent) < self.slider_minimum.text:
-          self.slider_minimum.text = minimum_average_rent
+        if self.slider_minimum.text is None or float(minimum_average_rent) < self.micro_living_rent_slider.min:
+          # self.slider_minimum.text = minimum_average_rent
           self.micro_living_rent_slider.min = float(minimum_average_rent)
-        if self.slider_maximum.text is None or float(maximum_average_rent) > self.slider_maximum.text:
-          self.slider_maximum.text = maximum_average_rent
+        if self.slider_maximum.text is None or float(maximum_average_rent) > self.micro_living_rent_slider.max:
+          # self.slider_maximum.text = maximum_average_rent
           self.micro_living_rent_slider.max = float(maximum_average_rent)
         self.micro_living_rent_slider.enabled = True
-        self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
+        # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Serviced Living":
         Variables.last_bbox_sl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_sl.checked, Variables.last_bbox_sl, "service_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
-        if self.slider_minimum.text is None or float(minimum_average_rent) < self.slider_minimum.text:
-          self.slider_minimum.text = minimum_average_rent
+        if self.slider_minimum.text is None or float(minimum_average_rent) < self.micro_living_rent_slider.min:
+          # self.slider_minimum.text = minimum_average_rent
           self.micro_living_rent_slider.min = float(minimum_average_rent)
-        if self.slider_maximum.text is None or float(maximum_average_rent) > self.slider_maximum.text:
-          self.slider_maximum.text = maximum_average_rent
+        if self.slider_maximum.text is None or float(maximum_average_rent) > self.micro_living_rent_slider.max:
+          # self.slider_maximum.text = maximum_average_rent
           self.micro_living_rent_slider.max = float(maximum_average_rent)
         self.micro_living_rent_slider.enabled = True
-        self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
+        # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Student Living":
         Variables.last_bbox_stl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_stl.checked, Variables.last_bbox_stl, "student_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
-        if self.slider_minimum.text is None or float(minimum_average_rent) < self.slider_minimum.text:
-          self.slider_minimum.text = minimum_average_rent
+        if self.slider_minimum.text is None or float(minimum_average_rent) < self.micro_living_rent_slider.min:
+          # self.slider_minimum.text = minimum_average_rent
           self.micro_living_rent_slider.min = float(minimum_average_rent)
-        if self.slider_maximum.text is None or float(maximum_average_rent) > self.slider_maximum.text:
-          self.slider_maximum.text = maximum_average_rent
+        if self.slider_maximum.text is None or float(maximum_average_rent) > self.micro_living_rent_slider.max:
+          # self.slider_maximum.text = maximum_average_rent
           self.micro_living_rent_slider.max = float(maximum_average_rent)
         self.micro_living_rent_slider.enabled = True
-        self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
+        # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       Functions.manipulate_loading_overlay(self, False)
 
   def checkbox_poi_x_hfcig_change(self, **event_args):
