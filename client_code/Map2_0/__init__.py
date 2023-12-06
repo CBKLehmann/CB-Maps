@@ -3331,3 +3331,19 @@ class Map2_0(Map2_0Template):
 
   def micro_living_rent_slider_change(self, handle, **event_args):
     pass
+
+  def export_comparables_click(self, **event_args):
+    checked_boxes = []
+    print(Variables.activeIcons)
+    for checkbox in self.micro_living_check_boxes.get_components():
+      if checkbox.checked:
+        if checkbox.text == "Business Living":
+          checked_boxes.append('business_living')
+        elif checkbox.text == "Co-living":
+          checked_boxes.append('co_living')
+        elif checkbox.text == "Serviced Living":
+          checked_boxes.append('service_living')
+        elif checkbox.text == "Student Living":
+          checked_boxes.append('student_living')
+    print(checke)
+        

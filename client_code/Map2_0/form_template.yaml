@@ -789,7 +789,7 @@ components:
             font_size: null, font: '', spacing_above: none, type: number, spacing_below: none,
             italic: false, background: '', bold: false, underline: false}
           name: slider_minimum
-          layout_properties: {row: UTEOWE, width_xs: 5, col_xs: 1, width: 57.885466}
+          layout_properties: {row: XXGVPZ, width_xs: 4, col_xs: 1, width: 57.885466}
           event_bindings: {pressed_enter: slider_textbox_pressed_enter, change: slider_textbox_change}
         - type: TextBox
           properties: {role: null, align: center, hide_text: false, tooltip: '', placeholder: '',
@@ -797,8 +797,16 @@ components:
             font_size: null, font: '', spacing_above: none, type: number, spacing_below: none,
             italic: false, background: '', bold: false, underline: false}
           name: slider_maximum
-          layout_properties: {row: UTEOWE, width_xs: 5, col_xs: 6, width: 57.885466}
+          layout_properties: {row: XXGVPZ, width_xs: 4, col_xs: 8, width: 57.885466}
           event_bindings: {pressed_enter: slider_textbox_pressed_enter, change: slider_textbox_change}
+        - type: Button
+          properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+            foreground: 'theme:Gray 300', visible: true, text: Export List, font_size: null,
+            font: '', spacing_above: small, icon_align: left, spacing_below: small,
+            italic: false, background: '', bold: false, underline: false, icon: ''}
+          name: export_comparables
+          layout_properties: {row: UTEOWE, width_xs: 8, col_xs: 2, width: 125.328}
+          event_bindings: {click: export_comparables_click}
       - type: Button
         properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
           enabled: true, foreground: 'theme:Gray 300', visible: true, text: Food & Drinks,
