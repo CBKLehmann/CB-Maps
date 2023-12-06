@@ -128,6 +128,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
       geojson = anvil.server.call('get_micro_living_facilities', 'Serviced living', marker_coords)
     elif category == 'student_living':
       geojson = anvil.server.call('get_micro_living_facilities', 'Student living', marker_coords)
+    Variables.micro_living_entries[category] = geojson
   
   else:
 

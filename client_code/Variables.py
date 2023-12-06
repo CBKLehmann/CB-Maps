@@ -85,3 +85,4 @@ average_rents = {
   'service_living': [0, 100],
   'student_living': [0, 100],
 }
+micro_living_entries = {}

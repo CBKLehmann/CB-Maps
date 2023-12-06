@@ -2918,3 +2918,475 @@ All rights reserved.
             }
         }
     }
+micro_living_comparables = {
+        'base_worksheet_settings': {
+            'paper': 9,
+            'hide_grid': 2,
+            'fit_to_pages': (1, 1),
+            'margins': (0, 0, 0, 0)
+        },
+        'workbook_format': {
+            'font_size': 11,
+            'font_name': "Segoe UI"
+        },
+        'cell_formats': {
+            'bold_underline': {
+                'font': 'Segoe UI Semibold',
+                'bottom': 1
+            },
+            'bold_vcenter': {
+                'font': 'Segoe UI Semibold',
+                'valign': 'vcenter'
+            },
+            'bold_right': {
+                'font': 'Segoe UI Semibold',
+                'align': 'right'
+            },
+            'bold_fs9': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 9,
+                'align': 'center'
+            },
+            'bold_fs9_underline': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 9,
+                'align': 'center',
+                'bottom': 1
+            },
+            'bold_fs9_vcenter_wrap': {
+                'font': 'Segoe UI Semibold',
+                'font_size': 9,
+                'align': 'center',
+                'valign': 'vcenter',
+                'text_wrap': True
+            },
+            'bold_investment_fs9': {
+                'font': 'Segoe UI Semibold',
+                'align': 'center',
+                'bg_color': '#1B2939',
+                'color': '#FFFFFF',
+                'font_size': 9
+            },
+            'bold_investment_fs9_underline': {
+                'font': 'Segoe UI Semibold',
+                'align': 'center',
+                'bg_color': '#1B2939',
+                'color': '#FFFFFF',
+                'font_size': 9,
+                'bottom': 1,
+                'bottom_color': '#FFFFFF'
+            },
+            'bold_investment_fs9_wrap_vcenter': {
+                'font': 'Segoe UI Semibold',
+                'align': 'center',
+                'bg_color': '#1B2939',
+                'color': '#FFFFFF',
+                'font_size': 9,
+                'text_wrap': True,
+                'valign': 'vcenter'
+            },
+            'regular': {
+                'font': 'Segoe UI',
+                'align': 'center'
+            },
+            'regular_number': {
+                'font': 'Segoe UI',
+                'align': 'center',
+                'num_format': '0',
+            },
+            'regular_number_with_two_komma': {
+                'font': 'Segoe UI',
+                'align': 'center',
+                'num_format': '0.00'
+            },
+            'wingdings': {
+                'font': 'Wingdings',
+                'align': 'center'
+            },
+            'regular_investment': {
+                'font': 'Segoe UI',
+                'bg_color': '#1B2939',
+                'color': '#FFFFFF',
+                'align': 'center'
+            },
+            'regular_investment_number': {
+                'font': 'Segoe UI',
+                'bg_color': '#1B2939',
+                'color': '#FFFFFF',
+                'align': 'center',
+                'num_format': '0',
+            },
+            'regular_investment_number_with_two_komma': {
+                'font': 'Segoe UI',
+                'bg_color': '#1B2939',
+                'color': '#FFFFFF',
+                'align': 'center',
+                'num_format': '0.00'
+            },
+            'wingdings_investment': {
+                'font': 'Wingdings',
+                'bg_color': '#1B2939',
+                'color': '#FFFFFF',
+                'align': 'center'
+            },
+            'city_heading': {
+                'font': 'Segoe UI',
+                'font_size': 40,
+                'color': '#C8B058'
+            },
+            'page_heading': {
+                'font': 'Segoe UI',
+                'font_size': 40
+            }
+        },
+        'pages': {
+            'Competitors De': {
+                'settings': {
+                    'area': 'A1:K90',
+                    'column_width': [
+                        28.18, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73
+                    ],
+                    'row_height': [
+                        16.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 51.00, 51.00, 14.50,
+                        14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50,
+                        14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50,
+                        14.50, 14.50, 14.50, 14.50, 14.50, 44.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50,
+                        14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50,
+                        14.50
+                    ]
+                },
+                'cell_content': {
+                    'images': {
+                        'A14': {
+                            'file': 'img/test_map.png',
+                            'settings': {
+                                'y_offset': 10,
+                                'y_scale': .8,
+                                'x_scale': .8
+                            }
+                        }
+                    },
+                    'cells': {
+                        'K1': {
+                            'text': '1 | 3',
+                            'format': 'bold_right'
+                        },
+                        'A11': {
+                            'text': 'Berlin',
+                            'format': 'city_heading'
+                        },
+                        'A12': {
+                            'text': 'Student Living',
+                            'format': 'page_heading'
+                        },
+                        'A44': {
+                            'text': 'Comparable',
+                            'format': 'bold_underline'
+                        },
+                        'A45': {
+                            'text': 'Adresse',
+                            'format': 'bold_vcenter'
+                        },
+                        'A46': {
+                            'text': 'Anzahl der Apartments'
+                        },
+                        'A47': {
+                            'text': 'Untere Mietspanne (in €)'
+                        },
+                        'A48': {
+                            'text': 'Obere Mietspanne (in €)'
+                        },
+                        'A49': {
+                            'text': 'Ø Miete / Apartment (in €)'
+                        },
+                        'A50': {
+                            'text': 'Kleinstes Apartment (in m²)'
+                        },
+                        'A51': {
+                            'text': 'Größtes Apartment (in m²)'
+                        },
+                        'A52': {
+                            'text': 'Ø m² / Apartment'
+                        },
+                        'A53': {
+                            'text': 'Ø Miete / m²'
+                        },
+                        'A54': {
+                            'text': 'Möbliert'
+                        },
+                        'A55': {
+                            'text': 'Küche'
+                        },
+                        'A56': {
+                            'text': 'Balkon'
+                        },
+                        'A57': {
+                            'text': 'Eigenes Bad'
+                        },
+                        'A58': {
+                            'text': 'Gemeinschaftsräume'
+                        },
+                        'A59': {
+                            'text': 'Services'
+                        },
+                        'A60': {
+                            'text': 'Fitnessstudio'
+                        },
+                        'A61': {
+                            'text': 'Medienlounge'
+                        },
+                        'A62': {
+                            'text': 'Lern-Lounge'
+                        },
+                        'A63': {
+                            'text': 'Waschraum'
+                        },
+                        'A64': {
+                            'text': 'Veranstaltungsräume'
+                        },
+                        'A65': {
+                            'text': 'Bar'
+                        },
+                        'A66': {
+                            'text': 'Gemeinschaftliches Kochen'
+                        }
+                    },
+                    'textboxes': {
+                        'A1_A': {
+                            'text': 'Capital Bay Group |',
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                }
+                            }
+                        },
+                        'A1_B': {
+                            'text': 'Comparables',
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI Semibold'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 132
+                            }
+                        },
+                        'A1_C': {
+                            'text': 'Micro Living',
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI Semibold',
+                                    'color': '#C8B058'
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 202
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+micro_living_comparables_invest = {
+  'B44': {
+      'text': '360 Objekt',
+      'format': 'bold_investment_fs9_underline'
+  },
+  'B45': {
+      'text': 'Frankfurter Straße 54-62',
+      'format': 'bold_investment_fs9_wrap_vcenter'
+  },
+  'B46': {
+      'text': 340,
+      'format': 'regular_investment_number'
+  },
+  'B47': {
+      'text': '-',
+      'format': 'regular_investment'
+  },
+  'B48': {
+      'text': '-',
+      'format': 'regular_investment'
+  },
+  'B49': {
+      'text': 1035,
+      'format': 'regular_investment_number'
+  },
+  'B50': {
+      'text': '-',
+      'format': 'regular_investment'
+  },
+  'B51': {
+      'text': '-',
+      'format': 'regular_investment'
+  },
+  'B52': {
+      'text': 36,
+      'format': 'regular_investment_number_with_two_komma'
+  },
+  'B53': {
+      'text': 24,
+      'format': 'regular_investment_number'
+  },
+  'B54': {
+      'text': 'ü',
+      'format': 'wingdings_investment'
+  },
+  'B55': {
+      'text': 'ü',
+      'format': 'wingdings_investment'
+  },
+  'B56': {
+      'text': '-',
+      'format': 'regular_investment'
+  },
+  'B57': {
+      'text': 'ü',
+      'format': 'wingdings_investment'
+  },
+  'B58': {
+      'text': 'ü',
+      'format': 'wingdings_investment'
+  },
+  'B59': {
+      'text': 'ü',
+      'format': 'wingdings_investment'
+  },
+  'B60': {
+      'text': 'ü',
+      'format': 'wingdings_investment'
+  },
+  'B61': {
+      'text': '-',
+      'format': 'regular_investment'
+  },
+  'B62': {
+      'text': '-',
+      'format': 'regular_investment'
+  },
+  'B63': {
+      'text': 'ü',
+      'format': 'wingdings_investment'
+  },
+  'B64': {
+      'text': '-',
+      'format': 'regular_investment'
+  },
+  'B65': {
+      'text': '-',
+      'format': 'regular_investment'
+  },
+  'B66': {
+      'text': '-',
+      'format': 'regular_investment'
+  },
+}
+micro_living_comparables_comparable = {
+  'C44': {
+      'text': '360 Objekt',
+      'format': 'bold_fs9_underline'
+  },
+  'C45': {
+      'text': 'Frankfurter Straße 54-62',
+      'format': 'bold_fs9_vcenter_wrap'
+  },
+  'C46': {
+      'text': 340,
+      'format': 'regular_number'
+  },
+  'C47': {
+      'text': '-',
+      'format': 'regular'
+  },
+  'C48': {
+      'text': '-',
+      'format': 'regular'
+  },
+  'C49': {
+      'text': 1035,
+      'format': 'regular_number'
+  },
+  'C50': {
+      'text': '-',
+      'format': 'regular'
+  },
+  'C51': {
+      'text': '-',
+      'format': 'regular'
+  },
+  'C52': {
+      'text': 36.00,
+      'format': 'regular_number_with_two_komma'
+  },
+  'C53': {
+      'text': 24,
+      'format': 'regular_number'
+  },
+  'C54': {
+      'text': 'ü',
+      'format': 'wingdings'
+  },
+  'C55': {
+      'text': 'ü',
+      'format': 'wingdings'
+  },
+  'C56': {
+      'text': '-',
+      'format': 'regular'
+  },
+  'C57': {
+      'text': 'ü',
+      'format': 'wingdings'
+  },
+  'C58': {
+      'text': 'ü',
+      'format': 'wingdings'
+  },
+  'C59': {
+      'text': 'ü',
+      'format': 'wingdings'
+  },
+  'C60': {
+      'text': 'ü',
+      'format': 'wingdings'
+  },
+  'C61': {
+      'text': '-',
+      'format': 'regular'
+  },
+  'C62': {
+      'text': '-',
+      'format': 'regular'
+  },
+  'C63': {
+      'text': 'ü',
+      'format': 'wingdings'
+  },
+  'C64': {
+      'text': '-',
+      'format': 'regular'
+  },
+  'C65': {
+      'text': '-',
+      'format': 'regular'
+  },
+  'C66': {
+      'text': '-',
+      'format': 'regular'
+  }
+}

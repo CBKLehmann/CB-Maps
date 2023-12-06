@@ -3334,16 +3334,28 @@ class Map2_0(Map2_0Template):
 
   def export_comparables_click(self, **event_args):
     checked_boxes = []
-    print(Variables.activeIcons)
+    marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
     for checkbox in self.micro_living_check_boxes.get_components():
       if checkbox.checked:
         if checkbox.text == "Business Living":
-          checked_boxes.append('business_living')
+          checked_boxes.append(('business_living', 'Business Living'))
         elif checkbox.text == "Co-living":
-          checked_boxes.append('co_living')
+          checked_boxes.append(('co_living', 'Co-living'))
         elif checkbox.text == "Serviced Living":
-          checked_boxes.append('service_living')
+          checked_boxes.append(('service_living', 'Serviced Living'))
         elif checkbox.text == "Student Living":
-          checked_boxes.append('student_living')
-    print(checke)
-        
+          checked_boxes.append(('student_living', 'Student Living'))
+    for category, page_name in checked_boxes:
+      micro_living_comparables = copy.deepcopy(ExcelFrames.micro_living_comparables)
+      micro_living_comparables_invest = copy.deepcopy(ExcelFrames.micro_living_comparables_invest)
+      micro_living_comparables_comparable = copy.deepcopy(ExcelFrames.micro_living_comparables_comparable)
+      sorted_entries = {}
+      distances = {}
+      for entry in Variables.micro_living_entries[category]:
+        el_coords = [entry['longitude'], entry['latitude']]
+        distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
+        entry['distance'] = distance
+      sorted_entries = sorted(Variables.micro_living_entries[category], key=lambda x: x['distance'])
+      for entry in sorted_entries:
+        if entry['distance'] == 0:
+          
