@@ -109,7 +109,7 @@ class Map2_0(Map2_0Template):
       
       mapboxgl.accessToken = self.token
       self.mapbox = mapboxgl.Map({'container': self.dom,
-                                  'style': "mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn",
+                                  'style': "mapbox://styles/mapbox/outdoors-v11",
                                   'center': [13.4092, 52.5167],
                                   'zoom': 8})
       # Create HTML Element for Icon
@@ -354,7 +354,7 @@ class Map2_0(Map2_0Template):
       elif event_args['sender'].text == "Airport":
         Variables.last_bbox_ap, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_ap.checked, Variables.last_bbox_ap, "aerodrome", f'{self.app_url}/_/theme/Pins/Flughafen_Pin.png')
       elif event_args['sender'].text == "Business Living":
-        Variables.last_bbox_bl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_bl.checked, Variables.last_bbox_bl, "business_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+        Variables.last_bbox_bl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_bl.checked, Variables.last_bbox_bl, "business_living", f'{self.app_url}/_/theme/Pins/BusinessLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
         if self.slider_minimum.text is None or minimum_average_rent < self.micro_living_rent_slider.min:
@@ -366,7 +366,7 @@ class Map2_0(Map2_0Template):
         self.micro_living_rent_slider.enabled = True
         # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Co-living":
-        Variables.last_bbox_cl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cl.checked, Variables.last_bbox_cl, "co_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+        Variables.last_bbox_cl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cl.checked, Variables.last_bbox_cl, "co_living", f'{self.app_url}/_/theme/Pins/CoLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
         if self.slider_minimum.text is None or float(minimum_average_rent) < self.micro_living_rent_slider.min:
@@ -378,7 +378,7 @@ class Map2_0(Map2_0Template):
         self.micro_living_rent_slider.enabled = True
         # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Serviced Living":
-        Variables.last_bbox_sl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_sl.checked, Variables.last_bbox_sl, "service_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+        Variables.last_bbox_sl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_sl.checked, Variables.last_bbox_sl, "service_living", f'{self.app_url}/_/theme/Pins/ServiceLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
         if self.slider_minimum.text is None or float(minimum_average_rent) < self.micro_living_rent_slider.min:
@@ -390,7 +390,7 @@ class Map2_0(Map2_0Template):
         self.micro_living_rent_slider.enabled = True
         # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Student Living":
-        Variables.last_bbox_stl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_stl.checked, Variables.last_bbox_stl, "student_living", f'{self.app_url}/_/theme/Pins/Services_blanc@4x.png')
+        Variables.last_bbox_stl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_stl.checked, Variables.last_bbox_stl, "student_living", f'{self.app_url}/_/theme/Pins/StudentLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
         if self.slider_minimum.text is None or float(minimum_average_rent) < self.micro_living_rent_slider.min:
@@ -3332,30 +3332,189 @@ class Map2_0(Map2_0Template):
   def micro_living_rent_slider_change(self, handle, **event_args):
     pass
 
-  # def export_comparables_click(self, **event_args):
-  #   checked_boxes = []
-  #   marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
-  #   for checkbox in self.micro_living_check_boxes.get_components():
-  #     if checkbox.checked:
-  #       if checkbox.text == "Business Living":
-  #         checked_boxes.append(('business_living', 'Business Living'))
-  #       elif checkbox.text == "Co-living":
-  #         checked_boxes.append(('co_living', 'Co-living'))
-  #       elif checkbox.text == "Serviced Living":
-  #         checked_boxes.append(('service_living', 'Serviced Living'))
-  #       elif checkbox.text == "Student Living":
-  #         checked_boxes.append(('student_living', 'Student Living'))
-  #   for category, page_name in checked_boxes:
-  #     micro_living_comparables = copy.deepcopy(ExcelFrames.micro_living_comparables)
-  #     micro_living_comparables_invest = copy.deepcopy(ExcelFrames.micro_living_comparables_invest)
-  #     micro_living_comparables_comparable = copy.deepcopy(ExcelFrames.micro_living_comparables_comparable)
-  #     sorted_entries = {}
-  #     distances = {}
-  #     for entry in Variables.micro_living_entries[category]:
-  #       el_coords = [entry['longitude'], entry['latitude']]
-  #       distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
-  #       entry['distance'] = distance
-  #     sorted_entries = sorted(Variables.micro_living_entries[category], key=lambda x: x['distance'])
-  #     for entry in sorted_entries:
-  #       if entry['distance'] == 0:
+  def export_comparables_click(self, **event_args):
+    checked_boxes = []
+    columns = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
+    column_id = 0
+    marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
+    for checkbox in self.micro_living_check_boxes.get_components():
+      if checkbox.checked:
+        if checkbox.text == "Business Living":
+          checked_boxes.append(('business_living', 'Business Living'))
+        elif checkbox.text == "Co-living":
+          checked_boxes.append(('co_living', 'Co-living'))
+        elif checkbox.text == "Serviced Living":
+          checked_boxes.append(('service_living', 'Serviced Living'))
+        elif checkbox.text == "Student Living":
+          checked_boxes.append(('student_living', 'Student Living'))
+    for category, page_name in checked_boxes:
+      micro_living_comparables = copy.deepcopy(ExcelFrames.micro_living_comparables)
+      micro_living_comparables_invest = copy.deepcopy(ExcelFrames.micro_living_comparables_invest)
+      micro_living_comparables_comparable = copy.deepcopy(ExcelFrames.micro_living_comparables_comparable)
+      sorted_entries = {}
+      distances = {}
+      for entry in Variables.micro_living_entries[category]:
+        el_coords = [entry['longitude'], entry['latitude']]
+        distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
+        entry['distance'] = distance
+      sorted_entries = sorted(Variables.micro_living_entries[category], key=lambda x: x['distance'])
+      for entry in sorted_entries:
+        if entry['distance'] == 0:
+          print(entry)
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_investment_fs9_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}45'] = {
+            'text': f"{entry['street']}, {entry['postcode']} {entry['city']}",
+            'format': 'bold_investment_fs9_wrap_vcenter'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}46'] = {
+            'text': entry['number_of_apartments'] if entry['number_of_apartments'] is not None else '-',
+            'format': 'regular_investment_number'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}47'] = {
+            'text': entry['all_in_rent_from'] if entry['all_in_rent_from'] is not None else '-',
+            'format': 'regular_investment'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}48'] = {
+            'text': entry['all_in_rent_up_to'] if entry['all_in_rent_up_to'] is not None else '-',
+            'format': 'regular_investment'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}49'] = {
+            'text': entry['all_in_rent_up_to'] if entry['all_in_rent_up_to'] is not None else '-',
+            'format': 'regular_investment_number'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
+          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': entry['operator'],
+            'format': 'bold_underline'
+          }
           
