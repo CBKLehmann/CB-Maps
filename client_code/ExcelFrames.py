@@ -2923,7 +2923,7 @@ micro_living_comparables = {
             'paper': 9,
             'hide_grid': 2,
             'fit_to_pages': (1, 1),
-            'margins': (0, 0, 0, 0)
+            'margins': (0.5, 0.5, 0.5, 0.5)
         },
         'workbook_format': {
             'font_size': 11,
@@ -2953,7 +2953,7 @@ micro_living_comparables = {
                 'align': 'center',
                 'bottom': 1
             },
-            'bold_fs9_vcenter_wrap': {
+            'bold_fs9_wrap_vcenter': {
                 'font': 'Segoe UI Semibold',
                 'font_size': 9,
                 'align': 'center',
@@ -2992,16 +2992,17 @@ micro_living_comparables = {
             'regular_number': {
                 'font': 'Segoe UI',
                 'align': 'center',
-                'num_format': '0',
+                'num_format': '#,##0',
             },
             'regular_number_with_two_komma': {
                 'font': 'Segoe UI',
                 'align': 'center',
-                'num_format': '0.00'
+                'num_format': '#,##0.00'
             },
             'wingdings': {
                 'font': 'Wingdings',
-                'align': 'center'
+                'align': 'center',
+                'valign': 'vcenter'
             },
             'regular_investment': {
                 'font': 'Segoe UI',
@@ -3014,20 +3015,21 @@ micro_living_comparables = {
                 'bg_color': '#1B2939',
                 'color': '#FFFFFF',
                 'align': 'center',
-                'num_format': '0',
+                'num_format': '#,##0',
             },
             'regular_investment_number_with_two_komma': {
                 'font': 'Segoe UI',
                 'bg_color': '#1B2939',
                 'color': '#FFFFFF',
                 'align': 'center',
-                'num_format': '0.00'
+                'num_format': '#,##0.00'
             },
             'wingdings_investment': {
                 'font': 'Wingdings',
                 'bg_color': '#1B2939',
                 'color': '#FFFFFF',
-                'align': 'center'
+                'align': 'center',
+                'valign': 'vcenter'
             },
             'city_heading': {
                 'font': 'Segoe UI',
@@ -3039,8 +3041,9 @@ micro_living_comparables = {
                 'font_size': 40
             }
         },
-        'pages': {
-            'Competitors De': {
+        'pages': {}
+    }
+micro_living_comparables_page_de = {
                 'settings': {
                     'area': 'A1:K90',
                     'column_width': [
@@ -3200,5 +3203,3 @@ micro_living_comparables = {
                     }
                 }
             }
-        }
-    }

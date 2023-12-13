@@ -238,8 +238,9 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
         # Create Icon
         if category in Variables.micro_living_categories:
           if ele['is_360_operator']:
-            picture = f'{self.app_url}/_/theme/Pins/360_Operator@0.75x.png'
-        el.style.backgroundImage = f'url({picture})'
+            el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/360_Operator@0.75x.png)'
+          else:
+            el.style.backgroundImage = f'url({picture})'
 
         # Check if Category is not PflegeDB
         if not category == 'nursing_homes':

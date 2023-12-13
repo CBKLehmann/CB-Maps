@@ -3333,9 +3333,11 @@ class Map2_0(Map2_0Template):
     pass
 
   def export_comparables_click(self, **event_args):
+    ''' Investobjekt auf jeder Seite anzeigen '''
     checked_boxes = []
+    page_order = []
     columns = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
-    column_id = 0
+    page_id = 0
     marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
     for checkbox in self.micro_living_check_boxes.get_components():
       if checkbox.checked:
@@ -3356,7 +3358,15 @@ class Map2_0(Map2_0Template):
         distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
         entry['distance'] = distance
       sorted_entries = sorted(Variables.micro_living_entries[category], key=lambda x: x['distance'])
-      for entry in sorted_entries:
+      for index, entry in enumerate(sorted_entries):
+        if index % 10 == 0:
+          if not page_id == 0:
+            micro_living_comparables['pages'][f'Competitors De {page_id}'] = micro_living_comparables_current_page
+            page_order.append(f'Competitors De {page_id}')
+          micro_living_comparables_current_page = copy.deepcopy(ExcelFrames.micro_living_comparables_page_de)
+          micro_living_comparables_current_page['cell_content']['cells'][f'A12']['text'] = page_name
+          column_id = 0
+          page_id += 1
 
         if entry['all_in_rent_from'] is not None:
             all_in_rent_from = entry['all_in_rent_from']
@@ -3401,193 +3411,196 @@ class Map2_0(Map2_0Template):
           average_rent_per_squaremeter = '-'
         
         if entry['distance'] == 0:
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}44'] = {
             'text': entry['operator'],
             'format': 'bold_investment_fs9_underline'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}45'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}45'] = {
             'text': f"{entry['street']}, {entry['postcode']} {entry['city']}",
             'format': 'bold_investment_fs9_wrap_vcenter'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}46'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}46'] = {
             'text': entry['number_of_apartments'] if entry['number_of_apartments'] is not None else '-',
             'format': 'regular_investment_number'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}47'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}47'] = {
             'text': all_in_rent_from,
-            'format': 'regular_investment'
+            'format': 'regular_investment_number'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}48'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}48'] = {
             'text': all_in_rent_up_to,
-            'format': 'regular_investment'
+            'format': 'regular_investment_number'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}49'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}49'] = {
             'text': average_rent_per_apartment,
             'format': 'regular_investment_number'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}50'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}50'] = {
             'text': apartment_size_from,
             'format': 'regular_investment_number_with_two_komma'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}51'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}51'] = {
             'text': apartment_size_up_to,
             'format': 'regular_investment_number_with_two_komma'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}52'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}52'] = {
             'text': average_squaremeters_per_apartment,
             'format': 'regular_investment_number_with_two_komma'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}53'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}53'] = {
             'text': average_rent_per_squaremeter,
             'format': 'regular_investment_number_with_two_komma'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}54'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}54'] = {
             'text': 'ü' if entry['furnishing'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['furnishing'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}55'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}55'] = {
             'text': 'ü' if entry['kitchen'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['kitchen'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}56'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}56'] = {
             'text': 'ü' if entry['balcony'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['balcony'] else 'regular_investment'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}57'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}57'] = {
             'text': 'ü' if entry['bath'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['bath'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}58'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}58'] = {
             'text': 'ü' if entry['community_spaces'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['community_spaces'] else 'regular_investment'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}59'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}59'] = {
             'text': 'ü' if entry['services'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['services'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}60'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}60'] = {
             'text': 'ü' if entry['gym'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['gym'] else 'regular_investment'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}61'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}61'] = {
             'text': 'ü' if entry['media_lounge'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['media_lounge'] else 'regular_investment'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}62'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}62'] = {
             'text': 'ü' if entry['study_lounge'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['study_lounge'] else 'regular_investment'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}63'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}63'] = {
             'text': 'ü' if entry['laundry_room'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['laundry_room'] else 'regular_investment'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}64'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}64'] = {
             'text': 'ü' if entry['rooms_for_events'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['rooms_for_events'] else 'regular_investment'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}65'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}65'] = {
             'text': 'ü' if entry['bar'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['bar'] else 'regular_investment'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}66'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}66'] = {
             'text': 'ü' if entry['collaborative_cooking'] else '-',
-            'format': 'wingdings_investment'
+            'format': 'wingdings_investment' if entry['collaborative_cooking'] else 'regular_investment'
           }
 
           column_id += 1
         else:
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}44'] = {
             'text': entry['operator'],
             'format': 'bold_fs9_underline'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}45'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}45'] = {
             'text': f"{entry['street']}, {entry['postcode']} {entry['city']}",
             'format': 'bold_fs9_wrap_vcenter'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}46'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}46'] = {
             'text': entry['number_of_apartments'] if entry['number_of_apartments'] is not None else '-',
             'format': 'regular_number'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}47'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}47'] = {
             'text': all_in_rent_from,
-            'format': 'regular'
+            'format': 'regular_number'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}48'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}48'] = {
             'text': all_in_rent_up_to,
-            'format': 'regular'
+            'format': 'regular_number'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}49'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}49'] = {
             'text': average_rent_per_apartment,
             'format': 'regular_number'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}50'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}50'] = {
             'text': apartment_size_from,
             'format': 'regular_number_with_two_komma'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}51'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}51'] = {
             'text': apartment_size_up_to,
             'format': 'regular_number_with_two_komma'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}52'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}52'] = {
             'text': average_squaremeters_per_apartment,
             'format': 'regular_number_with_two_komma'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}53'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}53'] = {
             'text': average_rent_per_squaremeter,
             'format': 'regular_number_with_two_komma'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}54'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}54'] = {
             'text': 'ü' if entry['furnishing'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['furnishing'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}55'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}55'] = {
             'text': 'ü' if entry['kitchen'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['kitchen'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}56'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}56'] = {
             'text': 'ü' if entry['balcony'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['balcony'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}57'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}57'] = {
             'text': 'ü' if entry['bath'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['bath'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}58'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}58'] = {
             'text': 'ü' if entry['community_spaces'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['community_spaces'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}59'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}59'] = {
             'text': 'ü' if entry['services'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['services'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}60'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}60'] = {
             'text': 'ü' if entry['gym'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['gym'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}61'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}61'] = {
             'text': 'ü' if entry['media_lounge'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['media_lounge'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}62'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}62'] = {
             'text': 'ü' if entry['study_lounge'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['study_lounge'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}63'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}63'] = {
             'text': 'ü' if entry['laundry_room'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['laundry_room'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}64'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}64'] = {
             'text': 'ü' if entry['rooms_for_events'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['rooms_for_events'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}65'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}65'] = {
             'text': 'ü' if entry['bar'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['bar'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}66'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}66'] = {
             'text': 'ü' if entry['collaborative_cooking'] else '-',
-            'format': 'wingdings'
+            'format': 'wingdings' if entry['collaborative_cooking'] else 'regular'
           }
 
           column_id += 1
-      print(micro_living_comparables)
+
+      micro_living_comparables['pages'][f'Competitors De {page_id}'] = micro_living_comparables_current_page
+      page_order.append(f'Competitors De {page_id}')
+      anvil.server.call('excel_test', micro_living_comparables, page_order)
