@@ -2923,7 +2923,7 @@ micro_living_comparables = {
             'paper': 9,
             'hide_grid': 2,
             'fit_to_pages': (1, 1),
-            'margins': (0, 0, 0, 0)
+            'margins': (0.5, 0.5, 0.5, 0.5)
         },
         'workbook_format': {
             'font_size': 11,
@@ -2932,245 +2932,274 @@ micro_living_comparables = {
         'cell_formats': {
             'bold_underline': {
                 'font': 'Segoe UI Semibold',
-                'bottom': 1
+                'bottom': 1,
+                'font_size': 8
             },
             'bold_vcenter': {
                 'font': 'Segoe UI Semibold',
-                'valign': 'vcenter'
+                'valign': 'vcenter',
+                'font_size': 8
             },
             'bold_right': {
                 'font': 'Segoe UI Semibold',
-                'align': 'right'
+                'align': 'right',
+                'font_size': 8
             },
-            'bold_fs9': {
+            'bold_fs8': {
                 'font': 'Segoe UI Semibold',
-                'font_size': 9,
+                'font_size': 8,
                 'align': 'center'
             },
-            'bold_fs9_underline': {
+            'bold_fs8_underline': {
                 'font': 'Segoe UI Semibold',
-                'font_size': 9,
+                'font_size': 8,
                 'align': 'center',
-                'bottom': 1
+                'bottom': 1,
+                'text_wrap': True
             },
-            'bold_fs9_vcenter_wrap': {
+            'bold_fs8_wrap_vcenter': {
                 'font': 'Segoe UI Semibold',
-                'font_size': 9,
+                'font_size': 8,
                 'align': 'center',
                 'valign': 'vcenter',
                 'text_wrap': True
             },
-            'bold_investment_fs9': {
+            'bold_investment_fs8': {
                 'font': 'Segoe UI Semibold',
                 'align': 'center',
                 'bg_color': '#1B2939',
                 'color': '#FFFFFF',
-                'font_size': 9
+                'font_size': 8
             },
-            'bold_investment_fs9_underline': {
+            'bold_investment_fs8_underline': {
                 'font': 'Segoe UI Semibold',
                 'align': 'center',
                 'bg_color': '#1B2939',
                 'color': '#FFFFFF',
-                'font_size': 9,
+                'font_size': 8,
                 'bottom': 1,
-                'bottom_color': '#FFFFFF'
+                'bottom_color': '#FFFFFF',
+                'text_wrap': True
             },
-            'bold_investment_fs9_wrap_vcenter': {
+            'bold_investment_fs8_wrap_vcenter': {
                 'font': 'Segoe UI Semibold',
                 'align': 'center',
                 'bg_color': '#1B2939',
                 'color': '#FFFFFF',
-                'font_size': 9,
+                'font_size': 8,
                 'text_wrap': True,
                 'valign': 'vcenter'
             },
+            'regular_fs8': {
+                'font': 'Segoe UI',
+                'font_size': 8
+            },
+            'regular_fs9': {
+                'font': 'Segoe UI',
+                'font_size': 9
+            },
             'regular': {
                 'font': 'Segoe UI',
-                'align': 'center'
+                'align': 'center',
+                'font_size': 8
             },
             'regular_number': {
                 'font': 'Segoe UI',
                 'align': 'center',
-                'num_format': '0',
+                'num_format': '#,##0',
+                'font_size': 8
             },
             'regular_number_with_two_komma': {
                 'font': 'Segoe UI',
                 'align': 'center',
-                'num_format': '0.00'
+                'num_format': '#,##0.00',
+                'font_size': 8
             },
             'wingdings': {
                 'font': 'Wingdings',
-                'align': 'center'
+                'align': 'center',
+                'valign': 'vcenter',
+                'font_size': 8
             },
             'regular_investment': {
                 'font': 'Segoe UI',
                 'bg_color': '#1B2939',
                 'color': '#FFFFFF',
-                'align': 'center'
+                'align': 'center',
+                'font_size': 8
             },
             'regular_investment_number': {
                 'font': 'Segoe UI',
                 'bg_color': '#1B2939',
                 'color': '#FFFFFF',
                 'align': 'center',
-                'num_format': '0',
+                'num_format': '#,##0',
+                'font_size': 8
             },
             'regular_investment_number_with_two_komma': {
                 'font': 'Segoe UI',
                 'bg_color': '#1B2939',
                 'color': '#FFFFFF',
                 'align': 'center',
-                'num_format': '0.00'
+                'num_format': '#,##0.00',
+                'font_size': 8
             },
             'wingdings_investment': {
                 'font': 'Wingdings',
                 'bg_color': '#1B2939',
                 'color': '#FFFFFF',
-                'align': 'center'
+                'align': 'center',
+                'valign': 'vcenter',
+                'font_size': 8
             },
             'city_heading': {
                 'font': 'Segoe UI',
-                'font_size': 40,
-                'color': '#C8B058'
+                'font_size': 27,
+                'color': '#DADADA',
+                'valign': 'vcenter'
             },
             'page_heading': {
                 'font': 'Segoe UI',
-                'font_size': 40
+                'font_size': 27,
+                'valign': 'vcenter'
             }
         },
-        'pages': {
-            'Competitors De': {
+        'pages': {}
+    }
+micro_living_comparables_page_de = {
                 'settings': {
-                    'area': 'A1:K90',
+                    'area': 'A1:L90',
                     'column_width': [
-                        28.18, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73
+                        4.18, 24, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73
                     ],
                     'row_height': [
-                        16.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 51.00, 51.00, 14.50,
-                        14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50,
-                        14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50,
-                        14.50, 14.50, 14.50, 14.50, 14.50, 44.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50,
-                        14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50, 14.50,
-                        14.50
+                        16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50,
+                        16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50,
+                        16.50, 16.50, 16.50, 16.50, 30.00, 44.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 
+                        16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 
+                        16.50
                     ]
                 },
                 'cell_content': {
                     'images': {
-                        'A14': {
+                        'B7': {
                             'file': 'img/test_map.png',
                             'settings': {
                                 'y_offset': 10,
-                                'y_scale': .8,
-                                'x_scale': .8
+                                'y_scale': 1,
+                                'x_scale': 1
                             }
                         }
                     },
                     'cells': {
-                        'K1': {
+                        'A1': {
+                            'text': 'Capital Bay Group  |',
+                            'format': 'regular_fs9'
+                        },
+                        'L1': {
                             'text': '1 | 3',
                             'format': 'bold_right'
                         },
-                        'A11': {
-                            'text': 'Berlin',
-                            'format': 'city_heading'
-                        },
-                        'A12': {
-                            'text': 'Student Living',
-                            'format': 'page_heading'
-                        },
-                        'A44': {
-                            'text': 'Comparable',
+                        'B31': {
+                            'text': 'Mitbewerber',
                             'format': 'bold_underline'
                         },
-                        'A45': {
+                        'B32': {
                             'text': 'Adresse',
                             'format': 'bold_vcenter'
                         },
-                        'A46': {
-                            'text': 'Anzahl der Apartments'
+                        'B33': {
+                            'text': 'Anzahl der Apartments',
+                            'format': 'regular_fs8' 
                         },
-                        'A47': {
-                            'text': 'Untere Mietspanne (in €)'
+                        'B34': {
+                            'text': 'Untere Mietspanne (in €)',
+                            'format': 'regular_fs8' 
                         },
-                        'A48': {
-                            'text': 'Obere Mietspanne (in €)'
+                        'B35': {
+                            'text': 'Obere Mietspanne (in €)',
+                            'format': 'regular_fs8' 
                         },
-                        'A49': {
-                            'text': 'Ø Miete / Apartment (in €)'
+                        'B36': {
+                            'text': 'Ø Miete / Apartment (in €)',
+                            'format': 'regular_fs8' 
                         },
-                        'A50': {
-                            'text': 'Kleinstes Apartment (in m²)'
+                        'B37': {
+                            'text': 'Kleinstes Apartment (in m²)',
+                            'format': 'regular_fs8' 
                         },
-                        'A51': {
-                            'text': 'Größtes Apartment (in m²)'
+                        'B38': {
+                            'text': 'Größtes Apartment (in m²)',
+                            'format': 'regular_fs8' 
                         },
-                        'A52': {
-                            'text': 'Ø m² / Apartment'
+                        'B39': {
+                            'text': 'Ø m² / Apartment',
+                            'format': 'regular_fs8' 
                         },
-                        'A53': {
-                            'text': 'Ø Miete / m²'
+                        'B40': {
+                            'text': 'Ø Miete / m²',
+                            'format': 'regular_fs8' 
                         },
-                        'A54': {
-                            'text': 'Möbliert'
+                        'B41': {
+                            'text': 'Möbliert',
+                            'format': 'regular_fs8' 
                         },
-                        'A55': {
-                            'text': 'Küche'
+                        'B42': {
+                            'text': 'Küche',
+                            'format': 'regular_fs8' 
                         },
-                        'A56': {
-                            'text': 'Balkon'
+                        'B43': {
+                            'text': 'Balkon',
+                            'format': 'regular_fs8' 
                         },
-                        'A57': {
-                            'text': 'Eigenes Bad'
+                        'B44': {
+                            'text': 'Eigenes Bad',
+                            'format': 'regular_fs8' 
                         },
-                        'A58': {
-                            'text': 'Gemeinschaftsräume'
+                        'B45': {
+                            'text': 'Gemeinschaftsräume',
+                            'format': 'regular_fs8' 
                         },
-                        'A59': {
-                            'text': 'Services'
+                        'B46': {
+                            'text': 'Services',
+                            'format': 'regular_fs8' 
                         },
-                        'A60': {
-                            'text': 'Fitnessstudio'
+                        'B47': {
+                            'text': 'Fitnessstudio',
+                            'format': 'regular_fs8' 
                         },
-                        'A61': {
-                            'text': 'Medienlounge'
+                        'B48': {
+                            'text': 'Medienlounge',
+                            'format': 'regular_fs8' 
                         },
-                        'A62': {
-                            'text': 'Lern-Lounge'
+                        'B49': {
+                            'text': 'Lern-Lounge',
+                            'format': 'regular_fs8' 
                         },
-                        'A63': {
-                            'text': 'Waschraum'
+                        'B50': {
+                            'text': 'Waschraum',
+                            'format': 'regular_fs8' 
                         },
-                        'A64': {
-                            'text': 'Veranstaltungsräume'
+                        'B51': {
+                            'text': 'Veranstaltungsräume',
+                            'format': 'regular_fs8' 
                         },
-                        'A65': {
-                            'text': 'Bar'
+                        'B52': {
+                            'text': 'Bar',
+                            'format': 'regular_fs8' 
                         },
-                        'A66': {
-                            'text': 'Gemeinschaftliches Kochen'
+                        'B53': {
+                            'text': 'Gemeinschaftliches Kochen',
+                            'format': 'regular_fs8' 
                         }
                     },
                     'textboxes': {
                         'A1_A': {
-                            'text': 'Capital Bay Group |',
-                            'settings': {
-                                'font': {
-                                    'name': 'Segoe UI'
-                                },
-                                'line': {
-                                    'none': True
-                                },
-                                'fill': {
-                                    'none': True
-                                }
-                            }
-                        },
-                        'A1_B': {
                             'text': 'Comparables',
                             'settings': {
                                 'font': {
-                                    'name': 'Segoe UI Semibold'
+                                    'name': 'Segoe UI Semibold',
+                                    'size': 9
                                 },
                                 'line': {
                                     'none': True
@@ -3178,15 +3207,16 @@ micro_living_comparables = {
                                 'fill': {
                                     'none': True
                                 },
-                                'x_offset': 132
+                                'x_offset': 98
                             }
                         },
-                        'A1_C': {
-                            'text': 'Micro Living',
+                        'A1_B': {
+                            'text': 'MICRO',
                             'settings': {
                                 'font': {
                                     'name': 'Segoe UI Semibold',
-                                    'color': '#C8B058'
+                                    'color': '#C8B058',
+                                    'size': 9
                                 },
                                 'line': {
                                     'none': True
@@ -3194,199 +3224,193 @@ micro_living_comparables = {
                                 'fill': {
                                     'none': True
                                 },
-                                'x_offset': 202
+                                'x_offset': 175
                             }
                         }
-                    }
+                    },
+                    'merge_cells': {
+                        'B3:K4': {
+                            'text': "Berlin",
+                            'format': "city_heading"
+                        },
+                        'B5:K6': {
+                            'text': "Student Living",
+                            'format': "page_heading"
+                        }
+                    },
                 }
             }
-        }
-    }
-micro_living_comparables_invest = {
-  'B44': {
-      'text': '360 Objekt',
-      'format': 'bold_investment_fs9_underline'
-  },
-  'B45': {
-      'text': 'Frankfurter Straße 54-62',
-      'format': 'bold_investment_fs9_wrap_vcenter'
-  },
-  'B46': {
-      'text': 340,
-      'format': 'regular_investment_number'
-  },
-  'B47': {
-      'text': '-',
-      'format': 'regular_investment'
-  },
-  'B48': {
-      'text': '-',
-      'format': 'regular_investment'
-  },
-  'B49': {
-      'text': 1035,
-      'format': 'regular_investment_number'
-  },
-  'B50': {
-      'text': '-',
-      'format': 'regular_investment'
-  },
-  'B51': {
-      'text': '-',
-      'format': 'regular_investment'
-  },
-  'B52': {
-      'text': 36,
-      'format': 'regular_investment_number_with_two_komma'
-  },
-  'B53': {
-      'text': 24,
-      'format': 'regular_investment_number'
-  },
-  'B54': {
-      'text': 'ü',
-      'format': 'wingdings_investment'
-  },
-  'B55': {
-      'text': 'ü',
-      'format': 'wingdings_investment'
-  },
-  'B56': {
-      'text': '-',
-      'format': 'regular_investment'
-  },
-  'B57': {
-      'text': 'ü',
-      'format': 'wingdings_investment'
-  },
-  'B58': {
-      'text': 'ü',
-      'format': 'wingdings_investment'
-  },
-  'B59': {
-      'text': 'ü',
-      'format': 'wingdings_investment'
-  },
-  'B60': {
-      'text': 'ü',
-      'format': 'wingdings_investment'
-  },
-  'B61': {
-      'text': '-',
-      'format': 'regular_investment'
-  },
-  'B62': {
-      'text': '-',
-      'format': 'regular_investment'
-  },
-  'B63': {
-      'text': 'ü',
-      'format': 'wingdings_investment'
-  },
-  'B64': {
-      'text': '-',
-      'format': 'regular_investment'
-  },
-  'B65': {
-      'text': '-',
-      'format': 'regular_investment'
-  },
-  'B66': {
-      'text': '-',
-      'format': 'regular_investment'
-  },
-}
-micro_living_comparables_comparable = {
-  'C44': {
-      'text': '360 Objekt',
-      'format': 'bold_fs9_underline'
-  },
-  'C45': {
-      'text': 'Frankfurter Straße 54-62',
-      'format': 'bold_fs9_vcenter_wrap'
-  },
-  'C46': {
-      'text': 340,
-      'format': 'regular_number'
-  },
-  'C47': {
-      'text': '-',
-      'format': 'regular'
-  },
-  'C48': {
-      'text': '-',
-      'format': 'regular'
-  },
-  'C49': {
-      'text': 1035,
-      'format': 'regular_number'
-  },
-  'C50': {
-      'text': '-',
-      'format': 'regular'
-  },
-  'C51': {
-      'text': '-',
-      'format': 'regular'
-  },
-  'C52': {
-      'text': 36.00,
-      'format': 'regular_number_with_two_komma'
-  },
-  'C53': {
-      'text': 24,
-      'format': 'regular_number'
-  },
-  'C54': {
-      'text': 'ü',
-      'format': 'wingdings'
-  },
-  'C55': {
-      'text': 'ü',
-      'format': 'wingdings'
-  },
-  'C56': {
-      'text': '-',
-      'format': 'regular'
-  },
-  'C57': {
-      'text': 'ü',
-      'format': 'wingdings'
-  },
-  'C58': {
-      'text': 'ü',
-      'format': 'wingdings'
-  },
-  'C59': {
-      'text': 'ü',
-      'format': 'wingdings'
-  },
-  'C60': {
-      'text': 'ü',
-      'format': 'wingdings'
-  },
-  'C61': {
-      'text': '-',
-      'format': 'regular'
-  },
-  'C62': {
-      'text': '-',
-      'format': 'regular'
-  },
-  'C63': {
-      'text': 'ü',
-      'format': 'wingdings'
-  },
-  'C64': {
-      'text': '-',
-      'format': 'regular'
-  },
-  'C65': {
-      'text': '-',
-      'format': 'regular'
-  },
-  'C66': {
-      'text': '-',
-      'format': 'regular'
-  }
-}
+micro_living_comparables_page_en = {
+                'settings': {
+                    'area': 'A1:L90',
+                    'column_width': [
+                        4.18, 24, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73, 13.73
+                    ],
+                    'row_height': [
+                        16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50,
+                        16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50,
+                        16.50, 16.50, 16.50, 16.50, 30.00, 44.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 
+                        16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 16.50, 
+                        16.50
+                    ]
+                },
+                'cell_content': {
+                    'images': {
+                        'B7': {
+                            'file': 'img/test_map.png',
+                            'settings': {
+                                'y_offset': 10,
+                                'y_scale': 1,
+                                'x_scale': 1
+                            }
+                        }
+                    },
+                    'cells': {
+                        'A1': {
+                            'text': 'Capital Bay Group  |',
+                            'format': 'regular_fs9'
+                        },
+                        'L1': {
+                            'text': '1 | 3',
+                            'format': 'bold_right'
+                        },
+                        'B31': {
+                            'text': 'Comparable',
+                            'format': 'bold_underline'
+                        },
+                        'B32': {
+                            'text': 'Address',
+                            'format': 'bold_vcenter'
+                        },
+                        'B33': {
+                            'text': 'Number of apartments',
+                            'format': 'regular_fs8' 
+                        },
+                        'B34': {
+                            'text': 'Lower rent range (in €)',
+                            'format': 'regular_fs8' 
+                        },
+                        'B35': {
+                            'text': 'Upper rent range (in €)',
+                            'format': 'regular_fs8' 
+                        },
+                        'B36': {
+                            'text': 'Ø Rent / Apartment (in €)',
+                            'format': 'regular_fs8' 
+                        },
+                        'B37': {
+                            'text': 'Smallest apartment (in m²)',
+                            'format': 'regular_fs8' 
+                        },
+                        'B38': {
+                            'text': 'Biggest apartment (in m²)',
+                            'format': 'regular_fs8' 
+                        },
+                        'B39': {
+                            'text': 'Ø m² / Apartment',
+                            'format': 'regular_fs8' 
+                        },
+                        'B40': {
+                            'text': 'Ø Rent / m²',
+                            'format': 'regular_fs8' 
+                        },
+                        'B41': {
+                            'text': 'Furnished',
+                            'format': 'regular_fs8' 
+                        },
+                        'B42': {
+                            'text': 'Kitchenette',
+                            'format': 'regular_fs8' 
+                        },
+                        'B43': {
+                            'text': 'Balcony',
+                            'format': 'regular_fs8' 
+                        },
+                        'B44': {
+                            'text': 'Own bathroom',
+                            'format': 'regular_fs8' 
+                        },
+                        'B45': {
+                            'text': 'Community spaces',
+                            'format': 'regular_fs8' 
+                        },
+                        'B46': {
+                            'text': 'Services',
+                            'format': 'regular_fs8' 
+                        },
+                        'B47': {
+                            'text': 'Gym',
+                            'format': 'regular_fs8' 
+                        },
+                        'B48': {
+                            'text': 'Media lounge',
+                            'format': 'regular_fs8' 
+                        },
+                        'B49': {
+                            'text': 'Learning lounge',
+                            'format': 'regular_fs8' 
+                        },
+                        'B50': {
+                            'text': 'Washing lounge',
+                            'format': 'regular_fs8' 
+                        },
+                        'B51': {
+                            'text': 'Event lovation',
+                            'format': 'regular_fs8' 
+                        },
+                        'B52': {
+                            'text': 'Bar',
+                            'format': 'regular_fs8' 
+                        },
+                        'B53': {
+                            'text': 'Community cooking',
+                            'format': 'regular_fs8' 
+                        }
+                    },
+                    'textboxes': {
+                        'A1_A': {
+                            'text': 'Comparables',
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI Semibold',
+                                    'size': 9
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 98
+                            }
+                        },
+                        'A1_B': {
+                            'text': 'MICRO',
+                            'settings': {
+                                'font': {
+                                    'name': 'Segoe UI Semibold',
+                                    'color': '#C8B058',
+                                    'size': 9
+                                },
+                                'line': {
+                                    'none': True
+                                },
+                                'fill': {
+                                    'none': True
+                                },
+                                'x_offset': 175
+                            }
+                        }
+                    },
+                    'merge_cells': {
+                        'B3:K4': {
+                            'text': "Berlin",
+                            'format': "city_heading"
+                        },
+                        'B5:K6': {
+                            'text': "Student Living",
+                            'format': "page_heading"
+                        }
+                    },
+                }
+            }

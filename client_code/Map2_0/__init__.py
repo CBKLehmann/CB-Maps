@@ -357,6 +357,8 @@ class Map2_0(Map2_0Template):
         Variables.last_bbox_bl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_bl.checked, Variables.last_bbox_bl, "business_living", f'{self.app_url}/_/theme/Pins/BusinessLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
+        print(minimum_average_rent)
+        print(maximum_average_rent)
         if self.slider_minimum.text is None or minimum_average_rent < self.micro_living_rent_slider.min:
           # self.slider_minimum.text = minimum_average_rent
           self.micro_living_rent_slider.min = float(minimum_average_rent)
@@ -3333,10 +3335,15 @@ class Map2_0(Map2_0Template):
     pass
 
   def export_comparables_click(self, **event_args):
+    ''' Investobjekt auf jeder Seite anzeigen '''
+    Variables.unique_code = anvil.server.call("get_unique_code")
     checked_boxes = []
-    columns = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
-    column_id = 0
+    page_order = []
+    requests = []
+    columns = ['C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
+    page_id = 0
     marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
+    last_coord_dist = -1
     for checkbox in self.micro_living_check_boxes.get_components():
       if checkbox.checked:
         if checkbox.text == "Business Living":
@@ -3349,172 +3356,345 @@ class Map2_0(Map2_0Template):
           checked_boxes.append(('student_living', 'Student Living'))
     for category, page_name in checked_boxes:
       micro_living_comparables = copy.deepcopy(ExcelFrames.micro_living_comparables)
-      micro_living_comparables_invest = copy.deepcopy(ExcelFrames.micro_living_comparables_invest)
-      micro_living_comparables_comparable = copy.deepcopy(ExcelFrames.micro_living_comparables_comparable)
       sorted_entries = {}
       distances = {}
+      page_entries = []
+      bounding_box = [1000000, 1000000, 0, 0]
+      no_number_marker = 0
+      no_number_map_marker = 0
       for entry in Variables.micro_living_entries[category]:
+        if float(entry['longitude']) < bounding_box[0]:
+          bounding_box[0] = float(entry['longitude'])
+        if float(entry['longitude']) > bounding_box[2]:
+          bounding_box[2] = float(entry['longitude'])
+        if float(entry['latitude']) < bounding_box[1]:
+          bounding_box[1] = float(entry['latitude'])
+        if float(entry['latitude']) > bounding_box[3]:
+          bounding_box[3] = float(entry['latitude'])
         el_coords = [entry['longitude'], entry['latitude']]
         distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
         entry['distance'] = distance
       sorted_entries = sorted(Variables.micro_living_entries[category], key=lambda x: x['distance'])
-      for entry in sorted_entries:
+      for index, entry in enumerate(sorted_entries):
+        if index % 10 == 0:
+          if not page_id == 0:
+            request, no_number_map_marker = self.build_micro_living_competitor_map_request(page_entries, page_id, no_number_map_marker)
+            micro_living_comparables_current_page['cell_content']['images']['B7']['file'] = f'tmp/map_image_{page_id}_{Variables.unique_code}.png'
+            micro_living_comparables['pages'][f'Competitors De {page_id}'] = micro_living_comparables_current_page
+            page_order.append(f'Competitors De {page_id}')  
+            requests.append((request, f'map_image_{page_id}_{Variables.unique_code}'))
+          if 'Ger' in event_args['sender'].text:
+            micro_living_comparables_current_page = copy.deepcopy(ExcelFrames.micro_living_comparables_page_de)
+          elif 'Eng' in event_args['sender'].text:
+            micro_living_comparables_current_page = copy.deepcopy(ExcelFrames.micro_living_comparables_page_en)
+          micro_living_comparables_current_page['cell_content']['merge_cells']['B3:K4']['text'] = entry['city']
+          micro_living_comparables_current_page['cell_content']['merge_cells']['B5:K6']['text'] = page_name
+          column_id = 0
+          page_id += 1
+          marker_number = 10 * page_id - 10
+          page_entries = []
+
+        page_entries.append(entry)
+        
+        if entry['all_in_rent_from'] is not None:
+            all_in_rent_from = entry['all_in_rent_from']
+            if entry['all_in_rent_up_to'] is not None:
+              all_in_rent_up_to = entry['all_in_rent_up_to']
+              average_rent_per_apartment = round((all_in_rent_from + all_in_rent_up_to) / 2, 0)
+            else:
+              all_in_rent_up_to = '-'
+              average_rent_per_apartment = all_in_rent_up_to
+        else:
+          all_in_rent_from = '-'
+          if entry['all_in_rent_up_to'] is not None:
+            all_in_rent_up_to = entry['all_in_rent_up_to']
+            average_rent_per_apartment = all_in_rent_up_to
+          else:
+            all_in_rent_up_to = '-'
+            average_rent_per_apartment = '-'
+
+        if entry['apartment_size_from'] is not None:
+          apartment_size_from = entry['apartment_size_from']
+          if entry['apartment_size_up_to'] is not None:
+            apartment_size_up_to = entry['apartment_size_up_to']
+            average_squaremeters_per_apartment = round((apartment_size_from + apartment_size_up_to) / 2, 2)
+          else:
+            apartment_size_up_to = '-'
+            average_squaremeters_per_apartment = apartment_size_from
+        else:
+          apartment_size_from = '-'
+          if entry['apartment_size_up_to'] is not None:
+            apartment_size_up_to = entry['apartment_size_up_to']
+            average_squaremeters_per_apartment = apartment_size_up_to
+          else:
+            apartment_size_up_to = '-'
+            average_squaremeters_per_apartment = '-'
+
+        if not average_rent_per_apartment == '-':
+          if not average_squaremeters_per_apartment == '-':
+            average_rent_per_squaremeter = round(average_rent_per_apartment / average_squaremeters_per_apartment, 2)
+          else:
+            average_rent_per_squaremeter = average_rent_per_apartment
+        else:
+          average_rent_per_squaremeter = '-'
+
+        if not entry['distance'] == last_coord_dist:
+          marker_number += 1
+          icon = f'img/locator.png'
+          no_number_marker += 1
+          if not entry['distance'] == 0:
+            if entry['is_360_operator']:
+              icon = f'img/360_operator@0.5x.png'
+            else:
+              no_number_marker -= 1
+              icon = f'img/micro_living_{marker_number - no_number_marker}@0.5x.png'
+
+        if not icon == f'img/locator.png':
+          micro_living_comparables_current_page['cell_content']['images'][f'{columns[column_id]}29'] = {
+            'file': icon,
+            'settings': {
+                'y_offset': 0,
+                'x_offset': 42,
+                'y_scale': .45,
+                'x_scale': .45
+            }
+          }
+        else:
+          micro_living_comparables_current_page['cell_content']['images'][f'{columns[column_id]}29'] = {
+            'file': icon,
+            'settings': {
+                'y_offset': 0,
+                'x_offset': 42
+            }
+          }
+        
         if entry['distance'] == 0:
-          print(entry)
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}31'] = {
             'text': entry['operator'],
-            'format': 'bold_underline'
+            'format': 'bold_investment_fs8_underline'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}45'] = {
-            'text': f'{entry['street']}, ',
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}32'] = {
+            'text': f"{entry['street']}, {entry['postcode']} {entry['city']}",
+            'format': 'bold_investment_fs8_wrap_vcenter'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}33'] = {
+            'text': entry['number_of_apartments'] if entry['number_of_apartments'] is not None else '-',
+            'format': 'regular_investment_number'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}34'] = {
+            'text': all_in_rent_from,
+            'format': 'regular_investment_number'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}35'] = {
+            'text': all_in_rent_up_to,
+            'format': 'regular_investment_number'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}36'] = {
+            'text': average_rent_per_apartment,
+            'format': 'regular_investment_number'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}37'] = {
+            'text': apartment_size_from,
+            'format': 'regular_investment_number_with_two_komma'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}38'] = {
+            'text': apartment_size_up_to,
+            'format': 'regular_investment_number_with_two_komma'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}39'] = {
+            'text': average_squaremeters_per_apartment,
+            'format': 'regular_investment_number_with_two_komma'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}40'] = {
+            'text': average_rent_per_squaremeter,
+            'format': 'regular_investment_number_with_two_komma'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}41'] = {
+            'text': 'ü' if entry['furnishing'] else '-',
+            'format': 'wingdings_investment' if entry['furnishing'] else 'regular'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}42'] = {
+            'text': 'ü' if entry['kitchen'] else '-',
+            'format': 'wingdings_investment' if entry['kitchen'] else 'regular'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}43'] = {
+            'text': 'ü' if entry['balcony'] else '-',
+            'format': 'wingdings_investment' if entry['balcony'] else 'regular_investment'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': 'ü' if entry['bath'] else '-',
+            'format': 'wingdings_investment' if entry['bath'] else 'regular'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}45'] = {
+            'text': 'ü' if entry['community_spaces'] else '-',
+            'format': 'wingdings_investment' if entry['community_spaces'] else 'regular_investment'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}46'] = {
+            'text': 'ü' if entry['services'] else '-',
+            'format': 'wingdings_investment' if entry['services'] else 'regular_investment'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}47'] = {
+            'text': 'ü' if entry['gym'] else '-',
+            'format': 'wingdings_investment' if entry['gym'] else 'regular_investment'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}48'] = {
+            'text': 'ü' if entry['media_lounge'] else '-',
+            'format': 'wingdings_investment' if entry['media_lounge'] else 'regular_investment'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}49'] = {
+            'text': 'ü' if entry['study_lounge'] else '-',
+            'format': 'wingdings_investment' if entry['study_lounge'] else 'regular_investment'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}50'] = {
+            'text': 'ü' if entry['laundry_room'] else '-',
+            'format': 'wingdings_investment' if entry['laundry_room'] else 'regular_investment'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}51'] = {
+            'text': 'ü' if entry['rooms_for_events'] else '-',
+            'format': 'wingdings_investment' if entry['rooms_for_events'] else 'regular_investment'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}52'] = {
+            'text': 'ü' if entry['bar'] else '-',
+            'format': 'wingdings_investment' if entry['bar'] else 'regular_investment'
+          }
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}53'] = {
+            'text': 'ü' if entry['collaborative_cooking'] else '-',
+            'format': 'wingdings_investment' if entry['collaborative_cooking'] else 'regular_investment'
+          }
+
+          column_id += 1
+        else:
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}31'] = {
             'text': entry['operator'],
-            'format': 'bold_underline'
+            'format': 'bold_fs8_underline'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}32'] = {
+            'text': f"{entry['street']}, {entry['postcode']} {entry['city']}",
+            'format': 'bold_fs8_wrap_vcenter'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}33'] = {
+            'text': entry['number_of_apartments'] if entry['number_of_apartments'] is not None else '-',
+            'format': 'regular_number'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}34'] = {
+            'text': all_in_rent_from,
+            'format': 'regular_number'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}35'] = {
+            'text': all_in_rent_up_to,
+            'format': 'regular_number'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}36'] = {
+            'text': average_rent_per_apartment,
+            'format': 'regular_number'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}37'] = {
+            'text': apartment_size_from,
+            'format': 'regular_number_with_two_komma'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}38'] = {
+            'text': apartment_size_up_to,
+            'format': 'regular_number_with_two_komma'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}39'] = {
+            'text': average_squaremeters_per_apartment,
+            'format': 'regular_number_with_two_komma'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}40'] = {
+            'text': average_rent_per_squaremeter,
+            'format': 'regular_number_with_two_komma'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}41'] = {
+            'text': 'ü' if entry['furnishing'] else '-',
+            'format': 'wingdings' if entry['furnishing'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}42'] = {
+            'text': 'ü' if entry['kitchen'] else '-',
+            'format': 'wingdings' if entry['kitchen'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}43'] = {
+            'text': 'ü' if entry['balcony'] else '-',
+            'format': 'wingdings' if entry['balcony'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}44'] = {
+            'text': 'ü' if entry['bath'] else '-',
+            'format': 'wingdings' if entry['bath'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}45'] = {
+            'text': 'ü' if entry['community_spaces'] else '-',
+            'format': 'wingdings' if entry['community_spaces'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}46'] = {
+            'text': 'ü' if entry['services'] else '-',
+            'format': 'wingdings' if entry['services'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}47'] = {
+            'text': 'ü' if entry['gym'] else '-',
+            'format': 'wingdings' if entry['gym'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}48'] = {
+            'text': 'ü' if entry['media_lounge'] else '-',
+            'format': 'wingdings' if entry['media_lounge'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}49'] = {
+            'text': 'ü' if entry['study_lounge'] else '-',
+            'format': 'wingdings' if entry['study_lounge'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}50'] = {
+            'text': 'ü' if entry['laundry_room'] else '-',
+            'format': 'wingdings' if entry['laundry_room'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}51'] = {
+            'text': 'ü' if entry['rooms_for_events'] else '-',
+            'format': 'wingdings' if entry['rooms_for_events'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}52'] = {
+            'text': 'ü' if entry['bar'] else '-',
+            'format': 'wingdings' if entry['bar'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
+          micro_living_comparables_current_page['cell_content']['cells'][f'{columns[column_id]}53'] = {
+            'text': 'ü' if entry['collaborative_cooking'] else '-',
+            'format': 'wingdings' if entry['collaborative_cooking'] else 'regular'
           }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          micro_living_comparables['pages']['Competitors De']['cell_content']['cells'][f'{columns[column_id]}44'] = {
-            'text': entry['operator'],
-            'format': 'bold_underline'
-          }
-          
+
+          column_id += 1
+
+        last_coord_dist = entry['distance']
+      
+      request, no_number_map_marker = self.build_micro_living_competitor_map_request(page_entries, page_id, no_number_map_marker)
+      requests.append((request, f'map_image_{page_id}_{Variables.unique_code}'))
+      micro_living_comparables_current_page['cell_content']['images']['B7']['file'] = f'tmp/map_image_{page_id}_{Variables.unique_code}.png'
+      micro_living_comparables['pages'][f'Competitors De {page_id}'] = micro_living_comparables_current_page
+      page_order.append(f'Competitors De {page_id}')
+      anvil.server.call('excel_test', micro_living_comparables, page_order, requests, bounding_box, Variables.unique_code)
+
+    micro_living = app_tables.pictures.search()[0]
+    anvil.media.download(micro_living['pic'])
+  
+  def build_micro_living_competitor_map_request(self, competitors, page_id, no_number_map_marker):
+    request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
+    request_static_map = request_static_map_raw
+    marker_number = 10 * page_id - 10
+    last_coord_dist = -1
+
+    for competitor_index, competitor in enumerate(competitors):
+      if not competitor['distance'] == last_coord_dist:
+        icon = f'locator.png'
+        no_number_map_marker += 1
+        marker_number += 1
+        if not competitor['distance'] == 0:
+          if competitor['is_360_operator']:
+            icon = f'360_operator@0.5x.png'
+          else:
+            no_number_map_marker -= 1
+            icon = f'micro_living_{marker_number - no_number_map_marker}@0.5x.png'
+      competitor['icon'] = icon
+      url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
+      encoded_url = url.replace("/", "%2F")
+      if not (competitor_index + 1) % 10 == 1 and not request_static_map[-1] == "B":
+        request_static_map += f"%2C"
+      request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{competitor['longitude']},{competitor['latitude']}%5D%7D%7D"
+      last_coord_dist = competitor['distance']
+    request_static_map += "%5D%7D"
+
+    return request_static_map, no_number_map_marker

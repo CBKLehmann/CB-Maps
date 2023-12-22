@@ -44,8 +44,9 @@ def refresh_icons(self):
   for panel in checkbox:
     if isinstance(panel, anvil.GridPanel):
       for component in panel.get_components():
-        if not component.text == 'Select All':
-          self.change_icons(component.text)
+        if not isinstance(component, anvil.GridPanel) and not isinstance(component, anvil.Spacer) and not 'Slider' in str(type(component)):
+          if not component.text == 'Select All':
+            self.change_icons(component.text)
 
 def create_bounding_box(self):
   
@@ -238,8 +239,9 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
         # Create Icon
         if category in Variables.micro_living_categories:
           if ele['is_360_operator']:
-            picture = f'{self.app_url}/_/theme/Pins/360_Operator@0.75x.png'
-        el.style.backgroundImage = f'url({picture})'
+            el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/360_Operator@0.75x.png)'
+          else:
+            el.style.backgroundImage = f'url({picture})'
 
         # Check if Category is not PflegeDB
         if not category == 'nursing_homes':
@@ -375,7 +377,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
             # Parting Line
             marker_details += "<div class='partingLine'></div>"
             # MDK Grade
-            if not ele['mdk_datum'] == "-":
+            if not ele['mdk_datum'] == "-" and ele['mdk_datum'] is not None :
               date = ele['mdk_datum'].split('-')
               marker_details += f"<p>MDK Evaluation from the {date[2]}.{date[1]}.{date[0]}</p>"
             else:
