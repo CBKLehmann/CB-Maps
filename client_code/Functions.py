@@ -5,11 +5,11 @@ import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
-from .. import Variables, Layer, Images
+from . import Variables, Layer, Images
 from anvil.js.window import document
 import datetime
 
-global Variables, Layer, Images
+global Variables, Layer, Images, Functions
 
 def show_hide_marker(self, check_box, marker_id):
   #Show or Hide markers from given Excel Table
@@ -84,25 +84,6 @@ def create_bounding_box(self):
       bbox[2] = el[1]
       
   return bbox
-
-def manipulate_loading_overlay(self, state):
-    html = document.getElementsByClassName('anvil-root-container')[0]
-    if state:
-      if not Variables.loading:
-        self.loading = document.createElement('div')
-        self.loading.style.width = '100vw'
-        self.loading.style.height = '100vh'
-        self.loading.style.backgroundColor = 'rgba(62, 62, 62, .3)'
-        self.loading.style.zIndex = '10000'
-        self.loading.style.cursor = 'wait'
-        self.loading.style.position = 'fixed'
-        self.loading.style.top = '0'
-        self.loading.style.left = '0'
-        html.appendChild(self.loading)
-        Variables.loading = True
-    else:
-      html.removeChild(self.loading)
-      Variables.loading = False
 
 def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_coords, mapboxgl):
 
@@ -728,3 +709,44 @@ def get_current_date_as_string():
     else:
       minute = date.minute
     return f"{day}.{month}.{year} {hour}:{minute}"
+
+
+""" Already reworked Functions """
+def get_mapbox_token():
+  try:
+    Variables.mapbox_token = anvil.server.call_s('get_token')
+  except:
+    Variables.maintenance = True
+
+def create_loading_overlay():
+  Variables.loading_overlay = document.createElement('div')
+  Variables.loading_overlay.style.width = '100vw'
+  Variables.loading_overlay.style.height = '100vh'
+  Variables.loading_overlay.style.backgroundColor = 'rgba(62, 62, 62, .3)'
+  Variables.loading_overlay.style.zIndex = '10000'
+  Variables.loading_overlay.style.cursor = 'wait'
+  Variables.loading_overlay.style.position = 'fixed'
+  Variables.loading_overlay.style.top = '0'
+  Variables.loading_overlay.style.left = '0'
+
+def manipulate_loading_overlay(state):
+  html = document.getElementsByClassName('anvil-root-container')[0]
+  if state:
+    if not Variables.loading:
+      html.appendChild(Variables.loading_overlay)
+      Variables.loading = True
+  else:
+    html.removeChild(Variables.loading_overlay)
+    Variables.loading = False
+
+def create_marker_div():
+  # Create HTML Element for Icon
+  marker_div = document.createElement('div')
+  marker_div.className = 'marker'
+  marker_div.style.width = '50px'
+  marker_div.style.height = '50px'
+  marker_div.style.backgroundSize = '100%'
+  marker_div.style.backgroundrepeat = 'no-repeat'
+  marker_div.style.zIndex = '299'
+  marker_div.style.backgroundImage = f'url({Variables.app_url}/_/theme/Pins/CB_MapPin_Location.png)'
+  return marker_div

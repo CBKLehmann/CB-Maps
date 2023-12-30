@@ -76,7 +76,6 @@ marker_icons_checked = 6
 home_address_nh = []
 home_address_al = []
 unique_code = None
-loading = False
 removed_markers = {}
 micro_living_categories = ['business_living', 'co_living', 'service_living', 'student_living']
 average_rents = {
@@ -86,3 +85,12 @@ average_rents = {
   'student_living': [0, 100],
 }
 micro_living_entries = {}
+
+
+""" Already reworked Variables """
+app_url = ""
+loading_overlay = None
+loading = False
+maintenance = False
+mapbox_token = ""
+user_role = "guest"

@@ -6,7 +6,7 @@ import anvil.google.auth, anvil.google.drive
 from anvil.google.drive import app_files
 from anvil.tables import app_tables
 from anvil.js.window import mapboxgl, MapboxGeocoder, document
-from .. import Variables, Layer, Images, ExcelFrames
+from .. import Variables, Layer, Images, ExcelFrames, Functions
 import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
@@ -18,33 +18,26 @@ import math
 import datetime
 import time
 import copy
-import Functions
 import functools
 import Market_Study_Functions
 
 global Variables, Layer, Images, ExcelFrames
 
 class Map2_0(Map2_0Template):
-  # Definition of every base function inside Map2_0
 
   def __init__(self, **properties):
     with anvil.server.no_loading_indicator:
-      maintenance = False
-      try:
-        self.token = anvil.server.call_s('get_token')
-      except:
-        maintenance = True
+      Functions.get_mapbox_token()
       
-      # Set Form properties and Data Bindings
-      if maintenance:
+      if Variables.maintenance and not Variables.user_role == "admin":
+        Functions.manipulate_loading_overlay(False)
         from .Maintenance import Maintenance
         alert(content=Maintenance(), dismissible=False, buttons=[], large=True)
       else:
-        self.role = properties['role']
         self.init_components(**properties)
         self.dom = anvil.js.get_dom_node(self.spacer_1)
         self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
-        self.app_url = anvil.server.call_s('get_app_url')
+        Variables.app_url = anvil.server.call_s('get_app_url')
         self.last_menu_height = '30%'
         self.cluster_data = {}
         self.competitors = []
@@ -58,100 +51,90 @@ class Map2_0(Map2_0Template):
         html.style.cursor = 'default'
   
   def form_show(self, **event_args):
-
     with anvil.server.no_loading_indicator:
-      screen = anvil.js.call('get_screen_width')
-      width = screen[0]
-      height = screen[1]
-      
-      if self.role == 'admin' or self.role == 'user':
-        self.dist_layer.visible = True
-        self.poi_categories.visible = True
-        self.button_overlay.visible = True
-        self.hide_ms_marker.visible = True
-        self.competitor_btn.visible = True
-        self.file_loader_upload.visible = True
-        self.share.visible = True
-        self.button_icons.visible = True
-        draggable = True
-
-      if self.role == 'admin':
-        self.admin_button.visible = 'visible'
-        self.db_upload.visible = 'visible'
-
-      if self.role == 'guest':
-        draggable = False
-      #   self.button_icons.text = 'Cluster & Investment'
-
-      if width <= 998:
-        self.mobile = True
-        self.mobile_btn_grid.visible = True
-        self.mobile_menu_open = False
-      else:
-        self.mobile = False
+      try:
+        width, height = anvil.js.call('get_screen_width')
+        
         if self.role == 'guest':
-          container = document.getElementById('appGoesHere')
-          logo = document.createElement('img')
-          logo.src = f'{self.app_url}/_/theme/Logo.png'
-          logo.style.position = 'absolute'
-          logo.style.pointerEvents = 'none'
-          logo.style.bottom = '30px'
-          logo.style.right = '20px'
-          logo.style.width = '15%'
-          container.appendChild(logo)
-      
-      # Initiate Map and set Listener on Page Load
-      self.select_all_hc.tag.categorie = 'Healthcare'
-      self.select_all_opnv.tag.categorie = 'ÖPNV'
-      self.select_all_edu.tag.categorie = 'Student Living'
-      self.select_all_food.tag.categorie = 'Food & Drinks'
-      self.select_all_micro_living.tag.categorie = 'Micro Living'
-      
-      mapboxgl.accessToken = self.token
-      self.mapbox = mapboxgl.Map({'container': self.dom,
-                                  'style': "mapbox://styles/mapbox/outdoors-v11",
-                                  'center': [13.4092, 52.5167],
-                                  'zoom': 8})
-      # Create HTML Element for Icon
-      el = document.createElement('div')
-      el.className = 'marker'
-      el.style.width = '50px'
-      el.style.height = '50px'
-      el.style.backgroundSize = '100%'
-      el.style.backgroundrepeat = 'no-repeat'
-      el.style.zIndex = '299'
-      el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/CB_MapPin_Location.png)'
-      
-      self.marker = mapboxgl.Marker({'draggable': draggable, 'element': el, 'anchor': 'bottom'})
-      self.marker.setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
-      self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
-      self.mapbox.addControl(self.geocoder)
-      
-      self.geocoder.on("result", self.move_marker)
-      self.marker.on("dragend", self.marker_dragged)
-      self.mapbox.on("mousemove", "federal_states", self.change_hover_state)
-      self.mapbox.on("mouseleave", "federal_states", self.change_hover_state)
-      self.mapbox.on("mousemove", "administrative_districts", self.change_hover_state)
-      self.mapbox.on("mouseleave", "administrative_districts", self.change_hover_state)
-      self.mapbox.on("mousemove", "counties", self.change_hover_state)
-      self.mapbox.on("mouseleave", "counties", self.change_hover_state)
-      self.mapbox.on("mousemove", "municipalities", self.change_hover_state)
-      self.mapbox.on("mouseleave", "municipalities", self.change_hover_state)
-      self.mapbox.on("mousemove", "districts", self.change_hover_state)
-      self.mapbox.on("mouseleave", "districts", self.change_hover_state)
-      self.mapbox.on("mousemove", 'netherlands', self.change_hover_state)
-      self.mapbox.on("mouseleave", 'netherlands', self.change_hover_state)
-      self.mapbox.on("click", "federal_states", self.popup)
-      self.mapbox.on("click", "administrative_districts", self.popup)
-      self.mapbox.on("click", "counties", self.popup)
-      self.mapbox.on("click", "municipalities", self.popup)
-      self.mapbox.on("click", "districts", self.popup)
-      self.mapbox.on("style.load", self.handle_style_change)
-      self.mapbox.on("load", self.loadHash)
-      self.mapbox.on("contextmenu", self.map_right_click)
-      self.mapbox.on("click", self.map_right_click)
-
-      document.addEventListener('click', functools.partial(self.remove_details, None))
+          marker_draggable = False
+        #   self.button_icons.text = 'Cluster & Investment'
+        else:
+            self.dist_layer.visible = True
+            self.poi_categories.visible = True
+            self.button_overlay.visible = True
+            self.hide_ms_marker.visible = True
+            self.competitor_btn.visible = True
+            self.file_loader_upload.visible = True
+            self.share.visible = True
+            self.button_icons.visible = True
+            marker_draggable = True
+            if self.role == 'admin':
+              self.admin_button.visible = True
+              self.db_upload.visible = True
+  
+        if width <= 998:
+          self.mobile = True
+          self.mobile_btn_grid.visible = True
+          self.mobile_menu_open = False
+        else:
+          self.mobile = False
+          if self.role == 'guest':
+            container = document.getElementById('appGoesHere')
+            logo = document.createElement('img')
+            logo.src = f'{self.app_url}/_/theme/Logo.png'
+            logo.style.position = 'absolute'
+            logo.style.pointerEvents = 'none'
+            logo.style.bottom = '30px'
+            logo.style.right = '20px'
+            logo.style.width = '15%'
+            container.appendChild(logo)
+        
+        # Initiate Map and set Listener on Page Load
+        self.select_all_hc.tag.categorie = 'Healthcare'
+        self.select_all_opnv.tag.categorie = 'ÖPNV'
+        self.select_all_edu.tag.categorie = 'Student Living'
+        self.select_all_food.tag.categorie = 'Food & Drinks'
+        self.select_all_micro_living.tag.categorie = 'Micro Living'
+        
+        mapboxgl.accessToken = Variables.mapbox_token
+        self.mapbox = mapboxgl.Map({'container': self.dom,
+                                    'style': "mapbox://styles/mapbox/outdoors-v11",
+                                    'center': [13.4092, 52.5167],
+                                    'zoom': 8})
+  
+        self.marker = mapboxgl.Marker({'draggable': marker_draggable, 'element': Functions.create_marker_div(), 'anchor': 'bottom'}).setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
+        self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
+        self.mapbox.addControl(self.geocoder)
+        
+        self.geocoder.on("result", self.move_marker)
+        self.marker.on("dragend", self.marker_dragged)
+        self.mapbox.on("mousemove", "federal_states", self.change_hover_state)
+        self.mapbox.on("mouseleave", "federal_states", self.change_hover_state)
+        self.mapbox.on("mousemove", "administrative_districts", self.change_hover_state)
+        self.mapbox.on("mouseleave", "administrative_districts", self.change_hover_state)
+        self.mapbox.on("mousemove", "counties", self.change_hover_state)
+        self.mapbox.on("mouseleave", "counties", self.change_hover_state)
+        self.mapbox.on("mousemove", "municipalities", self.change_hover_state)
+        self.mapbox.on("mouseleave", "municipalities", self.change_hover_state)
+        self.mapbox.on("mousemove", "districts", self.change_hover_state)
+        self.mapbox.on("mouseleave", "districts", self.change_hover_state)
+        self.mapbox.on("mousemove", 'netherlands', self.change_hover_state)
+        self.mapbox.on("mouseleave", 'netherlands', self.change_hover_state)
+        self.mapbox.on("click", "federal_states", self.popup)
+        self.mapbox.on("click", "administrative_districts", self.popup)
+        self.mapbox.on("click", "counties", self.popup)
+        self.mapbox.on("click", "municipalities", self.popup)
+        self.mapbox.on("click", "districts", self.popup)
+        self.mapbox.on("style.load", self.handle_style_change)
+        self.mapbox.on("load", self.loadHash)
+        self.mapbox.on("contextmenu", self.map_right_click)
+        self.mapbox.on("click", self.map_right_click)
+  
+        document.addEventListener('click', functools.partial(self.remove_details, None))
+      except:
+        pass
+      else:
+        Functions.manipulate_loading_overlay(False)
 
   def loadHash(self, event):
     with anvil.server.no_loading_indicator:
