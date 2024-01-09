@@ -3316,12 +3316,8 @@ class Map2_0(Map2_0Template):
     ''' Investobjekt auf jeder Seite anzeigen '''
     Variables.unique_code = anvil.server.call("get_unique_code")
     checked_boxes = []
-    page_order = []
-    requests = []
     columns = ['C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
-    page_id = 0
     marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
-    last_coord_dist = -1
     for checkbox in self.micro_living_check_boxes.get_components():
       if checkbox.checked:
         if checkbox.text == "Business Living":
@@ -3337,9 +3333,13 @@ class Map2_0(Map2_0Template):
       sorted_entries = {}
       distances = {}
       page_entries = []
+      page_order = []
+      requests = []
       bounding_box = [1000000, 1000000, 0, 0]
       no_number_marker = 0
       no_number_map_marker = 0
+      page_id = 0
+      last_coord_dist = -1
       for entry in Variables.micro_living_entries[category]:
         if float(entry['longitude']) < bounding_box[0]:
           bounding_box[0] = float(entry['longitude'])
@@ -3646,8 +3646,8 @@ class Map2_0(Map2_0Template):
       page_order.append(f'Competitors De {page_id}')
       anvil.server.call('excel_test', micro_living_comparables, page_order, requests, bounding_box, Variables.unique_code)
 
-    micro_living = app_tables.pictures.search()[0]
-    anvil.media.download(micro_living['pic'])
+      micro_living = app_tables.pictures.search()[0]
+      anvil.media.download(micro_living['pic'])
   
   def build_micro_living_competitor_map_request(self, competitors, page_id, no_number_map_marker):
     request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
