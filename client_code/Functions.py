@@ -126,6 +126,9 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
   # Do if Elements are under 3000
   else:
 
+    minimum_average_rent = 100
+    maximum_average_rent = 0
+    
     if category == 'subway':
 
       self.opnv_layer = []
@@ -198,8 +201,6 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
       #Create empty Icons Array to save Elements
       icons = []
       id_counter = 0
-      minimum_average_rent = 100
-      maximum_average_rent = 0
 
       # Loop through every Element in geojson
       for ele in geojson:
@@ -223,6 +224,8 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
             el.style.backgroundImage = f'url({Variables.app_url}/_/theme/Pins/360_Operator@0.75x.png)'
           else:
             el.style.backgroundImage = f'url({picture})'
+        else:
+          el.style.backgroundImage = f'url({picture})'
 
         # Check if Category is not PflegeDB
         if not category == 'nursing_homes':

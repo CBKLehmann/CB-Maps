@@ -32,7 +32,7 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
               counter += 1
               
               if topic == "nursing_homes":
-                if not entry['anz_vers_pat'] == "-":
+                if not entry['anz_vers_pat'] == "-" and entry['anz_vers_pat'] is not None:
                   anz_vers_pat = int(entry['anz_vers_pat'])
                 else:
                   anz_vers_pat = "-"
@@ -42,7 +42,7 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
                 else:
                   platz_voll_pfl = "-"
                   
-                if not entry['anz_vers_pat'] == "-" and not entry['platz_voll_pfl'] == "-":
+                if not anz_vers_pat == "-" and not platz_voll_pfl == "-":
                   occupancy_raw = anz_vers_pat / platz_voll_pfl
                   if occupancy_raw > 1:
                     occupancy_raw = 1
@@ -107,9 +107,9 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
     from .Market_Study_Existing_Home import Market_Study_Existing_Home
     for entry in sorted_coords:
       if entry[1] <= 0.01:
-        Functions.manipulate_loading_overlay(self, False)
+        Functions.manipulate_loading_overlay(False)
         res = alert(content=Market_Study_Existing_Home(entry=entry, topic=topic), dismissible=False, large=True, buttons=[], role='custom_alert')
-        Functions.manipulate_loading_overlay(self, True)
+        Functions.manipulate_loading_overlay(True)
         if res == 'Yes':
           if topic == 'nursing_homes':
             Variables.home_address_nh.append(entry)
@@ -120,24 +120,24 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
       if len(Variables.home_address_nh) == 0:
         from .Market_Study_NH_Home import Market_Study_NH_Home
         from .Market_Study_NH_Home_Mobile import Market_Study_NH_Home_Mobile
-        Functions.manipulate_loading_overlay(self, False)
+        Functions.manipulate_loading_overlay(False)
         if self.mobile:
           Variables.home_address_nh = alert(content=Market_Study_NH_Home_Mobile(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
         else:
           Variables.home_address_nh = alert(content=Market_Study_NH_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
-        Functions.manipulate_loading_overlay(self, True)
+        Functions.manipulate_loading_overlay(True)
         if not Variables.home_address_nh == []:
           sorted_coords.insert(0, Variables.home_address_nh)
     else:
       if Variables.home_address_al == []:
         from .Market_Study_AL_Home import Market_Study_AL_Home
         from .Market_Study_AL_Home_Mobile import Market_Study_AL_Home_Mobile
-        Functions.manipulate_loading_overlay(self, False)
+        Functions.manipulate_loading_overlay(False)
         if self.mobile:
           Variables.home_address_al = alert(content=Market_Study_AL_Home_Mobile(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
         else:
           Variables.home_address_al = alert(content=Market_Study_AL_Home(marker_coords=marker_coords), dismissible=False, large=True, buttons=[], role='custom_alert')
-        Functions.manipulate_loading_overlay(self, True)
+        Functions.manipulate_loading_overlay(True)
         if not Variables.home_address_al == []:
           sorted_coords.insert(0, Variables.home_address_al)
 

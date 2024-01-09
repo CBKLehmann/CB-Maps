@@ -599,7 +599,7 @@ class Map2_0(Map2_0Template):
                   operator.append(care_entry[0]['betreiber'])
     
       ''' Get Place from Geocoder-API for Map-Marker and extract needed Information '''
-      request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{marker_coords['lng']},{marker_coords['lat']}.json?access_token={self.token}"
+      request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{marker_coords['lng']},{marker_coords['lat']}.json?access_token={Variables.mapbox_token}"
       response_data = anvil.http.request(request, json=True)
       marker_context = response_data['features'][0]['context']
       zipcode = "n.a."
@@ -657,7 +657,7 @@ class Map2_0(Map2_0Template):
       beds_lk = 0
       for el in care_data_district:
           if not el['anz_vers_pat'] == '-':
-              inpatients_lk += int(el['anz_vers_pat'])
+              inpatients_lk += int(el['anz_vers_pat']) if el['anz_vers_pat'] is not None else 0
           if not el['platz_voll_pfl'] == '-':
               beds_lk += int(el['platz_voll_pfl'])
           if not el['platz_kurzpfl'] == '-':
@@ -1242,13 +1242,13 @@ class Map2_0(Map2_0Template):
                   list_occupancy_rate.append(competitor[0]['occupancy'])
               if not competitor[0]['invest'] == '-':
                   list_invest_cost.append(float(competitor[0]['invest']))
-              if not competitor[0]['mdk_note'] == '-':
+              if not competitor[0]['mdk_note'] == '-' and competitor[0]['mdk_note'] is not None:
                   list_mdk_grade.append(float(competitor[0]['mdk_note']))
               if not competitor[0]['baujahr'] == '-':
                   list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
               if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
                   invest_plot_data.append(["private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public", competitor[0]['invest'], competitor[0]['baujahr'], prev_competitor_index])
-  
+
               current_competitor_page['cell'][f'competitor_{table_position}_beds'] = {
                   'color': [0, 0, 0],
                   'font': 'segoeui',
@@ -1257,7 +1257,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': '{:,}'.format(beds),
+                  'txt': '{:,}'.format(beds) if not beds == '-' else beds,
                   'align': 'center',
               }
               current_competitor_page['cell'][f'competitor_{table_position}_single_rooms'] = {
@@ -1334,7 +1334,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': '-' if competitor[0]['mdk_note'] == '-' else '{:,}'.format(float(competitor[0]['mdk_note'])),
+                  'txt': '-' if competitor[0]['mdk_note'] == '-' else '-' if competitor[0]['mdk_note'] is None else '{:,}'.format(float(competitor[0]['mdk_note'])),
                   'align': 'center',
               }
       
@@ -2414,7 +2414,7 @@ class Map2_0(Map2_0Template):
 
         # Check if Bounding Box is not the same as least Request
         if not bbox == last_bbox:
-    
+          print(last_bbox)
           # Check if new Bounding Box is overlapping old Bounding Box
           if bbox[0] < last_bbox[0] or bbox[1] < last_bbox[1] or bbox[2] > last_bbox[2] or bbox[3] > last_bbox[3]:
       
@@ -2472,17 +2472,17 @@ class Map2_0(Map2_0Template):
 
         elif category in Variables.micro_living_categories:
           if self.check_box_bl.checked:
-            minimum_average_rent = Variables.average_rents['business_living'][0] if float(Variables.average_rents['business_living'][0]) < self.slider_minimum.text else self.slider_minimum.text
-            maximum_average_rent = Variables.average_rents['business_living'][1] if float(Variables.average_rents['business_living'][1]) > self.slider_maximum.text else self.slider_maximum.text
+            minimum_average_rent = Variables.average_rents['business_living'][0] if self.slider_minimum.text is None else Variables.average_rents['business_living'][0] if float(Variables.average_rents['business_living'][0]) < self.slider_minimum.text else self.slider_minimum.text
+            maximum_average_rent = Variables.average_rents['business_living'][1] if self.slider_maximum.text is None else Variables.average_rents['business_living'][0] if float(Variables.average_rents['business_living'][1]) > self.slider_maximum.text else self.slider_maximum.text
           if self.check_box_cl.checked:
-            minimum_average_rent = Variables.average_rents['co_living'][0] if float(Variables.average_rents['co_living'][0]) < self.slider_minimum.text else self.slider_minimum.text
-            maximum_average_rent = Variables.average_rents['co_living'][1] if float(Variables.average_rents['co_living'][1]) > self.slider_maximum.text else self.slider_maximum.text
+            minimum_average_rent = Variables.average_rents['co_living'][0] if self.slider_minimum.text is None else Variables.average_rents['co_living'][0] if float(Variables.average_rents['co_living'][0]) < self.slider_minimum.text else self.slider_minimum.text
+            maximum_average_rent = Variables.average_rents['co_living'][1] if self.slider_maximum.text is None else Variables.average_rents['co_living'][0] if float(Variables.average_rents['co_living'][1]) > self.slider_maximum.text else self.slider_maximum.text
           if self.check_box_sl.checked:
-            minimum_average_rent = Variables.average_rents['service_living'][0] if float(Variables.average_rents['service_living'][0]) < self.slider_minimum.text else self.slider_minimum.text
-            maximum_average_rent = Variables.average_rents['service_living'][1] if float(Variables.average_rents['service_living'][1]) > self.slider_maximum.text else self.slider_maximum.text
+            minimum_average_rent = Variables.average_rents['service_living'][0] if self.slider_minimum.text is None else Variables.average_rents['service_living'][0] if float(Variables.average_rents['service_living'][0]) < self.slider_minimum.text else self.slider_minimum.text
+            maximum_average_rent = Variables.average_rents['service_living'][1] if self.slider_maximum.text is None else Variables.average_rents['service_living'][0] if float(Variables.average_rents['service_living'][1]) > self.slider_maximum.text else self.slider_maximum.text
           if self.check_box_stl.checked:
-            minimum_average_rent = Variables.average_rents['student_living'][0] if float(Variables.average_rents['student_living'][0]) < self.slider_minimum.text else self.slider_minimum.text
-            maximum_average_rent = Variables.average_rents['student_living'][1] if float(Variables.average_rents['student_living'][1]) > self.slider_maximum.text else self.slider_maximum.text
+            minimum_average_rent = Variables.average_rents['student_living'][0] if self.slider_minimum.text is None else Variables.average_rents['student_living'][0] if float(Variables.average_rents['student_living'][0]) < self.slider_minimum.text else self.slider_minimum.text
+            maximum_average_rent = Variables.average_rents['student_living'][1] if self.slider_maximum.text is None else Variables.average_rents['student_living'][0] if float(Variables.average_rents['student_living'][1]) > self.slider_maximum.text else self.slider_maximum.text
         
         # Loop through every Element in global Icon-Elements
         for el in Variables.icons[f'{category}']:
@@ -2875,7 +2875,7 @@ class Map2_0(Map2_0Template):
     """This method is called when the button is clicked"""
     with anvil.server.no_loading_indicator:
       # if mode == 'click':
-        # Functions.manipulate_loading_overlay(self, True)
+        # Functions.manipulate_loading_overlay(True)
       searched_address = anvil.js.call('getSearchedAddress')
       date = datetime.datetime.now()
       str_date = str(date).split('.')
@@ -2946,9 +2946,9 @@ class Map2_0(Map2_0Template):
       }
 
       from .Name_Share_Link import Name_Share_Link
-      Functions.manipulate_loading_overlay(self, False)
+      Functions.manipulate_loading_overlay(False)
       name = alert(content=Name_Share_Link(searched_address=changed_address), buttons=[], dismissible=False, large=True, role='custom_alert')
-      Functions.manipulate_loading_overlay(self, True)
+      Functions.manipulate_loading_overlay(True)
       self.url = anvil.server.call('get_app_url') + f'#?name={name}'
       center = self.mapbox.getCenter()
       
@@ -2990,7 +2990,7 @@ class Map2_0(Map2_0Template):
         grid.add_component(label, row="label", col_xs=1, width_xs=10)
         grid.add_component(button, row="button", col_xs=1, width_xs=10)
   
-        # Functions.manipulate_loading_overlay(self, False)
+        # Functions.manipulate_loading_overlay(False)
         alert(grid, large=True, dismissible=False, role='custom_alert')
       else:
         return self.url.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss")
@@ -3080,13 +3080,13 @@ class Map2_0(Map2_0Template):
   def comp_loader_change(self, file, **event_args):
     """This method is called when a new file is loaded into this FileLoader"""
     with anvil.server.no_loading_indicator:
-      Functions.manipulate_loading_overlay(self, True)
+      Functions.manipulate_loading_overlay(True)
       anvil.js.call('update_loading_bar', 5, 'Reading Excel File')
       #Call Server-Function to safe the File  
       marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
       comps = anvil.server.call('read_comp_file', file, marker_coords)
       if comps == None:
-        Functions.manipulate_loading_overlay(self, False)
+        Functions.manipulate_loading_overlay(False)
         anvil.js.call('update_loading_bar', 100, 'Error while processing Excel File')
         alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
         anvil.js.call('update_loading_bar', 0, '')
@@ -3095,16 +3095,16 @@ class Map2_0(Map2_0Template):
         for marker in self.comp_marker:
           marker.remove()
         self.comp_marker = []
-        Functions.manipulate_loading_overlay(self, False)
+        Functions.manipulate_loading_overlay(False)
         anvil.js.call('update_loading_bar', 50, 'Waiting for Competitor Selection')
         from .Comp_Sort import Comp_Sort
         results = alert(Comp_Sort(data=comps, marker_coords=marker_coords), buttons=[], dismissible=False, large=True, role='custom_alert')
-        Functions.manipulate_loading_overlay(self, True)
+        Functions.manipulate_loading_overlay(True)
         anvil.js.call('update_loading_bar', 80, 'Creating Marker')
         self.create_comp_marker(results)
         self.competitors = results
         anvil.js.call('update_loading_bar', 100, 'Finishing Process')
-        Functions.manipulate_loading_overlay(self, False)
+        Functions.manipulate_loading_overlay(False)
         self.download_comps.visible = True
         anvil.js.call('update_loading_bar', 0, '')
       self.comp_loader.clear()
