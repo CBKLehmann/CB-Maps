@@ -64,7 +64,7 @@ class Map2_0(Map2_0Template):
             self.poi_categories.visible = True
             self.button_overlay.visible = True
             self.hide_ms_marker.visible = True
-            self.competitor_btn.visible = True
+            # self.competitor_btn.visible = True
             self.file_loader_upload.visible = True
             self.share.visible = True
             self.button_icons.visible = True
@@ -339,8 +339,6 @@ class Map2_0(Map2_0Template):
         Variables.last_bbox_bl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_bl.checked, Variables.last_bbox_bl, "business_living", f'{Variables.app_url}/_/theme/Pins/BusinessLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
-        print(minimum_average_rent)
-        print(maximum_average_rent)
         if self.slider_minimum.text is None or minimum_average_rent < self.micro_living_rent_slider.min:
           # self.slider_minimum.text = minimum_average_rent
           self.micro_living_rent_slider.min = float(minimum_average_rent)
@@ -2033,7 +2031,7 @@ class Map2_0(Map2_0Template):
     
           # #Get Coordinates of provided Adress for Marker
           req_str = self.build_request_string(asset)
-          req_str += f'.json?access_token={self.token}'
+          req_str += f'.json?access_token={Variables.mapbox_token}'
           coords = anvil.http.request(req_str,json=True)
           for entry in coords['features']:
             if asset['zip'] in entry['place_name']:
@@ -2409,12 +2407,11 @@ class Map2_0(Map2_0Template):
         else:
     
           # Get visible Bounding Box of Map
-          bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'],
-                  (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+          bbox = [self.mapbox.getBounds()['_sw']['lat'], self.mapbox.getBounds()['_sw']['lng'],
+                  self.mapbox.getBounds()['_ne']['lat'], self.mapbox.getBounds()['_ne']['lng']]
 
         # Check if Bounding Box is not the same as least Request
         if not bbox == last_bbox:
-          print(last_bbox)
           # Check if new Bounding Box is overlapping old Bounding Box
           if bbox[0] < last_bbox[0] or bbox[1] < last_bbox[1] or bbox[2] > last_bbox[2] or bbox[3] > last_bbox[3]:
       
@@ -2621,53 +2618,53 @@ class Map2_0(Map2_0Template):
   def change_icons(self, checkbox):
     with anvil.server.no_loading_indicator:
       if checkbox == "Veterinary" and self.check_box_vet.checked == True:
-        Variables.last_bbox_vet = self.create_icons(False, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
-        Variables.last_bbox_vet = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
+        Variables.last_bbox_vet, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
+        Variables.last_bbox_vet, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
       elif checkbox == "Social facility" and self.check_box_soc.checked == True:
-        Variables.last_bbox_soc = self.create_icons(False, Variables.last_bbox_soc, "social_facility", Variables.icon_social)  
-        Variables.last_bbox_soc = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, "social_facility", Variables.icon_social)   
+        Variables.last_bbox_soc, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_soc, "social_facility", Variables.icon_social)  
+        Variables.last_bbox_soc, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, "social_facility", Variables.icon_social)   
       elif checkbox == "Pharmacy" and self.check_box_pha.checked == True:
-        Variables.last_bbox_pha = self.create_icons(False, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
-        Variables.last_bbox_pha = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
+        Variables.last_bbox_pha, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
+        Variables.last_bbox_pha, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
       elif checkbox == "Hospital" and self.check_box_hos.checked == True:
-        Variables.last_bbox_hos = self.create_icons(False, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
-        Variables.last_bbox_hos = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
+        Variables.last_bbox_hos, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
+        Variables.last_bbox_hos, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
       elif checkbox == "Clinic" and self.check_box_cli.checked == True:
-        Variables.last_bbox_cli = self.create_icons(False, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
-        Variables.last_bbox_cli = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
+        Variables.last_bbox_cli, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
+        Variables.last_bbox_cli, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
       elif checkbox == "Dentist" and self.check_box_den.checked == True:
-        Variables.last_bbox_den = self.create_icons(False, Variables.last_bbox_den, "dentist", Variables.icon_dentist) 
-        Variables.last_bbox_den = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
+        Variables.last_bbox_den, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_den, "dentist", Variables.icon_dentist) 
+        Variables.last_bbox_den, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
       elif checkbox == "Doctors" and self.check_box_doc.checked == True:
-        Variables.last_bbox_doc = self.create_icons(False, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)
-        Variables.last_bbox_doc = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)
+        Variables.last_bbox_doc, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)
+        Variables.last_bbox_doc, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)
       elif checkbox == "Nursing School" and self.check_box_nsc.checked == True:
-        Variables.last_bbox_nsc = self.create_icons(False, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools)
-        Variables.last_bbox_nsc = self.create_icons(self.check_box_nsc.checked, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools)    
+        Variables.last_bbox_nsc, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools)
+        Variables.last_bbox_nsc, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_nsc.checked, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools)    
       elif checkbox == "Supermarket" and self.check_box_sma.checked == True:
-        Variables.last_bbox_sma = self.create_icons(False, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
-        Variables.last_bbox_sma = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
+        Variables.last_bbox_sma, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
+        Variables.last_bbox_sma, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
       elif checkbox == "Restaurant" and self.check_box_res.checked == True:
-        Variables.last_bbox_res = self.create_icons(False, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant) 
-        Variables.last_bbox_res = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant)  
+        Variables.last_bbox_res, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant) 
+        Variables.last_bbox_res, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant)  
       elif checkbox == "Cafe" and self.check_box_cafe.checked == True:
-        Variables.last_bbox_caf = self.create_icons(False, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
-        Variables.last_bbox_caf = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
+        Variables.last_bbox_caf, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
+        Variables.last_bbox_caf, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
       elif checkbox == "University" and self.check_box_uni.checked == True:
-        Variables.last_bbox_uni = self.create_icons(False, Variables.last_bbox_uni, "university", Variables.icon_university) 
-        Variables.last_bbox_uni = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, "university", Variables.icon_university)  
+        Variables.last_bbox_uni, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_uni, "university", Variables.icon_university) 
+        Variables.last_bbox_uni, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, "university", Variables.icon_university)  
       elif checkbox == "Bus Stop" and self.check_box_bus.checked == True:
-        Variables.last_bbox_bus = self.create_icons(False, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)
-        Variables.last_bbox_bus = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)  
+        Variables.last_bbox_bus, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)
+        Variables.last_bbox_bus, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)  
       elif checkbox == "Tram Stop" and self.check_box_tra.checked == True:
-        Variables.last_bbox_tra = self.create_icons(False, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
-        Variables.last_bbox_tra = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
+        Variables.last_bbox_tra, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
+        Variables.last_bbox_tra, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
       elif checkbox == "Nursing Home" and self.pdb_data_cb.checked == True:
-        Variables.last_bbox_nh = self.create_icons(False, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
-        Variables.last_bbox_nh = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
+        Variables.last_bbox_nh, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
+        Variables.last_bbox_nh, minimum_average_rent, maximum_average_rent = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
       elif checkbox == "Assisted Living" and self.pdb_data_al.checked == True:
-        Variables.last_bbox_al = self.create_icons(False, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
-        Variables.last_bbox_al = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+        Variables.last_bbox_al, minimum_average_rent, maximum_average_rent = self.create_icons(False, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
+        Variables.last_bbox_al, minimum_average_rent, maximum_average_rent = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
 
   def select_all_change(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -2874,8 +2871,8 @@ class Map2_0(Map2_0Template):
   def create_share_map(self, mode):
     """This method is called when the button is clicked"""
     with anvil.server.no_loading_indicator:
-      # if mode == 'click':
-        # Functions.manipulate_loading_overlay(True)
+      if mode == 'click':
+        Functions.manipulate_loading_overlay(True)
       searched_address = anvil.js.call('getSearchedAddress')
       date = datetime.datetime.now()
       str_date = str(date).split('.')
@@ -2990,7 +2987,7 @@ class Map2_0(Map2_0Template):
         grid.add_component(label, row="label", col_xs=1, width_xs=10)
         grid.add_component(button, row="button", col_xs=1, width_xs=10)
   
-        # Functions.manipulate_loading_overlay(False)
+        Functions.manipulate_loading_overlay(False)
         alert(grid, large=True, dismissible=False, role='custom_alert')
       else:
         return self.url.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss")
@@ -3108,7 +3105,6 @@ class Map2_0(Map2_0Template):
         self.download_comps.visible = True
         anvil.js.call('update_loading_bar', 0, '')
       self.comp_loader.clear()
-    pass
 
   def create_comp_marker(self, results):
     for index, result in enumerate(results):

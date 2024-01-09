@@ -336,7 +336,7 @@ components:
         font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
         italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
       name: competitor_btn
-      layout_properties: {row: KORCVK, width_xs: 12, col_xs: 0, width: 220}
+      layout_properties: {row: KORCVK, width_xs: 12, col_xs: 0, width: 227}
       event_bindings: {click: button_toggle_menu_parts}
     - type: GridPanel
       properties: {spacing_above: small, spacing_below: small, background: 'theme:Secondary
@@ -1126,7 +1126,7 @@ components:
         layout_properties: {row: EBYTEW, width_xs: 11, col_xs: 1, width: 211.385}
         event_bindings: {change: check_box_overlays_change}
     - type: Button
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: false,
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
         foreground: '#4AC9FF', visible: false, text: Map Link, font_size: 13, font: '',
         spacing_above: none, icon_align: right, spacing_below: none, italic: false,
         background: '', bold: false, underline: false, icon: 'fa:share-square-o'}
