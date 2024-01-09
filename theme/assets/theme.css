@@ -1401,7 +1401,7 @@ select > option {
   height: 100vh;
   display: grid;
   align-items: center;
-  background-image: url("_/theme/beach-2562563.jpg");
+/*   background-image: url("_/theme/beach-2562563.jpg"); */
   background-size: cover;
 }
 
@@ -1413,11 +1413,11 @@ select > option {
   padding: 0 !important;
 }
 
-.anvil-role-login_grid {
+/* .anvil-role-login_grid {
   position: relative;
   top: 50%;
   transform: translate(0, -50%);
-}
+} */
 
 #mapPopup {
   position: absolute;
@@ -1445,7 +1445,7 @@ select > option {
 
 body {
   width: 100vw;
-  background-image: url("_/theme/beach-2562563.jpg");
+/*   background-image: url("_/theme/beach-2562563.jpg"); */
   background-color: rgb(27, 41, 57);
   background-size: cover;
   height: 100vh;
@@ -1485,23 +1485,23 @@ a:hover {
   width: 100%;
 }
 
-.blur_background {
+/* .blur_background {
   height: 100vh;
   position: absolute;
   right: 0;
   width: 70%;
   background-color: rgba(27, 41, 57, .4);
   backdrop-filter: blur(4px);
-}
+} */
 
-.login_background {
+/* .login_background {
   height: 100vh;
   position: absolute;
   left: 0;
   z-index: -1;
   width: 30%;
   background-color: rgb(27, 41, 57);
-}
+} */
 
 #appGoesHere {
   height: 100%;
