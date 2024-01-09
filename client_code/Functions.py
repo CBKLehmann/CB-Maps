@@ -220,7 +220,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
         # Create Icon
         if category in Variables.micro_living_categories:
           if ele['is_360_operator']:
-            el.style.backgroundImage = f'url({self.app_url}/_/theme/Pins/360_Operator@0.75x.png)'
+            el.style.backgroundImage = f'url({Variables.app_url}/_/theme/Pins/360_Operator@0.75x.png)'
           else:
             el.style.backgroundImage = f'url({picture})'
 
@@ -340,13 +340,13 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
             # Parting Line
             marker_details += "<div class='partingLine'></div>"
             # Contact Details
-            marker_details += f"<div class='containerAddress'><img src='{self.app_url}/_/theme/Pins/Address.png' class='iconAddress' /><p>{ele['strasse']}, {ele['plz']} {ele['ort']}"
+            marker_details += f"<div class='containerAddress'><img src='{Variables.app_url}/_/theme/Pins/Address.png' class='iconAddress' /><p>{ele['strasse']}, {ele['plz']} {ele['ort']}"
             states = ['Berlin', 'Bremen', 'Hamburg']
             if not ele['bundesland'] in states:
               marker_details += f", {ele['bundesland']}</p></div>"
             else:
               marker_details += "</p></div>"
-            marker_details += f"<div class='containerAddress'><img src='{self.app_url}/_/theme/Icons/telefon.png' class='iconAddress' /><p>{ele['telefon']}</p></div>"
+            marker_details += f"<div class='containerAddress'><img src='{Variables.app_url}/_/theme/Icons/telefon.png' class='iconAddress' /><p>{ele['telefon']}</p></div>"
             marker_details += f"<p>{ele['email']}</p>"
             marker_details += f"<p>{ele['webseite']}</p>"
             # Parting Line
@@ -392,7 +392,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
             marker_details += f"<p><b>Holder ID: </b> {ele['traeger_id']}</p>"
             marker_details += f"<p><b>IK_Number: </b> {ele['ik_nummer']}</p>"
             if not self.role == 'guest':
-              marker_details += f"<div class='rmv_container'><button id='remove' class='btn btn-default'><img src='{self.app_url}/_/theme/Icons/remove_marker.png' class='iconRemove' />Remove Marker</button></div>"
+              marker_details += f"<div class='rmv_container'><button id='remove' class='btn btn-default'><img src='{Variables.app_url}/_/theme/Icons/remove_marker.png' class='iconRemove' />Remove Marker</button></div>"
 
         elif category == 'assisted_living':
 

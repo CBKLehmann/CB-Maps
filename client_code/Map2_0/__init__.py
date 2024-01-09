@@ -34,6 +34,7 @@ class Map2_0(Map2_0Template):
         from .Maintenance import Maintenance
         alert(content=Maintenance(), dismissible=False, buttons=[], large=True)
       else:
+        Functions.manipulate_loading_overlay(False)
         self.init_components(**properties)
         self.dom = anvil.js.get_dom_node(self.spacer_1)
         self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
@@ -81,7 +82,7 @@ class Map2_0(Map2_0Template):
           if self.role == 'guest':
             container = document.getElementById('appGoesHere')
             logo = document.createElement('img')
-            logo.src = f'{self.app_url}/_/theme/Logo.png'
+            logo.src = f'{Variables.app_url}/_/theme/Logo.png'
             logo.style.position = 'absolute'
             logo.style.pointerEvents = 'none'
             logo.style.bottom = '30px'
@@ -133,8 +134,6 @@ class Map2_0(Map2_0Template):
         document.addEventListener('click', functools.partial(self.remove_details, None))
       except:
         pass
-      else:
-        Functions.manipulate_loading_overlay(False)
 
   def loadHash(self, event):
     with anvil.server.no_loading_indicator:
@@ -294,7 +293,7 @@ class Map2_0(Map2_0Template):
 
   def check_box_poi_change(self, **event_args):
     with anvil.server.no_loading_indicator:
-      Functions.manipulate_loading_overlay(self, True)
+      Functions.manipulate_loading_overlay(True)
       # Check or uncheck various Check Boxes for different POI Categories
       if dict(event_args)['sender'].text == "Veterinary":
         Variables.last_bbox_vet, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
@@ -333,11 +332,11 @@ class Map2_0(Map2_0Template):
       elif dict(event_args)['sender'].text == "Hairdresser":
         Variables.last_bbox_hd, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
       elif event_args['sender'].text == "S-Bahn/U-Bahn":
-        Variables.last_bbox_al, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_su.checked, Variables.last_bbox_su, "subway", f'{self.app_url}/_/theme/Pins/U_Bahn_Pin.png')
+        Variables.last_bbox_al, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_su.checked, Variables.last_bbox_su, "subway", f'{Variables.app_url}/_/theme/Pins/U_Bahn_Pin.png')
       elif event_args['sender'].text == "Airport":
-        Variables.last_bbox_ap, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_ap.checked, Variables.last_bbox_ap, "aerodrome", f'{self.app_url}/_/theme/Pins/Flughafen_Pin.png')
+        Variables.last_bbox_ap, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_ap.checked, Variables.last_bbox_ap, "aerodrome", f'{Variables.app_url}/_/theme/Pins/Flughafen_Pin.png')
       elif event_args['sender'].text == "Business Living":
-        Variables.last_bbox_bl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_bl.checked, Variables.last_bbox_bl, "business_living", f'{self.app_url}/_/theme/Pins/BusinessLiving@0.75x.png')
+        Variables.last_bbox_bl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_bl.checked, Variables.last_bbox_bl, "business_living", f'{Variables.app_url}/_/theme/Pins/BusinessLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
         print(minimum_average_rent)
@@ -351,7 +350,7 @@ class Map2_0(Map2_0Template):
         self.micro_living_rent_slider.enabled = True
         # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Co-living":
-        Variables.last_bbox_cl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cl.checked, Variables.last_bbox_cl, "co_living", f'{self.app_url}/_/theme/Pins/CoLiving@0.75x.png')
+        Variables.last_bbox_cl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cl.checked, Variables.last_bbox_cl, "co_living", f'{Variables.app_url}/_/theme/Pins/CoLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
         if self.slider_minimum.text is None or float(minimum_average_rent) < self.micro_living_rent_slider.min:
@@ -363,7 +362,7 @@ class Map2_0(Map2_0Template):
         self.micro_living_rent_slider.enabled = True
         # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Serviced Living":
-        Variables.last_bbox_sl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_sl.checked, Variables.last_bbox_sl, "service_living", f'{self.app_url}/_/theme/Pins/ServiceLiving@0.75x.png')
+        Variables.last_bbox_sl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_sl.checked, Variables.last_bbox_sl, "service_living", f'{Variables.app_url}/_/theme/Pins/ServiceLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
         if self.slider_minimum.text is None or float(minimum_average_rent) < self.micro_living_rent_slider.min:
@@ -375,7 +374,7 @@ class Map2_0(Map2_0Template):
         self.micro_living_rent_slider.enabled = True
         # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Student Living":
-        Variables.last_bbox_stl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_stl.checked, Variables.last_bbox_stl, "student_living", f'{self.app_url}/_/theme/Pins/StudentLiving@0.75x.png')
+        Variables.last_bbox_stl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_stl.checked, Variables.last_bbox_stl, "student_living", f'{Variables.app_url}/_/theme/Pins/StudentLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
         if self.slider_minimum.text is None or float(minimum_average_rent) < self.micro_living_rent_slider.min:
@@ -386,7 +385,7 @@ class Map2_0(Map2_0Template):
           self.micro_living_rent_slider.max = float(maximum_average_rent)
         self.micro_living_rent_slider.enabled = True
         # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
-      Functions.manipulate_loading_overlay(self, False)
+      Functions.manipulate_loading_overlay(False)
 
   def checkbox_poi_x_hfcig_change(self, **event_args):
     #This method is called when the Check Box for POI based on HFCIG is checked or unchecked
@@ -513,7 +512,7 @@ class Map2_0(Map2_0Template):
       if self.role == 'admin':
         print(datetime.datetime.now())
 
-      Functions.manipulate_loading_overlay(self, True)
+      Functions.manipulate_loading_overlay(True)
       anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
       
       ''' Generate created Date of Market Study '''
@@ -626,9 +625,9 @@ class Map2_0(Map2_0Template):
       ''' Get generated Analysis-Text for City '''
       from .ChatGPT import ChatGPT
       analysis_text = anvil.server.call('openai_test', city)
-      Functions.manipulate_loading_overlay(self, False)
+      Functions.manipulate_loading_overlay(False)
       analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
-      Functions.manipulate_loading_overlay(self, True)
+      Functions.manipulate_loading_overlay(True)
       
       anvil.js.call('update_loading_bar', 50, 'Calculating Data for Market Study')
     
@@ -1898,7 +1897,7 @@ class Map2_0(Map2_0Template):
       print(datetime.datetime.now())
 
       anvil.js.call('update_loading_bar', 0, '')
-      Functions.manipulate_loading_overlay(self, False)
+      Functions.manipulate_loading_overlay(False)
   
   def upload_mspdf_change(self, file, **event_args):
     with anvil.server.no_loading_indicator:
@@ -1927,12 +1926,12 @@ class Map2_0(Map2_0Template):
   #This method is called when a new file is loaded into the FileLoader
   def file_loader_upload_change(self, file, **event_args):  
     with anvil.server.no_loading_indicator:
-      Functions.manipulate_loading_overlay(self, True)
+      Functions.manipulate_loading_overlay(True)
       anvil.js.call('update_loading_bar', 5, 'Reading Excel File')
       #Call Server-Function to safe the File  
       self.cluster_data = anvil.server.call('save_local_excel_file', file)
       if self.cluster_data == None:
-        Functions.manipulate_loading_overlay(self, False)
+        Functions.manipulate_loading_overlay(False)
         anvil.js.call('update_loading_bar', 100, 'Error while processing Excel File')
         alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
         anvil.js.call('update_loading_bar', 0, '')
@@ -2042,12 +2041,12 @@ class Map2_0(Map2_0Template):
               break
           if not cluster_name in excel_markers.keys():
             excel_markers[cluster_name] = {'color': color, 'static': 'none', 'marker': []}
-          el.style.backgroundImage = f'url({self.app_url}{excel_markers[cluster_name]["color"][2]})'
+          el.style.backgroundImage = f'url({Variables.app_url}{excel_markers[cluster_name]["color"][2]})'
           new_list = self.set_excel_markers(excel_markers[cluster_name]['static'], coordinates, excel_markers[cluster_name]['marker'], el, asset)
           excel_markers[cluster_name]['marker'] = new_list
           if not invest_name in excel_markers.keys():
             excel_markers[invest_name] = {'pin': invests[invest_name], 'static': 'none', 'marker': []}
-          inv_el.style.backgroundImage = f"url({self.app_url}{invests[invest_name]})"
+          inv_el.style.backgroundImage = f"url({Variables.app_url}{invests[invest_name]})"
           new_list = self.set_excel_markers(excel_markers[invest_name]['static'], coordinates, excel_markers[invest_name]['marker'], inv_el, asset)
           excel_markers[invest_name]['marker'] = new_list
 
@@ -2084,7 +2083,7 @@ class Map2_0(Map2_0Template):
 
         anvil.js.call('update_loading_bar', 100, 'Finishing Process')
         self.file_loader_upload.clear()
-        Functions.manipulate_loading_overlay(self, False)
+        Functions.manipulate_loading_overlay(False)
         anvil.js.call('update_loading_bar', 0, '')
 
   # This Function is called when a DB Update should be done
@@ -2162,7 +2161,7 @@ class Map2_0(Map2_0Template):
         request_string = request_string + f"contours_minutes={contours_minutes}"
       
       #Build request_string
-      request_string += f"&polygons=true&access_token={self.token}"
+      request_string += f"&polygons=true&access_token={Variables.mapbox_token}"
       
       #Get Data from request
       Variables.activeIso = anvil.http.request(request_string,json=True)
@@ -2718,11 +2717,11 @@ class Map2_0(Map2_0Template):
   def change_cluster_color_click(self, **event_args):
     """This method is called when the button is clicked"""
     with anvil.server.no_loading_indicator:
-      Functions.manipulate_loading_overlay(self, True)
+      Functions.manipulate_loading_overlay(True)
       from .Change_Cluster_Color import Change_Cluster_Color
-      Functions.manipulate_loading_overlay(self, False)
+      Functions.manipulate_loading_overlay(False)
       response = alert(content=Change_Cluster_Color(components=self.icon_grid.get_components(), mobile=self.mobile), dismissible=False, large=True, buttons=[], role='custom_alert')
-      Functions.manipulate_loading_overlay(self, True)
+      Functions.manipulate_loading_overlay(True)
       for key in Variables.marker:
         if key in response:
           Variables.marker[key]['color'] = response[key]
@@ -2734,7 +2733,7 @@ class Map2_0(Map2_0Template):
         elif type(component) == Label:
           component.foreground = Variables.marker[key]["color"][1]
       if len(event_args.keys()) > 0:
-        Functions.manipulate_loading_overlay(self, False)
+        Functions.manipulate_loading_overlay(False)
       pass
   
   def create_cluster_marker(self, cluster_data):
@@ -2828,7 +2827,7 @@ class Map2_0(Map2_0Template):
         cluster_data['settings'][cluster_name]['marker'] = new_list
         if 'marker' not in cluster_data['settings'][invest_name].keys():
           cluster_data['settings'][invest_name]['marker'] = []
-        inv_el.style.backgroundImage = f"url({self.app_url}{invests[invest_name]})"
+        inv_el.style.backgroundImage = f"url({Variables.app_url}{invests[invest_name]})"
         new_list = self.set_excel_markers(cluster_data['settings'][invest_name]['static'], coordinates, cluster_data['settings'][invest_name]['marker'], inv_el, asset)
         cluster_data['settings'][invest_name]['marker'] = new_list
         
@@ -3039,7 +3038,7 @@ class Map2_0(Map2_0Template):
   def create_marker(self, event):
 
     from .Custom_Marker import Custom_Marker
-    marker_data = alert(Custom_Marker(url=self.app_url), buttons=[], dismissible=False, large=True, role='custom_alert')
+    marker_data = alert(Custom_Marker(url=Variables.app_url), buttons=[], dismissible=False, large=True, role='custom_alert')
     self.create_custom_marker(marker_data)
     self.custom_marker.append(marker_data)
 
@@ -3124,7 +3123,7 @@ class Map2_0(Map2_0Template):
         el.style.zIndex = '220'
         el.style.cursor = 'pointer'
     
-        el.style.backgroundImage = f"url({self.app_url}/_/theme/Pins/Comp{index+1}.png)"
+        el.style.backgroundImage = f"url({Variables.app_url}/_/theme/Pins/Comp{index+1}.png)"
 
         popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
           f"<p class='popup_name'><b>{result['operator']}</b></p>"

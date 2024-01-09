@@ -45,7 +45,6 @@ class Login(LoginTemplate):
           self.user = anvil.users.login_with_email(self.email_input.text, self.passwort_input.text, remember=self.remember_me.checked)
           if self.user:
             open_form('Map2_0', role=self.user['role'])
-            Functions.manipulate_loading_overlay(False)
       except anvil.users.AuthenticationFailed:
           self.error.visible = True
           Functions.manipulate_loading_overlay(False)
