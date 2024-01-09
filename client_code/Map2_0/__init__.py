@@ -55,8 +55,8 @@ class Map2_0(Map2_0Template):
     with anvil.server.no_loading_indicator:
       try:
         width, height = anvil.js.call('get_screen_width')
-        
-        if self.role == 'guest':
+        print(Variables.user_role)
+        if Variables.user_role == 'guest':
           marker_draggable = False
         #   self.button_icons.text = 'Cluster & Investment'
         else:
@@ -69,9 +69,10 @@ class Map2_0(Map2_0Template):
             self.share.visible = True
             self.button_icons.visible = True
             marker_draggable = True
-            if self.role == 'admin':
+            if Variables.user_role == 'admin':
               self.admin_button.visible = True
               self.db_upload.visible = True
+              self.mapbox_token.visible = True
   
         if width <= 998:
           self.mobile = True
@@ -79,7 +80,7 @@ class Map2_0(Map2_0Template):
           self.mobile_menu_open = False
         else:
           self.mobile = False
-          if self.role == 'guest':
+          if Variables.user_role == 'guest':
             container = document.getElementById('appGoesHere')
             logo = document.createElement('img')
             logo.src = f'{Variables.app_url}/_/theme/Logo.png'
@@ -507,7 +508,7 @@ class Map2_0(Map2_0Template):
 
   def create_market_study(self, **event_args):
     with anvil.server.no_loading_indicator:
-      if self.role == 'admin':
+      if Variables.user_role == 'admin':
         print(datetime.datetime.now())
 
       Functions.manipulate_loading_overlay(True)
@@ -3153,10 +3154,10 @@ class Map2_0(Map2_0Template):
         details += "<div class='partingLine'></div>"
         details += f"<p>Created: {result['created']}</p>"
         details += f"<p>Updated: {result['updated']}</p>"
-        if not self.role == 'guest':
+        if not Variables.user_role == 'guest':
           details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
 
-        anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, result, 'Competitor', details, self.role)
+        anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, result, 'Competitor', details, Variables.user_role)
         self.comp_marker.append(newicon)  
   
   def download_comps_click(self, **event_args):
@@ -3241,7 +3242,7 @@ class Map2_0(Map2_0Template):
     self.last_popup = None
 
   def show_details(self, category, marker_details, icon_element, marker_coords, event):
-    if self.role == 'guest':
+    if Variables.user_role == 'guest':
       if category == 'nursing_homes' or category == 'assisted_living' or category == 'nursing_school' or category == 'Competitor':
         self.remove_details(marker_details, None)
         self.last_target = marker_details
@@ -3676,3 +3677,7 @@ class Map2_0(Map2_0Template):
     request_static_map += "%5D%7D"
 
     return request_static_map, no_number_map_marker
+
+  def mapbox_token_pressed_enter(self, **event_args):
+    Variables.mapbox_token = self.mapbox_token
+    self.form_show()

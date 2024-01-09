@@ -1142,6 +1142,14 @@ components:
       layout_properties: {grid_position: 'LLVIZT,GPYSKZ', row: TKKVBG, width_xs: 10,
         col_xs: 1, width: 205.885}
       event_bindings: {click: admin_button_click}
+    - type: TextBox
+      properties: {role: null, align: left, hide_text: true, tooltip: '', placeholder: '',
+        border: '', enabled: true, foreground: '', visible: false, text: '', font_size: null,
+        font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
+        background: '', bold: false, underline: false}
+      name: mapbox_token
+      layout_properties: {row: NJPYVA, width_xs: 10, col_xs: 1, width: 168.30178}
+      event_bindings: {pressed_enter: mapbox_token_pressed_enter}
     - type: FileLoader
       properties:
         role: null

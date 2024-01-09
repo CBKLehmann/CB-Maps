@@ -91,6 +91,6 @@ micro_living_entries = {}
 app_url = ""
 loading_overlay = None
 loading = False
-maintenance = False
+maintenance = True
 mapbox_token = ""
 user_role = "guest"
