@@ -496,13 +496,15 @@ class Map2_0(Map2_0Template):
   #######Noch bearbeiten#######
   def admin_button_click(self, **event_args): 
     with anvil.server.no_loading_indicator:
-      #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)  
+      #This method is called when the User used the Admin-Button (!!!Just for Admin!!!)
+      Functions.manipulate_loading_overlay(True)
       date = datetime.datetime.now()
       # anvil.server.call('micmaccircle')
       # anvil.server.call('manipulate')
       anvil.server.call('save_micro_living')
       
       print('Ready')
+      Functions.manipulate_loading_overlay(False)
 
   #######Noch bearbeiten#######[]
 
