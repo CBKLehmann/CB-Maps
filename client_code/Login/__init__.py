@@ -7,7 +7,7 @@ from anvil.google.drive import app_files
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
-from ..Map2_0 import Functions
+from ..Map2_0 import Functions, Variables
 
 class Login(LoginTemplate):
   def __init__(self, **properties):
