@@ -2289,30 +2289,44 @@ class Map2_0(Map2_0Template):
         }
       })
       
-      layers = [{'id_fill': 'federal_states',
-                'id_outline': 'outline_federal_states', 
-                'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json',
-                'line_width': .25}, 
-                {'id_fill': 'administrative_districts',
-                'id_outline': 'outline_administrative_districts', 
-                'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json',
-                'line_width': .25},
-              {'id_fill': 'counties',
-                'id_outline': 'outline_counties', 
-                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/landkreise.geojson',
-                'line_width': .25},
-              {'id_fill': 'municipalities',
-                'id_outline': 'outline_municipalities', 
-                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson',
-                'line_width': .25},
-              {'id_fill': 'districts',
-                'id_outline': 'outline_districts', 
-                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson',
-                'line_width': .25},
-              {'id_fill': 'netherlands',
-                'id_outline': 'outline_netherlands', 
-                'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson',
-                'line_width': .25}]
+      layers = [
+        {
+          'id_fill': 'federal_states',
+          'id_outline': 'outline_federal_states', 
+          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_bundeslaender/1_sehr_hoch.geo.json',
+          'line_width': .25
+        }, 
+        {
+          'id_fill': 'administrative_districts',
+          'id_outline': 'outline_administrative_districts', 
+          'data': 'https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/3_regierungsbezirke/1_sehr_hoch.geo.json',
+          'line_width': .25
+        },
+        {
+          'id_fill': 'counties',
+          'id_outline': 'outline_counties', 
+          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/landkreise.geojson',
+          'line_width': .25
+        },
+        {
+          'id_fill': 'municipalities',
+          'id_outline': 'outline_municipalities', 
+          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/municipalities.geojson',
+          'line_width': .25
+        },
+        {
+          'id_fill': 'districts',
+          'id_outline': 'outline_districts', 
+          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/bln_hh_mun_dist.geojson',
+          'line_width': .25
+        },
+        {
+          'id_fill': 'netherlands',
+          'id_outline': 'outline_netherlands', 
+          'data': 'https://raw.githubusercontent.com/CBKLehmann/Geodata/main/netherlands.geojson',
+          'line_width': .25
+        }
+      ]
       
       for entry in layers:
         
