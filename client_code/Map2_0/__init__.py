@@ -488,6 +488,10 @@ class Map2_0(Map2_0Template):
         'Micro Living': {
           'container': self.micro_living_grid,
           'icon_container': self.micro_living_btn
+        },
+        'Distance Circles': {
+          'container': self.distance_circles_view,
+          'icon_container': self.distance_circles
         }
       }
       
@@ -509,7 +513,21 @@ class Map2_0(Map2_0Template):
       date = datetime.datetime.now()
       # anvil.server.call('micmaccircle')
       # anvil.server.call('manipulate')
-      anvil.server.call('save_micro_living')
+      # anvil.server.call('save_micro_living')
+
+      self.mapbox.addSource("radius", self.createGeoJSONCircle([13.4092, 52.5167], 50));
+      
+      self.mapbox.addLayer({
+        "id": "radius",
+        "type": "fill",
+        "source": "radius",
+        "layout": {},
+        "paint": {
+            "fill-color": "rgba(0, 0, 0, 0)",
+            "fill-outline-color": "blue",
+            "fill-opacity": 0.6
+        }
+      })
       
       print('Ready')
       Functions.manipulate_loading_overlay(False)
@@ -3706,3 +3724,43 @@ class Map2_0(Map2_0Template):
   def mapbox_token_pressed_enter(self, **event_args):
     Variables.mapbox_token = self.mapbox_token
     self.form_show()
+
+  def createGeoJSONCircle (self, center, radiusInKm, points = 64):
+    coords = {
+        "latitude": center[1],
+        "longitude": center[0]
+    };
+
+    km = radiusInKm
+
+    ret = [];
+    distanceX = km/(111.320*math.cos(coords["latitude"]*math.pi/180))
+    distanceY = km/110.574
+
+    theta = None
+    x = None
+    y = None
+    i = 0
+    while i < points:
+      theta = (i/points)*(2*math.pi)
+      x = distanceX*math.cos(theta)
+      y = distanceY*math.sin(theta)
+      
+      ret.append([coords["longitude"]+x, coords["latitude"]+y])
+      i += 1
+
+    ret.append(ret[0])
+
+    return {
+        "type": "geojson",
+        "data": {
+            "type": "FeatureCollection",
+            "features": [{
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [ret]
+                }
+            }]
+        }
+    }

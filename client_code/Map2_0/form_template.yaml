@@ -481,11 +481,32 @@ components:
           event_bindings: {change: checkbox_poi_x_hfcig_change}
     - type: Button
       properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
+        enabled: true, foreground: 'theme:Gray 300', visible: false, text: Distance Circles,
+        font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
+        italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
+      name: distance_circles
+      layout_properties: {row: FTXTWW, width_xs: 12, col_xs: 0, width: 226.91}
+      event_bindings: {click: button_toggle_menu_parts}
+    - type: GridPanel
+      properties: {spacing_above: none, spacing_below: none, background: 'theme:Secondary
+          700', foreground: '', border: '', visible: false, role: card, tooltip: ''}
+      name: distance_circles_view
+      layout_properties: {row: GIIOXI, width_xs: 12, col_xs: 0, width: 202.91}
+      components:
+      - type: Button
+        properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+          foreground: 'theme:Gray 300', visible: true, text: +, font_size: 30, font: '',
+          spacing_above: none, icon_align: top, spacing_below: none, italic: false,
+          background: '', bold: false, underline: false, icon: ''}
+        name: add_circle
+        layout_properties: {row: WASVLE, width_xs: 12, col_xs: 0, width: 196.25}
+    - type: Button
+      properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
         enabled: true, foreground: 'theme:Gray 300', visible: false, text: Point of Interests,
         font_size: null, font: '', spacing_above: small, icon_align: right_edge, spacing_below: small,
         italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
       name: poi_categories
-      layout_properties: {grid_position: 'MQTBGY,PYRIGM', row: MZAHHY, width_xs: 12,
+      layout_properties: {grid_position: 'MQTBGY,PYRIGM', row: EZZPTT, width_xs: 12,
         col_xs: 0, width: 257.333}
       event_bindings: {click: button_toggle_menu_parts}
     - type: GridPanel
