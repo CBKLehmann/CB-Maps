@@ -88,6 +88,7 @@ micro_living_entries = {}
 
 
 """ Already reworked Variables """
+added_circles = []
 app_url = ""
 loading_overlay = None
 loading = False

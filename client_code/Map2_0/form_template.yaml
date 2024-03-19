@@ -494,12 +494,13 @@ components:
       layout_properties: {row: GIIOXI, width_xs: 12, col_xs: 0, width: 202.91}
       components:
       - type: Button
-        properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-          foreground: 'theme:Gray 300', visible: true, text: +, font_size: 30, font: '',
+        properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
+          foreground: 'theme:Gray 300', visible: true, text: +, font_size: 20, font: '',
           spacing_above: none, icon_align: top, spacing_below: none, italic: false,
           background: '', bold: false, underline: false, icon: ''}
         name: add_circle
-        layout_properties: {row: WASVLE, width_xs: 12, col_xs: 0, width: 196.25}
+        layout_properties: {row: WASVLE, width_xs: 12, col_xs: 0, width: 202.917}
+        event_bindings: {click: add_circle_click}
     - type: Button
       properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
         enabled: true, foreground: 'theme:Gray 300', visible: false, text: Point of Interests,

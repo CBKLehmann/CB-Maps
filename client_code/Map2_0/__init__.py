@@ -66,6 +66,7 @@ class Map2_0(Map2_0Template):
             self.hide_ms_marker.visible = True
             # self.competitor_btn.visible = True
             self.file_loader_upload.visible = True
+            self.distance_circles.visible = True
             self.share.visible = True
             self.button_icons.visible = True
             marker_draggable = True
@@ -3764,3 +3765,7 @@ class Map2_0(Map2_0Template):
             }]
         }
     }
+
+  def add_circle_click(self, **event_args):
+    uni_code = anvil.server.call('get_unique_code')
+    Variables.added_circles.append(uni_code)
