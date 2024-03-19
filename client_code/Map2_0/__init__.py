@@ -679,10 +679,10 @@ class Map2_0(Map2_0Template):
       care_rate_35_v1_raw = round((pat_rec_full_care_fc_35_v1 * 100 / (population_fc_35 * nursing_home_rate)) * 100, 1)
       pat_rec_full_care_fc_35_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc_35 + people_o80_fc_35))
       care_rate_35_v2_raw = round((pat_rec_full_care_fc_35_v2 * 100 / (population_fc_35 * nursing_home_rate)) * 100, 1)
-      inpatients_fc = round(pat_rec_full_care_fc_30_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
-      inpatients_fc_v2 = round(pat_rec_full_care_fc_30_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
-      inpatients_fc_35 = round(pat_rec_full_care_fc_35_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
-      inpatients_fc_35_v2 = round(pat_rec_full_care_fc_35_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100))
+      inpatients_fc = round(pat_rec_full_care_fc_30_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100)) if not inpatients_lk == 0 else 0 
+      inpatients_fc_v2 = round(pat_rec_full_care_fc_30_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100)) if not inpatients_lk == 0 else 0
+      inpatients_fc_35 = round(pat_rec_full_care_fc_35_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100)) if not inpatients_lk == 0 else 0
+      inpatients_fc_35_v2 = round(pat_rec_full_care_fc_35_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100)) if not inpatients_lk == 0 else 0
       beds_30_v1 = round((pat_rec_full_care_fc_30_v1 / 0.95))
       beds_30_v2 = round((pat_rec_full_care_fc_30_v2 / 0.95))
       beds_35_v1 = round((pat_rec_full_care_fc_35_v1 / 0.95))
@@ -1831,6 +1831,7 @@ class Map2_0(Map2_0Template):
               'years_of_construction_al': list_years_of_construction_al
           }
       )
+      print(good_to_know_median['years_of_construction_nh'])
       market_study_data['pages']['good_to_know']['cell']['median_beds_value']['txt'] = str(good_to_know_median['beds'])
       market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_value']['txt'] = str(good_to_know_median['years_of_construction_nh'])
       market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_al_value']['txt'] = str(good_to_know_median['years_of_construction_al'])
