@@ -1831,7 +1831,7 @@ class Map2_0(Map2_0Template):
               'years_of_construction_al': list_years_of_construction_al
           }
       )
-      print(good_to_know_median['years_of_construction_nh'])
+      
       market_study_data['pages']['good_to_know']['cell']['median_beds_value']['txt'] = str(good_to_know_median['beds'])
       market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_value']['txt'] = str(good_to_know_median['years_of_construction_nh'])
       market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_al_value']['txt'] = str(good_to_know_median['years_of_construction_al'])
