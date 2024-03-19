@@ -1833,8 +1833,8 @@ class Map2_0(Map2_0Template):
       )
       
       market_study_data['pages']['good_to_know']['cell']['median_beds_value']['txt'] = str(good_to_know_median['beds'])
-      market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_value']['txt'] = str(int(good_to_know_median['years_of_construction_nh']))
-      market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_al_value']['txt'] = str(int(good_to_know_median['years_of_construction_al']))
+      market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_value']['txt'] = str(int(good_to_know_median['years_of_construction_nh'])) if not good_to_know_median['years_of_construction_nh'] == '-' else good_to_know_median['years_of_construction_nh']
+      market_study_data['pages']['good_to_know']['cell']['median_year_of_construct_al_value']['txt'] = str(int(good_to_know_median['years_of_construction_al'])) if not good_to_know_median['years_of_construction_al'] == '-' else good_to_know_median['years_of_construction_al']
       
       # Create Map Request for Competitor Map
       competitor_map_request_data = self.build_competitor_map_request(
