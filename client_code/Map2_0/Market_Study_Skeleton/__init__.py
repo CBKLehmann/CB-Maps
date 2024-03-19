@@ -2594,7 +2594,7 @@ def market_study_skeleton(market_study_data):
                     'y': 70,
                     'w': 180,
                     'h': 4,
-                    'txt': f"This market study consideres {market_study_data['number_facilities_nh_value']} nursing homes within the vicinity of {market_study_data['iso_time']} minutes {market_study_data['iso_movement']}. Thereof, {market_study_data['complied_regulations']} facilities comply with the federal state regulations and {market_study_data['uncomplied_regulations']} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {market_study_data['loss_of_beds']}.",
+                    'txt': f"This market study consideres {market_study_data['nursing_homes_active']} nursing homes within the vicinity of {market_study_data['iso_time']} minutes {market_study_data['iso_movement']}. Thereof, {market_study_data['complied_regulations']} facilities comply with the federal state regulations and {market_study_data['uncomplied_regulations']} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {market_study_data['loss_of_beds']}.",
                     'align': 'left'
                 },
                 'new_comment': {

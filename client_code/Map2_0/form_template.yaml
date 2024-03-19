@@ -1046,8 +1046,16 @@ components:
             spacing_below: none, italic: false, background: '', bold: false, checked: true,
             underline: false}
           name: check_soft
-          layout_properties: {row: QENJIO, width_xs: 11, col_xs: 1, width: 183.885}
+          layout_properties: {row: EWUBBS, width_xs: 10, col_xs: 1, width: 183.885}
           event_bindings: {change: map_style_change}
+        - type: CheckBox
+          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
+            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
+            visible: true, text: Soft Map, font_size: 13, font: Roboto+Flex, spacing_above: none,
+            spacing_below: none, italic: false, background: '', bold: false, checked: true,
+            underline: false}
+          name: check_soft_copy_2
+          layout_properties: {row: QENJIO, width_xs: 10, col_xs: 1, width: 183.885}
     - type: Button
       properties: {role: sidebar_collapsable, align: full, tooltip: '', border: '',
         enabled: true, foreground: 'theme:Gray 200', visible: false, text: Overlays,
@@ -1216,3 +1224,10 @@ components:
     tooltip: ''}
   name: spacer_1
   layout_properties: {grid_position: 'QGFIHK,HAWKQF', full_width_row: true, slot: default}
+- type: CheckBox
+  properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
+    foreground: 'theme:Gray 300', allow_indeterminate: false, visible: true, text: Soft Map,
+    font_size: 13, font: Roboto+Flex, spacing_above: none, spacing_below: none, italic: false,
+    background: '', bold: false, checked: true, underline: false}
+  name: check_soft_copy
+  layout_properties: {row: QENJIO, width_xs: 11, col_xs: 1, width: 183.885}

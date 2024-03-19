@@ -100,7 +100,7 @@ class Map2_0(Map2_0Template):
         
         mapboxgl.accessToken = Variables.mapbox_token
         self.mapbox = mapboxgl.Map({'container': self.dom,
-                                    'style': "mapbox://styles/mapbox/outdoors-v11",
+                                    'style': "mapbox://styles/mapbox/light-v11",
                                     'center': [13.4092, 52.5167],
                                     'zoom': 8})
   
