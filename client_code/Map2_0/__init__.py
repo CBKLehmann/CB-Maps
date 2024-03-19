@@ -410,15 +410,23 @@ class Map2_0(Map2_0Template):
       #This method is called when one of the Buttons for changing the Map-Style got clicked
       if dict(event_args)['sender'].text == "Satellite Map":
         self.check_street.checked = False
-        self.check_soft.checked = False
+        self.check_light.checked = False
+        self.check_basic.checked = False
         self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
       elif dict(event_args)['sender'].text == "Street Map":
         self.check_satellite.checked = False
-        self.check_soft.checked = False
+        self.check_light.checked = False
+        self.check_basic.checked = False
         self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
-      elif dict(event_args)['sender'].text == "Soft Map":
+      elif dict(event_args)['sender'].text == "Light Map":
         self.check_street.checked = False
         self.check_satellite.checked = False
+        self.check_basic.checked = False
+        self.mapbox.setStyle('mapbox://styles/mapbox/light-v11')
+      elif dict(event_args)['sender'].text == "Basic Map":
+        self.check_street.checked = False
+        self.check_satellite.checked = False
+        self.check_light.checked = False
         self.mapbox.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
 
   def button_toggle_menu_parts(self, **event_args):
