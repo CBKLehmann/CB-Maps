@@ -7,10 +7,13 @@ from anvil.google.drive import app_files
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+from ... import Functions
 
 class Active_Circle(Active_CircleTemplate):
-  def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
+  def __init__(self, uni_code, mapbox, **properties):
     self.init_components(**properties)
+    self.tag = uni_code
+    self.mapbox = mapbox
 
-    # Any code you write here will run before the form opens.
+  def radius_change(self, **event_args):
+    self.mapbox.getSource(f'radius_{self.tag}').setData(Functions.createGeoJSONCircle([13.4092, 52.5167], event_args['sender'].text))

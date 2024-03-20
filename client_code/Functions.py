@@ -8,6 +8,7 @@ from anvil.tables import app_tables
 from . import Variables, Layer, Images
 from anvil.js.window import document
 import datetime
+import math
 
 global Variables, Layer, Images, Functions
 
@@ -753,3 +754,43 @@ def create_marker_div():
   marker_div.style.zIndex = '299'
   marker_div.style.backgroundImage = f'url({Variables.app_url}/_/theme/Pins/CB_MapPin_Location.png)'
   return marker_div
+
+def createGeoJSONCircle (center, radiusInKm, points = 64):
+  coords = {
+      "latitude": center[1],
+      "longitude": center[0]
+  };
+
+  km = radiusInKm
+
+  ret = [];
+  distanceX = km/(111.320*math.cos(coords["latitude"]*math.pi/180))
+  distanceY = km/110.574
+
+  theta = None
+  x = None
+  y = None
+  i = 0
+  while i < points:
+    theta = (i/points)*(2*math.pi)
+    x = distanceX*math.cos(theta)
+    y = distanceY*math.sin(theta)
+    
+    ret.append([coords["longitude"]+x, coords["latitude"]+y])
+    i += 1
+
+  ret.append(ret[0])
+
+  return {
+      "type": "geojson",
+      "data": {
+          "type": "FeatureCollection",
+          "features": [{
+              "type": "Feature",
+              "geometry": {
+                  "type": "Polygon",
+                  "coordinates": [ret]
+              }
+          }]
+      }
+  }

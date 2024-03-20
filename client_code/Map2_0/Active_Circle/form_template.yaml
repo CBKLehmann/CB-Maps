@@ -1,15 +1,26 @@
 container: {type: ColumnPanel}
 components:
 - name: flow_panel_1
-  properties: {align: justify, spacing_above: none, spacing_below: none, spacing: none,
+  properties: {align: left, spacing_above: none, spacing_below: none, spacing: none,
     vertical_align: middle}
   type: FlowPanel
-  layout_properties: {grid_position: 'UGUGXI,LWGZXY', full_width_row: true}
+  layout_properties: {grid_position: 'UGUGXI,LWGZXY', full_width_row: false}
   components:
   - name: radius
-    properties: {spacing_above: none, spacing_below: none, type: number}
+    properties: {role: null, align: center, border: '', text: '5', font_size: 13,
+      spacing_above: none, type: number, spacing_below: none, bold: false}
     type: TextBox
-    layout_properties: {width: 221.9996259765625, expand: false}
+    layout_properties: {width: 55.624956494140626, expand: false}
+    data_bindings: []
+    event_bindings: {change: radius_change}
+  - name: kilometer
+    properties: {text: km, foreground: 'theme:Gray 300'}
+    type: Label
+    layout_properties: {}
+  - name: spacer_1
+    properties: {height: 32}
+    type: Spacer
+    layout_properties: {width: 69.9479}
   - name: active_switch
     properties: {text: '', checked: true, role: switch-rounded}
     type: CheckBox

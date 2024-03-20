@@ -3726,50 +3726,10 @@ class Map2_0(Map2_0Template):
     Variables.mapbox_token = self.mapbox_token
     self.form_show()
 
-  def createGeoJSONCircle (self, center, radiusInKm, points = 64):
-    coords = {
-        "latitude": center[1],
-        "longitude": center[0]
-    };
-
-    km = radiusInKm
-
-    ret = [];
-    distanceX = km/(111.320*math.cos(coords["latitude"]*math.pi/180))
-    distanceY = km/110.574
-
-    theta = None
-    x = None
-    y = None
-    i = 0
-    while i < points:
-      theta = (i/points)*(2*math.pi)
-      x = distanceX*math.cos(theta)
-      y = distanceY*math.sin(theta)
-      
-      ret.append([coords["longitude"]+x, coords["latitude"]+y])
-      i += 1
-
-    ret.append(ret[0])
-
-    return {
-        "type": "geojson",
-        "data": {
-            "type": "FeatureCollection",
-            "features": [{
-                "type": "Feature",
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [ret]
-                }
-            }]
-        }
-    }
-
   def add_circle_click(self, **event_args):
     uni_code = anvil.server.call('get_unique_code')
     Variables.added_circles.append(uni_code)
-    self.mapbox.addSource(f"radius_{uni_code}", self.createGeoJSONCircle([13.4092, 52.5167], 50));
+    self.mapbox.addSource(f"radius_{uni_code}", Functions.createGeoJSONCircle([13.4092, 52.5167], 5));
     self.mapbox.addLayer({
       "id": f"radius_{uni_code}",
       "type": "fill",
@@ -3782,7 +3742,7 @@ class Map2_0(Map2_0Template):
       }
     })
 
-    import 
+    from .Active_Circle import Active_Circle
 
-    new_circle = TextBox(type="number")
+    new_circle = Active_Circle(uni_code, self.mapbox)
     self.active_circles.add_component(new_circle)
