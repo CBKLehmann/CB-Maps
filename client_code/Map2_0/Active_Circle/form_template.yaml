@@ -20,7 +20,7 @@ components:
   - name: spacer_1
     properties: {height: 32}
     type: Spacer
-    layout_properties: {width: 69.9479}
+    layout_properties: {width: 64.5938}
   - name: active_switch
     properties: {text: '', checked: true, role: switch-rounded}
     type: CheckBox

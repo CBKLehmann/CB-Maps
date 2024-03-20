@@ -3732,13 +3732,12 @@ class Map2_0(Map2_0Template):
     self.mapbox.addSource(f"radius_{uni_code}", Functions.createGeoJSONCircle([13.4092, 52.5167], 5));
     self.mapbox.addLayer({
       "id": f"radius_{uni_code}",
-      "type": "fill",
+      "type": "line",
       "source": f"radius_{uni_code}",
       "layout": {},
       "paint": {
-          "fill-color": "rgba(0, 0, 0, 0)",
-          "fill-outline-color": "blue",
-          "fill-opacity": 0.6
+        "line-color": "#CCB666",
+        "line-opacity": 0.2 + 0.2 * len(Variables.added_circles)
       }
     })
 

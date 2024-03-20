@@ -16,4 +16,4 @@ class Active_Circle(Active_CircleTemplate):
     self.mapbox = mapbox
 
   def radius_change(self, **event_args):
-    self.mapbox.getSource(f'radius_{self.tag}').setData(Functions.createGeoJSONCircle([13.4092, 52.5167], event_args['sender'].text))
+    self.mapbox.getSource(f'radius_{self.tag}').setData(Functions.createGeoJSONCircle([13.4092, 52.5167], event_args['sender'].text)['data'])
