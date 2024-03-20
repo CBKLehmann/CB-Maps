@@ -3730,16 +3730,55 @@ class Map2_0(Map2_0Template):
     uni_code = anvil.server.call('get_unique_code')
     Variables.added_circles.append(uni_code)
     self.mapbox.addSource(f"radius_{uni_code}", Functions.createGeoJSONCircle([13.4092, 52.5167], 5));
-    self.mapbox.addLayer({
-      "id": f"radius_{uni_code}",
-      "type": "line",
-      "source": f"radius_{uni_code}",
-      "layout": {},
-      "paint": {
-        "line-color": "#CCB666",
-        "line-opacity": 0.2 + 0.2 * len(Variables.added_circles)
-      }
-    })
+    three_count = len(Variables.added_circles) % 3
+    if three_count == 1:
+      self.mapbox.addLayer({
+        "id": f"radius_{uni_code}",
+        "type": "line",
+        "source": f"radius_{uni_code}",
+        "layout": {},
+        "paint": {
+          "line-color": "#1B2939",
+          "line-opacity": 0.75,
+          "line-width": 2
+        }
+      })
+    elif three_count == 2:
+      self.mapbox.addLayer({
+        "id": f"radius_{uni_code}",
+        "type": "line",
+        "source": f"radius_{uni_code}",
+        "layout": {},
+        "paint": {
+          "line-color": "#1B2939",
+          "line-opacity": 0.75,
+          "line-width": 2,
+          "line-dasharray": [2, 1]
+        }
+      })
+    elif three_count == 0:
+      self.mapbox.addLayer({
+        "id": f"radius_{uni_code}",
+        "type": "line",
+        "source": f"radius_{uni_code}",
+        "layout": {},
+        "paint": {
+          "line-color": "#1B2939",
+          "line-opacity": 0.75,
+          "line-width": 2,
+          "line-dasharray": [4, 1]
+        }
+      })
+      self.mapbox.addLayer({
+        "id": f"radius_{uni_code}_points",
+        "type": "circle",
+        "source": f"radius_{uni_code}",
+        "layout": {},
+        "paint": {
+          "circle-color": "#1B2939",
+          "circle-radius": 3,
+        }
+      })
 
     from .Active_Circle import Active_Circle
 
