@@ -3729,13 +3729,13 @@ class Map2_0(Map2_0Template):
   def add_circle_click(self, **event_args):
     uni_code = anvil.server.call('get_unique_code')
     Variables.added_circles.append(uni_code)
-    self.mapbox.addSource(f"radius_{uni_code}", Functions.createGeoJSONCircle([13.4092, 52.5167], 5));
+    self.mapbox.addSource(f"source_{uni_code}", Functions.createGeoJSONCircle([13.4092, 52.5167], 5));
     three_count = len(Variables.added_circles) % 3
     if three_count == 1:
       self.mapbox.addLayer({
         "id": f"radius_{uni_code}",
         "type": "line",
-        "source": f"radius_{uni_code}",
+        "source": f"source_{uni_code}",
         "layout": {},
         "paint": {
           "line-color": "#1B2939",
@@ -3743,11 +3743,22 @@ class Map2_0(Map2_0Template):
           "line-width": 2
         }
       })
+      self.mapbox.addLayer({
+        "id": f"symbol_{uni_code}",
+        "type": "symbol",
+        "source": f"source_{uni_code}",
+        "layout": {
+          "symbol-placement": "line",
+          "text-font": ["Open Sans Regular"],
+          "text-field": '{title}',
+          "text-size": 16
+        }
+      })
     elif three_count == 2:
       self.mapbox.addLayer({
         "id": f"radius_{uni_code}",
         "type": "line",
-        "source": f"radius_{uni_code}",
+        "source": f"source_{uni_code}",
         "layout": {},
         "paint": {
           "line-color": "#1B2939",
@@ -3760,7 +3771,7 @@ class Map2_0(Map2_0Template):
       self.mapbox.addLayer({
         "id": f"radius_{uni_code}",
         "type": "line",
-        "source": f"radius_{uni_code}",
+        "source": f"source_{uni_code}",
         "layout": {},
         "paint": {
           "line-color": "#1B2939",
@@ -3772,7 +3783,7 @@ class Map2_0(Map2_0Template):
       self.mapbox.addLayer({
         "id": f"radius_{uni_code}_points",
         "type": "circle",
-        "source": f"radius_{uni_code}",
+        "source": f"source_{uni_code}",
         "layout": {},
         "paint": {
           "circle-color": "#1B2939",
