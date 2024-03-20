@@ -3769,3 +3769,20 @@ class Map2_0(Map2_0Template):
   def add_circle_click(self, **event_args):
     uni_code = anvil.server.call('get_unique_code')
     Variables.added_circles.append(uni_code)
+    self.mapbox.addSource(f"radius_{uni_code}", self.createGeoJSONCircle([13.4092, 52.5167], 50));
+    self.mapbox.addLayer({
+      "id": f"radius_{uni_code}",
+      "type": "fill",
+      "source": f"radius_{uni_code}",
+      "layout": {},
+      "paint": {
+          "fill-color": "rgba(0, 0, 0, 0)",
+          "fill-outline-color": "blue",
+          "fill-opacity": 0.6
+      }
+    })
+
+    import 
+
+    new_circle = TextBox(type="number")
+    self.active_circles.add_component(new_circle)

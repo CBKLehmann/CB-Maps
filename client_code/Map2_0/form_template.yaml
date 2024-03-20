@@ -493,6 +493,10 @@ components:
       name: distance_circles_view
       layout_properties: {row: GIIOXI, width_xs: 12, col_xs: 0, width: 202.91}
       components:
+      - type: LinearPanel
+        properties: {}
+        name: active_circles
+        layout_properties: {row: EYKDSW, width_xs: 12, col_xs: 0}
       - type: Button
         properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', visible: true, text: +, font_size: 20, font: '',
