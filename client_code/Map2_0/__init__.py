@@ -3739,7 +3739,7 @@ class Map2_0(Map2_0Template):
         "layout": {},
         "paint": {
           "line-color": "#1B2939",
-          "line-opacity": 0.75,
+          "line-opacity": 0.5,
           "line-width": 2
         }
       })
@@ -3751,7 +3751,7 @@ class Map2_0(Map2_0Template):
         "layout": {},
         "paint": {
           "line-color": "#1B2939",
-          "line-opacity": 0.75,
+          "line-opacity": 0.5,
           "line-width": 2,
           "line-dasharray": [2, 1]
         }
@@ -3764,7 +3764,7 @@ class Map2_0(Map2_0Template):
         "layout": {},
         "paint": {
           "line-color": "#1B2939",
-          "line-opacity": 0.75,
+          "line-opacity": 0.5,
           "line-width": 2,
           "line-dasharray": [4, 1]
         }
@@ -3777,6 +3777,7 @@ class Map2_0(Map2_0Template):
         "paint": {
           "circle-color": "#1B2939",
           "circle-radius": 3,
+          "circle-opacity": 0.5
         }
       })
 
