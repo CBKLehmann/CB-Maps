@@ -2139,7 +2139,8 @@ class Map2_0(Map2_0Template):
       lnglat = result['result']['geometry']['coordinates']
       self.marker.setLngLat(lnglat)
       self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-      
+      for circle in self.active_circles.get_components():
+        circle.update_circle()
       Functions.refresh_icons(self)
   
   #This method is called when the draggable Marker was moved
@@ -2147,7 +2148,8 @@ class Map2_0(Map2_0Template):
     with anvil.server.no_loading_indicator:
       #Set iso-Layer for new Markerposition
       self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-      
+      for circle in self.active_circles.get_components():
+        circle.update_circle()
       Functions.refresh_icons(self)
     
   #This method is called when the draggable Marker was moved or when the Geocoder was used
@@ -3727,9 +3729,13 @@ class Map2_0(Map2_0Template):
     self.form_show()
 
   def add_circle_click(self, **event_args):
+    layers = []
     uni_code = anvil.server.call('get_unique_code')
     Variables.added_circles.append(uni_code)
-    self.mapbox.addSource(f"source_{uni_code}", Functions.createGeoJSONCircle([13.4092, 52.5167], 5));
+    self.mapbox.addSource(
+      f"source_{uni_code}", 
+      Functions.createGeoJSONCircle([self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']], 5)
+    );
     three_count = len(Variables.added_circles) % 3
     if three_count == 1:
       self.mapbox.addLayer({
@@ -3751,9 +3757,13 @@ class Map2_0(Map2_0Template):
           "symbol-placement": "line",
           "text-font": ["Open Sans Regular"],
           "text-field": '{title}',
-          "text-size": 16
+          "text-size": 14,
+          "text-anchor": "bottom",
+          "text-letter-spacing": .15
         }
       })
+      layers.append(f"radius_{uni_code}")
+      layers.append(f"symbol_{uni_code}")
     elif three_count == 2:
       self.mapbox.addLayer({
         "id": f"radius_{uni_code}",
@@ -3767,6 +3777,21 @@ class Map2_0(Map2_0Template):
           "line-dasharray": [2, 1]
         }
       })
+      self.mapbox.addLayer({
+        "id": f"symbol_{uni_code}",
+        "type": "symbol",
+        "source": f"source_{uni_code}",
+        "layout": {
+          "symbol-placement": "line",
+          "text-font": ["Open Sans Regular"],
+          "text-field": '{title}',
+          "text-size": 14,
+          "text-anchor": "bottom",
+          "text-letter-spacing": .15
+        }
+      })
+      layers.append(f"radius_{uni_code}")
+      layers.append(f"symbol_{uni_code}")
     elif three_count == 0:
       self.mapbox.addLayer({
         "id": f"radius_{uni_code}",
@@ -3791,8 +3816,24 @@ class Map2_0(Map2_0Template):
           "circle-opacity": 0.5
         }
       })
+      self.mapbox.addLayer({
+        "id": f"symbol_{uni_code}",
+        "type": "symbol",
+        "source": f"source_{uni_code}",
+        "layout": {
+          "symbol-placement": "line",
+          "text-font": ["Open Sans Regular"],
+          "text-field": '{title}',
+          "text-size": 14,
+          "text-anchor": "bottom",
+          "text-letter-spacing": .15
+        }
+      })
+      layers.append(f"radius_{uni_code}")
+      layers.append(f"radius_{uni_code}_points")
+      layers.append(f"symbol_{uni_code}")
 
     from .Active_Circle import Active_Circle
 
-    new_circle = Active_Circle(uni_code, self.mapbox)
+    new_circle = Active_Circle(uni_code, self.mapbox, self.marker, layers)
     self.active_circles.add_component(new_circle)

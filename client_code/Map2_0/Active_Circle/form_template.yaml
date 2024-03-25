@@ -25,4 +25,5 @@ components:
     properties: {text: '', checked: true, role: switch-rounded}
     type: CheckBox
     layout_properties: {}
+    event_bindings: {change: active_switch_change}
 is_package: true

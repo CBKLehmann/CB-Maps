@@ -10,11 +10,27 @@ from anvil.tables import app_tables
 from ... import Functions
 
 class Active_Circle(Active_CircleTemplate):
-  def __init__(self, uni_code, mapbox, **properties):
+  def __init__(self, uni_code, mapbox, marker, layers, **properties):
     self.init_components(**properties)
     self.tag = uni_code
     self.mapbox = mapbox
+    self.marker = marker
+    self.layers = layers
+    self.circle_radius = 5
 
   def radius_change(self, **event_args):
     if event_args['sender'].text is not None:
-      self.mapbox.getSource(f'radius_{self.tag}').setData(Functions.createGeoJSONCircle([13.4092, 52.5167], event_args['sender'].text)['data'])
+      self.circle_radius = event_args['sender'].text
+      self.update_circle()
+
+  def active_switch_change(self, **event_args):
+    for layer in self.layers:
+      self.mapbox.setLayoutProperty(layer, "visibility", "visible" if event_args['sender'].checked else "none")
+
+  def update_circle(self):
+    self.mapbox.getSource(f'source_{self.tag}').setData(
+        Functions.createGeoJSONCircle(
+          [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']], 
+          self.circle_radius
+        )['data']
+      )

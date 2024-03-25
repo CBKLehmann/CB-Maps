@@ -786,14 +786,14 @@ def createGeoJSONCircle (center, radiusInKm, points = 64):
     "data": {
       "type": "FeatureCollection",
       "features": [{
-          "type": "Feature",
-          "geometry": {
-              "type": "Polygon",
-              "coordinates": [ret]
-          }
-      }],
-      "properties": {
-        "title": "Testeronie"
-      }
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [ret]
+        },
+        "properties": {
+          "title": f"{radiusInKm}km"
+        }
+      }]
     }
   }
