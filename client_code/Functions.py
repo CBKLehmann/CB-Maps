@@ -792,7 +792,7 @@ def createGeoJSONCircle (center, radiusInKm, points = 64):
           "coordinates": [ret]
         },
         "properties": {
-          "title": f"{radiusInKm}km"
+          "title": f"{radiusInKm} km"
         }
       }]
     }

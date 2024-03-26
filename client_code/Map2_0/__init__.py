@@ -3736,8 +3736,7 @@ class Map2_0(Map2_0Template):
       f"source_{uni_code}", 
       Functions.createGeoJSONCircle([self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']], 5)
     );
-    three_count = len(Variables.added_circles) % 3
-    if three_count == 1:
+    if len(Variables.added_circles) == 1:
       self.mapbox.addLayer({
         "id": f"radius_{uni_code}",
         "type": "line",
@@ -3745,7 +3744,7 @@ class Map2_0(Map2_0Template):
         "layout": {},
         "paint": {
           "line-color": "#1B2939",
-          "line-opacity": 0.5,
+          "line-opacity": 0.25,
           "line-width": 2
         }
       })
@@ -3755,16 +3754,22 @@ class Map2_0(Map2_0Template):
         "source": f"source_{uni_code}",
         "layout": {
           "symbol-placement": "line",
-          "text-font": ["Open Sans Regular"],
+          # "text-font": ["Open Sans Regular"],
           "text-field": '{title}',
-          "text-size": 14,
-          "text-anchor": "bottom",
-          "text-letter-spacing": .15
+          "text-size": 13,
+          "text-anchor": "bottom"
+        },
+        "paint": {
+          "text-color": "#1B2939",
+          "text-opacity": .4,
+          "text-halo-color": "#FFFFFF",
+          "text-halo-width": 3,
+          "text-halo-blur": .5
         }
       })
       layers.append(f"radius_{uni_code}")
       layers.append(f"symbol_{uni_code}")
-    elif three_count == 2:
+    elif len(Variables.added_circles) >= 2:
       self.mapbox.addLayer({
         "id": f"radius_{uni_code}",
         "type": "line",
@@ -3772,7 +3777,7 @@ class Map2_0(Map2_0Template):
         "layout": {},
         "paint": {
           "line-color": "#1B2939",
-          "line-opacity": 0.5,
+          "line-opacity": 0.25,
           "line-width": 2,
           "line-dasharray": [2, 1]
         }
@@ -3783,54 +3788,20 @@ class Map2_0(Map2_0Template):
         "source": f"source_{uni_code}",
         "layout": {
           "symbol-placement": "line",
-          "text-font": ["Open Sans Regular"],
+          # "text-font": ["Open Sans Regular"],
           "text-field": '{title}',
-          "text-size": 14,
-          "text-anchor": "bottom",
-          "text-letter-spacing": .15
+          "text-size": 13,
+          "text-anchor": "bottom"
+        },
+        "paint": {
+          "text-color": "#1B2939",
+          "text-opacity": .4,
+          "text-halo-color": "#FFFFFF",
+          "text-halo-width": 3,
+          "text-halo-blur": 1
         }
       })
       layers.append(f"radius_{uni_code}")
-      layers.append(f"symbol_{uni_code}")
-    elif three_count == 0:
-      self.mapbox.addLayer({
-        "id": f"radius_{uni_code}",
-        "type": "line",
-        "source": f"source_{uni_code}",
-        "layout": {},
-        "paint": {
-          "line-color": "#1B2939",
-          "line-opacity": 0.5,
-          "line-width": 2,
-          "line-dasharray": [4, 1]
-        }
-      })
-      self.mapbox.addLayer({
-        "id": f"radius_{uni_code}_points",
-        "type": "circle",
-        "source": f"source_{uni_code}",
-        "layout": {},
-        "paint": {
-          "circle-color": "#1B2939",
-          "circle-radius": 3,
-          "circle-opacity": 0.5
-        }
-      })
-      self.mapbox.addLayer({
-        "id": f"symbol_{uni_code}",
-        "type": "symbol",
-        "source": f"source_{uni_code}",
-        "layout": {
-          "symbol-placement": "line",
-          "text-font": ["Open Sans Regular"],
-          "text-field": '{title}',
-          "text-size": 14,
-          "text-anchor": "bottom",
-          "text-letter-spacing": .15
-        }
-      })
-      layers.append(f"radius_{uni_code}")
-      layers.append(f"radius_{uni_code}_points")
       layers.append(f"symbol_{uni_code}")
 
     from .Active_Circle import Active_Circle
