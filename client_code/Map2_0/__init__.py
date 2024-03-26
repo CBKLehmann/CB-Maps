@@ -385,6 +385,8 @@ class Map2_0(Map2_0Template):
           self.micro_living_rent_slider.max = float(maximum_average_rent)
         self.micro_living_rent_slider.enabled = True
         # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
+      elif event_args['sender'].text == "Motorway":
+        Variables.last_bbox_mw, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_mw.checked, Variables.last_bbox_mw, "motorway", f'{Variables.app_url}/_/theme/Pins/Flughafen_Pin.png')
       Functions.manipulate_loading_overlay(False)
 
   def checkbox_poi_x_hfcig_change(self, **event_args):
