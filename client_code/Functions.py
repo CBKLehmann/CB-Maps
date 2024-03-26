@@ -112,6 +112,10 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
     elif category == 'student_living':
       geojson = anvil.server.call('get_micro_living_facilities', 'Student living', marker_coords)
     Variables.micro_living_entries[category] = geojson
+
+  elif category == "motorway":
+    
+    geojson = anvil.server.call('poi_data', category, bbox, marker_coords, 999999999)
   
   else:
 
@@ -236,27 +240,34 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
             if not category == 'nursing-schools':
 
               if not category in Variables.micro_living_categories:
+
+                if category == "motorway":
+                  el_coords = ele['geometry']['coordinates']
+
+                  name = ele['properties']['refrence']
+
+                else:
             
-                # Get coordinates of current Icon
-                el_coords = ele['geometry']['coordinates']
-    
-                # Get different Informations from geojson
-                city = ele['properties']['city']
-                suburb = ele['properties']['suburb']
-                street = ele['properties']['street']
-                housenumber = ele['properties']['housenumber']
-                postcode = ele['properties']['postcode']
-                phone = ele['properties']['phone']
-                website = ele['properties']['website']
-                healthcare = ele['properties']['healthcare']
-                name = ele['properties']['name']
-                opening_hours = ele['properties']['opening_hours']
-                wheelchair = ele['properties']['wheelchair']
-                o_id = ele['properties']['id']
-                fax = ele['properties']['fax']
-                email = ele['properties']['email']
-                speciality = ele['properties']['healthcare:speciality']
-                operator = ele['properties']['operator']
+                  # Get coordinates of current Icon
+                  el_coords = ele['geometry']['coordinates']
+      
+                  # Get different Informations from geojson
+                  city = ele['properties']['city']
+                  suburb = ele['properties']['suburb']
+                  street = ele['properties']['street']
+                  housenumber = ele['properties']['housenumber']
+                  postcode = ele['properties']['postcode']
+                  phone = ele['properties']['phone']
+                  website = ele['properties']['website']
+                  healthcare = ele['properties']['healthcare']
+                  name = ele['properties']['name']
+                  opening_hours = ele['properties']['opening_hours']
+                  wheelchair = ele['properties']['wheelchair']
+                  o_id = ele['properties']['id']
+                  fax = ele['properties']['fax']
+                  email = ele['properties']['email']
+                  speciality = ele['properties']['healthcare:speciality']
+                  operator = ele['properties']['operator']
 
               else:
 
@@ -509,6 +520,17 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
               f"<p class='popup_distance'>{distance} km  to the location</p>"
             )
 
+        elif category == 'motorway':
+          distance = anvil.server.call('get_point_distance', marker_coords, el_coords)
+          
+          marker_details = f'<b>Name:</b> {name}'
+
+          popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+              f"<p class='popup_name'><b>{name}</b></p>"
+              f"<p class='popup_type'>{category.capitalize()}</p>"
+              f"<p class='popup_distance'>{distance} km  to the location</p>"
+            )
+        
         elif category in Variables.micro_living_categories:
           if category in Variables.removed_markers.keys():
             for marker in Variables.removed_markers[category]:
@@ -611,7 +633,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
               marker_details += f"<p>Updated: {ele['updated'].split(' ')[0]}</p>"
             if not self.role == 'guest':
               marker_details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
-          
+        
         # Check if Category is not Bus or Tram or PflegeDB
         else:
 
