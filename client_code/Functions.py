@@ -6,6 +6,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from . import Variables, Layer, Images
+from .Map2_0 import Mapbox_Variables
 from anvil.js.window import document
 import datetime
 import math
@@ -740,7 +741,7 @@ def get_current_date_as_string():
 """ Already reworked Functions """
 def get_mapbox_token():
   try:
-    Variables.mapbox_token = anvil.server.call('get_token')
+    Mapbox_Variables.token = anvil.server.call('get_token')
   except:
     Variables.maintenance = True
 

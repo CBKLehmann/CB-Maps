@@ -1,13 +1,8 @@
 from ._anvil_designer import LoginTemplate
 from anvil import *
-from anvil.google.drive import app_files
-from anvil.tables import app_tables
 from ..Map2_0 import Functions, Variables
 import anvil.server
 import anvil.users
-import anvil.google.auth, anvil.google.drive
-import anvil.tables as tables
-import anvil.tables.query as q
 
 class Login(LoginTemplate):
   def __init__(self, **properties):
@@ -22,13 +17,9 @@ class Login(LoginTemplate):
     if self.user is not None:
       Variables.user_role = self.user['role']
       
-      if Variables.maintenance and not Variables.user_role == "admin":
-        from .Maintenance import Maintenance
-        alert(content=Maintenance(), dismissible=False, buttons=[], large=True)
+      if not self.check_maintenance():
+        open_form('Map2_0')
         return
-
-      open_form('Map2_0')
-      return
 
     if len(self.hash) > 0:
       open_form('Map2_0', role='guest')
@@ -61,8 +52,8 @@ class Login(LoginTemplate):
         Functions.manipulate_loading_overlay(False)
         return
         
-      Variables.user_role = self.user['role']
-      open_form('Map2_0')
+      if not self.check_maintenance():
+        open_form('Map2_0')
           
   def forgot_password_click(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -74,3 +65,12 @@ class Login(LoginTemplate):
 
       self.error.text = "Given E-Mail not found"
       self.error.visible = True
+
+  def check_maintenance(self):
+    Variables.user_role = self.user['role']
+    if Variables.maintenance and not Variables.user_role == "admin":
+      from .Maintenance import Maintenance
+      alert(content=Maintenance(), dismissible=False, buttons=[], large=True)
+      return True
+
+    return False

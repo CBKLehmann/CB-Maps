@@ -1,12 +1,13 @@
-# Import of different Modules
 from ._anvil_designer import Map2_0Template
 from anvil import *
-import anvil.users
 import anvil.google.auth, anvil.google.drive
 from anvil.google.drive import app_files
 from anvil.tables import app_tables
-from anvil.js.window import mapboxgl, MapboxGeocoder, document
+from anvil.js.window import document
+from anvil_extras.storage import local_storage
 from .. import Variables, Layer, Images, ExcelFrames, Functions
+from .Handle_Local_Storage import load_local_storage_settings
+from . import Mapbox_Functions, Mapbox_Variables
 import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
@@ -28,8 +29,6 @@ class Map2_0(Map2_0Template):
   def __init__(self, **properties):
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(False)
-        
-      Functions.manipulate_loading_overlay(False)
       self.init_components(**properties)
       self.dom = anvil.js.get_dom_node(self.spacer_1)
       self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
@@ -48,89 +47,84 @@ class Map2_0(Map2_0Template):
   
   def form_show(self, **event_args):
     with anvil.server.no_loading_indicator:
-      try:
-        width, height = anvil.js.call('get_screen_width')
-        if Variables.user_role == 'guest':
-          marker_draggable = False
-        #   self.button_icons.text = 'Cluster & Investment'
-        else:
-            self.dist_layer.visible = True
-            self.poi_categories.visible = True
-            self.button_overlay.visible = True
-            self.hide_ms_marker.visible = True
-            # self.competitor_btn.visible = True
-            self.file_loader_upload.visible = True
-            self.distance_circles.visible = True
-            self.share.visible = True
-            self.button_icons.visible = True
-            marker_draggable = True
-            if Variables.user_role == 'admin':
-              self.admin_button.visible = True
-              self.db_upload.visible = True
-              self.mapbox_token.visible = True
-  
-        if width <= 998:
-          self.mobile = True
-          self.mobile_btn_grid.visible = True
-          self.mobile_menu_open = False
-        else:
-          self.mobile = False
-          if Variables.user_role == 'guest':
-            container = document.getElementById('appGoesHere')
-            logo = document.createElement('img')
-            logo.src = f'{Variables.app_url}/_/theme/Logo.png'
-            logo.style.position = 'absolute'
-            logo.style.pointerEvents = 'none'
-            logo.style.bottom = '30px'
-            logo.style.right = '20px'
-            logo.style.width = '15%'
-            container.appendChild(logo)
-        
-        # Initiate Map and set Listener on Page Load
-        self.select_all_hc.tag.categorie = 'Healthcare'
-        self.select_all_opnv.tag.categorie = 'ÖPNV'
-        self.select_all_edu.tag.categorie = 'Student Living'
-        self.select_all_food.tag.categorie = 'Food & Drinks'
-        self.select_all_micro_living.tag.categorie = 'Micro Living'
-        
-        mapboxgl.accessToken = Variables.mapbox_token
-        self.mapbox = mapboxgl.Map({'container': self.dom,
-                                    'style': "mapbox://styles/mapbox/light-v11",
-                                    'center': [13.4092, 52.5167],
-                                    'zoom': 8})
-  
-        self.marker = mapboxgl.Marker({'draggable': marker_draggable, 'element': Functions.create_marker_div(), 'anchor': 'bottom'}).setLngLat([13.4092, 52.5167]).addTo(self.mapbox)
-        self.geocoder = MapboxGeocoder({'accessToken': mapboxgl.accessToken, 'marker': False})
-        self.mapbox.addControl(self.geocoder)
-        
-        self.geocoder.on("result", self.move_marker)
-        self.marker.on("dragend", self.marker_dragged)
-        self.mapbox.on("mousemove", "federal_states", self.change_hover_state)
-        self.mapbox.on("mouseleave", "federal_states", self.change_hover_state)
-        self.mapbox.on("mousemove", "administrative_districts", self.change_hover_state)
-        self.mapbox.on("mouseleave", "administrative_districts", self.change_hover_state)
-        self.mapbox.on("mousemove", "counties", self.change_hover_state)
-        self.mapbox.on("mouseleave", "counties", self.change_hover_state)
-        self.mapbox.on("mousemove", "municipalities", self.change_hover_state)
-        self.mapbox.on("mouseleave", "municipalities", self.change_hover_state)
-        self.mapbox.on("mousemove", "districts", self.change_hover_state)
-        self.mapbox.on("mouseleave", "districts", self.change_hover_state)
-        self.mapbox.on("mousemove", 'netherlands', self.change_hover_state)
-        self.mapbox.on("mouseleave", 'netherlands', self.change_hover_state)
-        self.mapbox.on("click", "federal_states", self.popup)
-        self.mapbox.on("click", "administrative_districts", self.popup)
-        self.mapbox.on("click", "counties", self.popup)
-        self.mapbox.on("click", "municipalities", self.popup)
-        self.mapbox.on("click", "districts", self.popup)
-        self.mapbox.on("style.load", self.handle_style_change)
-        self.mapbox.on("load", self.loadHash)
-        self.mapbox.on("contextmenu", self.map_right_click)
-        self.mapbox.on("click", self.map_right_click)
-  
-        document.addEventListener('click', functools.partial(self.remove_details, None))
-      except:
-        pass
+      self.set_device_settings()
 
+      if Variables.user_role == 'guest':
+        marker_draggable = False
+      #   self.button_icons.text = 'Cluster & Investment'
+      else:
+          self.dist_layer.visible = True
+          self.poi_categories.visible = True
+          self.button_overlay.visible = True
+          self.hide_ms_marker.visible = True
+          # self.competitor_btn.visible = True
+          self.file_loader_upload.visible = True
+          self.distance_circles.visible = True
+          self.share.visible = True
+          self.button_icons.visible = True
+          marker_draggable = True
+          if Variables.user_role == 'admin':
+            self.admin_button.visible = True
+            self.db_upload.visible = True
+            self.mapbox_token.visible = True
+
+      self.add_component_tags()
+      Mapbox_Functions.initialise_mapbox(self.dom, marker_draggable)
+      self.add_map_listeners()
+      document.addEventListener('click', functools.partial(self.remove_details, None))
+
+  def add_map_listeners(self):
+    Mapbox_Variables.geocoder.on("result", self.move_marker)
+    Mapbox_Variables.location_marker.on("dragend", self.marker_dragged)
+    Mapbox_Variables.map.on("mousemove", "federal_states", self.change_hover_state)
+    Mapbox_Variables.map.on("mouseleave", "federal_states", self.change_hover_state)
+    Mapbox_Variables.map.on("mousemove", "administrative_districts", self.change_hover_state)
+    Mapbox_Variables.map.on("mouseleave", "administrative_districts", self.change_hover_state)
+    Mapbox_Variables.map.on("mousemove", "counties", self.change_hover_state)
+    Mapbox_Variables.map.on("mouseleave", "counties", self.change_hover_state)
+    Mapbox_Variables.map.on("mousemove", "municipalities", self.change_hover_state)
+    Mapbox_Variables.map.on("mouseleave", "municipalities", self.change_hover_state)
+    Mapbox_Variables.map.on("mousemove", "districts", self.change_hover_state)
+    Mapbox_Variables.map.on("mouseleave", "districts", self.change_hover_state)
+    Mapbox_Variables.map.on("mousemove", 'netherlands', self.change_hover_state)
+    Mapbox_Variables.map.on("mouseleave", 'netherlands', self.change_hover_state)
+    Mapbox_Variables.map.on("click", "federal_states", self.popup)
+    Mapbox_Variables.map.on("click", "administrative_districts", self.popup)
+    Mapbox_Variables.map.on("click", "counties", self.popup)
+    Mapbox_Variables.map.on("click", "municipalities", self.popup)
+    Mapbox_Variables.map.on("click", "districts", self.popup)
+    Mapbox_Variables.map.on("style.load", self.handle_style_change)
+    Mapbox_Variables.map.on("load", self.loadHash)
+    Mapbox_Variables.map.on("contextmenu", self.map_right_click)
+    Mapbox_Variables.map.on("click", self.map_right_click)
+
+  def add_component_tags(self):
+    self.select_all_hc.tag.categorie = 'Healthcare'
+    self.select_all_opnv.tag.categorie = 'ÖPNV'
+    self.select_all_edu.tag.categorie = 'Student Living'
+    self.select_all_food.tag.categorie = 'Food & Drinks'
+    self.select_all_micro_living.tag.categorie = 'Micro Living'
+
+  def set_device_settings(self):
+    width, height = anvil.js.call('get_screen_width')
+    self.mobile = False
+    
+    if width <= 998:
+      self.mobile = True
+      self.mobile_btn_grid.visible = True
+      self.mobile_menu_open = False
+      
+    if Variables.user_role == 'guest':
+      container = document.getElementById('appGoesHere')
+      logo = document.createElement('img')
+      logo.src = f'{Variables.app_url}/_/theme/Logo.png'
+      logo.style.position = 'absolute'
+      logo.style.pointerEvents = 'none'
+      logo.style.bottom = '30px'
+      logo.style.right = '20px'
+      logo.style.width = '15%'
+      container.appendChild(logo)
+  
   def loadHash(self, event):
     with anvil.server.no_loading_indicator:
       hash = get_url_hash()
@@ -145,11 +139,11 @@ class Map2_0(Map2_0Template):
         self.map_styles.raise_event('click')
         time.sleep(.5)
         if data['study_pin']:
-          self.marker.setLngLat([data['marker_lng'], data['marker_lat']])
-          self.mapbox.flyTo({"center": [data['marker_lng'], data['marker_lat']], "zoom": data['zoom']})
+          Mapbox_Variables.location_marker.setLngLat([data['marker_lng'], data['marker_lat']])
+          Mapbox_Variables.map.flyTo({"center": [data['marker_lng'], data['marker_lat']], "zoom": data['zoom']})
         else:
-          self.mapbox.flyTo({"center": [data['center']['lng'], data['center']['lat']], "zoom": data['zoom']})
-          self.marker.remove()
+          Mapbox_Variables.map.flyTo({"center": [data['center']['lng'], data['center']['lat']], "zoom": data['zoom']})
+          Mapbox_Variables.location_marker.remove()
         if data['iso_layer']:
           self.time_dropdown.selected_value = data['distance_time']
           self.profile_dropdown.selected_value = data['distance_movement']
@@ -244,7 +238,7 @@ class Map2_0(Map2_0Template):
       
       layer_name = dict(event_args)['sender'].text.replace(" ", "_").lower()
       outline_name = "outline_" + layer_name
-      visibility = self.mapbox.getLayoutProperty(layer_name, "visibility")
+      visibility = Mapbox_Variables.map.getLayoutProperty(layer_name, "visibility")
       inactive_layers = []
       inactive_checkboxes = []
       
@@ -389,7 +383,7 @@ class Map2_0(Map2_0Template):
       if self.checkbox_poi_x_hfcig.checked == True:
         bbox = Functions.create_bounding_box(self)
       else:  
-        bbox = [(dict(self.mapbox.getBounds()['_sw']))['lat'], (dict(self.mapbox.getBounds()['_sw']))['lng'], (dict(self.mapbox.getBounds()['_ne']))['lat'], (dict(self.mapbox.getBounds()['_ne']))['lng']]
+        bbox = [(dict(Mapbox_Variables.map.getBounds()['_sw']))['lat'], (dict(Mapbox_Variables.map.getBounds()['_sw']))['lng'], (dict(Mapbox_Variables.map.getBounds()['_ne']))['lat'], (dict(Mapbox_Variables.map.getBounds()['_ne']))['lng']]
       
       Functions.refresh_icons(self)
         
@@ -404,27 +398,27 @@ class Map2_0(Map2_0Template):
    
   def map_style_change(self, **event_args):
     with anvil.server.no_loading_indicator:
-      #This method is called when one of the Buttons for changing the Map-Style got clicked
+      local_storage['map_style'] = dict(event_args)['sender'].text
       if dict(event_args)['sender'].text == "Satellite Map":
         self.check_street.checked = False
         self.check_light.checked = False
         self.check_basic.checked = False
-        self.mapbox.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
+        Mapbox_Variables.map.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
       elif dict(event_args)['sender'].text == "Street Map":
         self.check_satellite.checked = False
         self.check_light.checked = False
         self.check_basic.checked = False
-        self.mapbox.setStyle('mapbox://styles/mapbox/outdoors-v11')
+        Mapbox_Variables.map.setStyle('mapbox://styles/mapbox/outdoors-v11')
       elif dict(event_args)['sender'].text == "Light Map":
         self.check_street.checked = False
         self.check_satellite.checked = False
         self.check_basic.checked = False
-        self.mapbox.setStyle('mapbox://styles/mapbox/light-v11')
+        Mapbox_Variables.map.setStyle('mapbox://styles/mapbox/light-v11')
       elif dict(event_args)['sender'].text == "Basic Map":
         self.check_street.checked = False
         self.check_satellite.checked = False
         self.check_light.checked = False
-        self.mapbox.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
+        Mapbox_Variables.map.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
 
   def button_toggle_menu_parts(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -512,9 +506,9 @@ class Map2_0(Map2_0Template):
       # anvil.server.call('manipulate')
       # anvil.server.call('save_micro_living')
 
-      self.mapbox.addSource("radius", self.createGeoJSONCircle([13.4092, 52.5167], 50));
+      Mapbox_Variables.map.addSource("radius", self.createGeoJSONCircle([13.4092, 52.5167], 50));
       
-      self.mapbox.addLayer({
+      Mapbox_Variables.map.addLayer({
         "id": "radius",
         "type": "fill",
         "source": "radius",
@@ -550,11 +544,11 @@ class Map2_0(Map2_0Template):
       ''' Get Map based Information '''
       street = anvil.js.call('getSearchedAddress').split(",")[0]
       marker_coords = {
-          'lng': (dict(self.marker['_lngLat'])['lng']),
-          'lat': (dict(self.marker['_lngLat'])['lat'])
+          'lng': (dict(Mapbox_Variables.location_marker['_lngLat'])['lng']),
+          'lat': (dict(Mapbox_Variables.location_marker['_lngLat'])['lat'])
       }
       purchase_power = anvil.server.call('get_purchasing_power', location={'lat': marker_coords['lat'], 'lng': marker_coords['lng']})
-      iso = dict(self.mapbox.getSource('iso'))
+      iso = dict(Mapbox_Variables.map.getSource('iso'))
       iso_time = self.time_dropdown.selected_value
       if iso_time == "-1":
           iso_time = "20"
@@ -623,7 +617,7 @@ class Map2_0(Map2_0Template):
                   operator.append(care_entry[0]['betreiber'])
     
       ''' Get Place from Geocoder-API for Map-Marker and extract needed Information '''
-      request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{marker_coords['lng']},{marker_coords['lat']}.json?access_token={Variables.mapbox_token}"
+      request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{marker_coords['lng']},{marker_coords['lat']}.json?access_token={Mapbox_Variables.token}"
       response_data = anvil.http.request(request, json=True)
       marker_context = response_data['features'][0]['context']
       zipcode = "n.a."
@@ -2058,7 +2052,7 @@ class Map2_0(Map2_0Template):
     
           # #Get Coordinates of provided Adress for Marker
           req_str = self.build_request_string(asset)
-          req_str += f'.json?access_token={Variables.mapbox_token}'
+          req_str += f'.json?access_token={Mapbox_Variables.token}'
           coords = anvil.http.request(req_str,json=True)
           for entry in coords['features']:
             if asset['zip'] in entry['place_name']:
@@ -2133,7 +2127,7 @@ class Map2_0(Map2_0Template):
     with anvil.server.no_loading_indicator:
       #Set iso-Layer for new coordinates
       lnglat = result['result']['geometry']['coordinates']
-      self.marker.setLngLat(lnglat)
+      Mapbox_Variables.location_marker.setLngLat(lnglat)
       self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
       for circle in self.active_circles.get_components():
         circle.update_circle()
@@ -2152,16 +2146,16 @@ class Map2_0(Map2_0Template):
   def get_iso(self, profile, contours_minutes):
     with anvil.server.no_loading_indicator:
       #Check if isoLayer is already constructed
-      if not self.mapbox.getSource('iso'):
+      if not Mapbox_Variables.map.getSource('iso'):
         
         #Construct Mapsource for isoLayer
-        self.mapbox.addSource('iso', {'type': 'geojson',
+        Mapbox_Variables.map.addSource('iso', {'type': 'geojson',
                                       'data': {'type': 'FeatureCollection',
                                               'features': []}
                                     })
         
         #Construct and add isoLayer
-        self.mapbox.addLayer({'id': 'isoLayer',
+        Mapbox_Variables.map.addLayer({'id': 'isoLayer',
                               'type': 'fill',
                               'source': 'iso',
                               'layout': {'visibility': 'visible'},
@@ -2173,7 +2167,7 @@ class Map2_0(Map2_0Template):
                             })
       
       #Get iso-coordinates based of the marker-coordinates
-      lnglat = self.marker.getLngLat()
+      lnglat = Mapbox_Variables.location_marker.getLngLat()
       request_string = f"https://api.mapbox.com/isochrone/v1/mapbox/{profile}/{lnglat.lng},{lnglat.lat}?"
       
       #Check which iso-mode is currently active
@@ -2188,13 +2182,13 @@ class Map2_0(Map2_0Template):
         request_string = request_string + f"contours_minutes={contours_minutes}"
       
       #Build request_string
-      request_string += f"&polygons=true&access_token={Variables.mapbox_token}"
+      request_string += f"&polygons=true&access_token={Mapbox_Variables.token}"
       
       #Get Data from request
       Variables.activeIso = anvil.http.request(request_string,json=True)
       
       #Attach Data to iso-source
-      self.mapbox.getSource('iso').setData(Variables.activeIso)
+      Mapbox_Variables.map.getSource('iso').setData(Variables.activeIso)
       
   #This method is called when the User clicked a Part of a Map-Layer
   def popup(self, click):
@@ -2206,7 +2200,7 @@ class Map2_0(Map2_0Template):
         bl_name = click.features[0].properties.name
         bl_id = click.features[0].id
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p>").addTo(self.mapbox)
+        popup = mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p>").addTo(Mapbox_Variables.map)
       
       #Check which Layer is active
       elif click.features[0].layer.source == 'administrative_districts':
@@ -2215,7 +2209,7 @@ class Map2_0(Map2_0Template):
         bl_name = click.features[0].properties.NAME_1
         rb_name = click.features[0].properties.NAME_2
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p><p class='popup_distance'><b>Regierungsbezirk:</b> {rb_name}</p>").addTo(self.mapbox)
+        popup = mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p><p class='popup_distance'><b>Regierungsbezirk:</b> {rb_name}</p>").addTo(Mapbox_Variables.map)
       
       #Check which Layer is active
       elif click.features[0].layer.source == 'counties':
@@ -2224,7 +2218,7 @@ class Map2_0(Map2_0Template):
         bl_name = click.features[0].properties.lan_name
         lk_name = click.features[0].properties.krs_name
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p><p class='popup_distance'><b>Landkreis:</b> {lk_name}</p>").addTo(self.mapbox)
+        popup = mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p><p class='popup_distance'><b>Landkreis:</b> {lk_name}</p>").addTo(Mapbox_Variables.map)
     
       elif click.features[0].layer.source == 'municipalities':
         
@@ -2251,28 +2245,28 @@ class Map2_0(Map2_0Template):
         dt_name = click.features[0].properties.name
         dt_id = click.features[0].id
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bezirk:</b> {dt_name}').addTo(self.mapbox)
+        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bezirk:</b> {dt_name}').addTo(Mapbox_Variables.map)
 
   #This method is called when the User clicked on a Point of Interest on the Map   #Eventuell nicht mehr benötigt
   def poi(self, click):
     with anvil.server.no_loading_indicator:
       #Get and Set Variables
-      info = dict(self.mapbox.style)
+      info = dict(Mapbox_Variables.map.style)
       
       #Check current Map-Style
       if (info['stylesheet']['metadata']['mapbox:origin'] == 'outdoors-v11'):
       
         #Get all Layers on the Map
-        layers = self.mapbox.getStyle().layers
+        layers = Mapbox_Variables.map.getStyle().layers
     
         #Get all Features (Point of Interest) of selected Layers on clicked Point
-        features = self.mapbox.queryRenderedFeatures(click.point, {'layers': ['poi-label', 'transit-label', 'landuse', 'national-park']})
+        features = Mapbox_Variables.map.queryRenderedFeatures(click.point, {'layers': ['poi-label', 'transit-label', 'landuse', 'national-park']})
         
         #Check if no POI was clicked and no Layer is active
         if not features == [] and Variables.activeLayer == None and hasattr(features[0].properties, 'name') == True:
         
           #Create Popup on clicked Point with Information about the Point of Interest
-          popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('Name: ' + features[0].properties.name).addTo(self.mapbox)
+          popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('Name: ' + features[0].properties.name).addTo(Mapbox_Variables.map)
       
       #Check current Map-Style
       elif Variables.activeLayer == None:
@@ -2284,7 +2278,7 @@ class Map2_0(Map2_0Template):
   def place_layer(self):
     with anvil.server.no_loading_indicator:
       #Add 3D-Layer to the Map
-      self.mapbox.addLayer({
+      Mapbox_Variables.map.addLayer({
         'id': 'add-3d-buildings',
         'source': 'composite',
         'source-layer': 'building',
@@ -2357,7 +2351,7 @@ class Map2_0(Map2_0Template):
       for entry in layers:
         
         #Add filled Layer for Federal states
-        self.mapbox.addLayer({
+        Mapbox_Variables.map.addLayer({
           'id': entry['id_fill'],
           'type': 'fill',
           'source': {
@@ -2379,7 +2373,7 @@ class Map2_0(Map2_0Template):
         }) 
         
         #Add outlined Layer for Federal states
-        self.mapbox.addLayer({
+        Mapbox_Variables.map.addLayer({
             'id': entry['id_outline'],
             'type': 'line',
             'source': {
@@ -2396,8 +2390,8 @@ class Map2_0(Map2_0Template):
         })
 
       if not Variables.activeLayer == None:
-        self.mapbox.setLayoutProperty(Variables.activeLayer, 'visibility', 'visible')
-        self.mapbox.setLayoutProperty(f'outline_{Variables.activeLayer}', 'visibility', 'visible')
+        Mapbox_Variables.map.setLayoutProperty(Variables.activeLayer, 'visibility', 'visible')
+        Mapbox_Variables.map.setLayoutProperty(f'outline_{Variables.activeLayer}', 'visibility', 'visible')
   
   #This method is called from the check_box_change-Functions to place Icons on Map  
   def create_icons(self, check_box, last_bbox, category, picture):
@@ -2408,13 +2402,13 @@ class Map2_0(Map2_0Template):
       # Check if Checkbox is checked
       if check_box == True:
 
-        marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
+        marker_coords = [Mapbox_Variables.location_marker['_lngLat']['lng'], Mapbox_Variables.location_marker['_lngLat']['lat']]
         
         # Check if Checkbox for Iso-Layer' is checked
         if self.checkbox_poi_x_hfcig.checked == True:
     
           # Get Data of Iso-Layer
-          iso = dict(self.mapbox.getSource('iso'))
+          iso = dict(Mapbox_Variables.map.getSource('iso'))
     
           # Create empty Bounding Box
           bbox = [0, 0, 0, 0]
@@ -2450,8 +2444,8 @@ class Map2_0(Map2_0Template):
         else:
     
           # Get visible Bounding Box of Map
-          bbox = [self.mapbox.getBounds()['_sw']['lat'], self.mapbox.getBounds()['_sw']['lng'],
-                  self.mapbox.getBounds()['_ne']['lat'], self.mapbox.getBounds()['_ne']['lng']]
+          bbox = [Mapbox_Variables.map.getBounds()['_sw']['lat'], Mapbox_Variables.map.getBounds()['_sw']['lng'],
+                  Mapbox_Variables.map.getBounds()['_ne']['lat'], Mapbox_Variables.map.getBounds()['_ne']['lng']]
 
         # Check if Bounding Box is not the same as least Request
         if not bbox == last_bbox:
@@ -2477,7 +2471,7 @@ class Map2_0(Map2_0Template):
               if bbox[0] < el_coords['lat'] < bbox[2] and bbox[1] < el_coords['lng'] < bbox[3]:
           
                 # Add Element to Map and add to Icon-Array
-                el.addTo(self.mapbox)
+                el.addTo(Mapbox_Variables.map)
                 icons.append(el)
     
             # Change last Category and add Icons to active Icon-Array
@@ -2498,7 +2492,7 @@ class Map2_0(Map2_0Template):
           for el in icons:
           
             # Add Element to Map
-            el.addTo(self.mapbox)
+            el.addTo(Mapbox_Variables.map)
     
           # Change last Category
           Variables.last_cat = f'{category}'
@@ -2508,7 +2502,7 @@ class Map2_0(Map2_0Template):
 
         if category == "subway":
           for id in self.opnv_layer:
-            self.mapbox.setLayoutProperty(id, 'visibility', 'none')
+            Mapbox_Variables.map.setLayoutProperty(id, 'visibility', 'none')
 
         elif category in Variables.micro_living_categories:
           if self.check_box_bl.checked:
@@ -2551,10 +2545,10 @@ class Map2_0(Map2_0Template):
       marker_cat = mapboxgl.Marker({'draggable': False, 'element': el, 'anchor': 'bottom'}).setPopup(popup)
       marker_el = marker_cat.getElement()
 
-      anvil.js.call('addHoverEffect', marker_el, popup, self.mapbox, marker_cat, asset, asset['cluster'], "Hahahahahahahahahahahahahahahaha", self.mobile)
+      anvil.js.call('addHoverEffect', marker_el, popup, Mapbox_Variables.map, marker_cat, asset, asset['cluster'], "Hahahahahahahahahahahahahahahaha", self.mobile)
       
       # Add Marker to the Map
-      newmarker = marker_cat.setLngLat(coords).addTo(self.mapbox)
+      newmarker = marker_cat.setLngLat(coords).addTo(Mapbox_Variables.map)
   
       # Add Marker Marker-Array
       marker_list.append(newmarker)
@@ -2567,7 +2561,7 @@ class Map2_0(Map2_0Template):
       if Variables.hoveredStateId != None:
     
         # Change hover-State to False and set global-variable 'hoveredStateId' to None
-        self.mapbox.setFeatureState({'source': Variables.activeLayer, 'id': Variables.hoveredStateId}, {'hover': False})
+        Mapbox_Variables.map.setFeatureState({'source': Variables.activeLayer, 'id': Variables.hoveredStateId}, {'hover': False})
         
         Variables.hoveredStateId = None
       
@@ -2581,7 +2575,7 @@ class Map2_0(Map2_0Template):
           Variables.hoveredStateId = mouse.features[0].id
       
           # Change hover-State to True
-          self.mapbox.setFeatureState({'source': Variables.activeLayer, 'id': Variables.hoveredStateId}, {'hover': True})
+          Mapbox_Variables.map.setFeatureState({'source': Variables.activeLayer, 'id': Variables.hoveredStateId}, {'hover': True})
   
   #Builds request-String for geocoder
   def build_request_string(self, asset):
@@ -2740,18 +2734,18 @@ class Map2_0(Map2_0Template):
   def iso_layer_active_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       if event_args['sender'].checked:
-        self.mapbox.setLayoutProperty('isoLayer', 'visibility', 'visible')
+        Mapbox_Variables.map.setLayoutProperty('isoLayer', 'visibility', 'visible')
       else:
-        self.mapbox.setLayoutProperty('isoLayer', 'visibility', 'none')
+        Mapbox_Variables.map.setLayoutProperty('isoLayer', 'visibility', 'none')
       pass
 
   def hide_ms_marker_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       """This method is called when this checkbox is checked or unchecked"""
       if event_args['sender'].checked:
-        self.marker.addTo(self.mapbox)
+        Mapbox_Variables.location_marker.addTo(Mapbox_Variables.map)
       else:
-        self.marker.remove()
+        Mapbox_Variables.location_marker.remove()
       pass
 
   def change_cluster_color_click(self, **event_args):
@@ -2875,7 +2869,7 @@ class Map2_0(Map2_0Template):
         # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
         # popup.setHTML(data[0][markercount]['Informationen'])
         # popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[0][markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
-        # popup_static.addTo(self.mapbox)
+        # popup_static.addTo(Mapbox_Variables.map)
         
         #Increase Markercount
         # markercount += 1
@@ -2990,11 +2984,11 @@ class Map2_0(Map2_0Template):
       name = alert(content=Name_Share_Link(searched_address=changed_address), buttons=[], dismissible=False, large=True, role='custom_alert')
       Functions.manipulate_loading_overlay(True)
       self.url = anvil.server.call('get_app_url') + f'#?name={name}'
-      center = self.mapbox.getCenter()
+      center = Mapbox_Variables.map.getCenter()
       
       dataset = {
-        'marker_lng': self.marker['_lngLat']['lng'],
-        'marker_lat': self.marker['_lngLat']['lat'],
+        'marker_lng': Mapbox_Variables.location_marker['_lngLat']['lng'],
+        'marker_lat': Mapbox_Variables.location_marker['_lngLat']['lat'],
         'cluster': cluster,
         'distance_movement': self.profile_dropdown.selected_value,
         'distance_time': self.time_dropdown.selected_value,
@@ -3008,7 +3002,7 @@ class Map2_0(Map2_0Template):
         'name': name.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss"),
         'url': self.url.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss"),
         'study_pin': study_pin,
-        'zoom': self.mapbox.getZoom(),
+        'zoom': Mapbox_Variables.map.getZoom(),
         'center': {'lng': center.lng, 'lat': center.lat},
         'competitors': {'competitors': self.competitors},
         'custom_marker': self.custom_marker,
@@ -3108,7 +3102,7 @@ class Map2_0(Map2_0Template):
       coords = self.clicked_coords
     else:
       coords = marker_data['address']['geometry']['coordinates']
-    newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+    newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(coords).setOffset([0, 0]).addTo(Mapbox_Variables.map).setPopup(popup)
 
     popup = document.getElementById('mapPopup')
     if popup:
@@ -3123,7 +3117,7 @@ class Map2_0(Map2_0Template):
       Functions.manipulate_loading_overlay(True)
       anvil.js.call('update_loading_bar', 5, 'Reading Excel File')
       #Call Server-Function to safe the File  
-      marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
+      marker_coords = [Mapbox_Variables.location_marker['_lngLat']['lng'], Mapbox_Variables.location_marker['_lngLat']['lat']]
       comps = anvil.server.call('read_comp_file', file, marker_coords)
       if comps == None:
         Functions.manipulate_loading_overlay(False)
@@ -3171,7 +3165,7 @@ class Map2_0(Map2_0Template):
           f"<p class='popup_type'>{result['distance']} km</p>"
         )
     
-        newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(result['coords']).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)
+        newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(result['coords']).setOffset([0, 0]).addTo(Mapbox_Variables.map).setPopup(popup)
         newiconElement = newicon.getElement()
 
         details = f"<h1>{result['operator']}</h1>"
@@ -3199,7 +3193,7 @@ class Map2_0(Map2_0Template):
         if not Variables.user_role == 'guest':
           details += "<div class='rmv_container'><button id='remove' class='btn btn-default'>Remove Marker</button></div>"
 
-        anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, result, 'Competitor', details, Variables.user_role)
+        anvil.js.call('addHoverEffect', newiconElement, popup, Mapbox_Variables.map, newicon, result, 'Competitor', details, Variables.user_role)
         self.comp_marker.append(newicon)  
   
   def download_comps_click(self, **event_args):
@@ -3267,7 +3261,7 @@ class Map2_0(Map2_0Template):
   def add_popup(self, popup, category, marker_details, icon_element, event):
     if not popup == self.last_popup:
       self.last_popup = popup
-      popup.addTo(self.mapbox)
+      popup.addTo(Mapbox_Variables.map)
       pop = document.getElementsByClassName('mapboxgl-popup-content')[0]
       pop.addEventListener('mouseenter', functools.partial(self.readd_popup, popup))
       pop.addEventListener('mouseleave', functools.partial(self.remove_popup, popup))
@@ -3276,7 +3270,7 @@ class Map2_0(Map2_0Template):
   def readd_popup(self, popup, event):
     if not popup == self.last_popup:
       popup.remove()
-      popup.addTo(self.mapbox)
+      popup.addTo(Mapbox_Variables.map)
       self.last_popup = popup
 
   def remove_popup(self, popup, event):
@@ -3360,7 +3354,7 @@ class Map2_0(Map2_0Template):
     Variables.unique_code = anvil.server.call("get_unique_code")
     checked_boxes = []
     columns = ['C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
-    marker_coords = [self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']]
+    marker_coords = [Mapbox_Variables.location_marker['_lngLat']['lng'], Mapbox_Variables.location_marker['_lngLat']['lat']]
     for checkbox in self.micro_living_check_boxes.get_components():
       if checkbox.checked:
         if checkbox.text == "Business Living":
@@ -3721,19 +3715,19 @@ class Map2_0(Map2_0Template):
     return request_static_map, no_number_map_marker
 
   def mapbox_token_pressed_enter(self, **event_args):
-    Variables.mapbox_token = self.mapbox_token
+    Mapbox_Variables.token = Mapbox_Variables.map_token
     self.form_show()
 
   def add_circle_click(self, **event_args):
     layers = []
     uni_code = anvil.server.call('get_unique_code')
     Variables.added_circles.append(uni_code)
-    self.mapbox.addSource(
+    Mapbox_Variables.map.addSource(
       f"source_{uni_code}", 
-      Functions.createGeoJSONCircle([self.marker['_lngLat']['lng'], self.marker['_lngLat']['lat']], 5)
+      Functions.createGeoJSONCircle([Mapbox_Variables.location_marker['_lngLat']['lng'], Mapbox_Variables.location_marker['_lngLat']['lat']], 5)
     );
     if len(Variables.added_circles) == 1:
-      self.mapbox.addLayer({
+      Mapbox_Variables.map.addLayer({
         "id": f"radius_{uni_code}",
         "type": "line",
         "source": f"source_{uni_code}",
@@ -3744,7 +3738,7 @@ class Map2_0(Map2_0Template):
           "line-width": 2
         }
       })
-      self.mapbox.addLayer({
+      Mapbox_Variables.map.addLayer({
         "id": f"symbol_{uni_code}",
         "type": "symbol",
         "source": f"source_{uni_code}",
@@ -3765,7 +3759,7 @@ class Map2_0(Map2_0Template):
       layers.append(f"radius_{uni_code}")
       layers.append(f"symbol_{uni_code}")
     elif len(Variables.added_circles) >= 2:
-      self.mapbox.addLayer({
+      Mapbox_Variables.map.addLayer({
         "id": f"radius_{uni_code}",
         "type": "line",
         "source": f"source_{uni_code}",
@@ -3777,7 +3771,7 @@ class Map2_0(Map2_0Template):
           "line-dasharray": [2, 1]
         }
       })
-      self.mapbox.addLayer({
+      Mapbox_Variables.map.addLayer({
         "id": f"symbol_{uni_code}",
         "type": "symbol",
         "source": f"source_{uni_code}",
@@ -3800,5 +3794,5 @@ class Map2_0(Map2_0Template):
 
     from .Active_Circle import Active_Circle
 
-    new_circle = Active_Circle(uni_code, self.mapbox, self.marker, layers)
+    new_circle = Active_Circle(uni_code, Mapbox_Variables.map, Mapbox_Variables.location_marker, layers)
     self.active_circles.add_component(new_circle)
