@@ -2171,9 +2171,9 @@ class Map2_0(Map2_0Template):
                               'source': 'iso',
                               'layout': {'visibility': 'visible'},
                               'paint': {
-                              'fill-color': '#A6A18A',
-                              'fill-opacity': 0.3,
-                              'fill-outline-color': '#4D4A3F'
+                              'fill-color': '#0A2232',
+                              'fill-opacity': 0.15,
+                              'fill-outline-color': '#06151F'
                               },
                             })
       
