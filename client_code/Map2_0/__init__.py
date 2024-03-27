@@ -27,29 +27,24 @@ class Map2_0(Map2_0Template):
 
   def __init__(self, **properties):
     with anvil.server.no_loading_indicator:
-      Functions.get_mapbox_token()
-      
-      if Variables.maintenance and not Variables.user_role == "admin":
-        Functions.manipulate_loading_overlay(False)
-        from .Maintenance import Maintenance
-        alert(content=Maintenance(), dismissible=False, buttons=[], large=True)
-      else:
-        Functions.manipulate_loading_overlay(False)
-        self.init_components(**properties)
-        self.dom = anvil.js.get_dom_node(self.spacer_1)
-        self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
-        Variables.app_url = anvil.server.call_s('get_app_url')
-        self.last_menu_height = '30%'
-        self.cluster_data = {}
-        self.competitors = []
-        self.custom_marker = []
-        self.comp_marker = []
-        self.last_popup = None
-        self.last_target = None
-        self.active_container = None
-        self.prev_called = None
-        html = document.getElementsByClassName('anvil-root-container')[0]
-        html.style.cursor = 'default'
+      Functions.manipulate_loading_overlay(False)
+        
+      Functions.manipulate_loading_overlay(False)
+      self.init_components(**properties)
+      self.dom = anvil.js.get_dom_node(self.spacer_1)
+      self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
+      Variables.app_url = anvil.server.call_s('get_app_url')
+      self.last_menu_height = '30%'
+      self.cluster_data = {}
+      self.competitors = []
+      self.custom_marker = []
+      self.comp_marker = []
+      self.last_popup = None
+      self.last_target = None
+      self.active_container = None
+      self.prev_called = None
+      html = document.getElementsByClassName('anvil-root-container')[0]
+      html.style.cursor = 'default'
   
   def form_show(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -3755,7 +3750,6 @@ class Map2_0(Map2_0Template):
         "source": f"source_{uni_code}",
         "layout": {
           "symbol-placement": "line",
-          # "text-font": ["Open Sans Regular"],
           "text-field": '{title}',
           "text-size": 13,
           "text-anchor": "bottom"
@@ -3789,7 +3783,6 @@ class Map2_0(Map2_0Template):
         "source": f"source_{uni_code}",
         "layout": {
           "symbol-placement": "line",
-          # "text-font": ["Open Sans Regular"],
           "text-field": '{title}',
           "text-size": 13,
           "text-anchor": "bottom"

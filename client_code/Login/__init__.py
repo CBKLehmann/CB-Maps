@@ -13,14 +13,20 @@ class Login(LoginTemplate):
   def __init__(self, **properties):
     with anvil.server.no_loading_indicator:
       self.init_components(**properties)
-      
       Functions.create_loading_overlay()
+      Functions.get_mapbox_token()
       self.user = anvil.server.call('get_current_user')
       self.hash = get_url_hash()
 
   def form_show(self, **event_args):
     if self.user is not None:
       Variables.user_role = self.user['role']
+      
+      if Variables.maintenance and not Variables.user_role == "admin":
+        from .Maintenance import Maintenance
+        alert(content=Maintenance(), dismissible=False, buttons=[], large=True)
+        return
+
       open_form('Map2_0')
       return
 

@@ -740,7 +740,7 @@ def get_current_date_as_string():
 """ Already reworked Functions """
 def get_mapbox_token():
   try:
-    Variables.mapbox_token = anvil.server.call_s('get_token')
+    Variables.mapbox_token = anvil.server.call('get_token')
   except:
     Variables.maintenance = True
 
