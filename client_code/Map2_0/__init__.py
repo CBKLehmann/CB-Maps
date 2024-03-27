@@ -26,6 +26,7 @@ global Variables, Layer, Images, ExcelFrames
 
 class Map2_0(Map2_0Template):
 
+  ''' Code angepasst '''
   def __init__(self, **properties):
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(False)
@@ -44,35 +45,71 @@ class Map2_0(Map2_0Template):
       self.prev_called = None
       html = document.getElementsByClassName('anvil-root-container')[0]
       html.style.cursor = 'default'
-  
+
+  ''' Code angepasst '''
   def form_show(self, **event_args):
     with anvil.server.no_loading_indicator:
+      ''' App-related Functions '''
       self.set_device_settings()
-
-      if Variables.user_role == 'guest':
-        marker_draggable = False
-      #   self.button_icons.text = 'Cluster & Investment'
-      else:
-          self.dist_layer.visible = True
-          self.poi_categories.visible = True
-          self.button_overlay.visible = True
-          self.hide_ms_marker.visible = True
-          # self.competitor_btn.visible = True
-          self.file_loader_upload.visible = True
-          self.distance_circles.visible = True
-          self.share.visible = True
-          self.button_icons.visible = True
-          marker_draggable = True
-          if Variables.user_role == 'admin':
-            self.admin_button.visible = True
-            self.db_upload.visible = True
-            self.mapbox_token.visible = True
-
+      self.set_display_settings()
       self.add_component_tags()
-      Mapbox_Functions.initialise_mapbox(self.dom, marker_draggable)
-      self.add_map_listeners()
       document.addEventListener('click', functools.partial(self.remove_details, None))
 
+      ''' Map-related Functions '''
+      Mapbox_Functions.initialise_mapbox(self.dom, self.marker_draggable)
+      self.add_map_listeners()
+
+  ''' Code angepasst '''
+  def set_device_settings(self):
+    width, height = anvil.js.call('get_screen_width')
+    self.mobile = False
+    
+    if width <= 998:
+      self.mobile = True
+      self.mobile_btn_grid.visible = True
+      self.mobile_menu_open = False
+      
+    if Variables.user_role == 'guest':
+      container = document.getElementById('appGoesHere')
+      logo = document.createElement('img')
+      logo.src = f'{Variables.app_url}/_/theme/Logo.png'
+      logo.style.position = 'absolute'
+      logo.style.pointerEvents = 'none'
+      logo.style.bottom = '30px'
+      logo.style.right = '20px'
+      logo.style.width = '15%'
+      container.appendChild(logo)
+
+  ''' Code angepasst '''
+  def set_display_settings(self):
+    if Variables.user_role == 'guest':
+      self.marker_draggable = False
+    #   self.button_icons.text = 'Cluster & Investment'
+    else:
+        self.dist_layer.visible = True
+        self.poi_categories.visible = True
+        self.button_overlay.visible = True
+        self.hide_ms_marker.visible = True
+        # self.competitor_btn.visible = True
+        self.file_loader_upload.visible = True
+        self.distance_circles.visible = True
+        self.share.visible = True
+        self.button_icons.visible = True
+        self.marker_draggable = True
+        if Variables.user_role == 'admin':
+          self.admin_button.visible = True
+          self.db_upload.visible = True
+          self.mapbox_token.visible = True
+
+  ''' Code angepasst '''
+  def add_component_tags(self):
+    self.select_all_hc.tag.categorie = 'Healthcare'
+    self.select_all_opnv.tag.categorie = 'ÖPNV'
+    self.select_all_edu.tag.categorie = 'Student Living'
+    self.select_all_food.tag.categorie = 'Food & Drinks'
+    self.select_all_micro_living.tag.categorie = 'Micro Living'
+
+  ''' Code angepasst '''
   def add_map_listeners(self):
     Mapbox_Variables.geocoder.on("result", self.move_marker)
     Mapbox_Variables.location_marker.on("dragend", self.marker_dragged)
@@ -98,33 +135,6 @@ class Map2_0(Map2_0Template):
     Mapbox_Variables.map.on("contextmenu", self.map_right_click)
     Mapbox_Variables.map.on("click", self.map_right_click)
 
-  def add_component_tags(self):
-    self.select_all_hc.tag.categorie = 'Healthcare'
-    self.select_all_opnv.tag.categorie = 'ÖPNV'
-    self.select_all_edu.tag.categorie = 'Student Living'
-    self.select_all_food.tag.categorie = 'Food & Drinks'
-    self.select_all_micro_living.tag.categorie = 'Micro Living'
-
-  def set_device_settings(self):
-    width, height = anvil.js.call('get_screen_width')
-    self.mobile = False
-    
-    if width <= 998:
-      self.mobile = True
-      self.mobile_btn_grid.visible = True
-      self.mobile_menu_open = False
-      
-    if Variables.user_role == 'guest':
-      container = document.getElementById('appGoesHere')
-      logo = document.createElement('img')
-      logo.src = f'{Variables.app_url}/_/theme/Logo.png'
-      logo.style.position = 'absolute'
-      logo.style.pointerEvents = 'none'
-      logo.style.bottom = '30px'
-      logo.style.right = '20px'
-      logo.style.width = '15%'
-      container.appendChild(logo)
-  
   def loadHash(self, event):
     with anvil.server.no_loading_indicator:
       hash = get_url_hash()

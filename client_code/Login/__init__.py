@@ -14,27 +14,29 @@ class Login(LoginTemplate):
       self.hash = get_url_hash()
 
   def form_show(self, **event_args):
-    if self.user is not None:
-      Variables.user_role = self.user['role']
-      
-      if not self.check_maintenance():
-        open_form('Map2_0')
+    with anvil.server.no_loading_indicator:
+      if self.user is not None:
+        Variables.user_role = self.user['role']
+        
+        if not self.check_maintenance():
+          open_form('Map2_0')
+          return
+  
+      if len(self.hash) > 0:
+        open_form('Map2_0', role='guest')
         return
-
-    if len(self.hash) > 0:
-      open_form('Map2_0', role='guest')
-      return
-
-    self.display_login_form()
+  
+      self.display_login_form()
 
   def display_login_form(self):
-    self.login_main_grid.visible = True
-    width = anvil.js.window.innerWidth if anvil.js.window.innerWidth > 0 else anvil.js.screen.width;
-    height = anvil.js.window.innerHeight if anvil.js.window.innerHeight > 0 else anvil.js.screen.height;
-    
-    if width <= 998:
-      self.email_icon.visible = False
-      self.password_icon.visible = False
+    with anvil.server.no_loading_indicator:
+      self.login_main_grid.visible = True
+      width = anvil.js.window.innerWidth if anvil.js.window.innerWidth > 0 else anvil.js.screen.width;
+      height = anvil.js.window.innerHeight if anvil.js.window.innerHeight > 0 else anvil.js.screen.height;
+      
+      if width <= 998:
+        self.email_icon.visible = False
+        self.password_icon.visible = False
   
   def login_click(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -67,10 +69,11 @@ class Login(LoginTemplate):
       self.error.visible = True
 
   def check_maintenance(self):
-    Variables.user_role = self.user['role']
-    if Variables.maintenance and not Variables.user_role == "admin":
-      from .Maintenance import Maintenance
-      alert(content=Maintenance(), dismissible=False, buttons=[], large=True)
-      return True
-
-    return False
+    with anvil.server.no_loading_indicator:
+      Variables.user_role = self.user['role']
+      if Variables.maintenance and not Variables.user_role == "admin":
+        from .Maintenance import Maintenance
+        alert(content=Maintenance(), dismissible=False, buttons=[], large=True)
+        return True
+  
+      return False
