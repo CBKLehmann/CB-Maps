@@ -1,3 +1,4 @@
+import anvil.server
 nursing_homes_competitor_skeleton = {
   'page_number': 4,
   'line': {

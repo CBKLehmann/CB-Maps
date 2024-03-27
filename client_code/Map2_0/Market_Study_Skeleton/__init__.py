@@ -1,3 +1,4 @@
+import anvil.server
 from .. import Variables
 
 def market_study_skeleton(market_study_data):

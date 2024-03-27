@@ -55,7 +55,6 @@ class Map2_0(Map2_0Template):
     with anvil.server.no_loading_indicator:
       try:
         width, height = anvil.js.call('get_screen_width')
-        print(Variables.user_role)
         if Variables.user_role == 'guest':
           marker_draggable = False
         #   self.button_icons.text = 'Cluster & Investment'

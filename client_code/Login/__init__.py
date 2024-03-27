@@ -13,16 +13,17 @@ class Login(LoginTemplate):
   def __init__(self, **properties):
     with anvil.server.no_loading_indicator:
       self.init_components(**properties)
-      self.user = anvil.users.get_user()
       Functions.create_loading_overlay()
+      self.user = anvil.server.call('get_current_user')
+      # self.user = None
+      self.hash = get_url_hash()
 
   def form_show(self, **event_args):
     if self.user is not None:
       Variables.user_role = self.user['role']
       open_form('Map2_0', role=self.user['role'])
     else:
-      hash = get_url_hash()
-      if len(hash) > 0:
+      if len(self.hash) > 0:
         open_form('Map2_0', role='guest')
       else:
         self.login_main_grid.visible = True

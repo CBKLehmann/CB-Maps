@@ -1,3 +1,4 @@
+import anvil.server
 assisted_living_competitor_skeleton = {
   'page_number': 4,
   'line': {
