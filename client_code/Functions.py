@@ -746,6 +746,7 @@ def get_mapbox_token():
 
 def create_loading_overlay():
   Variables.loading_overlay = document.createElement('div')
+  Variables.loading_overlay.className = "loading-overlay"
   Variables.loading_overlay.style.width = '100vw'
   Variables.loading_overlay.style.height = '100vh'
   Variables.loading_overlay.style.backgroundColor = 'rgba(62, 62, 62, .3)'
@@ -757,12 +758,14 @@ def create_loading_overlay():
 
 def manipulate_loading_overlay(state):
   html = document.getElementsByClassName('anvil-root-container')[0]
+  loading_overlay = document.getElementsByClassName('loading-overlay')
   if state:
     if not Variables.loading:
       html.appendChild(Variables.loading_overlay)
       Variables.loading = True
   else:
-    html.removeChild(Variables.loading_overlay)
+    if len(loading_overlay) > 0:
+      html.removeChild(Variables.loading_overlay)
     Variables.loading = False
 
 def create_marker_div():
