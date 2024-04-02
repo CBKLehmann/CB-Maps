@@ -18,14 +18,12 @@ def show_hide_marker(self, check_box, marker_id):
       else:
         el.remove()
 
-def change_active_Layer(self, layer, inactive_layer, visibility, other_checkbox):
-  #This method is called when the active Layer is changed
-
+def change_active_Layer(layer, inactive_layer, visibility, other_checkbox):
   for layer_entry in layer:
-    self.mapbox.setLayoutProperty(layer_entry, 'visibility', visibility)
+    Mapbox_Variables.map.setLayoutProperty(layer_entry, 'visibility', visibility)
     for inactive_layer_entries in inactive_layer:
       for inactive_layer_entry in inactive_layer_entries:
-        self.mapbox.setLayoutProperty(inactive_layer_entry, 'visibility', 'none')
+        Mapbox_Variables.map.setLayoutProperty(inactive_layer_entry, 'visibility', 'none')
 
   for checkbox in other_checkbox:
     checkbox.checked = False

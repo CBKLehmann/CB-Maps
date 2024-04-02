@@ -244,9 +244,9 @@ class Map2_0(Map2_0Template):
      
   def check_box_overlays_change(self, **event_args):
     with anvil.server.no_loading_indicator:
-      #Change Overlays based on checked Checkbox
-      
-      layer_name = dict(event_args)['sender'].text.replace(" ", "_").lower()
+      print(event_args['sender'].checked)
+      layer_name = event_args['sender'].text.replace(" ", "_").lower()
+      local_storage['map_overlay'] = layer_name if event_args['sender'].checked else None
       outline_name = "outline_" + layer_name
       visibility = Mapbox_Variables.map.getLayoutProperty(layer_name, "visibility")
       inactive_layers = []
@@ -289,7 +289,7 @@ class Map2_0(Map2_0Template):
           inactive_layers.append([layer['name'], "outline_" + layer['name']])
           inactive_checkboxes.append(layer['checkbox'])
       
-      Functions.change_active_Layer(self, [layer_name, outline_name], inactive_layers, new_visibility, inactive_checkboxes)
+      Functions.change_active_Layer([layer_name, outline_name], inactive_layers, new_visibility, inactive_checkboxes)
 
   def check_box_poi_change(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -408,23 +408,23 @@ class Map2_0(Map2_0Template):
    
   def map_style_change(self, **event_args):
     with anvil.server.no_loading_indicator:
-      local_storage['map_style'] = dict(event_args)['sender'].text
-      if dict(event_args)['sender'].text == "Satellite Map":
+      local_storage['map_style'] = event_args['sender'].text
+      if event_args['sender'].text == "Satellite Map":
         self.check_street.checked = False
         self.check_light.checked = False
         self.check_basic.checked = False
         Mapbox_Variables.map.setStyle('mapbox://styles/mapbox/satellite-streets-v11')
-      elif dict(event_args)['sender'].text == "Street Map":
+      elif event_args['sender'].text == "Street Map":
         self.check_satellite.checked = False
         self.check_light.checked = False
         self.check_basic.checked = False
         Mapbox_Variables.map.setStyle('mapbox://styles/mapbox/outdoors-v11')
-      elif dict(event_args)['sender'].text == "Light Map":
+      elif event_args['sender'].text == "Light Map":
         self.check_street.checked = False
         self.check_satellite.checked = False
         self.check_basic.checked = False
         Mapbox_Variables.map.setStyle('mapbox://styles/mapbox/light-v11')
-      elif dict(event_args)['sender'].text == "Basic Map":
+      elif event_args['sender'].text == "Basic Map":
         self.check_street.checked = False
         self.check_satellite.checked = False
         self.check_light.checked = False
@@ -1957,8 +1957,8 @@ class Map2_0(Map2_0Template):
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(True)
       anvil.js.call('update_loading_bar', 5, 'Reading Excel File')
-      
-      if str(file.content_type) != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+
+      if not file.name.split('.')[-1] in ["xlsm", "xlsx"]:
         Functions.show_error_alert({
             'alert_title': "Incorrect file format type uploaded",
             'alert_message': "It looks like an incorrect file format was uploaded. Please ensure that only Excel files are uploaded for processing",
@@ -2028,7 +2028,7 @@ class Map2_0(Map2_0Template):
       self.icon_grid.row_spacing = 0
       counter = 0
       
-      for asset in self.cluster_data:
+      for asset in self.cluster_data['content']:
   
         # Create HTML Element for Icon
         el = document.createElement('div')
