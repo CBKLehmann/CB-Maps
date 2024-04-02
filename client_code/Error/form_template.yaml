@@ -16,24 +16,29 @@ components:
     layout_properties: {row: PNAYWX, width_xs: 12, col_xs: 0, width: 970}
   - type: Label
     properties: {role: text, align: left, tooltip: '', border: '', foreground: 'theme:Gray
-        300', visible: true, text: '', font_size: null, font: '', spacing_above: medium,
-      icon_align: left, spacing_below: medium, italic: false, background: '', bold: false,
+        300', visible: true, text: '', font_size: 15, font: '', spacing_above: medium,
+      icon_align: left, spacing_below: large, italic: false, background: '', bold: false,
       underline: false, icon: ''}
     name: message
     layout_properties: {row: ZKJSDV, width_xs: 12, col_xs: 0, width: 970}
-  - type: Button
-    properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
-      foreground: 'theme:Gray 300', visible: true, text: Cancel, font_size: null,
-      font: '', spacing_above: none, icon_align: left, spacing_below: none, italic: false,
-      background: '', bold: false, underline: false, icon: ''}
-    name: cancel
-    layout_properties: {row: DFTDXJ, width_xs: 2, col_xs: 8, width: 136.649}
-    event_bindings: {click: cancel_click}
-  - type: Button
-    properties: {role: primary-color, align: full, tooltip: '', border: '', enabled: true,
-      foreground: 'theme:Gray 300', visible: true, text: Try Again, font_size: null,
-      font: '', spacing_above: none, icon_align: top, spacing_below: none, italic: false,
-      background: 'theme:Tertiari 500', bold: false, underline: false, icon: ''}
-    name: try_again
-    layout_properties: {row: DFTDXJ, width_xs: 2, col_xs: 10, width: 136.649}
+  - name: flow_panel_1
+    properties: {spacing_above: large, spacing_below: none, align: right}
+    type: FlowPanel
+    layout_properties: {row: YPSWZZ, width_xs: 12, col_xs: 0}
+    components:
+    - name: cancel
+      properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
+        foreground: 'theme:Gray 300', visible: true, text: Cancel, font_size: null,
+        font: '', spacing_above: none, icon_align: left, spacing_below: none, italic: false,
+        background: '', bold: false, underline: false, icon: ''}
+      type: Button
+      layout_properties: {width: 111.00686796875}
+      event_bindings: {click: cancel_click}
+    - name: try_again
+      properties: {role: primary-color, align: full, tooltip: '', border: '', enabled: true,
+        foreground: 'theme:Gray 300', visible: true, text: Try Again, font_size: null,
+        font: '', spacing_above: none, icon_align: top, spacing_below: none, italic: false,
+        background: 'theme:Tertiary 500', bold: false, underline: false, icon: ''}
+      type: Button
+      layout_properties: {width: 129.16293896484376}
 is_package: true

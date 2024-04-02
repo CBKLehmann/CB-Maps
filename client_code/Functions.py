@@ -1,13 +1,8 @@
-import anvil.users
-import anvil.google.auth, anvil.google.drive
-from anvil.google.drive import app_files
-import anvil.server
-import anvil.tables as tables
-import anvil.tables.query as q
-from anvil.tables import app_tables
+from anvil import *
 from . import Variables, Layer, Images
 from .Map2_0 import Mapbox_Variables
 from anvil.js.window import document
+import anvil.js
 import datetime
 import math
 
@@ -781,7 +776,7 @@ def create_marker_div():
   marker_div.style.backgroundImage = f'url({Variables.app_url}/_/theme/Pins/CB_MapPin_Location.png)'
   return marker_div
 
-def createGeoJSONCircle (center, radiusInKm, points = 64):
+def createGeoJSONCircle(center, radiusInKm, points = 64):
   coords = {
       "latitude": center[1],
       "longitude": center[0]
@@ -823,3 +818,11 @@ def createGeoJSONCircle (center, radiusInKm, points = 64):
       }]
     }
   }
+
+def show_error_alert(properties):
+  from .Error import Error
+  
+  manipulate_loading_overlay(False)
+  anvil.js.call('update_loading_bar', 100, properties['alert_title'])
+  alert(content=Error(title=properties['alert_title'], message=properties['alert_message'], show_try_again=properties['alert_try_again']), buttons=[], dismissible=False, large=True, role='custom_alert')
+  anvil.js.call('update_loading_bar', 0, '')

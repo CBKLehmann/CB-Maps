@@ -6,7 +6,6 @@ from anvil.tables import app_tables
 from anvil.js.window import document
 from anvil_extras.storage import local_storage
 from .. import Variables, Layer, Images, ExcelFrames, Functions
-from ..Error import Error
 from .Handle_Local_Storage import load_local_storage_settings
 from . import Mapbox_Functions, Mapbox_Variables
 import anvil.server
@@ -1958,13 +1957,23 @@ class Map2_0(Map2_0Template):
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(True)
       anvil.js.call('update_loading_bar', 5, 'Reading Excel File')
+      
+      if str(file.content_type) != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+        Functions.show_error_alert({
+            'alert_title': "Incorrect file format type uploaded",
+            'alert_message': "It looks like an incorrect file format was uploaded. Please ensure that only Excel files are uploaded for processing",
+            'alert_try_again': False
+          })
+        self.file_loader_upload.clear()
+        return
+
       self.cluster_data = anvil.server.call('cb_teaser_processing', file)
       if self.cluster_data['code'] == 400:
-        Functions.manipulate_loading_overlay(False)
-        anvil.js.call('update_loading_bar', 100, 'Error while processing Excel File')
-        alert(content=Error(title=self.cluster_data['title'], message=self.cluster_data['message']), buttons=[], dismissible=False, large=True, role='custom_alert')
-        # alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
-        anvil.js.call('update_loading_bar', 0, '')
+        Functions.show_error_alert({
+          'alert_title': "Error while processing Excel File",
+          'alert_message': "It appears that the data set is incorrect. Make sure you have uploaded the correct file.",
+          'alert_try_again': False
+        })
         self.file_loader_upload.clear()
         return
 

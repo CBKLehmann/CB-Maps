@@ -13,6 +13,7 @@ class Error(ErrorTemplate):
     self.init_components(**properties)
     self.heading.text = properties['title']
     self.message.text = properties['message']
+    self.try_again.visible = properties['show_try_again']
 
   def cancel_click(self, **event_args):
     self.raise_event('x-close-alert')
