@@ -3772,6 +3772,20 @@ class Map2_0(Map2_0Template):
     layers = []
     uni_code = anvil.server.call('get_unique_code')
     Variables.added_circles.append(uni_code)
+    if visible:
+      new_storage = local_storage['distance_circles']
+      new_storage[uni_code] = {
+        'distance': 5,
+        'visible': visible
+      }
+      local_storage['distance_circles'] = new_storage
+    else:
+      local_storage['distance_circles'] = {
+        uni_code: {
+          'distance': 5,
+          'visible': visible
+        }
+      }
     Mapbox_Variables.map.addSource(
       f"source_{uni_code}", 
       Functions.createGeoJSONCircle([Mapbox_Variables.location_marker['_lngLat']['lng'], Mapbox_Variables.location_marker['_lngLat']['lat']], 5)
