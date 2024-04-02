@@ -6,6 +6,7 @@ from anvil.tables import app_tables
 from anvil.js.window import document
 from anvil_extras.storage import local_storage
 from .. import Variables, Layer, Images, ExcelFrames, Functions
+from ..Error import Error
 from .Handle_Local_Storage import load_local_storage_settings
 from . import Mapbox_Functions, Mapbox_Variables
 import anvil.server
@@ -1953,167 +1954,168 @@ class Map2_0(Map2_0Template):
   #####  Upload Functions   #####
 
   #This method is called when a new file is loaded into the FileLoader
-  def file_loader_upload_change(self, file, **event_args):  
+  def cb_teaser_upload(self, file, **event_args):  
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(True)
       anvil.js.call('update_loading_bar', 5, 'Reading Excel File')
-      #Call Server-Function to safe the File  
-      self.cluster_data = anvil.server.call('save_local_excel_file', file)
-      if self.cluster_data == None:
+      self.cluster_data = anvil.server.call('cb_teaser_processing', file)
+      if self.cluster_data['code'] == 400:
         Functions.manipulate_loading_overlay(False)
         anvil.js.call('update_loading_bar', 100, 'Error while processing Excel File')
-        alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
+        alert(content=Error(title=self.cluster_data['title'], message=self.cluster_data['message']), buttons=[], dismissible=False, large=True, role='custom_alert')
+        # alert('Irgendwas ist schief gelaufen. Bitte Datei neu hochladen!')
         anvil.js.call('update_loading_bar', 0, '')
         self.file_loader_upload.clear()
-      else:
-        self.cluster_btn.visible = False
-        self.invest_class_btn.visible = False
-        self.cluster_all.visible = False
-        self.i_class_all.visible = False
-        self.icon_grid.visible = False
-        self.invest_grid.visible = False
-        self.change_cluster_color.visible = False
-        self.invest_class_btn.raise_event('click')
-        self.cluster_btn.raise_event('click')
-        for key in Variables.marker.keys():
-          for marker in Variables.marker[key]['marker']:
-            marker.remove()
-        Variables.marker = {}
-        self.icon_grid.clear()
-        self.invest_grid.clear()
-        if self.mobile:
-          self.mobile_hide_click()
-        anvil.js.call('update_loading_bar', 15, 'Creating Markers and Clusters')
-        #Initialise Variables
-        excel_markers = {}
-        added_clusters = []
-        added_invest_classes = []
-        invest_components = {}
-        cluster_components = {}
-        colors = [
-          ['white', '#ffffff', '/_/theme/Pins/CB_MapPin_white.png'],
-          ['blue', '#234ce2', '/_/theme/Pins/CB_MapPin_blue.png'],
-          ['green', '#438e39', '/_/theme/Pins/CB_MapPin_green.png'],
-          ['grey', '#b3b3b3', '/_/theme/Pins/CB_MapPin_grey.png'],
-          ['lightblue', '#2fb2e0', '/_/theme/Pins/CB_MapPin_lightblue.png'],
-          ['orange', '#fc9500', '/_/theme/Pins/CB_MapPin_orange.png'],
-          ['pink', '#e254b7', '/_/theme/Pins/CB_MapPin_pink.png'],
-          ['red', '#d32f2f', '/_/theme/Pins/CB_MapPin_red.png'],
-          ['yellow', '#f4de42', '/_/theme/Pins/CB_MapPin_yellow.png'],
-          ['gold', '#ccb666', '/_/theme/Pins/CB_MapPin_gold.png']
-        ]
+        return
+
+      self.cluster_btn.visible = False
+      self.invest_class_btn.visible = False
+      self.cluster_all.visible = False
+      self.i_class_all.visible = False
+      self.icon_grid.visible = False
+      self.invest_grid.visible = False
+      self.change_cluster_color.visible = False
+      self.invest_class_btn.raise_event('click')
+      self.cluster_btn.raise_event('click')
+      for key in Variables.marker.keys():
+        for marker in Variables.marker[key]['marker']:
+          marker.remove()
+      Variables.marker = {}
+      self.icon_grid.clear()
+      self.invest_grid.clear()
+      if self.mobile:
+        self.mobile_hide_click()
+      anvil.js.call('update_loading_bar', 15, 'Creating Markers and Clusters')
+      #Initialise Variables
+      excel_markers = {}
+      added_clusters = []
+      added_invest_classes = []
+      invest_components = {}
+      cluster_components = {}
+      colors = [
+        ['white', '#ffffff', '/_/theme/Pins/CB_MapPin_white.png'],
+        ['blue', '#234ce2', '/_/theme/Pins/CB_MapPin_blue.png'],
+        ['green', '#438e39', '/_/theme/Pins/CB_MapPin_green.png'],
+        ['grey', '#b3b3b3', '/_/theme/Pins/CB_MapPin_grey.png'],
+        ['lightblue', '#2fb2e0', '/_/theme/Pins/CB_MapPin_lightblue.png'],
+        ['orange', '#fc9500', '/_/theme/Pins/CB_MapPin_orange.png'],
+        ['pink', '#e254b7', '/_/theme/Pins/CB_MapPin_pink.png'],
+        ['red', '#d32f2f', '/_/theme/Pins/CB_MapPin_red.png'],
+        ['yellow', '#f4de42', '/_/theme/Pins/CB_MapPin_yellow.png'],
+        ['gold', '#ccb666', '/_/theme/Pins/CB_MapPin_gold.png']
+      ]
+
+      invests = {
+        'Super Core': '/_/theme/Pins/CB_MapPin_Sc.png',
+        'Core/ Core+': '/_/theme/Pins/CB_MapPin_CC.png',
+        'Value Add': '/_/theme/Pins/CB_MapPin_VA.png',
+        'Opportunistic': '/_/theme/Pins/CB_MapPin_Opp.png',
+        'Development': '/_/theme/Pins/CB_MapPin_Dev.png',
+        'Workout': '/_/theme/Pins/CB_MapPin_Wo.png',
+        'Unclassified': '/_/theme/Pins/CB_MapPin_gold.png'
+      }
   
-        invests = {
-          'Super Core': '/_/theme/Pins/CB_MapPin_Sc.png',
-          'Core/ Core+': '/_/theme/Pins/CB_MapPin_CC.png',
-          'Value Add': '/_/theme/Pins/CB_MapPin_VA.png',
-          'Opportunistic': '/_/theme/Pins/CB_MapPin_Opp.png',
-          'Development': '/_/theme/Pins/CB_MapPin_Dev.png',
-          'Workout': '/_/theme/Pins/CB_MapPin_Wo.png',
-          'Unclassified': '/_/theme/Pins/CB_MapPin_gold.png'
-        }
-    
-        #Create Settings
-        self.icon_grid.row_spacing = 0
-        counter = 0
+      #Create Settings
+      self.icon_grid.row_spacing = 0
+      counter = 0
+      
+      for asset in self.cluster_data:
+  
+        # Create HTML Element for Icon
+        el = document.createElement('div')
+        el.className = f'{asset["address"]}'
+        el.style.width = '40px'
+        el.style.height = '40px'
+        el.style.backgroundSize = '100%'
+        el.style.backgroundrepeat = 'no-repeat'
+        el.style.zIndex = '250'
+
+        # Create HTML Element for Invest Class Icon
+        inv_el = document.createElement('div')
+        inv_el.className = f'{asset["address"]}_investment'
+        inv_el.style.width = '40px'
+        inv_el.style.height = '40px'
+        inv_el.style.backgroundSize = '100%'
+        inv_el.style.backgroundrepeat = 'no-repeat'
+        inv_el.style.zIndex = '251'
+
+        cluster_name = asset['cluster']
+        if asset['invest_class'] == "Select please":
+          invest_name = "Unnamed"
+        else:
+          invest_name = asset['invest_class']
+  
+        if cluster_name not in added_clusters:
+          counter += 1
+          color = colors[counter]
+          text = f"{cluster_name[:11]}..." if len(cluster_name) > 11 else cluster_name
+          checkbox = CheckBox(checked=True, text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=cluster_name)
+          checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+          icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none', icon_align='top')
+          cluster_components[cluster_name] = [checkbox, icon]
+          added_clusters.append(cluster_name)
+
+        if invest_name not in added_invest_classes:
+          text = f"{invest_name[:11]}..." if len(invest_name) > 11 else invest_name
+          checkbox = CheckBox(checked=False, text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=invest_name)
+          checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+          invest_components[invest_name] = checkbox
+          added_invest_classes.append(invest_name)
+  
+        # #Get Coordinates of provided Adress for Marker
+        req_str = self.build_request_string(asset)
+        req_str += f'.json?access_token={Mapbox_Variables.token}'
+        coords = anvil.http.request(req_str,json=True)
+        for entry in coords['features']:
+          if asset['zip'] in entry['place_name']:
+            coordinates = entry['geometry']['coordinates']
+            break
+        if not cluster_name in excel_markers.keys():
+          excel_markers[cluster_name] = {'color': color, 'static': 'none', 'marker': []}
+        el.style.backgroundImage = f'url({Variables.app_url}{excel_markers[cluster_name]["color"][2]})'
+        new_list = self.set_excel_markers(excel_markers[cluster_name]['static'], coordinates, excel_markers[cluster_name]['marker'], el, asset)
+        excel_markers[cluster_name]['marker'] = new_list
+        if not invest_name in excel_markers.keys():
+          excel_markers[invest_name] = {'pin': invests[invest_name], 'static': 'none', 'marker': []}
+        inv_el.style.backgroundImage = f"url({Variables.app_url}{invests[invest_name]})"
+        new_list = self.set_excel_markers(excel_markers[invest_name]['static'], coordinates, excel_markers[invest_name]['marker'], inv_el, asset)
+        excel_markers[invest_name]['marker'] = new_list
+
+      anvil.js.call('update_loading_bar', 60, 'Adding Menu Items')
+      
+      for key in sorted(cluster_components):
+        self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=1, width_xs=8)
+        self.icon_grid.add_component(cluster_components[key][1], row=key, col_xs=9, width_xs=1)
         
-        for asset in self.cluster_data:
-    
-          # Create HTML Element for Icon
-          el = document.createElement('div')
-          el.className = f'{asset["address"]}'
-          el.style.width = '40px'
-          el.style.height = '40px'
-          el.style.backgroundSize = '100%'
-          el.style.backgroundrepeat = 'no-repeat'
-          el.style.zIndex = '250'
-  
-          # Create HTML Element for Invest Class Icon
-          inv_el = document.createElement('div')
-          inv_el.className = f'{asset["address"]}_investment'
-          inv_el.style.width = '40px'
-          inv_el.style.height = '40px'
-          inv_el.style.backgroundSize = '100%'
-          inv_el.style.backgroundrepeat = 'no-repeat'
-          inv_el.style.zIndex = '251'
-
-          cluster_name = asset['cluster']
-          if asset['invest_class'] == "Select please":
-            invest_name = "Unnamed"
-          else:
-            invest_name = asset['invest_class']
-    
-          if cluster_name not in added_clusters:
-            counter += 1
-            color = colors[counter]
-            text = f"{cluster_name[:11]}..." if len(cluster_name) > 11 else cluster_name
-            checkbox = CheckBox(checked=True, text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=cluster_name)
-            checkbox.add_event_handler('change', self.check_box_marker_icons_change)
-            icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none', icon_align='top')
-            cluster_components[cluster_name] = [checkbox, icon]
-            added_clusters.append(cluster_name)
-  
-          if invest_name not in added_invest_classes:
-            text = f"{invest_name[:11]}..." if len(invest_name) > 11 else invest_name
-            checkbox = CheckBox(checked=False, text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=invest_name)
-            checkbox.add_event_handler('change', self.check_box_marker_icons_change)
-            invest_components[invest_name] = checkbox
-            added_invest_classes.append(invest_name)
-    
-          # #Get Coordinates of provided Adress for Marker
-          req_str = self.build_request_string(asset)
-          req_str += f'.json?access_token={Mapbox_Variables.token}'
-          coords = anvil.http.request(req_str,json=True)
-          for entry in coords['features']:
-            if asset['zip'] in entry['place_name']:
-              coordinates = entry['geometry']['coordinates']
-              break
-          if not cluster_name in excel_markers.keys():
-            excel_markers[cluster_name] = {'color': color, 'static': 'none', 'marker': []}
-          el.style.backgroundImage = f'url({Variables.app_url}{excel_markers[cluster_name]["color"][2]})'
-          new_list = self.set_excel_markers(excel_markers[cluster_name]['static'], coordinates, excel_markers[cluster_name]['marker'], el, asset)
-          excel_markers[cluster_name]['marker'] = new_list
-          if not invest_name in excel_markers.keys():
-            excel_markers[invest_name] = {'pin': invests[invest_name], 'static': 'none', 'marker': []}
-          inv_el.style.backgroundImage = f"url({Variables.app_url}{invests[invest_name]})"
-          new_list = self.set_excel_markers(excel_markers[invest_name]['static'], coordinates, excel_markers[invest_name]['marker'], inv_el, asset)
-          excel_markers[invest_name]['marker'] = new_list
-
-        anvil.js.call('update_loading_bar', 60, 'Adding Menu Items')
+        sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout', 'Unclassified']
+      for key in sorted(invest_components.keys(), key=lambda x: sorted_keys.index(x)):
+        self.invest_grid.add_component(invest_components[key], row=key, col_xs=1, width_xs=8)
         
-        for key in sorted(cluster_components):
-          self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=1, width_xs=8)
-          self.icon_grid.add_component(cluster_components[key][1], row=key, col_xs=9, width_xs=1)
-          
-          sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout', 'Unclassified']
-        for key in sorted(invest_components.keys(), key=lambda x: sorted_keys.index(x)):
-          self.invest_grid.add_component(invest_components[key], row=key, col_xs=1, width_xs=8)
-          
-        # Add Marker-Arrays to global Variable Marker
-        Variables.marker.update(excel_markers)
+      # Add Marker-Arrays to global Variable Marker
+      Variables.marker.update(excel_markers)
 
-        anvil.js.call('update_loading_bar', 80, 'Waiting for individual Cluster Colors')
-        self.change_cluster_color_click()
-        anvil.js.call('remove_span')
+      anvil.js.call('update_loading_bar', 80, 'Waiting for individual Cluster Colors')
+      self.change_cluster_color_click()
+      anvil.js.call('remove_span')
 
-        anvil.js.call('update_loading_bar', 95, 'Loading created Markers')
-        for checkbox in self.invest_grid.get_components():
-          checkbox.raise_event('change')
-  
-        self.cluster_btn.visible = True
-        self.invest_class_btn.visible = True
-        self.cluster_all.visible = True
-        self.i_class_all.visible = True
-        self.icon_grid.visible = True
-        self.invest_grid.visible = True
-        self.change_cluster_color.visible = True
-        self.invest_class_btn.raise_event('click')
-        self.cluster_btn.raise_event('click')
+      anvil.js.call('update_loading_bar', 95, 'Loading created Markers')
+      for checkbox in self.invest_grid.get_components():
+        checkbox.raise_event('change')
 
-        anvil.js.call('update_loading_bar', 100, 'Finishing Process')
-        self.file_loader_upload.clear()
-        Functions.manipulate_loading_overlay(False)
-        anvil.js.call('update_loading_bar', 0, '')
+      self.cluster_btn.visible = True
+      self.invest_class_btn.visible = True
+      self.cluster_all.visible = True
+      self.i_class_all.visible = True
+      self.icon_grid.visible = True
+      self.invest_grid.visible = True
+      self.change_cluster_color.visible = True
+      self.invest_class_btn.raise_event('click')
+      self.cluster_btn.raise_event('click')
+
+      anvil.js.call('update_loading_bar', 100, 'Finishing Process')
+      self.file_loader_upload.clear()
+      Functions.manipulate_loading_overlay(False)
+      anvil.js.call('update_loading_bar', 0, '')
 
   # This Function is called when a DB Update should be done
   def db_upload_change(self, file, **event_args):
