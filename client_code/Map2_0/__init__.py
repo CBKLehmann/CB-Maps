@@ -2555,7 +2555,7 @@ class Map2_0(Map2_0Template):
         date = 'N/A'
       else:
         date = asset['acqisition_date']
-      popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+      popup = Mapbox_Functions.mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
         f"<p class='popup_type'><b>{asset['address']}</b></p>"
         f"<p class='popup_type'>{asset['zip']} {asset['city']}<p>"
         f"<p class='popup_type'>{asset['federal_state']}</p>"
@@ -2563,7 +2563,7 @@ class Map2_0(Map2_0Template):
         f"<p class='popup_type'>Invest Class: {asset['invest_class']}<p>"
         f"<p class='popup_type'>Acqisition Date: {date}<p>"
       )
-      marker_cat = mapboxgl.Marker({'draggable': False, 'element': el, 'anchor': 'bottom'}).setPopup(popup)
+      marker_cat = Mapbox_Functions.mapboxgl.Marker({'draggable': False, 'element': el, 'anchor': 'bottom'}).setPopup(popup)
       marker_el = marker_cat.getElement()
 
       anvil.js.call('addHoverEffect', marker_el, popup, Mapbox_Variables.map, marker_cat, asset, asset['cluster'], "Hahahahahahahahahahahahahahahaha", self.mobile)
