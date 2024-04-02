@@ -10,18 +10,22 @@ from anvil.tables import app_tables
 from ... import Functions
 
 class Active_Circle(Active_CircleTemplate):
-  def __init__(self, uni_code, mapbox, marker, layers, **properties):
+  def __init__(self, uni_code, mapbox, marker, layers, visible, **properties):
     self.init_components(**properties)
     self.tag = uni_code
     self.mapbox = mapbox
     self.marker = marker
     self.layers = layers
     self.circle_radius = 5
+    self.active_switch.checked = visible
+    self.active_switch.raise_event('change')
 
   def radius_change(self, **event_args):
     if event_args['sender'].text is not None:
       self.circle_radius = event_args['sender'].text
       self.update_circle()
+      self.active_switch.checked = True
+      self.active_switch.raise_event('change')
 
   def active_switch_change(self, **event_args):
     for layer in self.layers:

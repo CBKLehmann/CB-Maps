@@ -15,6 +15,7 @@ class Login(LoginTemplate):
 
   def form_show(self, **event_args):
     with anvil.server.no_loading_indicator:
+      Functions.manipulate_loading_overlay(True)
       if self.user is not None:
         Variables.user_role = self.user['role']
         

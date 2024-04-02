@@ -29,7 +29,6 @@ class Map2_0(Map2_0Template):
   ''' Code angepasst '''
   def __init__(self, **properties):
     with anvil.server.no_loading_indicator:
-      Functions.manipulate_loading_overlay(False)
       self.init_components(**properties)
       self.dom = anvil.js.get_dom_node(self.spacer_1)
       self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
@@ -131,11 +130,21 @@ class Map2_0(Map2_0Template):
     Mapbox_Variables.map.on("click", "municipalities", self.popup)
     Mapbox_Variables.map.on("click", "districts", self.popup)
     Mapbox_Variables.map.on("style.load", self.handle_style_change)
-    Mapbox_Variables.map.on("load", self.loadHash)
+    Mapbox_Variables.map.on("load", self.handle_map_load)
     Mapbox_Variables.map.on("contextmenu", self.map_right_click)
     Mapbox_Variables.map.on("click", self.map_right_click)
 
-  def loadHash(self, event):
+  def handle_map_load(self, event):
+    try:
+      if Variables.user_role == 'guest':
+        self.load_hash()
+      else:
+        self.load_local_storage()
+        self.add_circle_click(visible=False)
+    finally:
+      Functions.manipulate_loading_overlay(False)
+  
+  def load_hash(self):
     with anvil.server.no_loading_indicator:
       hash = get_url_hash()
       if not len(hash) == 0:
@@ -216,7 +225,33 @@ class Map2_0(Map2_0Template):
           self.create_comp_marker(data['competitors']['competitors'])
         for marker in data['custom_marker']:
           self.create_custom_marker(marker)
-            
+
+  def load_local_storage(self):
+    local_keys = local_storage.keys()
+    if 'map_style' in local_keys:
+      for component in self.style_grid.get_components():
+        if component.text == local_storage['map_style']:
+          component.checked = True
+          component.raise_event('change')
+    if 'map_overlay' in local_keys:
+      for component in self.layer_categories.get_components():
+        if component.text.replace(" ", "_").lower() == local_storage['map_overlay']:
+          component.checked = True
+          component.raise_event('change')
+    if 'time_dropdown' in local_keys:
+      self.time_dropdown.selected_value = local_storage['time_dropdown']
+    if 'profile_dropdown' in local_keys:
+      self.profile_dropdown.selected_value = local_storage['profile_dropdown']
+    if 'active_distance_layer' in local_keys:
+      self.iso_layer_active.checked = local_storage['active_distance_layer']
+      self.iso_layer_active.raise_event('change')
+    if 'active_marker' in local_keys:
+      self.hide_ms_marker.checked = local_storage['active_marker']
+      self.hide_ms_marker.raise_event('change')
+    if 'marker' in local_keys:
+      Mapbox_Variables.map.flyTo({'center': local_storage['marker'], 'essential': True})
+      self.move_marker_and_update_dependencies(local_storage['marker'])
+  
   def check_box_marker_icons_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       # Show or Hide Marker-Icon-Types
@@ -244,7 +279,6 @@ class Map2_0(Map2_0Template):
      
   def check_box_overlays_change(self, **event_args):
     with anvil.server.no_loading_indicator:
-      print(event_args['sender'].checked)
       layer_name = event_args['sender'].text.replace(" ", "_").lower()
       local_storage['map_overlay'] = layer_name if event_args['sender'].checked else None
       outline_name = "outline_" + layer_name
@@ -1944,8 +1978,10 @@ class Map2_0(Map2_0Template):
 
   def distance_dropdown_change(self, **event_args):
     with anvil.server.no_loading_indicator:
+      local_storage['profile_dropdown'] = self.profile_dropdown.selected_value
+      local_storage['time_dropdown'] = self.time_dropdown.selected_value
       self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-      
+
       Functions.refresh_icons(self)
 
   #####  Dropdown Functions #####
@@ -2146,22 +2182,12 @@ class Map2_0(Map2_0Template):
   #This method is called when the Geocoder was used 
   def move_marker(self, result):
     with anvil.server.no_loading_indicator:
-      #Set iso-Layer for new coordinates
-      lnglat = result['result']['geometry']['coordinates']
-      Mapbox_Variables.location_marker.setLngLat(lnglat)
-      self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-      for circle in self.active_circles.get_components():
-        circle.update_circle()
-      Functions.refresh_icons(self)
+      self.move_marker_and_update_dependencies(result['result']['geometry']['coordinates'])
   
   #This method is called when the draggable Marker was moved
   def marker_dragged(self, drag):
     with anvil.server.no_loading_indicator:
-      #Set iso-Layer for new Markerposition
-      self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-      for circle in self.active_circles.get_components():
-        circle.update_circle()
-      Functions.refresh_icons(self)
+      self.move_marker_and_update_dependencies(["{:.6f}".format(Mapbox_Variables.location_marker['_lngLat']['lng']),"{:.6f}".format(Mapbox_Variables.location_marker['_lngLat']['lat'])])
     
   #This method is called when the draggable Marker was moved or when the Geocoder was used
   def get_iso(self, profile, contours_minutes):
@@ -2207,9 +2233,10 @@ class Map2_0(Map2_0Template):
       
       #Get Data from request
       Variables.activeIso = anvil.http.request(request_string,json=True)
-      
-      #Attach Data to iso-source
-      Mapbox_Variables.map.getSource('iso').setData(Variables.activeIso)
+
+      if Mapbox_Variables.map.getSource('iso') is not None:
+        #Attach Data to iso-source
+        Mapbox_Variables.map.getSource('iso').setData(Variables.activeIso)
       
   #This method is called when the User clicked a Part of a Map-Layer
   def popup(self, click):
@@ -2754,6 +2781,7 @@ class Map2_0(Map2_0Template):
 
   def iso_layer_active_change(self, **event_args):
     with anvil.server.no_loading_indicator:
+      local_storage['active_distance_layer'] = event_args['sender'].checked
       if event_args['sender'].checked:
         Mapbox_Variables.map.setLayoutProperty('isoLayer', 'visibility', 'visible')
       else:
@@ -2763,6 +2791,7 @@ class Map2_0(Map2_0Template):
   def hide_ms_marker_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       """This method is called when this checkbox is checked or unchecked"""
+      local_storage['active_marker'] = event_args['sender'].checked
       if event_args['sender'].checked:
         Mapbox_Variables.location_marker.addTo(Mapbox_Variables.map)
       else:
@@ -3739,14 +3768,14 @@ class Map2_0(Map2_0Template):
     Mapbox_Variables.token = Mapbox_Variables.map_token
     self.form_show()
 
-  def add_circle_click(self, **event_args):
+  def add_circle_click(self, visible = True, **event_args):
     layers = []
     uni_code = anvil.server.call('get_unique_code')
     Variables.added_circles.append(uni_code)
     Mapbox_Variables.map.addSource(
       f"source_{uni_code}", 
       Functions.createGeoJSONCircle([Mapbox_Variables.location_marker['_lngLat']['lng'], Mapbox_Variables.location_marker['_lngLat']['lat']], 5)
-    );
+    )
     if len(Variables.added_circles) == 1:
       Mapbox_Variables.map.addLayer({
         "id": f"radius_{uni_code}",
@@ -3812,8 +3841,16 @@ class Map2_0(Map2_0Template):
       })
       layers.append(f"radius_{uni_code}")
       layers.append(f"symbol_{uni_code}")
-
+    
     from .Active_Circle import Active_Circle
 
-    new_circle = Active_Circle(uni_code, Mapbox_Variables.map, Mapbox_Variables.location_marker, layers)
+    new_circle = Active_Circle(uni_code, Mapbox_Variables.map, Mapbox_Variables.location_marker, layers, visible)
     self.active_circles.add_component(new_circle)
+
+  def move_marker_and_update_dependencies(self, coords):
+    local_storage['marker'] = coords
+    Mapbox_Variables.location_marker.setLngLat(coords)
+    self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
+    for circle in self.active_circles.get_components():
+      circle.update_circle()
+    Functions.refresh_icons(self)
