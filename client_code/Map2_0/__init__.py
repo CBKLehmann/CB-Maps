@@ -42,6 +42,7 @@ class Map2_0(Map2_0Template):
       self.last_target = None
       self.active_container = None
       self.prev_called = None
+      self.local_loading = False
       html = document.getElementsByClassName('anvil-root-container')[0]
       html.style.cursor = 'default'
 
@@ -135,14 +136,13 @@ class Map2_0(Map2_0Template):
     Mapbox_Variables.map.on("click", self.map_right_click)
 
   def handle_map_load(self, event):
-    try:
-      if Variables.user_role == 'guest':
-        self.load_hash()
-      else:
-        self.load_local_storage()
-        self.add_circle_click(visible=False)
-    finally:
+    if Variables.user_role == 'guest':
+      self.load_hash()
       Functions.manipulate_loading_overlay(False)
+    else:
+      self.local_loading = True
+      self.local_keys = local_storage.keys()
+      self.load_local_storage_map_style()
   
   def load_hash(self):
     with anvil.server.no_loading_indicator:
@@ -226,31 +226,40 @@ class Map2_0(Map2_0Template):
         for marker in data['custom_marker']:
           self.create_custom_marker(marker)
 
-  def load_local_storage(self):
-    local_keys = local_storage.keys()
-    if 'map_style' in local_keys:
+  def load_local_storage_map_style(self):
+    if 'map_style' in self.local_keys:
       for component in self.style_grid.get_components():
         if component.text == local_storage['map_style']:
           component.checked = True
           component.raise_event('change')
-    if 'map_overlay' in local_keys:
+
+  def load_local_storage_settings(self):
+    Functions.manipulate_loading_overlay(True)
+    if 'marker' in self.local_keys:
+        Mapbox_Variables.map.flyTo({'center': local_storage['marker'], 'essential': True})
+        self.move_marker_and_update_dependencies(local_storage['marker'])
+    if 'active_marker' in self.local_keys:
+      self.hide_ms_marker.checked = local_storage['active_marker']
+      self.hide_ms_marker.raise_event('change')
+    if 'active_distance_layer' in self.local_keys:
+      self.iso_layer_active.checked = local_storage['active_distance_layer']
+      self.iso_layer_active.raise_event('change')
+    if 'time_dropdown' in self.local_keys:
+      self.time_dropdown.selected_value = local_storage['time_dropdown']
+    if 'profile_dropdown' in self.local_keys:
+      self.profile_dropdown.selected_value = local_storage['profile_dropdown']
+      self.profile_dropdown.raise_event('change')
+    if 'distance_circles' in self.local_keys:
+      for key in local_storage['distance_circles']:
+        self.add_circle_click(local_storage['distance_circles'][key]['visible'], local_storage['distance_circles'][key]['distance'], key, True)
+    else:
+      self.add_circle_click(visible=False)
+    if 'map_overlay' in self.local_keys:
       for component in self.layer_categories.get_components():
         if component.text.replace(" ", "_").lower() == local_storage['map_overlay']:
           component.checked = True
           component.raise_event('change')
-    if 'time_dropdown' in local_keys:
-      self.time_dropdown.selected_value = local_storage['time_dropdown']
-    if 'profile_dropdown' in local_keys:
-      self.profile_dropdown.selected_value = local_storage['profile_dropdown']
-    if 'active_distance_layer' in local_keys:
-      self.iso_layer_active.checked = local_storage['active_distance_layer']
-      self.iso_layer_active.raise_event('change')
-    if 'active_marker' in local_keys:
-      self.hide_ms_marker.checked = local_storage['active_marker']
-      self.hide_ms_marker.raise_event('change')
-    if 'marker' in local_keys:
-      Mapbox_Variables.map.flyTo({'center': local_storage['marker'], 'essential': True})
-      self.move_marker_and_update_dependencies(local_storage['marker'])
+    self.local_loading = False
   
   def check_box_marker_icons_change(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -3080,8 +3089,13 @@ class Map2_0(Map2_0Template):
         return self.url.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss")
 
   def handle_style_change(self, event):
-    self.place_layer()
-    self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
+    if self.local_loading:
+      self.load_local_storage_settings()
+    else:
+      self.place_layer()
+      self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
+    Functions.manipulate_loading_overlay(False)
+    
 
   def map_right_click(self, event):
 
@@ -3768,27 +3782,29 @@ class Map2_0(Map2_0Template):
     Mapbox_Variables.token = Mapbox_Variables.map_token
     self.form_show()
 
-  def add_circle_click(self, visible = True, **event_args):
+  def add_circle_click(self, visible = True, distance = 5, uni_code = None, local_storage_entry = False, **event_args):
     layers = []
-    uni_code = anvil.server.call('get_unique_code')
+    if uni_code is None:
+      uni_code = anvil.server.call('get_unique_code')
     Variables.added_circles.append(uni_code)
-    if visible:
-      new_storage = local_storage['distance_circles']
-      new_storage[uni_code] = {
-        'distance': 5,
-        'visible': visible
-      }
-      local_storage['distance_circles'] = new_storage
-    else:
-      local_storage['distance_circles'] = {
-        uni_code: {
+    if not local_storage_entry:
+      if visible:
+        new_storage = local_storage['distance_circles']
+        new_storage[uni_code] = {
           'distance': 5,
           'visible': visible
         }
-      }
+        local_storage['distance_circles'] = new_storage
+      else:
+        local_storage['distance_circles'] = {
+          uni_code: {
+            'distance': 5,
+            'visible': visible
+          }
+        }
     Mapbox_Variables.map.addSource(
       f"source_{uni_code}", 
-      Functions.createGeoJSONCircle([Mapbox_Variables.location_marker['_lngLat']['lng'], Mapbox_Variables.location_marker['_lngLat']['lat']], 5)
+      Functions.createGeoJSONCircle([Mapbox_Variables.location_marker['_lngLat']['lng'], Mapbox_Variables.location_marker['_lngLat']['lat']], distance)
     )
     if len(Variables.added_circles) == 1:
       Mapbox_Variables.map.addLayer({
@@ -3858,7 +3874,7 @@ class Map2_0(Map2_0Template):
     
     from .Active_Circle import Active_Circle
 
-    new_circle = Active_Circle(uni_code, Mapbox_Variables.map, Mapbox_Variables.location_marker, layers, visible)
+    new_circle = Active_Circle(uni_code, Mapbox_Variables.map, Mapbox_Variables.location_marker, layers, visible, distance)
     self.active_circles.add_component(new_circle)
 
   def move_marker_and_update_dependencies(self, coords):
