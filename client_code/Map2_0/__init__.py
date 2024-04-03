@@ -232,6 +232,8 @@ class Map2_0(Map2_0Template):
         if component.text == local_storage['map_style']:
           component.checked = True
           component.raise_event('change')
+    else:
+      self.load_local_storage_settings()
 
   def load_local_storage_settings(self):
     Functions.manipulate_loading_overlay(True)
@@ -340,6 +342,7 @@ class Map2_0(Map2_0Template):
           public_transport_settings += "0"
       local_storage['public_transport'] = public_transport_settings
     self.local_loading = False
+    Functions.manipulate_loading_overlay(False)
   
   def check_box_marker_icons_change(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -3224,8 +3227,7 @@ class Map2_0(Map2_0Template):
     else:
       self.place_layer()
       self.get_iso(self.profile_dropdown.selected_value.lower(), self.time_dropdown.selected_value)
-    Functions.manipulate_loading_overlay(False)
-    
+    Functions.manipulate_loading_overlay(False) 
 
   def map_right_click(self, event):
 
@@ -3919,6 +3921,8 @@ class Map2_0(Map2_0Template):
     Variables.added_circles.append(uni_code)
     if not local_storage_entry:
       if visible:
+        if not 'distance_circles' in local_storage.keys():
+          local_storage['distance_circles'] = {}
         new_storage = local_storage['distance_circles']
         new_storage[uni_code] = {
           'distance': 5,
