@@ -36,6 +36,10 @@
   let activeContainer = null;
   let lastPopup = null;
   let deleted_marker = [];
+
+  function refresh_page() {
+    location.reload()
+  }
   
   function hideSidebar() {
     var ln = $('.structure > .nav-holder > .left-nav');

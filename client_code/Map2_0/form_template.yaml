@@ -22,12 +22,13 @@ container:
       \ />\n      </div> -->\n    </div>\n  </div>\n<!--   <div class=\"nav-shield\"\
       ></div>\n  <div id=\"lock-modal\" class=\"lock-modal\"></div> -->\n</div>\n\n\
       <script>\n  \n  let response = 'none';\n  let lastTarget = null;\n  let activeContainer\
-      \ = null;\n  let lastPopup = null;\n  let deleted_marker = [];\n  \n  function\
-      \ hideSidebar() {\n    var ln = $('.structure > .nav-holder > .left-nav');\n\
-      \    ln.animate({left: -ln.outerWidth()}, function() {\n      ln.removeClass(\"\
-      in-transition shown\").addClass(\"hidden\");\n      $('.nav-shield').removeClass(\"\
-      shown\");\n      $(window).trigger('resize');\n    });\n  }\n  function showSidebar()\
-      \ {\n    var ln = $('.structure > .nav-holder > .left-nav');\n    $('.nav-shield').addClass(\"\
+      \ = null;\n  let lastPopup = null;\n  let deleted_marker = [];\n\n  function\
+      \ refresh_page() {\n    location.reload()\n  }\n  \n  function hideSidebar()\
+      \ {\n    var ln = $('.structure > .nav-holder > .left-nav');\n    ln.animate({left:\
+      \ -ln.outerWidth()}, function() {\n      ln.removeClass(\"in-transition shown\"\
+      ).addClass(\"hidden\");\n      $('.nav-shield').removeClass(\"shown\");\n  \
+      \    $(window).trigger('resize');\n    });\n  }\n  function showSidebar() {\n\
+      \    var ln = $('.structure > .nav-holder > .left-nav');\n    $('.nav-shield').addClass(\"\
       shown\");\n    ln.addClass(\"shown\").removeClass(\"hidden\").css({left: \"\
       -100%\"}).css({left: -ln.outerWidth()}).animate({left: 0}, function() {\n  \
       \    ln.removeClass(\"in-transition\");\n    });\n    $(window).trigger('resize');\n\
@@ -1177,6 +1178,14 @@ components:
       name: share
       layout_properties: {row: TJNYUM, width_xs: 10, col_xs: 2, width: 184.156}
       event_bindings: {click: share_click}
+    - type: Button
+      properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
+        foreground: 'theme:Gray 300', visible: true, text: Reset Map, font_size: null,
+        font: '', spacing_above: none, icon_align: left, spacing_below: none, italic: false,
+        background: '', bold: false, underline: false, icon: ''}
+      name: reset_map
+      layout_properties: {row: CNAJHT, width_xs: 8, col_xs: 2, width: 141.505}
+      event_bindings: {click: reset_map_click}
     - type: Button
       properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
         foreground: 'theme:Gray 300', visible: false, text: Admin-Button, font_size: 13,

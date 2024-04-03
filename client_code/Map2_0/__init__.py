@@ -4018,3 +4018,7 @@ class Map2_0(Map2_0Template):
     for circle in self.active_circles.get_components():
       circle.update_circle()
     Functions.refresh_icons(self)
+
+  def reset_map_click(self, **event_args):
+    local_storage.clear()
+    anvil.js.call('refresh_page')
