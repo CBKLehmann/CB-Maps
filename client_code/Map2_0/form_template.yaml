@@ -1043,7 +1043,7 @@ components:
         italic: false, background: '', bold: false, underline: false, icon: 'fa:angle-right'}
       name: map_styles
       layout_properties: {grid_position: 'JWMYTW,UYNMDY', row: YNQHAJ, width_xs: 12,
-        col_xs: 0, width: 227.333}
+        col_xs: 0, width: 227.257}
       event_bindings: {click: button_toggle_menu_parts}
     - type: LinearPanel
       properties: {spacing_above: small, spacing_below: small, background: 'theme:Secondary
@@ -1103,11 +1103,11 @@ components:
         row: CBJJPY, width_xs: 12, col_xs: 0}
       event_bindings: {click: button_toggle_menu_parts}
     - type: LinearPanel
-      properties: {spacing_above: none, spacing_below: none, background: 'theme:Secondary
+      properties: {spacing_above: none, spacing_below: large, background: 'theme:Secondary
           700', foreground: '', border: '', visible: false, role: card, tooltip: ''}
       name: layer_categories_card
       layout_properties: {grid_position: 'NJFQVV,ACEAIK', full_width_row: false, row_background: '',
-        row: WFRIMH, width_xs: 12, col_xs: 0}
+        row: WFRIMH, width_xs: 12, col_xs: 0, width: 203.257}
       components:
       - type: GridPanel
         properties: {spacing_above: none, spacing_below: none, background: '', foreground: '',
@@ -1170,39 +1170,14 @@ components:
         name: check_box_nl
         layout_properties: {row: EBYTEW, width_xs: 11, col_xs: 1, width: 211.385}
         event_bindings: {change: check_box_overlays_change}
-    - type: Button
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: '#4AC9FF', visible: false, text: Map Link, font_size: 13, font: '',
-        spacing_above: none, icon_align: right, spacing_below: none, italic: false,
-        background: '', bold: false, underline: false, icon: 'fa:share-square-o'}
-      name: share
-      layout_properties: {row: TJNYUM, width_xs: 10, col_xs: 2, width: 184.156}
-      event_bindings: {click: share_click}
-    - type: Button
-      properties: {role: null, align: full, tooltip: '', border: '', enabled: true,
-        foreground: 'theme:Gray 300', visible: true, text: Reset Map, font_size: null,
-        font: '', spacing_above: none, icon_align: left, spacing_below: none, italic: false,
-        background: '', bold: false, underline: false, icon: ''}
-      name: reset_map
-      layout_properties: {row: CNAJHT, width_xs: 8, col_xs: 2, width: 141.505}
-      event_bindings: {click: reset_map_click}
-    - type: Button
-      properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-        foreground: 'theme:Gray 300', visible: false, text: Admin-Button, font_size: 13,
-        font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
-        background: '', bold: false, underline: false, icon: ''}
-      name: admin_button
-      layout_properties: {grid_position: 'LLVIZT,GPYSKZ', row: TKKVBG, width_xs: 10,
-        col_xs: 1, width: 205.885}
-      event_bindings: {click: admin_button_click}
-    - type: TextBox
-      properties: {role: null, align: left, hide_text: true, tooltip: '', placeholder: '',
-        border: '', enabled: true, foreground: '', visible: false, text: '', font_size: null,
-        font: '', spacing_above: small, type: text, spacing_below: small, italic: false,
-        background: '', bold: false, underline: false}
-      name: mapbox_token
-      layout_properties: {row: NJPYVA, width_xs: 10, col_xs: 1, width: 168.30178}
-      event_bindings: {pressed_enter: mapbox_token_pressed_enter}
+    - type: Spacer
+      properties: {height: 6}
+      name: spacer_5
+      layout_properties: {row: SCQJSM, width_xs: 12, col_xs: 0}
+    - type: form:dep_qxtrfrkcq2g1q:PageBreak
+      properties: {margin_top: 0, border: 1px solid white}
+      name: page_break_1
+      layout_properties: {row: LHYLBJ, width_xs: 12, col_xs: 0, width: 227.257}
     - type: FileLoader
       properties:
         role: null
@@ -1215,12 +1190,12 @@ components:
         files: []
         foreground: theme:Gray 300
         visible: false
-        text: Upload DB Update
-        font_size: null
+        text: DB Update
+        font_size: 14
         font: ''
-        spacing_above: small
-        icon_align: left
-        spacing_below: small
+        spacing_above: none
+        icon_align: right
+        spacing_below: medium
         italic: false
         file: null
         background: ''
@@ -1229,9 +1204,42 @@ components:
         multiple: false
         icon: fa:upload
       name: db_upload
-      layout_properties: {grid_position: 'FMBCTN,SGSPUP', row: GZJBWY, width_xs: 12,
-        col_xs: 0, width: 227}
+      layout_properties: {grid_position: 'FMBCTN,SGSPUP', row: WLFMXE, width_xs: 11,
+        col_xs: 0, width: 205.801}
       event_bindings: {change: db_upload_change}
+    - type: Button
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+        foreground: '#4AC9FF', visible: false, text: Map Link, font_size: 14, font: '',
+        spacing_above: none, icon_align: right, spacing_below: none, italic: false,
+        background: '', bold: false, underline: false, icon: 'fa:share'}
+      name: share
+      layout_properties: {row: YMXEXA, width_xs: 12, col_xs: 0, width: 227.257}
+      event_bindings: {click: share_click}
+    - type: Button
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+        foreground: 'theme:Red', visible: true, text: Reset Map, font_size: 14, font: '',
+        spacing_above: none, icon_align: right, spacing_below: none, italic: false,
+        background: '', bold: false, underline: false, icon: 'fa:refresh'}
+      name: reset_map
+      layout_properties: {row: VJYJND, width_xs: 11, col_xs: 0, width: 205.81}
+      event_bindings: {click: reset_map_click}
+    - type: Button
+      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+        foreground: 'theme:Gray 300', visible: false, text: Admin-Button, font_size: 14,
+        font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+        background: '', bold: false, underline: false, icon: ''}
+      name: admin_button
+      layout_properties: {grid_position: 'LLVIZT,GPYSKZ', row: CDHHMN, width_xs: 11,
+        col_xs: 0, width: 205.81}
+      event_bindings: {click: admin_button_click}
+    - type: TextBox
+      properties: {role: null, align: left, hide_text: true, tooltip: '', placeholder: '',
+        border: '', enabled: true, foreground: '', visible: false, text: '', font_size: null,
+        font: '', spacing_above: none, type: text, spacing_below: none, italic: false,
+        background: '', bold: false, underline: false}
+      name: mapbox_token
+      layout_properties: {row: OLHYJV, width_xs: 12, col_xs: 0, width: 217.775518}
+      event_bindings: {pressed_enter: mapbox_token_pressed_enter}
   - type: Spacer
     properties: {height: 14}
     name: spacer_3

@@ -341,6 +341,13 @@ class Map2_0(Map2_0Template):
         if not component.text == "Select All":
           public_transport_settings += "0"
       local_storage['public_transport'] = public_transport_settings
+    if 'removed_marker' in self.local_keys:
+      for key in local_storage['removed_marker'].keys():
+        for marker in local_storage['removed_marker'][key]:
+          self.remove_marker(key, marker, None, True)
+    if 'custom_marker' in self.local_keys:
+      for marker in local_storage['custom_marker']:
+        self.create_custom_marker(marker, marker['coordinates'])
     self.local_loading = False
     Functions.manipulate_loading_overlay(False)
   
@@ -669,9 +676,9 @@ class Map2_0(Map2_0Template):
         'Distance Circles': {
           'container': self.distance_circles_view,
           'icon_container': self.distance_circles
-        }
       }
-      
+      }
+        
       sender = dict(event_args)['sender'].text
       container = toggler[sender]['container']
       container.visible = not container.visible
@@ -3272,7 +3279,7 @@ class Map2_0(Map2_0Template):
     self.create_custom_marker(marker_data)
     self.custom_marker.append(marker_data)
 
-  def create_custom_marker(self, marker_data):
+  def create_custom_marker(self, marker_data, coords = None):
     # Create HTML Element for Icon
     el = document.createElement('div')
     el.className = 'marker'
@@ -3295,7 +3302,9 @@ class Map2_0(Map2_0Template):
     )
 
     if marker_data['address'] is None:
-      coords = self.clicked_coords
+      if coords == None:
+        coords = self.clicked_coords
+        marker_data['coordinates'] = coords
     else:
       coords = marker_data['address']['geometry']['coordinates']
     newicon = Mapbox_Functions.mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(coords).setOffset([0, 0]).addTo(Mapbox_Variables.map).setPopup(popup)
@@ -3303,6 +3312,12 @@ class Map2_0(Map2_0Template):
     popup = document.getElementById('mapPopup')
     if popup:
       popup.remove()
+
+    if 'custom_marker' in local_storage.keys():
+      new_custom_marker = local_storage['custom_marker']
+      new_custom_marker.append(marker_data)
+    else:
+      local_storage['custom_marker'] = [marker_data]
 
   def copy_to_clipboard(self, **event_args):
     anvil.js.window.navigator.clipboard.writeText(self.url)
@@ -3520,14 +3535,27 @@ class Map2_0(Map2_0Template):
       self.last_target = None
     self.prev_called = None
 
-  def remove_marker(self, category, marker_coords, event):
+  def remove_marker(self, category, marker_coords, event, local_storage_entry = False):
+    from anvil_extras.storage import local_storage
     for index, marker in enumerate(Variables.activeIcons[category]):
       if marker['_lngLat']['lng'] == marker_coords['lng'] and marker['_lngLat']['lat'] == marker_coords['lat']:
         deleted_icon = Variables.activeIcons[category].pop(index)
-        if not category in Variables.removed_markers.keys():
-          Variables.removed_markers[category] = [dict(marker['_lngLat'])]
-        else:
-          Variables.removed_markers[category].append(dict(marker['_lngLat']))
+        if local_storage_entry:
+          if not category in Variables.removed_markers.keys():
+            Variables.removed_markers[category] = [dict(marker['_lngLat'])]
+          else:
+            Variables.removed_markers[category].append(dict(marker['_lngLat']))
+          if not 'removed_marker' in local_storage.keys():
+            local_storage['removed_marker'] = {
+              category: [marker_coords]
+            }
+          else:
+            new_removed_marker = local_storage['removed_marker']
+            if not category in new_removed_marker.keys():
+              new_removed_marker[category] = [marker_coords]
+            else:
+              new_removed_marker[category].append(marker_coords)
+            local_storage['removed_marker'] = new_removed_marker
         marker.remove()
 
   def micro_living_rent_slider_slide(self, handle, **event_args):
@@ -3881,7 +3909,7 @@ class Map2_0(Map2_0Template):
 
       micro_living = app_tables.pictures.search()[0]
       anvil.media.download(micro_living['pic'])
-  
+
   def build_micro_living_competitor_map_request(self, competitors, page_id, no_number_map_marker):
     request_static_map_raw = f"%7B%22type%22%3A%22FeatureCollection%22%2C%22features%22%3A%5B"
     request_static_map = request_static_map_raw
@@ -3940,71 +3968,38 @@ class Map2_0(Map2_0Template):
       f"source_{uni_code}", 
       Functions.createGeoJSONCircle([Mapbox_Variables.location_marker['_lngLat']['lng'], Mapbox_Variables.location_marker['_lngLat']['lat']], distance)
     )
-    if len(Variables.added_circles) == 1:
-      Mapbox_Variables.map.addLayer({
-        "id": f"radius_{uni_code}",
-        "type": "line",
-        "source": f"source_{uni_code}",
-        "layout": {},
-        "paint": {
-          "line-color": "#1B2939",
-          "line-opacity": 0.25,
-          "line-width": 2
-        }
-      })
-      Mapbox_Variables.map.addLayer({
-        "id": f"symbol_{uni_code}",
-        "type": "symbol",
-        "source": f"source_{uni_code}",
-        "layout": {
-          "symbol-placement": "line",
-          "text-field": '{title}',
-          "text-size": 13,
-          "text-anchor": "bottom"
-        },
-        "paint": {
-          "text-color": "#1B2939",
-          "text-opacity": .4,
-          "text-halo-color": "#FFFFFF",
-          "text-halo-width": 3,
-          "text-halo-blur": .5
-        }
-      })
-      layers.append(f"radius_{uni_code}")
-      layers.append(f"symbol_{uni_code}")
-    elif len(Variables.added_circles) >= 2:
-      Mapbox_Variables.map.addLayer({
-        "id": f"radius_{uni_code}",
-        "type": "line",
-        "source": f"source_{uni_code}",
-        "layout": {},
-        "paint": {
-          "line-color": "#1B2939",
-          "line-opacity": 0.25,
-          "line-width": 2,
-          "line-dasharray": [2, 1]
-        }
-      })
-      Mapbox_Variables.map.addLayer({
-        "id": f"symbol_{uni_code}",
-        "type": "symbol",
-        "source": f"source_{uni_code}",
-        "layout": {
-          "symbol-placement": "line",
-          "text-field": '{title}',
-          "text-size": 13,
-          "text-anchor": "bottom"
-        },
-        "paint": {
-          "text-color": "#1B2939",
-          "text-opacity": .4,
-          "text-halo-color": "#FFFFFF",
-          "text-halo-width": 3,
-          "text-halo-blur": 1
-        }
-      })
-      layers.append(f"radius_{uni_code}")
-      layers.append(f"symbol_{uni_code}")
+    Mapbox_Variables.map.addLayer({
+      "id": f"radius_{uni_code}",
+      "type": "line",
+      "source": f"source_{uni_code}",
+      "layout": {},
+      "paint": {
+        "line-color": "#1B2939",
+        "line-opacity": 0.25,
+        "line-width": 2,
+        "line-dasharray": [2, 1]
+      }
+    })
+    Mapbox_Variables.map.addLayer({
+      "id": f"symbol_{uni_code}",
+      "type": "symbol",
+      "source": f"source_{uni_code}",
+      "layout": {
+        "symbol-placement": "line",
+        "text-field": '{title}',
+        "text-size": 13,
+        "text-anchor": "bottom"
+      },
+      "paint": {
+        "text-color": "#1B2939",
+        "text-opacity": .4,
+        "text-halo-color": "#FFFFFF",
+        "text-halo-width": 3,
+        "text-halo-blur": 1
+      }
+    })
+    layers.append(f"radius_{uni_code}")
+    layers.append(f"symbol_{uni_code}")
     
     from .Active_Circle import Active_Circle
 
@@ -4021,4 +4016,6 @@ class Map2_0(Map2_0Template):
 
   def reset_map_click(self, **event_args):
     local_storage.clear()
+    local_storage.clear()
+    local_storage['keep_user'] = True
     anvil.js.call('refresh_page')

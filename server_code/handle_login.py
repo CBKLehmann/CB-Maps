@@ -5,7 +5,7 @@ import anvil.server
 def get_current_user():
   user = anvil.users.get_user()
   
-  if user is not None and user['remember_me']:
+  if user is not None:
     return user
 
   return None

@@ -3,6 +3,7 @@ from anvil import *
 from ..Map2_0 import Functions, Variables
 import anvil.server
 import anvil.users
+from anvil_extras.storage import local_storage
 
 class Login(LoginTemplate):
   def __init__(self, **properties):
@@ -16,10 +17,19 @@ class Login(LoginTemplate):
   def form_show(self, **event_args):
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(True)
+      
       if self.user is not None:
-        Variables.user_role = self.user['role']
+        proceed = False
         
-        if not self.check_maintenance():
+        if self.user['remember_me']:
+          proceed = True
+          
+        if 'keep_user' in local_storage.keys() and local_storage['keep_user']:
+          proceed = True
+          local_storage['keep_user'] = False
+        Variables.user_role = self.user['role']
+
+        if not self.check_maintenance() and proceed:
           open_form('Map2_0')
           return
   
@@ -28,6 +38,7 @@ class Login(LoginTemplate):
         return
   
       self.display_login_form()
+      Functions.manipulate_loading_overlay(False)
 
   def display_login_form(self):
     with anvil.server.no_loading_indicator:
