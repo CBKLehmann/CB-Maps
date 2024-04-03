@@ -259,6 +259,86 @@ class Map2_0(Map2_0Template):
         if component.text.replace(" ", "_").lower() == local_storage['map_overlay']:
           component.checked = True
           component.raise_event('change')
+    if 'healthcare' in self.local_keys:
+      if not "0" in local_storage['healthcare']:
+        self.select_all_hc.checked = True
+        self.select_all_hc.raise_event('change')
+      else:
+        for index, component in enumerate(self.poi_categories_healthcare_container.get_components()):
+          if not component.text == "Select All":
+            if local_storage['healthcare'][index - 1] == "1":
+              component.checked = True
+              component.raise_event('change')
+    else:
+      healthcare_settings = ""
+      for component in self.poi_categories_healthcare_container.get_components():
+        if not component.text == "Select All":
+          healthcare_settings += "0"
+      local_storage['healthcare'] = healthcare_settings
+    if 'student_living' in self.local_keys:
+      if not "0" in local_storage['student_living']:
+        self.select_all_edu.checked = True
+        self.select_all_edu.raise_event('change')
+      else:
+        for index, component in enumerate(self.education_grid.get_components()):
+          if not component.text == "Select All":
+            if local_storage['student_living'][index - 1] == "1":
+              component.checked = True
+              component.raise_event('change')
+    else:
+      student_living_settings = ""
+      for component in self.education_grid.get_components():
+        if not component.text == "Select All":
+          student_living_settings += "0"
+      local_storage['student_living'] = student_living_settings
+    if 'micro_living' in self.local_keys:
+      if not "0" in local_storage['micro_living']:
+        self.select_all_micro_living.checked = True
+        self.select_all_micro_living.raise_event('change')
+      else:
+        for index, component in enumerate(self.micro_living_check_boxes.get_components()):
+          if not component.text == "Select All":
+            if local_storage['micro_living'][index - 1] == "1":
+              component.checked = True
+              component.raise_event('change')
+    else:
+      micro_living_settings = ""
+      for component in self.micro_living_check_boxes.get_components():
+        if not component.text == "Select All":
+          micro_living_settings += "0"
+      local_storage['micro_living'] = micro_living_settings
+    if 'food_drinks' in self.local_keys:
+      if not "0" in local_storage['food_drinks']:
+        self.select_all_food.checked = True
+        self.select_all_food.raise_event('change')
+      else:
+        for index, component in enumerate(self.food_drinks_grid.get_components()):
+          if not component.text == "Select All":
+            if local_storage['food_drinks'][index - 1] == "1":
+              component.checked = True
+              component.raise_event('change')
+    else:
+      food_drinks_settings = ""
+      for component in self.food_drinks_grid.get_components():
+        if not component.text == "Select All":
+          food_drinks_settings += "0"
+      local_storage['food_drinks'] = food_drinks_settings
+    if 'public_transport' in self.local_keys:
+      if not "0" in local_storage['public_transport']:
+        self.select_all_opnv.checked = True
+        self.select_all_opnv.raise_event('change')
+      else:
+        for index, component in enumerate(self.opnv_container.get_components()):
+          if not component.text == "Select All":
+            if local_storage['public_transport'][index - 1] == "1":
+              component.checked = True
+              component.raise_event('change')
+    else:
+      public_transport_settings = ""
+      for component in self.opnv_container.get_components():
+        if not component.text == "Select All":
+          public_transport_settings += "0"
+      local_storage['public_transport'] = public_transport_settings
     self.local_loading = False
   
   def check_box_marker_icons_change(self, **event_args):
@@ -337,48 +417,90 @@ class Map2_0(Map2_0Template):
   def check_box_poi_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(True)
-      # Check or uncheck various Check Boxes for different POI Categories
+      index = event_args['sender'].parent.get_components().index(event_args['sender']) - 1
       if dict(event_args)['sender'].text == "Veterinary":
+        settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
+        local_storage['healthcare'] = settings
         Variables.last_bbox_vet, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_vet.checked, Variables.last_bbox_vet, "veterinary", Variables.icon_veterinary)
       elif dict(event_args)['sender'].text == "Social Facility":
+        settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
+        local_storage['healthcare'] = settings
         Variables.last_bbox_soc, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_soc.checked, Variables.last_bbox_soc, "social_facility", Variables.icon_social)   
       elif dict(event_args)['sender'].text == "Pharmacy":
+        settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
+        local_storage['healthcare'] = settings
         Variables.last_bbox_pha, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_pha.checked, Variables.last_bbox_pha, "pharmacy", Variables.icon_pharmacy)
       elif dict(event_args)['sender'].text == "Hospital":
+        settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
+        local_storage['healthcare'] = settings
         Variables.last_bbox_hos, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_hos.checked, Variables.last_bbox_hos, "hospital", Variables.icon_hospital)
       elif dict(event_args)['sender'].text == "Clinic":
+        settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
+        local_storage['healthcare'] = settings
         Variables.last_bbox_cli, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cli.checked, Variables.last_bbox_cli, "clinic", Variables.icon_clinics)
       elif dict(event_args)['sender'].text == "Dentist":
+        settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
+        local_storage['healthcare'] = settings
         Variables.last_bbox_den, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_den.checked, Variables.last_bbox_den, "dentist", Variables.icon_dentist)  
       elif dict(event_args)['sender'].text == "Doctor":
+        settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
+        local_storage['healthcare'] = settings
         Variables.last_bbox_doc, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_doc.checked, Variables.last_bbox_doc, "doctors", Variables.icon_doctors)      
       elif dict(event_args)['sender'].text == "Nursing School":
+        settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
+        local_storage['healthcare'] = settings
         Variables.last_bbox_nsc, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_nsc.checked, Variables.last_bbox_nsc, "nursing-schools", Variables.icon_nursing_schools) 
       elif dict(event_args)['sender'].text == "Supermarket":
+        settings = local_storage['food_drinks'][:index] + "1" + local_storage['food_drinks'][index + 1:]
+        local_storage['food_drinks'] = settings
         Variables.last_bbox_sma, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_sma.checked, Variables.last_bbox_sma, "supermarket", Variables.icon_supermarket)  
       elif dict(event_args)['sender'].text == "Restaurant":
+        settings = local_storage['food_drinks'][:index] + "1" + local_storage['food_drinks'][index + 1:]
+        local_storage['food_drinks'] = settings
         Variables.last_bbox_res, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_res.checked, Variables.last_bbox_res, "restaurant", Variables.icon_restaurant)  
       elif dict(event_args)['sender'].text == "Cafe":
+        settings = local_storage['food_drinks'][:index] + "1" + local_storage['food_drinks'][index + 1:]
+        local_storage['food_drinks'] = settings
         Variables.last_bbox_caf, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cafe.checked, Variables.last_bbox_caf, "cafe", Variables.icon_cafe)
       elif dict(event_args)['sender'].text == "University":
+        settings = local_storage['student_living'][:index] + "1" + local_storage['student_living'][index + 1:]
+        local_storage['student_living'] = settings
         Variables.last_bbox_uni, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_uni.checked, Variables.last_bbox_uni, "university", Variables.icon_university)  
       elif dict(event_args)['sender'].text == "Bus Stop":
+        settings = local_storage['public_transport'][:index] + "1" + local_storage['public_transport'][index + 1:]
+        local_storage['public_transport'] = settings
         Variables.last_bbox_bus, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_bus.checked, Variables.last_bbox_bus, "bus_stop", Variables.icon_bus)  
       elif dict(event_args)['sender'].text == "Tram Stop":
+        settings = local_storage['public_transport'][:index] + "1" + local_storage['public_transport'][index + 1:]
+        local_storage['public_transport'] = settings
         Variables.last_bbox_tra, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_tra.checked, Variables.last_bbox_tra, "tram_stop", Variables.icon_tram)
       elif dict(event_args)['sender'].text == "Nursing Home":
+        settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
+        local_storage['healthcare'] = settings
         Variables.last_bbox_nh, minimum_average_rent, maximum_average_rent = self.create_icons(self.pdb_data_cb.checked, Variables.last_bbox_nh, "nursing_homes", Variables.icon_nursing_homes)
       elif dict(event_args)['sender'].text == "Assisted Living":
+        settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
+        local_storage['healthcare'] = settings
         Variables.last_bbox_al, minimum_average_rent, maximum_average_rent = self.create_icons(self.pdb_data_al.checked, Variables.last_bbox_al, "assisted_living", Variables.icon_assisted_living)
       elif dict(event_args)['sender'].text == "Podiatrist":
+        settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
+        local_storage['healthcare'] = settings
         Variables.last_bbox_pdt, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_pdt.checked, Variables.last_bbox_pdt, "podiatrist", Variables.icon_podiatrist)
       elif dict(event_args)['sender'].text == "Hairdresser":
+        settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
+        local_storage['healthcare'] = settings
         Variables.last_bbox_hd, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
       elif event_args['sender'].text == "S-Bahn/U-Bahn":
+        settings = local_storage['public_transport'][:index] + "1" + local_storage['public_transport'][index + 1:]
+        local_storage['public_transport'] = settings
         Variables.last_bbox_al, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_su.checked, Variables.last_bbox_su, "subway", f'{Variables.app_url}/_/theme/Pins/U_Bahn_Pin.png')
       elif event_args['sender'].text == "Airport":
+        settings = local_storage['public_transport'][:index] + "1" + local_storage['public_transport'][index + 1:]
+        local_storage['public_transport'] = settings
         Variables.last_bbox_ap, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_ap.checked, Variables.last_bbox_ap, "aerodrome", f'{Variables.app_url}/_/theme/Pins/Flughafen_Pin.png')
       elif event_args['sender'].text == "Business Living":
+        settings = local_storage['micro_living'][:index] + "1" + local_storage['micro_living'][index + 1:]
+        local_storage['micro_living'] = settings
         Variables.last_bbox_bl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_bl.checked, Variables.last_bbox_bl, "business_living", f'{Variables.app_url}/_/theme/Pins/BusinessLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
@@ -391,6 +513,8 @@ class Map2_0(Map2_0Template):
         self.micro_living_rent_slider.enabled = True
         # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Co-living":
+        settings = local_storage['micro_living'][:index] + "1" + local_storage['micro_living'][index + 1:]
+        local_storage['micro_living'] = settings
         Variables.last_bbox_cl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_cl.checked, Variables.last_bbox_cl, "co_living", f'{Variables.app_url}/_/theme/Pins/CoLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
@@ -403,6 +527,8 @@ class Map2_0(Map2_0Template):
         self.micro_living_rent_slider.enabled = True
         # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Serviced Living":
+        settings = local_storage['micro_living'][:index] + "1" + local_storage['micro_living'][index + 1:]
+        local_storage['micro_living'] = settings
         Variables.last_bbox_sl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_sl.checked, Variables.last_bbox_sl, "service_living", f'{Variables.app_url}/_/theme/Pins/ServiceLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
@@ -415,6 +541,8 @@ class Map2_0(Map2_0Template):
         self.micro_living_rent_slider.enabled = True
         # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Student Living":
+        settings = local_storage['micro_living'][:index] + "1" + local_storage['micro_living'][index + 1:]
+        local_storage['micro_living'] = settings
         Variables.last_bbox_stl, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_stl.checked, Variables.last_bbox_stl, "student_living", f'{Variables.app_url}/_/theme/Pins/StudentLiving@0.75x.png')
         self.slider_maximum.enabled = True
         self.slider_minimum.enabled = True
@@ -427,6 +555,8 @@ class Map2_0(Map2_0Template):
         self.micro_living_rent_slider.enabled = True
         # self.micro_living_rent_slider.values = float(minimum_average_rent), float(maximum_average_rent)
       elif event_args['sender'].text == "Motorway":
+        settings = local_storage['public_transport'][:index] + "1" + local_storage['public_transport'][index + 1:]
+        local_storage['public_transport'] = settings
         Variables.last_bbox_mw, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_mw.checked, Variables.last_bbox_mw, "motorway", f'{Variables.app_url}/_/theme/Pins/Flughafen_Pin.png')
       Functions.manipulate_loading_overlay(False)
 
@@ -2257,7 +2387,7 @@ class Map2_0(Map2_0Template):
         bl_name = click.features[0].properties.name
         bl_id = click.features[0].id
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p>").addTo(Mapbox_Variables.map)
+        popup = Mapbox_Functions.mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p>").addTo(Mapbox_Variables.map)
       
       #Check which Layer is active
       elif click.features[0].layer.source == 'administrative_districts':
@@ -2266,7 +2396,7 @@ class Map2_0(Map2_0Template):
         bl_name = click.features[0].properties.NAME_1
         rb_name = click.features[0].properties.NAME_2
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p><p class='popup_distance'><b>Regierungsbezirk:</b> {rb_name}</p>").addTo(Mapbox_Variables.map)
+        popup = Mapbox_Functions.mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p><p class='popup_distance'><b>Regierungsbezirk:</b> {rb_name}</p>").addTo(Mapbox_Variables.map)
       
       #Check which Layer is active
       elif click.features[0].layer.source == 'counties':
@@ -2275,7 +2405,7 @@ class Map2_0(Map2_0Template):
         bl_name = click.features[0].properties.lan_name
         lk_name = click.features[0].properties.krs_name
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p><p class='popup_distance'><b>Landkreis:</b> {lk_name}</p>").addTo(Mapbox_Variables.map)
+        popup = Mapbox_Functions.mapboxgl.Popup({'className': 'markerPopup'}).setLngLat(clicked_lngLat).setHTML(f"<p class='popup_distance'><b>Bundesland:</b> {bl_name}</p><p class='popup_distance'><b>Landkreis:</b> {lk_name}</p>").addTo(Mapbox_Variables.map)
     
       elif click.features[0].layer.source == 'municipalities':
         
@@ -2302,7 +2432,7 @@ class Map2_0(Map2_0Template):
         dt_name = click.features[0].properties.name
         dt_id = click.features[0].id
         clicked_lngLat = dict(click.lngLat)
-        popup = mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bezirk:</b> {dt_name}').addTo(Mapbox_Variables.map)
+        popup = Mapbox_Functions.mapboxgl.Popup().setLngLat(clicked_lngLat).setHTML(f'<b>Bezirk:</b> {dt_name}').addTo(Mapbox_Variables.map)
 
   #This method is called when the User clicked on a Point of Interest on the Map   #Eventuell nicht mehr benötigt
   def poi(self, click):
@@ -2323,7 +2453,7 @@ class Map2_0(Map2_0Template):
         if not features == [] and Variables.activeLayer == None and hasattr(features[0].properties, 'name') == True:
         
           #Create Popup on clicked Point with Information about the Point of Interest
-          popup = mapboxgl.Popup().setLngLat(click.lngLat).setHTML('Name: ' + features[0].properties.name).addTo(Mapbox_Variables.map)
+          popup = Mapbox_Functions.mapboxgl.Popup().setLngLat(click.lngLat).setHTML('Name: ' + features[0].properties.name).addTo(Mapbox_Variables.map)
       
       #Check current Map-Style
       elif Variables.activeLayer == None:
@@ -2509,7 +2639,7 @@ class Map2_0(Map2_0Template):
           # Check if new Bounding Box is overlapping old Bounding Box
           if bbox[0] < last_bbox[0] or bbox[1] < last_bbox[1] or bbox[2] > last_bbox[2] or bbox[3] > last_bbox[3]:
       
-            minimum_average_rent, maximum_average_rent = Functions.create_marker(self, check_box, last_bbox, category, picture, bbox, marker_coords, mapboxgl)
+            minimum_average_rent, maximum_average_rent = Functions.create_marker(self, check_box, last_bbox, category, picture, bbox, marker_coords, Mapbox_Functions.mapboxgl)
             Variables.average_rents[category] = [minimum_average_rent, maximum_average_rent]
       
           # Do if new Bounding Box is smaller or same than old Bounding Box
@@ -2925,9 +3055,9 @@ class Map2_0(Map2_0Template):
         cluster_data['settings'][invest_name]['marker'] = new_list
         
         # Create Popup for Marker and add it to the Map
-        # popup = mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
+        # popup = Mapbox_Functions.mapboxgl.Popup({'closeOnClick': False, 'offset': 25})
         # popup.setHTML(data[0][markercount]['Informationen'])
-        # popup_static = mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[0][markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
+        # popup_static = Mapbox_Functions.mapboxgl.Popup({'closeOnClick': False, 'offset': 5, 'className': 'static-popup', 'closeButton': False, 'anchor': 'top'}).setText(data[0][markercount]['Informationen']).setLngLat(coords['features'][0]['geometry']['coordinates'])
         # popup_static.addTo(Mapbox_Variables.map)
         
         #Increase Markercount
@@ -3157,7 +3287,7 @@ class Map2_0(Map2_0Template):
     el.style.cursor = 'pointer'
     el.style.backgroundImage = f"url({marker_data['icon']})"
     
-    popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+    popup = Mapbox_Functions.mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
       f"<p class='popup_name'><b>{marker_data['name']}</b></p>"
       f"<p class='popup_type'>{marker_data['text']}</p>"
     )
@@ -3166,7 +3296,7 @@ class Map2_0(Map2_0Template):
       coords = self.clicked_coords
     else:
       coords = marker_data['address']['geometry']['coordinates']
-    newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(coords).setOffset([0, 0]).addTo(Mapbox_Variables.map).setPopup(popup)
+    newicon = Mapbox_Functions.mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(coords).setOffset([0, 0]).addTo(Mapbox_Variables.map).setPopup(popup)
 
     popup = document.getElementById('mapPopup')
     if popup:
@@ -3222,14 +3352,14 @@ class Map2_0(Map2_0Template):
     
         el.style.backgroundImage = f"url({Variables.app_url}/_/theme/Pins/Comp{index+1}.png)"
 
-        popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
+        popup = Mapbox_Functions.mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
           f"<p class='popup_name'><b>{result['operator']}</b></p>"
           f"<p class='popup_type'>{result['address']}</p>"
           f"<p class='popup_type'>{result['zip']} {result['city']}, {result['federal_state']}</p>"
           f"<p class='popup_type'>{result['distance']} km</p>"
         )
     
-        newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(result['coords']).setOffset([0, 0]).addTo(Mapbox_Variables.map).setPopup(popup)
+        newicon = Mapbox_Functions.mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(result['coords']).setOffset([0, 0]).addTo(Mapbox_Variables.map).setPopup(popup)
         newiconElement = newicon.getElement()
 
         details = f"<h1>{result['operator']}</h1>"

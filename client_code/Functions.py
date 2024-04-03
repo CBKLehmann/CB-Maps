@@ -14,7 +14,7 @@ def show_hide_marker(self, check_box, marker_id):
   for el in Variables.marker[marker_id]['marker']:
     if marker_id in Variables.marker.keys():
       if check_box:
-        el.addTo(self.mapbox)
+        el.addTo(Mapbox_Variables.map)
       else:
         el.remove()
 
@@ -46,7 +46,7 @@ def refresh_icons(self):
 def create_bounding_box(self):
   
   # Get Data of Iso-Layer
-  iso = dict(self.mapbox.getSource('iso'))
+  iso = dict(Mapbox_Variables.map.getSource('iso'))
 
   # Create empty Bounding Box
   bbox = [0, 0, 0, 0]
@@ -159,7 +159,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
             el.style.borderRadius = '50%'
 
             # Add Icon to the Map
-            newicon = mapboxgl.Marker(el, {'anchor': 'center'}).setLngLat([point['lon'], point['lat']]).setOffset([0, 0]).addTo(self.mapbox)
+            newicon = mapboxgl.Marker(el, {'anchor': 'center'}).setLngLat([point['lon'], point['lat']]).setOffset([0, 0]).addTo(Mapbox_Variables.map)
 
             id_counter += 1
             
@@ -175,7 +175,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
           id = route['tags']['name']
         else:
           id = route['tags']['ref']
-        self.mapbox.addLayer({
+        Mapbox_Variables.map.addLayer({
           'id': id,
           'type': 'line',
           'source': {
@@ -689,10 +689,10 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
         if not deleted:
 
           # Add Icon to the Map
-          newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(self.mapbox).setPopup(popup)#.setPopup(name_popup)
+          newicon = mapboxgl.Marker(el, {'anchor': 'bottom'}).setLngLat(el_coords).setOffset([0, 0]).addTo(Mapbox_Variables.map).setPopup(popup)#.setPopup(name_popup)
           newiconElement = newicon.getElement()
           self.addHoverEffect(newiconElement, popup, newicon, ele, category, marker_details)
-          # anvil.js.call('addHoverEffect', newiconElement, popup, self.mapbox, newicon, ele, category, marker_details, self.role)
+          # anvil.js.call('addHoverEffect', newiconElement, popup, Mapbox_Variables.map, newicon, ele, category, marker_details, self.role)
   
           # Add current Element-Icon to Icon-Array
           icons.append(newicon)

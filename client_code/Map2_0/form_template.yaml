@@ -724,20 +724,20 @@ components:
         name: micro_living_grid
         layout_properties: {row: NFSPMN, width_xs: 12, col_xs: 0, width: 203.333}
         components:
-        - type: CheckBox
-          properties: {role: switch-rounded, align: left, tooltip: '', border: '',
-            enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
-            visible: true, text: Select All, font_size: 13, font: Roboto+Flex, spacing_above: small,
-            spacing_below: none, italic: false, background: '', bold: false, checked: false,
-            underline: false}
-          name: select_all_micro_living
-          layout_properties: {row: RBYCNR, width_xs: 11, col_xs: 1, width: 183.885}
-          event_bindings: {change: select_all_change}
         - type: GridPanel
           properties: {}
           name: micro_living_check_boxes
           layout_properties: {row: VHUMYU, width_xs: 12, col_xs: 0}
           components:
+          - type: CheckBox
+            properties: {role: switch-rounded, align: left, tooltip: '', border: '',
+              enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
+              visible: true, text: Select All, font_size: 13, font: Roboto+Flex, spacing_above: small,
+              spacing_below: none, italic: false, background: '', bold: false, checked: false,
+              underline: false}
+            name: select_all_micro_living
+            layout_properties: {row: GGQEOJ, width_xs: 11, col_xs: 1, width: 183.885}
+            event_bindings: {change: select_all_change}
           - type: CheckBox
             properties: {role: switch-rounded, align: left, tooltip: '', border: '',
               enabled: true, foreground: 'theme:Gray 300', allow_indeterminate: false,
