@@ -357,12 +357,12 @@ class Map2_0(Map2_0Template):
       # Show or Hide Marker-Icon-Types
       if event_args['sender'] in self.icon_grid.get_components():
         new_active = local_storage['cluster_active']
-        new_active[event_args['sender'].text] = event_args['sender'].checked
+        new_active[event_args['sender'].tooltip] = event_args['sender'].checked
         local_storage['cluster_active'] = new_active
       elif event_args['sender'] in self.invest_grid.get_components():
         active_index = self.invest_grid.get_components().index(event_args['sender'])
         new_active = local_storage['invest_active']
-        new_active = new_active[:active_index] + ("1" if event_args['sender'].checked else "0") + new_active[active_index + 1:]
+        new_active[event_args['sender'].tooltip] = event_args['sender'].checked
         local_storage['invest_active'] = new_active
       Functions.show_hide_marker(self, event_args['sender'].checked, event_args['sender'].tooltip)
 
@@ -372,19 +372,21 @@ class Map2_0(Map2_0Template):
   
       if event_args['sender'] == self.cluster_all:
         all_marker = self.icon_grid.get_components()
+        key = 'cluster_active'
       else:
         all_marker = self.invest_grid.get_components()
+        key = 'invest_active'
       
-      if event_args['sender'].checked == True:
-        marker_state = True
-      else:
-        marker_state = False
+      new_local_storage = local_storage[key]
         
       for marker in all_marker:
         if not type(marker) is Label:
-          if not marker.checked == marker_state:
-            Functions.show_hide_marker(self, marker_state, marker.tooltip)
-            marker.checked = marker_state
+          if not marker.checked == event_args['sender'].checked:
+            new_local_storage[marker.tooltip] = event_args['sender'].checked
+            Functions.show_hide_marker(self, event_args['sender'].checked, marker.tooltip)
+            marker.checked = event_args['sender'].checked
+
+      local_storage[key] = new_local_storage
      
   def check_box_overlays_change(self, **event_args):
     with anvil.server.no_loading_indicator:
@@ -2330,10 +2332,10 @@ class Map2_0(Map2_0Template):
       ''' Update created Markers on Map '''
       anvil.js.call('update_loading_bar', 95, 'Loading created Markers')
       for checkbox in self.invest_grid.get_components():
-        if not local_storage['invest_active'][checkbox.text]:
+        if not local_storage['invest_active'][checkbox.tooltip]:
           checkbox.raise_event('change')
       for checkbox in self.icon_grid.get_components():
-        if not local_storage['invest_active'][checkbox.text]:
+        if not checkbox.tooltip == "" and not local_storage['cluster_active'][checkbox.tooltip]:
           checkbox.raise_event('change')
 
       ''' Show UI Elements and trigger Events '''
