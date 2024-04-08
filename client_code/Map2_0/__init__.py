@@ -2243,8 +2243,7 @@ class Map2_0(Map2_0Template):
         el.style.backgroundrepeat = 'no-repeat'
         el.style.zIndex = '250'
 
-        ''' Create HTML Element for Icon '''
-        # Create HTML Element for Invest Class Icon
+        ''' Create HTML Element for Invest Class Icon '''
         inv_el = document.createElement('div')
         inv_el.className = f'{asset["address"]}_investment'
         inv_el.style.width = '40px'
@@ -2260,9 +2259,13 @@ class Map2_0(Map2_0Template):
           invest_name = asset['invest_class']
 
         if cluster_name not in added_clusters:
-          cluster_active += "1"
-          counter += 1
-          color = colors[counter]
+          if 'cluster_color' in local_storage.keys():
+            color = local_storage['cluster_color'][cluster_name]
+          else:
+            cluster_active += "1"
+            counter += 1
+            color = colors[counter]
+          if ''
           text = f"{cluster_name[:11]}..." if len(cluster_name) > 11 else cluster_name
           checkbox = CheckBox(checked=True, text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=cluster_name)
           checkbox.add_event_handler('change', self.check_box_marker_icons_change)
