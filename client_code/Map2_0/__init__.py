@@ -2162,6 +2162,8 @@ class Map2_0(Map2_0Template):
         self.file_loader_upload.clear()
         return
 
+      local_storage['cluster_data'] = self.cluster_data
+
       self.cluster_btn.visible = False
       self.invest_class_btn.visible = False
       self.cluster_all.visible = False
@@ -2284,7 +2286,7 @@ class Map2_0(Map2_0Template):
         sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout', 'Unclassified']
       for key in sorted(invest_components.keys(), key=lambda x: sorted_keys.index(x)):
         self.invest_grid.add_component(invest_components[key], row=key, col_xs=1, width_xs=8)
-        
+      
       # Add Marker-Arrays to global Variable Marker
       Variables.marker.update(excel_markers)
 
@@ -2954,6 +2956,7 @@ class Map2_0(Map2_0Template):
       from .Change_Cluster_Color import Change_Cluster_Color
       Functions.manipulate_loading_overlay(False)
       response = alert(content=Change_Cluster_Color(components=self.icon_grid.get_components(), mobile=self.mobile), dismissible=False, large=True, buttons=[], role='custom_alert')
+      print(response)
       Functions.manipulate_loading_overlay(True)
       for key in Variables.marker:
         if key in response:
@@ -2967,7 +2970,6 @@ class Map2_0(Map2_0Template):
           component.foreground = Variables.marker[key]["color"][1]
       if len(event_args.keys()) > 0:
         Functions.manipulate_loading_overlay(False)
-      pass
   
   def create_cluster_marker(self, cluster_data):
     with anvil.server.no_loading_indicator:
