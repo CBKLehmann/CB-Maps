@@ -356,9 +356,8 @@ class Map2_0(Map2_0Template):
     with anvil.server.no_loading_indicator:
       # Show or Hide Marker-Icon-Types
       if event_args['sender'] in self.icon_grid.get_components():
-        active_index = int(self.icon_grid.get_components().index(event_args['sender']) / 2)
         new_active = local_storage['cluster_active']
-        new_active = new_active[:active_index] + ("1" if event_args['sender'].checked else "0") + new_active[active_index + 1:]
+        new_active[event_args['sender'].text] = event_args['sender'].checked
         local_storage['cluster_active'] = new_active
       elif event_args['sender'] in self.invest_grid.get_components():
         active_index = self.invest_grid.get_components().index(event_args['sender'])
@@ -2228,13 +2227,11 @@ class Map2_0(Map2_0Template):
       }
       self.icon_grid.row_spacing = 0
       counter = 0
-      if not 'cluster_active' in local_storage.keys() or not local_load:
-        cluster_active = {}
-      else:
+      cluster_active = {}
+      invest_active = {}
+      if 'cluster_active' in local_storage.keys() and local_load:
         cluster_active = local_storage['cluster_active']
-      if not 'invest_active' in local_storage.keys() or not local_load:
-        invest_active = {}
-      else:
+      if 'invest_active' in local_storage.keys() and local_load:
         invest_active = local_storage['invest_active']
 
       ''' Process Cluster Data '''
@@ -2265,7 +2262,7 @@ class Map2_0(Map2_0Template):
           invest_name = asset['invest_class']
 
         if cluster_name not in added_clusters:
-          if 'cluster_color' in local_storage.keys():
+          if 'cluster_color' in local_storage.keys() and local_load:
             color = local_storage['cluster_color'][cluster_name]
           else:
             counter += 1
@@ -2274,8 +2271,7 @@ class Map2_0(Map2_0Template):
             cluster_active[cluster_name] = True
           text = f"{cluster_name[:11]}..." if len(cluster_name) > 11 else cluster_name
           checkbox = CheckBox(checked=cluster_active[cluster_name], text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=cluster_name)
-          if not local_load:
-            checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+          checkbox.add_event_handler('change', self.check_box_marker_icons_change)
           icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none', icon_align='top')
           cluster_components[cluster_name] = [checkbox, icon]
           added_clusters.append(cluster_name)
@@ -2285,8 +2281,7 @@ class Map2_0(Map2_0Template):
             invest_active[invest_name] = False
           text = f"{invest_name[:11]}..." if len(invest_name) > 11 else invest_name
           checkbox = CheckBox(checked=invest_active[invest_name], text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=invest_name)
-          if not local_load:
-            checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+          checkbox.add_event_handler('change', self.check_box_marker_icons_change)
           invest_components[invest_name] = checkbox
           added_invest_classes.append(invest_name)
         
@@ -2309,9 +2304,8 @@ class Map2_0(Map2_0Template):
         new_list = self.set_excel_markers(excel_markers[invest_name]['static'], coordinates, excel_markers[invest_name]['marker'], inv_el, asset)
         excel_markers[invest_name]['marker'] = new_list
 
-      if not 'cluster_active' in local_storage.keys():
+      if not local_load:
         local_storage['cluster_active'] = cluster_active
-      if not 'invest_active' in local_storage.keys():
         local_storage['invest_active'] = invest_active
 
       ''' Update UI Elements'''
@@ -2319,8 +2313,8 @@ class Map2_0(Map2_0Template):
       for key in sorted(cluster_components):
         self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=1, width_xs=8)
         self.icon_grid.add_component(cluster_components[key][1], row=key, col_xs=9, width_xs=1)
-        
         sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout', 'Unclassified']
+
       for key in sorted(invest_components.keys(), key=lambda x: sorted_keys.index(x)):
         self.invest_grid.add_component(invest_components[key], row=key, col_xs=1, width_xs=8)
 
@@ -2336,11 +2330,10 @@ class Map2_0(Map2_0Template):
       ''' Update created Markers on Map '''
       anvil.js.call('update_loading_bar', 95, 'Loading created Markers')
       for checkbox in self.invest_grid.get_components():
-        raise_event = True
-        if 'invest_active' in local_storage.keys():
-          if local_storage['invest_active'][checjbox.text] == "1":
-            raise_event = False
-        if raise_event:
+        if not local_storage['invest_active'][checkbox.text]:
+          checkbox.raise_event('change')
+      for checkbox in self.icon_grid.get_components():
+        if not local_storage['invest_active'][checkbox.text]:
           checkbox.raise_event('change')
 
       ''' Show UI Elements and trigger Events '''
