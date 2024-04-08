@@ -34,7 +34,6 @@ class Map2_0(Map2_0Template):
       self.time_dropdown.items = [("5 minutes", "5"), ("10 minutes", "10"), ("15 minutes", "15"), ("20 minutes", "20"), ("30 minutes", "30"), ("60 minutes", "60"), ("5 minutes layers", "-1")]
       Variables.app_url = anvil.server.call_s('get_app_url')
       self.last_menu_height = '30%'
-      self.cluster_data = {}
       self.competitors = []
       self.custom_marker = []
       self.comp_marker = []
@@ -348,12 +347,24 @@ class Map2_0(Map2_0Template):
     if 'custom_marker' in self.local_keys:
       for marker in local_storage['custom_marker']:
         self.create_custom_marker(marker, marker['coordinates'])
+    if 'cluster_data' in self.local_keys:
+      pass
     self.local_loading = False
     Functions.manipulate_loading_overlay(False)
   
   def check_box_marker_icons_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       # Show or Hide Marker-Icon-Types
+      if event_args['sender'] in self.icon_grid.get_components():
+        active_index = int(self.icon_grid.get_components().index(event_args['sender']) / 2)
+        new_active = local_storage['cluster_active']
+        new_active = new_active[:active_index] + ("1" if event_args['sender'].checked else "0") + new_active[active_index + 1:]
+        local_storage['cluster_active'] = new_active
+      elif event_args['sender'] in self.invest_grid.get_components():
+        active_index = self.invest_grid.get_components().index(event_args['sender'])
+        new_active = local_storage['invest_active']
+        new_active = new_active[:active_index] + ("1" if event_args['sender'].checked else "0") + new_active[active_index + 1:]
+        local_storage['invest_active'] = new_active
       Functions.show_hide_marker(self, event_args['sender'].checked, event_args['sender'].tooltip)
 
   def button_marker_icons_change(self, **event_args):
@@ -2152,8 +2163,8 @@ class Map2_0(Map2_0Template):
         self.file_loader_upload.clear()
         return
 
-      self.cluster_data = anvil.server.call('cb_teaser_processing', file)
-      if self.cluster_data['code'] == 400:
+      local_storage['cluster_data'] = anvil.server.call('cb_teaser_processing', file)
+      if local_storage['cluster_data']['code'] == 400:
         Functions.show_error_alert({
           'alert_title': "Error while processing Excel File",
           'alert_message': "It appears that the data set is incorrect. Make sure you have uploaded the correct file.",
@@ -2162,8 +2173,11 @@ class Map2_0(Map2_0Template):
         self.file_loader_upload.clear()
         return
 
-      local_storage['cluster_data'] = self.cluster_data
-
+      self.handle_teaser_data()
+  
+  def handle_teaser_data(self):
+    with anvil.server.no_loading_indicator:
+      ''' Hide UI Elements while Processing and trigger Events '''
       self.cluster_btn.visible = False
       self.invest_class_btn.visible = False
       self.cluster_all.visible = False
@@ -2173,16 +2187,19 @@ class Map2_0(Map2_0Template):
       self.change_cluster_color.visible = False
       self.invest_class_btn.raise_event('click')
       self.cluster_btn.raise_event('click')
+      if self.mobile:
+        self.mobile_hide_click()
+
+      ''' Delete all current Markers '''
       for key in Variables.marker.keys():
         for marker in Variables.marker[key]['marker']:
           marker.remove()
       Variables.marker = {}
       self.icon_grid.clear()
       self.invest_grid.clear()
-      if self.mobile:
-        self.mobile_hide_click()
+
+      ''' Initialise needed Variables '''
       anvil.js.call('update_loading_bar', 15, 'Creating Markers and Clusters')
-      #Initialise Variables
       excel_markers = {}
       added_clusters = []
       added_invest_classes = []
@@ -2200,7 +2217,6 @@ class Map2_0(Map2_0Template):
         ['yellow', '#f4de42', '/_/theme/Pins/CB_MapPin_yellow.png'],
         ['gold', '#ccb666', '/_/theme/Pins/CB_MapPin_gold.png']
       ]
-
       invests = {
         'Super Core': '/_/theme/Pins/CB_MapPin_Sc.png',
         'Core/ Core+': '/_/theme/Pins/CB_MapPin_CC.png',
@@ -2210,12 +2226,13 @@ class Map2_0(Map2_0Template):
         'Workout': '/_/theme/Pins/CB_MapPin_Wo.png',
         'Unclassified': '/_/theme/Pins/CB_MapPin_gold.png'
       }
-  
-      #Create Settings
       self.icon_grid.row_spacing = 0
       counter = 0
-      
-      for asset in self.cluster_data['content']:
+      cluster_active = ""
+      invest_active = ""
+
+      ''' Process Cluster Data '''
+      for asset in local_storage['cluster_data']['content']:
   
         # Create HTML Element for Icon
         el = document.createElement('div')
@@ -2240,8 +2257,9 @@ class Map2_0(Map2_0Template):
           invest_name = "Unnamed"
         else:
           invest_name = asset['invest_class']
-  
+
         if cluster_name not in added_clusters:
+          cluster_active += "1"
           counter += 1
           color = colors[counter]
           text = f"{cluster_name[:11]}..." if len(cluster_name) > 11 else cluster_name
@@ -2250,14 +2268,15 @@ class Map2_0(Map2_0Template):
           icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none', icon_align='top')
           cluster_components[cluster_name] = [checkbox, icon]
           added_clusters.append(cluster_name)
-
+        
         if invest_name not in added_invest_classes:
+          invest_active += "0"
           text = f"{invest_name[:11]}..." if len(invest_name) > 11 else invest_name
           checkbox = CheckBox(checked=False, text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=invest_name)
           checkbox.add_event_handler('change', self.check_box_marker_icons_change)
           invest_components[invest_name] = checkbox
           added_invest_classes.append(invest_name)
-  
+        
         # #Get Coordinates of provided Adress for Marker
         req_str = self.build_request_string(asset)
         req_str += f'.json?access_token={Mapbox_Variables.token}'
@@ -2277,8 +2296,11 @@ class Map2_0(Map2_0Template):
         new_list = self.set_excel_markers(excel_markers[invest_name]['static'], coordinates, excel_markers[invest_name]['marker'], inv_el, asset)
         excel_markers[invest_name]['marker'] = new_list
 
+      local_storage['cluster_active'] = cluster_active
+      local_storage['invest_active'] = invest_active
+
+      ''' Update UI Elements'''
       anvil.js.call('update_loading_bar', 60, 'Adding Menu Items')
-      
       for key in sorted(cluster_components):
         self.icon_grid.add_component(cluster_components[key][0], row=key, col_xs=1, width_xs=8)
         self.icon_grid.add_component(cluster_components[key][1], row=key, col_xs=9, width_xs=1)
@@ -2286,18 +2308,21 @@ class Map2_0(Map2_0Template):
         sorted_keys = ['Super Core', 'Core/ Core+', 'Value Add', 'Opportunistic', 'Development', 'Workout', 'Unclassified']
       for key in sorted(invest_components.keys(), key=lambda x: sorted_keys.index(x)):
         self.invest_grid.add_component(invest_components[key], row=key, col_xs=1, width_xs=8)
-      
-      # Add Marker-Arrays to global Variable Marker
+
+      ''' Update global Marker List '''
       Variables.marker.update(excel_markers)
 
+      ''' Set Custom Colors for Markers '''
       anvil.js.call('update_loading_bar', 80, 'Waiting for individual Cluster Colors')
       self.change_cluster_color_click()
       anvil.js.call('remove_span')
 
+      ''' Update created Markers on Map '''
       anvil.js.call('update_loading_bar', 95, 'Loading created Markers')
       for checkbox in self.invest_grid.get_components():
         checkbox.raise_event('change')
 
+      ''' Show UI Elements and trigger Events '''
       self.cluster_btn.visible = True
       self.invest_class_btn.visible = True
       self.cluster_all.visible = True
@@ -2308,6 +2333,7 @@ class Map2_0(Map2_0Template):
       self.invest_class_btn.raise_event('click')
       self.cluster_btn.raise_event('click')
 
+      ''' Finish and Clean Up '''
       anvil.js.call('update_loading_bar', 100, 'Finishing Process')
       self.file_loader_upload.clear()
       Functions.manipulate_loading_overlay(False)
@@ -2956,7 +2982,7 @@ class Map2_0(Map2_0Template):
       from .Change_Cluster_Color import Change_Cluster_Color
       Functions.manipulate_loading_overlay(False)
       response = alert(content=Change_Cluster_Color(components=self.icon_grid.get_components(), mobile=self.mobile), dismissible=False, large=True, buttons=[], role='custom_alert')
-      print(response)
+      local_storage['cluster_color'] = response
       Functions.manipulate_loading_overlay(True)
       for key in Variables.marker:
         if key in response:
@@ -3176,7 +3202,7 @@ class Map2_0(Map2_0Template):
         popped = Variables.marker[setting].pop('marker')
         deleted_marker[setting] = popped
       cluster = {
-        'data': self.cluster_data,
+        'data': local_storage['cluster_data'],
         'settings': Variables.marker
       }
 
