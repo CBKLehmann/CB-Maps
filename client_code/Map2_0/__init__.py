@@ -2234,7 +2234,7 @@ class Map2_0(Map2_0Template):
       ''' Process Cluster Data '''
       for asset in local_storage['cluster_data']['content']:
   
-        # Create HTML Element for Icon
+        ''' Create HTML Element for Icon '''
         el = document.createElement('div')
         el.className = f'{asset["address"]}'
         el.style.width = '40px'
@@ -2243,6 +2243,7 @@ class Map2_0(Map2_0Template):
         el.style.backgroundrepeat = 'no-repeat'
         el.style.zIndex = '250'
 
+        ''' Create HTML Element for Icon '''
         # Create HTML Element for Invest Class Icon
         inv_el = document.createElement('div')
         inv_el.className = f'{asset["address"]}_investment'
