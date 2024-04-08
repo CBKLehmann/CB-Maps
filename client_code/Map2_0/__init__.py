@@ -2228,8 +2228,14 @@ class Map2_0(Map2_0Template):
       }
       self.icon_grid.row_spacing = 0
       counter = 0
-      cluster_active = ""
-      invest_active = ""
+      if not 'cluster_active' in local_storage.keys() or not local_load:
+        cluster_active = {}
+      else:
+        cluster_active = local_storage['cluster_active']
+      if not 'invest_active' in local_storage.keys() or not local_load:
+        invest_active = {}
+      else:
+        invest_active = local_storage['invest_active']
 
       ''' Process Cluster Data '''
       for asset in local_storage['cluster_data']['content']:
@@ -2262,21 +2268,25 @@ class Map2_0(Map2_0Template):
           if 'cluster_color' in local_storage.keys():
             color = local_storage['cluster_color'][cluster_name]
           else:
-            cluster_active += "1"
             counter += 1
             color = colors[counter]
+          if not local_load:
+            cluster_active[cluster_name] = True
           text = f"{cluster_name[:11]}..." if len(cluster_name) > 11 else cluster_name
-          checkbox = CheckBox(checked=True, text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=cluster_name)
-          checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+          checkbox = CheckBox(checked=cluster_active[cluster_name], text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=cluster_name)
+          if not local_load:
+            checkbox.add_event_handler('change', self.check_box_marker_icons_change)
           icon = Label(icon='fa:circle', foreground=color[1], spacing_above='none', spacing_below='none', icon_align='top')
           cluster_components[cluster_name] = [checkbox, icon]
           added_clusters.append(cluster_name)
         
         if invest_name not in added_invest_classes:
-          invest_active += "0"
+          if not local_load:
+            invest_active[invest_name] = False
           text = f"{invest_name[:11]}..." if len(invest_name) > 11 else invest_name
-          checkbox = CheckBox(checked=False, text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=invest_name)
-          checkbox.add_event_handler('change', self.check_box_marker_icons_change)
+          checkbox = CheckBox(checked=invest_active[invest_name], text=text, spacing_above='none', spacing_below='none', font='Roboto+Flex', font_size=13, role='switch-rounded', tooltip=invest_name)
+          if not local_load:
+            checkbox.add_event_handler('change', self.check_box_marker_icons_change)
           invest_components[invest_name] = checkbox
           added_invest_classes.append(invest_name)
         
@@ -2325,10 +2335,10 @@ class Map2_0(Map2_0Template):
 
       ''' Update created Markers on Map '''
       anvil.js.call('update_loading_bar', 95, 'Loading created Markers')
-      for index, checkbox in enumerate(self.invest_grid.get_components()):
+      for checkbox in self.invest_grid.get_components():
         raise_event = True
         if 'invest_active' in local_storage.keys():
-          if local_storage['invest_active'][index] == "1":
+          if local_storage['invest_active'][checjbox.text] == "1":
             raise_event = False
         if raise_event:
           checkbox.raise_event('change')
