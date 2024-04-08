@@ -101,23 +101,28 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
     if event_args['sender'].selected_value == 'blue':
       color = '#234ce2'
       colorName = 'blue'
-      source = f'{self.app_url}/_/theme/Pins/CB_MapPin_blue.png'
+      raw_source = '/_/theme/Pins/CB_MapPin_blue.png'
+      source = f'{self.app_url}{raw_source}'
     elif event_args['sender'].selected_value == 'green':
       color = '#438e39'
       colorName = 'green'
-      source = f'{self.app_url}/_/theme/Pins/CB_MapPin_green.png'
+      raw_source = '/_/theme/Pins/CB_MapPin_green.png'
+      source = f'{self.app_url}{raw_source}'
     elif event_args['sender'].selected_value == 'grey':
       color = '#b3b3b3'
       colorName = 'grey'
-      source = f'{self.app_url}/_/theme/Pins/CB_MapPin_grey.png'
+      raw_source = '/_/theme/Pins/CB_MapPin_grey.png'
+      source = f'{self.app_url}{raw_source}'
     elif event_args['sender'].selected_value == 'lightblue':
       color = '#2fb2e0'
       colorName = 'lightblue'
-      source = f'{self.app_url}/_/theme/Pins/CB_MapPin_lightblue.png'
+      raw_source = '/_/theme/Pins/CB_MapPin_lightblue.png'
+      source = f'{self.app_url}{raw_source}'
     elif event_args['sender'].selected_value == 'orange':
       color = '#fc9500'
       colorName = 'orange'
-      source = f'{self.app_url}/_/theme/Pins/CB_MapPin_orange.png'
+      raw_source = '/_/theme/Pins/CB_MapPin_orange.png'
+      source = f'{self.app_url}{raw_source}'
     elif event_args['sender'].selected_value == 'pink':
       color = '#e254b7'
       colorName = 'pink'
