@@ -348,7 +348,7 @@ class Map2_0(Map2_0Template):
       for marker in local_storage['custom_marker']:
         self.create_custom_marker(marker, marker['coordinates'])
     if 'cluster_data' in self.local_keys:
-      pass
+      self.handle_teaser_data(True)
     self.local_loading = False
     Functions.manipulate_loading_overlay(False)
   
@@ -2175,7 +2175,7 @@ class Map2_0(Map2_0Template):
 
       self.handle_teaser_data()
   
-  def handle_teaser_data(self):
+  def handle_teaser_data(self, local_load = False):
     with anvil.server.no_loading_indicator:
       ''' Hide UI Elements while Processing and trigger Events '''
       self.cluster_btn.visible = False
@@ -2299,8 +2299,10 @@ class Map2_0(Map2_0Template):
         new_list = self.set_excel_markers(excel_markers[invest_name]['static'], coordinates, excel_markers[invest_name]['marker'], inv_el, asset)
         excel_markers[invest_name]['marker'] = new_list
 
-      local_storage['cluster_active'] = cluster_active
-      local_storage['invest_active'] = invest_active
+      if not 'cluster_active' in local_storage.keys():
+        local_storage['cluster_active'] = cluster_active
+      if not 'invest_active' in local_storage.keys():
+        local_storage['invest_active'] = invest_active
 
       ''' Update UI Elements'''
       anvil.js.call('update_loading_bar', 60, 'Adding Menu Items')
@@ -2316,14 +2318,20 @@ class Map2_0(Map2_0Template):
       Variables.marker.update(excel_markers)
 
       ''' Set Custom Colors for Markers '''
-      anvil.js.call('update_loading_bar', 80, 'Waiting for individual Cluster Colors')
-      self.change_cluster_color_click()
-      anvil.js.call('remove_span')
+      if not local_load:
+        anvil.js.call('update_loading_bar', 80, 'Waiting for individual Cluster Colors')
+        self.change_cluster_color_click()
+        anvil.js.call('remove_span')
 
       ''' Update created Markers on Map '''
       anvil.js.call('update_loading_bar', 95, 'Loading created Markers')
-      for checkbox in self.invest_grid.get_components():
-        checkbox.raise_event('change')
+      for index, checkbox in enumerate(self.invest_grid.get_components()):
+        raise_event = True
+        if 'invest_active' in local_storage.keys():
+          if local_storage['invest_active'][index] == "1":
+            raise_event = False
+        if raise_event:
+          checkbox.raise_event('change')
 
       ''' Show UI Elements and trigger Events '''
       self.cluster_btn.visible = True
@@ -2991,7 +2999,7 @@ class Map2_0(Map2_0Template):
         if key in response:
           Variables.marker[key]['color'] = response[key]
           for marker in Variables.marker[key]['marker']:
-            anvil.js.call('changeBackground', marker['_element'], Variables.marker[key]["color"][2])
+            anvil.js.call('changeBackground', marker['_element'], f"{Variables.app_url}{Variables.marker[key]['color'][2]}")
       for component in self.icon_grid.get_components():
         if type(component) == CheckBox:
           key = component.tooltip

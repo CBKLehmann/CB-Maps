@@ -28,34 +28,44 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
       if type(component) == Label:
         if component.foreground == '#234ce2':
           self.color = 'blue'
-          self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_blue.png'
+          self.raw_source = "/_/theme/Pins/CB_MapPin_blue.png"
+          self.source = f'{self.app_url}{self.raw_source}'
         elif component.foreground == '#438e39':
           self.color = 'green'
-          self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_green.png'
+          self.raw_source = "/_/theme/Pins/CB_MapPin_green.png"
+          self.source = f'{self.app_url}{self.raw_source}'
         elif component.foreground == '#b3b3b3':
           self.color = 'grey'
-          self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_grey.png'
+          self.raw_source = "/_/theme/Pins/CB_MapPin_grey.png"
+          self.source = f'{self.app_url}{self.raw_source}'
         elif component.foreground == '#2fb2e0':
           self.color = 'lightblue'
-          self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_lightblue.png'
+          self.raw_source = "/_/theme/Pins/CB_MapPin_lightblue.png"
+          self.source = f'{self.app_url}{self.raw_source}'
         elif component.foreground == '#fc9500':
           self.color = 'orange'
-          self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_orange.png'
+          self.raw_source = "/_/theme/Pins/CB_MapPin_orange.png"
+          self.source = f'{self.app_url}{self.raw_source}'
         elif component.foreground == '#e254b7':
           self.color = 'pink'
-          self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_pink.png'
+          self.raw_source = "/_/theme/Pins/CB_MapPin_pink.png"
+          self.source = f'{self.app_url}{self.raw_source}'
         elif component.foreground == '#d32f2f':
           self.color = 'red'
-          self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_red.png'
+          self.raw_source = "/_/theme/Pins/CB_MapPin_red.png"
+          self.source = f'{self.app_url}{self.raw_source}'
         elif component.foreground == '#ffffff':
           self.color = 'white'
-          self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_white.png'
+          self.raw_source = "/_/theme/Pins/CB_MapPin_white.png"
+          self.source = f'{self.app_url}{self.raw_source}'
         elif component.foreground == '#f4de42':
           self.color = 'yellow'
-          self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_yellow.png'
+          self.raw_source = "/_/theme/Pins/CB_MapPin_yellow.png"
+          self.source = f'{self.app_url}{self.raw_source}'
         elif component.foreground == '#ccb666':
           self.color = 'gold'
-          self.source = f'{self.app_url}/_/theme/Pins/CB_MapPin_gold.png'
+          self.raw_source = "/_/theme/Pins/CB_MapPin_gold.png"
+          self.source = f'{self.app_url}{self.raw_source}'
         if self.color in self.colors:
           self.colors.remove(self.color)
         point = Label(icon='fa:circle', align='center', foreground=component.foreground)
@@ -73,7 +83,7 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
         self.label.tag.type = 'label'
         image.tag.color = self.color
         image.tag.type = 'image'
-        image.tag.source = self.source
+        image.tag.source = self.raw_source
         point.tag.color = self.color
         point.tag.type = 'point'
       else:
