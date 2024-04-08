@@ -126,23 +126,28 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
     elif event_args['sender'].selected_value == 'pink':
       color = '#e254b7'
       colorName = 'pink'
-      source = f'{self.app_url}/_/theme/Pins/CB_MapPin_pink.png'
+      raw_source = '/_/theme/Pins/CB_MapPin_pink.png'
+      source = f'{self.app_url}{raw_source}'
     elif event_args['sender'].selected_value == 'red':
       color = '#d32f2f'
       colorName = 'red'
-      source = f'{self.app_url}/_/theme/Pins/CB_MapPin_red.png'
+      raw_source = '/_/theme/Pins/CB_MapPin_red.png'
+      source = f'{self.app_url}{raw_source}'
     elif event_args['sender'].selected_value == 'white':
       color = '#ffffff'
       colorName = 'white'
-      source = f'{self.app_url}/_/theme/Pins/CB_MapPin_white.png'
+      raw_source = '/_/theme/Pins/CB_MapPin_white.png'
+      source = f'{self.app_url}{raw_source}'
     elif event_args['sender'].selected_value == 'yellow':
       color = '#f4de42'
       colorName = 'yellow'
-      source = f'{self.app_url}/_/theme/Pins/CB_MapPin_yellow.png'
+      raw_source = '/_/theme/Pins/CB_MapPin_yellow.png'
+      source = f'{self.app_url}{raw_source}'
     elif event_args['sender'].selected_value == 'gold':
       color = '#ccb666'
       colorName = 'gold'
-      source = f'{self.app_url}/_/theme/Pins/CB_MapPin_gold.png'
+      raw_source = '/_/theme/Pins/CB_MapPin_gold.png'
+      source = f'{self.app_url}{raw_source}'
 
     for component in self.grid_panel_1.get_components():
       if component.tag.type == 'point':
@@ -152,7 +157,7 @@ class Change_Cluster_Color(Change_Cluster_ColorTemplate):
       elif component.tag.type == 'image':
         if component.tag.color == self.oldColor:
           component.tag.color = colorName
-          component.tag.source = source
+          component.tag.source = raw_source
           component.source = source
       elif component.tag.type == 'select':
         if component.tag.color == self.oldColor:
