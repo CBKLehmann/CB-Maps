@@ -2361,7 +2361,7 @@ class Map2_0(Map2_0Template):
       if 'Betreutes' in file.name:
         anvil.server.call('update_assisted_living_facilities_db', file)
       elif 'Pflegeheime' in file.name:
-        anvil.server.call('write_caredb_care', file)
+        anvil.server.call('update_nursing_home_facilities', file)
       else:
         print('Uploaded incorrect File')
     finally:
