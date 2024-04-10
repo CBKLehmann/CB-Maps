@@ -2359,7 +2359,7 @@ class Map2_0(Map2_0Template):
   def db_upload_change(self, file, **event_args):
     try:
       if 'Betreutes' in file.name:
-        anvil.server.call('write_caredb_bw', file)
+        anvil.server.call('update_assisted_living_facilities_db', file)
       elif 'Pflegeheime' in file.name:
         anvil.server.call('write_caredb_care', file)
       else:
