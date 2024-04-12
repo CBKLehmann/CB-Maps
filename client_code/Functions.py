@@ -335,7 +335,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
             # Tags
             marker_details += "<div class='tagContainer'>"
             marker_details += f"<p class='tag'>{ele['type']}</p>"
-            spez = ele['specialization'].split('|')
+            spez = ele['specialization'].split('|') if ele['specialization'] is not None else 'N.A.'
             for entry in spez:
               marker_details += f"<p class='tag'>{entry}</p>"
             marker_details += f"<p class='tag'>{ele['status']}</p>"
@@ -365,68 +365,67 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
             # Parting Line
             marker_details += "<div class='partingLine'></div>"
             # MDK Grade
-            mdk_report = json.loads(ele['mdk_report'])
+            mdk_report = json.loads(json.loads(ele['mdk_report']))
             print(mdk_report)
             if not mdk_report['data_date'] == "-" and mdk_report['data_date'] is not None :
               date = mdk_report['data_date'].split('-')
               marker_details += f"<p>MDK Evaluation from the {date[2]}.{date[1]}.{date[0]}</p>"
             else:
               marker_details += f"<p>MDK Evaluation from the {mdk_report['data_date']}</p>"
-            marker_details += f"<p><b>Ventilation: </b> {mdk_report['result_ventilation'] if mdk_report['result_ventilation'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Vegetative State: </b> {mdk_report['result_vegetative_state'] if mdk_report['result_vegetative_state'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Mobility: </b> {mdk_report['result_mobility'] if mdk_report['result_mobility'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Food: </b> {mdk_report['result_food'] if mdk_report['result_food'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Continence: </b> {mdk_report['result_continence'] if mdk_report['result_continence'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Personal hygiene: </b> {mdk_report['result_personal_hygiene'] if mdk_report['result_personal_hygiene'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Medication: </b> {mdk_report['result_medication'] if mdk_report['result_medication'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Pain management: </b> {mdk_report['result_pain_management'] if mdk_report['result_pain_management'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Wound care: </b> {mdk_report['result_wound_care'] if mdk_report['result_wound_care'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Special needs: </b> {mdk_report['result_special_needs'] if mdk_report['result_special_needs'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Vision and hearing problems: </b> {mdk_report['result_vision_and_hearing_problems'] if mdk_report['result_vision_and_hearing_problems'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Daylie routine: </b> {mdk_report['result_daylie_routine'] if mdk_report['result_daylie_routine'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Night care: </b> {mdk_report['result_night_care'] if mdk_report['result_night_care'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Move-in phase: </b> {mdk_report['result_move-in_phase'] if mdk_report['result_move-in_phase'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Hospitalization: </b> {mdk_report['result_hospitalization'] if mdk_report['result_hospitalization'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Behavioral problems: </b> {mdk_report['result_behavioral_problems'] if mdk_report['result_behavioral_problems'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Deprivation of liberty: </b> {mdk_report['result_deprivation_of_liberty'] if mdk_report['result_deprivation_of_liberty'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Palliative concept: </b> {mdk_report['result_palliative_concept'] if mdk_report['result_palliative_concept'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Palliativ outsourcing: </b> {mdk_report['result_palliativ_outsourcing'] if mdk_report['result_palliativ_outsourcing'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Palliativ last wishes: </b> {mdk_report['result_palliativ_last_wishes'] if mdk_report['result_palliativ_last_wishes'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Palliativ authority known: </b> {mdk_report['result_palliativ_authority_known'] if mdk_report['result_palliativ_authority_known'] is not null else 'N.A.'}</p>"
-            marker_details += f"<p><b>Palliativ inform relatives: </b> {mdk_report['result_palliativ_inform_relatives'] if mdk_report['result_palliativ_inform_relatives'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Ventilation: </b> {mdk_report['result_ventilation'] if mdk_report['result_ventilation'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Vegetative State: </b> {mdk_report['result_vegetative_state'] if mdk_report['result_vegetative_state'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Mobility: </b> {mdk_report['result_mobility'] if mdk_report['result_mobility'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Food: </b> {mdk_report['result_food'] if mdk_report['result_food'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Continence: </b> {mdk_report['result_continence'] if mdk_report['result_continence'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Personal hygiene: </b> {mdk_report['result_personal_hygiene'] if mdk_report['result_personal_hygiene'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Medication: </b> {mdk_report['result_medication'] if mdk_report['result_medication'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Pain management: </b> {mdk_report['result_pain_management'] if mdk_report['result_pain_management'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Wound care: </b> {mdk_report['result_wound_care'] if mdk_report['result_wound_care'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Special needs: </b> {mdk_report['result_special_needs'] if mdk_report['result_special_needs'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Vision and hearing problems: </b> {mdk_report['result_vision_and_hearing_problems'] if mdk_report['result_vision_and_hearing_problems'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Daylie routine: </b> {mdk_report['result_daylie_routine'] if mdk_report['result_daylie_routine'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Night care: </b> {mdk_report['result_night_care'] if mdk_report['result_night_care'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Move-in phase: </b> {mdk_report['result_move-in_phase'] if mdk_report['result_move-in_phase'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Hospitalization: </b> {mdk_report['result_hospitalization'] if mdk_report['result_hospitalization'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Behavioral problems: </b> {mdk_report['result_behavioral_problems'] if mdk_report['result_behavioral_problems'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Deprivation of liberty: </b> {mdk_report['result_deprivation_of_liberty'] if mdk_report['result_deprivation_of_liberty'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Palliative concept: </b> {mdk_report['result_palliative_concept'] if mdk_report['result_palliative_concept'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Palliativ outsourcing: </b> {mdk_report['result_palliativ_outsourcing'] if mdk_report['result_palliativ_outsourcing'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Palliativ last wishes: </b> {mdk_report['result_palliativ_last_wishes'] if mdk_report['result_palliativ_last_wishes'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Palliativ authority known: </b> {mdk_report['result_palliativ_authority_known'] if mdk_report['result_palliativ_authority_known'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Palliativ inform relatives: </b> {mdk_report['result_palliativ_inform_relatives'] if mdk_report['result_palliativ_inform_relatives'] is not None else 'N.A.'}</p>"
             mdk_blacklist = ['report_date', 'data_date']
             mdk_letters = ['A', 'B', 'C', 'D']
             mdk_grade = 0
             mdk_count = 0
             for key in mdk_report:
-              if not key in mdk_blacklist and mdk_report[key] is not null:
+              if not key in mdk_blacklist and mdk_report[key] is not None:
                 mdk_grade += int(mdk_report[key])
                 mdk_count += 1
+            if not mdk_count == 0:
             mdk_grade = int(mdk_grade / mdk_count)
             mdk_letter_grade = mdk_letters[mdk_grade]
-            marker_details += f"<p><b>MDK Grade: </b> {ele['mdk_letter_grade']}</p>"
+            marker_details += f"<p><b>MDK Grade: </b> {mdk_letter_grade}</p>"
             marker_details += "<div class='partingLine'></div>"
-            marker_details += f"<p><b>Number of patients treated: </b> {ele['anz_vers_pat']}</p>"
-            
-            marker_details += f"<p><b>Number of places full care: </b> {ele['platz_voll_pfl']}</p>"
-            marker_details += f"<p><b>Number of places for short-term care: </b> {ele['platz_kurzpfl']}</p>"
-            marker_details += f"<p><b>Number of places night care: </b> {ele['platz_nachtpfl']}</p>"
-            
-            marker_details += f"<p><b>Single rooms: </b> {ele['ez']}</p>"
-            marker_details += f"<p><b>Double roooms: </b> {ele['dz']}</p>"
+            # marker_details += f"<p><b>Number of patients treated: </b> {ele['anz_vers_pat']}</p>"
+            marker_details += f"<p><b>Number of places fulltime care: </b> {ele['number_of_places_fulltime_care'] if ele['number_of_places_fulltime_care'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Number of places for shortterm care: </b> {ele['number_of_places_shortterm_care'] if ele['number_of_places_shortterm_care'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Number of places night care: </b> {ele['number_of_places_night_care'] if ele['number_of_places_night_care'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Single rooms: </b> {ele['single_rooms'] if ele['single_rooms'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Double roooms: </b> {ele['double_rooms'] if ele['double_rooms'] is not None else 'N.A.'}</p>"
             marker_details += "<div class='line'></div>"
-            marker_details += f"<p><b>Education fee: </b> {ele['ausbildungsumlage']}</p>"
-            marker_details += f"<p><b>EEE: </b> {ele['eee']}</p>"
-            marker_details += f"<p><b>UuV: </b> {ele['uuv']}</p>"
-            marker_details += f"<p><b>Invest: </b> {ele['invest']}</p>"
-            marker_details += f"<p><b>PG 1: </b> {ele['pg_1']}</p>"
-            marker_details += f"<p><b>PG 2: </b> {ele['pg_2']}</p>"
-            marker_details += f"<p><b>PG 3: </b> {ele['pg_3']}</p>"
-            marker_details += f"<p><b>PG 4: </b> {ele['pg_4']}</p>"
-            marker_details += f"<p><b>PG 5: </b> {ele['pg_5']}</p>"
+            marker_details += f"<p><b>Apprenticeship levy: </b> {ele['apprenticeship_levy'] if ele['apprenticeship_levy'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>EEE: </b> {ele['eee'] if ele['apprenticeship_levy'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>UuV: </b> {ele['uuv'] if ele['uuv'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>Invest: </b> {ele['invest'] if ele['invest'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>PG 1: </b> {ele['pg_1'] if ele['pg_1'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>PG 2: </b> {ele['pg_2'] if ele['pg_2'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>PG 3: </b> {ele['pg_3'] if ele['pg_3'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>PG 4: </b> {ele['pg_4'] if ele['pg_4'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>PG 5: </b> {ele['pg_5'] if ele['pg_5'] is not None else 'N.A.'}</p>"
             marker_details += "<div class='line'></div>"
-            marker_details += f"<p><b>Holder ID: </b> {ele['traeger_id']}</p>"
-            marker_details += f"<p><b>IK_Number: </b> {ele['ik_nummer']}</p>"
+            marker_details += f"<p><b>Operator ID: </b> {ele['operator_id'] if ele['operator_id'] is not None else 'N.A.'}</p>"
+            marker_details += f"<p><b>IK Number: </b> {ele['ik_number'] if ele['ik_number'] is not None else 'N.A.'}</p>"
             if not self.role == 'guest':
               marker_details += f"<div class='rmv_container'><button id='remove' class='btn btn-default'><img src='{Variables.app_url}/_/theme/Icons/remove_marker.png' class='iconRemove' />Remove Marker</button></div>"
 
@@ -756,7 +755,6 @@ def get_current_date_as_string():
     else:
       minute = date.minute
     return f"{day}.{month}.{year} {hour}:{minute}"
-
 
 """ Already reworked Functions """
 def get_mapbox_token():
