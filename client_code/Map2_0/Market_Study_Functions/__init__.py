@@ -18,11 +18,11 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
     for entry in entries:
       added = False
       if topic == "nursing_homes":
-        lat_entry = "%.6f" % float(entry['coord_lat'])
-        lng_entry = "%.6f" % float(entry['coord_lon'])
+        lat_entry = "%.6f" % float(entry['latitude'])
+        lng_entry = "%.6f" % float(entry['longitude'])
       else:
-        lat_entry = "%.6f" % float(entry['coord_lat'])
-        lng_entry = "%.6f" % float(entry['coord_lon'])
+        lat_entry = "%.6f" % float(entry['latitude'])
+        lng_entry = "%.6f" % float(entry['longitude'])
       for icon in Variables.activeIcons[topic]:
         if not added:
           lng_icon = "%.6f" % icon['_lngLat']['lng']
