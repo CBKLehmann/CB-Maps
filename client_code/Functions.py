@@ -5,6 +5,7 @@ from anvil.js.window import document
 import anvil.js
 import datetime
 import math
+import json
 
 global Variables, Layer, Images, Functions
 
@@ -309,7 +310,8 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
         # Check if Category is PflegeDB
         elif category == 'nursing_homes':
 
-          el_coords = [ele['coord_lon'], ele['coord_lat']]
+          print(ele)
+          el_coords = [ele['longitude'], ele['latitude']]
 
           if category in Variables.removed_markers.keys():
             for marker in Variables.removed_markers[category]:
@@ -322,62 +324,87 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
             # Create Popup for Element
             popup = mapboxgl.Popup({'offset': 25, 'className': 'markerPopup'}).setHTML(
               f"<p class='popup_name'><b>{ele['name']}</b></p>"
-              f"<p class='popup_type'>{ele['sektor']}</p>"
               f"<p class='popup_distance'>{distance} km  to the location</p>"
               "<p class='popup_betreiber_label'><b>Operator:</b></p>"
-              f"<p class='popup_betreiber'>{ele['betreiber']}</p>"
+              f"<p class='popup_betreiber'>{ele['operator']}</p>"
               f"<p class='popup_status'><b>Status:</b> {ele['status']}</p>"
             )
-            # popup_element = popup.getElement()
-            # print(popup_element)
-            # popup.getElement().addEventListener('mouseenter', print('Hello'))
             marker_details = f"<div class='x-btn-container'><button id='close' class='btn btn-default'>X</button></div>"
             # Name of Object
             marker_details += f"<div class='objectName'>{ele['name']}</div>"
             # Tags
             marker_details += "<div class='tagContainer'>"
-            marker_details += f"<p class='tag'>{ele['sektor']}</p>"
-            marker_details += f"<p class='tag'>{ele['art']}</p>"
-            spez = ele['spezialisierung'].split('|')
+            marker_details += f"<p class='tag'>{ele['type']}</p>"
+            spez = ele['specialization'].split('|')
             for entry in spez:
               marker_details += f"<p class='tag'>{entry}</p>"
             marker_details += f"<p class='tag'>{ele['status']}</p>"
             marker_details += "</div>"
             # Year of Construction/Modernisation
-            marker_details += f"<p>Year of construction: {ele['baujahr']}</p>"
-            marker_details += f"<p>Year od modernization: {ele['modernisierung']}</p>"
+            marker_details += f"<p>Year of construction: {ele['year_of_construction']}</p>"
+            marker_details += f"<p>Year od modernization: {ele['year_of_modernisation']}</p>"
             # Parting Line
             marker_details += "<div class='partingLine'></div>"
             # Contact Details
-            marker_details += f"<div class='containerAddress'><img src='{Variables.app_url}/_/theme/Pins/Address.png' class='iconAddress' /><p>{ele['strasse']}, {ele['plz']} {ele['ort']}"
+            marker_details += f"<div class='containerAddress'><img src='{Variables.app_url}/_/theme/Pins/Address.png' class='iconAddress' /><p>{ele['street']}, {ele['postcode']} {ele['city']}"
             states = ['Berlin', 'Bremen', 'Hamburg']
-            if not ele['bundesland'] in states:
-              marker_details += f", {ele['bundesland']}</p></div>"
+            if not ele['federal_state'] in states:
+              marker_details += f", {ele['federal_state']}</p></div>"
             else:
               marker_details += "</p></div>"
-            marker_details += f"<div class='containerAddress'><img src='{Variables.app_url}/_/theme/Icons/telefon.png' class='iconAddress' /><p>{ele['telefon']}</p></div>"
+            marker_details += f"<div class='containerAddress'><img src='{Variables.app_url}/_/theme/Icons/telefon.png' class='iconAddress' /><p>{ele['telephone']}</p></div>"
             marker_details += f"<p>{ele['email']}</p>"
-            marker_details += f"<p>{ele['webseite']}</p>"
+            marker_details += f"<p>{ele['domain']}</p>"
             # Parting Line
             marker_details += "<div class='partingLine'></div>"
             # Operator
-            marker_details += f"<p>Operator: {ele['betreiber']}</p>"
-            marker_details += f"<p>Subsidiary 1: {ele['tochterfirma1']}</p>"
-            marker_details += f"<p>Subsidiary 2: {ele['tochterfirma2']}</p>"
+            marker_details += f"<p>Operator: {ele['operator']}</p>"
+            marker_details += f"<p>Unternehmensgruppe: {ele['company_group']}</p>"
+            marker_details += f"<p>Subsidiary 1: {ele['subsidiary_1']}</p>"
+            marker_details += f"<p>Subsidiary 2: {ele['subsidiary_2']}</p>"
             # Parting Line
             marker_details += "<div class='partingLine'></div>"
             # MDK Grade
-            if not ele['mdk_datum'] == "-" and ele['mdk_datum'] is not None :
-              date = ele['mdk_datum'].split('-')
+            mdk_report = json.loads(ele['mdk_report'])
+            print(mdk_report)
+            if not mdk_report['data_date'] == "-" and mdk_report['data_date'] is not None :
+              date = mdk_report['data_date'].split('-')
               marker_details += f"<p>MDK Evaluation from the {date[2]}.{date[1]}.{date[0]}</p>"
             else:
-              marker_details += f"<p>MDK Evaluation from the {ele['mdk_datum']}</p>"
-            marker_details += f"<p><b>Nursing and medical care: </b> {ele['pfl_u_med_vers']}</p>"
-            marker_details += f"<p><b>Dealing with residents with dementia: </b> {ele['umg_mit_dem_bew']}</p>"
-            marker_details += f"<p><b>Social care and daily routine: </b> {ele['soz_betrualltag']}</p>"
-            marker_details += f"<p><b>Housing, food, housekeeping and hygiene: </b> {ele['wohn_verpfl_hausw_hyg']}</p>"
-            marker_details += f"<p><b>Survey of residents: </b> {ele['befr_bew']}</p>"
-            marker_details += f"<p><b>MDK Grade: </b> {ele['mdk_note']}</p>"
+              marker_details += f"<p>MDK Evaluation from the {mdk_report['data_date']}</p>"
+            marker_details += f"<p><b>Ventilation: </b> {mdk_report['result_ventilation'] if mdk_report['result_ventilation'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Vegetative State: </b> {mdk_report['result_vegetative_state'] if mdk_report['result_vegetative_state'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Mobility: </b> {mdk_report['result_mobility'] if mdk_report['result_mobility'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Food: </b> {mdk_report['result_food'] if mdk_report['result_food'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Continence: </b> {mdk_report['result_continence'] if mdk_report['result_continence'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Personal hygiene: </b> {mdk_report['result_personal_hygiene'] if mdk_report['result_personal_hygiene'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Medication: </b> {mdk_report['result_medication'] if mdk_report['result_medication'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Pain management: </b> {mdk_report['result_pain_management'] if mdk_report['result_pain_management'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Wound care: </b> {mdk_report['result_wound_care'] if mdk_report['result_wound_care'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Special needs: </b> {mdk_report['result_special_needs'] if mdk_report['result_special_needs'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Vision and hearing problems: </b> {mdk_report['result_vision_and_hearing_problems'] if mdk_report['result_vision_and_hearing_problems'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Daylie routine: </b> {mdk_report['result_daylie_routine'] if mdk_report['result_daylie_routine'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Night care: </b> {mdk_report['result_night_care'] if mdk_report['result_night_care'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Move-in phase: </b> {mdk_report['result_move-in_phase'] if mdk_report['result_move-in_phase'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Hospitalization: </b> {mdk_report['result_hospitalization'] if mdk_report['result_hospitalization'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Behavioral problems: </b> {mdk_report['result_behavioral_problems'] if mdk_report['result_behavioral_problems'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Deprivation of liberty: </b> {mdk_report['result_deprivation_of_liberty'] if mdk_report['result_deprivation_of_liberty'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Palliative concept: </b> {mdk_report['result_palliative_concept'] if mdk_report['result_palliative_concept'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Palliativ outsourcing: </b> {mdk_report['result_palliativ_outsourcing'] if mdk_report['result_palliativ_outsourcing'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Palliativ last wishes: </b> {mdk_report['result_palliativ_last_wishes'] if mdk_report['result_palliativ_last_wishes'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Palliativ authority known: </b> {mdk_report['result_palliativ_authority_known'] if mdk_report['result_palliativ_authority_known'] is not null else 'N.A.'}</p>"
+            marker_details += f"<p><b>Palliativ inform relatives: </b> {mdk_report['result_palliativ_inform_relatives'] if mdk_report['result_palliativ_inform_relatives'] is not null else 'N.A.'}</p>"
+            mdk_blacklist = ['report_date', 'data_date']
+            mdk_letters = ['A', 'B', 'C', 'D']
+            mdk_grade = 0
+            mdk_count = 0
+            for key in mdk_report:
+              if not key in mdk_blacklist and mdk_report[key] is not null:
+                mdk_grade += int(mdk_report[key])
+                mdk_count += 1
+            mdk_grade = int(mdk_grade / mdk_count)
+            mdk_letter_grade = mdk_letters[mdk_grade]
+            marker_details += f"<p><b>MDK Grade: </b> {ele['mdk_letter_grade']}</p>"
             marker_details += "<div class='partingLine'></div>"
             marker_details += f"<p><b>Number of patients treated: </b> {ele['anz_vers_pat']}</p>"
             
