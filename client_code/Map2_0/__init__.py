@@ -881,14 +881,9 @@ class Map2_0(Map2_0Template):
       inpatients_lk = 0
       beds_lk = 0
       for el in care_data_district:
-          if not el['anz_vers_pat'] == '-':
-              inpatients_lk += int(el['anz_vers_pat']) if el['anz_vers_pat'] is not None else 0
-          if not el['platz_voll_pfl'] == '-':
-              beds_lk += int(el['platz_voll_pfl'])
-          if not el['platz_kurzpfl'] == '-':
-              beds_lk += int(el['platz_kurzpfl'])
-          if not el['platz_nachtpfl'] == '-':
-              beds_lk += int(el['platz_nachtpfl'])
+        inpatients_lk += int(el['number_of_patients_cared_for']) if el['number_of_patients_cared_for'] is not None else 0
+        if el['number_of_places_fulltime_care'] is not None:
+          beds_lk += int(el['number_of_places_fulltime_care'])
       occupancy_lk = round((inpatients_lk * 100) / beds_lk, 1)
       free_beds_lk = beds_lk - inpatients_lk
     
@@ -1364,7 +1359,7 @@ class Map2_0(Map2_0Template):
                   'txt': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
                   'align': 'center',
               }
-              current_competitor_page['cell'][f'competitor_{table_position}_operator_type'] = {
+              current_competitor_page['cell'][f'competitor_{table_position}_type'] = {
                   'color': [0, 0, 0],
                   'font': 'segoeui',
                   'size': 8,
@@ -1372,7 +1367,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 12,
                   'h': 6,
-                  'txt': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
+                  'txt': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
                   'align': 'center',
               }
               current_competitor_page['cell'][f'competitor_{table_position}_status'] = {
@@ -3219,7 +3214,7 @@ class Map2_0(Map2_0Template):
         popped = Variables.marker[setting].pop('marker')
         deleted_marker[setting] = popped
       cluster = {
-        'data': local_storage['cluster_data'],
+        'data': local_storage['cluster_data'] if 'cluster_data' in local_storage.keys() else {},
         'settings': Variables.marker
       }
 
