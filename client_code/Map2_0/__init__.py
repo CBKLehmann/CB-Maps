@@ -789,37 +789,39 @@ class Map2_0(Map2_0Template):
       operator_nonProfit = []
       operator_private = []
       for care_entry in data_comp_analysis_nh['data']:
-          beds_amount = 0
-          if not care_entry[0]['anz_vers_pat'] == '-':
-              inpatients += int(care_entry[0]['anz_vers_pat'])
-          if care_entry[0]['status'] == "aktiv":
-              nursing_homes_active += 1
-              if not care_entry[0]['platz_voll_pfl'] == "-":
-                  beds_active += int(care_entry[0]['platz_voll_pfl'])
-                  beds_amount = int(care_entry[0]['platz_voll_pfl'])
-              beds.append(beds_amount)
-          elif care_entry[0]['status'] == "in Planung":
-              nursing_homes_planned += 1
-              if not care_entry[0]['platz_voll_pfl'] == "-":
-                  beds_planned += int(care_entry[0]['platz_voll_pfl'])
-          elif care_entry[0]['status'] == "im Bau":
-              nursing_homes_construct += 1
-              if not care_entry[0]['platz_voll_pfl'] == "-":
-                  beds_construct += int(care_entry[0]['platz_voll_pfl'])
-          if not care_entry[0]['invest'] == "-":
-              invest_cost.append(float(care_entry[0]['invest']))
-          if not care_entry[0]['betreiber'] == "-":
-              if care_entry[0]['operator_type'] == "privat":
-                  if not care_entry[0]['betreiber'] in operator_private:
-                      operator_private.append(care_entry[0]['betreiber'])
-              elif care_entry[0]['operator_type'] == "gemeinnützig":
-                  if not care_entry[0]['betreiber'] in operator_nonProfit:
-                      operator_nonProfit.append(care_entry[0]['betreiber'])
-              elif care_entry[0]['operator_type'] == "kommunal":
-                  if not care_entry[0]['betreiber'] in operator_public:
-                      operator_public.append(care_entry[0]['betreiber'])
-              if not care_entry[0]['betreiber'] in operator:
-                  operator.append(care_entry[0]['betreiber'])
+        print('###############################################')
+        print(care_entry)
+        beds_amount = 0
+        if not care_entry[0]['anz_vers_pat'] == '-':
+            inpatients += int(care_entry[0]['anz_vers_pat'])
+        if care_entry[0]['status'] == "aktiv":
+            nursing_homes_active += 1
+            if not care_entry[0]['platz_voll_pfl'] == "-":
+                beds_active += int(care_entry[0]['platz_voll_pfl'])
+                beds_amount = int(care_entry[0]['platz_voll_pfl'])
+            beds.append(beds_amount)
+        elif care_entry[0]['status'] == "in Planung":
+            nursing_homes_planned += 1
+            if not care_entry[0]['platz_voll_pfl'] == "-":
+                beds_planned += int(care_entry[0]['platz_voll_pfl'])
+        elif care_entry[0]['status'] == "im Bau":
+            nursing_homes_construct += 1
+            if not care_entry[0]['platz_voll_pfl'] == "-":
+                beds_construct += int(care_entry[0]['platz_voll_pfl'])
+        if not care_entry[0]['invest'] == "-":
+            invest_cost.append(float(care_entry[0]['invest']))
+        if not care_entry[0]['betreiber'] == "-":
+            if care_entry[0]['type'] == "privat":
+                if not care_entry[0]['betreiber'] in operator_private:
+                    operator_private.append(care_entry[0]['betreiber'])
+            elif care_entry[0]['type'] == "gemeinnützig":
+                if not care_entry[0]['betreiber'] in operator_nonProfit:
+                    operator_nonProfit.append(care_entry[0]['betreiber'])
+            elif care_entry[0]['type'] == "kommunal":
+                if not care_entry[0]['betreiber'] in operator_public:
+                    operator_public.append(care_entry[0]['betreiber'])
+            if not care_entry[0]['betreiber'] in operator:
+                operator.append(care_entry[0]['betreiber'])
     
       ''' Get Place from Geocoder-API for Map-Marker and extract needed Information '''
       request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{marker_coords['lng']},{marker_coords['lat']}.json?access_token={Mapbox_Variables.token}"

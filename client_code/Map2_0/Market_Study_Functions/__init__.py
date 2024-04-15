@@ -1,6 +1,7 @@
 import anvil.server
 from .. import Variables
 from anvil import alert
+import json
 
 ''' Organize Data for Compettior Analysis '''
 def organize_ca_data(entries, topic, marker_coords, self, Functions):
@@ -16,7 +17,6 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
       Variables.home_address_al = []
 
     for entry in entries:
-      print(entry)
       added = False
       if topic == "nursing_homes":
         lat_entry = "%.6f" % float(entry['latitude'])
@@ -33,15 +33,8 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
               counter += 1
               
               if topic == "nursing_homes":
-                if not entry['number_of_patients_cared_for'] == "-" and entry['number_of_patients_cared_for'] is not None:
-                  anz_vers_pat = int(entry['number_of_patients_cared_for'])
-                else:
-                  anz_vers_pat = "-"
-                  
-                if not entry['number_of_places_fulltime_care'] == "-":
-                  platz_voll_pfl = int(entry['number_of_places_fulltime_care'])
-                else:
-                  platz_voll_pfl = "-"
+                anz_vers_pat = int(entry['number_of_patients_cared_for']) if entry['number_of_patients_cared_for'] is not None else "-"
+                platz_voll_pfl = int(entry['number_of_places_fulltime_care']) if not entry['number_of_places_fulltime_care'] == None else "-"
                   
                 if not anz_vers_pat == "-" and not platz_voll_pfl == "-":
                   occupancy_raw = anz_vers_pat / platz_voll_pfl
@@ -51,7 +44,7 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
                   occupancy = "-"
                   occupancy_raw = "-"
                   
-                if not entry['invest'] == "-":
+                if not entry['invest'] == None:
                   if len(entry['invest']) == 4:
                     if entry['invest'].index(".") == 2:
                       invest = entry['invest'] + "0"
@@ -62,6 +55,7 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
                 else:
                   invest = "-"
 
+                mdk_report = json.loads(entry['mdk_report'])
                 mdk_blacklist = ['report_date', 'data_date', 'result_ventilation', 'result_vegetative_state', 'result_palliative_concept', 'result_palliativ_outsourcing', 'result_palliativ_last_wishes', 'result_palliativ_authority_known', 'result_palliativ_inform_relatives']
                 mdk_letters = ['A', 'B', 'C', 'D']
                 mdk_grade = 0
@@ -89,7 +83,7 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
                   "betreiber": entry['operator'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                   "raw_betreiber": entry['operator'],
                   "invest": invest,
-                  "mdk_note": entry['mdk_letter_grade'],
+                  "mdk_note": mdk_letter_grade,
                   "coords": [lng_icon, lat_icon],
                   "web": entry['domain'],
                   "type": entry['type']
@@ -100,19 +94,18 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
                 data = {
                   "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                   "raw_name": entry['name'],
-                  "operator": entry['betreiber'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                  "raw_betreiber": entry['betreiber'],
-                  "type": entry['art'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                  "raw_type": entry['art'],
-                  "city": entry['ort'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                  "raw_city": entry['ort'],
+                  "operator": entry['operator'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "raw_betreiber": entry['operator'],
+                  "type": entry['type'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "raw_type": entry['type'],
+                  "city": entry['city'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "raw_city": entry['city'],
                   "status": entry['status'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                   "raw_status": entry['status'],
-                  "number_apts": entry['anz_wohnungen'],
+                  "number_apts": entry['apartments'],
                   "coords": [lng_icon, lat_icon],
-                  "web": entry['webseite'],
-                  "type": entry['art'],
-                  "year_of_construction": entry['baujahr']
+                  "web": entry['domain'],
+                  "year_of_construction": entry['year_of_construction']
                 }
                 data_comp_analysis.append(data)
                 added = True

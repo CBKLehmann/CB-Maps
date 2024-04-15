@@ -353,7 +353,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
               marker_details += "</p></div>"
             marker_details += f"<div class='containerAddress'><img src='{Variables.app_url}/_/theme/Icons/telefon.png' class='iconAddress' /><p>{ele['telephone']}</p></div>"
             marker_details += f"<p>{ele['email']}</p>"
-            marker_details += f"<p>{ele['domain']}</p>"
+            marker_details += f"<a href=https://{ele['domain']} target='_blank'>{ele['domain']}</a>"
             # Parting Line
             marker_details += "<div class='partingLine'></div>"
             # Operator
@@ -474,7 +474,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
               marker_details += "</p>"
             marker_details += f"<p>{check_none(ele['telephone'])}</p>"
             marker_details += f"<p>{check_none(ele['email'])}</p>"
-            marker_details += f"<p>{check_none(ele['domain'])}</p>"
+            marker_details += f"<a href=https://{check_none(ele['domain'])} target='_blank'>{check_none(ele['domain'])}</a>"
             # Parting Line
             marker_details += "<div class='partingLine'></div>"
             # Operator
