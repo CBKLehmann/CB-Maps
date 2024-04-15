@@ -392,7 +392,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
             marker_details += f"<p><b>Palliativ last wishes: </b> {check_none(mdk_report['result_palliativ_last_wishes'])}</p>"
             marker_details += f"<p><b>Palliativ authority known: </b> {check_none(mdk_report['result_palliativ_authority_known'])}</p>"
             marker_details += f"<p><b>Palliativ inform relatives: </b> {check_none(mdk_report['result_palliativ_inform_relatives'])}</p>"
-            mdk_blacklist = ['report_date', 'data_date']
+            mdk_blacklist = ['report_date', 'data_date', 'result_ventilation', 'result_vegetative_state', 'result_palliative_concept', 'result_palliativ_outsourcing', 'result_palliativ_last_wishes', 'result_palliativ_authority_known', 'result_palliativ_inform_relatives']
             mdk_letters = ['A', 'B', 'C', 'D']
             mdk_grade = 0
             mdk_count = 0
@@ -401,16 +401,15 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
                 mdk_grade += int(mdk_report[key])
                 mdk_count += 1
             if not mdk_count == 0:
-              mdk_grade = int(mdk_grade / mdk_count)
+              mdk_grade = int(mdk_grade / mdk_count) - 1
               mdk_letter_grade = mdk_letters[mdk_grade]
             else:
               mdk_letter_grade = 'N.A.'
             marker_details += f"<p><b>MDK Grade: </b> {mdk_letter_grade}</p>"
             marker_details += "<div class='partingLine'></div>"
-            # marker_details += f"<p><b>Number of patients treated: </b> {ele['anz_vers_pat']}</p>"
+            marker_details += f"<p><b>Number of patients treated: </b> {check_none(ele['number_of_patients_cared_for'])}</p>"
             marker_details += f"<p><b>Number of places fulltime care: </b> {check_none(ele['number_of_places_fulltime_care'])}</p>"
             marker_details += f"<p><b>Number of places for shortterm care: </b> {check_none(ele['number_of_places_shortterm_care'])}</p>"
-            marker_details += f"<p><b>Number of places night care: </b> {check_none(ele['number_of_places_night_care'])}</p>"
             marker_details += f"<p><b>Single rooms: </b> {check_none(ele['single_rooms'])}</p>"
             marker_details += f"<p><b>Double roooms: </b> {check_none(ele['double_rooms'])}</p>"
             marker_details += "<div class='line'></div>"

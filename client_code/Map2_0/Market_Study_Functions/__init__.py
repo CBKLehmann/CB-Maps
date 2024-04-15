@@ -16,6 +16,7 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
       Variables.home_address_al = []
 
     for entry in entries:
+      print(entry)
       added = False
       if topic == "nursing_homes":
         lat_entry = "%.6f" % float(entry['latitude'])
@@ -32,13 +33,13 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
               counter += 1
               
               if topic == "nursing_homes":
-                if not entry['anz_vers_pat'] == "-" and entry['anz_vers_pat'] is not None:
-                  anz_vers_pat = int(entry['anz_vers_pat'])
+                if not entry['number_of_patients_cared_for'] == "-" and entry['number_of_patients_cared_for'] is not None:
+                  anz_vers_pat = int(entry['number_of_patients_cared_for'])
                 else:
                   anz_vers_pat = "-"
                   
-                if not entry['platz_voll_pfl'] == "-":
-                  platz_voll_pfl = int(entry['platz_voll_pfl'])
+                if not entry['number_of_places_fulltime_care'] == "-":
+                  platz_voll_pfl = int(entry['number_of_places_fulltime_care'])
                 else:
                   platz_voll_pfl = "-"
                   
@@ -60,24 +61,38 @@ def organize_ca_data(entries, topic, marker_coords, self, Functions):
                     invest = entry['invest']
                 else:
                   invest = "-"
-                    
+
+                mdk_blacklist = ['report_date', 'data_date', 'result_ventilation', 'result_vegetative_state', 'result_palliative_concept', 'result_palliativ_outsourcing', 'result_palliativ_last_wishes', 'result_palliativ_authority_known', 'result_palliativ_inform_relatives']
+                mdk_letters = ['A', 'B', 'C', 'D']
+                mdk_grade = 0
+                mdk_count = 0
+                for key in mdk_report:
+                  if not key in mdk_blacklist and mdk_report[key] is not None:
+                    mdk_grade += int(mdk_report[key])
+                    mdk_count += 1
+                if not mdk_count == 0:
+                  mdk_grade = int(mdk_grade / mdk_count) - 1
+                  mdk_letter_grade = mdk_letters[mdk_grade]
+                else:
+                  mdk_letter_grade = 'N.A.'
+                
                 data = {
                   "name": entry['name'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
                   "raw_name": entry['name'],
                   "platz_voll_pfl": platz_voll_pfl,
-                  "ez": entry['ez'],
-                  "dz": entry['dz'],
+                  "ez": entry['single_rooms'],
+                  "dz": entry['double_rooms'],
                   "anz_vers_pat": anz_vers_pat,
                   "occupancy": occupancy_raw,
-                  "baujahr": entry['baujahr'],
+                  "baujahr": entry['year_of_construction'],
                   "status": entry['status'],
-                  "betreiber": entry['betreiber'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
-                  "raw_betreiber": entry['betreiber'],
+                  "betreiber": entry['operator'].replace("ä", "&auml;").replace("ö", "&ouml;").replace("ü", "&uuml").replace("Ä", "&Auml;").replace("Ö", "&Ouml;").replace("Ü", "&Uuml").replace("ß", "&szlig").replace("’", "&prime;").replace("–", "&ndash;"),
+                  "raw_betreiber": entry['operator'],
                   "invest": invest,
-                  "mdk_note": entry['mdk_note'],
+                  "mdk_note": entry['mdk_letter_grade'],
                   "coords": [lng_icon, lat_icon],
-                  "web": entry['webseite'],
-                  "operator_type": entry['art']
+                  "web": entry['domain'],
+                  "type": entry['type']
                 }
                 data_comp_analysis.append(data)
                 added = True
