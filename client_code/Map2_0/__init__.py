@@ -789,8 +789,6 @@ class Map2_0(Map2_0Template):
       operator_nonProfit = []
       operator_private = []
       for care_entry in data_comp_analysis_nh['data']:
-        print('###############################################')
-        print(care_entry)
         beds_amount = 0
         if not care_entry[0]['anz_vers_pat'] == '-':
             inpatients += int(care_entry[0]['anz_vers_pat'])
@@ -1012,6 +1010,7 @@ class Map2_0(Map2_0Template):
       prev_competitor_index = 0
       current_page_height = 177
 
+      print(data_comp_analysis_nh['data'])
       for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if index % 9 == 0:
               if index > 0:
@@ -1306,7 +1305,6 @@ class Map2_0(Map2_0Template):
                   'align': 'center',
                   'fill': True,
               }
-      
           else:
               table_position = (index % 9) + 1
               if not prev_competitor_distance == competitor[1]:
@@ -1404,32 +1402,32 @@ class Map2_0(Map2_0Template):
                   'align': 'center',
               }
       
-              if not competitor[0]['legal'] == '-':
+              if not competitor[0]['legal'] == None:
                   if competitor[0]['legal'] == 'Yes':
                       complied_regulations += 1
                   else:
                       uncomplied_regulations += 1
-              if competitor[0]['operator_type'] == 'privat':
+              if competitor[0]['type'] == 'privat':
                   private_operator_nh += 1
-                  if not competitor[0]['invest'] == '-':
+                  if not competitor[0]['invest'] == None:
                       invest_costs_private.append(float(competitor[0]['invest']))
-              elif competitor[0]['operator_type'] == 'kommunal':
+              elif competitor[0]['type'] == 'kommunal':
                   public_operator_nh += 1
-                  if not competitor[0]['invest'] == '-':
+                  if not competitor[0]['invest'] == None:
                       invest_costs_public.append(float(competitor[0]['invest']))
-              elif competitor[0]['operator_type'] == 'gemeinnützig':
+              elif competitor[0]['type'] == 'gemeinnützig':
                   none_profit_operator_nh += 1
-                  if not competitor[0]['invest'] == '-':
+                  if not competitor[0]['invest'] == None:
                       invest_costs_non_profit.append(float(competitor[0]['invest']))
-              if not competitor[0]['ez'] == '-':
+              if not competitor[0]['ez'] == None:
                   single_rooms = int(competitor[0]['ez'])
               else:
                   single_rooms = '-'
-              if not competitor[0]['dz'] == '-':
+              if not competitor[0]['dz'] == None:
                   double_rooms = int(competitor[0]['dz'])
               else:
                   double_rooms = '-'
-              if not competitor[0]['platz_voll_pfl'] == '-':
+              if not competitor[0]['platz_voll_pfl'] == None:
                   beds = competitor[0]['platz_voll_pfl']
               else:
                   beds = '-'
@@ -1462,12 +1460,13 @@ class Map2_0(Map2_0Template):
                   list_occupancy_rate.append(competitor[0]['occupancy'])
               if not competitor[0]['invest'] == '-':
                   list_invest_cost.append(float(competitor[0]['invest']))
+              mdk_grade_letters = ['A', 'B', 'C', 'D']
               if not competitor[0]['mdk_note'] == '-' and competitor[0]['mdk_note'] is not None:
-                  list_mdk_grade.append(float(competitor[0]['mdk_note']))
+                  list_mdk_grade.append(mdk_grade_letters.index(competitor[0]['mdk_note']) + 1)
               if not competitor[0]['baujahr'] == '-':
                   list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
               if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
-                  invest_plot_data.append(["private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public", competitor[0]['invest'], competitor[0]['baujahr'], prev_competitor_index])
+                  invest_plot_data.append(["private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public", competitor[0]['invest'], competitor[0]['baujahr'], prev_competitor_index])
 
               current_competitor_page['cell'][f'competitor_{table_position}_beds'] = {
                   'color': [0, 0, 0],
@@ -1546,6 +1545,7 @@ class Map2_0(Map2_0Template):
                   'txt': '-' if competitor[0]['invest'] == '-' else '{:,}€'.format(float(competitor[0]['invest'])),
                   'align': 'center',
               }
+              mdk_grade_letters = ['A', 'B', 'C', 'D']
               current_competitor_page['cell'][f'competitor_{table_position}_quality'] = {
                   'color': [0, 0, 0],
                   'font': 'segoeui',
@@ -1554,7 +1554,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': '-' if competitor[0]['mdk_note'] == '-' else '-' if competitor[0]['mdk_note'] is None else '{:,}'.format(float(competitor[0]['mdk_note'])),
+                  'txt': '-' if competitor[0]['mdk_note'] == '-' else '-' if competitor[0]['mdk_note'] is None else competitor[0]['mdk_note'],
                   'align': 'center',
               }
       
@@ -1932,7 +1932,7 @@ class Map2_0(Map2_0Template):
                   'align': 'center',
               }
       
-              if not competitor[0]['year_of_construction'] == '-':
+              if not competitor[0]['year_of_construction'] == None:
                   list_years_of_construction_al.append(int(competitor[0]['year_of_construction']))
               if competitor[0]['type'] == 'gemeinnützig':
                   none_profit_operator_al += 1
