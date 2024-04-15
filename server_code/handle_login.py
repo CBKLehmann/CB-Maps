@@ -2,15 +2,6 @@ import anvil.users
 import anvil.server
 
 @anvil.server.callable
-def get_current_user():
-  user = anvil.users.get_user()
-  
-  if user is not None and user['remember_me']:
-    return user
-
-  return None
-
-@anvil.server.callable
 def login_user(email, password, remember):
   try:
     user = anvil.users.login_with_email(email, password, remember=remember)

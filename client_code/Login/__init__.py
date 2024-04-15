@@ -15,7 +15,7 @@ class Login(LoginTemplate):
       self.init_components(**properties)
       Functions.create_loading_overlay()
       Functions.get_mapbox_token()
-      self.user = anvil.server.call('get_current_user')
+      self.user = anvil.users.get_user()
       self.hash = get_url_hash()
 
   def form_show(self, **event_args):
