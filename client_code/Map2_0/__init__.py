@@ -1106,7 +1106,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 12,
                   'h': 6,
-                  'txt': "private" if competitor[0]['operator_type'] == "privat" else "non-profit" if competitor[0]['operator_type'] == "gemeinnützig" else "public",
+                  'txt': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
                   'align': 'center',
                   'fill': True,
               }
@@ -1155,30 +1155,30 @@ class Map2_0(Map2_0Template):
                       complied_regulations += 1
                   else:
                       uncomplied_regulations += 1
-              if competitor[0]['operator_type'] == 'privat':
+              if competitor[0]['type'] == 'privat':
                   private_operator_nh += 1
                   if not competitor[0]['invest'] == '-':
                       invest_costs_private.append(float(competitor[0]['invest']))
                       invest_costs_private_home = float(competitor[0]['invest'])
-              elif competitor[0]['operator_type'] == 'kommunal':
+              elif competitor[0]['type'] == 'kommunal':
                   public_operator_nh += 1
                   if not competitor[0]['invest'] == '-':
                       invest_costs_public.append(float(competitor[0]['invest']))
                       invest_costs_public_home = float(competitor[0]['invest'])
-              elif competitor[0]['operator_type'] == 'gemeinnützig':
+              elif competitor[0]['type'] == 'gemeinnützig':
                   none_profit_operator_nh += 1
                   if not competitor[0]['invest'] == '-':
                       invest_costs_non_profit.append(float(competitor[0]['invest']))
                       invest_costs_non_profit_home = float(competitor[0]['invest'])
-              if not competitor[0]['ez'] == '-':
+              if not competitor[0]['ez'] == '-' and competitor[0]['ez'] is not None:
                   single_rooms = int(competitor[0]['ez'])
               else:
                   single_rooms = '-'
-              if not competitor[0]['dz'] == '-':
+              if not competitor[0]['dz'] == '-' and competitor[0]['dz'] is not None:
                   double_rooms = int(competitor[0]['dz'])
               else:
                   double_rooms = '-'
-              if not competitor[0]['platz_voll_pfl'] == '-':
+              if not competitor[0]['platz_voll_pfl'] == '-' and competitor[0]['platz_voll_pfl'] is not None:
                   beds = competitor[0]['platz_voll_pfl']
               else:
                   beds = '-'
@@ -1207,16 +1207,16 @@ class Map2_0(Map2_0Template):
                   total_rooms += rooms
               if not single_room_quote == '-':
                   list_single_room_quota.append(single_room_quote)
-              if not competitor[0]['occupancy'] == '-':
+              if not competitor[0]['occupancy'] == '-' and not competitor[0]['occupancy'] == 'N.A.':
                   list_occupancy_rate.append(competitor[0]['occupancy'])
-              if not competitor[0]['invest'] == '-':
+              if not competitor[0]['invest'] == '-' and not competitor[0]['invest'] == 'N.A.':
                   list_invest_cost.append(float(competitor[0]['invest']))
                   home_invest = float(competitor[0]['invest'])
-              if not competitor[0]['mdk_note'] == '-':
+              if not competitor[0]['mdk_note'] == '-' and not competitor[0]['mdk_note'] == 'N.A.':
                   list_mdk_grade.append(float(competitor[0]['mdk_note']))
-              if not competitor[0]['baujahr'] == '-':
+              if not competitor[0]['baujahr'] == '-' and not competitor[0]['baujahr'] == 'N.A.':
                   list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
-              if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
+              if not competitor[0]['invest'] == '-' and not competitor[0]['invest'] == 'N.A.' and not competitor[0]['baujahr'] == '-' and not competitor[0]['baujahr'] == 'N.A.':
                   invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
       
               current_competitor_page['cell'][f'home_{home_counter}_beds'] = {
@@ -1254,7 +1254,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 12,
                   'h': 6,
-                  'txt': '{:,}'.format(double_rooms) if not single_rooms == '-' else single_rooms,
+                  'txt': '{:,}'.format(double_rooms) if not double_rooms == '-' else double_rooms,
                   'align': 'center',
                   'fill': True,
               }
@@ -1267,7 +1267,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': '{:,}'.format(rooms) if not single_rooms == '-' else single_rooms,
+                  'txt': '{:,}'.format(rooms) if not rooms == '-' else rooms,
                   'align': 'center',
                   'fill': True,
               }
@@ -1280,7 +1280,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': '{:,}%'.format(single_room_quote) if not single_rooms == '-' else single_rooms,
+                  'txt': '{:,}%'.format(single_room_quote) if not single_room_quote == '-' else single_room_quote,
                   'align': 'center',
                   'fill': True,
               }
