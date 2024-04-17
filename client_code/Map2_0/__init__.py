@@ -1284,6 +1284,7 @@ class Map2_0(Map2_0Template):
                   'align': 'center',
                   'fill': True,
               }
+              print(competitor[0]['occupancy'])
               current_competitor_page['cell'][f'home_{home_counter}_occupancy'] = {
                   'color': [0, 0, 0],
                   'fill_color': [244, 239, 220],
@@ -1293,7 +1294,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100), 1),
+                  'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100), 1) if not competitor[0]['occupancy'] == '-' else '-',
                   'align': 'center',
                   'fill': True,
               }
