@@ -1320,7 +1320,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': '-' if competitor[0]['mdk_note'] == '-' else '{:,}'.format(float(competitor[0]['mdk_note'])),
+                  'txt': '-' if competitor[0]['mdk_note'] == 'N.A.' else '{:,}'.format(float(competitor[0]['mdk_note'])),
                   'align': 'center',
                   'fill': True,
               }
