@@ -736,8 +736,15 @@ class Map2_0(Map2_0Template):
         print(datetime.datetime.now())
 
       Functions.manipulate_loading_overlay(True)
-      # anvil.js.call('update_loading_bar', 5, 'Checking basic map settings')
-      # checked_nursing_home
+      anvil.js.call('update_loading_bar', 5, 'Checking basic map settings')
+      checked_nursing_home = self.pdb_data_cb.checked
+      checked_assisted_living = self.pdb_data_al.checked
+      if not checked_nursing_home:
+        self.pdb_data_cb.checked = True
+        self.pdb_data_cb.raise_event('change')
+      if not checked_assisted_living:
+        self.pdb_data_al.checked = True
+        self.pdb_data_al.raise_event('change')
       
       anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
       
@@ -926,7 +933,10 @@ class Map2_0(Map2_0Template):
               else:
                   facility_double_rooms = 0
               facility_rooms = facility_single_rooms + facility_double_rooms
-              facility_single_room_quote = facility_single_rooms / facility_rooms
+              if facility_rooms > 0:
+                facility_single_room_quote = facility_single_rooms / facility_rooms
+              else:
+                facility_single_room_quote = 0
               facility_bed_amount = facility_single_rooms + facility_double_rooms * 2
               if not regulations['Existing']['sr_quote'] == '/':
                   facility_single_room_quote_future = float(regulations['Existing']['sr_quote'])
@@ -1332,7 +1342,7 @@ class Map2_0(Map2_0Template):
                   'fill': True
               }
               current_competitor_page['cell'][f'competitor_{table_position}_name'] = {
-                  'color': [0, 176, 240] if not "keine " in competitor[0]['web'] else [0, 0, 0],
+                  'color': [0, 176, 240] if competitor[0]['web'] is not None and not "keine " in competitor[0]['web'] else [0, 0, 0],
                   'font': 'segoeui',
                   'size': 8,
                   'x': 17,
@@ -1341,7 +1351,7 @@ class Map2_0(Map2_0Template):
                   'h': 6,
                   'txt': competitor[0]['raw_name'] if len(competitor[0]['raw_name']) <= 30 else f"{competitor[0]['raw_name'][:30]}...",
                   'align': 'left',
-                  'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
+                  'link': competitor[0]['web'] if competitor[0]['web'] is not None and not "keine " in competitor[0]['web'] else ""
               }
               current_competitor_page['cell'][f'competitor_{table_position}_operator'] = {
                   'color': [0, 0, 0],
@@ -1417,15 +1427,15 @@ class Map2_0(Map2_0Template):
                       uncomplied_regulations += 1
               if competitor[0]['type'] == 'privat':
                   private_operator_nh += 1
-                  if not competitor[0]['invest'] == None:
+                  if not competitor[0]['invest'] == None and not competitor[0]['invest'] == '-':
                       invest_costs_private.append(float(competitor[0]['invest']))
               elif competitor[0]['type'] == 'kommunal':
                   public_operator_nh += 1
-                  if not competitor[0]['invest'] == None:
+                  if not competitor[0]['invest'] == None and not competitor[0]['invest'] == '-':
                       invest_costs_public.append(float(competitor[0]['invest']))
               elif competitor[0]['type'] == 'gemeinnützig':
                   none_profit_operator_nh += 1
-                  if not competitor[0]['invest'] == None:
+                  if not competitor[0]['invest'] == None and not competitor[0]['invest'] == '-':
                       invest_costs_non_profit.append(float(competitor[0]['invest']))
               if not competitor[0]['ez'] == None:
                   single_rooms = int(competitor[0]['ez'])
@@ -1469,11 +1479,11 @@ class Map2_0(Map2_0Template):
               if not competitor[0]['invest'] == '-':
                   list_invest_cost.append(float(competitor[0]['invest']))
               mdk_grade_letters = ['A', 'B', 'C', 'D']
-              if not competitor[0]['mdk_note'] == '-' and competitor[0]['mdk_note'] is not None:
+              if not competitor[0]['mdk_note'] == 'N.A.' and competitor[0]['mdk_note'] is not None:
                   list_mdk_grade.append(mdk_grade_letters.index(competitor[0]['mdk_note']) + 1)
-              if not competitor[0]['baujahr'] == '-':
+              if not competitor[0]['baujahr'] == None:
                   list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
-              if not competitor[0]['invest'] == '-' and not competitor[0]['baujahr'] == '-':
+              if competitor[0]['invest'] is not None and not competitor[0]['invest'] == '-' and competitor[0]['baujahr'] is not None and not competitor[0]['baujahr'] == '-':
                   invest_plot_data.append(["private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public", competitor[0]['invest'], competitor[0]['baujahr'], prev_competitor_index])
 
               current_competitor_page['cell'][f'competitor_{table_position}_beds'] = {
@@ -1850,7 +1860,7 @@ class Map2_0(Map2_0Template):
                   'fill': True
               }
               current_competitor_page['cell'][f'competitor_{table_position}_name'] = {
-                  'color': [0, 176, 240] if not "keine " in competitor[0]['web'] else [0, 0, 0],
+                  'color': [0, 176, 240] if competitor[0]['web'] is not None and not "keine " in competitor[0]['web'] else [0, 0, 0],
                   'font': 'segoeui',
                   'size': 8,
                   'x': 17,
@@ -1859,7 +1869,7 @@ class Map2_0(Map2_0Template):
                   'h': 6,
                   'txt': competitor[0]['raw_name'] if len(competitor[0]['raw_name']) <= 30 else f"{competitor[0]['raw_name'][:30]}...",
                   'align': 'left',
-                  'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
+                  'link': competitor[0]['web'] if competitor[0]['web'] is not None and not "keine " in competitor[0]['web'] else ""
               }
               current_competitor_page['cell'][f'competitor_{table_position}_operator'] = {
                   'color': [0, 0, 0],
@@ -1924,7 +1934,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 8,
                   'h': 6,
-                  'txt': '{:,}'.format(int(competitor[0]['number_apts'])) if not competitor[0]['number_apts'] == '-' else competitor[0]['number_apts'],
+                  'txt': '{:,}'.format(int(competitor[0]['number_apts'])) if not competitor[0]['number_apts'] == None else '-',
                   'align': 'center',
               }
       
