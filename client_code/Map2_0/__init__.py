@@ -1080,7 +1080,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100), 1),
+                  'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100), 1) if not competitor[0]['occupancy'] == '-' else '-',
                   'align': 'center',
                   'fill': True,
               }
