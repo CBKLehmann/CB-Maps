@@ -351,7 +351,7 @@ class Map2_0(Map2_0Template):
       self.handle_teaser_data(True)
     self.local_loading = False
     Functions.manipulate_loading_overlay(False)
-  
+
   def check_box_marker_icons_change(self, **event_args):
     with anvil.server.no_loading_indicator:
       # Show or Hide Marker-Icon-Types
@@ -736,6 +736,9 @@ class Map2_0(Map2_0Template):
         print(datetime.datetime.now())
 
       Functions.manipulate_loading_overlay(True)
+      # anvil.js.call('update_loading_bar', 5, 'Checking basic map settings')
+      # checked_nursing_home
+      
       anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
       
       ''' Generate created Date of Market Study '''
@@ -1009,8 +1012,13 @@ class Map2_0(Map2_0Template):
       prev_competitor_distance = 0
       prev_competitor_index = 0
       current_page_height = 177
+      minimum_invest_cost = 0
+      total_occupancy_rate = 0
+      total_single_room_quota = 0
+      maximum_invest_cost = 0
+      total_invest_cost = 0
+      total_mdk_grade = 0
 
-      print(data_comp_analysis_nh['data'])
       for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if index % 9 == 0:
               if index > 0:
@@ -1572,28 +1580,16 @@ class Map2_0(Map2_0Template):
               )
               if len(list_single_room_quota) > 0:
                   total_single_room_quota = median_dictionary['single_room_quota']
-              else:
-                  total_single_room_quota = 0
               if len(list_occupancy_rate) > 0:
                   total_occupancy_rate = median_dictionary['occupancy_rate']
-              else:
-                  total_occupancy_rate = 0
               if len(list_invest_cost) > 0:
                   minimum_invest_cost = min(list_invest_cost)
-              else:
-                  minimum_invest_cost = 0
               if len(list_invest_cost) > 0:
                   maximum_invest_cost = max(list_invest_cost)
-              else:
-                  maximum_invest_cost = 0
               if len(list_invest_cost) > 0:
                   total_invest_cost = median_dictionary['invest_cost']
-              else:
-                  total_invest_cost = 0
               if len(list_mdk_grade) > 0:
                   total_mdk_grade = median_dictionary['mdk_grade']
-              else:
-                  total_mdk_grade = 0
       
               current_competitor_page['cell'][f'competitor_sum_beds'] = {
                   'color': [0, 0, 0],
