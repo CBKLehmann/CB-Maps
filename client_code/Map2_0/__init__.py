@@ -732,8 +732,6 @@ class Map2_0(Map2_0Template):
 
   def create_market_study(self, **event_args):
     with anvil.server.no_loading_indicator:
-      if Variables.user_role == 'admin':
-        print(datetime.datetime.now())
 
       Functions.manipulate_loading_overlay(True)
       anvil.js.call('update_loading_bar', 5, 'Checking basic map settings')
@@ -1028,6 +1026,7 @@ class Map2_0(Map2_0Template):
       maximum_invest_cost = 0
       total_invest_cost = 0
       total_mdk_grade = 0
+      mdk_grade_letters = ['A', 'B', 'C', 'D']
 
       for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if index % 9 == 0:
@@ -1284,7 +1283,6 @@ class Map2_0(Map2_0Template):
                   'align': 'center',
                   'fill': True,
               }
-              print(competitor[0]['occupancy'])
               current_competitor_page['cell'][f'home_{home_counter}_occupancy'] = {
                   'color': [0, 0, 0],
                   'fill_color': [244, 239, 220],
@@ -1479,7 +1477,6 @@ class Map2_0(Map2_0Template):
                   list_occupancy_rate.append(competitor[0]['occupancy'])
               if not competitor[0]['invest'] == '-':
                   list_invest_cost.append(float(competitor[0]['invest']))
-              mdk_grade_letters = ['A', 'B', 'C', 'D']
               if not competitor[0]['mdk_note'] == 'N.A.' and competitor[0]['mdk_note'] is not None:
                   list_mdk_grade.append(mdk_grade_letters.index(competitor[0]['mdk_note']) + 1)
               if not competitor[0]['baujahr'] == None:
@@ -1687,7 +1684,7 @@ class Map2_0(Map2_0Template):
                   'y': 285,
                   'w': 10,
                   'h': 6,
-                  'txt': '{:,}'.format(total_mdk_grade),
+                  'txt': mdk_grade_letters[int(total_mdk_grade)],
                   'align': 'center',
               }
             
@@ -1954,7 +1951,88 @@ class Map2_0(Map2_0Template):
               competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
 
       from . import Market_Study_Skeleton
-      market_study_data = Market_Study_Skeleton.market_study_skeleton({
+      version = "de"
+      if version == "en":
+        market_study_data = Market_Study_Skeleton.market_study_skeleton_en({
+        'street': street,
+        'zipcode': zipcode,
+        'city': city,
+        'district': district,
+        'federal_state': federal_state,
+        'iso_time': iso_time,
+        'iso_movement': iso_movement,
+        'created_date': created_date,
+        'purchase_power': purchase_power,
+        'population_trend': population_trend,
+        'beds_surplus_35_v2': beds_surplus_35_v2,
+        'countie': countie[0],
+        'population_city_2020': countie_data['dem_city']['bevoelkerung_ges'],
+        'population_county_2020': countie_data['ex_dem_lk']['all_compl'],
+        'people_u80': people_u80,
+        'people_o80': people_o80,
+        'new_care_rate_raw': new_care_rate_raw,
+        'nursing_home_rate': nursing_home_rate,
+        'inpatients_lk': inpatients_lk,
+        'occupancy_lk': occupancy_lk,
+        'beds_lk': beds_lk,
+        'free_beds_lk': free_beds_lk,
+        'nursing_homes_active': nursing_homes_active,
+        'beds_active': beds_active,
+        'nursing_homes_planned': nursing_homes_planned,
+        'nursing_homes_construct': nursing_homes_construct,
+        'beds_planned': beds_planned,
+        'beds_construct': beds_construct,
+        'beds_active': beds_active,
+        'inpatients': inpatients,
+        'population_fc_30': population_fc_30,
+        'people_u80_fc': people_u80_fc,
+        'people_o80_fc': people_o80_fc,
+        'care_rate_30_v1_raw': care_rate_30_v1_raw,
+        'pat_rec_full_care_fc_30_v1': pat_rec_full_care_fc_30_v1,
+        'beds_30_v1': beds_30_v1,
+        'free_beds_30_v1': free_beds_30_v1,
+        'loss_of_beds': loss_of_beds,
+        'beds_adjusted_30_v1': beds_adjusted_30_v1,
+        'inpatients_fc': inpatients_fc,
+        'beds_surplus': beds_surplus,
+        'care_rate_30_v2_raw': care_rate_30_v2_raw,
+        'pat_rec_full_care_fc_30_v2': pat_rec_full_care_fc_30_v2,
+        'beds_30_v2': beds_30_v2,
+        'free_beds_30_v2': free_beds_30_v2,
+        'beds_adjusted_30_v2': beds_adjusted_30_v2,
+        'inpatients_fc_v2': inpatients_fc_v2,
+        'beds_surplus_v2': beds_surplus_v2,
+        'population_fc_35': population_fc_35,
+        'people_u80_fc_35': people_u80_fc_35,
+        'people_o80_fc_35': people_o80_fc_35,
+        'care_rate_35_v1_raw': care_rate_35_v1_raw,
+        'pat_rec_full_care_fc_35_v1': pat_rec_full_care_fc_35_v1,
+        'beds_35_v1': beds_35_v1,
+        'free_beds_35_v1': free_beds_35_v1,
+        'beds_adjusted_35_v1': beds_adjusted_35_v1,
+        'inpatients_fc_35': inpatients_fc_35,
+        'beds_surplus_35': beds_surplus_35,
+        'care_rate_35_v2_raw': care_rate_35_v2_raw,
+        'pat_rec_full_care_fc_35_v2': pat_rec_full_care_fc_35_v2,
+        'beds_35_v2': beds_35_v2,
+        'free_beds_35_v2': free_beds_35_v2,
+        'beds_adjusted_35_v2': beds_adjusted_35_v2,
+        'inpatients_fc_35_v2': inpatients_fc_35_v2,
+        'analysis_text': analysis_text,
+        'number_facilities_nh_value': len(data_comp_analysis_nh['data']),
+        'number_facilities_al_value': len(data_comp_analysis_al['data']),
+        'minimum_invest_cost': minimum_invest_cost,
+        'maximum_invest_cost': maximum_invest_cost,
+        'total_invest_cost': total_invest_cost,
+        'home_invest': home_invest,
+        'regulations': regulations,
+        'complied_regulations': complied_regulations,
+        'uncomplied_regulations': uncomplied_regulations,
+        'share_url': share_url,
+        'analysis_text': analysis_text
+      })
+      elif version == "de":
+        market_study_data = Market_Study_Skeleton.market_study_skeleton_de({
         'street': street,
         'zipcode': zipcode,
         'city': city,
@@ -2122,7 +2200,6 @@ class Map2_0(Map2_0Template):
       # Download Market Study PDF
       market_study = app_tables.pictures.search()[0]
       anvil.media.download(market_study['pic'])
-      print(datetime.datetime.now())
 
       anvil.js.call('update_loading_bar', 0, '')
       Functions.manipulate_loading_overlay(False)
