@@ -5559,7 +5559,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 12,
                     'x': 15,
-                    'y': 65,
+                    'y': 55,
                     'w': 80,
                     'h': 4,
                     'txt': 'Methodik, Datenanalyse und -prognose',
@@ -5570,10 +5570,10 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 15,
-                    'y': 80,
+                    'y': 63,
                     'w': 80,
                     'h': 4,
-                    'txt': 'Die Marktstudie beleuchtet den aktuellen Stand des\nstationären Pflegemarktes in Deutschland und gibt eine\nPrognose für den Pflegebedarf bis 2030 und 2035.\nDie Studie hebt die wichtigsten Treiber der Nachfrage und\ndie Methodik hervor, mit der die prognostizierten Zahlen\nermittelt wurden.\n\nDie Studie stützt sich auf eine Kombination aus öffentlich\nzugänglicher Sekundärforschung. Die Sekundärforschung\numfasst die Analyse geografischer, demografischer und\nstatistischer Datenbanken sowie staatlicher\nVeröffentlichungen und seriöser Quellen aus dem\nGesundheitswesen, um quantitative Daten zu sammeln.\n\nDie gesammelten Daten werden analysiert, um Trends,\nWachstumstreiber und Marktdynamiken zu identifizieren.\nDie Analyse umfasst Faktoren wie die\nBevölkerungsdemografie, die Gesundheitspolitik und\nverfügbare Marktinformationen über bestehende und\nzukünftige Pflegeeinrichtungen, die Entwicklung chronischer\nKrankheiten und wirtschaftliche Indikatoren, die die\nNachfrage nach stationärer Pflege beeinflussen.\n\nZur Vorhersage der künftigen Nachfrage nach\nPflegeleistungen wird eine Kombination aus demografischer\nProjektion, Trendanalyse und Berücksichtigung neuer\nPflegeeinrichtungen, die auf den Markt kommen sollen,\nverwenden. Die demografische Vorhersage berücksichtigt\ndas Bevölkerungswachstum, Alterungstendenzen und\nMigrationsmuster. Die Trendanalyse untersucht historische\nDaten und identifiziert Muster und Wachstumsraten, um den\nzukünftigen Bedarf zu prognostizieren. Bei neuen\nPflegeeinrichtungen werden Gebäude berücksichtigt, die\n sich in Planung oder im Bau befinden.\n\nAlle Ergebnisse der Marktstudie werden die oben genannten\nFaktoren berücksichtigen, um ein umfassendes Verständnis\ndes aktuellen Stands des stationären Pflegemarkts zu\nvermitteln.',
+                    'txt': 'Die Marktstudie beleuchtet den aktuellen Stand des\nstationären Pflegemarktes in Deutschland und gibt eine\nPrognose für den Pflegebedarf bis 2030 und 2035.\nDie Studie hebt die wichtigsten Treiber der Nachfrage\nund die Methodik hervor, mit der die prognostizierten\nZahlen ermittelt wurden.\n\nDie Studie stützt sich auf eine Kombination aus\nöffentlich zugänglicher Sekundärforschung.\nDie Sekundärforschung umfasst die Analyse geografischer, demografischer und\nstatistischer Datenbanken sowie staatlicher\nVeröffentlichungen und seriöser Quellen aus dem\nGesundheitswesen, um quantitative Daten zu sammeln.\n\nDie gesammelten Daten werden analysiert, um Trends,\nWachstumstreiber und Marktdynamiken zu\nidentifizieren. Die Analyse umfasst Faktoren wie die\nBevölkerungsdemografie, die Gesundheitspolitik und\nverfügbare Marktinformationen über bestehende und\nzukünftige Pflegeeinrichtungen, die Entwicklung\nchronischer Krankheiten und wirtschaftliche\nIndikatoren, die die Nachfrage nach stationärer\nPflege beeinflussen.\n\nZur Vorhersage der künftigen Nachfrage nach\nPflegeleistungen wird eine Kombination aus\ndemografischer Projektion, Trendanalyse und\nBerücksichtigung neuer Pflegeeinrichtungen, die auf\nden Markt kommen sollen, verwenden.\nDie demografische Vorhersage berücksichtigt\ndas Bevölkerungswachstum, Alterungstendenzen und\nMigrationsmuster. Die Trendanalyse untersucht\nhistorische Daten und identifiziert Muster und\nWachstumsraten, um den zukünftigen Bedarf\nzu prognostizieren. Bei neuen Pflegeeinrichtungen\nwerden Gebäude berücksichtigt, die sich in Planung\noder im Bau befinden.\n\nAlle Ergebnisse der Marktstudie werden die oben\ngenannten Faktoren berücksichtigen, um\numfassendes Verständnis des aktuellen Stands des\nstationären Pflegemarkts zu vermitteln.',
                     'align': 'left'
                 },
                 'heading_2': {
@@ -5595,7 +5595,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 250,
                     'w': 80,
                     'h': 4,
-                    'txt': 'Die Prognose basiert auf den verfügbaren Daten und geht davon\naus, dass es keine diruptiven Ereignisse oder politischen\nVeränderungen geben wird, die sich erheblich auf die Nachfrage\nnach stationärer Pflege auswirken könnten.',
+                    'txt': 'Die Prognose basiert auf den verfügbaren Daten und\ngeht davon aus, dass es keine diruptiven Ereignisse\noder politischen Veränderungen geben wird, die sich\nerheblich auf die Nachfrage nach stationärer Pflege auswirken könnten.',
                     'align': 'left'
                 },
                 'heading_3': {
@@ -5603,7 +5603,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 12,
                     'x': 120,
-                    'y': 68,
+                    'y': 55,
                     'w': 80,
                     'h': 4,
                     'txt': 'Datenquellen',
@@ -5614,7 +5614,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 120,
-                    'y': 80,
+                    'y': 60,
                     'w': 80,
                     'h': 4,
                     'txt': 'Statistisches Bundesamt\nStatista\nPflegemarkt.com\nPflegemarktdatenbank (updates every 3 months)\nDemografieportal\nPflegeheim-Atlas Deutschland 2021, Wuest Partner\n21st Real Estate\nChatGPT\nOpen Street Maps\nMalbox',
@@ -5773,7 +5773,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 230,
                     'w': 90,
                     'h': 4,
-                    'txt': "Diese Studie wurde von der Capital Bay Group S.A.\n(im Folgenden Capital Bay) erstellt, um Investoren und\nGeschäftspartnern von Capital Bay einen Überblick über\ndie aktuellen Entwicklungen im Bereich Pflege und\nBetreutes Wohnen in der Immobilienbranche zu geben.\nCapital Bay weist darauf hin, dass diese Studie keine\nhinreichende Entscheidungsgrundlage darstellt und die\nEntscheidungsfindung im eigenen Ermessen liegt.\n\nDiese Studie wurde mit angemessener Sorgfalt erstellt.\nDie dargestellten Informationen wurden von Capital Bay\nnicht auf Vollständigkeit oder Richtigkeit überprüft.\nSie wurden aus den angegebenen Quellen entnommen\nund mit Bezug auf die Marktkenntnisse von Capital Bay, zusammengestellt.\nEs wurden keine vertraulichen oder nicht-öffentlichen\nInformationen verwendet.",
+                    'txt': "Diese Studie wurde von der Capital Bay Group S.A.\n(im Folgenden Capital Bay) erstellt, um Investoren und\nGeschäftspartnern von Capital Bay einen Überblick über\ndie aktuellen Entwicklungen im Bereich Pflege und\nBetreutes Wohnen in der Immobilienbranche zu geben.\nCapital Bay weist darauf hin, dass diese Studie keine\nhinreichende Entscheidungsgrundlage darstellt und die\nEntscheidungsfindung im eigenen Ermessen liegt.\n\nDiese Studie wurde mit angemessener Sorgfalt erstellt.\nDie dargestellten Informationen wurden von Capital Bay\nnicht auf Vollständigkeit oder Richtigkeit überprüft.\nSie wurden aus den angegebenen Quellen entnommen\nund mit Bezug auf die Marktkenntnisse von Capital Bay,\nzusammengestellt. Es wurden keine vertraulichen oder\nnicht-öffentlichen Informationen verwendet.",
                     'align': 'left'
                 },
                 'bottom_text_right': {
@@ -5784,7 +5784,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 230,
                     'w': 90,
                     'h': 4,
-                    'txt': "Capital Bay ist nicht verantwortlich für unvollständige oder\nungenaue Informationen und die Leser werden dringend\ngebeten, die Informationen selbst zu überprüfen, bevor sie eine\nEntscheidung treffen. Capital Bay haftet nicht für Auslassungen\noder Ungenauigkeiten in diesem Bericht oder für andere\nmündliche oder schriftliche Erklärungen, die im Zusammenhang\nmit diesem Bericht abgegeben werden.\n\n© 2024 Capital Bay Group\nAlle Rechte vorbehalten.",
+                    'txt': "Capital Bay ist nicht verantwortlich für unvollständige oder\nungenaue Informationen und die Leser werden dringend\ngebeten, die Informationen selbst zu überprüfen, bevor sie\neine Entscheidung treffen. Capital Bay haftet nicht für\nAuslassungen oder Ungenauigkeiten in diesem Bericht oder\nfür andere mündliche oder schriftliche Erklärungen,\ndie im Zusammenhang mit diesem Bericht abgegeben werden.\n\n© 2024 Capital Bay Group\nAlle Rechte vorbehalten.",
                     'align': 'left'
                 }
             }

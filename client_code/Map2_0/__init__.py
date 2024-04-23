@@ -1042,7 +1042,7 @@ class Map2_0(Map2_0Template):
                   page += 1
                   current_competitor_analysis_page += 1
               from . import Nursing_Homes_Competitor_Skeleton
-              current_competitor_page = copy.deepcopy(Nursing_Homes_Competitor_Skeleton.nursing_homes_competitor_skeleton)
+              current_competitor_page = copy.deepcopy(Nursing_Homes_Competitor_Skeleton.nursing_homes_competitor_skeleton_en if version == "en" else Nursing_Homes_Competitor_Skeleton.nursing_homes_competitor_skeleton_de)
               current_competitor_page['page_number'] = current_competitor_analysis_page
               current_competitor_page['text']['heading_city']['txt'] = city
               current_competitor_page['image']['location_map']['path'] = f"tmp/map_image_{Variables.unique_code}.png"
