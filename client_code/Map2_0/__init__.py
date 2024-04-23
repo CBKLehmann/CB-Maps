@@ -864,7 +864,7 @@ class Map2_0(Map2_0Template):
       
       ''' Get generated Analysis-Text for City '''
       from .ChatGPT import ChatGPT
-      analysis_text = anvil.server.call('openai_test', city)
+      analysis_text = anvil.server.call('openai_test', city, 'german' if version == 'de' else 'english')
       Functions.manipulate_loading_overlay(False)
       analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
       Functions.manipulate_loading_overlay(True)

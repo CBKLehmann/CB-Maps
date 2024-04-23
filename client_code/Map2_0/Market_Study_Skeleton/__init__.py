@@ -2595,7 +2595,7 @@ def market_study_skeleton_en(market_study_data):
                     'y': 70,
                     'w': 180,
                     'h': 4,
-                    'txt': f"This market study consideres {market_study_data['nursing_homes_active']} nursing homes within the vicinity of {market_study_data['iso_time']} minutes {market_study_data['iso_movement']}. Thereof, {market_study_data['complied_regulations']} facilities comply with the federal state regulations and {market_study_data['uncomplied_regulations']} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {market_study_data['loss_of_beds']}.",
+                    'txt': f"This market study consideres {market_study_data['nursing_homes_active']} nursing homes within the vicinity of {market_study_data['iso_string']}. Thereof, {market_study_data['complied_regulations']} facilities comply with the federal state regulations and {market_study_data['uncomplied_regulations']} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {market_study_data['loss_of_beds']}.",
                     'align': 'left'
                 },
                 'new_comment': {
@@ -5496,7 +5496,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 70,
                     'w': 180,
                     'h': 4,
-                    'txt': f"Diese Marktstudie berücksichtigt {market_study_data['nursing_homes_active']} Pflegeheime im Umkreis von {market_study_data['iso_time']} Minuten {market_study_data['iso_movement']}. Davon erfüllen {market_study_data['complied_regulations']} Einrichtungen die landesrechtlichen Vorgaben und {market_study_data['uncomplied_regulations']} Einrichtungen erfüllen die bundesrechtlichen Anforderungen nicht. Geht man davon aus, dass nur 80% der jeweiligen Einrichtungen die unten dargestellten Landesregelungen erfüllen müssen, so ergibt sich bis zum Jahr 2030 ein Bettenverlust im Markt von {market_study_data['loss_of_beds']}.",
+                    'txt': f"Diese Marktstudie berücksichtigt {market_study_data['nursing_homes_active']} Pflegeheime im Umkreis von {market_study_data['iso_string']}. Davon erfüllen {market_study_data['complied_regulations']} Einrichtungen die landesrechtlichen Vorgaben und {market_study_data['uncomplied_regulations']} Einrichtungen erfüllen die bundesrechtlichen Anforderungen nicht. Geht man davon aus, dass nur 80% der jeweiligen Einrichtungen die unten dargestellten Landesregelungen erfüllen müssen, so ergibt sich bis zum Jahr 2030 ein Bettenverlust im Markt von {market_study_data['loss_of_beds']}.",
                     'align': 'left'
                 },
                 'new_comment': {
