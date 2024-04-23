@@ -768,11 +768,13 @@ class Map2_0(Map2_0Template):
       iso_movement = self.profile_dropdown.selected_value.lower()
       if version == "de":
         if iso_movement == "walking":
-          iso_movement = "laufen"
+          iso_string = f"{iso_time} Minuten zu Fuß"
         elif iso_movement == "cycling":
-          iso_movement = "fahrradfahren"
+          iso_string = f"{iso_time} Minuten fahren - Fahrrad"
         elif iso_movement == "driving":
-          iso_movement = "autofahren"
+          iso_string = f"{iso_time} Minuten fahren - Auto"
+      else:
+          iso_string = f"{iso_time} minutes {iso_movement}"
       bounding_box = [0, 0, 0, 0]
       for point in iso['_data']['features'][0]['geometry']['coordinates'][0]:
           if point[0] < bounding_box[1] or bounding_box[1] == 0:
@@ -1965,8 +1967,7 @@ class Map2_0(Map2_0Template):
         'city': city,
         'district': district,
         'federal_state': federal_state,
-        'iso_time': iso_time,
-        'iso_movement': iso_movement,
+        'iso_string': iso_string,
         'created_date': created_date,
         'purchase_power': purchase_power,
         'population_trend': population_trend,
@@ -2044,8 +2045,7 @@ class Map2_0(Map2_0Template):
         'city': city,
         'district': district,
         'federal_state': federal_state,
-        'iso_time': iso_time,
-        'iso_movement': iso_movement,
+        'iso_string': iso_string,
         'created_date': created_date,
         'purchase_power': purchase_power,
         'population_trend': population_trend,

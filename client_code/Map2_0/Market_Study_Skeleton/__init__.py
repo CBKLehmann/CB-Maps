@@ -146,7 +146,7 @@ def market_study_skeleton_en(market_study_data):
                         'size': 12,
                         'x': 55,
                         'y': 216,
-                        'txt': f"{market_study_data['iso_time']} minutes of {market_study_data['iso_movement']}"
+                        'txt': f"{market_study_data['iso_string']}"
                     },
                     'ms_text_1': {
                         'color': [0, 0, 0],
@@ -835,7 +835,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 12,
                     'y': 183,
                     'w': 20,
-                    'txt': f"Viewing radius: {market_study_data['iso_time']} minutes of {market_study_data['iso_movement']}",
+                    'txt': f"Viewing radius: {market_study_data['iso_string']}",
                     'align': 'left'
                 },
                 'nursing_homes_heading': {
@@ -1999,7 +1999,7 @@ def market_study_skeleton_en(market_study_data):
                     'size': 12,
                     'x': 30,
                     'y': 250,
-                    'txt': f"{market_study_data['iso_time']} minutes of {market_study_data['iso_movement']}"
+                    'txt': f"{market_study_data['iso_string']}"
                 }
             },
             'image': {
@@ -2179,7 +2179,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 10,
                     'y': 80,
                     'w': 20,
-                    'txt': f"Viewing radius: {market_study_data['iso_time']} minutes of {market_study_data['iso_movement']}",
+                    'txt': f"Viewing radius: {market_study_data['iso_string']}",
                     'align': 'left'
                 },
                 'number_facilities_nh': {
@@ -2299,7 +2299,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 110,
                     'y': 80,
                     'w': 20,
-                    'txt': f"Viewing radius: {market_study_data['iso_time']} minutes of {market_study_data['iso_movement']}",
+                    'txt': f"Viewing radius: {market_study_data['iso_string']}",
                     'align': 'left'
                 },
                 'invest_cost_nursing_home': {
@@ -3036,7 +3036,7 @@ def market_study_skeleton_de(market_study_data):
                         'size': 12,
                         'x': 55,
                         'y': 216,
-                        'txt': f"{market_study_data['iso_time']} minuten {market_study_data['iso_movement']}"
+                        'txt': f"{market_study_data['iso_string']}"
                     },
                     'ms_text_1': {
                         'color': [0, 0, 0],
@@ -3733,7 +3733,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 183,
                     'w': 20,
-                    'txt': f"Radius: {market_study_data['iso_time']} Minuten {market_study_data['iso_movement']}",
+                    'txt': f"Radius: {market_study_data['iso_string']}",
                     'align': 'left'
                 },
                 'nursing_homes_heading': {
@@ -4900,7 +4900,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 12,
                     'x': 30,
                     'y': 250,
-                    'txt': f"{market_study_data['iso_time']} Minuten {market_study_data['iso_movement']}"
+                    'txt': f"{market_study_data['iso_string']}"
                 }
             },
             'image': {
@@ -5080,7 +5080,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 10,
                     'y': 80,
                     'w': 20,
-                    'txt': f"Radius: {market_study_data['iso_time']} Minuten {market_study_data['iso_movement']}",
+                    'txt': f"Radius: {market_study_data['iso_string']}",
                     'align': 'left'
                 },
                 'number_facilities_nh': {
@@ -5200,7 +5200,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 110,
                     'y': 80,
                     'w': 20,
-                    'txt': f"Radius: {market_study_data['iso_time']} Minuten {market_study_data['iso_movement']}",
+                    'txt': f"Radius: {market_study_data['iso_string']}",
                     'align': 'left'
                 },
                 'invest_cost_nursing_home': {

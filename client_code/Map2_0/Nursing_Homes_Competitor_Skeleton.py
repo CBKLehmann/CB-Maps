@@ -135,17 +135,17 @@ nursing_homes_competitor_skeleton_de = {
     }
   },
   'image': {
+    'table_header': {
+      'x': 70,
+      'y': 138,
+      'w': 132,
+      'path': "img/nh_header_de.png"
+    },
     'location_map': {
       'x': 10,
       'y': 45,
       'w': 150,
       'path': f"tmp/map_image.png"
-    },
-    'table_header': {
-      'x': 70,
-      'y': 135,
-      'w': 132,
-      'path': "img/nh_header_de.png"
     }
   },
   'cell': {},
