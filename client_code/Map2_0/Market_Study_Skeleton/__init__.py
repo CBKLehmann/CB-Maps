@@ -2132,7 +2132,7 @@ def market_study_skeleton_en(market_study_data):
                     'size': 12,
                     'x': 10,
                     'y': 72,
-                    'txt': 'Operator'
+                    'txt': 'Operator & Facilities'
                 },
                 'prices': {
                     'color': [0, 0, 0],
@@ -3279,7 +3279,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 76,
                     'y': 178.3,
                     'w': 24,
-                    'h': 74.7,
+                    'h': 78.7,
                     'style': 'F'
                 },
                 'gray_rect_1': {
@@ -3327,7 +3327,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 101,
                     'y': 178.3,
                     'w': 49,
-                    'h': 74.7,
+                    'h': 78.7,
                     'style': 'F'
                 },
                 'lightgray_rect_1': {
@@ -3375,7 +3375,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 151,
                     'y': 178.3,
                     'w': 49,
-                    'h': 74.7,
+                    'h': 78.7,
                     'style': 'F'
                 },
                 'demographic_top_line_1': {
@@ -3525,7 +3525,7 @@ def market_study_skeleton_de(market_study_data):
                 'final_line_1': {
                     'color': [0, 0, 0],
                     'x': 10,
-                    'y': 253,
+                    'y': 257,
                     'w': 65,
                     'h': .3,
                     'style': 'F'
@@ -3533,7 +3533,7 @@ def market_study_skeleton_de(market_study_data):
                 'final_line_2': {
                     'color': [0, 0, 0],
                     'x': 101,
-                    'y': 253,
+                    'y': 257,
                     'w': 49,
                     'h': .3,
                     'style': 'F'
@@ -3541,7 +3541,7 @@ def market_study_skeleton_de(market_study_data):
                 'final_line_3': {
                     'color': [0, 0, 0],
                     'x': 151,
-                    'y': 253,
+                    'y': 257,
                     'w': 49,
                     'h': .3,
                     'style': 'F'
@@ -3562,7 +3562,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 27,
                     'x': 10,
                     'y': 40,
-                    'txt': 'Current Situation'
+                    'txt': 'Aktuelle Marktsituation'
                 }
             },
             'cell': {
@@ -3573,7 +3573,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 55,
                     'w': 20,
-                    'txt': 'Demographic trend analysis',
+                    'txt': 'Demografische Entwicklung',
                     'align': 'left'
                 },
                 'population_city_heading': {
@@ -3583,7 +3583,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 65,
                     'w': 20,
-                    'txt': f"Population {market_study_data['city']} (City)",
+                    'txt': f"Bevölkerung {market_study_data['city']} (Stadt)",
                     'align': 'left'
                 },
                 'population_county_heading': {
@@ -3593,7 +3593,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 71,
                     'w': 20,
-                    'txt': f"Population {market_study_data['countie']} (County)",
+                    'txt': f"Bevölkerung {market_study_data['countie']} (Landkreis)",
                     'align': 'left'
                 },
                 'population_county_in_percent_heading': {
@@ -3613,7 +3613,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 15,
                     'y': 83,
                     'w': 20,
-                    'txt': 'of which population aged 65-79 years',
+                    'txt': 'davon Bevölkerung 65-79 Jahre',
                     'align': 'left'
                 },
                 'population_aged_65_79_in_percent_heading': {
@@ -3633,7 +3633,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 15,
                     'y': 95,
                     'w': 20,
-                    'txt': 'of which population aged 80+',
+                    'txt': 'davon Bevölkerung 80+ Jahre',
                     'align': 'left'
                 },
                 'population_aged_80_in_percent_heading': {
@@ -3653,7 +3653,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 110,
                     'w': 20,
-                    'txt': 'Full inpatient care',
+                    'txt': 'Vollstationäre Pflege',
                     'align': 'left'
                 },
                 'care_rate_heading': {
@@ -3661,9 +3661,9 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 12,
-                    'y': 133,
+                    'y': 135,
                     'w': 20,
-                    'txt': 'Care rate of population',
+                    'txt': 'Pflegequote der Bevölkerung',
                     'align': 'left'
                 },
                 'nursing_home_rate_heading': {
@@ -3671,9 +3671,9 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 12,
-                    'y': 139,
+                    'y': 141,
                     'w': 20,
-                    'txt': 'There of nursing home rate',
+                    'txt': 'Davon vollstationär Pflegebedürftige',
                     'align': 'left'
                 },
                 'full_inpatient_care_heading': {
@@ -3681,9 +3681,9 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 12,
-                    'y': 145,
+                    'y': 147,
                     'w': 20,
-                    'txt': 'Patients receiving full inpatient care',
+                    'txt': 'Anzahl vollstationär Pflegebedürftige',
                     'align': 'left'
                 },
                 'occupancy_rate_heading': {
@@ -3691,9 +3691,9 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 12,
-                    'y': 151,
+                    'y': 153,
                     'w': 20,
-                    'txt': 'Occupancy rate',
+                    'txt': 'Auslastungsquote',
                     'align': 'left'
                 },
                 'number_of_beds_heading': {
@@ -3701,9 +3701,9 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 12,
-                    'y': 157,
+                    'y': 159,
                     'w': 20,
-                    'txt': 'Number of beds',
+                    'txt': 'Anzahl Pflegebetten',
                     'align': 'left'
                 },
                 'number_of_free_beds_heading': {
@@ -3711,9 +3711,9 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 12,
-                    'y': 163,
+                    'y': 165,
                     'w': 20,
-                    'txt': 'Number of free beds',
+                    'txt': 'Anzahl freier Pflegebetten',
                     'align': 'left'
                 },
                 'demand_supply': {
@@ -3723,7 +3723,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 173,
                     'w': 20,
-                    'txt': 'Demand & Supply',
+                    'txt': 'Nachfrage & Angebot',
                     'align': 'left'
                 },
                 'demand_supply_viewing_radius': {
@@ -3733,7 +3733,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 183,
                     'w': 20,
-                    'txt': f"Viewing radius: {market_study_data['iso_time']} minutes of {market_study_data['iso_movement']}",
+                    'txt': f"Radius: {market_study_data['iso_time']} Minuten {market_study_data['iso_movement']}",
                     'align': 'left'
                 },
                 'nursing_homes_heading': {
@@ -3743,7 +3743,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 189,
                     'w': 20,
-                    'txt': 'Nursing homes',
+                    'txt': 'Pflegeheime',
                     'align': 'left'
                 },
                 'beds_supply_heading': {
@@ -3753,7 +3753,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 195,
                     'w': 20,
-                    'txt': 'Beds in supply',
+                    'txt': 'Pflegebetten',
                     'align': 'left'
                 },
                 'demand_occupancy_rate_heading': {
@@ -3763,7 +3763,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 201,
                     'w': 20,
-                    'txt': 'Occupancy rate',
+                    'txt': 'Auslastungsquote',
                     'align': 'left'
                 },
                 'planned_nursing_homes_heading': {
@@ -3773,7 +3773,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 207,
                     'w': 20,
-                    'txt': 'Nursing homes in planning',
+                    'txt': 'Pflegeheime in Planung',
                     'align': 'left'
                 },
                 'constructing_nursing_homes_heading': {
@@ -3783,7 +3783,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 213,
                     'w': 20,
-                    'txt': 'Nursing homes under construction',
+                    'txt': 'Pflegeheime im Bau',
                     'align': 'left'
                 },
                 'beds_planning_heading': {
@@ -3793,7 +3793,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 219,
                     'w': 20,
-                    'txt': 'Beds in planning',
+                    'txt': 'Pflegebetten in Planung',
                     'align': 'left'
                 },
                 'beds_constructing_heading': {
@@ -3803,27 +3803,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 12,
                     'y': 225,
                     'w': 20,
-                    'txt': 'Beds under construction',
-                    'align': 'left'
-                },
-                'loss_of_beds_heading': {
-                    'color': [0, 0, 0],
-                    'font': 'seguisb',
-                    'size': 9,
-                    'x': 12,
-                    'y': 231,
-                    'w': 20,
-                    'txt': 'Beds lost while meeting federal state law',
-                    'align': 'left'
-                },
-                'adjusted_beds_heading': {
-                    'color': [0, 0, 0],
-                    'font': 'seguisb',
-                    'size': 9,
-                    'x': 12,
-                    'y': 237,
-                    'w': 20,
-                    'txt': 'Adjusted number of beds',
+                    'txt': 'Pflegebetten im Bau',
                     'align': 'left'
                 },
                 'demand_inpatients_heading': {
@@ -3831,9 +3811,9 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 12,
-                    'y': 243,
+                    'y': 249,
                     'w': 20,
-                    'txt': 'Demand of number of inpatients',
+                    'txt': 'Nachfrage nach Pflegebetten',
                     'align': 'left'
                 },
                 'surplus_deficit_heading': {
@@ -3841,19 +3821,9 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 12,
-                    'y': 249,
+                    'y': 254,
                     'w': 20,
-                    'txt': 'Surplus or deficit of beds',
-                    'align': 'left'
-                },
-                'scenario_1_text': {
-                    'color': [128, 128, 128],
-                    'font': 'segoeui',
-                    'size': 7,
-                    'x': 12,
-                    'y': 275,
-                    'w': 20,
-                    'txt': '¹In scenario 1 the relative situation (product of nursing home rate and care rate) as in 2020 is assumed to be constant for the entire forecasting period.',
+                    'txt': 'Pflegebetten im Überschuss / Defizit',
                     'align': 'left'
                 },
                 'scenario_2_text': {
@@ -3861,9 +3831,9 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 7,
                     'x': 12,
-                    'y': 281,
+                    'y': 285,
                     'w': 20,
-                    'txt': '²In scenario 2, it is assumed that the proportion of the nursing home rate will increase by 0.003 percent-points from 2020 to 2035.',
+                    'txt': '²In Szenario 2 wird angenommen, dass der Anteil der vollstationären Pflegequote von 2020 bis 2035 um 0,003 Prozentpunkte ansteigt.',
                     'align': 'left'
                 },
                 '2020_heading': {
@@ -3951,7 +3921,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 76,
-                    'y': 133,
+                    'y': 135,
                     'w': 23,
                     'txt': '{:,}%'.format(market_study_data['new_care_rate_raw']),
                     'align': 'right'
@@ -3961,7 +3931,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 76,
-                    'y': 139,
+                    'y': 141,
                     'w': 23,
                     'txt': '{:,}%'.format(market_study_data['nursing_home_rate']),
                     'align': 'right'
@@ -3971,7 +3941,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 76,
-                    'y': 145,
+                    'y': 147,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['inpatients_lk']),
                     'align': 'right'
@@ -3981,7 +3951,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 76,
-                    'y': 151,
+                    'y': 153,
                     'w': 23,
                     'txt': '{:,}%'.format(market_study_data['occupancy_lk']),
                     'align': 'right'
@@ -3991,7 +3961,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 76,
-                    'y': 157,
+                    'y': 159,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_lk']),
                     'align': 'right'
@@ -4001,7 +3971,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 76,
-                    'y': 163,
+                    'y': 165,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['free_beds_lk']),
                     'align': 'right'
@@ -4081,7 +4051,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 76,
-                    'y': 237,
+                    'y': 242,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_active']),
                     'align': 'right'
@@ -4091,7 +4061,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 9,
                     'x': 76,
-                    'y': 243,
+                    'y': 249,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['inpatients']),
                     'align': 'right'
@@ -4175,7 +4145,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 101,
                     'y': 120,
                     'w': 23,
-                    'txt': 'Scenario 1',
+                    'txt': 'Szenario 1',
                     'align': 'right'
                 },
                 'care_rate_2030_s1': {
@@ -4183,7 +4153,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 101,
-                    'y': 133,
+                    'y': 135,
                     'w': 23,
                     'txt': '{:,}%'.format(market_study_data['care_rate_30_v1_raw']),
                     'align': 'right'
@@ -4193,7 +4163,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 101,
-                    'y': 139,
+                    'y': 141,
                     'w': 23,
                     'txt': '{:,}%'.format(market_study_data['nursing_home_rate']),
                     'align': 'right'
@@ -4203,7 +4173,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 101,
-                    'y': 145,
+                    'y': 147,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['pat_rec_full_care_fc_30_v1']),
                     'align': 'right'
@@ -4213,7 +4183,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 101,
-                    'y': 151,
+                    'y': 153,
                     'w': 23,
                     'txt': '95.0%',
                     'align': 'right'
@@ -4223,7 +4193,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 101,
-                    'y': 157,
+                    'y': 159,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_30_v1']),
                     'align': 'right'
@@ -4233,7 +4203,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 101,
-                    'y': 163,
+                    'y': 165,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['free_beds_30_v1']),
                     'align': 'right'
@@ -4263,7 +4233,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 101,
-                    'y': 231,
+                    'y': 234,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['loss_of_beds']),
                     'align': 'right'
@@ -4273,7 +4243,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 101,
-                    'y': 237,
+                    'y': 242,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_adjusted_30_v1']),
                     'align': 'right'
@@ -4283,7 +4253,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 101,
-                    'y': 243,
+                    'y': 249,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['inpatients_fc']),
                     'align': 'right'
@@ -4293,7 +4263,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 101,
-                    'y': 249,
+                    'y': 254,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_surplus']),
                     'align': 'right'
@@ -4305,7 +4275,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 125,
                     'y': 120,
                     'w': 23,
-                    'txt': 'Scenario 2',
+                    'txt': 'Szenario 2',
                     'align': 'right'
                 },
                 'care_rate_2030_s2': {
@@ -4313,7 +4283,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 125,
-                    'y': 133,
+                    'y': 135,
                     'w': 23,
                     'txt': '{:,}%'.format(market_study_data['care_rate_30_v2_raw']),
                     'align': 'right'
@@ -4323,7 +4293,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 125,
-                    'y': 139,
+                    'y': 141,
                     'w': 23,
                     'txt': '{:,}%'.format(market_study_data['nursing_home_rate']),
                     'align': 'right'
@@ -4333,7 +4303,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 125,
-                    'y': 145,
+                    'y': 147,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['pat_rec_full_care_fc_30_v2']),
                     'align': 'right'
@@ -4343,7 +4313,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 125,
-                    'y': 151,
+                    'y': 153,
                     'w': 23,
                     'txt': '95.0%',
                     'align': 'right'
@@ -4353,7 +4323,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 125,
-                    'y': 157,
+                    'y': 159,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_30_v2']),
                     'align': 'right'
@@ -4363,7 +4333,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 125,
-                    'y': 163,
+                    'y': 165,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['free_beds_30_v2']),
                     'align': 'right'
@@ -4393,7 +4363,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 125,
-                    'y': 231,
+                    'y': 234,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['loss_of_beds']),
                     'align': 'right'
@@ -4403,7 +4373,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 125,
-                    'y': 237,
+                    'y': 242,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_adjusted_30_v2']),
                     'align': 'right'
@@ -4413,7 +4383,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 125,
-                    'y': 243,
+                    'y': 249,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['inpatients_fc_v2']),
                     'align': 'right'
@@ -4423,7 +4393,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 125,
-                    'y': 249,
+                    'y': 254,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_surplus_v2']),
                     'align': 'right'
@@ -4507,7 +4477,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 151,
                     'y': 120,
                     'w': 23,
-                    'txt': 'Scenario 1',
+                    'txt': 'Szenario 1',
                     'align': 'right'
                 },
                 'care_rate_2035_s1': {
@@ -4515,7 +4485,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 151,
-                    'y': 133,
+                    'y': 135,
                     'w': 23,
                     'txt': '{:,}%'.format(market_study_data['care_rate_35_v1_raw']),
                     'align': 'right'
@@ -4525,7 +4495,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 151,
-                    'y': 139,
+                    'y': 141,
                     'w': 23,
                     'txt': '{:,}%'.format(market_study_data['nursing_home_rate']),
                     'align': 'right'
@@ -4535,7 +4505,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 151,
-                    'y': 145,
+                    'y': 147,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['pat_rec_full_care_fc_35_v1']),
                     'align': 'right'
@@ -4545,7 +4515,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 151,
-                    'y': 151,
+                    'y': 153,
                     'w': 23,
                     'txt': '95.0%',
                     'align': 'right'
@@ -4555,7 +4525,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 151,
-                    'y': 157,
+                    'y': 159,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_35_v1']),
                     'align': 'right'
@@ -4565,7 +4535,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 151,
-                    'y': 163,
+                    'y': 165,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['free_beds_35_v1']),
                     'align': 'right'
@@ -4595,7 +4565,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 151,
-                    'y': 231,
+                    'y': 234,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['loss_of_beds']),
                     'align': 'right'
@@ -4605,7 +4575,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 151,
-                    'y': 237,
+                    'y': 242,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_adjusted_35_v1']),
                     'align': 'right'
@@ -4615,7 +4585,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 151,
-                    'y': 243,
+                    'y': 249,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['inpatients_fc_35']),
                     'align': 'right'
@@ -4625,7 +4595,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 151,
-                    'y': 249,
+                    'y': 254,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_surplus_35']),
                     'align': 'right'
@@ -4637,7 +4607,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 175,
                     'y': 120,
                     'w': 24,
-                    'txt': 'Scenario 2',
+                    'txt': 'Szenario 2',
                     'align': 'right'
                 },
                 'care_rate_2035_s2': {
@@ -4645,7 +4615,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 175,
-                    'y': 133,
+                    'y': 135,
                     'w': 23,
                     'txt': '{:,}%'.format(market_study_data['care_rate_35_v2_raw']),
                     'align': 'right'
@@ -4655,7 +4625,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 175,
-                    'y': 139,
+                    'y': 141,
                     'w': 23,
                     'txt': '{:,}%'.format(market_study_data['nursing_home_rate']),
                     'align': 'right'
@@ -4665,7 +4635,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 175,
-                    'y': 145,
+                    'y': 147,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['pat_rec_full_care_fc_35_v2']),
                     'align': 'right'
@@ -4675,7 +4645,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 175,
-                    'y': 151,
+                    'y': 153,
                     'w': 23,
                     'txt': '95.0%',
                     'align': 'right'
@@ -4685,7 +4655,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 175,
-                    'y': 157,
+                    'y': 159,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_35_v2']),
                     'align': 'right'
@@ -4695,7 +4665,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 175,
-                    'y': 163,
+                    'y': 165,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['free_beds_35_v2']),
                     'align': 'right'
@@ -4725,7 +4695,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 175,
-                    'y': 231,
+                    'y': 234,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['loss_of_beds']),
                     'align': 'right'
@@ -4735,7 +4705,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 175,
-                    'y': 237,
+                    'y': 242,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_adjusted_35_v2']),
                     'align': 'right'
@@ -4745,7 +4715,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 175,
-                    'y': 243,
+                    'y': 249,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['inpatients_fc_35_v2']),
                     'align': 'right'
@@ -4755,13 +4725,46 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'segoeui',
                     'size': 9,
                     'x': 175,
-                    'y': 249,
+                    'y': 254,
                     'w': 23,
                     'txt': '{:,}'.format(market_study_data['beds_surplus_35_v2']),
                     'align': 'right'
                 }
             },
             'multi_cell': {
+                'loss_of_beds_heading': {
+                    'color': [0, 0, 0],
+                    'font': 'seguisb',
+                    'size': 9,
+                    'x': 12,
+                    'y': 229,
+                    'w': 70,
+                    'h': 4,
+                    'txt': 'Wegfall Pflegebetten\ndurch Einhaltung Landesrecht',
+                    'align': 'left'
+                },
+                'adjusted_beds_heading': {
+                    'color': [0, 0, 0],
+                    'font': 'seguisb',
+                    'size': 9,
+                    'x': 12,
+                    'y': 238,
+                    'w': 70,
+                    'h': 4,
+                    'txt': 'Anzahl Pflegebetten\n(nach Wegfall durch Landesrecht)',
+                    'align': 'left'
+                },
+                'scenario_1_text': {
+                    'color': [128, 128, 128],
+                    'font': 'segoeui',
+                    'size': 7,
+                    'x': 12,
+                    'y': 275,
+                    'w': 190,
+                    'h': 4,
+                    'txt': '¹In Szenario 1 wird die relative Entwicklung (Produkt aus vollstationäre Pflegequote und Pflegequote) wie im Jahr 2020 für den gesamten Prognosezeitraum\nals konstant angenommen.',
+                    'align': 'left'
+                },
                 'scenario_1_2030_text': {
                     'color': [0, 0, 0],
                     'font': 'segoeui',
@@ -4770,7 +4773,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 122,
                     'w': 24,
                     'h': 4,
-                    'txt': "Constant care\nsituation¹",
+                    'txt': "Konstante\nEntwicklung¹",
                     'align': 'right'
                 },
                 'scenario_2_2030_text': {
@@ -4781,7 +4784,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 122,
                     'w': 24,
                     'h': 4,
-                    'txt': "Increase in care needs of 0,003%²",
+                    'txt': "Zunahme der\nPflegebedürftigkeit um 0,003%²",
                     'align': 'right'
                 },
                 'scenario_1_2035_text': {
@@ -4792,7 +4795,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 122,
                     'w': 24,
                     'h': 4,
-                    'txt': "Constant care\nsituation¹",
+                    'txt': "Konstante\nEntwicklung¹",
                     'align': 'right'
                 },
                 'scenario_2_2035_text': {
@@ -4803,7 +4806,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 122,
                     'w': 24,
                     'h': 4,
-                    'txt': "Increase in care needs of 0,003%²",
+                    'txt': "Zunahme der\nPflegebedürftigkeit um 0,003%²",
                     'align': 'right'
                 }
             },
@@ -4825,7 +4828,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 27,
                     'x': 10,
                     'y': 40,
-                    'txt': 'Location Analysis'
+                    'txt': 'Standortanalyse'
                 },
                 'investment_object': {
                     'color': [0, 0, 0],
@@ -4833,7 +4836,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 12,
                     'x': 30,
                     'y': 210,
-                    'txt': 'Investment object'
+                    'txt': 'Objekt der Analyse'
                 },
                 'nursing_home_competitor': {
                     'color': [128, 128, 128],
@@ -4841,7 +4844,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 9,
                     'x': 30,
                     'y': 216,
-                    'txt': 'Competitor'
+                    'txt': 'Mitbewerber'
                 },
                 'nursing_home': {
                     'color': [0, 0, 0],
@@ -4849,7 +4852,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 12,
                     'x': 30,
                     'y': 220,
-                    'txt': 'Nursing home'
+                    'txt': 'Pflegeheim'
                 },
                 'assisted_living_competitor': {
                     'color': [128, 128, 128],
@@ -4857,7 +4860,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 9,
                     'x': 30,
                     'y': 226,
-                    'txt': 'Competitor'
+                    'txt': 'Mitbewerber'
                 },
                 'assisted_living': {
                     'color': [0, 0, 0],
@@ -4865,7 +4868,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 12,
                     'x': 30,
                     'y': 230,
-                    'txt': 'Assisted Living'
+                    'txt': 'Betreutes Wohnen'
                 },
                 'nursing_home_assisted_living_competitor': {
                     'color': [128, 128, 128],
@@ -4873,7 +4876,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 9,
                     'x': 30,
                     'y': 236,
-                    'txt': 'Competitor'
+                    'txt': 'Mitbewerber'
                 },
                 'nursing_home_assisted_living': {
                     'color': [0, 0, 0],
@@ -4881,7 +4884,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 12,
                     'x': 30,
                     'y': 240,
-                    'txt': 'Nursing home & Assisted living'
+                    'txt': 'Pflegeheime & Betreutes Wohnen'
                 },
                 'distance_layer': {
                     'color': [128, 128, 128],
@@ -4889,7 +4892,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 9,
                     'x': 30,
                     'y': 246,
-                    'txt': 'Distance layer'
+                    'txt': 'Betrachteter Radius'
                 },
                 'distance_amount': {
                     'color': [0, 0, 0],
@@ -4897,7 +4900,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 12,
                     'x': 30,
                     'y': 250,
-                    'txt': f"{market_study_data['iso_time']} minutes of {market_study_data['iso_movement']}"
+                    'txt': f"{market_study_data['iso_time']} Minuten {market_study_data['iso_movement']}"
                 }
             },
             'image': {
@@ -5014,7 +5017,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 27,
                     'x': 10,
                     'y': 40,
-                    'txt': 'Good to know'
+                    'txt': 'Wissenswertes'
                 },
                 'market_shares': {
                     'color': [0, 0, 0],
@@ -5022,7 +5025,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 17,
                     'x': 10,
                     'y': 55,
-                    'txt': 'Market shares'
+                    'txt': 'Marktanteile'
                 },
                 'operator': {
                     'color': [0, 0, 0],
@@ -5030,7 +5033,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 12,
                     'x': 10,
                     'y': 72,
-                    'txt': 'Operator'
+                    'txt': 'Betreiber & Einrichtungen'
                 },
                 'prices': {
                     'color': [0, 0, 0],
@@ -5038,7 +5041,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 12,
                     'x': 110,
                     'y': 72,
-                    'txt': 'Prices'
+                    'txt': 'Preise'
                 },
                 'purchase_power': {
                     'color': [0, 0, 0],
@@ -5046,7 +5049,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 12,
                     'x': 10,
                     'y': 206,
-                    'txt': 'Purchasing power index (municipality)'
+                    'txt': 'Kaufkraftindex (Gemeinde)'
                 }
             },
             'image': {
@@ -5077,7 +5080,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 10,
                     'y': 80,
                     'w': 20,
-                    'txt': f"Viewing radius: {market_study_data['iso_time']} minutes of {market_study_data['iso_movement']}",
+                    'txt': f"Radius: {market_study_data['iso_time']} Minuten {market_study_data['iso_movement']}",
                     'align': 'left'
                 },
                 'number_facilities_nh': {
@@ -5087,7 +5090,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 10,
                     'y': 85,
                     'w': 20,
-                    'txt': 'Number of facilities (NH)',
+                    'txt': 'Anzahl Pflegeheime',
                     'align': 'left'
                 },
                 'number_facilities_nh_value': {
@@ -5107,7 +5110,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 10,
                     'y': 90,
                     'w': 20,
-                    'txt': 'Number of facilities (AL)',
+                    'txt': 'Anzahl betreute Wohneinrichtungen',
                     'align': 'left'
                 },
                 'number_facilities_al_value': {
@@ -5127,7 +5130,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 10,
                     'y': 95,
                     'w': 20,
-                    'txt': 'Median numbers of beds (NH)',
+                    'txt': 'Median Bettenzahl - Pflegeheim',
                     'align': 'left'
                 },
                 'median_beds_value': {
@@ -5147,7 +5150,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 10,
                     'y': 100,
                     'w': 20,
-                    'txt': 'Median year of construction (NH)',
+                    'txt': 'Median Baujahr - Pflegeheim',
                     'align': 'left'
                 },
                 'median_year_of_construct_value': {
@@ -5167,7 +5170,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 10,
                     'y': 105,
                     'w': 20,
-                    'txt': 'Median year of construction (AL)',
+                    'txt': 'Median Baujahr - Betreutes Wohnen',
                     'align': 'left'
                 },
                 'median_year_of_construct_al_value': {
@@ -5187,7 +5190,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 10,
                     'y': 115,
                     'w': 20,
-                    'txt': 'Operator types',
+                    'txt': 'Betreiberarten',
                     'align': 'left'
                 },
                 'prices_viewing_radius': {
@@ -5197,7 +5200,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 110,
                     'y': 80,
                     'w': 20,
-                    'txt': f"Viewing radius: {market_study_data['iso_time']} minutes of {market_study_data['iso_movement']}",
+                    'txt': f"Radius: {market_study_data['iso_time']} Minuten {market_study_data['iso_movement']}",
                     'align': 'left'
                 },
                 'invest_cost_nursing_home': {
@@ -5207,7 +5210,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 110,
                     'y': 85,
                     'w': 20,
-                    'txt': 'Invest costs in Nursing homes',
+                    'txt': 'Investitionskosten in Pflegeheimen',
                     'align': 'left'
                 }
             },
@@ -5220,7 +5223,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 270,
                     'w': 90,
                     'h': 4,
-                    'txt': f"""The investment cost rates of the facilities within the catchment area range between €{market_study_data['minimum_invest_cost']} and €{market_study_data['maximum_invest_cost']}.  The median investment cost amount to €{'{:.2f}'.format(market_study_data['total_invest_cost'])}. {f"The investment costs at the facility, that is subject to this study amounts to €{market_study_data['home_invest']}." if not market_study_data['home_invest'] == -1 else ''}""",
+                    'txt': f"""Die Investitionskostensätze der Einrichtungen im Einzugsgebiet liegen zwischen {market_study_data['minimum_invest_cost']}€ und {market_study_data['maximum_invest_cost']}€. Der Median der Investitionskosten liegt bei {'{:.2f}'.format(market_study_data['total_invest_cost'])}€. {f"Die Investitionskosten der Einrichtung, die Gegenstand dieser Studie ist, belaufen sich auf {market_study_data['home_invest']}€." if not market_study_data['home_invest'] == -1 else ''}""",
                     'align': 'left'
                 }
             }
@@ -5240,15 +5243,15 @@ def market_study_skeleton_de(market_study_data):
             'line': {
                 'state_top_line': {
                     'x1': 15,
-                    'y1': 84,
+                    'y1': 87,
                     'x2': 195,
-                    'y2': 84
+                    'y2': 87
                 },
                 'state_bottom_line': {
                     'x1': 15,
-                    'y1': 95,
+                    'y1': 98,
                     'x2': 195,
-                    'y2': 95
+                    'y2': 98
                 }
             },
             'text': {
@@ -5266,7 +5269,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 27,
                     'x': 10,
                     'y': 40,
-                    'txt': 'Regulations'
+                    'txt': 'Vorschriften'
                 }
             },
             'cell': {
@@ -5277,7 +5280,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 15,
                     'y': 60,
                     'w': 20,
-                    'txt': 'Regulations of federal state',
+                    'txt': 'Vorschriften des Bundeslandes',
                     'align': 'left'
                 },
                 'federal_state': {
@@ -5285,9 +5288,9 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 12,
                     'x': 15,
-                    'y': 90,
+                    'y': 93,
                     'w': 20,
-                    'txt': 'Federal state',
+                    'txt': 'Bundesland',
                     'align': 'left'
                 },
                 'federal_state_value': {
@@ -5296,7 +5299,7 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 12,
                     'x': 85,
-                    'y': 84,
+                    'y': 87,
                     'w': 110,
                     'h': 11,
                     'txt': market_study_data['regulations']['federal_state'],
@@ -5310,7 +5313,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 15,
                     'y': 110,
                     'w': 20,
-                    'txt': 'Single room quota (min.)',
+                    'txt': 'Einzelzimmerquote (min.)',
                     'align': 'left'
                 },
                 'home_size': {
@@ -5320,7 +5323,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 15,
                     'y': 116,
                     'w': 20,
-                    'txt': 'Maximum home size',
+                    'txt': 'Max. Größe der Pflegeeinrichtung (Betten)',
                     'align': 'left'
                 },
                 'room_size': {
@@ -5330,7 +5333,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 15,
                     'y': 122,
                     'w': 20,
-                    'txt': 'Minimum room size (SR/DR)',
+                    'txt': 'Mindestzimmergröße (EZ/DZ)',
                     'align': 'left'
                 },
                 'common_area': {
@@ -5340,7 +5343,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 15,
                     'y': 128,
                     'w': 20,
-                    'txt': 'Minimum common area/residential',
+                    'txt': 'Min. Gemeinschaftsfläche/Wohnen',
                     'align': 'left'
                 },
                 'comment': {
@@ -5350,7 +5353,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 15,
                     'y': 134,
                     'w': 20,
-                    'txt': 'Comment',
+                    'txt': 'Kommentar',
                     'align': 'left'
                 },
                 'legal_basis': {
@@ -5360,7 +5363,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 15,
                     'y': 153,
                     'w': 20,
-                    'txt': 'Legal basis',
+                    'txt': 'Rechtsgrundlage',
                     'align': 'left'
                 },
                 'new': {
@@ -5368,9 +5371,9 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 12,
                     'x': 85,
-                    'y': 100,
+                    'y': 101,
                     'w': 20,
-                    'txt': 'New',
+                    'txt': 'Neu',
                     'align': 'left'
                 },
                 'new_single_room_quota': {
@@ -5428,9 +5431,9 @@ def market_study_skeleton_de(market_study_data):
                     'font': 'seguisb',
                     'size': 12,
                     'x': 140,
-                    'y': 100,
+                    'y': 101,
                     'w': 20,
-                    'txt': 'Existing',
+                    'txt': 'Bestehend',
                     'align': 'left'
                 },
                 'existing_single_room_quota': {
@@ -5493,7 +5496,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 70,
                     'w': 180,
                     'h': 4,
-                    'txt': f"This market study consideres {market_study_data['nursing_homes_active']} nursing homes within the vicinity of {market_study_data['iso_time']} minutes {market_study_data['iso_movement']}. Thereof, {market_study_data['complied_regulations']} facilities comply with the federal state regulations and {market_study_data['uncomplied_regulations']} facilities that do not fullfill the federal requirements. Assuming that only 80% of the respective facilities need to comply with the below shown federal state regulations, the resulting loss of beds in the market until 2030 will amount to {market_study_data['loss_of_beds']}.",
+                    'txt': f"Diese Marktstudie berücksichtigt {market_study_data['nursing_homes_active']} Pflegeheime im Umkreis von {market_study_data['iso_time']} Minuten {market_study_data['iso_movement']}. Davon erfüllen {market_study_data['complied_regulations']} Einrichtungen die landesrechtlichen Vorgaben und {market_study_data['uncomplied_regulations']} Einrichtungen erfüllen die bundesrechtlichen Anforderungen nicht. Geht man davon aus, dass nur 80% der jeweiligen Einrichtungen die unten dargestellten Landesregelungen erfüllen müssen, so ergibt sich bis zum Jahr 2030 ein Bettenverlust im Markt von {market_study_data['loss_of_beds']}.",
                     'align': 'left'
                 },
                 'new_comment': {
@@ -5539,7 +5542,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 27,
                     'x': 10,
                     'y': 30,
-                    'txt': 'About the study'
+                    'txt': 'Über diese Studie'
                 },
                 'methodic': {
                     'color': [0, 0, 0],
@@ -5547,7 +5550,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 27,
                     'x': 10,
                     'y': 40,
-                    'txt': 'Methodic'
+                    'txt': 'Methodik'
                 }
             },
             'multi_cell': {
@@ -5559,7 +5562,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 65,
                     'w': 80,
                     'h': 4,
-                    'txt': 'Methodology, Data analysis &\nforecasting',
+                    'txt': 'Methodik, Datenanalyse und -prognose',
                     'align': 'left'
                 },
                 'paragraph_1': {
@@ -5570,7 +5573,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 80,
                     'w': 80,
                     'h': 4,
-                    'txt': 'The market study highlights the current state of the\ninpatient care market in Germany and provides a\nforecast for the demand for nursing care until 2030\nand 2035. The study emphasizes the key drivers of\ndemand and the methodology employed to arrive at\nthe forecasted figures\n\nThe study utilizes a combination of publicly available\nsecondary research. Secondary research includes\nanalyzing geographical, demographical and\nstatistical databases as well as government\npublications and reputable healthcare sources to\ngather quantitative data.\n\nThe collected data is analyzed to identify trends,\ngrowth drivers, and market dynamics. The analysis\nencompasses factors such as population\ndemographics, healthcare policies and available\nmarket information on existing and future care\nfacilities, prevalence of chronic diseases, and\neconomic indicators affecting the demand for\ninpatient care.\n\nTo forecast the future demand for nursing care, a\ncombination of demographic projection, trend\nanalysis and consideration of new care facilities to\nbe launched on the market is employed.\nDemographic projection takes into account\npopulation growth, aging trends, and migration\npatterns. Trend analysis examines historical data and\nidentifies patterns and growth rates to project future\ndemand. New care facilities takes into account\nbuildings that are in planning or under construction.\n\nAll findings of the market study will consider the\nfactors mentioned above to provide a\ncomprehensive understanding of the current state of\nthe inpatient care market.',
+                    'txt': 'Die Marktstudie beleuchtet den aktuellen Stand des\nstationären Pflegemarktes in Deutschland und gibt eine\nPrognose für den Pflegebedarf bis 2030 und 2035.\nDie Studie hebt die wichtigsten Treiber der Nachfrage und\ndie Methodik hervor, mit der die prognostizierten Zahlen\nermittelt wurden.\n\nDie Studie stützt sich auf eine Kombination aus öffentlich\nzugänglicher Sekundärforschung. Die Sekundärforschung\numfasst die Analyse geografischer, demografischer und\nstatistischer Datenbanken sowie staatlicher\nVeröffentlichungen und seriöser Quellen aus dem\nGesundheitswesen, um quantitative Daten zu sammeln.\n\nDie gesammelten Daten werden analysiert, um Trends,\nWachstumstreiber und Marktdynamiken zu identifizieren.\nDie Analyse umfasst Faktoren wie die\nBevölkerungsdemografie, die Gesundheitspolitik und\nverfügbare Marktinformationen über bestehende und\nzukünftige Pflegeeinrichtungen, die Entwicklung chronischer\nKrankheiten und wirtschaftliche Indikatoren, die die\nNachfrage nach stationärer Pflege beeinflussen.\n\nZur Vorhersage der künftigen Nachfrage nach\nPflegeleistungen wird eine Kombination aus demografischer\nProjektion, Trendanalyse und Berücksichtigung neuer\nPflegeeinrichtungen, die auf den Markt kommen sollen,\nverwenden. Die demografische Vorhersage berücksichtigt\ndas Bevölkerungswachstum, Alterungstendenzen und\nMigrationsmuster. Die Trendanalyse untersucht historische\nDaten und identifiziert Muster und Wachstumsraten, um den\nzukünftigen Bedarf zu prognostizieren. Bei neuen\nPflegeeinrichtungen werden Gebäude berücksichtigt, die\n sich in Planung oder im Bau befinden.\n\nAlle Ergebnisse der Marktstudie werden die oben genannten\nFaktoren berücksichtigen, um ein umfassendes Verständnis\ndes aktuellen Stands des stationären Pflegemarkts zu\nvermitteln.',
                     'align': 'left'
                 },
                 'heading_2': {
@@ -5581,7 +5584,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 240,
                     'w': 70,
                     'h': 4,
-                    'txt': 'Limitations',
+                    'txt': 'Beschränkungen',
                     'align': 'left'
                 },
                 'paragraph_2': {
@@ -5592,7 +5595,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 250,
                     'w': 80,
                     'h': 4,
-                    'txt': 'The forecast is based on available data and assumes\nthat there will be no major disruptive events or\npolicy changes that could significantly impact the\ndemand for inpatient care.',
+                    'txt': 'Die Prognose basiert auf den verfügbaren Daten und geht davon\naus, dass es keine diruptiven Ereignisse oder politischen\nVeränderungen geben wird, die sich erheblich auf die Nachfrage\nnach stationärer Pflege auswirken könnten.',
                     'align': 'left'
                 },
                 'heading_3': {
@@ -5603,7 +5606,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 68,
                     'w': 80,
                     'h': 4,
-                    'txt': 'Data sources',
+                    'txt': 'Datenquellen',
                     'align': 'left'
                 },
                 'paragraph_3': {
@@ -5638,7 +5641,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 27,
                     'x': 10,
                     'y': 30,
-                    'txt': 'Keep in touch'
+                    'txt': 'Ansprechpartner'
                 },
                 'capital_bay_team': {
                     'color': [0, 0, 0],
