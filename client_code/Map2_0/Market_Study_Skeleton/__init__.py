@@ -2883,7 +2883,7 @@ def market_study_skeleton_en(market_study_data):
                     'y': 230,
                     'w': 90,
                     'h': 4,
-                    'txt': "Capital Bay is not responsible for any incomplete or\ninaccurate information and readers are urged to verify\nthe information themselves before making any\ndecision. Capital Bay shall not be liable for any\nomissions or inaccuracies in this report or for any\nother oral or written statements made in connection\nwith this report.\n\n© 2023 Capital Bay Group\nAll rights reserved.",
+                    'txt': "Capital Bay is not responsible for any incomplete or\ninaccurate information and readers are urged to verify\nthe information themselves before making any\ndecision. Capital Bay shall not be liable for any\nomissions or inaccuracies in this report or for any\nother oral or written statements made in connection\nwith this report.\n\n© 2024 Capital Bay Group\nAll rights reserved.",
                     'align': 'left'
                 }
             }
@@ -5773,7 +5773,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 230,
                     'w': 90,
                     'h': 4,
-                    'txt': "This study has been prepared by Capital Bay Group\nS.A. (hereinafter Capital Bay) to provide investors and\nbusiness partners of Capital Bay with an overview of\ncurrent developments in the care and assisted living\nsector of the real estate industry. Capital Bay\nemphasizes that this study is not a sufficient basis for\ndecision making and user discretion is necessary for\nthe decision making process.\n\nThis study has been prepared with reasonable care.\nThe information presented has not been verified by\nCapital Bay for completeness or accuracy.\nIt has beenobtained from the sources indicated and\nsupplemented by Capital Bay's own market\nknowledge. No confidential or non-public information\nhas been made use.",
+                    'txt': "Diese Studie wurde von der Capital Bay Group S.A.\n(im Folgenden Capital Bay) erstellt, um Investoren und\nGeschäftspartnern von Capital Bay einen Überblick über\ndie aktuellen Entwicklungen im Bereich Pflege und\nBetreutes Wohnen in der Immobilienbranche zu geben.\nCapital Bay weist darauf hin, dass diese Studie keine\nhinreichende Entscheidungsgrundlage darstellt und die\nEntscheidungsfindung im eigenen Ermessen liegt.\n\nDiese Studie wurde mit angemessener Sorgfalt erstellt.\nDie dargestellten Informationen wurden von Capital Bay\nnicht auf Vollständigkeit oder Richtigkeit überprüft.\nSie wurden aus den angegebenen Quellen entnommen\nund mit Bezug auf die Marktkenntnisse von Capital Bay, zusammengestellt.\nEs wurden keine vertraulichen oder nicht-öffentlichen\nInformationen verwendet.",
                     'align': 'left'
                 },
                 'bottom_text_right': {
@@ -5784,7 +5784,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 230,
                     'w': 90,
                     'h': 4,
-                    'txt': "Capital Bay is not responsible for any incomplete or\ninaccurate information and readers are urged to verify\nthe information themselves before making any\ndecision. Capital Bay shall not be liable for any\nomissions or inaccuracies in this report or for any\nother oral or written statements made in connection\nwith this report.\n\n© 2023 Capital Bay Group\nAll rights reserved.",
+                    'txt': "Capital Bay ist nicht verantwortlich für unvollständige oder\nungenaue Informationen und die Leser werden dringend\ngebeten, die Informationen selbst zu überprüfen, bevor sie eine\nEntscheidung treffen. Capital Bay haftet nicht für Auslassungen\noder Ungenauigkeiten in diesem Bericht oder für andere\nmündliche oder schriftliche Erklärungen, die im Zusammenhang\nmit diesem Bericht abgegeben werden.\n\n© 2024 Capital Bay Group\nAlle Rechte vorbehalten.",
                     'align': 'left'
                 }
             }
