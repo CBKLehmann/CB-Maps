@@ -1951,7 +1951,7 @@ class Map2_0(Map2_0Template):
               competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
 
       from . import Market_Study_Skeleton
-      version = "en"
+      version = "de"
       if version == "en":
         market_study_data = Market_Study_Skeleton.market_study_skeleton_en({
         'street': street,
