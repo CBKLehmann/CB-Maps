@@ -732,8 +732,8 @@ class Map2_0(Map2_0Template):
 
   def create_market_study(self, **event_args):
     with anvil.server.no_loading_indicator:
-
       Functions.manipulate_loading_overlay(True)
+      version = "de"
       anvil.js.call('update_loading_bar', 5, 'Checking basic map settings')
       checked_nursing_home = self.pdb_data_cb.checked
       checked_assisted_living = self.pdb_data_al.checked
@@ -766,6 +766,13 @@ class Map2_0(Map2_0Template):
       if iso_time == "-1":
           iso_time = "20"
       iso_movement = self.profile_dropdown.selected_value.lower()
+      if version == "de":
+        if iso_movement == "walking":
+          iso_movement = "laufen"
+        elif iso_movement == "cycling":
+          iso_movement = "fahrradfahren"
+        elif iso_movement == "driving":
+          iso_movement = "autofahren"
       bounding_box = [0, 0, 0, 0]
       for point in iso['_data']['features'][0]['geometry']['coordinates'][0]:
           if point[0] < bounding_box[1] or bounding_box[1] == 0:
@@ -1951,7 +1958,6 @@ class Map2_0(Map2_0Template):
               competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
 
       from . import Market_Study_Skeleton
-      version = "de"
       if version == "en":
         market_study_data = Market_Study_Skeleton.market_study_skeleton_en({
         'street': street,

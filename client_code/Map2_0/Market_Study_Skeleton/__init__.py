@@ -3020,7 +3020,7 @@ def market_study_skeleton_de(market_study_data):
                         'size': 12,
                         'x': 55,
                         'y': 210,
-                        'txt': 'Germany'
+                        'txt': 'Deutschland'
                     },
                     'radius_of_analysis': {
                         'color': [200, 176, 88],
@@ -3036,7 +3036,7 @@ def market_study_skeleton_de(market_study_data):
                         'size': 12,
                         'x': 55,
                         'y': 216,
-                        'txt': f"{market_study_data['iso_time']} minutes of {market_study_data['iso_movement']}"
+                        'txt': f"{market_study_data['iso_time']} minuten {market_study_data['iso_movement']}"
                     },
                     'ms_text_1': {
                         'color': [0, 0, 0],
