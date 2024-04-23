@@ -78,6 +78,17 @@ nursing_homes_competitor_skeleton = {
       'h': 4,
       'txt': 'For more info see page "Regulations"',
       'align': 'left'
+    },
+    'mdk_info': {
+      'color': [128, 128, 128],
+      'font': 'segoeui',
+      'size': 7,
+      'x': 10,
+      'y': 291,
+      'w': 190,
+      'h': 4,
+      'txt': '²Since 2019, MDK ratings are displayed from A ( best ) to D ( worst ).',
+      'align': 'left'
     }
   }
 }
