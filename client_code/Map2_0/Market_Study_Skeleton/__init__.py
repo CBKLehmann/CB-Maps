@@ -5383,7 +5383,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 85,
                     'y': 110,
                     'w': 20,
-                    'txt': f"{int(market_study_data['regulations']['New']['sr_quote_raw'] * 100)}%" if not type(market_study_data['regulations']['New']['sr_quote_raw']) == str else market_study_data['regulations']['New']['sr_quote_raw'],
+                    'txt': f"{int(market_study_data['regulations']['Neubau']['sr_quote_raw'] * 100)}%" if not type(market_study_data['regulations']['Neubau']['sr_quote_raw']) == str else market_study_data['regulations']['Neubau']['sr_quote_raw'],
                     'align': 'left'
                 },
                 'new_home_size': {
@@ -5393,7 +5393,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 85,
                     'y': 116,
                     'w': 20,
-                    'txt': market_study_data['regulations']['New']['max_beds_raw'],
+                    'txt': market_study_data['regulations']['Neubau']['max_beds_raw'],
                     'align': 'left'
                 },
                 'new_room_size': {
@@ -5403,7 +5403,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 85,
                     'y': 122,
                     'w': 20,
-                    'txt': market_study_data['regulations']['New']['min_room_size'],
+                    'txt': market_study_data['regulations']['Neubau']['min_room_size'],
                     'align': 'left'
                 },
                 'new_common_area': {
@@ -5413,7 +5413,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 85,
                     'y': 128,
                     'w': 20,
-                    'txt': market_study_data['regulations']['New']['min_common_area_resident'],
+                    'txt': market_study_data['regulations']['Neubau']['min_common_area_resident'],
                     'align': 'left'
                 },
                 'new_legal_basis': {
@@ -5423,7 +5423,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 85,
                     'y': 153,
                     'w': 20,
-                    'txt': market_study_data['regulations']['New']['legal_basis'],
+                    'txt': market_study_data['regulations']['Neubau']['legal_basis'],
                     'align': 'left'
                 },
                 'existing': {
@@ -5443,7 +5443,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 140,
                     'y': 110,
                     'w': 20,
-                    'txt': f"{int(market_study_data['regulations']['Existing']['sr_quote_raw'] * 100)}%" if not type(market_study_data['regulations']['Existing']['sr_quote_raw']) == str else market_study_data['regulations']['Existing']['sr_quote_raw'],
+                    'txt': f"{int(market_study_data['regulations']['Bestand']['sr_quote_raw'] * 100)}%" if not type(market_study_data['regulations']['Bestand']['sr_quote_raw']) == str else market_study_data['regulations']['Bestand']['sr_quote_raw'],
                     'align': 'left'
                 },
                 'existing_home_size': {
@@ -5453,7 +5453,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 140,
                     'y': 116,
                     'w': 20,
-                    'txt': market_study_data['regulations']['Existing']['max_beds_raw'],
+                    'txt': market_study_data['regulations']['Bestand']['max_beds_raw'],
                     'align': 'left'
                 },
                 'existing_room_size': {
@@ -5463,7 +5463,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 140,
                     'y': 122,
                     'w': 20,
-                    'txt': market_study_data['regulations']['Existing']['min_room_size'],
+                    'txt': market_study_data['regulations']['Bestand']['min_room_size'],
                     'align': 'left'
                 },
                 'existing_common_area': {
@@ -5473,7 +5473,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 140,
                     'y': 128,
                     'w': 20,
-                    'txt': market_study_data['regulations']['Existing']['min_common_area_resident'],
+                    'txt': market_study_data['regulations']['Bestand']['min_common_area_resident'],
                     'align': 'left'
                 },
                 'existing_legal_basis': {
@@ -5483,7 +5483,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 140,
                     'y': 153,
                     'w': 20,
-                    'txt': market_study_data['regulations']['Existing']['legal_basis'],
+                    'txt': market_study_data['regulations']['Bestand']['legal_basis'],
                     'align': 'left'
                 }
             },
@@ -5507,7 +5507,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 134,
                     'w': 55,
                     'h': 4,
-                    'txt': market_study_data['regulations']['New']['comment'],
+                    'txt': market_study_data['regulations']['Neubau']['comment'],
                     'align': 'left'
                 },
                 'existing_comment': {
@@ -5518,7 +5518,7 @@ def market_study_skeleton_de(market_study_data):
                     'y': 134,
                     'w': 55,
                     'h': 4,
-                    'txt': market_study_data['regulations']['Existing']['comment'],
+                    'txt': market_study_data['regulations']['Bestand']['comment'],
                     'align': 'left'
                 }
             }

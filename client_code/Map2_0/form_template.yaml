@@ -989,15 +989,6 @@ components:
         name: max_marker
       - type: Button
         properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-          foreground: 'theme:Gray 300', visible: true, text: create Market Study,
-          font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small,
-          italic: false, background: '', bold: false, underline: false, icon: ''}
-        layout_properties: {grid_position: 'DKUUUF,TBTQVD', row: AADDGY, width_xs: 12,
-          col_xs: 0, width: 203}
-        event_bindings: {click: create_market_study}
-        name: Summary
-      - type: Button
-        properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
           foreground: 'theme:Gray 300', visible: false, text: SUMMARY (EXCEL), font_size: null,
           font: '', spacing_above: small, icon_align: left, spacing_below: small,
           italic: false, background: '', bold: false, underline: false, icon: ''}
@@ -1174,6 +1165,15 @@ components:
       properties: {margin_top: 0, border: 1px solid white}
       layout_properties: {row: LHYLBJ, width_xs: 12, col_xs: 0, width: 227.257}
       name: page_break_1
+    - type: Button
+      properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
+        foreground: 'theme:Gray 300', visible: true, text: create Market Study, font_size: null,
+        font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+        background: '', bold: false, underline: false, icon: ''}
+      layout_properties: {grid_position: 'JZLGMP,PJMRMC', row: UQVDJU, width_xs: 12,
+        col_xs: 0, width: 203}
+      event_bindings: {click: generate_market_studies}
+      name: Summary
     - type: FileLoader
       properties:
         role: null

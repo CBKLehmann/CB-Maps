@@ -1,0 +1,48 @@
+container:
+  type: ColumnPanel
+  properties: {col_widths: '{}'}
+components:
+- type: GridPanel
+  properties: {}
+  name: grid_panel_1
+  layout_properties: {grid_position: 'SCOIRK,DZZEZZ'}
+  components:
+  - type: Label
+    properties: {role: null, align: center, tooltip: '', border: '', foreground: 'theme:Gray
+        50', visible: true, text: Choose languages to generate, font_size: 18, font: '',
+      spacing_above: small, icon_align: left, spacing_below: small, italic: false,
+      background: '', bold: true, underline: false, icon: ''}
+    name: label_1
+    layout_properties: {row: SXHFGQ, width_xs: 6, col_xs: 3, width: 470}
+  - type: Spacer
+    properties: {height: 16}
+    name: spacer_1
+    layout_properties: {row: RIUYVI, width_xs: 12, col_xs: 0}
+  - type: CheckBox
+    properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
+      foreground: 'theme:Gray 50', allow_indeterminate: false, visible: true, text: English,
+      font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+      background: '', bold: false, checked: false, underline: false}
+    name: english_check
+    layout_properties: {row: RLSLWX, width_xs: 3, col_xs: 4, width: 220}
+  - type: CheckBox
+    properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true,
+      foreground: 'theme:Gray 50', allow_indeterminate: false, visible: true, text: German,
+      font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false,
+      background: '', bold: false, checked: false, underline: false}
+    name: german_check
+    layout_properties: {row: PBKAZI, width_xs: 3, col_xs: 4, width: 220, grid_position: 'SCOIRK,QXHHQQ'}
+    event_bindings: {change: check_box_2_change}
+  - type: Spacer
+    properties: {height: 15}
+    name: spacer_2
+    layout_properties: {row: LYWQQZ, width_xs: 12, col_xs: 0}
+  - type: Button
+    properties: {role: secondary-color, align: full, tooltip: '', border: '', enabled: true,
+      foreground: 'theme:Primary 700', visible: true, text: Continue, font_size: null,
+      font: '', spacing_above: small, icon_align: top, spacing_below: small, italic: false,
+      background: '', bold: true, underline: false, icon: ''}
+    name: continue_btn
+    layout_properties: {row: LQZYUM, width_xs: 2, col_xs: 5, width: 136.649}
+    event_bindings: {click: continue_btn_click}
+is_package: true

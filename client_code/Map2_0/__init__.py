@@ -730,10 +730,15 @@ class Map2_0(Map2_0Template):
 
   #######Noch bearbeiten#######[]
 
-  def create_market_study(self, **event_args):
+  def generate_market_studies(self, **event_args):
+    from .Market_Study_Language import Market_Study_Language
+    versions = alert(Market_Study_Language(), buttons=[], dismissible=False, large=True, role='custom_alert')
+    for version in versions:
+      self.create_market_study(version)
+  
+  def create_market_study(self, version, **event_args):
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(True)
-      version = "de"
       anvil.js.call('update_loading_bar', 5, 'Checking basic map settings')
       checked_nursing_home = self.pdb_data_cb.checked
       checked_assisted_living = self.pdb_data_al.checked
@@ -930,46 +935,46 @@ class Map2_0(Map2_0Template):
       facilities_bed_amount = 0
       facilities_bed_amount_future = 0
       for index, competitor in enumerate(data_comp_analysis_nh['data']):
-          if not competitor[0]['ez'] == '-' or not competitor[0]['dz'] == '-':
-              if not competitor[0]['ez'] == '-' and competitor[0]['ez'] is not None:
-                  facility_single_rooms = int(competitor[0]['ez'])
-              else:
-                  facility_single_rooms = 0
-              if not competitor[0]['dz'] == '-' and competitor[0]['dz'] is not None:
-                  facility_double_rooms = int(competitor[0]['dz'])
-              else:
-                  facility_double_rooms = 0
-              facility_rooms = facility_single_rooms + facility_double_rooms
-              if facility_rooms > 0:
-                facility_single_room_quote = facility_single_rooms / facility_rooms
-              else:
-                facility_single_room_quote = 0
-              facility_bed_amount = facility_single_rooms + facility_double_rooms * 2
-              if not regulations['Existing']['sr_quote'] == '/':
-                  facility_single_room_quote_future = float(regulations['Existing']['sr_quote'])
-              else:
-                  facility_single_room_quote_future = 0
-              if not regulations['Existing']['max_beds'] == '/':
-                  facility_max_beds_future = float(regulations['Existing']['max_beds'])
-              else:
-                  facility_max_beds_future = 999999
-              if facility_single_room_quote < facility_single_room_quote_future or facility_bed_amount > facility_max_beds_future:
-                  data_comp_analysis_nh['data'][index][0]['legal'] = "No"
-              else:
-                  data_comp_analysis_nh['data'][index][0]['legal'] = "Yes"
-              if facility_single_room_quote < facility_single_room_quote_future:
-                  facility_single_rooms_future = int(round(facility_rooms * facility_single_room_quote_future, 0))
-                  facility_double_rooms_future = int(round(facility_rooms - facility_single_rooms_future, 0))
-                  facility_bed_amount_future = int(
-                      round(facility_single_rooms_future + facility_double_rooms_future * 2, 0))
-              else:
-                  facility_bed_amount_future = facility_bed_amount
-              if facility_bed_amount_future > facility_max_beds_future:
-                  facility_bed_amount_future = facility_max_beds_future
-              facilities_bed_amount += facility_bed_amount
-              facilities_bed_amount_future += facility_bed_amount_future
-          else:
-              data_comp_analysis_nh['data'][index][0]['legal'] = "-"
+        if not competitor[0]['ez'] == '-' or not competitor[0]['dz'] == '-':
+            if not competitor[0]['ez'] == '-' and competitor[0]['ez'] is not None:
+                facility_single_rooms = int(competitor[0]['ez'])
+            else:
+                facility_single_rooms = 0
+            if not competitor[0]['dz'] == '-' and competitor[0]['dz'] is not None:
+                facility_double_rooms = int(competitor[0]['dz'])
+            else:
+                facility_double_rooms = 0
+            facility_rooms = facility_single_rooms + facility_double_rooms
+            if facility_rooms > 0:
+              facility_single_room_quote = facility_single_rooms / facility_rooms
+            else:
+              facility_single_room_quote = 0
+            facility_bed_amount = facility_single_rooms + facility_double_rooms * 2
+            if not regulations['Existing' if version == "en" else 'Bestand']['sr_quote'] == '/':
+                facility_single_room_quote_future = float(regulations['Existing' if version == "en" else 'Bestand']['sr_quote'])
+            else:
+                facility_single_room_quote_future = 0
+            if not regulations['Existing' if version == "en" else 'Bestand']['max_beds'] == '/':
+                facility_max_beds_future = float(regulations['Existing']['max_beds'])
+            else:
+                facility_max_beds_future = 999999
+            if facility_single_room_quote < facility_single_room_quote_future or facility_bed_amount > facility_max_beds_future:
+                data_comp_analysis_nh['data'][index][0]['legal'] = "No"
+            else:
+                data_comp_analysis_nh['data'][index][0]['legal'] = "Yes"
+            if facility_single_room_quote < facility_single_room_quote_future:
+                facility_single_rooms_future = int(round(facility_rooms * facility_single_room_quote_future, 0))
+                facility_double_rooms_future = int(round(facility_rooms - facility_single_rooms_future, 0))
+                facility_bed_amount_future = int(
+                    round(facility_single_rooms_future + facility_double_rooms_future * 2, 0))
+            else:
+                facility_bed_amount_future = facility_bed_amount
+            if facility_bed_amount_future > facility_max_beds_future:
+                facility_bed_amount_future = facility_max_beds_future
+            facilities_bed_amount += facility_bed_amount
+            facilities_bed_amount_future += facility_bed_amount_future
+        else:
+            data_comp_analysis_nh['data'][index][0]['legal'] = "-"
     
       loss_of_beds = facilities_bed_amount_future - facilities_bed_amount
       beds_adjusted_30_v1 = beds_active + beds_planned + beds_construct + loss_of_beds
