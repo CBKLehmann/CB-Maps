@@ -1714,7 +1714,7 @@ class Map2_0(Map2_0Template):
                   'y': 285,
                   'w': 10,
                   'h': 6,
-                  'txt': mdk_grade_letters[int(total_mdk_grade)],
+                  'txt': mdk_grade_letters[int(total_mdk_grade) - 1],
                   'align': 'center',
               }
             
