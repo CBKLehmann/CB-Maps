@@ -926,7 +926,7 @@ class Map2_0(Map2_0Template):
       free_beds_35_v1 = beds_35_v1 - pat_rec_full_care_fc_35_v1
       free_beds_35_v2 = beds_35_v2 - pat_rec_full_care_fc_35_v2
     
-      regulations = anvil.server.call('read_regulations', federal_state)
+      regulations = anvil.server.call('read_regulations', federal_state, "EN" if version == "en" else "DE")
       facilities_bed_amount = 0
       facilities_bed_amount_future = 0
       for index, competitor in enumerate(data_comp_analysis_nh['data']):
