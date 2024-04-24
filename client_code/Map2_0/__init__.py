@@ -2229,6 +2229,7 @@ class Map2_0(Map2_0Template):
           Variables.activeIso,  # Data of current Iso Layer
           marker_coords,  # Coordinates of Map Marker
           chart_data,  # Data to create all needed charts
+          version  # Language Version of Market Study
       )
 
       anvil.js.call('update_loading_bar', 100, 'Download Market Study')
