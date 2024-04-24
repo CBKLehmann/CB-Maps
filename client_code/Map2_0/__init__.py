@@ -739,16 +739,6 @@ class Map2_0(Map2_0Template):
   def create_market_study(self, version, **event_args):
     with anvil.server.no_loading_indicator:
       Functions.manipulate_loading_overlay(True)
-      anvil.js.call('update_loading_bar', 5, 'Checking basic map settings')
-      checked_nursing_home = self.pdb_data_cb.checked
-      checked_assisted_living = self.pdb_data_al.checked
-      if not checked_nursing_home:
-        self.pdb_data_cb.checked = True
-        self.pdb_data_cb.raise_event('change')
-      if not checked_assisted_living:
-        self.pdb_data_al.checked = True
-        self.pdb_data_al.raise_event('change')
-      
       anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
       
       ''' Generate created Date of Market Study '''
