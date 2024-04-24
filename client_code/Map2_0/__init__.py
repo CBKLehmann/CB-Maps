@@ -1057,8 +1057,13 @@ class Map2_0(Map2_0Template):
           if version == "de":
             top_30_operator = "Nein" if top_30_operator == "No" else "Ja"
             legal = "Nein" if legal == "No" else "Ja"
+            if operator_type == "gemeinnützig":
+              operator_type_size = 7
+            else:
+              operator_type_size = 8
           elif version == "en":
             operator_type = "private" if operator_type == "privat" else "non-profit" if operator_type == "gemeinnützig" else "public"
+            operator_type_size = 8
             status = "active" if status == "aktiv" else "planning" if status == "in Planung" else "construction"
         
           if 'home' in competitor:
@@ -1120,7 +1125,7 @@ class Map2_0(Map2_0Template):
                   'color': [0, 0, 0],
                   'fill_color': [244, 239, 220],
                   'font': 'segoeui',
-                  'size': 8,
+                  'size': operator_type_size,
                   'x': 77,
                   'y': current_page_height,
                   'w': 12,
@@ -1151,7 +1156,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': competitor[0]['baujahr'],
+                  'txt': competitor[0]['baujahr'] if competitor[0]['baujahr'] is not None else '-',
                   'align': 'center',
                   'fill': True,
               }
@@ -1397,7 +1402,7 @@ class Map2_0(Map2_0Template):
               current_competitor_page['cell'][f'competitor_{table_position}_type'] = {
                   'color': [0, 0, 0],
                   'font': 'segoeui',
-                  'size': 8,
+                  'size': operator_type_size,
                   'x': 77,
                   'y': current_page_height,
                   'w': 12,
@@ -1424,7 +1429,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': competitor[0]['baujahr'],
+                  'txt': competitor[0]['baujahr'] if competitor[0]['baujahr'] is not None else '-',
                   'align': 'center',
               }
               current_competitor_page['cell'][f'competitor_{table_position}_legal'] = {
@@ -1729,12 +1734,17 @@ class Map2_0(Map2_0Template):
               current_page_height = 177
 
           top_30_operator = anvil.server.call("read_top_30", competitor[0]['raw_betreiber'])
-          operator_type = competitor[0]['type']
+          operator_type = competitor[0]['raw_type']
           status = competitor[0]['status']
           if version == "de":
             top_30_operator = "Nein" if top_30_operator == "No" else "Ja"
+            if operator_type == "gemeinnützig":
+              operator_type_size = 7
+            else:
+              operator_type_size = 8
           elif version == "en":
             operator_type = "private" if operator_type == "privat" else "non-profit" if operator_type == "gemeinnützig" else "public"
+            operator_type_size = 8
             status = "active" if status == "aktiv" else "planning" if status == "in Planung" else "construction"
         
           if 'home' in competitor:
@@ -1796,7 +1806,7 @@ class Map2_0(Map2_0Template):
                   'color': [0, 0, 0],
                   'fill_color': [244, 239, 220],
                   'font': 'segoeui',
-                  'size': 8,
+                  'size': operator_type_size,
                   'x': 77,
                   'y': current_page_height,
                   'w': 12,
@@ -1827,7 +1837,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': competitor[0]['year_of_construction'],
+                  'txt': competitor[0]['year_of_construction'] if competitor[0]['year_of_construction'] is not None else '-',
                   'align': 'center',
                   'fill': True,
               }
@@ -1923,7 +1933,7 @@ class Map2_0(Map2_0Template):
               current_competitor_page['cell'][f'competitor_{table_position}_operator_type'] = {
                   'color': [0, 0, 0],
                   'font': 'segoeui',
-                  'size': 8,
+                  'size': operator_type_size,
                   'x': 77,
                   'y': current_page_height,
                   'w': 12,
@@ -1950,7 +1960,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': competitor[0]['year_of_construction'],
+                  'txt': competitor[0]['year_of_construction'] if competitor[0]['year_of_construction'] is not None else '-',
                   'align': 'center',
               }
               current_competitor_page['cell'][f'competitor_{table_position}_apartments'] = {
