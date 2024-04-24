@@ -1049,7 +1049,18 @@ class Map2_0(Map2_0Template):
               current_competitor_page['text']['heading_city']['txt'] = city
               current_competitor_page['image']['location_map']['path'] = f"tmp/map_image_{Variables.unique_code}.png"
               current_page_height = 177
-      
+
+          top_30_operator = anvil.server.call("read_top_30", competitor[0]['raw_betreiber'])
+          operator_type = competitor[0]['type']
+          status = competitor[0]['status']
+          legal = competitor[0]['legal']
+          if version == "de":
+            top_30_operator = "Nein" if top_30_operator == "No" else "Ja"
+            legal = "Nein" if legal == "No" else "Ja"
+          elif version == "en":
+            operator_type = "private" if operator_type == "privat" else "non-profit" if operator_type == "gemeinnützig" else "public"
+            status = "active" if status == "aktiv" else "planning" if status == "in Planung" else "construction"
+        
           if 'home' in competitor:
               home_counter += 1
               current_competitor_page['cell'][f'home_{home_counter}_icon'] = {
@@ -1101,7 +1112,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
+                  'txt': top_30_operator,
                   'align': 'center',
                   'fill': True,
               }
@@ -1114,7 +1125,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 12,
                   'h': 6,
-                  'txt': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
+                  'txt': operator_type,
                   'align': 'center',
                   'fill': True,
               }
@@ -1127,7 +1138,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 12,
                   'h': 6,
-                  'txt': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
+                  'txt': status,
                   'align': 'center',
                   'fill': True,
               }
@@ -1153,7 +1164,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 8,
                   'h': 6,
-                  'txt': competitor[0]['legal'],
+                  'txt': legal,
                   'align': 'center',
                   'fill': True,
               }
@@ -1380,7 +1391,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
+                  'txt': top_30_operator,
                   'align': 'center',
               }
               current_competitor_page['cell'][f'competitor_{table_position}_type'] = {
@@ -1391,7 +1402,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 12,
                   'h': 6,
-                  'txt': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
+                  'txt': operator_type,
                   'align': 'center',
               }
               current_competitor_page['cell'][f'competitor_{table_position}_status'] = {
@@ -1402,7 +1413,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 12,
                   'h': 6,
-                  'txt': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
+                  'txt': status,
                   'align': 'center',
               }
               current_competitor_page['cell'][f'competitor_{table_position}_year_of_construction'] = {
@@ -1424,7 +1435,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 8,
                   'h': 6,
-                  'txt': competitor[0]['legal'],
+                  'txt': legal,
                   'align': 'center',
               }
       
@@ -1716,7 +1727,16 @@ class Map2_0(Map2_0Template):
               current_competitor_page['text']['heading_city']['txt'] = city
               current_competitor_page['image']['location_map']['path'] = f"tmp/map_image_{Variables.unique_code}.png"
               current_page_height = 177
-      
+
+          top_30_operator = anvil.server.call("read_top_30", competitor[0]['raw_betreiber'])
+          operator_type = competitor[0]['type']
+          status = competitor[0]['status']
+          if version == "de":
+            top_30_operator = "Nein" if top_30_operator == "No" else "Ja"
+          elif version == "en":
+            operator_type = "private" if operator_type == "privat" else "non-profit" if operator_type == "gemeinnützig" else "public"
+            status = "active" if status == "aktiv" else "planning" if status == "in Planung" else "construction"
+        
           if 'home' in competitor:
               home_counter += 1
               current_competitor_page['cell'][f'home_{home_counter}_icon'] = {
@@ -1768,7 +1788,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
+                  'txt': top_30_operator,
                   'align': 'center',
                   'fill': True,
               }
@@ -1781,7 +1801,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 12,
                   'h': 6,
-                  'txt': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
+                  'txt': operator_type,
                   'align': 'center',
                   'fill': True,
               }
@@ -1794,7 +1814,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 12,
                   'h': 6,
-                  'txt': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
+                  'txt': status,
                   'align': 'center',
                   'fill': True,
               }
@@ -1897,7 +1917,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': anvil.server.call("read_top_30", competitor[0]['raw_betreiber']),
+                  'txt': top_30_operator,
                   'align': 'center',
               }
               current_competitor_page['cell'][f'competitor_{table_position}_operator_type'] = {
@@ -1908,7 +1928,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 12,
                   'h': 6,
-                  'txt': "private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public",
+                  'txt': operator_type,
                   'align': 'center',
               }
               current_competitor_page['cell'][f'competitor_{table_position}_status'] = {
@@ -1919,7 +1939,7 @@ class Map2_0(Map2_0Template):
                   'y': current_page_height,
                   'w': 12,
                   'h': 6,
-                  'txt': "active" if competitor[0]['status'] == "aktiv" else "planning" if competitor[0]['status'] == "in Planung" else "construction",
+                  'txt': status,
                   'align': 'center',
               }
               current_competitor_page['cell'][f'competitor_{table_position}_year_of_construction'] = {
