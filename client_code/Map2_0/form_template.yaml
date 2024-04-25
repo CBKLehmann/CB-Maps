@@ -993,7 +993,7 @@ components:
           font: '', spacing_above: small, icon_align: left, spacing_below: small,
           italic: false, background: '', bold: false, underline: false, icon: ''}
         layout_properties: {row: IRJPJW, width_xs: 12, col_xs: 0, width: 233.333}
-        event_bindings: {click: create_market_study}
+        event_bindings: {click: create_market_study_clicked}
         name: excel_summary
       - type: FileLoader
         properties:
@@ -1167,12 +1167,12 @@ components:
       name: page_break_1
     - type: Button
       properties: {role: null, align: center, tooltip: '', border: '', enabled: true,
-        foreground: 'theme:Gray 300', visible: true, text: create Market Study, font_size: null,
+        foreground: 'theme:Gray 300', visible: false, text: create Market Study, font_size: null,
         font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false,
         background: '', bold: false, underline: false, icon: ''}
       layout_properties: {grid_position: 'JZLGMP,PJMRMC', row: UQVDJU, width_xs: 12,
-        col_xs: 0, width: 203}
-      event_bindings: {click: generate_market_studies}
+        col_xs: 0, width: 227.333}
+      event_bindings: {click: create_market_study_clicked}
       name: Summary
     - type: FileLoader
       properties:
@@ -1213,10 +1213,10 @@ components:
       name: share
     - type: Button
       properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
-        foreground: 'theme:Red', visible: true, text: Reset Map, font_size: 14, font: '',
+        foreground: 'theme:Red', visible: false, text: Reset Map, font_size: 14, font: '',
         spacing_above: none, icon_align: right, spacing_below: none, italic: false,
         background: '', bold: false, underline: false, icon: 'fa:refresh'}
-      layout_properties: {row: VJYJND, width_xs: 11, col_xs: 0, width: 205.81}
+      layout_properties: {row: VJYJND, width_xs: 11, col_xs: 0, width: 205.885}
       event_bindings: {click: reset_map_click}
       name: reset_map
     - type: Button

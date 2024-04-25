@@ -32,7 +32,7 @@ components:
       background: '', bold: false, checked: false, underline: false}
     name: german_check
     layout_properties: {row: PBKAZI, width_xs: 3, col_xs: 4, width: 220, grid_position: 'SCOIRK,QXHHQQ'}
-    event_bindings: {change: check_box_2_change}
+    event_bindings: {}
   - type: Spacer
     properties: {height: 15}
     name: spacer_2
