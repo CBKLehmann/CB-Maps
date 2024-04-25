@@ -5,15 +5,16 @@ from anvil import alert
 import json, copy
 
 def generate_market_studies(self):
-  from ..Market_Study_Language import Market_Study_Language
-  versions = alert(Market_Study_Language(), buttons=[], dismissible=False, large=True, role='custom_alert')
-  for version in versions:
-    create_market_study(self, version)
+  with anvil.server.no_loading_indicator:
+    Functions.manipulate_loading_overlay(True)
+    anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
+    
+    from ..Market_Study_Language import Market_Study_Language
+    versions = alert(Market_Study_Language(), buttons=[], dismissible=False, large=True, role='custom_alert')
+    for version in versions:
+      create_market_study(self, version)
 
 def create_market_study(self, version):
-    with anvil.server.no_loading_indicator:
-      Functions.manipulate_loading_overlay(True)
-      anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
       
       ''' Generate created Date of Market Study '''
       created_date = Functions.get_current_date_as_string()
