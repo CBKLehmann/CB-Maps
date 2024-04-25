@@ -4,10 +4,14 @@ from .. import Variables, Functions, Mapbox_Variables
 from anvil import alert
 import json, copy
 
+created_date = None
+
 def generate_market_studies(self):
   with anvil.server.no_loading_indicator:
     Functions.manipulate_loading_overlay(True)
     anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
+    created_date = Functions.get_current_date_as_string()
+    Variables.unique_code = anvil.server.call("get_unique_code")
     
     from ..Market_Study_Language import Market_Study_Language
     versions = alert(Market_Study_Language(), buttons=[], dismissible=False, large=True, role='custom_alert')
@@ -15,13 +19,6 @@ def generate_market_studies(self):
       create_market_study(self, version)
 
 def create_market_study(self, version):
-      
-      ''' Generate created Date of Market Study '''
-      created_date = Functions.get_current_date_as_string()
-    
-      ''' Get unique Code to identify Files and Images with current MS-Creation '''
-      Variables.unique_code = anvil.server.call("get_unique_code")
-
       anvil.js.call('update_loading_bar', 25, 'Getting map related information')
       
       ''' Get Map based Information '''
