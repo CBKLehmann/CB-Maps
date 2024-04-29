@@ -1,4 +1,4 @@
-assisted_living_competitor_skeleton = {
+assisted_living_competitor_skeleton_en = {
   'page_number': 4,
   'line': {
     'top_line': {
@@ -57,7 +57,7 @@ assisted_living_competitor_skeleton = {
   'cell': {}
 }
 
-assisted_living_competitor_skeleton = {
+assisted_living_competitor_skeleton_de = {
   'page_number': 4,
   'line': {
     'top_line': {
