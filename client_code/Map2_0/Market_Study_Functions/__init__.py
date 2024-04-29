@@ -1,63 +1,112 @@
 import anvil.server
 from anvil.tables import app_tables
 from .. import Variables, Functions, Mapbox_Variables
+from ..ChatGPT import ChatGPT
 from anvil import alert
 import json, copy
 
 created_date = None
 
+class market_stud_class:
+  def __init__(self, application, unique_code, version):
+    self.application = application
+    self.unique_code = unique_code
+    self.version = version
+    
+    self.created_date = Functions.get_current_date_as_string()
+    self.street = anvil.js.call('getSearchedAddress').split(",")[0]
+    self.marker_coords = {
+      'lng': Mapbox_Variables.location_marker['_lngLat']['lng'],
+      'lat': Mapbox_Variables.location_marker['_lngLat']['lat']
+    }
+    self.purchase_power = anvil.server.call('get_purchasing_power', location=self.marker_coords)
+    self.iso = dict(Mapbox_Variables.map.getSource('iso'))
+    self.iso_time = application.time_dropdown.selected_value
+    if self.iso_time == "-1":
+      self.iso_time = "20"
+    self.iso_movement = application.profile_dropdown.selected_value.lower()
+    self.calculate_bounding_box()
+    self.get_place_information()
+    
+    if self.version == "de":
+      self.init_german()
+    elif self.version == "en":
+      self.init_english()
+
+  def init_german(self):
+    if self.iso_movement == "walking":
+      self.iso_string = f"{self.iso_time} Minuten zu Fuß"
+    elif self.iso_movement == "cycling":
+      self.iso_string = f"{self.iso_time} Minuten fahren - Fahrrad"
+    elif self.iso_movement == "driving":
+      self.iso_string = f"{self.iso_time} Minuten fahren - Auto"
+    self.generate_analysis_text('german')
+  
+  def init_english(self):
+    self.iso_string = f"{self.iso_time} minutes {self.iso_movement}"
+    self.generate_analysis_text('english')
+
+  def calculate_bounding_box(self):
+    self.bounding_box = [0, 0, 0, 0]
+    for point in self.iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      if point[0] < self.bounding_box[1] or self.bounding_box[1] == 0:
+        self.bounding_box[1] = point[0]
+      if point[0] > self.bounding_box[3] or self.bounding_box[3] == 0:
+        self.bounding_box[3] = point[0]
+      if point[1] < self.bounding_box[0] or self.bounding_box[0] == 0:
+        self.bounding_box[0] = point[1]
+      if point[1] > self.bounding_box[2] or self.bounding_box[2] == 0:
+        self.bounding_box[2] = point[1]
+
+  def get_place_information(self):
+    place_request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{self.marker_coords['lng']},{self.marker_coords['lat']}.json?access_token={Mapbox_Variables.token}"
+    place_response = anvil.http.request(place_request, json=True)
+    marker_context = place_response['features'][0]['context']
+    self.zipcode = "n.a."
+    self.district = "n.a."
+    self.city = "n.a."
+    self.federal_state = "n.a."
+    for info in marker_context:
+      if "postcode" in info['id']:
+        self.zipcode = info['text']
+      elif "locality" in info['id']:
+        self.district = info['text']
+      elif "place" in info['id']:
+        self.city = info['text']
+      elif "region" in info['id']:
+        self.federal_state = info['text']
+    if self.federal_state == "n.a.":
+      self.federal_state = self.city
+    if self.district == "n.a.":
+      self.district = self.city
+
+  def get_facility_data(self):
+    self.coords_nh = organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', self.marker_coords, self.application, Functions)
+    self.coords_al = organize_ca_data(Variables.assisted_living_entries, 'assisted_living', self.marker_coords, self.application, Functions)
+    self.data_comp_analysis_nh = build_req_string(self.coords_nh, 'nursing_homes')
+    self.data_comp_analysis_al = build_req_string(self.coords_al, 'assisted_living')
+
+  def generate_analysis_text(self, language):
+    generated_analysis_text = anvil.server.call('openai_test', self.city, language)
+    self.analysis_text_final = alert(ChatGPT(generated_text=generated_analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
+
 def generate_market_studies(self):
   with anvil.server.no_loading_indicator:
     Functions.manipulate_loading_overlay(True)
     anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
-    created_date = Functions.get_current_date_as_string()
     Variables.unique_code = anvil.server.call("get_unique_code")
+    market_study = market_stud_class(
+      unique_code=Variables.unique_code
+    )
+    Functions.manipulate_loading_overlay(False)
     
-    from ..Market_Study_Language import Market_Study_Language
-    versions = alert(Market_Study_Language(), buttons=[], dismissible=False, large=True, role='custom_alert')
-    for version in versions:
-      create_market_study(self, version)
+    # from ..Market_Study_Language import Market_Study_Language
+    # versions = alert(Market_Study_Language(), buttons=[], dismissible=False, large=True, role='custom_alert')
+    # for version in versions:
+    #   create_market_study(self, version)
 
 def create_market_study(self, version):
       anvil.js.call('update_loading_bar', 25, 'Getting map related information')
-      
-      ''' Get Map based Information '''
-      street = anvil.js.call('getSearchedAddress').split(",")[0]
-      marker_coords = {
-          'lng': (dict(Mapbox_Variables.location_marker['_lngLat'])['lng']),
-          'lat': (dict(Mapbox_Variables.location_marker['_lngLat'])['lat'])
-      }
-      purchase_power = anvil.server.call('get_purchasing_power', location={'lat': marker_coords['lat'], 'lng': marker_coords['lng']})
-      iso = dict(Mapbox_Variables.map.getSource('iso'))
-      iso_time = self.time_dropdown.selected_value
-      if iso_time == "-1":
-          iso_time = "20"
-      iso_movement = self.profile_dropdown.selected_value.lower()
-      if version == "de":
-        if iso_movement == "walking":
-          iso_string = f"{iso_time} Minuten zu Fuß"
-        elif iso_movement == "cycling":
-          iso_string = f"{iso_time} Minuten fahren - Fahrrad"
-        elif iso_movement == "driving":
-          iso_string = f"{iso_time} Minuten fahren - Auto"
-      else:
-          iso_string = f"{iso_time} minutes {iso_movement}"
-      bounding_box = [0, 0, 0, 0]
-      for point in iso['_data']['features'][0]['geometry']['coordinates'][0]:
-          if point[0] < bounding_box[1] or bounding_box[1] == 0:
-              bounding_box[1] = point[0]
-          if point[0] > bounding_box[3] or bounding_box[3] == 0:
-              bounding_box[3] = point[0]
-          if point[1] < bounding_box[0] or bounding_box[0] == 0:
-              bounding_box[0] = point[1]
-          if point[1] > bounding_box[2] or bounding_box[2] == 0:
-              bounding_box[2] = point[1]
-    
-      ''' Get Data for Nursing Homes and Assisted Living '''
-      coords_nh = organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', marker_coords, self, Functions)
-      coords_al = organize_ca_data(Variables.assisted_living_entries, 'assisted_living', marker_coords, self, Functions)
-      data_comp_analysis_nh = build_req_string(coords_nh, 'nursing_homes')
-      data_comp_analysis_al = build_req_string(coords_al, 'assisted_living')
     
       inpatients = 0
       beds_active = 0
@@ -104,40 +153,7 @@ def create_market_study(self, version):
                     operator_public.append(care_entry[0]['betreiber'])
             if care_entry[0]['betreiber'] not in operator:
                 operator.append(care_entry[0]['betreiber'])
-    
-      ''' Get Place from Geocoder-API for Map-Marker and extract needed Information '''
-      request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{marker_coords['lng']},{marker_coords['lat']}.json?access_token={Mapbox_Variables.token}"
-      response_data = anvil.http.request(request, json=True)
-      marker_context = response_data['features'][0]['context']
-      zipcode = "n.a."
-      district = "n.a."
-      city = "n.a."
-      federal_state = "n.a."
-      for info in marker_context:
-          if "postcode" in info['id']:
-              zipcode = info['text']
-          elif "locality" in info['id']:
-              district = info['text']
-          elif "place" in info['id']:
-              city = info['text']
-          elif "region" in info['id']:
-              federal_state = info['text']
-      if federal_state == "n.a.":
-          federal_state = city
-      if district == "n.a.":
-          district = city
 
-      anvil.js.call('update_loading_bar', 45, 'Generating Location Analysis Text')
-      
-      ''' Get generated Analysis-Text for City '''
-      from ..ChatGPT import ChatGPT
-      analysis_text = anvil.server.call('openai_test', city, 'german' if version == 'de' else 'english')
-      Functions.manipulate_loading_overlay(False)
-      analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
-      Functions.manipulate_loading_overlay(True)
-      
-      anvil.js.call('update_loading_bar', 50, 'Calculating Data for Market Study')
-    
       ''' Get Information from Database for County of Marker-Position and extract Data '''
       countie_data = anvil.server.call("get_demographic_district_data", marker_coords)
       countie = countie_data['ex_dem_lk']['name'].split(',')
