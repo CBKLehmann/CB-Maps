@@ -16,7 +16,7 @@ class Market_Study_Language(Market_Study_LanguageTemplate):
   def continue_btn_click(self, **event_args):
     versions = []
     if self.english_check.checked:
-      versions.append("en")
+      versions.append("english")
     if self.german_check.checked:
-      versions.append("de")
+      versions.append("german")
     self.raise_event('x-close-alert', value = versions)

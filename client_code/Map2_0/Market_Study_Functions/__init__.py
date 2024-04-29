@@ -3,308 +3,202 @@ from anvil.tables import app_tables
 from .. import Variables, Functions, Mapbox_Variables
 from anvil import alert
 import json, copy
+from . import Market_Study_Variables
+from ..Market_Study_Language import Market_Study_Language
+from ..ChatGPT import ChatGPT
 
-created_date = None
-
-def generate_market_studies(self):
+def generate_market_studies(application):
   with anvil.server.no_loading_indicator:
     Functions.manipulate_loading_overlay(True)
     anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
-    created_date = Functions.get_current_date_as_string()
+    Market_Study_Variables.created_date = Functions.get_current_date_as_string()
+    Market_Study_Variables.share_url = application.create_share_map('market_study')
     Variables.unique_code = anvil.server.call("get_unique_code")
-    
-    from ..Market_Study_Language import Market_Study_Language
+
+    anvil.js.call('update_loading_bar', 25, 'Getting map related information')
+    Market_Study_Variables.street = anvil.js.call('getSearchedAddress').split(",")[0]
+    Market_Study_Variables.marker_coords = {
+      'lng': Mapbox_Variables.location_marker['_lngLat']['lng'],
+      'lat': Mapbox_Variables.location_marker['_lngLat']['lat']
+    }
+    Market_Study_Variables.purchase_power = anvil.server.call('get_purchasing_power', location=Market_Study_Variables.marker_coords)
+    Market_Study_Variables.iso = dict(Mapbox_Variables.map.getSource('iso'))
+    Market_Study_Variables.iso_time = application.time_dropdown.selected_value
+    if Market_Study_Variables.iso_time == "-1":
+      Market_Study_Variables.iso_time = "20"
+    Market_Study_Variables.iso_movement = application.profile_dropdown.selected_value.lower()
+
+    for point in Market_Study_Variables.iso['_data']['features'][0]['geometry']['coordinates'][0]:
+      if point[0] < Market_Study_Variables.bounding_box[1] or Market_Study_Variables.bounding_box[1] == 0:
+        Market_Study_Variables.bounding_box[1] = point[0]
+      if point[0] > Market_Study_Variables.bounding_box[3] or Market_Study_Variables.bounding_box[3] == 0:
+        Market_Study_Variables.bounding_box[3] = point[0]
+      if point[1] < Market_Study_Variables.bounding_box[0] or Market_Study_Variables.bounding_box[0] == 0:
+        Market_Study_Variables.bounding_box[0] = point[1]
+      if point[1] > Market_Study_Variables.bounding_box[2] or Market_Study_Variables.bounding_box[2] == 0:
+        Market_Study_Variables.bounding_box[2] = point[1]
+
+    Market_Study_Variables.coords_nh = organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes',Market_Study_Variables.marker_coords, application, Functions)
+    Market_Study_Variables.coords_al = organize_ca_data(Variables.assisted_living_entries, 'assisted_living', Market_Study_Variables.marker_coords, application, Functions)
+    Market_Study_Variables.data_comp_analysis_nh = build_req_string(Market_Study_Variables.coords_nh, 'nursing_homes')
+    Market_Study_Variables.data_comp_analysis_al = build_req_string(Market_Study_Variables.coords_al, 'assisted_living')
+
+    for care_entry in Market_Study_Variables.data_comp_analysis_nh['data']:
+      beds_amount = 0
+      if not care_entry[0]['anz_vers_pat'] == '-':
+        Market_Study_Variables.inpatients += int(care_entry[0]['anz_vers_pat'])
+      if care_entry[0]['status'] == "aktiv":
+        Market_Study_Variables.nursing_homes_active += 1
+        if not care_entry[0]['platz_voll_pfl'] == "-":
+          Market_Study_Variables.beds_active += int(care_entry[0]['platz_voll_pfl'])
+          beds_amount = int(care_entry[0]['platz_voll_pfl'])
+        beds.append(beds_amount)
+      elif care_entry[0]['status'] == "in Planung":
+        Market_Study_Variables.nursing_homes_planned += 1
+        if not care_entry[0]['platz_voll_pfl'] == "-":
+          Market_Study_Variables.beds_planned += int(care_entry[0]['platz_voll_pfl'])
+      elif care_entry[0]['status'] == "im Bau":
+        Market_Study_Variables.nursing_homes_construct += 1
+        if not care_entry[0]['platz_voll_pfl'] == "-":
+          Market_Study_Variables.beds_construct += int(care_entry[0]['platz_voll_pfl'])
+      if not care_entry[0]['invest'] == "-":
+        Market_Study_Variables.invest_cost.append(float(care_entry[0]['invest']))
+      if not care_entry[0]['betreiber'] == "-":
+        if care_entry[0]['type'] == "privat":
+          if care_entry[0]['betreiber'] not in Market_Study_Variables.operator_private:
+            Market_Study_Variables.operator_private.append(care_entry[0]['betreiber'])
+        elif care_entry[0]['type'] == "gemeinnützig":
+          if care_entry[0]['betreiber'] not in Market_Study_Variables.operator_nonProfit:
+            Market_Study_Variables.operator_nonProfit.append(care_entry[0]['betreiber'])
+        elif care_entry[0]['type'] == "kommunal":
+          if care_entry[0]['betreiber'] not in Market_Study_Variables.operator_public:
+            Market_Study_Variables.operator_public.append(care_entry[0]['betreiber'])
+        if care_entry[0]['betreiber'] not in Market_Study_Variables.operator:
+          Market_Study_Variables.operator.append(care_entry[0]['betreiber'])
+
+    location_request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{marker_coords['lng']},{marker_coords['lat']}.json?access_token={Mapbox_Variables.token}"
+    location_response = anvil.http.request(location_request, json=True)
+    marker_context = location_response['features'][0]['context']
+    for info in marker_context:
+      if "postcode" in info['id']:
+        Market_Study_Variables.zipcode = info['text']
+      elif "locality" in info['id']:
+        Market_Study_Variables.district = info['text']
+      elif "place" in info['id']:
+        Market_Study_Variables.city = info['text']
+      elif "region" in info['id']:
+        Market_Study_Variables.federal_state = info['text']
+    if Market_Study_Variables.federal_state == "n.a.":
+      Market_Study_Variables.federal_state = Market_Study_Variables.city
+    if district == "n.a.":
+      Market_Study_Variables.district = Market_Study_Variables.city
+
+    Market_Study_Variables.countie_data = anvil.server.call("get_demographic_district_data", Market_Study_Variables.marker_coords)
+    Market_Study_Variables.countie = Market_Study_Variables.countie_data['ex_dem_lk']['name'].split(',')
+    Market_Study_Variables.people_u80 = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_65tou70_2020_abs']) + int(Market_Study_Variables.countie_data['dem_fc_lk']['g_70tou80_2020_abs'])
+    Market_Study_Variables.people_o80 = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_80plus_2020_abs'])
+    Market_Study_Variables.people_u80_fc = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_65tou70_2030_abs']) + int(Market_Study_Variables.countie_data['dem_fc_lk']['g_70tou80_2030_abs'])
+    Market_Study_Variables.people_o80_fc = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_80plus_2030_abs'])
+    Market_Study_Variables.people_u80_fc_35 = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_65tou70_2035_abs']) + int(Market_Study_Variables.countie_data['dem_fc_lk']['g_70tou80_2035_abs'])
+    Market_Study_Variables.people_o80_fc_35 = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_80plus_2035_abs'])
+    Market_Study_Variables.change_u80 = float("{:.2f}".format(((Market_Study_Variables.people_u80_fc * 100) / Market_Study_Variables.people_u80) - 100))
+    Market_Study_Variables.change_o80 = float("{:.2f}".format(((Market_Study_Variables.people_o80_fc * 100) / Market_Study_Variables.people_o80) - 100))
+    Market_Study_Variables.population_trend = "{:.1f}".format((Market_Study_Variables.people_u80_fc_35 + Market_Study_Variables.people_o80_fc_35) * 100 / (Market_Study_Variables.people_u80 + Market_Study_Variables.people_o80) - 100)
+    Market_Study_Variables.nursing_home_rate = round(float(Market_Study_Variables.countie_data['pfleg_stat_lk']['heimquote2019']) * 100, 1)
+    for key in Market_Study_Variables.keys:
+      Market_Study_Variables.population_fc_30 += int(Market_Study_Variables.countie_data['dem_fc_lk'][f'{key}_2030_abs'])
+      Market_Study_Variables.population_fc_35 += int(Market_Study_Variables.countie_data['dem_fc_lk'][f'{key}_2035_abs'])
+
+    care_data_district = anvil.server.call("get_care_district_data", Market_Study_Variables.countie_data['ex_dem_lk']['key'])
+    for el in care_data_district:
+      Market_Study_Variables.inpatients_lk += int(el['number_of_patients_cared_for']) if el['number_of_patients_cared_for'] is not None else 0
+      if el['number_of_places_fulltime_care'] is not None:
+        Market_Study_Variables.beds_lk += int(el['number_of_places_fulltime_care'])
+    Market_Study_Variables.occupancy_lk = round((Market_Study_Variables.inpatients_lk * 100) / Market_Study_Variables.beds_lk, 1)
+    Market_Study_Variables.free_beds_lk = Market_Study_Variables.beds_lk - Market_Study_Variables.inpatients_lk
+
+    Market_Study_Variables.new_r_care_rate_raw = float("{:.3f}".format(Market_Study_Variables.inpatients_lk / (Market_Study_Variables.people_u80 + Market_Study_Variables.people_o80)))
+    Market_Study_Variables.new_care_rate_raw = round((Market_Study_Variables.inpatients_lk * 100 / round((Market_Study_Variables.nursing_home_rate * Market_Study_Variables.countie_data['ex_dem_lk']['all_compl']) + 1)) * 100, 1)
+    Market_Study_Variables.pat_rec_full_care_fc_30_v1 = round(Market_Study_Variables.new_r_care_rate_raw * (Market_Study_Variables.people_u80_fc + Market_Study_Variables.people_o80_fc))
+    Market_Study_Variables.care_rate_30_v1_raw = round((Market_Study_Variables.pat_rec_full_care_fc_30_v1 * 100 / (Market_Study_Variables.population_fc_30 * Market_Study_Variables.nursing_home_rate)) * 100, 1)
+    Market_Study_Variables.pat_rec_full_care_fc_30_v2 = round((Market_Study_Variables.new_r_care_rate_raw + 0.003) * (Market_Study_Variables.people_u80_fc + Market_Study_Variables.people_o80_fc))
+    Market_Study_Variables.care_rate_30_v2_raw = round((Market_Study_Variables.pat_rec_full_care_fc_30_v2 * 100 / (Market_Study_Variables.population_fc_30 * Market_Study_Variables.nursing_home_rate)) * 100, 1)
+    Market_Study_Variables.pat_rec_full_care_fc_35_v1 = round(Market_Study_Variables.new_r_care_rate_raw * (Market_Study_Variables.people_u80_fc_35 + Market_Study_Variables.people_o80_fc_35))
+    Market_Study_Variables.care_rate_35_v1_raw = round((Market_Study_Variables.pat_rec_full_care_fc_35_v1 * 100 / (Market_Study_Variables.population_fc_35 * Market_Study_Variables.nursing_home_rate)) * 100, 1)
+    Market_Study_Variables.pat_rec_full_care_fc_35_v2 = round((Market_Study_Variables.new_r_care_rate_raw + 0.003) * (Market_Study_Variables.people_u80_fc_35 + Market_Study_Variables.people_o80_fc_35))
+    Market_Study_Variables.care_rate_35_v2_raw = round((Market_Study_Variables.pat_rec_full_care_fc_35_v2 * 100 / (Market_Study_Variables.population_fc_35 * Market_Study_Variables.nursing_home_rate)) * 100, 1)
+    Market_Study_Variables.inpatients_fc = round(Market_Study_Variables.pat_rec_full_care_fc_30_v1 * (round(((Market_Study_Variables.inpatients * 100) / Market_Study_Variables.inpatients_lk), 1) / 100)) if not Market_Study_Variables.inpatients_lk == 0 else 0
+    Market_Study_Variables.inpatients_fc_v2 = round(Market_Study_Variables.pat_rec_full_care_fc_30_v2 * (round(((Market_Study_Variables.inpatients * 100) / Market_Study_Variables.inpatients_lk), 1) / 100)) if not Market_Study_Variables.inpatients_lk == 0 else 0
+    Market_Study_Variables.inpatients_fc_35 = round(Market_Study_Variables.pat_rec_full_care_fc_35_v1 * (round(((Market_Study_Variables.inpatients * 100) / Market_Study_Variables.inpatients_lk), 1) / 100)) if not Market_Study_Variables.inpatients_lk == 0 else 0
+    Market_Study_Variables.inpatients_fc_35_v2 = round(Market_Study_Variables.pat_rec_full_care_fc_35_v2 * (round(((Market_Study_Variables.inpatients * 100) / Market_Study_Variables.inpatients_lk), 1) / 100)) if not Market_Study_Variables.inpatients_lk == 0 else 0
+    Market_Study_Variables.beds_30_v1 = round((Market_Study_Variables.pat_rec_full_care_fc_30_v1 / 0.95))
+    Market_Study_Variables.beds_30_v2 = round((Market_Study_Variables.pat_rec_full_care_fc_30_v2 / 0.95))
+    Market_Study_Variables.beds_35_v1 = round((Market_Study_Variables.pat_rec_full_care_fc_35_v1 / 0.95))
+    Market_Study_Variables.beds_35_v2 = round((Market_Study_Variables.pat_rec_full_care_fc_35_v2 / 0.95))
+    Market_Study_Variables.free_beds_30_v1 = Market_Study_Variables.beds_30_v1 - Market_Study_Variables.pat_rec_full_care_fc_30_v1
+    Market_Study_Variables.free_beds_30_v2 = Market_Study_Variables.beds_30_v2 - Market_Study_Variables.pat_rec_full_care_fc_30_v2
+    Market_Study_Variables.free_beds_35_v1 = Market_Study_Variables.beds_35_v1 - Market_Study_Variables.pat_rec_full_care_fc_35_v1
+    Market_Study_Variables.free_beds_35_v2 = Market_Study_Variables.beds_35_v2 - Market_Study_Variables.pat_rec_full_care_fc_35_v2
+
+    for index, competitor in enumerate(Market_Study_Variables.data_comp_analysis_nh['data']):
+      if not competitor[0]['ez'] == '-' or not competitor[0]['dz'] == '-':
+        if not competitor[0]['ez'] == '-' and competitor[0]['ez'] is not None:
+          facility_single_rooms = int(competitor[0]['ez'])
+        else:
+          facility_single_rooms = 0
+        if not competitor[0]['dz'] == '-' and competitor[0]['dz'] is not None:
+          facility_double_rooms = int(competitor[0]['dz'])
+        else:
+          facility_double_rooms = 0
+        facility_rooms = facility_single_rooms + facility_double_rooms
+        if facility_rooms > 0:
+          facility_single_room_quote = facility_single_rooms / facility_rooms
+        else:
+          facility_single_room_quote = 0
+        facility_bed_amount = facility_single_rooms + facility_double_rooms * 2
+        if not regulations['Existing' if version == "en" else 'Bestand']['sr_quote'] == '/':
+          facility_single_room_quote_future = float(regulations['Existing' if version == "en" else 'Bestand']['sr_quote'])
+        else:
+          facility_single_room_quote_future = 0
+        if not regulations['Existing' if version == "en" else 'Bestand']['max_beds'] == '/':
+          facility_max_beds_future = float(regulations['Existing']['max_beds'])
+        else:
+          facility_max_beds_future = 999999
+        if facility_single_room_quote < facility_single_room_quote_future or facility_bed_amount > facility_max_beds_future:
+          Market_Study_Variables.data_comp_analysis_nh['data'][index][0]['legal'] = "No"
+        else:
+          Market_Study_Variables.data_comp_analysis_nh['data'][index][0]['legal'] = "Yes"
+        if facility_single_room_quote < facility_single_room_quote_future:
+          facility_single_rooms_future = int(round(facility_rooms * facility_single_room_quote_future, 0))
+          facility_double_rooms_future = int(round(facility_rooms - facility_single_rooms_future, 0))
+          facility_bed_amount_future = int(
+            round(facility_single_rooms_future + facility_double_rooms_future * 2, 0))
+        else:
+          facility_bed_amount_future = facility_bed_amount
+        if facility_bed_amount_future > facility_max_beds_future:
+          facility_bed_amount_future = facility_max_beds_future
+        facilities_bed_amount += facility_bed_amount
+        facilities_bed_amount_future += facility_bed_amount_future
+      else:
+        Market_Study_Variables.data_comp_analysis_nh['data'][index][0]['legal'] = "-"
+  
+    Market_Study_Variables.loss_of_beds = facilities_bed_amount_future - facilities_bed_amount
+    Market_Study_Variables.beds_adjusted_30_v1 = beds_active + beds_planned + beds_construct + loss_of_beds
+    Market_Study_Variables.beds_adjusted_30_v2 = beds_active + beds_planned + beds_construct + loss_of_beds
+    Market_Study_Variables.beds_adjusted_35_v1 = beds_active + beds_planned + beds_construct + loss_of_beds
+    Market_Study_Variables.beds_adjusted_35_v2 = beds_active + beds_planned + beds_construct + loss_of_beds
+    Market_Study_Variables.beds_surplus_35 = beds_adjusted_35_v1 - inpatients_fc_35
+    Market_Study_Variables.beds_surplus_35_v2 = beds_adjusted_35_v2 - inpatients_fc_35_v2
+    Market_Study_Variables.beds_surplus = beds_adjusted_30_v1 - inpatients_fc
+    Market_Study_Variables.beds_surplus_v2 = beds_adjusted_30_v2 - inpatients_fc_v2
+
     versions = alert(Market_Study_Language(), buttons=[], dismissible=False, large=True, role='custom_alert')
     for version in versions:
-      create_market_study(self, version)
+      regulations = anvil.server.call('read_regulations', federal_state, version)
+      create_market_study(application, version)
 
-def create_market_study(self, version):
-      anvil.js.call('update_loading_bar', 25, 'Getting map related information')
-      
-      ''' Get Map based Information '''
-      street = anvil.js.call('getSearchedAddress').split(",")[0]
-      marker_coords = {
-          'lng': (dict(Mapbox_Variables.location_marker['_lngLat'])['lng']),
-          'lat': (dict(Mapbox_Variables.location_marker['_lngLat'])['lat'])
-      }
-      purchase_power = anvil.server.call('get_purchasing_power', location={'lat': marker_coords['lat'], 'lng': marker_coords['lng']})
-      iso = dict(Mapbox_Variables.map.getSource('iso'))
-      iso_time = self.time_dropdown.selected_value
-      if iso_time == "-1":
-          iso_time = "20"
-      iso_movement = self.profile_dropdown.selected_value.lower()
-      if version == "de":
-        if iso_movement == "walking":
-          iso_string = f"{iso_time} Minuten zu Fuß"
-        elif iso_movement == "cycling":
-          iso_string = f"{iso_time} Minuten fahren - Fahrrad"
-        elif iso_movement == "driving":
-          iso_string = f"{iso_time} Minuten fahren - Auto"
-      else:
-          iso_string = f"{iso_time} minutes {iso_movement}"
-      bounding_box = [0, 0, 0, 0]
-      for point in iso['_data']['features'][0]['geometry']['coordinates'][0]:
-          if point[0] < bounding_box[1] or bounding_box[1] == 0:
-              bounding_box[1] = point[0]
-          if point[0] > bounding_box[3] or bounding_box[3] == 0:
-              bounding_box[3] = point[0]
-          if point[1] < bounding_box[0] or bounding_box[0] == 0:
-              bounding_box[0] = point[1]
-          if point[1] > bounding_box[2] or bounding_box[2] == 0:
-              bounding_box[2] = point[1]
-    
-      ''' Get Data for Nursing Homes and Assisted Living '''
-      coords_nh = organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', marker_coords, self, Functions)
-      coords_al = organize_ca_data(Variables.assisted_living_entries, 'assisted_living', marker_coords, self, Functions)
-      data_comp_analysis_nh = build_req_string(coords_nh, 'nursing_homes')
-      data_comp_analysis_al = build_req_string(coords_al, 'assisted_living')
-    
-      inpatients = 0
-      beds_active = 0
-      beds_planned = 0
-      beds_construct = 0
-      nursing_homes_active = 0
-      nursing_homes_planned = 0
-      nursing_homes_construct = 0
-      invest_cost = []
-      operator = []
-      beds = []
-      operator_public = []
-      operator_nonProfit = []
-      operator_private = []
-      for care_entry in data_comp_analysis_nh['data']:
-        beds_amount = 0
-        if not care_entry[0]['anz_vers_pat'] == '-':
-            inpatients += int(care_entry[0]['anz_vers_pat'])
-        if care_entry[0]['status'] == "aktiv":
-            nursing_homes_active += 1
-            if not care_entry[0]['platz_voll_pfl'] == "-":
-                beds_active += int(care_entry[0]['platz_voll_pfl'])
-                beds_amount = int(care_entry[0]['platz_voll_pfl'])
-            beds.append(beds_amount)
-        elif care_entry[0]['status'] == "in Planung":
-            nursing_homes_planned += 1
-            if not care_entry[0]['platz_voll_pfl'] == "-":
-                beds_planned += int(care_entry[0]['platz_voll_pfl'])
-        elif care_entry[0]['status'] == "im Bau":
-            nursing_homes_construct += 1
-            if not care_entry[0]['platz_voll_pfl'] == "-":
-                beds_construct += int(care_entry[0]['platz_voll_pfl'])
-        if not care_entry[0]['invest'] == "-":
-            invest_cost.append(float(care_entry[0]['invest']))
-        if not care_entry[0]['betreiber'] == "-":
-            if care_entry[0]['type'] == "privat":
-                if care_entry[0]['betreiber'] not in operator_private:
-                    operator_private.append(care_entry[0]['betreiber'])
-            elif care_entry[0]['type'] == "gemeinnützig":
-                if care_entry[0]['betreiber'] not in operator_nonProfit:
-                    operator_nonProfit.append(care_entry[0]['betreiber'])
-            elif care_entry[0]['type'] == "kommunal":
-                if care_entry[0]['betreiber'] not in operator_public:
-                    operator_public.append(care_entry[0]['betreiber'])
-            if care_entry[0]['betreiber'] not in operator:
-                operator.append(care_entry[0]['betreiber'])
-    
-      ''' Get Place from Geocoder-API for Map-Marker and extract needed Information '''
-      request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{marker_coords['lng']},{marker_coords['lat']}.json?access_token={Mapbox_Variables.token}"
-      response_data = anvil.http.request(request, json=True)
-      marker_context = response_data['features'][0]['context']
-      zipcode = "n.a."
-      district = "n.a."
-      city = "n.a."
-      federal_state = "n.a."
-      for info in marker_context:
-          if "postcode" in info['id']:
-              zipcode = info['text']
-          elif "locality" in info['id']:
-              district = info['text']
-          elif "place" in info['id']:
-              city = info['text']
-          elif "region" in info['id']:
-              federal_state = info['text']
-      if federal_state == "n.a.":
-          federal_state = city
-      if district == "n.a.":
-          district = city
-
-      anvil.js.call('update_loading_bar', 45, 'Generating Location Analysis Text')
-      
-      ''' Get generated Analysis-Text for City '''
-      from ..ChatGPT import ChatGPT
-      analysis_text = anvil.server.call('openai_test', city, 'german' if version == 'de' else 'english')
-      Functions.manipulate_loading_overlay(False)
-      analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
-      Functions.manipulate_loading_overlay(True)
-      
-      anvil.js.call('update_loading_bar', 50, 'Calculating Data for Market Study')
-    
-      ''' Get Information from Database for County of Marker-Position and extract Data '''
-      countie_data = anvil.server.call("get_demographic_district_data", marker_coords)
-      countie = countie_data['ex_dem_lk']['name'].split(',')
-      people_u80 = int(countie_data['dem_fc_lk']['g_65tou70_2020_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2020_abs'])
-      people_o80 = int(countie_data['dem_fc_lk']['g_80plus_2020_abs'])
-      people_u80_fc = int(countie_data['dem_fc_lk']['g_65tou70_2030_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2030_abs'])
-      people_o80_fc = int(countie_data['dem_fc_lk']['g_80plus_2030_abs'])
-      people_u80_fc_35 = int(countie_data['dem_fc_lk']['g_65tou70_2035_abs']) + int(countie_data['dem_fc_lk']['g_70tou80_2035_abs'])
-      people_o80_fc_35 = int(countie_data['dem_fc_lk']['g_80plus_2035_abs'])
-      change_u80 = float("{:.2f}".format(((people_u80_fc * 100) / people_u80) - 100))
-      change_o80 = float("{:.2f}".format(((people_o80_fc * 100) / people_o80) - 100))
-      population_trend = "{:.1f}".format((people_u80_fc_35 + people_o80_fc_35) * 100 / (people_u80 + people_o80) - 100)
-      nursing_home_rate = round(float(countie_data['pfleg_stat_lk']['heimquote2019']) * 100, 1)
-      keys = ['g_u6', 'g_6tou10', 'g_10tou16', 'g_16tou20', 'g_20tou30', 'g_30tou50', 'g_50tou65', 'g_65tou70', 'g_70tou80', 'g_80plus']
-      population_fc_30 = 0
-      population_fc_35 = 0
-      for key in keys:
-          population_fc_30 += int(countie_data['dem_fc_lk'][f'{key}_2030_abs'])
-          population_fc_35 += int(countie_data['dem_fc_lk'][f'{key}_2035_abs'])
-    
-      ''' Get Entries from Care-Database based on District and extract Data '''
-      care_data_district = anvil.server.call("get_care_district_data", countie_data['ex_dem_lk']['key'])
-      inpatients_lk = 0
-      beds_lk = 0
-      for el in care_data_district:
-        inpatients_lk += int(el['number_of_patients_cared_for']) if el['number_of_patients_cared_for'] is not None else 0
-        if el['number_of_places_fulltime_care'] is not None:
-          beds_lk += int(el['number_of_places_fulltime_care'])
-      occupancy_lk = round((inpatients_lk * 100) / beds_lk, 1)
-      free_beds_lk = beds_lk - inpatients_lk
-    
-      ''' Calculate Data for Market Study '''
-      new_r_care_rate_raw = float("{:.3f}".format(inpatients_lk / (people_u80 + people_o80)))
-      new_care_rate_raw = round((inpatients_lk * 100 / round((nursing_home_rate * countie_data['ex_dem_lk']['all_compl']) + 1)) * 100, 1)
-      pat_rec_full_care_fc_30_v1 = round(new_r_care_rate_raw * (people_u80_fc + people_o80_fc))
-      care_rate_30_v1_raw = round((pat_rec_full_care_fc_30_v1 * 100 / (population_fc_30 * nursing_home_rate)) * 100, 1)
-      pat_rec_full_care_fc_30_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc + people_o80_fc))
-      care_rate_30_v2_raw = round((pat_rec_full_care_fc_30_v2 * 100 / (population_fc_30 * nursing_home_rate)) * 100, 1)
-      pat_rec_full_care_fc_35_v1 = round(new_r_care_rate_raw * (people_u80_fc_35 + people_o80_fc_35))
-      care_rate_35_v1_raw = round((pat_rec_full_care_fc_35_v1 * 100 / (population_fc_35 * nursing_home_rate)) * 100, 1)
-      pat_rec_full_care_fc_35_v2 = round((new_r_care_rate_raw + 0.003) * (people_u80_fc_35 + people_o80_fc_35))
-      care_rate_35_v2_raw = round((pat_rec_full_care_fc_35_v2 * 100 / (population_fc_35 * nursing_home_rate)) * 100, 1)
-      inpatients_fc = round(pat_rec_full_care_fc_30_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100)) if not inpatients_lk == 0 else 0 
-      inpatients_fc_v2 = round(pat_rec_full_care_fc_30_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100)) if not inpatients_lk == 0 else 0
-      inpatients_fc_35 = round(pat_rec_full_care_fc_35_v1 * (round(((inpatients * 100) / inpatients_lk), 1) / 100)) if not inpatients_lk == 0 else 0
-      inpatients_fc_35_v2 = round(pat_rec_full_care_fc_35_v2 * (round(((inpatients * 100) / inpatients_lk), 1) / 100)) if not inpatients_lk == 0 else 0
-      beds_30_v1 = round((pat_rec_full_care_fc_30_v1 / 0.95))
-      beds_30_v2 = round((pat_rec_full_care_fc_30_v2 / 0.95))
-      beds_35_v1 = round((pat_rec_full_care_fc_35_v1 / 0.95))
-      beds_35_v2 = round((pat_rec_full_care_fc_35_v2 / 0.95))
-      free_beds_30_v1 = beds_30_v1 - pat_rec_full_care_fc_30_v1
-      free_beds_30_v2 = beds_30_v2 - pat_rec_full_care_fc_30_v2
-      free_beds_35_v1 = beds_35_v1 - pat_rec_full_care_fc_35_v1
-      free_beds_35_v2 = beds_35_v2 - pat_rec_full_care_fc_35_v2
-    
-      regulations = anvil.server.call('read_regulations', federal_state, "EN" if version == "en" else "DE")
-      facilities_bed_amount = 0
-      facilities_bed_amount_future = 0
-      for index, competitor in enumerate(data_comp_analysis_nh['data']):
-        if not competitor[0]['ez'] == '-' or not competitor[0]['dz'] == '-':
-            if not competitor[0]['ez'] == '-' and competitor[0]['ez'] is not None:
-                facility_single_rooms = int(competitor[0]['ez'])
-            else:
-                facility_single_rooms = 0
-            if not competitor[0]['dz'] == '-' and competitor[0]['dz'] is not None:
-                facility_double_rooms = int(competitor[0]['dz'])
-            else:
-                facility_double_rooms = 0
-            facility_rooms = facility_single_rooms + facility_double_rooms
-            if facility_rooms > 0:
-              facility_single_room_quote = facility_single_rooms / facility_rooms
-            else:
-              facility_single_room_quote = 0
-            facility_bed_amount = facility_single_rooms + facility_double_rooms * 2
-            if not regulations['Existing' if version == "en" else 'Bestand']['sr_quote'] == '/':
-                facility_single_room_quote_future = float(regulations['Existing' if version == "en" else 'Bestand']['sr_quote'])
-            else:
-                facility_single_room_quote_future = 0
-            if not regulations['Existing' if version == "en" else 'Bestand']['max_beds'] == '/':
-                facility_max_beds_future = float(regulations['Existing']['max_beds'])
-            else:
-                facility_max_beds_future = 999999
-            if facility_single_room_quote < facility_single_room_quote_future or facility_bed_amount > facility_max_beds_future:
-                data_comp_analysis_nh['data'][index][0]['legal'] = "No"
-            else:
-                data_comp_analysis_nh['data'][index][0]['legal'] = "Yes"
-            if facility_single_room_quote < facility_single_room_quote_future:
-                facility_single_rooms_future = int(round(facility_rooms * facility_single_room_quote_future, 0))
-                facility_double_rooms_future = int(round(facility_rooms - facility_single_rooms_future, 0))
-                facility_bed_amount_future = int(
-                    round(facility_single_rooms_future + facility_double_rooms_future * 2, 0))
-            else:
-                facility_bed_amount_future = facility_bed_amount
-            if facility_bed_amount_future > facility_max_beds_future:
-                facility_bed_amount_future = facility_max_beds_future
-            facilities_bed_amount += facility_bed_amount
-            facilities_bed_amount_future += facility_bed_amount_future
-        else:
-            data_comp_analysis_nh['data'][index][0]['legal'] = "-"
-    
-      loss_of_beds = facilities_bed_amount_future - facilities_bed_amount
-      beds_adjusted_30_v1 = beds_active + beds_planned + beds_construct + loss_of_beds
-      beds_adjusted_30_v2 = beds_active + beds_planned + beds_construct + loss_of_beds
-      beds_adjusted_35_v1 = beds_active + beds_planned + beds_construct + loss_of_beds
-      beds_adjusted_35_v2 = beds_active + beds_planned + beds_construct + loss_of_beds
-      beds_surplus_35 = beds_adjusted_35_v1 - inpatients_fc_35
-      beds_surplus_35_v2 = beds_adjusted_35_v2 - inpatients_fc_35_v2
-      beds_surplus = beds_adjusted_30_v1 - inpatients_fc
-      beds_surplus_v2 = beds_adjusted_30_v2 - inpatients_fc_v2
-    
-      share_url = self.create_share_map('market_study')
-
-      anvil.js.call('update_loading_bar', 75, 'Generating Market Study')
-      
-      market_study_pages = ["cover", "summary", "location_analysis"]
-      max_pages = 3
-      summary_page = 2
-      location_analysis_page = 3
-      current_competitor_analysis_page = 4
-    
-      nursing_homes_amount = len(data_comp_analysis_nh['data'])
-      assisted_living_amount = len(data_comp_analysis_al['data'])
-      total_amount = nursing_homes_amount + assisted_living_amount
-      list_beds = []
-      list_years_of_construction_nh = []
-      list_years_of_construction_al = []
-      none_profit_operator_nh = 0
-      none_profit_operator_al = 0
-      public_operator_nh = 0
-      public_operator_al = 0
-      private_operator_nh = 0
-      private_operator_al = 0
-      home_invest = -1
-      complied_regulations = 0
-      uncomplied_regulations = 0
-      invest_plot_data = []
-      invest_costs_public = []
-      invest_costs_non_profit = []
-      invest_costs_private = []
-      invest_costs_public_home = -1
-      invest_costs_non_profit_home = -1
-      invest_costs_private_home = -1
-      competitor_pages = {}
-      page = 1
-    
-      # Nursing Home Pages
-      home_counter = 0
-      total_beds = 0
-      total_single_rooms = 0
-      total_double_rooms = 0
-      total_rooms = 0
-      list_single_room_quota = []
-      list_occupancy_rate = []
-      list_invest_cost = []
-      list_mdk_grade = []
-      prev_competitor_distance = 0
-      prev_competitor_index = 0
-      current_page_height = 177
-      minimum_invest_cost = 0
-      total_occupancy_rate = 0
-      total_single_room_quota = 0
-      maximum_invest_cost = 0
-      total_invest_cost = 0
-      total_mdk_grade = 0
-      mdk_grade_letters = ['A', 'B', 'C', 'D']
-
-      for index, competitor in enumerate(data_comp_analysis_nh['data']):
+def generated_nursing_home_pages():
+  for index, competitor in enumerate(data_comp_analysis_nh['data']):
           if index % 9 == 0:
               if index > 0:
                   competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
@@ -334,653 +228,714 @@ def create_market_study(self, version):
             status = "active" if status == "aktiv" else "planning" if status == "in Planung" else "construction"
         
           if 'home' in competitor:
-              home_counter += 1
-              current_competitor_page['cell'][f'home_{home_counter}_icon'] = {
-                  'color': [204, 182, 102],
-                  'fill_color': [27, 41, 57],
-                  'font': 'calibri',
-                  'size': 14,
-                  'x': 10,
-                  'y': current_page_height,
-                  'w': 6,
-                  'h': 10,
-                  'txt': '⌂',
-                  'align': 'center',
-                  'fill': True
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_name'] = {
-                  'color': [0, 176, 240] if not "keine " in competitor[0]['web'] else [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 17,
-                  'y': current_page_height,
-                  'w': 50,
-                  'h': 6,
-                  'txt': competitor[0]['raw_name'] if len(competitor[0]['raw_name']) <= 30 else f"{competitor[0]['raw_name'][:30]}...",
-                  'align': 'left',
-                  'fill': True,
-                  'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_operator'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 17,
-                  'y': current_page_height + 4,
-                  'w': 186,
-                  'h': 6,
-                  'txt': competitor[0]['raw_betreiber'] if len(competitor[0]['raw_betreiber']) <= 30 else f"{competitor[0]['raw_betreiber'][:30]}...",
-                  'align': 'left',
-                  'fill': True
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_top_30_operator'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 67,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': top_30_operator,
-                  'align': 'center',
-                  'fill': True,
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_operator_type'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': operator_type_size,
-                  'x': 77,
-                  'y': current_page_height,
-                  'w': 12,
-                  'h': 6,
-                  'txt': operator_type,
-                  'align': 'center',
-                  'fill': True,
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_status'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 89,
-                  'y': current_page_height,
-                  'w': 12,
-                  'h': 6,
-                  'txt': status,
-                  'align': 'center',
-                  'fill': True,
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_year_of_construction'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 101,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': competitor[0]['baujahr'] if competitor[0]['baujahr'] is not None else '-',
-                  'align': 'center',
-                  'fill': True,
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_legal'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 111,
-                  'y': current_page_height,
-                  'w': 8,
-                  'h': 6,
-                  'txt': legal,
-                  'align': 'center',
-                  'fill': True,
-              }
-      
-              if not competitor[0]['legal'] == '-':
-                  if competitor[0]['legal'] == 'Yes':
-                      complied_regulations += 1
-                  else:
-                      uncomplied_regulations += 1
-              if competitor[0]['type'] == 'privat':
-                  private_operator_nh += 1
-                  if not competitor[0]['invest'] == '-':
-                      invest_costs_private.append(float(competitor[0]['invest']))
-                      invest_costs_private_home = float(competitor[0]['invest'])
-              elif competitor[0]['type'] == 'kommunal':
-                  public_operator_nh += 1
-                  if not competitor[0]['invest'] == '-':
-                      invest_costs_public.append(float(competitor[0]['invest']))
-                      invest_costs_public_home = float(competitor[0]['invest'])
-              elif competitor[0]['type'] == 'gemeinnützig':
-                  none_profit_operator_nh += 1
-                  if not competitor[0]['invest'] == '-':
-                      invest_costs_non_profit.append(float(competitor[0]['invest']))
-                      invest_costs_non_profit_home = float(competitor[0]['invest'])
-              if not competitor[0]['ez'] == '-' and competitor[0]['ez'] is not None:
-                  single_rooms = int(competitor[0]['ez'])
+            home_counter += 1
+            current_competitor_page['cell'][f'home_{home_counter}_icon'] = {
+              'color': [204, 182, 102],
+              'fill_color': [27, 41, 57],
+              'font': 'calibri',
+              'size': 14,
+              'x': 10,
+              'y': current_page_height,
+              'w': 6,
+              'h': 10,
+              'txt': '⌂',
+              'align': 'center',
+              'fill': True
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_name'] = {
+              'color': [0, 176, 240] if not "keine " in competitor[0]['web'] else [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 17,
+              'y': current_page_height,
+              'w': 50,
+              'h': 6,
+              'txt': competitor[0]['raw_name'] if len(competitor[0]['raw_name']) <= 30 else f"{competitor[0]['raw_name'][:30]}...",
+              'align': 'left',
+              'fill': True,
+              'link': competitor[0]['web'] if not "keine " in competitor[0]['web'] else ""
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_operator'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 17,
+              'y': current_page_height + 4,
+              'w': 186,
+              'h': 6,
+              'txt': competitor[0]['raw_betreiber'] if len(competitor[0]['raw_betreiber']) <= 30 else f"{competitor[0]['raw_betreiber'][:30]}...",
+              'align': 'left',
+              'fill': True
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_top_30_operator'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 67,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': top_30_operator,
+              'align': 'center',
+              'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_operator_type'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': operator_type_size,
+              'x': 77,
+              'y': current_page_height,
+              'w': 12,
+              'h': 6,
+              'txt': operator_type,
+              'align': 'center',
+              'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_status'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 89,
+              'y': current_page_height,
+              'w': 12,
+              'h': 6,
+              'txt': status,
+              'align': 'center',
+              'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_year_of_construction'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 101,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': competitor[0]['baujahr'] if competitor[0]['baujahr'] is not None else '-',
+              'align': 'center',
+              'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_legal'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 111,
+              'y': current_page_height,
+              'w': 8,
+              'h': 6,
+              'txt': legal,
+              'align': 'center',
+              'fill': True,
+            }
+    
+            if not competitor[0]['legal'] == '-':
+              if competitor[0]['legal'] == 'Yes':
+                complied_regulations += 1
               else:
-                  single_rooms = '-'
-              if not competitor[0]['dz'] == '-' and competitor[0]['dz'] is not None:
-                  double_rooms = int(competitor[0]['dz'])
-              else:
-                  double_rooms = '-'
-              if not competitor[0]['platz_voll_pfl'] == '-' and competitor[0]['platz_voll_pfl'] is not None:
-                  beds = competitor[0]['platz_voll_pfl']
-              else:
-                  beds = '-'
-              if not single_rooms == '-':
-                  if not double_rooms == '-':
-                      rooms = single_rooms + double_rooms
-                      single_room_quote = round(single_rooms / (single_rooms + double_rooms) * 100, 1)
-                  else:
-                      rooms = single_rooms
-                      single_room_quote = 100.0
-              else:
-                  if not double_rooms == '-':
-                      rooms = double_rooms
-                      single_room_quote = 0.0
-                  else:
-                      rooms = '-'
-                      single_room_quote = '-'
-              if not beds == '-':
-                  total_beds += beds
-                  list_beds.append(beds)
-              if not single_rooms == '-':
-                  total_single_rooms += single_rooms
+                uncomplied_regulations += 1
+            if competitor[0]['type'] == 'privat':
+              private_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_private.append(float(competitor[0]['invest']))
+                invest_costs_private_home = float(competitor[0]['invest'])
+            elif competitor[0]['type'] == 'kommunal':
+              public_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_public.append(float(competitor[0]['invest']))
+                invest_costs_public_home = float(competitor[0]['invest'])
+            elif competitor[0]['type'] == 'gemeinnützig':
+              none_profit_operator_nh += 1
+              if not competitor[0]['invest'] == '-':
+                invest_costs_non_profit.append(float(competitor[0]['invest']))
+                invest_costs_non_profit_home = float(competitor[0]['invest'])
+            if not competitor[0]['ez'] == '-' and competitor[0]['ez'] is not None:
+              single_rooms = int(competitor[0]['ez'])
+            else:
+              single_rooms = '-'
+            if not competitor[0]['dz'] == '-' and competitor[0]['dz'] is not None:
+              double_rooms = int(competitor[0]['dz'])
+            else:
+              double_rooms = '-'
+            if not competitor[0]['platz_voll_pfl'] == '-' and competitor[0]['platz_voll_pfl'] is not None:
+              beds = competitor[0]['platz_voll_pfl']
+            else:
+              beds = '-'
+            if not single_rooms == '-':
               if not double_rooms == '-':
-                  total_double_rooms += double_rooms
-              if not rooms == '-':
-                  total_rooms += rooms
-              if not single_room_quote == '-':
-                  list_single_room_quota.append(single_room_quote)
-              if not competitor[0]['occupancy'] == '-' and not competitor[0]['occupancy'] == 'N.A.':
-                  list_occupancy_rate.append(competitor[0]['occupancy'])
-              if not competitor[0]['invest'] == '-' and not competitor[0]['invest'] == 'N.A.':
-                  list_invest_cost.append(float(competitor[0]['invest']))
-                  home_invest = float(competitor[0]['invest'])
-              if not competitor[0]['mdk_note'] == '-' and not competitor[0]['mdk_note'] == 'N.A.':
-                  list_mdk_grade.append(float(competitor[0]['mdk_note']))
-              if not competitor[0]['baujahr'] == '-' and not competitor[0]['baujahr'] == 'N.A.':
-                  list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
-              if not competitor[0]['invest'] == '-' and not competitor[0]['invest'] == 'N.A.' and not competitor[0]['baujahr'] == '-' and not competitor[0]['baujahr'] == 'N.A.':
-                  invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
-      
-              current_competitor_page['cell'][f'home_{home_counter}_beds'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 119,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': '{:,}'.format(beds),
-                  'align': 'center',
-                  'fill': True,
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_single_rooms'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 129,
-                  'y': current_page_height,
-                  'w': 12,
-                  'h': 6,
-                  'txt': '{:,}'.format(single_rooms) if not single_rooms == '-' else single_rooms,
-                  'align': 'center',
-                  'fill': True,
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_double_rooms'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 141,
-                  'y': current_page_height,
-                  'w': 12,
-                  'h': 6,
-                  'txt': '{:,}'.format(double_rooms) if not double_rooms == '-' else double_rooms,
-                  'align': 'center',
-                  'fill': True,
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_rooms'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 153,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': '{:,}'.format(rooms) if not rooms == '-' else rooms,
-                  'align': 'center',
-                  'fill': True,
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_single_room_quota'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 163,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': '{:,}%'.format(single_room_quote) if not single_room_quote == '-' else single_room_quote,
-                  'align': 'center',
-                  'fill': True,
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_occupancy'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 173,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100), 1) if not competitor[0]['occupancy'] == '-' else '-',
-                  'align': 'center',
-                  'fill': True,
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_invest'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 183,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': '-' if competitor[0]['invest'] == '-' else '{:,}€'.format(float(competitor[0]['invest'])),
-                  'align': 'center',
-                  'fill': True,
-              }
-              current_competitor_page['cell'][f'home_{home_counter}_quality'] = {
-                  'color': [0, 0, 0],
-                  'fill_color': [244, 239, 220],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 193,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': '-' if competitor[0]['mdk_note'] == 'N.A.' else '{:,}'.format(float(competitor[0]['mdk_note'])),
-                  'align': 'center',
-                  'fill': True,
+                rooms = single_rooms + double_rooms
+                single_room_quote = round(single_rooms / (single_rooms + double_rooms) * 100, 1)
+              else:
+                rooms = single_rooms
+                single_room_quote = 100.0
+            else:
+              if not double_rooms == '-':
+                rooms = double_rooms
+                single_room_quote = 0.0
+              else:
+                rooms = '-'
+                single_room_quote = '-'
+            if not beds == '-':
+              total_beds += beds
+              list_beds.append(beds)
+            if not single_rooms == '-':
+              total_single_rooms += single_rooms
+            if not double_rooms == '-':
+              total_double_rooms += double_rooms
+            if not rooms == '-':
+              total_rooms += rooms
+            if not single_room_quote == '-':
+              list_single_room_quota.append(single_room_quote)
+            if not competitor[0]['occupancy'] == '-' and not competitor[0]['occupancy'] == 'N.A.':
+              list_occupancy_rate.append(competitor[0]['occupancy'])
+            if not competitor[0]['invest'] == '-' and not competitor[0]['invest'] == 'N.A.':
+              list_invest_cost.append(float(competitor[0]['invest']))
+              home_invest = float(competitor[0]['invest'])
+            if not competitor[0]['mdk_note'] == '-' and not competitor[0]['mdk_note'] == 'N.A.':
+              list_mdk_grade.append(float(competitor[0]['mdk_note']))
+            if not competitor[0]['baujahr'] == '-' and not competitor[0]['baujahr'] == 'N.A.':
+              list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
+            if not competitor[0]['invest'] == '-' and not competitor[0]['invest'] == 'N.A.' and not competitor[0]['baujahr'] == '-' and not competitor[0]['baujahr'] == 'N.A.':
+              invest_plot_data.append(['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
+    
+            current_competitor_page['cell'][f'home_{home_counter}_beds'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 119,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': '{:,}'.format(beds),
+              'align': 'center',
+              'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_single_rooms'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 129,
+              'y': current_page_height,
+              'w': 12,
+              'h': 6,
+              'txt': '{:,}'.format(single_rooms) if not single_rooms == '-' else single_rooms,
+              'align': 'center',
+              'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_double_rooms'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 141,
+              'y': current_page_height,
+              'w': 12,
+              'h': 6,
+              'txt': '{:,}'.format(double_rooms) if not double_rooms == '-' else double_rooms,
+              'align': 'center',
+              'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_rooms'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 153,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': '{:,}'.format(rooms) if not rooms == '-' else rooms,
+              'align': 'center',
+              'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_single_room_quota'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 163,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': '{:,}%'.format(single_room_quote) if not single_room_quote == '-' else single_room_quote,
+              'align': 'center',
+              'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_occupancy'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 173,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100), 1) if not competitor[0]['occupancy'] == '-' else '-',
+              'align': 'center',
+              'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_invest'] = {
+              'color': [0, 0, 0],
+              'fill_color': [244, 239, 220],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 183,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': '-' if competitor[0]['invest'] == '-' else '{:,}€'.format(float(competitor[0]['invest'])),
+              'align': 'center',
+              'fill': True,
+            }
+            current_competitor_page['cell'][f'home_{home_counter}_quality'] = {
+                'color': [0, 0, 0],
+                'fill_color': [244, 239, 220],
+                'font': 'segoeui',
+                'size': 8,
+                'x': 193,
+                'y': current_page_height,
+                'w': 10,
+                'h': 6,
+                'txt': '-' if competitor[0]['mdk_note'] == 'N.A.' else '{:,}'.format(float(competitor[0]['mdk_note'])),
+                'align': 'center',
+                'fill': True,
               }
           else:
-              table_position = (index % 9) + 1
-              if not prev_competitor_distance == competitor[1]:
-                  prev_competitor_distance = competitor[1]
-                  prev_competitor_index += 1
-              current_competitor_page['cell'][f'competitor_{table_position}_icon'] = {
-                  'color': [255, 255, 255],
-                  'fill_color': [244, 81, 94],
-                  'font': 'segoeui',
-                  'size': 11,
-                  'x': 10,
-                  'y': current_page_height,
-                  'w': 6,
-                  'h': 10,
-                  'txt': str(prev_competitor_index),
-                  'align': 'center',
-                  'fill': True
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_name'] = {
-                  'color': [0, 176, 240] if competitor[0]['web'] is not None and not "keine " in competitor[0]['web'] else [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 17,
-                  'y': current_page_height,
-                  'w': 50,
-                  'h': 6,
-                  'txt': competitor[0]['raw_name'] if len(competitor[0]['raw_name']) <= 30 else f"{competitor[0]['raw_name'][:30]}...",
-                  'align': 'left',
-                  'link': competitor[0]['web'] if competitor[0]['web'] is not None and not "keine " in competitor[0]['web'] else ""
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_operator'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 17,
-                  'y': current_page_height + 4,
-                  'w': 50,
-                  'h': 6,
-                  'txt': competitor[0]['raw_betreiber'] if len(competitor[0]['raw_betreiber']) <= 30 else f"{competitor[0]['raw_betreiber'][:30]}...",
-                  'align': 'left',
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_top_30_operator'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 67,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': top_30_operator,
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_type'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': operator_type_size,
-                  'x': 77,
-                  'y': current_page_height,
-                  'w': 12,
-                  'h': 6,
-                  'txt': operator_type,
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_status'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 89,
-                  'y': current_page_height,
-                  'w': 12,
-                  'h': 6,
-                  'txt': status,
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_year_of_construction'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 101,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': competitor[0]['baujahr'] if competitor[0]['baujahr'] is not None else '-',
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_legal'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 111,
-                  'y': current_page_height,
-                  'w': 8,
-                  'h': 6,
-                  'txt': legal,
-                  'align': 'center',
-              }
-      
-              if not competitor[0]['legal'] == None:
-                  if competitor[0]['legal'] == 'Yes':
-                      complied_regulations += 1
-                  else:
-                      uncomplied_regulations += 1
-              if competitor[0]['type'] == 'privat':
-                  private_operator_nh += 1
-                  if not competitor[0]['invest'] == None and not competitor[0]['invest'] == '-':
-                      invest_costs_private.append(float(competitor[0]['invest']))
-              elif competitor[0]['type'] == 'kommunal':
-                  public_operator_nh += 1
-                  if not competitor[0]['invest'] == None and not competitor[0]['invest'] == '-':
-                      invest_costs_public.append(float(competitor[0]['invest']))
-              elif competitor[0]['type'] == 'gemeinnützig':
-                  none_profit_operator_nh += 1
-                  if not competitor[0]['invest'] == None and not competitor[0]['invest'] == '-':
-                      invest_costs_non_profit.append(float(competitor[0]['invest']))
-              if not competitor[0]['ez'] == None:
-                  single_rooms = int(competitor[0]['ez'])
+            table_position = (index % 9) + 1
+            if not prev_competitor_distance == competitor[1]:
+              prev_competitor_distance = competitor[1]
+              prev_competitor_index += 1
+            current_competitor_page['cell'][f'competitor_{table_position}_icon'] = {
+              'color': [255, 255, 255],
+              'fill_color': [244, 81, 94],
+              'font': 'segoeui',
+              'size': 11,
+              'x': 10,
+              'y': current_page_height,
+              'w': 6,
+              'h': 10,
+              'txt': str(prev_competitor_index),
+              'align': 'center',
+              'fill': True
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_name'] = {
+              'color': [0, 176, 240] if competitor[0]['web'] is not None and not "keine " in competitor[0]['web'] else [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 17,
+              'y': current_page_height,
+              'w': 50,
+              'h': 6,
+              'txt': competitor[0]['raw_name'] if len(competitor[0]['raw_name']) <= 30 else f"{competitor[0]['raw_name'][:30]}...",
+              'align': 'left',
+              'link': competitor[0]['web'] if competitor[0]['web'] is not None and not "keine " in competitor[0]['web'] else ""
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_operator'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 17,
+              'y': current_page_height + 4,
+              'w': 50,
+              'h': 6,
+              'txt': competitor[0]['raw_betreiber'] if len(competitor[0]['raw_betreiber']) <= 30 else f"{competitor[0]['raw_betreiber'][:30]}...",
+              'align': 'left',
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_top_30_operator'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 67,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': top_30_operator,
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_type'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': operator_type_size,
+              'x': 77,
+              'y': current_page_height,
+              'w': 12,
+              'h': 6,
+              'txt': operator_type,
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_status'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 89,
+              'y': current_page_height,
+              'w': 12,
+              'h': 6,
+              'txt': status,
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_year_of_construction'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 101,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': competitor[0]['baujahr'] if competitor[0]['baujahr'] is not None else '-',
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_legal'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 111,
+              'y': current_page_height,
+              'w': 8,
+              'h': 6,
+              'txt': legal,
+              'align': 'center',
+            }
+    
+            if not competitor[0]['legal'] == None:
+              if competitor[0]['legal'] == 'Yes':
+                complied_regulations += 1
               else:
-                  single_rooms = '-'
-              if not competitor[0]['dz'] == None:
-                  double_rooms = int(competitor[0]['dz'])
-              else:
-                  double_rooms = '-'
-              if not competitor[0]['platz_voll_pfl'] == None:
-                  beds = competitor[0]['platz_voll_pfl']
-              else:
-                  beds = '-'
-              if not single_rooms == '-':
-                  if not double_rooms == '-':
-                      rooms = single_rooms + double_rooms
-                      single_room_quote = round(single_rooms / (single_rooms + double_rooms) * 100, 1)
-                  else:
-                      rooms = single_rooms
-                      single_room_quote = 100.0
-              else:
-                  if not double_rooms == '-':
-                      rooms = double_rooms
-                      single_room_quote = 0.0
-                  else:
-                      rooms = '-'
-                      single_room_quote = '-'
-              if not beds == '-':
-                  total_beds += beds
-                  list_beds.append(beds)
-              if not single_rooms == '-':
-                  total_single_rooms += single_rooms
+                uncomplied_regulations += 1
+            if competitor[0]['type'] == 'privat':
+              private_operator_nh += 1
+              if not competitor[0]['invest'] == None and not competitor[0]['invest'] == '-':
+                invest_costs_private.append(float(competitor[0]['invest']))
+            elif competitor[0]['type'] == 'kommunal':
+              public_operator_nh += 1
+              if not competitor[0]['invest'] == None and not competitor[0]['invest'] == '-':
+                invest_costs_public.append(float(competitor[0]['invest']))
+            elif competitor[0]['type'] == 'gemeinnützig':
+              none_profit_operator_nh += 1
+              if not competitor[0]['invest'] == None and not competitor[0]['invest'] == '-':
+                invest_costs_non_profit.append(float(competitor[0]['invest']))
+            if not competitor[0]['ez'] == None:
+              single_rooms = int(competitor[0]['ez'])
+            else:
+              single_rooms = '-'
+            if not competitor[0]['dz'] == None:
+              double_rooms = int(competitor[0]['dz'])
+            else:
+              double_rooms = '-'
+            if not competitor[0]['platz_voll_pfl'] == None:
+              beds = competitor[0]['platz_voll_pfl']
+            else:
+              beds = '-'
+            if not single_rooms == '-':
               if not double_rooms == '-':
-                  total_double_rooms += double_rooms
-              if not rooms == '-':
-                  total_rooms += rooms
-              if not single_room_quote == '-':
-                  list_single_room_quota.append(single_room_quote)
-              if not competitor[0]['occupancy'] == '-':
-                  list_occupancy_rate.append(competitor[0]['occupancy'])
-              if not competitor[0]['invest'] == '-':
-                  list_invest_cost.append(float(competitor[0]['invest']))
-              if not competitor[0]['mdk_note'] == 'N.A.' and competitor[0]['mdk_note'] is not None:
-                  list_mdk_grade.append(mdk_grade_letters.index(competitor[0]['mdk_note']) + 1)
-              if not competitor[0]['baujahr'] == None:
-                  list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
-              if competitor[0]['invest'] is not None and not competitor[0]['invest'] == '-' and competitor[0]['baujahr'] is not None and not competitor[0]['baujahr'] == '-':
-                  invest_plot_data.append(["private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public", competitor[0]['invest'], competitor[0]['baujahr'], prev_competitor_index])
+                rooms = single_rooms + double_rooms
+                single_room_quote = round(single_rooms / (single_rooms + double_rooms) * 100, 1)
+              else:
+                rooms = single_rooms
+                single_room_quote = 100.0
+            else:
+              if not double_rooms == '-':
+                rooms = double_rooms
+                single_room_quote = 0.0
+              else:
+                rooms = '-'
+                single_room_quote = '-'
+            if not beds == '-':
+              total_beds += beds
+              list_beds.append(beds)
+            if not single_rooms == '-':
+              total_single_rooms += single_rooms
+            if not double_rooms == '-':
+              total_double_rooms += double_rooms
+            if not rooms == '-':
+              total_rooms += rooms
+            if not single_room_quote == '-':
+              list_single_room_quota.append(single_room_quote)
+            if not competitor[0]['occupancy'] == '-':
+              list_occupancy_rate.append(competitor[0]['occupancy'])
+            if not competitor[0]['invest'] == '-':
+              list_invest_cost.append(float(competitor[0]['invest']))
+            if not competitor[0]['mdk_note'] == 'N.A.' and competitor[0]['mdk_note'] is not None:
+              list_mdk_grade.append(mdk_grade_letters.index(competitor[0]['mdk_note']) + 1)
+            if not competitor[0]['baujahr'] == None:
+              list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
+            if competitor[0]['invest'] is not None and not competitor[0]['invest'] == '-' and competitor[0]['baujahr'] is not None and not competitor[0]['baujahr'] == '-':
+              invest_plot_data.append(["private" if competitor[0]['type'] == "privat" else "non-profit" if competitor[0]['type'] == "gemeinnützig" else "public", competitor[0]['invest'], competitor[0]['baujahr'], prev_competitor_index])
 
-              current_competitor_page['cell'][f'competitor_{table_position}_beds'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 119,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': '{:,}'.format(beds) if not beds == '-' else beds,
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_single_rooms'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 129,
-                  'y': current_page_height,
-                  'w': 12,
-                  'h': 6,
-                  'txt': '{:,}'.format(single_rooms) if not single_rooms == '-' else single_rooms,
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_double_rooms'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 141,
-                  'y': current_page_height,
-                  'w': 12,
-                  'h': 6,
-                  'txt': '{:,}'.format(double_rooms) if not double_rooms == '-' else double_rooms,
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_rooms'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 153,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': '{:,}'.format(rooms) if not rooms == '-' else rooms,
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_single_room_quota'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 163,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': '{:,}%'.format(single_room_quote) if not single_room_quote == '-' else single_room_quote,
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_occupancy'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 173,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100), 1) if not competitor[0]['occupancy'] == '-' else competitor[0]['occupancy'],
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_{table_position}_invest'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 183,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': '-' if competitor[0]['invest'] == '-' else '{:,}€'.format(float(competitor[0]['invest'])),
-                  'align': 'center',
-              }
-              mdk_grade_letters = ['A', 'B', 'C', 'D']
-              current_competitor_page['cell'][f'competitor_{table_position}_quality'] = {
-                  'color': [0, 0, 0],
-                  'font': 'segoeui',
-                  'size': 8,
-                  'x': 193,
-                  'y': current_page_height,
-                  'w': 10,
-                  'h': 6,
-                  'txt': '-' if competitor[0]['mdk_note'] == '-' else '-' if competitor[0]['mdk_note'] is None else competitor[0]['mdk_note'],
-                  'align': 'center',
-              }
+            current_competitor_page['cell'][f'competitor_{table_position}_beds'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 119,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': '{:,}'.format(beds) if not beds == '-' else beds,
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_single_rooms'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 129,
+              'y': current_page_height,
+              'w': 12,
+              'h': 6,
+              'txt': '{:,}'.format(single_rooms) if not single_rooms == '-' else single_rooms,
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_double_rooms'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 141,
+              'y': current_page_height,
+              'w': 12,
+              'h': 6,
+              'txt': '{:,}'.format(double_rooms) if not double_rooms == '-' else double_rooms,
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_rooms'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 153,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': '{:,}'.format(rooms) if not rooms == '-' else rooms,
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_single_room_quota'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 163,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': '{:,}%'.format(single_room_quote) if not single_room_quote == '-' else single_room_quote,
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_occupancy'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 173,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': '{:,}%'.format(round(competitor[0]['occupancy'] * 100), 1) if not competitor[0]['occupancy'] == '-' else competitor[0]['occupancy'],
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_{table_position}_invest'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 183,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': '-' if competitor[0]['invest'] == '-' else '{:,}€'.format(float(competitor[0]['invest'])),
+              'align': 'center',
+            }
+            mdk_grade_letters = ['A', 'B', 'C', 'D']
+            current_competitor_page['cell'][f'competitor_{table_position}_quality'] = {
+              'color': [0, 0, 0],
+              'font': 'segoeui',
+              'size': 8,
+              'x': 193,
+              'y': current_page_height,
+              'w': 10,
+              'h': 6,
+              'txt': '-' if competitor[0]['mdk_note'] == '-' else '-' if competitor[0]['mdk_note'] is None else competitor[0]['mdk_note'],
+              'align': 'center',
+            }
       
           current_page_height += 12
   
           if index == len(data_comp_analysis_nh['data']) - 1:
-              median_dictionary = anvil.server.call(
-                  "get_multiple_median",
-                  {
-                      'single_room_quota': list_single_room_quota,
-                      'occupancy_rate': list_occupancy_rate,
-                      'invest_cost': list_invest_cost,
-                      'mdk_grade': list_mdk_grade
-                  }
-              )
-              if len(list_single_room_quota) > 0:
-                  total_single_room_quota = median_dictionary['single_room_quota']
-              if len(list_occupancy_rate) > 0:
-                  total_occupancy_rate = median_dictionary['occupancy_rate']
-              if len(list_invest_cost) > 0:
-                  minimum_invest_cost = min(list_invest_cost)
-              if len(list_invest_cost) > 0:
-                  maximum_invest_cost = max(list_invest_cost)
-              if len(list_invest_cost) > 0:
-                  total_invest_cost = median_dictionary['invest_cost']
-              if len(list_mdk_grade) > 0:
-                  total_mdk_grade = median_dictionary['mdk_grade']
+            median_dictionary = anvil.server.call(
+              "get_multiple_median",
+              {
+                'single_room_quota': list_single_room_quota,
+                'occupancy_rate': list_occupancy_rate,
+                'invest_cost': list_invest_cost,
+                'mdk_grade': list_mdk_grade
+              }
+            )
+            if len(list_single_room_quota) > 0:
+              total_single_room_quota = median_dictionary['single_room_quota']
+            if len(list_occupancy_rate) > 0:
+              total_occupancy_rate = median_dictionary['occupancy_rate']
+            if len(list_invest_cost) > 0:
+              minimum_invest_cost = min(list_invest_cost)
+            if len(list_invest_cost) > 0:
+              maximum_invest_cost = max(list_invest_cost)
+            if len(list_invest_cost) > 0:
+              total_invest_cost = median_dictionary['invest_cost']
+            if len(list_mdk_grade) > 0:
+              total_mdk_grade = median_dictionary['mdk_grade']
+    
+            current_competitor_page['cell'][f'competitor_sum_beds'] = {
+              'color': [0, 0, 0],
+              'font': 'seguisb',
+              'size': 8,
+              'x': 119,
+              'y': 285,
+              'w': 10,
+              'h': 6,
+              'txt': 'Σ {:,}'.format(total_beds),
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_sum_single_rooms'] = {
+              'color': [0, 0, 0],
+              'font': 'seguisb',
+              'size': 8,
+              'x': 129,
+              'y': 285,
+              'w': 12,
+              'h': 6,
+              'txt': 'Σ {:,}'.format(total_single_rooms),
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_sum_double_rooms'] = {
+              'color': [0, 0, 0],
+              'font': 'seguisb',
+              'size': 8,
+              'x': 141,
+              'y': 285,
+              'w': 12,
+              'h': 6,
+              'txt': 'Σ {:,}'.format(total_double_rooms),
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_sum_rooms'] = {
+              'color': [0, 0, 0],
+              'font': 'seguisb',
+              'size': 8,
+              'x': 153,
+              'y': 285,
+              'w': 10,
+              'h': 6,
+              'txt': 'Σ {:,}'.format(total_rooms),
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_median_single_room_quota'] = {
+              'color': [0, 0, 0],
+              'font': 'seguisb',
+              'size': 8,
+              'x': 163,
+              'y': 285,
+              'w': 10,
+              'h': 6,
+              'txt': 'x̃ {:,}%'.format(round(total_single_room_quota, 1)),
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_median_occupancy'] = {
+              'color': [0, 0, 0],
+              'font': 'seguisb',
+              'size': 8,
+              'x': 173,
+              'y': 285,
+              'w': 10,
+              'h': 6,
+              'txt': 'x̃ {:,}%'.format(round(total_occupancy_rate * 100, 1)),
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_median_invest'] = {
+              'color': [0, 0, 0],
+              'font': 'seguisb',
+              'size': 8,
+              'x': 183,
+              'y': 285,
+              'w': 10,
+              'h': 6,
+              'txt': 'x̃ {:,}'.format(round(total_invest_cost, 2)),
+              'align': 'center',
+            }
+            current_competitor_page['cell'][f'competitor_median_quality'] = {
+              'color': [0, 0, 0],
+              'font': 'seguisb',
+              'size': 8,
+              'x': 193,
+              'y': 285,
+              'w': 10,
+              'h': 6,
+              'txt': mdk_grade_letters[int(total_mdk_grade) - 1],
+              'align': 'center',
+            }
+          
+            competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
+
+def create_market_study(self, version):
+  if version == "german":
+    if Market_Study_Variables.iso_movement == "walking":
+      Market_Study_Variables.iso_string = f"{Market_Study_Variables.iso_time} Minuten zu Fuß"
+    elif Market_Study_Variables.iso_movement == "cycling":
+      Market_Study_Variables.iso_string = f"{Market_Study_Variables.iso_time} Minuten fahren - Fahrrad"
+    elif Market_Study_Variables.iso_movement == "driving":
+      Market_Study_Variables.iso_string = f"{Market_Study_Variables.iso_time} Minuten fahren - Auto"
+  elif version == "english":
+    Market_Study_Variables.iso_string = f"{Market_Study_Variables.iso_time} minutes {Market_Study_Variables.iso_movement}"
+  
+  Market_Study_Variables.analysis_text_response = anvil.server.call('openai_test', city, version)
+  Functions.manipulate_loading_overlay(False)
+  Market_Study_Variables.final_analysis_text = alert(ChatGPT(generated_text=analysis_text), buttons=[], dismissible=False, large=True, role='custom_alert')
+  Functions.manipulate_loading_overlay(True)
+  
+  ''' Code to Edit '''
       
-              current_competitor_page['cell'][f'competitor_sum_beds'] = {
-                  'color': [0, 0, 0],
-                  'font': 'seguisb',
-                  'size': 8,
-                  'x': 119,
-                  'y': 285,
-                  'w': 10,
-                  'h': 6,
-                  'txt': 'Σ {:,}'.format(total_beds),
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_sum_single_rooms'] = {
-                  'color': [0, 0, 0],
-                  'font': 'seguisb',
-                  'size': 8,
-                  'x': 129,
-                  'y': 285,
-                  'w': 12,
-                  'h': 6,
-                  'txt': 'Σ {:,}'.format(total_single_rooms),
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_sum_double_rooms'] = {
-                  'color': [0, 0, 0],
-                  'font': 'seguisb',
-                  'size': 8,
-                  'x': 141,
-                  'y': 285,
-                  'w': 12,
-                  'h': 6,
-                  'txt': 'Σ {:,}'.format(total_double_rooms),
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_sum_rooms'] = {
-                  'color': [0, 0, 0],
-                  'font': 'seguisb',
-                  'size': 8,
-                  'x': 153,
-                  'y': 285,
-                  'w': 10,
-                  'h': 6,
-                  'txt': 'Σ {:,}'.format(total_rooms),
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_median_single_room_quota'] = {
-                  'color': [0, 0, 0],
-                  'font': 'seguisb',
-                  'size': 8,
-                  'x': 163,
-                  'y': 285,
-                  'w': 10,
-                  'h': 6,
-                  'txt': 'x̃ {:,}%'.format(round(total_single_room_quota, 1)),
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_median_occupancy'] = {
-                  'color': [0, 0, 0],
-                  'font': 'seguisb',
-                  'size': 8,
-                  'x': 173,
-                  'y': 285,
-                  'w': 10,
-                  'h': 6,
-                  'txt': 'x̃ {:,}%'.format(round(total_occupancy_rate * 100, 1)),
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_median_invest'] = {
-                  'color': [0, 0, 0],
-                  'font': 'seguisb',
-                  'size': 8,
-                  'x': 183,
-                  'y': 285,
-                  'w': 10,
-                  'h': 6,
-                  'txt': 'x̃ {:,}'.format(round(total_invest_cost, 2)),
-                  'align': 'center',
-              }
-              current_competitor_page['cell'][f'competitor_median_quality'] = {
-                  'color': [0, 0, 0],
-                  'font': 'seguisb',
-                  'size': 8,
-                  'x': 193,
-                  'y': 285,
-                  'w': 10,
-                  'h': 6,
-                  'txt': mdk_grade_letters[int(total_mdk_grade) - 1],
-                  'align': 'center',
-              }
-            
-              competitor_pages[f'competitor_analysis_{page}'] = current_competitor_page
+      max_pages = 3
+      current_competitor_analysis_page = 4
+      list_beds = []
+      list_years_of_construction_nh = []
+      list_years_of_construction_al = []
+      none_profit_operator_nh = 0
+      none_profit_operator_al = 0
+      public_operator_nh = 0
+      public_operator_al = 0
+      private_operator_nh = 0
+      private_operator_al = 0
+      invest_plot_data = []
+      invest_costs_public = []
+      invest_costs_non_profit = []
+      invest_costs_private = []
+      invest_costs_public_home = -1
+      invest_costs_non_profit_home = -1
+      invest_costs_private_home = -1 
+      page = 1
+    
+      # Nursing Home Pages
+      home_counter = 0
+      total_beds = 0
+      total_single_rooms = 0
+      total_double_rooms = 0
+      total_rooms = 0
+      list_single_room_quota = []
+      list_occupancy_rate = []
+      list_invest_cost = []
+      list_mdk_grade = []
+      prev_competitor_distance = 0
+      prev_competitor_index = 0
+      current_page_height = 177
+      minimum_invest_cost = 0
+      total_occupancy_rate = 0
+      total_single_room_quota = 0
+      maximum_invest_cost = 0
+      total_invest_cost = 0
+      total_mdk_grade = 0
+      mdk_grade_letters = ['A', 'B', 'C', 'D']
+
+      
     
       # Assisted Living Pages
       home_counter = 0
