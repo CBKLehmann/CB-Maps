@@ -734,7 +734,9 @@ class Map2_0(Map2_0Template):
   #######Noch bearbeiten#######[]
 
   def create_market_study_clicked(self, **event_args):
+    print(datetime.datetime.now())
     generate_market_studies(self)
+    print(datetime.datetime.now())
 
   def upload_mspdf_change(self, file, **event_args):
     with anvil.server.no_loading_indicator:
