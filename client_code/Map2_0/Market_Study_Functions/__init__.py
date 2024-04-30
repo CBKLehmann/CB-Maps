@@ -11,202 +11,202 @@ from .. import Assisted_Living_Competitor_Skeleton
 from .. import Market_Study_Skeleton
 
 def generate_market_studies(application):
-with anvil.server.no_loading_indicator:
-    Functions.manipulate_loading_overlay(True)
-    anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
-    Market_Study_Variables.reset_values()
-    Market_Study_Variables.created_date = Functions.get_current_date_as_string()
-    Market_Study_Variables.share_url = application.create_share_map('market_study')
-    Variables.unique_code = anvil.server.call("get_unique_code")
-
-    anvil.js.call('update_loading_bar', 25, 'Getting map related information')
-    Market_Study_Variables.street = anvil.js.call('getSearchedAddress').split(",")[0]
-    Market_Study_Variables.marker_coords = dict(Mapbox_Variables.location_marker['_lngLat'])
-    Market_Study_Variables.purchase_power = anvil.server.call('get_purchasing_power', location=Market_Study_Variables.marker_coords)
-    Market_Study_Variables.iso = dict(Mapbox_Variables.map.getSource('iso'))
-    Market_Study_Variables.iso_time = application.time_dropdown.selected_value
-    if Market_Study_Variables.iso_time == "-1":
-      Market_Study_Variables.iso_time = "20"
-    Market_Study_Variables.iso_movement = application.profile_dropdown.selected_value.lower()
-    for point in Market_Study_Variables.iso['_data']['features'][0]['geometry']['coordinates'][0]:
-      if point[0] < Market_Study_Variables.bounding_box[1] or Market_Study_Variables.bounding_box[1] == 0:
-        Market_Study_Variables.bounding_box[1] = point[0]
-      if point[0] > Market_Study_Variables.bounding_box[3] or Market_Study_Variables.bounding_box[3] == 0:
-        Market_Study_Variables.bounding_box[3] = point[0]
-      if point[1] < Market_Study_Variables.bounding_box[0] or Market_Study_Variables.bounding_box[0] == 0:
-        Market_Study_Variables.bounding_box[0] = point[1]
-      if point[1] > Market_Study_Variables.bounding_box[2] or Market_Study_Variables.bounding_box[2] == 0:
-        Market_Study_Variables.bounding_box[2] = point[1]
-
-    anvil.js.call('update_loading_bar', 40, 'Organizing Marker Data')
-    Market_Study_Variables.coords_nh = organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', Market_Study_Variables.marker_coords, application, Functions)
-    Market_Study_Variables.coords_al = organize_ca_data(Variables.assisted_living_entries, 'assisted_living', Market_Study_Variables.marker_coords, application, Functions)
-    Market_Study_Variables.data_comp_analysis_nh = build_req_string(Market_Study_Variables.coords_nh, 'nursing_homes')
-    Market_Study_Variables.data_comp_analysis_al = build_req_string(Market_Study_Variables.coords_al, 'assisted_living')
-
-    anvil.js.call('update_loading_bar', 50, 'Calculating Market Study Data')
-    for care_entry in Market_Study_Variables.data_comp_analysis_nh['data']:
-      beds_amount = 0
-      if not care_entry[0]['anz_vers_pat'] == '-':
-        Market_Study_Variables.inpatients += int(care_entry[0]['anz_vers_pat'])
-      if care_entry[0]['status'] == "aktiv":
-        Market_Study_Variables.nursing_homes_active += 1
-        if not care_entry[0]['platz_voll_pfl'] == "-":
-          Market_Study_Variables.beds_active += int(care_entry[0]['platz_voll_pfl'])
-          beds_amount = int(care_entry[0]['platz_voll_pfl'])
-        Market_Study_Variables.beds.append(beds_amount)
-      elif care_entry[0]['status'] == "in Planung":
-        Market_Study_Variables.nursing_homes_planned += 1
-        if not care_entry[0]['platz_voll_pfl'] == "-":
-          Market_Study_Variables.beds_planned += int(care_entry[0]['platz_voll_pfl'])
-      elif care_entry[0]['status'] == "im Bau":
-        Market_Study_Variables.nursing_homes_construct += 1
-        if not care_entry[0]['platz_voll_pfl'] == "-":
-          Market_Study_Variables.beds_construct += int(care_entry[0]['platz_voll_pfl'])
-      if not care_entry[0]['invest'] == "-":
-        Market_Study_Variables.invest_cost.append(float(care_entry[0]['invest']))
-      if not care_entry[0]['betreiber'] == "-":
-        if care_entry[0]['type'] == "privat":
-          if care_entry[0]['betreiber'] not in Market_Study_Variables.operator_private:
-            Market_Study_Variables.operator_private.append(care_entry[0]['betreiber'])
-        elif care_entry[0]['type'] == "gemeinnützig":
-          if care_entry[0]['betreiber'] not in Market_Study_Variables.operator_nonProfit:
-            Market_Study_Variables.operator_nonProfit.append(care_entry[0]['betreiber'])
-        elif care_entry[0]['type'] == "kommunal":
-          if care_entry[0]['betreiber'] not in Market_Study_Variables.operator_public:
-            Market_Study_Variables.operator_public.append(care_entry[0]['betreiber'])
-        if care_entry[0]['betreiber'] not in Market_Study_Variables.operator:
-          Market_Study_Variables.operator.append(care_entry[0]['betreiber'])
-
-    location_request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{Market_Study_Variables.marker_coords['lng']},{Market_Study_Variables.marker_coords['lat']}.json?access_token={Mapbox_Variables.token}"
-    location_response = anvil.http.request(location_request, json=True)
-    marker_context = location_response['features'][0]['context']
-    for info in marker_context:
-      if "postcode" in info['id']:
-        Market_Study_Variables.zipcode = info['text']
-      elif "locality" in info['id']:
-        Market_Study_Variables.district = info['text']
-      elif "place" in info['id']:
-        Market_Study_Variables.city = info['text']
-      elif "region" in info['id']:
-        Market_Study_Variables.federal_state = info['text']
-    if Market_Study_Variables.federal_state == "n.a.":
-      Market_Study_Variables.federal_state = Market_Study_Variables.city
-    if Market_Study_Variables.district == "n.a.":
-      Market_Study_Variables.district = Market_Study_Variables.city
-
-    Market_Study_Variables.countie_data = anvil.server.call("get_demographic_district_data", Market_Study_Variables.marker_coords)
-    Market_Study_Variables.countie = Market_Study_Variables.countie_data['ex_dem_lk']['name'].split(',')
-    Market_Study_Variables.people_u80 = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_65tou70_2020_abs']) + int(Market_Study_Variables.countie_data['dem_fc_lk']['g_70tou80_2020_abs'])
-    Market_Study_Variables.people_o80 = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_80plus_2020_abs'])
-    Market_Study_Variables.people_u80_fc = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_65tou70_2030_abs']) + int(Market_Study_Variables.countie_data['dem_fc_lk']['g_70tou80_2030_abs'])
-    Market_Study_Variables.people_o80_fc = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_80plus_2030_abs'])
-    Market_Study_Variables.people_u80_fc_35 = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_65tou70_2035_abs']) + int(Market_Study_Variables.countie_data['dem_fc_lk']['g_70tou80_2035_abs'])
-    Market_Study_Variables.people_o80_fc_35 = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_80plus_2035_abs'])
-    Market_Study_Variables.change_u80 = float("{:.2f}".format(((Market_Study_Variables.people_u80_fc * 100) / Market_Study_Variables.people_u80) - 100))
-    Market_Study_Variables.change_o80 = float("{:.2f}".format(((Market_Study_Variables.people_o80_fc * 100) / Market_Study_Variables.people_o80) - 100))
-    Market_Study_Variables.population_trend = "{:.1f}".format((Market_Study_Variables.people_u80_fc_35 + Market_Study_Variables.people_o80_fc_35) * 100 / (Market_Study_Variables.people_u80 + Market_Study_Variables.people_o80) - 100)
-    Market_Study_Variables.nursing_home_rate = round(float(Market_Study_Variables.countie_data['pfleg_stat_lk']['heimquote2019']) * 100, 1)
-    for key in Market_Study_Variables.keys:
-      Market_Study_Variables.population_fc_30 += int(Market_Study_Variables.countie_data['dem_fc_lk'][f'{key}_2030_abs'])
-      Market_Study_Variables.population_fc_35 += int(Market_Study_Variables.countie_data['dem_fc_lk'][f'{key}_2035_abs'])
-
-    care_data_district = anvil.server.call("get_care_district_data", Market_Study_Variables.countie_data['ex_dem_lk']['key'])
-    for el in care_data_district:
-      Market_Study_Variables.inpatients_lk += int(el['number_of_patients_cared_for']) if el['number_of_patients_cared_for'] is not None else 0
-      if el['number_of_places_fulltime_care'] is not None:
-        Market_Study_Variables.beds_lk += int(el['number_of_places_fulltime_care'])
-    Market_Study_Variables.occupancy_lk = round((Market_Study_Variables.inpatients_lk * 100) / Market_Study_Variables.beds_lk, 1)
-    Market_Study_Variables.free_beds_lk = Market_Study_Variables.beds_lk - Market_Study_Variables.inpatients_lk
-
-    Market_Study_Variables.new_r_care_rate_raw = float("{:.3f}".format(Market_Study_Variables.inpatients_lk / (Market_Study_Variables.people_u80 + Market_Study_Variables.people_o80)))
-    Market_Study_Variables.new_care_rate_raw = round((Market_Study_Variables.inpatients_lk * 100 / round((Market_Study_Variables.nursing_home_rate * Market_Study_Variables.countie_data['ex_dem_lk']['all_compl']) + 1)) * 100, 1)
-    Market_Study_Variables.pat_rec_full_care_fc_30_v1 = round(Market_Study_Variables.new_r_care_rate_raw * (Market_Study_Variables.people_u80_fc + Market_Study_Variables.people_o80_fc))
-    Market_Study_Variables.care_rate_30_v1_raw = round((Market_Study_Variables.pat_rec_full_care_fc_30_v1 * 100 / (Market_Study_Variables.population_fc_30 * Market_Study_Variables.nursing_home_rate)) * 100, 1)
-    Market_Study_Variables.pat_rec_full_care_fc_30_v2 = round((Market_Study_Variables.new_r_care_rate_raw + 0.003) * (Market_Study_Variables.people_u80_fc + Market_Study_Variables.people_o80_fc))
-    Market_Study_Variables.care_rate_30_v2_raw = round((Market_Study_Variables.pat_rec_full_care_fc_30_v2 * 100 / (Market_Study_Variables.population_fc_30 * Market_Study_Variables.nursing_home_rate)) * 100, 1)
-    Market_Study_Variables.pat_rec_full_care_fc_35_v1 = round(Market_Study_Variables.new_r_care_rate_raw * (Market_Study_Variables.people_u80_fc_35 + Market_Study_Variables.people_o80_fc_35))
-    Market_Study_Variables.care_rate_35_v1_raw = round((Market_Study_Variables.pat_rec_full_care_fc_35_v1 * 100 / (Market_Study_Variables.population_fc_35 * Market_Study_Variables.nursing_home_rate)) * 100, 1)
-    Market_Study_Variables.pat_rec_full_care_fc_35_v2 = round((Market_Study_Variables.new_r_care_rate_raw + 0.003) * (Market_Study_Variables.people_u80_fc_35 + Market_Study_Variables.people_o80_fc_35))
-    Market_Study_Variables.care_rate_35_v2_raw = round((Market_Study_Variables.pat_rec_full_care_fc_35_v2 * 100 / (Market_Study_Variables.population_fc_35 * Market_Study_Variables.nursing_home_rate)) * 100, 1)
-    Market_Study_Variables.inpatients_fc = round(Market_Study_Variables.pat_rec_full_care_fc_30_v1 * (round(((Market_Study_Variables.inpatients * 100) / Market_Study_Variables.inpatients_lk), 1) / 100)) if not Market_Study_Variables.inpatients_lk == 0 else 0
-    Market_Study_Variables.inpatients_fc_v2 = round(Market_Study_Variables.pat_rec_full_care_fc_30_v2 * (round(((Market_Study_Variables.inpatients * 100) / Market_Study_Variables.inpatients_lk), 1) / 100)) if not Market_Study_Variables.inpatients_lk == 0 else 0
-    Market_Study_Variables.inpatients_fc_35 = round(Market_Study_Variables.pat_rec_full_care_fc_35_v1 * (round(((Market_Study_Variables.inpatients * 100) / Market_Study_Variables.inpatients_lk), 1) / 100)) if not Market_Study_Variables.inpatients_lk == 0 else 0
-    Market_Study_Variables.inpatients_fc_35_v2 = round(Market_Study_Variables.pat_rec_full_care_fc_35_v2 * (round(((Market_Study_Variables.inpatients * 100) / Market_Study_Variables.inpatients_lk), 1) / 100)) if not Market_Study_Variables.inpatients_lk == 0 else 0
-    Market_Study_Variables.beds_30_v1 = round((Market_Study_Variables.pat_rec_full_care_fc_30_v1 / 0.95))
-    Market_Study_Variables.beds_30_v2 = round((Market_Study_Variables.pat_rec_full_care_fc_30_v2 / 0.95))
-    Market_Study_Variables.beds_35_v1 = round((Market_Study_Variables.pat_rec_full_care_fc_35_v1 / 0.95))
-    Market_Study_Variables.beds_35_v2 = round((Market_Study_Variables.pat_rec_full_care_fc_35_v2 / 0.95))
-    Market_Study_Variables.free_beds_30_v1 = Market_Study_Variables.beds_30_v1 - Market_Study_Variables.pat_rec_full_care_fc_30_v1
-    Market_Study_Variables.free_beds_30_v2 = Market_Study_Variables.beds_30_v2 - Market_Study_Variables.pat_rec_full_care_fc_30_v2
-    Market_Study_Variables.free_beds_35_v1 = Market_Study_Variables.beds_35_v1 - Market_Study_Variables.pat_rec_full_care_fc_35_v1
-    Market_Study_Variables.free_beds_35_v2 = Market_Study_Variables.beds_35_v2 - Market_Study_Variables.pat_rec_full_care_fc_35_v2
-
-    Market_Study_Variables.regulations = anvil.server.call('read_regulations', Market_Study_Variables.federal_state, "english")
-    for index, competitor in enumerate(Market_Study_Variables.data_comp_analysis_nh['data']):
-      if not competitor[0]['ez'] == '-' or not competitor[0]['dz'] == '-':
-        if not competitor[0]['ez'] == '-' and competitor[0]['ez'] is not None:
-          facility_single_rooms = int(competitor[0]['ez'])
-        else:
-          facility_single_rooms = 0
-        if not competitor[0]['dz'] == '-' and competitor[0]['dz'] is not None:
-          facility_double_rooms = int(competitor[0]['dz'])
-        else:
-          facility_double_rooms = 0
-        facility_rooms = facility_single_rooms + facility_double_rooms
-        if facility_rooms > 0:
-          facility_single_room_quote = facility_single_rooms / facility_rooms
-        else:
-          facility_single_room_quote = 0
-        facility_bed_amount = facility_single_rooms + facility_double_rooms * 2
-        if not Market_Study_Variables.regulations['Existing']['sr_quote'] == '/':
-          facility_single_room_quote_future = float(Market_Study_Variables.regulations['Existing']['sr_quote'])
-        else:
-          facility_single_room_quote_future = 0
-        if not Market_Study_Variables.regulations['Existing']['max_beds'] == '/':
-          facility_max_beds_future = float(Market_Study_Variables.regulations['Existing']['max_beds'])
-        else:
-          facility_max_beds_future = 999999
-        if facility_single_room_quote < facility_single_room_quote_future or facility_bed_amount > facility_max_beds_future:
-          Market_Study_Variables.data_comp_analysis_nh['data'][index][0]['legal'] = "No"
-        else:
-          Market_Study_Variables.data_comp_analysis_nh['data'][index][0]['legal'] = "Yes"
-        if facility_single_room_quote < facility_single_room_quote_future:
-          facility_single_rooms_future = int(round(facility_rooms * facility_single_room_quote_future, 0))
-          facility_double_rooms_future = int(round(facility_rooms - facility_single_rooms_future, 0))
-          facility_bed_amount_future = int(
-            round(facility_single_rooms_future + facility_double_rooms_future * 2, 0))
-        else:
-          facility_bed_amount_future = facility_bed_amount
-        if facility_bed_amount_future > facility_max_beds_future:
-          facility_bed_amount_future = facility_max_beds_future
-        Market_Study_Variables.facilities_bed_amount += facility_bed_amount
-        Market_Study_Variables.facilities_bed_amount_future += facility_bed_amount_future
-      else:
-        Market_Study_Variables.data_comp_analysis_nh['data'][index][0]['legal'] = "-"
-  
-    Market_Study_Variables.loss_of_beds = Market_Study_Variables.facilities_bed_amount_future - Market_Study_Variables.facilities_bed_amount
-    Market_Study_Variables.beds_adjusted_30_v1 = Market_Study_Variables.beds_active + Market_Study_Variables.beds_planned + Market_Study_Variables.beds_construct + Market_Study_Variables.loss_of_beds
-    Market_Study_Variables.beds_adjusted_30_v2 = Market_Study_Variables.beds_active + Market_Study_Variables.beds_planned + Market_Study_Variables.beds_construct + Market_Study_Variables.loss_of_beds
-    Market_Study_Variables.beds_adjusted_35_v1 = Market_Study_Variables.beds_active + Market_Study_Variables.beds_planned + Market_Study_Variables.beds_construct + Market_Study_Variables.loss_of_beds
-    Market_Study_Variables.beds_adjusted_35_v2 = Market_Study_Variables.beds_active + Market_Study_Variables.beds_planned + Market_Study_Variables.beds_construct + Market_Study_Variables.loss_of_beds
-    Market_Study_Variables.beds_surplus_35 = Market_Study_Variables.beds_adjusted_35_v1 - Market_Study_Variables.inpatients_fc_35
-    Market_Study_Variables.beds_surplus_35_v2 = Market_Study_Variables.beds_adjusted_35_v2 - Market_Study_Variables.inpatients_fc_35_v2
-    Market_Study_Variables.beds_surplus = Market_Study_Variables.beds_adjusted_30_v1 - Market_Study_Variables.inpatients_fc
-    Market_Study_Variables.beds_surplus_v2 = Market_Study_Variables.beds_adjusted_30_v2 - Market_Study_Variables.inpatients_fc_v2
-
-    anvil.js.call('update_loading_bar', 80, 'Generating Market Studies')
-    Functions.manipulate_loading_overlay(False)
-    versions = alert(Market_Study_Language(), buttons=[], dismissible=False, large=True, role='custom_alert')
-    Functions.manipulate_loading_overlay(True)
-    for version_index, version in enumerate(versions):
-      anvil.js.call('update_loading_bar', 80 + 5 + 10 * (version_index - 1), f'Generating {version} Market Study')
-      Market_Study_Variables.regulations = anvil.server.call('read_regulations', Market_Study_Variables.federal_state, version)
-      generate_nursing_home_pages(version)
-      generate_assisted_living_pages(version)
-      create_market_study(application, version, version_index)
-    anvil.js.call('update_loading_bar', 0, '')
-    Functions.manipulate_loading_overlay(False)
+    with anvil.server.no_loading_indicator:
+        Functions.manipulate_loading_overlay(True)
+        anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
+        Market_Study_Variables.reset_values()
+        Market_Study_Variables.created_date = Functions.get_current_date_as_string()
+        Market_Study_Variables.share_url = application.create_share_map('market_study')
+        Variables.unique_code = anvil.server.call("get_unique_code")
+    
+        anvil.js.call('update_loading_bar', 25, 'Getting map related information')
+        Market_Study_Variables.street = anvil.js.call('getSearchedAddress').split(",")[0]
+        Market_Study_Variables.marker_coords = dict(Mapbox_Variables.location_marker['_lngLat'])
+        Market_Study_Variables.purchase_power = anvil.server.call('get_purchasing_power', location=Market_Study_Variables.marker_coords)
+        Market_Study_Variables.iso = dict(Mapbox_Variables.map.getSource('iso'))
+        Market_Study_Variables.iso_time = application.time_dropdown.selected_value
+        if Market_Study_Variables.iso_time == "-1":
+            Market_Study_Variables.iso_time = "20"
+        Market_Study_Variables.iso_movement = application.profile_dropdown.selected_value.lower()
+        for point in Market_Study_Variables.iso['_data']['features'][0]['geometry']['coordinates'][0]:
+            if point[0] < Market_Study_Variables.bounding_box[1] or Market_Study_Variables.bounding_box[1] == 0:
+                Market_Study_Variables.bounding_box[1] = point[0]
+            if point[0] > Market_Study_Variables.bounding_box[3] or Market_Study_Variables.bounding_box[3] == 0:
+                Market_Study_Variables.bounding_box[3] = point[0]
+            if point[1] < Market_Study_Variables.bounding_box[0] or Market_Study_Variables.bounding_box[0] == 0:
+                Market_Study_Variables.bounding_box[0] = point[1]
+            if point[1] > Market_Study_Variables.bounding_box[2] or Market_Study_Variables.bounding_box[2] == 0:
+                Market_Study_Variables.bounding_box[2] = point[1]
+    
+        anvil.js.call('update_loading_bar', 40, 'Organizing Marker Data')
+        Market_Study_Variables.coords_nh = organize_ca_data(Variables.nursing_homes_entries, 'nursing_homes', Market_Study_Variables.marker_coords, application, Functions)
+        Market_Study_Variables.coords_al = organize_ca_data(Variables.assisted_living_entries, 'assisted_living', Market_Study_Variables.marker_coords, application, Functions)
+        Market_Study_Variables.data_comp_analysis_nh = build_req_string(Market_Study_Variables.coords_nh, 'nursing_homes')
+        Market_Study_Variables.data_comp_analysis_al = build_req_string(Market_Study_Variables.coords_al, 'assisted_living')
+    
+        anvil.js.call('update_loading_bar', 50, 'Calculating Market Study Data')
+        for care_entry in Market_Study_Variables.data_comp_analysis_nh['data']:
+            beds_amount = 0
+        if not care_entry[0]['anz_vers_pat'] == '-':
+            Market_Study_Variables.inpatients += int(care_entry[0]['anz_vers_pat'])
+        if care_entry[0]['status'] == "aktiv":
+            Market_Study_Variables.nursing_homes_active += 1
+            if not care_entry[0]['platz_voll_pfl'] == "-":
+                Market_Study_Variables.beds_active += int(care_entry[0]['platz_voll_pfl'])
+                beds_amount = int(care_entry[0]['platz_voll_pfl'])
+                Market_Study_Variables.beds.append(beds_amount)
+        elif care_entry[0]['status'] == "in Planung":
+            Market_Study_Variables.nursing_homes_planned += 1
+            if not care_entry[0]['platz_voll_pfl'] == "-":
+                Market_Study_Variables.beds_planned += int(care_entry[0]['platz_voll_pfl'])
+        elif care_entry[0]['status'] == "im Bau":
+            Market_Study_Variables.nursing_homes_construct += 1
+            if not care_entry[0]['platz_voll_pfl'] == "-":
+                Market_Study_Variables.beds_construct += int(care_entry[0]['platz_voll_pfl'])
+        if not care_entry[0]['invest'] == "-":
+            Market_Study_Variables.invest_cost.append(float(care_entry[0]['invest']))
+        if not care_entry[0]['betreiber'] == "-":
+            if care_entry[0]['type'] == "privat":
+                if care_entry[0]['betreiber'] not in Market_Study_Variables.operator_private:
+                    Market_Study_Variables.operator_private.append(care_entry[0]['betreiber'])
+            elif care_entry[0]['type'] == "gemeinnützig":
+                if care_entry[0]['betreiber'] not in Market_Study_Variables.operator_nonProfit:
+                    Market_Study_Variables.operator_nonProfit.append(care_entry[0]['betreiber'])
+            elif care_entry[0]['type'] == "kommunal":
+                if care_entry[0]['betreiber'] not in Market_Study_Variables.operator_public:
+                    Market_Study_Variables.operator_public.append(care_entry[0]['betreiber'])
+            if care_entry[0]['betreiber'] not in Market_Study_Variables.operator:
+                Market_Study_Variables.operator.append(care_entry[0]['betreiber'])
+    
+        location_request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{Market_Study_Variables.marker_coords['lng']},{Market_Study_Variables.marker_coords['lat']}.json?access_token={Mapbox_Variables.token}"
+        location_response = anvil.http.request(location_request, json=True)
+        marker_context = location_response['features'][0]['context']
+        for info in marker_context:
+            if "postcode" in info['id']:
+                Market_Study_Variables.zipcode = info['text']
+            elif "locality" in info['id']:
+                Market_Study_Variables.district = info['text']
+            elif "place" in info['id']:
+                Market_Study_Variables.city = info['text']
+            elif "region" in info['id']:
+                Market_Study_Variables.federal_state = info['text']
+        if Market_Study_Variables.federal_state == "n.a.":
+            Market_Study_Variables.federal_state = Market_Study_Variables.city
+        if Market_Study_Variables.district == "n.a.":
+            Market_Study_Variables.district = Market_Study_Variables.city
+    
+        Market_Study_Variables.countie_data = anvil.server.call("get_demographic_district_data", Market_Study_Variables.marker_coords)
+        Market_Study_Variables.countie = Market_Study_Variables.countie_data['ex_dem_lk']['name'].split(',')
+        Market_Study_Variables.people_u80 = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_65tou70_2020_abs']) + int(Market_Study_Variables.countie_data['dem_fc_lk']['g_70tou80_2020_abs'])
+        Market_Study_Variables.people_o80 = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_80plus_2020_abs'])
+        Market_Study_Variables.people_u80_fc = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_65tou70_2030_abs']) + int(Market_Study_Variables.countie_data['dem_fc_lk']['g_70tou80_2030_abs'])
+        Market_Study_Variables.people_o80_fc = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_80plus_2030_abs'])
+        Market_Study_Variables.people_u80_fc_35 = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_65tou70_2035_abs']) + int(Market_Study_Variables.countie_data['dem_fc_lk']['g_70tou80_2035_abs'])
+        Market_Study_Variables.people_o80_fc_35 = int(Market_Study_Variables.countie_data['dem_fc_lk']['g_80plus_2035_abs'])
+        Market_Study_Variables.change_u80 = float("{:.2f}".format(((Market_Study_Variables.people_u80_fc * 100) / Market_Study_Variables.people_u80) - 100))
+        Market_Study_Variables.change_o80 = float("{:.2f}".format(((Market_Study_Variables.people_o80_fc * 100) / Market_Study_Variables.people_o80) - 100))
+        Market_Study_Variables.population_trend = "{:.1f}".format((Market_Study_Variables.people_u80_fc_35 + Market_Study_Variables.people_o80_fc_35) * 100 / (Market_Study_Variables.people_u80 + Market_Study_Variables.people_o80) - 100)
+        Market_Study_Variables.nursing_home_rate = round(float(Market_Study_Variables.countie_data['pfleg_stat_lk']['heimquote2019']) * 100, 1)
+        for key in Market_Study_Variables.keys:
+            Market_Study_Variables.population_fc_30 += int(Market_Study_Variables.countie_data['dem_fc_lk'][f'{key}_2030_abs'])
+            Market_Study_Variables.population_fc_35 += int(Market_Study_Variables.countie_data['dem_fc_lk'][f'{key}_2035_abs'])
+    
+        care_data_district = anvil.server.call("get_care_district_data", Market_Study_Variables.countie_data['ex_dem_lk']['key'])
+        for el in care_data_district:
+            Market_Study_Variables.inpatients_lk += int(el['number_of_patients_cared_for']) if el['number_of_patients_cared_for'] is not None else 0
+            if el['number_of_places_fulltime_care'] is not None:
+                Market_Study_Variables.beds_lk += int(el['number_of_places_fulltime_care'])
+            Market_Study_Variables.occupancy_lk = round((Market_Study_Variables.inpatients_lk * 100) / Market_Study_Variables.beds_lk, 1)
+            Market_Study_Variables.free_beds_lk = Market_Study_Variables.beds_lk - Market_Study_Variables.inpatients_lk
+    
+        Market_Study_Variables.new_r_care_rate_raw = float("{:.3f}".format(Market_Study_Variables.inpatients_lk / (Market_Study_Variables.people_u80 + Market_Study_Variables.people_o80)))
+        Market_Study_Variables.new_care_rate_raw = round((Market_Study_Variables.inpatients_lk * 100 / round((Market_Study_Variables.nursing_home_rate * Market_Study_Variables.countie_data['ex_dem_lk']['all_compl']) + 1)) * 100, 1)
+        Market_Study_Variables.pat_rec_full_care_fc_30_v1 = round(Market_Study_Variables.new_r_care_rate_raw * (Market_Study_Variables.people_u80_fc + Market_Study_Variables.people_o80_fc))
+        Market_Study_Variables.care_rate_30_v1_raw = round((Market_Study_Variables.pat_rec_full_care_fc_30_v1 * 100 / (Market_Study_Variables.population_fc_30 * Market_Study_Variables.nursing_home_rate)) * 100, 1)
+        Market_Study_Variables.pat_rec_full_care_fc_30_v2 = round((Market_Study_Variables.new_r_care_rate_raw + 0.003) * (Market_Study_Variables.people_u80_fc + Market_Study_Variables.people_o80_fc))
+        Market_Study_Variables.care_rate_30_v2_raw = round((Market_Study_Variables.pat_rec_full_care_fc_30_v2 * 100 / (Market_Study_Variables.population_fc_30 * Market_Study_Variables.nursing_home_rate)) * 100, 1)
+        Market_Study_Variables.pat_rec_full_care_fc_35_v1 = round(Market_Study_Variables.new_r_care_rate_raw * (Market_Study_Variables.people_u80_fc_35 + Market_Study_Variables.people_o80_fc_35))
+        Market_Study_Variables.care_rate_35_v1_raw = round((Market_Study_Variables.pat_rec_full_care_fc_35_v1 * 100 / (Market_Study_Variables.population_fc_35 * Market_Study_Variables.nursing_home_rate)) * 100, 1)
+        Market_Study_Variables.pat_rec_full_care_fc_35_v2 = round((Market_Study_Variables.new_r_care_rate_raw + 0.003) * (Market_Study_Variables.people_u80_fc_35 + Market_Study_Variables.people_o80_fc_35))
+        Market_Study_Variables.care_rate_35_v2_raw = round((Market_Study_Variables.pat_rec_full_care_fc_35_v2 * 100 / (Market_Study_Variables.population_fc_35 * Market_Study_Variables.nursing_home_rate)) * 100, 1)
+        Market_Study_Variables.inpatients_fc = round(Market_Study_Variables.pat_rec_full_care_fc_30_v1 * (round(((Market_Study_Variables.inpatients * 100) / Market_Study_Variables.inpatients_lk), 1) / 100)) if not Market_Study_Variables.inpatients_lk == 0 else 0
+        Market_Study_Variables.inpatients_fc_v2 = round(Market_Study_Variables.pat_rec_full_care_fc_30_v2 * (round(((Market_Study_Variables.inpatients * 100) / Market_Study_Variables.inpatients_lk), 1) / 100)) if not Market_Study_Variables.inpatients_lk == 0 else 0
+        Market_Study_Variables.inpatients_fc_35 = round(Market_Study_Variables.pat_rec_full_care_fc_35_v1 * (round(((Market_Study_Variables.inpatients * 100) / Market_Study_Variables.inpatients_lk), 1) / 100)) if not Market_Study_Variables.inpatients_lk == 0 else 0
+        Market_Study_Variables.inpatients_fc_35_v2 = round(Market_Study_Variables.pat_rec_full_care_fc_35_v2 * (round(((Market_Study_Variables.inpatients * 100) / Market_Study_Variables.inpatients_lk), 1) / 100)) if not Market_Study_Variables.inpatients_lk == 0 else 0
+        Market_Study_Variables.beds_30_v1 = round((Market_Study_Variables.pat_rec_full_care_fc_30_v1 / 0.95))
+        Market_Study_Variables.beds_30_v2 = round((Market_Study_Variables.pat_rec_full_care_fc_30_v2 / 0.95))
+        Market_Study_Variables.beds_35_v1 = round((Market_Study_Variables.pat_rec_full_care_fc_35_v1 / 0.95))
+        Market_Study_Variables.beds_35_v2 = round((Market_Study_Variables.pat_rec_full_care_fc_35_v2 / 0.95))
+        Market_Study_Variables.free_beds_30_v1 = Market_Study_Variables.beds_30_v1 - Market_Study_Variables.pat_rec_full_care_fc_30_v1
+        Market_Study_Variables.free_beds_30_v2 = Market_Study_Variables.beds_30_v2 - Market_Study_Variables.pat_rec_full_care_fc_30_v2
+        Market_Study_Variables.free_beds_35_v1 = Market_Study_Variables.beds_35_v1 - Market_Study_Variables.pat_rec_full_care_fc_35_v1
+        Market_Study_Variables.free_beds_35_v2 = Market_Study_Variables.beds_35_v2 - Market_Study_Variables.pat_rec_full_care_fc_35_v2
+    
+        Market_Study_Variables.regulations = anvil.server.call('read_regulations', Market_Study_Variables.federal_state, "english")
+        for index, competitor in enumerate(Market_Study_Variables.data_comp_analysis_nh['data']):
+            if not competitor[0]['ez'] == '-' or not competitor[0]['dz'] == '-':
+                if not competitor[0]['ez'] == '-' and competitor[0]['ez'] is not None:
+                    facility_single_rooms = int(competitor[0]['ez'])
+                else:
+                    facility_single_rooms = 0
+                if not competitor[0]['dz'] == '-' and competitor[0]['dz'] is not None:
+                    facility_double_rooms = int(competitor[0]['dz'])
+                else:
+                    facility_double_rooms = 0
+                facility_rooms = facility_single_rooms + facility_double_rooms
+                if facility_rooms > 0:
+                    facility_single_room_quote = facility_single_rooms / facility_rooms
+                else:
+                    facility_single_room_quote = 0
+                facility_bed_amount = facility_single_rooms + facility_double_rooms * 2
+                if not Market_Study_Variables.regulations['Existing']['sr_quote'] == '/':
+                    facility_single_room_quote_future = float(Market_Study_Variables.regulations['Existing']['sr_quote'])
+                else:
+                    facility_single_room_quote_future = 0
+                if not Market_Study_Variables.regulations['Existing']['max_beds'] == '/':
+                    facility_max_beds_future = float(Market_Study_Variables.regulations['Existing']['max_beds'])
+                else:
+                    facility_max_beds_future = 999999
+                if facility_single_room_quote < facility_single_room_quote_future or facility_bed_amount > facility_max_beds_future:
+                    Market_Study_Variables.data_comp_analysis_nh['data'][index][0]['legal'] = "No"
+                else:
+                    Market_Study_Variables.data_comp_analysis_nh['data'][index][0]['legal'] = "Yes"
+                if facility_single_room_quote < facility_single_room_quote_future:
+                    facility_single_rooms_future = int(round(facility_rooms * facility_single_room_quote_future, 0))
+                    facility_double_rooms_future = int(round(facility_rooms - facility_single_rooms_future, 0))
+                    facility_bed_amount_future = int(
+                        round(facility_single_rooms_future + facility_double_rooms_future * 2, 0))
+                else:
+                    facility_bed_amount_future = facility_bed_amount
+                if facility_bed_amount_future > facility_max_beds_future:
+                    facility_bed_amount_future = facility_max_beds_future
+                Market_Study_Variables.facilities_bed_amount += facility_bed_amount
+                Market_Study_Variables.facilities_bed_amount_future += facility_bed_amount_future
+            else:
+                Market_Study_Variables.data_comp_analysis_nh['data'][index][0]['legal'] = "-"
+    
+        Market_Study_Variables.loss_of_beds = Market_Study_Variables.facilities_bed_amount_future - Market_Study_Variables.facilities_bed_amount
+        Market_Study_Variables.beds_adjusted_30_v1 = Market_Study_Variables.beds_active + Market_Study_Variables.beds_planned + Market_Study_Variables.beds_construct + Market_Study_Variables.loss_of_beds
+        Market_Study_Variables.beds_adjusted_30_v2 = Market_Study_Variables.beds_active + Market_Study_Variables.beds_planned + Market_Study_Variables.beds_construct + Market_Study_Variables.loss_of_beds
+        Market_Study_Variables.beds_adjusted_35_v1 = Market_Study_Variables.beds_active + Market_Study_Variables.beds_planned + Market_Study_Variables.beds_construct + Market_Study_Variables.loss_of_beds
+        Market_Study_Variables.beds_adjusted_35_v2 = Market_Study_Variables.beds_active + Market_Study_Variables.beds_planned + Market_Study_Variables.beds_construct + Market_Study_Variables.loss_of_beds
+        Market_Study_Variables.beds_surplus_35 = Market_Study_Variables.beds_adjusted_35_v1 - Market_Study_Variables.inpatients_fc_35
+        Market_Study_Variables.beds_surplus_35_v2 = Market_Study_Variables.beds_adjusted_35_v2 - Market_Study_Variables.inpatients_fc_35_v2
+        Market_Study_Variables.beds_surplus = Market_Study_Variables.beds_adjusted_30_v1 - Market_Study_Variables.inpatients_fc
+        Market_Study_Variables.beds_surplus_v2 = Market_Study_Variables.beds_adjusted_30_v2 - Market_Study_Variables.inpatients_fc_v2
+    
+        anvil.js.call('update_loading_bar', 80, 'Generating Market Studies')
+        Functions.manipulate_loading_overlay(False)
+        versions = alert(Market_Study_Language(), buttons=[], dismissible=False, large=True, role='custom_alert')
+        Functions.manipulate_loading_overlay(True)
+        for version_index, version in enumerate(versions):
+            anvil.js.call('update_loading_bar', 80 + 5 + 10 * (version_index - 1), f'Generating {version} Market Study')
+            Market_Study_Variables.regulations = anvil.server.call('read_regulations', Market_Study_Variables.federal_state, version)
+            generate_nursing_home_pages(version)
+            generate_assisted_living_pages(version)
+            create_market_study(application, version, version_index)
+        anvil.js.call('update_loading_bar', 0, '')
+        Functions.manipulate_loading_overlay(False)
 
 def generate_nursing_home_pages(version):
   with anvil.server.no_loading_indicator:
