@@ -11,7 +11,7 @@ from .. import Assisted_Living_Competitor_Skeleton
 from .. import Market_Study_Skeleton
 
 def generate_market_studies(application):
-  with anvil.server.no_loading_indicator:
+with anvil.server.no_loading_indicator:
     Functions.manipulate_loading_overlay(True)
     anvil.js.call('update_loading_bar', 10, 'Generating basic Information')
     Market_Study_Variables.reset_values()
@@ -784,7 +784,7 @@ def generate_nursing_home_pages(version):
         }
   
       current_page_height += 12
-  
+
       if index == len(Market_Study_Variables.data_comp_analysis_nh['data']) - 1:
         median_dictionary = anvil.server.call(
           "get_multiple_median",
