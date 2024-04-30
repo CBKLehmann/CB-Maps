@@ -9,6 +9,11 @@ from ..ChatGPT import ChatGPT
 from .. import Nursing_Homes_Competitor_Skeleton
 from .. import Assisted_Living_Competitor_Skeleton
 from .. import Market_Study_Skeleton
+from .Market_Study_Existing_Home import Market_Study_Existing_Home
+from .Market_Study_NH_Home import Market_Study_NH_Home
+from .Market_Study_NH_Home_Mobile import Market_Study_NH_Home_Mobile
+from .Market_Study_AL_Home import Market_Study_AL_Home
+from .Market_Study_AL_Home_Mobile import Market_Study_AL_Home_Mobile
 
 def generate_market_studies(application):
     with anvil.server.no_loading_indicator:
