@@ -3,7 +3,6 @@ from anvil.tables import app_tables
 from .. import Variables, Functions, Mapbox_Variables
 from anvil import alert
 import json, copy
-from . import Market_Study_Variables
 from ..Market_Study_Language import Market_Study_Language
 from ..ChatGPT import ChatGPT
 from .. import Nursing_Homes_Competitor_Skeleton
@@ -498,18 +497,23 @@ def generate_nursing_home_pages(version, market_study_dictionary):
         market_study_dictionary['private_operator_nh'] = 0
         market_study_dictionary['uncomplied_regulations'] = 0
         market_study_dictionary['public_operator_nh'] = 0
-        market_study_dictionary['none_profit_operator_nh'] = 0
+        market_study_dictionary['non_profit_operator_nh'] = 0
         market_study_dictionary['invest_costs_private'] = []
         market_study_dictionary['invest_costs_public'] = []
         market_study_dictionary['invest_costs_non_profit'] = []
         market_study_dictionary['list_beds'] = []
         market_study_dictionary['list_years_of_construction_nh'] = []
         market_study_dictionary['invest_plot_data'] = []
+        market_study_dictionary['competitor_pages'] = {}
+        market_study_dictionary['page'] = 0
+        market_study_dictionary['invest_costs_public_home'] = -1
+        market_study_dictionary['invest_costs_non_profit_home'] = -1
+        market_study_dictionary['invest_costs_private_home'] = -1
 
         for index, competitor in enumerate(market_study_dictionary['data_comp_analysis_nh']['data']):
             if index % 9 == 0:
                 if index > 0:
-                    # market_study_dictionary['competitor_pages'][f'competitor_analysis_{market_study_dictionary['page']}'] = current_competitor_page
+                    market_study_dictionary['competitor_pages'][f"competitor_analysis_{market_study_dictionary['page']}"] = current_competitor_page
                     market_study_dictionary['page'] += 1
                     market_study_dictionary['current_competitor_analysis_page'] += 1
                 current_competitor_page = copy.deepcopy(Nursing_Homes_Competitor_Skeleton.nursing_homes_competitor_skeleton_en if version == "english" else Nursing_Homes_Competitor_Skeleton.nursing_homes_competitor_skeleton_de)
@@ -660,7 +664,7 @@ def generate_nursing_home_pages(version, market_study_dictionary):
                         market_study_dictionary['invest_costs_public'].append(float(competitor[0]['invest']))
                         market_study_dictionary['invest_costs_public_home'] = float(competitor[0]['invest'])
                 elif competitor[0]['type'] == 'gemeinnützig':
-                    market_study_dictionary['none_profit_operator_nh'] += 1
+                    market_study_dictionary['non_profit_operator_nh'] += 1
                     if not competitor[0]['invest'] == '-':
                         market_study_dictionary['invest_costs_non_profit'].append(float(competitor[0]['invest']))
                         market_study_dictionary['invest_costs_non_profit_home'] = float(competitor[0]['invest'])
@@ -936,7 +940,7 @@ def generate_nursing_home_pages(version, market_study_dictionary):
                     if competitor[0]['invest'] is not None and not competitor[0]['invest'] == '-':
                         market_study_dictionary['invest_costs_public'].append(float(competitor[0]['invest']))
                 elif competitor[0]['type'] == 'gemeinnützig':
-                    market_study_dictionary['none_profit_operator_nh'] += 1
+                    market_study_dictionary['non_profit_operator_nh'] += 1
                     if competitor[0]['invest'] is not None and not competitor[0]['invest'] == '-':
                         market_study_dictionary['invest_costs_non_profit'].append(float(competitor[0]['invest']))
                 if competitor[0]['ez'] is not None:
@@ -1197,7 +1201,7 @@ def generate_nursing_home_pages(version, market_study_dictionary):
                     'align': 'center',
                 }
 
-                # market_study_dictionary['competitor_pages'][f'competitor_analysis_{market_study_dictionary['page']}'] = current_competitor_page
+                market_study_dictionary['competitor_pages'][f'competitor_analysis_{market_study_dictionary["page"]}'] = current_competitor_page
 
         return market_study_dictionary
 
@@ -1215,7 +1219,7 @@ def generate_assisted_living_pages(version, market_study_dictionary):
         for index, competitor in enumerate(market_study_dictionary['data_comp_analysis_al']['data']):
             if index % 9 == 0:
                 if index > 0:
-                    # market_study_dictionary['competitor_pages'][f'competitor_analysis_{market_study_dictionary['page']}'] = current_competitor_page
+                    market_study_dictionary['competitor_pages'][f'competitor_analysis_{market_study_dictionary["page"]}'] = current_competitor_page
                     market_study_dictionary['page'] += 1
                     market_study_dictionary['current_competitor_analysis_page'] += 1
                 current_competitor_page = copy.deepcopy(Assisted_Living_Competitor_Skeleton.assisted_living_competitor_skeleton_en if version == "english" else Assisted_Living_Competitor_Skeleton.assisted_living_competitor_skeleton_de)
@@ -1488,7 +1492,7 @@ def generate_assisted_living_pages(version, market_study_dictionary):
             current_page_height += 12
 
             if index == len(market_study_dictionary['data_comp_analysis_al']['data']) - 1:
-                # market_study_dictionary['competitor_pages'][f'competitor_analysis_{market_study_dictionary['page']}'] = current_competitor_page
+                market_study_dictionary['competitor_pages'][f'competitor_analysis_{market_study_dictionary["page"]}'] = current_competitor_page
                 pass
 
         return market_study_dictionary
@@ -1499,6 +1503,8 @@ def create_market_study(application, version, version_index, market_study_dictio
     Functions.manipulate_loading_overlay(False)
     market_study_dictionary['final_analysis_text'] = alert(ChatGPT(generated_text=market_study_dictionary['analysis_text_response']), buttons=[], dismissible=False, large=True, role='custom_alert')
     Functions.manipulate_loading_overlay(True)
+
+    market_study_dictionary['market_study_pages'] = []
 
     if version == "german":
         if market_study_dictionary['iso_movement'] == "walking":
@@ -1721,7 +1727,7 @@ def create_market_study(application, version, version_index, market_study_dictio
             'nursing_home_data': [market_study_dictionary['non_profit_operator_nh'],
                                   market_study_dictionary['public_operator_nh'],
                                   market_study_dictionary['private_operator_nh']],
-            'assisted_living_data': [market_study_dictionary['none_profit_operator_al'],
+            'assisted_living_data': [market_study_dictionary['non_profit_operator_al'],
                                      market_study_dictionary['public_operator_al'],
                                      market_study_dictionary['private_operator_al']]
         },
