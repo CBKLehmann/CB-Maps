@@ -506,7 +506,7 @@ def create_market_study(self, version):
                   list_invest_cost.append(float(competitor[0]['invest']))
                   home_invest = float(competitor[0]['invest'])
               if not competitor[0]['mdk_note'] == '-' and not competitor[0]['mdk_note'] == 'N.A.':
-                  list_mdk_grade.append(float(competitor[0]['mdk_note']))
+                  list_mdk_grade.append(mdk_grade_letters.index(competitor[0]['mdk_note']) + 1)
               if not competitor[0]['baujahr'] == '-' and not competitor[0]['baujahr'] == 'N.A.':
                   list_years_of_construction_nh.append(int(competitor[0]['baujahr']))
               if not competitor[0]['invest'] == '-' and not competitor[0]['invest'] == 'N.A.' and not competitor[0]['baujahr'] == '-' and not competitor[0]['baujahr'] == 'N.A.':
@@ -612,7 +612,7 @@ def create_market_study(self, version):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': '-' if competitor[0]['mdk_note'] == 'N.A.' else '{:,}'.format(float(competitor[0]['mdk_note'])),
+                  'txt': '-' if competitor[0]['mdk_note'] == 'N.A.' else competitor[0]['mdk_note'],
                   'align': 'center',
                   'fill': True,
               }
@@ -864,7 +864,7 @@ def create_market_study(self, version):
                   'y': current_page_height,
                   'w': 10,
                   'h': 6,
-                  'txt': '-' if competitor[0]['mdk_note'] == '-' else '-' if competitor[0]['mdk_note'] is None else competitor[0]['mdk_note'],
+                  'txt': '-' if competitor[0]['mdk_note'] == 'N.A.' else '-' if competitor[0]['mdk_note'] is None else competitor[0]['mdk_note'],
                   'align': 'center',
               }
       
