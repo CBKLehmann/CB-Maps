@@ -56,9 +56,11 @@ def generate_market_studies(application):
             'list_mdk_grade': [],
             'prev_competitor_distance': 0,
             'prev_competitor_index': 0,
+            'beds_building_lk': 0,
+            'beds_planning_lk': 0
         }
 
-        market_study_dictionary['bounding_box'] = get_bounding_box(market_study_dictionary['iso']),
+        market_study_dictionary['bounding_box'] = get_bounding_box(market_study_dictionary['iso'])
         market_study_dictionary['coords_nh'] = organize_ca_data(
             entries=Variables.nursing_homes_entries,
             topic='nursing_homes',
@@ -148,8 +150,16 @@ def generate_market_studies(application):
             market_study_dictionary['population_fc_35'] += int(market_study_dictionary['countie_data']['dem_fc_lk'][f'{key}_2035_abs'])
 
         for el in market_study_dictionary['care_data_district']:
+            # if el['status'] == "aktiv":
+            #     print(el)
+            #     print('###############################################')
             market_study_dictionary['inpatients_lk'] += int(el['number_of_patients_cared_for']) if el['number_of_patients_cared_for'] is not None else 0
             market_study_dictionary['beds_lk'] += int(el['number_of_places_fulltime_care']) if el['number_of_places_fulltime_care'] is not None else 0
+            # elif el['status'] == "im Bau":
+            #     market_study_dictionary['beds_building_lk'] += int(el['number_of_places_fulltime_care']) if el['number_of_places_fulltime_care'] is not None else 0
+            # elif el['status'] == "in Planung":
+            #     market_study_dictionary['beds_planning_lk'] += int(el['number_of_places_fulltime_care']) if el['number_of_places_fulltime_care'] is not None else 0
+
         market_study_dictionary['occupancy_lk'] = round((market_study_dictionary['inpatients_lk'] * 100) / market_study_dictionary['beds_lk'], 1)
         market_study_dictionary['free_beds_lk'] = market_study_dictionary['beds_lk'] - market_study_dictionary['inpatients_lk']
 
@@ -171,6 +181,10 @@ def generate_market_studies(application):
         market_study_dictionary['beds_30_v2'] = round((market_study_dictionary['pat_rec_full_care_fc_30_v2'] / 0.95))
         market_study_dictionary['beds_35_v1'] = round((market_study_dictionary['pat_rec_full_care_fc_35_v1'] / 0.95))
         market_study_dictionary['beds_35_v2'] = round((market_study_dictionary['pat_rec_full_care_fc_35_v2'] / 0.95))
+        # market_study_dictionary['beds_30_v1'] = market_study_dictionary['beds_lk'] + market_study_dictionary['beds_building_lk']
+        # market_study_dictionary['beds_30_v2'] = market_study_dictionary['beds_lk'] + market_study_dictionary['beds_building_lk']
+        # market_study_dictionary['beds_35_v1'] = market_study_dictionary['beds_30_v1'] + market_study_dictionary['beds_planning_lk']
+        # market_study_dictionary['beds_35_v2'] = market_study_dictionary['beds_30_v2'] + market_study_dictionary['beds_planning_lk']
         market_study_dictionary['free_beds_30_v1'] = market_study_dictionary['beds_30_v1'] - market_study_dictionary['pat_rec_full_care_fc_30_v1']
         market_study_dictionary['free_beds_30_v2'] = market_study_dictionary['beds_30_v2'] - market_study_dictionary['pat_rec_full_care_fc_30_v2']
         market_study_dictionary['free_beds_35_v1'] = market_study_dictionary['beds_35_v1'] - market_study_dictionary['pat_rec_full_care_fc_35_v1']
@@ -1504,7 +1518,7 @@ def create_market_study(application, version, version_index, market_study_dictio
     market_study_dictionary['final_analysis_text'] = alert(ChatGPT(generated_text=market_study_dictionary['analysis_text_response']), buttons=[], dismissible=False, large=True, role='custom_alert')
     Functions.manipulate_loading_overlay(True)
 
-    market_study_dictionary['market_study_pages'] = []
+    market_study_dictionary['market_study_pages'] = ['cover', 'summary', 'location_analysis']
 
     if version == "german":
         if market_study_dictionary['iso_movement'] == "walking":
