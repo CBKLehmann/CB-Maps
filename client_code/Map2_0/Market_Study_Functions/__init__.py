@@ -22,7 +22,6 @@ def generate_market_studies(application):
             'created_date': Functions.get_current_date_as_string(),
             'share_url': application.create_share_map('market_study'),
             'unique_code': anvil.server.call("get_unique_code"),
-            'street': anvil.js.call('getSearchedAddress').split(",")[0],
             'marker_coords': dict(Mapbox_Variables.location_marker['_lngLat']),
             'iso': [[key, value] for key, value in dict(Mapbox_Variables.map.getSource('iso')['_data']['features'][0]['geometry']['coordinates'][0]).items()],
             'iso_time': application.time_dropdown.selected_value if not application.time_dropdown.selected_value == "-1" else "20",
@@ -84,20 +83,17 @@ def generate_market_studies(application):
 
         anvil.js.call('update_loading_bar', 25, 'Requesting Location Information')
         market_study_dictionary['purchase_power'] = anvil.server.call('get_purchasing_power', location=market_study_dictionary['marker_coords'])
-        market_study_dictionary['countie_data'] = anvil.server.call(
-            "get_demographic_district_data",
-            marker_coords=market_study_dictionary['marker_coords']
-        )
-        market_study_dictionary['care_data_district'] = anvil.server.call("get_care_district_data", dist_key=market_study_dictionary['countie_data']['ex_dem_lk']['key'])
+        
         location_request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{market_study_dictionary['marker_coords']['lng']},{market_study_dictionary['marker_coords']['lat']}.json?access_token={Mapbox_Variables.token}"
         location_response = anvil.http.request(location_request, json=True)
         market_study_dictionary['marker_context'] = location_response['features'][0]['context']
+        market_study_dictionary['street'] = f"{location_response['features'][0]['text']} {location_response['features'][0]['address']}"
         market_study_dictionary['federal_state'] = "n.a."
         market_study_dictionary['district'] = "n.a."
         for info in market_study_dictionary['marker_context']:
             if "postcode" in info['id']:
                 market_study_dictionary['zipcode'] = info['text']
-            elif "locality" in info['id']:
+            elif "district" in info['id']:
                 market_study_dictionary['district'] = info['text']
             elif "place" in info['id']:
                 market_study_dictionary['city'] = info['text']
@@ -107,6 +103,12 @@ def generate_market_studies(application):
             market_study_dictionary['federal_state'] = market_study_dictionary['city']
         if market_study_dictionary['district'] == "n.a.":
             market_study_dictionary['district'] = market_study_dictionary['city']
+        
+        market_study_dictionary['countie_data'] = anvil.server.call(
+            "get_demographic_district_data",
+            district=market_study_dictionary['district']
+        )
+        market_study_dictionary['care_data_district'] = anvil.server.call("get_care_district_data", dist_key=market_study_dictionary['countie_data']['ex_dem_lk']['key'])
         market_study_dictionary['regulations'] = anvil.server.call('read_regulations', federal_state=market_study_dictionary['federal_state'], version="english")
 
         anvil.js.call('update_loading_bar', 30, 'Calculating Market Study Data')
@@ -134,7 +136,7 @@ def generate_market_studies(application):
                     market_study_dictionary['operator'].append(care_entry[0]['betreiber'])
 
         keys = ['g_u6', 'g_6tou10', 'g_10tou16', 'g_16tou20', 'g_20tou30', 'g_30tou50', 'g_50tou65', 'g_65tou70', 'g_70tou80', 'g_80plus']
-        market_study_dictionary['countie'] = market_study_dictionary['countie_data']['ex_dem_lk']['name'].split(',')
+        market_study_dictionary['countie'] = market_study_dictionary['countie_data']['ex_dem_lk']['name'].split(',')[0]
         market_study_dictionary['people_u80'] = int(market_study_dictionary['countie_data']['dem_fc_lk']['g_65tou70_2020_abs']) + int(market_study_dictionary['countie_data']['dem_fc_lk']['g_70tou80_2020_abs'])
         market_study_dictionary['people_o80'] = int(market_study_dictionary['countie_data']['dem_fc_lk']['g_80plus_2020_abs'])
         market_study_dictionary['people_u80_fc'] = int(market_study_dictionary['countie_data']['dem_fc_lk']['g_65tou70_2030_abs']) + int(market_study_dictionary['countie_data']['dem_fc_lk']['g_70tou80_2030_abs'])
@@ -150,15 +152,8 @@ def generate_market_studies(application):
             market_study_dictionary['population_fc_35'] += int(market_study_dictionary['countie_data']['dem_fc_lk'][f'{key}_2035_abs'])
 
         for el in market_study_dictionary['care_data_district']:
-            # if el['status'] == "aktiv":
-            #     print(el)
-            #     print('###############################################')
             market_study_dictionary['inpatients_lk'] += int(el['number_of_patients_cared_for']) if el['number_of_patients_cared_for'] is not None else 0
             market_study_dictionary['beds_lk'] += int(el['number_of_places_fulltime_care']) if el['number_of_places_fulltime_care'] is not None else 0
-            # elif el['status'] == "im Bau":
-            #     market_study_dictionary['beds_building_lk'] += int(el['number_of_places_fulltime_care']) if el['number_of_places_fulltime_care'] is not None else 0
-            # elif el['status'] == "in Planung":
-            #     market_study_dictionary['beds_planning_lk'] += int(el['number_of_places_fulltime_care']) if el['number_of_places_fulltime_care'] is not None else 0
 
         market_study_dictionary['occupancy_lk'] = round((market_study_dictionary['inpatients_lk'] * 100) / market_study_dictionary['beds_lk'], 1)
         market_study_dictionary['free_beds_lk'] = market_study_dictionary['beds_lk'] - market_study_dictionary['inpatients_lk']
@@ -523,6 +518,13 @@ def generate_nursing_home_pages(version, market_study_dictionary):
         market_study_dictionary['invest_costs_public_home'] = -1
         market_study_dictionary['invest_costs_non_profit_home'] = -1
         market_study_dictionary['invest_costs_private_home'] = -1
+        market_study_dictionary['home_invest'] = -1
+        market_study_dictionary['minimum_invest_cost'] = 0
+        market_study_dictionary['maximum_invest_cost'] = 0
+        market_study_dictionary['total_invest_cost'] = 0
+        total_mdk_grade = 0
+        total_occupancy_rate = 0
+        total_single_room_quota = 0
 
         for index, competitor in enumerate(market_study_dictionary['data_comp_analysis_nh']['data']):
             if index % 9 == 0:
@@ -533,7 +535,7 @@ def generate_nursing_home_pages(version, market_study_dictionary):
                 current_competitor_page = copy.deepcopy(Nursing_Homes_Competitor_Skeleton.nursing_homes_competitor_skeleton_en if version == "english" else Nursing_Homes_Competitor_Skeleton.nursing_homes_competitor_skeleton_de)
                 current_competitor_page['page_number'] = market_study_dictionary['current_competitor_analysis_page']
                 current_competitor_page['text']['heading_city']['txt'] = market_study_dictionary['city']
-                current_competitor_page['image']['location_map']['path'] = f"tmp/map_image_{Variables.unique_code}.png"
+                current_competitor_page['image']['location_map']['path'] = f"tmp/map_image_{market_study_dictionary['unique_code']}.png"
                 current_page_height = 177
 
             top_30_operator = anvil.server.call("read_top_30", competitor[0]['raw_betreiber'])
@@ -1119,9 +1121,7 @@ def generate_nursing_home_pages(version, market_study_dictionary):
                     total_occupancy_rate = median_dictionary['occupancy_rate']
                 if len(list_invest_cost) > 0:
                     market_study_dictionary['minimum_invest_cost'] = min(list_invest_cost)
-                if len(list_invest_cost) > 0:
                     market_study_dictionary['maximum_invest_cost'] = max(list_invest_cost)
-                if len(list_invest_cost) > 0:
                     market_study_dictionary['total_invest_cost'] = median_dictionary['invest_cost']
                 if len(list_mdk_grade) > 0:
                     total_mdk_grade = median_dictionary['mdk_grade']
@@ -1239,7 +1239,7 @@ def generate_assisted_living_pages(version, market_study_dictionary):
                 current_competitor_page = copy.deepcopy(Assisted_Living_Competitor_Skeleton.assisted_living_competitor_skeleton_en if version == "english" else Assisted_Living_Competitor_Skeleton.assisted_living_competitor_skeleton_de)
                 current_competitor_page['page_number'] = market_study_dictionary['current_competitor_analysis_page']
                 current_competitor_page['text']['heading_city']['txt'] = market_study_dictionary['city']
-                current_competitor_page['image']['location_map']['path'] = f"tmp/map_image_{Variables.unique_code}.png"
+                current_competitor_page['image']['location_map']['path'] = f"tmp/map_image_{market_study_dictionary['unique_code']}.png"
                 current_page_height = 177
 
             top_30_operator = anvil.server.call("read_top_30", competitor[0]['raw_betreiber'])
@@ -1601,6 +1601,7 @@ def create_market_study(application, version, version_index, market_study_dictio
             'complied_regulations': market_study_dictionary['complied_regulations'],
             'uncomplied_regulations': market_study_dictionary['uncomplied_regulations'],
             'share_url': market_study_dictionary['share_url'],
+            'unique_code': market_study_dictionary['unique_code']
         })
     elif version == "english":
         market_study_dictionary['iso_string'] = f"{market_study_dictionary['iso_time']} minutes {market_study_dictionary['iso_movement']}"
@@ -1678,6 +1679,7 @@ def create_market_study(application, version, version_index, market_study_dictio
             'complied_regulations': market_study_dictionary['complied_regulations'],
             'uncomplied_regulations': market_study_dictionary['uncomplied_regulations'],
             'share_url': market_study_dictionary['share_url'],
+            'unique_code': market_study_dictionary['unique_code']
         })
 
     max_pages = 3
@@ -1765,7 +1767,7 @@ def create_market_study(application, version, version_index, market_study_dictio
         'generate_market_study_pdf',
         market_study_data,  # Dictionary of Data to fill Market Study PDF
         market_study_dictionary['bounding_box'],  # Bounding Box of the Map
-        Variables.unique_code,  # Unique creation Code for current Market Study
+        market_study_dictionary['unique_code'],  # Unique creation Code for current Market Study
         market_study_dictionary['market_study_pages'],  # Ordered List of Pages inside Market Study
         competitor_map_request,  # Request Data for Competitor Map
         Variables.activeIso,  # Data of current Iso Layer

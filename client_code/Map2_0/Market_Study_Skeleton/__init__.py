@@ -66,7 +66,7 @@ def market_study_skeleton_en(market_study_data):
                         'size': 12,
                         'x': 10,
                         'y': 198,
-                        'txt': 'District'
+                        'txt': 'County'
                     },
                     'federal_state_heading': {
                         'color': [0, 0, 0],
@@ -240,7 +240,7 @@ def market_study_skeleton_en(market_study_data):
                         'x': 135,
                         'y': 30,
                         'w': 60,
-                        'path': f"tmp/summary_map_{Variables.unique_code}.png"
+                        'path': f"tmp/summary_map_{market_study_data['unique_code']}.png"
                     },
                     'population': {
                         'x': 161,
@@ -2007,7 +2007,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 10,
                     'y': 50,
                     'w': 200,
-                    'path': f"tmp/map_image_{Variables.unique_code}.png"
+                    'path': f"tmp/map_image_{market_study_data['unique_code']}.png"
                 },
                 'invest_marker': {
                     'x': 13.5,
@@ -2956,7 +2956,7 @@ def market_study_skeleton_de(market_study_data):
                         'size': 12,
                         'x': 10,
                         'y': 198,
-                        'txt': 'Bezirk'
+                        'txt': 'Landkreis'
                     },
                     'federal_state_heading': {
                         'color': [0, 0, 0],
@@ -3138,7 +3138,7 @@ def market_study_skeleton_de(market_study_data):
                         'x': 135,
                         'y': 30,
                         'w': 60,
-                        'path': f"tmp/summary_map_{Variables.unique_code}.png"
+                        'path': f"tmp/summary_map_{market_study_data['unique_code']}.png"
                     },
                     'population': {
                         'x': 161,
@@ -4908,7 +4908,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 10,
                     'y': 50,
                     'w': 200,
-                    'path': f"tmp/map_image_{Variables.unique_code}.png"
+                    'path': f"tmp/map_image_{market_study_data['unique_code']}.png"
                 },
                 'invest_marker': {
                     'x': 13.5,
