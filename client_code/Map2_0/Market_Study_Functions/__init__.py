@@ -86,6 +86,7 @@ def generate_market_studies(application):
         
         location_request = f"https://api.mapbox.com/geocoding/v5/mapbox.places/{market_study_dictionary['marker_coords']['lng']},{market_study_dictionary['marker_coords']['lat']}.json?access_token={Mapbox_Variables.token}"
         location_response = anvil.http.request(location_request, json=True)
+        print(location_response)
         market_study_dictionary['marker_context'] = location_response['features'][0]['context']
         market_study_dictionary['street'] = f"{location_response['features'][0]['text']} {location_response['features'][0]['address']}"
         market_study_dictionary['federal_state'] = "n.a."
