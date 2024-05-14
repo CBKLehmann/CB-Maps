@@ -178,14 +178,18 @@ def generate_market_studies(application):
         market_study_dictionary['inpatients_fc_v2'] = round(market_study_dictionary['pat_rec_full_care_fc_30_v2'] * (round(((market_study_dictionary['inpatients'] * 100) / market_study_dictionary['inpatients_lk']), 1) / 100)) if not market_study_dictionary['inpatients_lk'] == 0 else 0
         market_study_dictionary['inpatients_fc_35'] = round(market_study_dictionary['pat_rec_full_care_fc_35_v1'] * (round(((market_study_dictionary['inpatients'] * 100) / market_study_dictionary['inpatients_lk']), 1) / 100)) if not market_study_dictionary['inpatients_lk'] == 0 else 0
         market_study_dictionary['inpatients_fc_35_v2'] = round(market_study_dictionary['pat_rec_full_care_fc_35_v2'] * (round(((market_study_dictionary['inpatients'] * 100) / market_study_dictionary['inpatients_lk']), 1) / 100)) if not market_study_dictionary['inpatients_lk'] == 0 else 0
+        
+        ''' Current Version '''
         # market_study_dictionary['beds_30_v1'] = round((market_study_dictionary['pat_rec_full_care_fc_30_v1'] / 0.95))
         # market_study_dictionary['beds_30_v2'] = round((market_study_dictionary['pat_rec_full_care_fc_30_v2'] / 0.95))
         # market_study_dictionary['beds_35_v1'] = round((market_study_dictionary['pat_rec_full_care_fc_35_v1'] / 0.95))
         # market_study_dictionary['beds_35_v2'] = round((market_study_dictionary['pat_rec_full_care_fc_35_v2'] / 0.95))
+        ''' 2030 im Bau / 2035 in Planung '''
         market_study_dictionary['beds_30_v1'] = market_study_dictionary['beds_lk'] + market_study_dictionary['beds_building_lk']
         market_study_dictionary['beds_30_v2'] = market_study_dictionary['beds_lk'] + market_study_dictionary['beds_building_lk']
         market_study_dictionary['beds_35_v1'] = market_study_dictionary['beds_30_v1'] + market_study_dictionary['beds_planning_lk']
         market_study_dictionary['beds_35_v2'] = market_study_dictionary['beds_30_v2'] + market_study_dictionary['beds_planning_lk']
+        
         market_study_dictionary['free_beds_30_v1'] = market_study_dictionary['beds_30_v1'] - market_study_dictionary['pat_rec_full_care_fc_30_v1']
         market_study_dictionary['free_beds_30_v2'] = market_study_dictionary['beds_30_v2'] - market_study_dictionary['pat_rec_full_care_fc_30_v2']
         market_study_dictionary['free_beds_35_v1'] = market_study_dictionary['beds_35_v1'] - market_study_dictionary['pat_rec_full_care_fc_35_v1']
