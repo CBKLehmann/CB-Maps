@@ -1317,7 +1317,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 101,
                     'y': 151,
                     'w': 23,
-                    'txt': '95.0%',
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v1']),
                     'align': 'right'
                 },
                 'number_of_beds_2030_s1': {
