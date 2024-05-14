@@ -212,7 +212,7 @@ def generate_market_studies(application):
                 else:
                     market_study_dictionary['facility_bed_amount_future'] = market_study_dictionary['facility_bed_amount']
                 market_study_dictionary['facilities_bed_amount'] += market_study_dictionary['facility_bed_amount']
-                market_study_dictionary['facilities_bed_amount_future'] += market_study_dictionary['facility_bed_amount_future'] if market_study_dictionary['facility_bed_amount_future'] > market_study_dictionary['facility_max_beds_future'] else market_study_dictionary['facility_max_beds_future']
+                market_study_dictionary['facilities_bed_amount_future'] += market_study_dictionary['facility_bed_amount_future']
             else:
                 market_study_dictionary['data_comp_analysis_nh']['data'][index][0]['legal'] = "-"
 
@@ -1653,6 +1653,7 @@ def create_market_study(application, version, version_index, market_study_dictio
             'people_o80_fc': market_study_dictionary['people_o80_fc'],
             'care_rate_30_v1_raw': market_study_dictionary['care_rate_30_v1_raw'],
             'pat_rec_full_care_fc_30_v1': market_study_dictionary['pat_rec_full_care_fc_30_v1'],
+            'occupancy_lk_30_v1': market_study_dictionary['occupancy_lk_30_v1'],
             'beds_30_v1': market_study_dictionary['beds_30_v1'],
             'free_beds_30_v1': market_study_dictionary['free_beds_30_v1'],
             'loss_of_beds': market_study_dictionary['loss_of_beds'],
@@ -1661,6 +1662,7 @@ def create_market_study(application, version, version_index, market_study_dictio
             'beds_surplus': market_study_dictionary['beds_surplus'],
             'care_rate_30_v2_raw': market_study_dictionary['care_rate_30_v2_raw'],
             'pat_rec_full_care_fc_30_v2': market_study_dictionary['pat_rec_full_care_fc_30_v2'],
+            'occupancy_lk_30_v2': market_study_dictionary['occupancy_lk_30_v2'],
             'beds_30_v2': market_study_dictionary['beds_30_v2'],
             'free_beds_30_v2': market_study_dictionary['free_beds_30_v2'],
             'beds_adjusted_30_v2': market_study_dictionary['beds_adjusted_30_v2'],
@@ -1671,6 +1673,7 @@ def create_market_study(application, version, version_index, market_study_dictio
             'people_o80_fc_35': market_study_dictionary['people_o80_fc_35'],
             'care_rate_35_v1_raw': market_study_dictionary['care_rate_35_v1_raw'],
             'pat_rec_full_care_fc_35_v1': market_study_dictionary['pat_rec_full_care_fc_35_v1'],
+            'occupancy_lk_35_v1': market_study_dictionary['occupancy_lk_35_v1'],
             'beds_35_v1': market_study_dictionary['beds_35_v1'],
             'free_beds_35_v1': market_study_dictionary['free_beds_35_v1'],
             'beds_adjusted_35_v1': market_study_dictionary['beds_adjusted_35_v1'],
@@ -1678,6 +1681,7 @@ def create_market_study(application, version, version_index, market_study_dictio
             'beds_surplus_35': market_study_dictionary['beds_surplus_35'],
             'care_rate_35_v2_raw': market_study_dictionary['care_rate_35_v2_raw'],
             'pat_rec_full_care_fc_35_v2': market_study_dictionary['pat_rec_full_care_fc_35_v2'],
+            'occupancy_lk_35_v2': market_study_dictionary['occupancy_lk_35_v2'],
             'beds_35_v2': market_study_dictionary['beds_35_v2'],
             'free_beds_35_v2': market_study_dictionary['free_beds_35_v2'],
             'beds_adjusted_35_v2': market_study_dictionary['beds_adjusted_35_v2'],
