@@ -1302,6 +1302,8 @@ class Map2_0(Map2_0Template):
           bbox = [Mapbox_Variables.map.getBounds()['_sw']['lat'], Mapbox_Variables.map.getBounds()['_sw']['lng'],
                   Mapbox_Variables.map.getBounds()['_ne']['lat'], Mapbox_Variables.map.getBounds()['_ne']['lng']]
 
+        print(bbox)
+          
         # Check if Bounding Box is not the same as least Request
         if not bbox == last_bbox:
           # Check if new Bounding Box is overlapping old Bounding Box
