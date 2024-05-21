@@ -113,7 +113,6 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
     geojson = anvil.server.call('poi_data', category, bbox, marker_coords, 999999999)
   
   else:
-    print(bbox)
     # Get geojson of POIs inside Bounding Box
     geojson = anvil.server.call('poi_data', category, bbox, marker_coords, int(self.max_marker.text))
 

@@ -1301,8 +1301,6 @@ class Map2_0(Map2_0Template):
           # Get visible Bounding Box of Map
           bbox = [Mapbox_Variables.map.getBounds()['_sw']['lat'], Mapbox_Variables.map.getBounds()['_sw']['lng'],
                   Mapbox_Variables.map.getBounds()['_ne']['lat'], Mapbox_Variables.map.getBounds()['_ne']['lng']]
-
-        print(bbox)
           
         # Check if Bounding Box is not the same as least Request
         if not bbox == last_bbox:
