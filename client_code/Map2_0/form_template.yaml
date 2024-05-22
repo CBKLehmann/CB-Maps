@@ -1212,11 +1212,11 @@ components:
       event_bindings: {click: share_click}
       name: share
     - type: Button
-      properties: {role: null, align: left, tooltip: '', border: '', enabled: true,
+      properties: {role: reset, align: left, tooltip: '', border: '', enabled: true,
         foreground: 'theme:Red', visible: false, text: Reset Map, font_size: 14, font: '',
         spacing_above: none, icon_align: right, spacing_below: none, italic: false,
         background: '', bold: false, underline: false, icon: 'fa:refresh'}
-      layout_properties: {row: VJYJND, width_xs: 11, col_xs: 0, width: 205.885}
+      layout_properties: {row: VJYJND, width_xs: 11, col_xs: 0, width: 199.167}
       event_bindings: {click: reset_map_click}
       name: reset_map
     - type: Button

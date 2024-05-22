@@ -138,6 +138,7 @@ def create_marker(self, check_box, last_bbox, category, picture, bbox, marker_co
       id_counter = 0
       
       for route in geojson:
+        print(route)
         coordinates = []
         if 'colour' in route['tags']:
           colour = route['tags']['colour']
