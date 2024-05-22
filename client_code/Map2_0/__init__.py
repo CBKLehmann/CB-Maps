@@ -515,7 +515,7 @@ class Map2_0(Map2_0Template):
         settings = local_storage['healthcare'][:index] + "1" + local_storage['healthcare'][index + 1:]
         local_storage['healthcare'] = settings
         Variables.last_bbox_hd, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_hd.checked, Variables.last_bbox_hd, "hairdresser", Variables.icon_hairdresser)
-      elif event_args['sender'].text == "S-Bahn/U-Bahn":
+      elif event_args['sender'].text == "S-Bahn":
         settings = local_storage['public_transport'][:index] + "1" + local_storage['public_transport'][index + 1:]
         local_storage['public_transport'] = settings
         Variables.last_bbox_al, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_su.checked, Variables.last_bbox_su, "subway", f'{Variables.app_url}/_/theme/Pins/U_Bahn_Pin.png')
