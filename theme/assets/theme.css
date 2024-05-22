@@ -277,6 +277,10 @@ a:hover, a:active {
     display: none;
   }
 
+  .anvil-role-reset {
+      z-index: 9999
+  }
+
   .marker_details {
     left: 0 !important;
     width: 100% !important;
