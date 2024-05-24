@@ -1377,9 +1377,8 @@ def generate_assisted_living_pages(version, market_study_dictionary):
                     'y': current_page_height,
                     'w': 8,
                     'h': 6,
-                    'txt': '{:,}'.format(int(competitor[0]['number_apts'])) if not competitor[0][
-                                                                                       'number_apts'] == '-' else
-                    competitor[0]['number_apts'],
+                    'txt': '{:,}'.format(int(competitor[0]['number_apts'])) if competitor[0][
+                                                                                       'number_apts'] is not None else '-',
                     'align': 'center',
                     'fill': True,
                 }
@@ -1397,7 +1396,7 @@ def generate_assisted_living_pages(version, market_study_dictionary):
                     'fill': True,
                 }
 
-                if not competitor[0]['year_of_construction'] == '-':
+                if competitor[0]['year_of_construction'] is not None:
                     market_study_dictionary['list_years_of_construction_al'].append(int(competitor[0]['year_of_construction']))
                 if competitor[0]['type'] == 'gemeinnützig':
                     market_study_dictionary['non_profit_operator_al'] += 1
