@@ -72,6 +72,8 @@ def generate_market_studies(application):
             marker_coords=market_study_dictionary['marker_coords'],
             application=application
         )
+
+        ''' Diese beiden Funktionsaufrufe inklusive der Funktion selbst sind vollkommen unnötig und werden nirgendswo benutzt. Ich habs aber noch nicht gelöscht weil ich keinen Bock hatte die Variablenbenutzung zu ändern. Schönen Gruß von Vergangenheits-Kevin (est. 30.05.2024) '''
         market_study_dictionary['data_comp_analysis_nh'] = build_req_string(
             res_data=market_study_dictionary['coords_nh'],
             topic='nursing_homes'
@@ -80,6 +82,7 @@ def generate_market_studies(application):
             res_data=market_study_dictionary['coords_al'],
             topic='assisted_living'
         )
+        ''' Hier endet der Code-Müll (Vorerst, wer weiß was Ur-Vergangenheits-Kevin noch so angestellt hat.) '''
 
         anvil.js.call('update_loading_bar', 25, 'Requesting Location Information')
         market_study_dictionary['purchase_power'] = anvil.server.call('get_purchasing_power', location=market_study_dictionary['marker_coords'])
