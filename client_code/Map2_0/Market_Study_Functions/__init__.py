@@ -1233,6 +1233,8 @@ def generate_nursing_home_pages(version, market_study_dictionary):
                 }
 
                 market_study_dictionary['competitor_pages'][f'competitor_analysis_{market_study_dictionary["page"]}'] = current_competitor_page
+                market_study_dictionary['page'] += 1
+                market_study_dictionary['current_competitor_analysis_page'] += 1
 
         return market_study_dictionary
 
@@ -1523,6 +1525,8 @@ def generate_assisted_living_pages(version, market_study_dictionary):
 
             if index == len(market_study_dictionary['data_comp_analysis_al']['data']) - 1:
                 market_study_dictionary['competitor_pages'][f'competitor_analysis_{market_study_dictionary["page"]}'] = current_competitor_page
+                market_study_dictionary['page'] += 1
+                market_study_dictionary['current_competitor_analysis_page'] += 1
                 pass
 
         return market_study_dictionary
@@ -1756,6 +1760,9 @@ def create_market_study(application, version, version_index, market_study_dictio
         competitor_map_request_data['request'],
         'assisted_living'
     )
+
+    print(competitor_map_request_data['request'])
+    
     competitor_map_request = application.build_home_marker_map_request(
         competitor_map_request_data['controlling_marker']['marker_coords']['lng'],
         competitor_map_request_data['controlling_marker']['marker_coords']['lat'],

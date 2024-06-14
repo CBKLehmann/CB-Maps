@@ -8,10 +8,7 @@ components:
     grid_position: FFKAPH,IIWHQS
   components:
   - type: Label
-    properties: {role: null, align: center, tooltip: '', border: '', foreground: '',
-      visible: true, text: Change Cluster Colors, font_size: 20, font: '', spacing_above: small,
-      icon_align: left, spacing_below: small, italic: false, background: '', bold: true,
-      underline: false, icon: ''}
+    properties: {role: null, align: center, tooltip: '', border: '', foreground: '', visible: true, text: Change Cluster Colors, font_size: 20, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: true, underline: false, icon: ''}
     name: heading
     layout_properties: {row: JNFUZM, width_xs: 12, col_xs: 0, width: 970}
   - type: Spacer
