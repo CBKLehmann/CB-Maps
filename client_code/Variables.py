@@ -93,6 +93,6 @@ added_circles = []
 app_url = ""
 loading_overlay = None
 loading = False
-maintenance = True
+maintenance = False
 mapbox_token = ""
 user_role = "guest"
