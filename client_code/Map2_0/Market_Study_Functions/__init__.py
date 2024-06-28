@@ -738,18 +738,18 @@ def generate_nursing_home_pages(version, market_study_dictionary):
                     total_rooms += rooms
                 if not single_room_quote == '-':
                     list_single_room_quota.append(single_room_quote)
-                if not competitor[0]['occupancy'] == '-' and not competitor[0]['occupancy'] == 'N.A.':
+                if not competitor[0]['occupancy'] == '-' and not competitor[0]['occupancy'] == 'N.A.' and competitor[0]['occupancy'] is not None:
                     list_occupancy_rate.append(competitor[0]['occupancy'])
-                if not competitor[0]['invest'] == '-' and not competitor[0]['invest'] == 'N.A.':
+                if not competitor[0]['invest'] == '-' and not competitor[0]['invest'] == 'N.A.' and competitor[0]['invest'] is not None:
                     list_invest_cost.append(float(competitor[0]['invest']))
                     market_study_dictionary['home_invest'] = float(competitor[0]['invest'])
-                if not competitor[0]['mdk_note'] == '-' and not competitor[0]['mdk_note'] == 'N.A.':
+                if not competitor[0]['mdk_note'] == '-' and not competitor[0]['mdk_note'] == 'N.A.' and competitor[0]['mdk_note'] is not None:
                     list_mdk_grade.append(mdk_grade_letters.index(competitor[0]['mdk_note']) + 1)
-                if not competitor[0]['baujahr'] == '-' and not competitor[0]['baujahr'] == 'N.A.':
+                if not competitor[0]['baujahr'] == '-' and not competitor[0]['baujahr'] == 'N.A.' and competitor[0]['baujahr'] is not None:
                     market_study_dictionary['list_years_of_construction_nh'].append(int(competitor[0]['baujahr']))
                 if not competitor[0]['invest'] == '-' and not competitor[0]['invest'] == 'N.A.' and not competitor[0][
                                                                                                             'baujahr'] == '-' and not \
-                competitor[0]['baujahr'] == 'N.A.':
+                competitor[0]['baujahr'] == 'N.A.' and competitor[0]['baujahr'] is not None and competitor[0]['invest'] is not None:
                     market_study_dictionary['invest_plot_data'].append(
                         ['home', competitor[0]['invest'], competitor[0]['baujahr'], '⌂'])
 
