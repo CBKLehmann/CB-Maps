@@ -70,7 +70,7 @@ name: MAP
 runtime_options:
   version: 2
   client_version: '3'
-  server_version: python3-sandbox
+  server_version: python3-full
   server_spec: null
   server_spec_disabled: {base: python310-minimal, requirements: ''}
 metadata: {description: This Tool is a market-analysation Tool., logo_img: 'asset:MicrosoftTeams-image (3).png'}
