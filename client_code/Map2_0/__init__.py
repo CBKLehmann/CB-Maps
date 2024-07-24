@@ -906,6 +906,8 @@ class Map2_0(Map2_0Template):
         req_str = self.build_request_string(asset)
         req_str += f'.json?access_token={Mapbox_Variables.token}'
         coords = anvil.http.request(req_str,json=True)
+        print(req_str)
+        print(coords)
         for entry in coords['features']:
           if asset['zip'] in entry['place_name']:
             coordinates = entry['geometry']['coordinates']
