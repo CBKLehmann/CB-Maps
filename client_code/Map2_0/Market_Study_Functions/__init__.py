@@ -112,7 +112,7 @@ def generate_market_studies(application):
         
         ##### Temporary Fix #####
         if market_study_dictionary['city'] == "Fürstenwalde":
-            countie_data_city = "Fürstenwalde/Spree, Stadt"
+            countie_data_city = "Fürstenwalde/Spree"
         else:
             countie_data_city = market_study_dictionary['city']
         ##### Temporary Fix #####
