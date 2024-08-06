@@ -12,7 +12,7 @@ def initialise_map(dom):
   return mapboxgl.Map(
     {
       'container': dom,
-      'style': "mapbox://styles/shinykampfkeule/clzia2dv200ii01qygs6v4rrc",
+      'style': "mapbox://styles/mapbox/light-v11",
       'center': [13.4092, 52.5167],
       'zoom': 8
     }
