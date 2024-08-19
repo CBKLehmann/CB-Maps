@@ -87,7 +87,7 @@ class Custom_Marker(Custom_MarkerTemplate):
       results = anvil.server.call('coords_from_address', address)
       items = []
       for result in results:
-        items.append((result['place'], result))
+        items.append((result['place_name'], result))
       self.address_results.items = items
     pass
 
