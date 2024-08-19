@@ -50,9 +50,6 @@ class Custom_Marker(Custom_MarkerTemplate):
     pass
 
   def text_change(self, **event_args):
-    print(event_args['sender'] == self.object_name)
-    print(len(self.text_area.text))
-    print(len(self.object_name.text))
     if event_args['sender'] == self.object_name and len(self.text_area.text) == 0 and len(event_args['sender'].text) == 0:
       error = True
     elif event_args['sender'] == self.text_area and len(self.object_name.text) == 0 and len(event_args['sender'].text) == 0:
@@ -89,8 +86,8 @@ class Custom_Marker(Custom_MarkerTemplate):
     if not address == '':
       results = anvil.server.call('coords_from_address', address)
       items = []
-      for result in results['features']:
-        items.append((result['properties']['display_name'], result))
+      for result in results:
+        items.append((result['place'], result))
       self.address_results.items = items
     pass
 
