@@ -580,6 +580,8 @@ def generate_nursing_home_pages(version, market_study_dictionary):
                 operator_type_size = 8
                 status = "active" if status == "aktiv" else "planning" if status == "in Planung" else "construction"
 
+            # New CBMaps letzter Stand generateNursingHomePages
+            
             if 'home' in competitor:
                 home_counter += 1
                 current_competitor_page['cell'][f'home_{home_counter}_icon'] = {
