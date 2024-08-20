@@ -1467,6 +1467,7 @@ class Map2_0(Map2_0Template):
           icon = f'{marker_number}Nursing@0.6x.png'
         else:
           icon = f'{marker_number}@0.6x.png'
+        print(working_marker_coordinate)
         if not working_marker_coordinate[2]:
             for controlling_maker_index, controlling_maker_coordinate in enumerate(controlling_marker['sorted_coords']):
               if abs(controlling_maker_coordinate[1] - working_marker_coordinate[1]) <= .015:
