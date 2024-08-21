@@ -1141,6 +1141,7 @@ def generate_nursing_home_pages(version, market_study_dictionary):
                         'mdk_grade': list_mdk_grade
                     }
                 )
+                # Hier geht`s weiter
                 if len(list_single_room_quota) > 0:
                     total_single_room_quota = median_dictionary['single_room_quota']
                 if len(list_occupancy_rate) > 0:
