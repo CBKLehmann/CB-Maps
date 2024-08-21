@@ -579,8 +579,6 @@ def generate_nursing_home_pages(version, market_study_dictionary):
                 operator_type = "private" if operator_type == "privat" else "non-profit" if operator_type == "gemeinnützig" else "public"
                 operator_type_size = 8
                 status = "active" if status == "aktiv" else "planning" if status == "in Planung" else "construction"
-
-            # New CBMaps letzter Stand generateNursingHomePages
             
             if 'home' in competitor:
                 home_counter += 1
