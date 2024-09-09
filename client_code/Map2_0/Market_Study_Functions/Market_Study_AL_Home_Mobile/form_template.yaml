@@ -1,89 +1,89 @@
-container:
-  type: ColumnPanel
-  properties: {col_widths: '{}'}
 components:
-- type: GridPanel
-  properties: {}
-  name: grid_panel_1
-  layout_properties: {grid_position: 'KSANFS,JPRMTN'}
-  components:
-  - type: Label
+- components:
+  - layout_properties: {col_xs: 1, row: CBBVGI, width: 803.333, width_xs: 10}
+    name: text_label
     properties:
-      role: null
       align: left
-      tooltip: ''
-      border: ''
-      foreground: theme:Gray 300
-      visible: true
-      text: "Do you want to add additional Informations \nfor your address related to Assisted Living ?"
-      font_size: 13
-      font: ''
-      spacing_above: small
-      icon_align: left
-      spacing_below: small
-      italic: false
       background: ''
       bold: false
-      underline: false
+      border: ''
+      font: ''
+      font_size: 13
+      foreground: theme:Gray 300
       icon: ''
-    name: text_label
-    layout_properties: {row: CBBVGI, width_xs: 10, col_xs: 1, width: 803.333}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray 300', visible: true, text: 'Name:', font_size: 13, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+      icon_align: left
+      italic: false
+      role: null
+      spacing_above: small
+      spacing_below: small
+      text: "Do you want to add additional Informations \nfor your address related to Assisted Living ?"
+      tooltip: ''
+      underline: false
+      visible: true
+    type: Label
+  - layout_properties: {col_xs: 1, row: JVXWDG, width: 803.333, width_xs: 10}
     name: name_label
-    layout_properties: {row: JVXWDG, width_xs: 10, col_xs: 1, width: 803.333}
-  - type: TextBox
-    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '', font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small, italic: false, background: '', bold: false, underline: false}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: 13, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: 'Name:', tooltip: '', underline: false, visible: true}
+    type: Label
+  - layout_properties: {col_xs: 1, row: ASRWDD, width: 793.9996659999999, width_xs: 10}
     name: name_input
-    layout_properties: {row: ASRWDD, width_xs: 10, col_xs: 1, width: 793.9996659999999}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray 300', visible: true, text: 'Operator:', font_size: 13, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: 13, foreground: 'theme:Gray 300', hide_text: false, italic: false, placeholder: '', role: null, spacing_above: small, spacing_below: small, text: '', tooltip: '', type: text, underline: false, visible: true}
+    type: TextBox
+  - layout_properties: {col_xs: 1, row: KZQAEW, width: 803.333, width_xs: 10}
     name: operator_label
-    layout_properties: {row: KZQAEW, width_xs: 10, col_xs: 1, width: 803.333}
-  - type: TextBox
-    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '', font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small, italic: false, background: '', bold: false, underline: false}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: 13, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: 'Operator:', tooltip: '', underline: false, visible: true}
+    type: Label
+  - layout_properties: {col_xs: 1, row: OUSFAX, width: 793.9996659999999, width_xs: 10}
     name: operator_input
-    layout_properties: {row: OUSFAX, width_xs: 10, col_xs: 1, width: 793.9996659999999}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray 300', visible: true, text: 'Type:', font_size: 13, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: 13, foreground: 'theme:Gray 300', hide_text: false, italic: false, placeholder: '', role: null, spacing_above: small, spacing_below: small, text: '', tooltip: '', type: text, underline: false, visible: true}
+    type: TextBox
+  - layout_properties: {col_xs: 1, row: WLXTHF, width: 803.333, width_xs: 10}
     name: type_label
-    layout_properties: {row: WLXTHF, width_xs: 10, col_xs: 1, width: 803.333}
-  - type: TextBox
-    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '', font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small, italic: false, background: '', bold: false, underline: false}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: 13, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: 'Type:', tooltip: '', underline: false, visible: true}
+    type: Label
+  - layout_properties: {col_xs: 1, row: RGHYMP, width: 793.9996659999999, width_xs: 10}
     name: type_input
-    layout_properties: {row: RGHYMP, width_xs: 10, col_xs: 1, width: 793.9996659999999}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray 300', visible: true, text: 'City:', font_size: 13, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: 13, foreground: 'theme:Gray 300', hide_text: false, italic: false, placeholder: '', role: null, spacing_above: small, spacing_below: small, text: '', tooltip: '', type: text, underline: false, visible: true}
+    type: TextBox
+  - layout_properties: {col_xs: 1, row: MQMVDE, width: 803.333, width_xs: 10}
     name: city_label
-    layout_properties: {row: MQMVDE, width_xs: 10, col_xs: 1, width: 803.333}
-  - type: TextBox
-    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '', font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small, italic: false, background: '', bold: false, underline: false}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: 13, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: 'City:', tooltip: '', underline: false, visible: true}
+    type: Label
+  - layout_properties: {col_xs: 1, row: IHSOMA, width: 793.9996659999999, width_xs: 10}
     name: city_input
-    layout_properties: {row: IHSOMA, width_xs: 10, col_xs: 1, width: 793.9996659999999}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray 300', visible: true, text: 'Status:', font_size: 13, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: 13, foreground: 'theme:Gray 300', hide_text: false, italic: false, placeholder: '', role: null, spacing_above: small, spacing_below: small, text: '', tooltip: '', type: text, underline: false, visible: true}
+    type: TextBox
+  - layout_properties: {col_xs: 1, row: AWMGLR, width: 803.333, width_xs: 10}
     name: status_label
-    layout_properties: {row: AWMGLR, width_xs: 10, col_xs: 1, width: 803.333}
-  - type: TextBox
-    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '', font_size: 13, font: '', spacing_above: small, type: text, spacing_below: small, italic: false, background: '', bold: false, underline: false}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: 13, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: 'Status:', tooltip: '', underline: false, visible: true}
+    type: Label
+  - layout_properties: {col_xs: 1, row: UFVIHI, width: 793.9996659999999, width_xs: 10}
     name: status_input
-    layout_properties: {row: UFVIHI, width_xs: 10, col_xs: 1, width: 793.9996659999999}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray 300', visible: true, text: 'Number of Apartments:', font_size: 13, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: 13, foreground: 'theme:Gray 300', hide_text: false, italic: false, placeholder: '', role: null, spacing_above: small, spacing_below: small, text: '', tooltip: '', type: text, underline: false, visible: true}
+    type: TextBox
+  - layout_properties: {col_xs: 1, row: KXEVYI, width: 803.333, width_xs: 10}
     name: apartment_count
-    layout_properties: {row: KXEVYI, width_xs: 10, col_xs: 1, width: 803.333}
-  - type: TextBox
-    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '', font_size: 13, font: '', spacing_above: small, type: number, spacing_below: small, italic: false, background: '', bold: false, underline: false}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: 13, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: 'Number of Apartments:', tooltip: '', underline: false, visible: true}
+    type: Label
+  - layout_properties: {col_xs: 1, row: JEJUNA, width: 793.9996659999999, width_xs: 10}
     name: apartment_count_input
-    layout_properties: {row: JEJUNA, width_xs: 10, col_xs: 1, width: 793.9996659999999}
-  - type: Button
-    properties: {role: null, align: center, tooltip: '', border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: Save, font_size: 13, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: 13, foreground: 'theme:Gray 300', hide_text: false, italic: false, placeholder: '', role: null, spacing_above: small, spacing_below: small, text: '', tooltip: '', type: number, underline: false, visible: true}
+    type: TextBox
+  - event_bindings: {click: btn_click}
+    layout_properties: {col_xs: 2, row: LYIZRB, width: 220, width_xs: 4}
     name: save_btn
-    layout_properties: {row: LYIZRB, width_xs: 4, col_xs: 2, width: 220}
-    event_bindings: {click: btn_click}
-  - type: Button
-    properties: {role: null, align: center, tooltip: '', border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: Dismiss, font_size: 13, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {align: center, background: '', bold: false, border: '', enabled: true, font: '', font_size: 13, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Save, tooltip: '', underline: false, visible: true}
+    type: Button
+  - event_bindings: {click: btn_click}
+    layout_properties: {col_xs: 6, row: LYIZRB, width: 220, width_xs: 4}
     name: dismiss_btn
-    layout_properties: {row: LYIZRB, width_xs: 4, col_xs: 6, width: 220}
-    event_bindings: {click: btn_click}
+    properties: {align: center, background: '', bold: false, border: '', enabled: true, font: '', font_size: 13, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Dismiss, tooltip: '', underline: false, visible: true}
+    type: Button
+  layout_properties: {grid_position: 'KSANFS,JPRMTN'}
+  name: grid_panel_1
+  properties: {}
+  type: GridPanel
+container:
+  properties: {col_widths: '{}'}
+  type: ColumnPanel
 is_package: true

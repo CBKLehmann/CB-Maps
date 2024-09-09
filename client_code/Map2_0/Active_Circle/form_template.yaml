@@ -1,27 +1,27 @@
-container: {type: ColumnPanel}
 components:
-- name: flow_panel_1
-  properties: {align: left, spacing_above: none, spacing_below: none, spacing: none, vertical_align: middle}
-  type: FlowPanel
-  layout_properties: {grid_position: 'UGUGXI,LWGZXY', full_width_row: false}
-  components:
-  - name: radius
-    properties: {role: null, align: center, border: '', text: '5', font_size: 13, spacing_above: none, type: number, spacing_below: none, bold: false}
-    type: TextBox
-    layout_properties: {width: 55.624956494140626, expand: false}
-    data_bindings: []
+- components:
+  - data_bindings: []
     event_bindings: {change: radius_change}
-  - name: kilometer
-    properties: {text: km, foreground: 'theme:Gray 300'}
+    layout_properties: {expand: false, width: 55.624956494140626}
+    name: radius
+    properties: {align: center, bold: false, border: '', font_size: 13, role: null, spacing_above: none, spacing_below: none, text: '5', type: number}
+    type: TextBox
+  - layout_properties: {}
+    name: kilometer
+    properties: {foreground: 'theme:Gray 300', text: km}
     type: Label
-    layout_properties: {}
-  - name: spacer_1
+  - layout_properties: {width: 64.5938}
+    name: spacer_1
     properties: {height: 32}
     type: Spacer
-    layout_properties: {width: 64.5938}
-  - name: active_switch
-    properties: {role: switch-rounded, align: left, tooltip: '', border: '', enabled: true, foreground: '', allow_indeterminate: false, visible: true, text: '', font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, checked: false, underline: false}
-    type: CheckBox
+  - event_bindings: {change: active_switch_change}
     layout_properties: {}
-    event_bindings: {change: active_switch_change}
+    name: active_switch
+    properties: {align: left, allow_indeterminate: false, background: '', bold: false, border: '', checked: false, enabled: true, font: '', font_size: null, foreground: '', italic: false, role: switch-rounded, spacing_above: small, spacing_below: small, text: '', tooltip: '', underline: false, visible: true}
+    type: CheckBox
+  layout_properties: {full_width_row: false, grid_position: 'UGUGXI,LWGZXY'}
+  name: flow_panel_1
+  properties: {align: left, spacing: none, spacing_above: none, spacing_below: none, vertical_align: middle}
+  type: FlowPanel
+container: {type: ColumnPanel}
 is_package: true

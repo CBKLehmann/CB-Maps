@@ -1,43 +1,43 @@
-container:
-  type: ColumnPanel
-  properties: {col_widths: '{}'}
 components:
-- type: DataGrid
+- components:
+  - layout_properties: {}
+    name: competitor_panel
+    properties: {}
+    type: LinearPanel
+  layout_properties: {full_width_row: true, grid_position: 'LIFVYF,GDTKQD'}
+  name: competitor_grid
   properties:
-    role: null
-    columns:
-    - {id: TKUHOE, title: Operator, data_key: operator, $$hashKey: 'object:21587'}
-    - {id: FNJKDW, title: Address, data_key: address, $$hashKey: 'object:21588'}
-    - {id: PGHIHZ, title: Distance, data_key: distance, $$hashKey: 'object:21589', width: 80, expand: false}
-    - {id: INDVZK, title: 360 Operator, data_key: 360_operator, $$hashKey: 'object:21642'}
-    - {id: AHWVPR, title: Living Concept, data_key: living_concept, $$hashKey: 'object:21644'}
-    - {id: LIJVGR, title: Equipment, data_key: equipment, $$hashKey: 'object:21648', width: 100, expand: false}
-    - {id: QQMZEN, title: Note, data_key: note, $$hashKey: 'object:21650', width: 70, expand: false}
-    - {id: ICSUCA, title: Community Spaces, data_key: community_spaces, $$hashKey: 'object:21652', expand: false}
-    - {id: WBGYGD, title: Furnishing, data_key: furnishing, $$hashKey: 'object:21654'}
-    - {id: WCWRUS, title: Services, data_key: services, $$hashKey: 'object:21656'}
-    - {id: THXMHF, title: Apartments, data_key: apartments, $$hashKey: 'object:21658'}
-    - {id: VAKLRT, title: Size Range (m²), data_key: size_range_m2, $$hashKey: 'object:21660'}
-    - {id: BDMBNW, title: Rent per m² Range (€), data_key: rent_per_m2_range, $$hashKey: 'object:21662'}
-    - {id: ZILAYO, title: Rent per month Range (€), data_key: rent_per_month_range, $$hashKey: 'object:21664'}
-    - {id: CXSJJJ, title: Created, data_key: created, $$hashKey: 'object:21666'}
-    - {id: MNSXDF, title: Updated, data_key: updated, $$hashKey: 'object:21668'}
     auto_header: true
-    tooltip: ''
+    background: ''
     border: ''
+    columns:
+    - {$$hashKey: 'object:21587', data_key: operator, id: TKUHOE, title: Operator}
+    - {$$hashKey: 'object:21588', data_key: address, id: FNJKDW, title: Address}
+    - {$$hashKey: 'object:21589', data_key: distance, expand: false, id: PGHIHZ, title: Distance, width: 80}
+    - {$$hashKey: 'object:21642', data_key: 360_operator, id: INDVZK, title: 360 Operator}
+    - {$$hashKey: 'object:21644', data_key: living_concept, id: AHWVPR, title: Living Concept}
+    - {$$hashKey: 'object:21648', data_key: equipment, expand: false, id: LIJVGR, title: Equipment, width: 100}
+    - {$$hashKey: 'object:21650', data_key: note, expand: false, id: QQMZEN, title: Note, width: 70}
+    - {$$hashKey: 'object:21652', data_key: community_spaces, expand: false, id: ICSUCA, title: Community Spaces}
+    - {$$hashKey: 'object:21654', data_key: furnishing, id: WBGYGD, title: Furnishing}
+    - {$$hashKey: 'object:21656', data_key: services, id: WCWRUS, title: Services}
+    - {$$hashKey: 'object:21658', data_key: apartments, id: THXMHF, title: Apartments}
+    - {$$hashKey: 'object:21660', data_key: size_range_m2, id: VAKLRT, title: Size Range (m²)}
+    - {$$hashKey: 'object:21662', data_key: rent_per_m2_range, id: BDMBNW, title: Rent per m² Range (€)}
+    - {$$hashKey: 'object:21664', data_key: rent_per_month_range, id: ZILAYO, title: Rent per month Range (€)}
+    - {$$hashKey: 'object:21666', data_key: created, id: CXSJJJ, title: Created}
+    - {$$hashKey: 'object:21668', data_key: updated, id: MNSXDF, title: Updated}
     foreground: ''
+    role: null
     rows_per_page: 20
-    visible: true
-    wrap_on: never
     show_page_controls: true
     spacing_above: small
     spacing_below: small
-    background: ''
-  name: competitor_grid
-  layout_properties: {grid_position: 'LIFVYF,GDTKQD', full_width_row: true}
-  components:
-  - type: LinearPanel
-    properties: {}
-    name: competitor_panel
-    layout_properties: {}
+    tooltip: ''
+    visible: true
+    wrap_on: never
+  type: DataGrid
+container:
+  properties: {col_widths: '{}'}
+  type: ColumnPanel
 is_package: true

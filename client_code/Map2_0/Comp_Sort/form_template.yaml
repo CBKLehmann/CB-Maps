@@ -1,129 +1,129 @@
-container:
-  type: ColumnPanel
-  properties: {role: custom_alert, tooltip: '', border: '', foreground: '', visible: true, wrap_on: mobile, col_spacing: medium, spacing_above: small, col_widths: '{}', spacing_below: small, background: ''}
 components:
-- type: GridPanel
-  properties: {spacing_above: none, spacing_below: none, background: '', foreground: '', border: '', visible: true, role: null, tooltip: ''}
-  name: grid_panel_1
-  layout_properties: {grid_position: 'PRLDEE,DXRGZW', full_width_row: false}
-  components:
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray 300', visible: true, text: 'Which Settings do you want to use ?', font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+- components:
+  - layout_properties: {col_xs: 0, row: MGFWGN, width: 970, width_xs: 12}
     name: heading
-    layout_properties: {row: MGFWGN, width_xs: 12, col_xs: 0, width: 970}
-  - type: Spacer
-    properties: {height: 36}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: null, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: 'Which Settings do you want to use ?', tooltip: '', underline: false, visible: true}
+    type: Label
+  - layout_properties: {col_xs: 0, row: LOHLSA, width_xs: 12}
     name: spacer_1
-    layout_properties: {row: LOHLSA, width_xs: 12, col_xs: 0}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray 300', visible: true, text: City, font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {height: 36}
+    type: Spacer
+  - layout_properties: {col_xs: 0, row: YSVIXT, width: 136.667, width_xs: 2}
     name: city_label
-    layout_properties: {row: YSVIXT, width_xs: 2, col_xs: 0, width: 136.667}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray 300', visible: true, text: Living Concept, font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: null, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: City, tooltip: '', underline: false, visible: true}
+    type: Label
+  - layout_properties: {col_xs: 4, row: YSVIXT, width: 136.667, width_xs: 2}
     name: category_label
-    layout_properties: {row: YSVIXT, width_xs: 2, col_xs: 4, width: 136.667}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: 'theme:Gray 300', visible: true, text: Maximum Competitor Count, font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: null, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Living Concept, tooltip: '', underline: false, visible: true}
+    type: Label
+  - layout_properties: {col_xs: 8, row: YSVIXT, width: 303.333, width_xs: 4}
     name: count_label
-    layout_properties: {row: YSVIXT, width_xs: 4, col_xs: 8, width: 303.333}
-  - type: DropDown
-    properties:
-      role: null
-      align: full
-      tooltip: ''
-      placeholder: Choose a City
-      border: ''
-      enabled: true
-      foreground: theme:Gray 300
-      items: ['']
-      visible: true
-      font_size: null
-      font: ''
-      spacing_above: small
-      spacing_below: small
-      italic: false
-      background: ''
-      bold: false
-      underline: false
-      include_placeholder: true
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: null, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: Maximum Competitor Count, tooltip: '', underline: false, visible: true}
+    type: Label
+  - event_bindings: {change: refresh_amount}
+    layout_properties: {col_xs: 0, row: LDBDAA, width: 165, width_xs: 3}
     name: city_dropdown
-    layout_properties: {row: LDBDAA, width_xs: 3, col_xs: 0, width: 165}
-    event_bindings: {change: refresh_amount}
-  - type: DropDown
     properties:
-      role: null
       align: full
-      tooltip: ''
-      placeholder: Choose a Living Concept
-      border: ''
-      enabled: true
-      foreground: theme:Gray 300
-      items: [Student living, Business living, Serviced living, Co-living, Hotel, Classic living]
-      visible: true
-      font_size: null
-      font: ''
-      spacing_above: small
-      spacing_below: small
-      italic: false
       background: ''
       bold: false
-      underline: false
-      include_placeholder: true
-    name: category_dropdown
-    layout_properties: {row: LDBDAA, width_xs: 3, col_xs: 4, width: 220}
-    event_bindings: {change: refresh_amount}
-  - type: RadioButton
-    properties: {role: null, selected: false, align: left, tooltip: '', border: '', enabled: true, foreground: 'theme:Gray 300', value: '', visible: true, text: All Entries, font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, group_name: Competitor_Count, underline: false}
-    name: all_switch
-    layout_properties: {row: LDBDAA, width_xs: 2, col_xs: 8, width: 220}
-    event_bindings: {clicked: refresh_amount}
-  - type: RadioButton
-    properties: {role: null, selected: true, align: left, tooltip: '', border: '', enabled: true, foreground: 'theme:Gray 300', value: '', visible: true, text: Maximum, font_size: null, font: '', spacing_above: small, spacing_below: small, italic: false, background: '', bold: false, group_name: Competitor_Count, underline: false}
-    name: custom_switch
-    layout_properties: {row: XORQYC, width_xs: 2, col_xs: 8, width: 136.667}
-    event_bindings: {clicked: refresh_amount}
-  - type: TextBox
-    properties: {role: null, align: left, hide_text: false, tooltip: '', placeholder: '', border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: '10', font_size: null, font: '', spacing_above: small, type: number, spacing_below: small, italic: false, background: '', bold: false, underline: false}
-    name: custom_input
-    layout_properties: {row: XORQYC, width_xs: 2, col_xs: 10, width: 127.333666}
-    event_bindings: {change: refresh_amount}
-  - type: Label
-    properties: {role: null, align: left, tooltip: '', border: '', foreground: '', visible: true, text: 'Found Competitor Amount: 0', font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: '', bold: false, underline: false, icon: ''}
-    name: competitor_count
-    layout_properties: {row: STYPGM, width_xs: 4, col_xs: 0, width: 230}
-  - type: DataGrid
-    properties:
-      role: null
-      columns:
-      - {id: URBKPU, title: Address, data_key: address, $$hashKey: 'object:90847', width: 249, expand: false}
-      - {id: NTMULL, title: Zip, data_key: zip, $$hashKey: 'object:90848', width: 84, expand: false}
-      - {id: ZOBEQG, title: Operator, data_key: operator, $$hashKey: 'object:90849', width: 184, expand: false}
-      - {id: WTXLXS, title: 360 Operator, data_key: 360_operator, $$hashKey: 'object:90973', width: 95, expand: false}
-      - {id: MJHVTH, title: No. of Apartments, data_key: apartments, $$hashKey: 'object:90969', width: 114, expand: false}
-      - {id: OPVOAW, title: Distance, data_key: distance, $$hashKey: 'object:90971'}
-      auto_header: true
-      tooltip: ''
       border: ''
-      foreground: ''
-      rows_per_page: 10
+      enabled: true
+      font: ''
+      font_size: null
+      foreground: theme:Gray 300
+      include_placeholder: true
+      italic: false
+      items: ['']
+      placeholder: Choose a City
+      role: null
+      spacing_above: small
+      spacing_below: small
+      tooltip: ''
+      underline: false
       visible: true
-      wrap_on: never
+    type: DropDown
+  - event_bindings: {change: refresh_amount}
+    layout_properties: {col_xs: 4, row: LDBDAA, width: 220, width_xs: 3}
+    name: category_dropdown
+    properties:
+      align: full
+      background: ''
+      bold: false
+      border: ''
+      enabled: true
+      font: ''
+      font_size: null
+      foreground: theme:Gray 300
+      include_placeholder: true
+      italic: false
+      items: [Student living, Business living, Serviced living, Co-living, Hotel, Classic living]
+      placeholder: Choose a Living Concept
+      role: null
+      spacing_above: small
+      spacing_below: small
+      tooltip: ''
+      underline: false
+      visible: true
+    type: DropDown
+  - event_bindings: {clicked: refresh_amount}
+    layout_properties: {col_xs: 8, row: LDBDAA, width: 220, width_xs: 2}
+    name: all_switch
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: 'theme:Gray 300', group_name: Competitor_Count, italic: false, role: null, selected: false, spacing_above: small, spacing_below: small, text: All Entries, tooltip: '', underline: false, value: '', visible: true}
+    type: RadioButton
+  - event_bindings: {clicked: refresh_amount}
+    layout_properties: {col_xs: 8, row: XORQYC, width: 136.667, width_xs: 2}
+    name: custom_switch
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: 'theme:Gray 300', group_name: Competitor_Count, italic: false, role: null, selected: true, spacing_above: small, spacing_below: small, text: Maximum, tooltip: '', underline: false, value: '', visible: true}
+    type: RadioButton
+  - event_bindings: {change: refresh_amount}
+    layout_properties: {col_xs: 10, row: XORQYC, width: 127.333666, width_xs: 2}
+    name: custom_input
+    properties: {align: left, background: '', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: 'theme:Gray 300', hide_text: false, italic: false, placeholder: '', role: null, spacing_above: small, spacing_below: small, text: '10', tooltip: '', type: number, underline: false, visible: true}
+    type: TextBox
+  - layout_properties: {col_xs: 0, row: STYPGM, width: 230, width_xs: 4}
+    name: competitor_count
+    properties: {align: left, background: '', bold: false, border: '', font: '', font_size: null, foreground: '', icon: '', icon_align: left, italic: false, role: null, spacing_above: small, spacing_below: small, text: 'Found Competitor Amount: 0', tooltip: '', underline: false, visible: true}
+    type: Label
+  - components:
+    - components: []
+      layout_properties: {}
+      name: competitor_list
+      properties: {}
+      type: LinearPanel
+    layout_properties: {col_xs: 0, row: LOQRYI, width: 750, width_xs: 12}
+    name: competitor_data
+    properties:
+      auto_header: true
+      background: ''
+      border: ''
+      columns:
+      - {$$hashKey: 'object:90847', data_key: address, expand: false, id: URBKPU, title: Address, width: 249}
+      - {$$hashKey: 'object:90848', data_key: zip, expand: false, id: NTMULL, title: Zip, width: 84}
+      - {$$hashKey: 'object:90849', data_key: operator, expand: false, id: ZOBEQG, title: Operator, width: 184}
+      - {$$hashKey: 'object:90973', data_key: 360_operator, expand: false, id: WTXLXS, title: 360 Operator, width: 95}
+      - {$$hashKey: 'object:90969', data_key: apartments, expand: false, id: MJHVTH, title: No. of Apartments, width: 114}
+      - {$$hashKey: 'object:90971', data_key: distance, id: OPVOAW, title: Distance}
+      foreground: ''
+      role: null
+      rows_per_page: 10
       show_page_controls: true
       spacing_above: small
       spacing_below: small
-      background: ''
-    name: competitor_data
-    layout_properties: {row: LOQRYI, width_xs: 12, col_xs: 0, width: 750}
-    components:
-    - type: LinearPanel
-      properties: {}
-      name: competitor_list
-      layout_properties: {}
-      components: []
-  - type: Button
-    properties: {role: primary-color, align: center, tooltip: '', border: '', enabled: true, foreground: 'theme:Gray 300', visible: true, text: Confirm, font_size: null, font: '', spacing_above: small, icon_align: left, spacing_below: small, italic: false, background: 'theme:Secondary 700', bold: false, underline: false, icon: ''}
+      tooltip: ''
+      visible: true
+      wrap_on: never
+    type: DataGrid
+  - event_bindings: {click: confirm_btn_click}
+    layout_properties: {col_xs: 4, row: NQWNVU, width: 220, width_xs: 3}
     name: confirm_btn
-    layout_properties: {row: NQWNVU, width_xs: 3, col_xs: 4, width: 220}
-    event_bindings: {click: confirm_btn_click}
+    properties: {align: center, background: 'theme:Secondary 700', bold: false, border: '', enabled: true, font: '', font_size: null, foreground: 'theme:Gray 300', icon: '', icon_align: left, italic: false, role: primary-color, spacing_above: small, spacing_below: small, text: Confirm, tooltip: '', underline: false, visible: true}
+    type: Button
+  layout_properties: {full_width_row: false, grid_position: 'PRLDEE,DXRGZW'}
+  name: grid_panel_1
+  properties: {background: '', border: '', foreground: '', role: null, spacing_above: none, spacing_below: none, tooltip: '', visible: true}
+  type: GridPanel
+container:
+  properties: {background: '', border: '', col_spacing: medium, col_widths: '{}', foreground: '', role: custom_alert, spacing_above: small, spacing_below: small, tooltip: '', visible: true, wrap_on: mobile}
+  type: ColumnPanel
 is_package: true

@@ -1317,7 +1317,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 101,
                     'y': 151,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v1']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v1'] if market_study_data['occupancy_lk_30_v1'] < 100 else 100),
                     'align': 'right'
                 },
                 'number_of_beds_2030_s1': {
@@ -1357,7 +1357,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 101,
                     'y': 201,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v1']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v1'] if market_study_data['occupancy_lk_30_v1'] < 100 else 100),
                     'align': 'right'
                 },
                 'loss_of_beds_2030_s1': {
@@ -1447,7 +1447,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 125,
                     'y': 151,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v2']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v2'] if market_study_data['occupancy_lk_30_v2'] < 100 else 100),
                     'align': 'right'
                 },
                 'number_of_beds_2030_s2': {
@@ -1487,7 +1487,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 125,
                     'y': 201,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v2']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v2'] if market_study_data['occupancy_lk_30_v2'] < 100 else 100),
                     'align': 'right'
                 },
                 'loss_of_beds_2030_s2': {
@@ -1649,7 +1649,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 151,
                     'y': 151,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v1']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v1'] if market_study_data['occupancy_lk_35_v1'] < 100 else 100),
                     'align': 'right'
                 },
                 'number_of_beds_2035_s1': {
@@ -1689,7 +1689,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 151,
                     'y': 201,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v1']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v1'] if market_study_data['occupancy_lk_35_v1'] < 100 else 100),
                     'align': 'right'
                 },
                 'loss_of_beds_2035_s1': {
@@ -1779,7 +1779,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 175,
                     'y': 151,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v2']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v2'] if market_study_data['occupancy_lk_35_v2'] < 100 else 100),
                     'align': 'right'
                 },
                 'number_of_beds_2035_s2': {
@@ -1819,7 +1819,7 @@ def market_study_skeleton_en(market_study_data):
                     'x': 175,
                     'y': 201,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v2']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v2'] if market_study_data['occupancy_lk_35_v2'] < 100 else 100),
                     'align': 'right'
                 },
                 'loss_of_beds_2035_s2': {
@@ -2804,7 +2804,7 @@ def market_study_skeleton_en(market_study_data):
                     'size': 9,
                     'x': 100,
                     'y': 70,
-                    'txt': 'Junior Transaction Manager'
+                    'txt': 'Transaction Manager'
                 },
                 'right_person_company': {
                     'color': [0, 0, 0],
@@ -4185,7 +4185,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 101,
                     'y': 153,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v1']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v1'] if market_study_data['occupancy_lk_30_v1'] < 100 else 100),
                     'align': 'right'
                 },
                 'number_of_beds_2030_s1': {
@@ -4225,7 +4225,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 101,
                     'y': 201,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v1']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v1'] if market_study_data['occupancy_lk_30_v1'] < 100 else 100),
                     'align': 'right'
                 },
                 'loss_of_beds_2030_s1': {
@@ -4315,7 +4315,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 125,
                     'y': 153,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v2']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v2'] if market_study_data['occupancy_lk_30_v2'] < 100 else 100),
                     'align': 'right'
                 },
                 'number_of_beds_2030_s2': {
@@ -4355,7 +4355,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 125,
                     'y': 201,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v2']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_30_v2'] if market_study_data['occupancy_lk_30_v2'] < 100 else 100),
                     'align': 'right'
                 },
                 'loss_of_beds_2030_s2': {
@@ -4517,7 +4517,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 151,
                     'y': 153,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v1']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v1'] if market_study_data['occupancy_lk_35_v1'] < 100 else 100),
                     'align': 'right'
                 },
                 'number_of_beds_2035_s1': {
@@ -4557,7 +4557,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 151,
                     'y': 201,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v1']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v1'] if market_study_data['occupancy_lk_35_v1'] < 100 else 100),
                     'align': 'right'
                 },
                 'loss_of_beds_2035_s1': {
@@ -4647,7 +4647,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 175,
                     'y': 153,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v2']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v2'] if market_study_data['occupancy_lk_35_v2'] < 100 else 100),
                     'align': 'right'
                 },
                 'number_of_beds_2035_s2': {
@@ -4687,7 +4687,7 @@ def market_study_skeleton_de(market_study_data):
                     'x': 175,
                     'y': 201,
                     'w': 23,
-                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v2']),
+                    'txt': '{:,}%'.format(market_study_data['occupancy_lk_35_v2'] if market_study_data['occupancy_lk_35_v2'] < 100 else 100),
                     'align': 'right'
                 },
                 'loss_of_beds_2035_s2': {
@@ -5705,7 +5705,7 @@ def market_study_skeleton_de(market_study_data):
                     'size': 9,
                     'x': 100,
                     'y': 70,
-                    'txt': 'Junior Transaction Manager'
+                    'txt': 'Transaction Manager'
                 },
                 'right_person_company': {
                     'color': [0, 0, 0],
