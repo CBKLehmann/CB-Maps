@@ -906,8 +906,7 @@ class Map2_0(Map2_0Template):
         req_str = self.build_request_string(asset)
         req_str += f'.json?access_token={Mapbox_Variables.token}'
         coords = anvil.http.request(req_str,json=True)
-        print(req_str)
-        print(coords)
+
         for entry in coords['features']:
           if asset['zip'] in entry['place_name']:
             coordinates = entry['geometry']['coordinates']
@@ -1467,7 +1466,7 @@ class Map2_0(Map2_0Template):
           icon = f'{marker_number}Nursing@0.6x.png'
         else:
           icon = f'{marker_number}@0.6x.png'
-        print(working_marker_coordinate)
+
         if not working_marker_coordinate[2]:
             for controlling_maker_index, controlling_maker_coordinate in enumerate(controlling_marker['sorted_coords']):
               if abs(controlling_maker_coordinate[1] - working_marker_coordinate[1]) <= .015:
@@ -1500,6 +1499,8 @@ class Map2_0(Map2_0Template):
           request_static_map = request_static_map_raw
       last_coord_dist = working_marker_coordinate[1]
 
+    print(request)
+      
     return {'request': request, 'working_marker': working_marker, 'controlling_marker': controlling_marker}
 
   def build_home_marker_map_request(self, longitude, latitude, request):

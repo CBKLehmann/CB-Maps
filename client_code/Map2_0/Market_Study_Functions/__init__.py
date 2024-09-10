@@ -108,8 +108,6 @@ def generate_market_studies(application):
         if market_study_dictionary['district'] == "n.a.":
             market_study_dictionary['district'] = market_study_dictionary['city']
         
-        print(market_study_dictionary['city'])
-        
         ##### Temporary Fix #####
         if market_study_dictionary['city'] == "Fürstenwalde":
             countie_data_city = "Fürstenwalde/Spree"
@@ -248,7 +246,6 @@ def generate_market_studies(application):
         Functions.manipulate_loading_overlay(True)
         for version_index, version in enumerate(versions):
             anvil.js.call('update_loading_bar', 80 + 10 * version_index, f'Generating {version} Market Study')
-            # print(market_study_dictionary)
             market_study_dictionary_language = copy.deepcopy(market_study_dictionary)
             market_study_dictionary_language['regulations'] = anvil.server.call('read_regulations', market_study_dictionary['federal_state'], version)
             market_study_dictionary_nh = generate_nursing_home_pages(version=version, market_study_dictionary=copy.deepcopy(market_study_dictionary_language))
@@ -1770,8 +1767,6 @@ def create_market_study(application, version, version_index, market_study_dictio
         competitor_map_request_data['request'],
         'assisted_living'
     )
-
-    print(competitor_map_request_data['request'])
     
     competitor_map_request = application.build_home_marker_map_request(
         competitor_map_request_data['controlling_marker']['marker_coords']['lng'],
