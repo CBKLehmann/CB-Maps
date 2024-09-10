@@ -1494,14 +1494,18 @@ class Map2_0(Map2_0Template):
         if not (working_marker_index + 1) % 20 == 1 and not request_static_map[-1] == "B":
           request_static_map += f"%2C"
         request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{working_marker_coordinate[0]['coords'][0]},{working_marker_coordinate[0]['coords'][1]}%5D%7D%7D"
-        if marker_number == len(working_marker['sorted_coords']) - 1 - double_marker or (marker_number + 1) % 20 == 0:
+        print(marker_number)
+        print((marker_number + 1) % 20 == 0)
+        if (marker_number == len(working_marker['sorted_coords']) - 1 - double_marker) or ((marker_number + 1) % 20 == 0):
+          print("Here")
           request_static_map += "%5D%7D"
           request.append(request_static_map)
           request_static_map = request_static_map_raw
       else:
           double_marker += 1
       last_coord_dist = working_marker_coordinate[1]
-      
+
+    print(request)
     return {'request': request, 'working_marker': working_marker, 'controlling_marker': controlling_marker}
 
   def build_home_marker_map_request(self, longitude, latitude, request):
