@@ -1491,7 +1491,7 @@ class Map2_0(Map2_0Template):
             icon = f'Assisted{marker_number}@0.6x.png'
         url = f'https%3A%2F%2Fraw.githubusercontent.com/ShinyKampfkeule/geojson_germany/main/{icon}'
         encoded_url = url.replace("/", "%2F")
-        if not (working_marker_index + 1) % 20 == 1 and not request_static_map[-1] == "B":
+        if not (marker_number + 1) % 20 == 1 and not request_static_map[-1] == "B":
           request_static_map += f"%2C"
         request_static_map += f"%7B%22type%22%3A%22Feature%22%2C%22properties%22%3A%7B%22marker%2Durl%22%3A%22{encoded_url}%22%7D%2C%22geometry%22%3A%7B%22type%22%3A%22Point%22%2C%22coordinates%22%3A%5B{working_marker_coordinate[0]['coords'][0]},{working_marker_coordinate[0]['coords'][1]}%5D%7D%7D"
         print(marker_number)
