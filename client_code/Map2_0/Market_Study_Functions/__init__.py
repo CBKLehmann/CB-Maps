@@ -301,7 +301,7 @@ def organize_ca_data(entries, topic, marker_coords, application):
                             anz_vers_pat = int(entry['number_of_patients_cared_for']) if entry['number_of_patients_cared_for'] is not None else "-"
                             platz_voll_pfl = int(entry['number_of_places_fulltime_care']) if entry['number_of_places_fulltime_care'] is not None else "-"
 
-                            if not anz_vers_pat == "-" and not platz_voll_pfl == "-":
+                            if (not anz_vers_pat == "-") and (not anz_vers_pat == 0) and (not platz_voll_pfl == "-") and (not platz_voll_pfl == 0):
                                 occupancy_raw = anz_vers_pat / platz_voll_pfl
                                 if occupancy_raw > 1:
                                     occupancy_raw = 1
