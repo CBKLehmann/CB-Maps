@@ -2158,12 +2158,6 @@ def market_study_skeleton_en(market_study_data):
                     'w': 120,
                     'path': "tmp/operator_chart.png"
                 },
-                'invest_scatter_chart': {
-                    'x': 105,
-                    'y': 85,
-                    'w': 100,
-                    'path': "tmp/invest_cost_scatter_chart.png"
-                },
                 'purchasing_power_chart': {
                     'x': 10,
                     'y': 190,
@@ -5058,12 +5052,6 @@ def market_study_skeleton_de(market_study_data):
                     'y': 105,
                     'w': 120,
                     'path': "tmp/operator_chart.png"
-                },
-                'invest_scatter_chart': {
-                    'x': 105,
-                    'y': 85,
-                    'w': 100,
-                    'path': "tmp/invest_cost_scatter_chart.png"
                 },
                 'purchasing_power_chart': {
                     'x': 10,
