@@ -582,7 +582,7 @@ class Map2_0(Map2_0Template):
       elif event_args['sender'].text == "Motorway":
         settings = local_storage['public_transport'][:index] + "1" + local_storage['public_transport'][index + 1:]
         local_storage['public_transport'] = settings
-        Variables.last_bbox_mw, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_mw.checked, Variables.last_bbox_mw, "motorway", f'{Variables.app_url}/_/theme/Pins/Flughafen_Pin.png')
+        Variables.last_bbox_mw, minimum_average_rent, maximum_average_rent = self.create_icons(self.check_box_mw.checked, Variables.last_bbox_mw, "motorway", f'{Variables.app_url}/_/theme/Pins/Autobahn@4x.png')
       Functions.manipulate_loading_overlay(False)
 
   def checkbox_poi_x_hfcig_change(self, **event_args):
