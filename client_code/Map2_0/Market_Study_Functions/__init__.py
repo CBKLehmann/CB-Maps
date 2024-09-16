@@ -107,17 +107,9 @@ def generate_market_studies(application):
             market_study_dictionary['federal_state'] = market_study_dictionary['city']
         if market_study_dictionary['district'] == "n.a.":
             market_study_dictionary['district'] = market_study_dictionary['city']
-        
-        ##### Temporary Fix #####
-        if market_study_dictionary['city'] == "Fürstenwalde":
-            countie_data_city = "Fürstenwalde/Spree"
-        else:
-            countie_data_city = market_study_dictionary['city']
-        ##### Temporary Fix #####
 
         market_study_dictionary['countie_data'] = anvil.server.call(
             "get_demographic_district_data",
-            city=countie_data_city,
             marker_coords = market_study_dictionary['marker_coords']
         )
         market_study_dictionary['care_data_district'] = anvil.server.call("get_care_district_data", dist_key=market_study_dictionary['countie_data']['ex_dem_lk']['key'])
