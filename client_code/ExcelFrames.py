@@ -3355,7 +3355,7 @@ micro_living_comparables_page_en = {
                             'format': 'regular_fs8' 
                         },
                         'B51': {
-                            'text': 'Event lovation',
+                            'text': 'Event location',
                             'format': 'regular_fs8' 
                         },
                         'B52': {
