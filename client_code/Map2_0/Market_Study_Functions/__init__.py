@@ -56,7 +56,8 @@ def generate_market_studies(application):
             'prev_competitor_distance': 0,
             'prev_competitor_index': 0,
             'beds_building_lk': 0,
-            'beds_planning_lk': 0
+            'beds_planning_lk': 0,
+            'population_county_2020': 0
         }
 
         market_study_dictionary['bounding_box'] = get_bounding_box(market_study_dictionary['iso'])
@@ -153,9 +154,19 @@ def generate_market_studies(application):
         market_study_dictionary['population_trend'] = "{:.1f}".format((market_study_dictionary['people_u80_fc_35'] + market_study_dictionary['people_o80_fc_35']) * 100 / (market_study_dictionary['people_u80'] + market_study_dictionary['people_o80']) - 100)
         market_study_dictionary['nursing_home_rate'] = round(float(market_study_dictionary['countie_data']['pfleg_stat_lk']['heimquote2019']) * 100, 1)
         for key in keys:
+            market_study_dictionary['population_county_2020'] += int(market_study_dictionary['countie_data']['dem_fc_lk'][f'{key}_2020_abs'])
             market_study_dictionary['population_fc_30'] += int(market_study_dictionary['countie_data']['dem_fc_lk'][f'{key}_2030_abs'])
             market_study_dictionary['population_fc_35'] += int(market_study_dictionary['countie_data']['dem_fc_lk'][f'{key}_2035_abs'])
 
+        city_key = market_study_dictionary['countie_data']['dem_city']['key']
+        county_key = market_study_dictionary['countie_data']['dem_fc_lk']['key']
+        county_key = county_key if len(county_key) == 8 else f"0{county_key}"
+        print(city_key)
+        print(county_key)
+
+        if city_key == county_key:
+            market_study_dictionary['countie_data']['dem_city']['bevoelkerung_ges'] = market_study_dictionary['population_county_2020']
+        
         for el in market_study_dictionary['care_data_district']:
             market_study_dictionary['inpatients_lk'] += int(el['number_of_patients_cared_for']) if el['number_of_patients_cared_for'] is not None else 0
             if el['status'] == 'aktiv':
@@ -1561,7 +1572,7 @@ def create_market_study(application, version, version_index, market_study_dictio
             'beds_surplus_35_v2': market_study_dictionary['beds_surplus_35_v2'],
             'countie': market_study_dictionary['countie'],
             'population_city_2020': market_study_dictionary['countie_data']['dem_city']['bevoelkerung_ges'],
-            'population_county_2020': market_study_dictionary['countie_data']['ex_dem_lk']['all_compl'],
+            'population_county_2020': market_study_dictionary['population_county_2020'],
             'people_u80': market_study_dictionary['people_u80'],
             'people_o80': market_study_dictionary['people_o80'],
             'new_care_rate_raw': market_study_dictionary['new_care_rate_raw'],
@@ -1643,7 +1654,7 @@ def create_market_study(application, version, version_index, market_study_dictio
             'beds_surplus_35_v2': market_study_dictionary['beds_surplus_35_v2'],
             'countie': market_study_dictionary['countie'],
             'population_city_2020': market_study_dictionary['countie_data']['dem_city']['bevoelkerung_ges'],
-            'population_county_2020': market_study_dictionary['countie_data']['ex_dem_lk']['all_compl'],
+            'population_county_2020': market_study_dictionary['population_county_2020'],
             'people_u80': market_study_dictionary['people_u80'],
             'people_o80': market_study_dictionary['people_o80'],
             'new_care_rate_raw': market_study_dictionary['new_care_rate_raw'],
