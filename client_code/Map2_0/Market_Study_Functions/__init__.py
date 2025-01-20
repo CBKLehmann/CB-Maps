@@ -109,6 +109,13 @@ def generate_market_studies(application):
         if market_study_dictionary['district'] == "n.a.":
             market_study_dictionary['district'] = market_study_dictionary['city']
 
+        demographic_city = market_study_dictionary['city']
+        if demographic_city == "Zerbst":
+            demographic_city = "Zerbst/Anhalt"
+        elif demographic_city == "Köthen":
+            demographic_city = "Köthen (Anhalt)"
+        
+        
         market_study_dictionary['countie_data'] = anvil.server.call(
             "get_demographic_district_data",
             marker_coords = market_study_dictionary['marker_coords'],
