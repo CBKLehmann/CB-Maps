@@ -119,7 +119,7 @@ def generate_market_studies(application):
         market_study_dictionary['countie_data'] = anvil.server.call(
             "get_demographic_district_data",
             marker_coords = market_study_dictionary['marker_coords'],
-            city = market_study_dictionary['city'] if not market_study_dictionary['city'] == "Zerbst" else "Zerbst/Anhalt" 
+            city = demographic_city 
         )
         market_study_dictionary['care_data_district'] = anvil.server.call("get_care_district_data", dist_key=market_study_dictionary['countie_data']['ex_dem_lk']['key'])
         market_study_dictionary['regulations'] = anvil.server.call('read_regulations', federal_state=market_study_dictionary['federal_state'], version="english")
@@ -175,13 +175,14 @@ def generate_market_studies(application):
             market_study_dictionary['countie_data']['dem_city']['bevoelkerung_ges'] = market_study_dictionary['population_county_2020']
         
         for el in market_study_dictionary['care_data_district']:
+            number_of_places_fulltime_care_string = el['number_of_places_fulltime_care'].split(".")[0] if el['number_of_places_fulltime_care'] is not None else "-"
             market_study_dictionary['inpatients_lk'] += int(el['number_of_patients_cared_for']) if el['number_of_patients_cared_for'] is not None else 0
             if el['status'] == 'aktiv':
-                market_study_dictionary['beds_lk'] += int(el['number_of_places_fulltime_care']) if el['number_of_places_fulltime_care'] is not None else 0
+                market_study_dictionary['beds_lk'] += int(number_of_places_fulltime_care_string) if number_of_places_fulltime_care_string != "-" else 0
             elif el['status'] == 'im Bau':
-                market_study_dictionary['beds_building_lk'] += int(el['number_of_places_fulltime_care']) if el['number_of_places_fulltime_care'] is not None else 0
+                market_study_dictionary['beds_building_lk'] += int(number_of_places_fulltime_care_string) if number_of_places_fulltime_care_string != "-" else 0
             elif el['status'] == 'in Planung':
-                market_study_dictionary['beds_planning_lk'] += int(el['number_of_places_fulltime_care']) if el['number_of_places_fulltime_care'] is not None else 0
+                market_study_dictionary['beds_planning_lk'] += int(number_of_places_fulltime_care_string) if number_of_places_fulltime_care_string != "-" else 0
 
         market_study_dictionary['occupancy_lk'] = round((market_study_dictionary['inpatients_lk'] * 100) / market_study_dictionary['beds_lk'], 1)
         market_study_dictionary['free_beds_lk'] = market_study_dictionary['beds_lk'] - market_study_dictionary['inpatients_lk']
@@ -311,7 +312,8 @@ def organize_ca_data(entries, topic, marker_coords, application):
 
                         if topic == "nursing_homes":
                             anz_vers_pat = int(entry['number_of_patients_cared_for']) if entry['number_of_patients_cared_for'] is not None else "-"
-                            platz_voll_pfl = int(entry['number_of_places_fulltime_care']) if entry['number_of_places_fulltime_care'] is not None else "-"
+                            number_of_places_fulltime_care_string = entry['number_of_places_fulltime_care'].split(".")[0] if entry['number_of_places_fulltime_care'] is not None else "-"
+                            platz_voll_pfl = int(number_of_places_fulltime_care_string) if number_of_places_fulltime_care_string != "-" else number_of_places_fulltime_care_string
 
                             if (not anz_vers_pat == "-") and (not anz_vers_pat == 0) and (not platz_voll_pfl == "-") and (not platz_voll_pfl == 0):
                                 occupancy_raw = anz_vers_pat / platz_voll_pfl
