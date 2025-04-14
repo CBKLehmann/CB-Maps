@@ -137,6 +137,7 @@ class Map2_0(Map2_0Template):
     Mapbox_Variables.map.on("click", self.map_right_click)
 
   def handle_map_load(self, event):
+    print("Hello Map Load")
     if Variables.user_role == 'guest':
       self.load_hash()
       Functions.manipulate_loading_overlay(False)
@@ -263,7 +264,6 @@ class Map2_0(Map2_0Template):
           component.checked = True
           component.raise_event('change')
     if 'healthcare' in self.local_keys:
-      print(local_storage['healthcare'])
       if not "0" in local_storage['healthcare']:
         self.select_all_hc.checked = True
         self.select_all_hc.raise_event('change')
@@ -606,6 +606,7 @@ class Map2_0(Map2_0Template):
    
   def map_style_change(self, **event_args):
     with anvil.server.no_loading_indicator:
+      Functions.manipulate_loading_overlay(True)
       local_storage['map_style'] = event_args['sender'].text
       if event_args['sender'].text == "Satellite Map":
         self.check_street.checked = False
@@ -627,7 +628,8 @@ class Map2_0(Map2_0Template):
         self.check_satellite.checked = False
         self.check_light.checked = False
         Mapbox_Variables.map.setStyle('mapbox://styles/shinykampfkeule/cldkfk8qu000001thivb3l1jn')
-
+      Functions.manipulate_loading_overlay(False)
+      
   def button_toggle_menu_parts(self, **event_args):
     with anvil.server.no_loading_indicator:
       #This method is called when one of the Submenus should be opened or closed
@@ -995,7 +997,9 @@ class Map2_0(Map2_0Template):
   #This method is called when the draggable Marker was moved
   def marker_dragged(self, drag):
     with anvil.server.no_loading_indicator:
+      Functions.manipulate_loading_overlay(True)
       self.move_marker_and_update_dependencies(["{:.6f}".format(Mapbox_Variables.location_marker['_lngLat']['lng']),"{:.6f}".format(Mapbox_Variables.location_marker['_lngLat']['lat'])])
+      Functions.manipulate_loading_overlay(False)
     
   #This method is called when the draggable Marker was moved or when the Geocoder was used
   def get_iso(self, profile, contours_minutes):
@@ -1896,6 +1900,7 @@ class Map2_0(Map2_0Template):
         return self.url.replace("ä", "ae").replace("ö", "oe").replace("ü", "ue").replace("Ä", "Ae").replace("Ö", "Oe").replace("Ü", "Ue").replace("ß", "ss")
 
   def handle_style_change(self, event):
+    print("Hello")
     if self.local_loading:
       self.load_local_storage_settings()
     else:
