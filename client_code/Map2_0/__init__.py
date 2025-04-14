@@ -6,7 +6,6 @@ from anvil.tables import app_tables
 from anvil.js.window import document
 from anvil_extras.storage import local_storage
 from .. import Variables, Layer, Images, ExcelFrames, Functions
-from .Handle_Local_Storage import load_local_storage_settings
 from . import Mapbox_Functions, Mapbox_Variables
 from .Market_Study_Functions import generate_market_studies
 import anvil.server
@@ -264,6 +263,7 @@ class Map2_0(Map2_0Template):
           component.checked = True
           component.raise_event('change')
     if 'healthcare' in self.local_keys:
+      print(local_storage['healthcare'])
       if not "0" in local_storage['healthcare']:
         self.select_all_hc.checked = True
         self.select_all_hc.raise_event('change')
