@@ -115,12 +115,14 @@ def generate_market_studies(application):
         elif demographic_city == "Köthen":
             demographic_city = "Köthen (Anhalt)"
         
-        
+        print(market_study_dictionary['marker_coords'])
+        print(demographic_city)
         market_study_dictionary['countie_data'] = anvil.server.call(
             "get_demographic_district_data",
             marker_coords = market_study_dictionary['marker_coords'],
             city = demographic_city 
         )
+        print(market_study_dictionary['countie_data'])
         market_study_dictionary['care_data_district'] = anvil.server.call("get_care_district_data", dist_key=market_study_dictionary['countie_data']['ex_dem_lk']['key'])
         market_study_dictionary['regulations'] = anvil.server.call('read_regulations', federal_state=market_study_dictionary['federal_state'], version="english")
 
